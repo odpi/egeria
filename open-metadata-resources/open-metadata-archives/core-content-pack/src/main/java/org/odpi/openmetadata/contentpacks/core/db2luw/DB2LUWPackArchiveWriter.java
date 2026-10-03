@@ -68,6 +68,7 @@ public class DB2LUWPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.DB2LUW_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.DB2LUW_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.DB2LUW_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.DB2LUW_CONTENT_PACK);
 

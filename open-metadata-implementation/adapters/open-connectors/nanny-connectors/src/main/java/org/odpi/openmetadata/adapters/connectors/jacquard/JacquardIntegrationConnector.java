@@ -2700,6 +2700,15 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                         perspectiveClient.updatePerspective(perspective.getElementHeader().getGUID(), perspectiveClient.getUpdateOptions(true), perspectiveProperties);
                     }
 
+                    if (perspectiveDefinition.getFolder() != null)
+                    {
+                        String parentGUID = productFolders.get(perspectiveDefinition.getFolder().getQualifiedName());
+
+                        CollectionClient collectionClient = integrationContext.getCollectionClient();
+
+                        collectionClient.addToCollection(parentGUID, perspective.getElementHeader().getGUID(), collectionClient.getMakeAnchorOptions(false), null);
+                    }
+
                     return perspective.getElementHeader().getGUID();
                 }
             }

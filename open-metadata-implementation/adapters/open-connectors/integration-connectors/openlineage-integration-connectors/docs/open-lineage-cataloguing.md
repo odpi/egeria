@@ -75,7 +75,7 @@ are parsed and delivered through new default methods on `OpenLineageEventListene
 
 | OpenLineage | Open metadata | Notes |
 |-------------|---------------|-------|
-| Job (namespace, name) | `DeployedSoftwareComponent` (a `Process`) | Matched on `namespacePath` + `resourceName` (see below); created as `DeployedSoftwareComponent::{namespace}::{name}`. The pre-existing `OpenLineageJob:{name}` naming is still recognised. |
+| Job (namespace, name) | `DeployedSoftwareComponent` (a `Process`) | Matched on `namespacePath` + `resourceName` (see below); created as `DeployedSoftwareComponent::{namespace}::{name}`, from the catalog template chosen by the `jobType` facet where there is one.  The pre-existing `OpenLineageJob:{name}` naming is still recognised. |
 | `documentation` job facet | `description` | Only set when the process has no description (stewards' edits are preserved). |
 | `sql` job facet | `formula` / `formulaType` (`SQL:{dialect}`) | |
 | `sourceCode` job facet | `implementationLanguage` | The source text itself is not stored. |
@@ -85,36 +85,170 @@ are parsed and delivered through new default methods on `OpenLineageEventListene
 | `parent` run facet (parent and root job) | `Process` for each, `ProcessHierarchy` (OWNED) root → parent → job | A newly created child process is anchored to its parent, so deleting the parent removes its children.  An existing process keeps its own anchor. |
 | `jobDependencies` run facet, JOB entries of the `lineage` job facet | `ControlFlow` between processes | guard = status trigger rule, label = dependency type. |
 | Run (runId) | `TransientEmbeddedProcess` owned by the job's process via `ProcessHierarchy` (OWNED) | Optional (`catalogRuns`, default off).  `activityStatus` from the event type, `startTime`/`completionTime` from event times, `requestedStartTime` from nominal start; run facets in additional properties. |
-| Input / output dataset (namespace, name) | Data asset: `TabularDataSet` (tables/views/lakehouse tables), `DataFile`/`DataFolder` (object stores and file systems), `Topic` (Kafka etc.), otherwise `DataSet` | Matched on `namespacePath` + `resourceName` (see below).  Type chosen from the namespace scheme and the `datasetType`/`storage` facets; created as `{typeName}::{namespace}::{name}` with namespace in `namespacePath`, name in `resourceName`/`pathName`. |
+| Input / output dataset (namespace, name) | The element that describes the physical data: a catalogued `RelationalTable` (with its `DeployedDatabaseSchema` or `RelationalDatabase`), `Topic`, file, Unity Catalog table ... or, when nothing is catalogued, a new asset created from the catalog template for the technology in the namespace, or a generic `DataStore` | See "Matching datasets to the physical landscape" and "Creating datasets and jobs that are not catalogued" below.  A new asset is named `{typeName}::{namespace}::{name}` with namespace in `namespacePath`, name in `resourceName` (and `pathName` for files). |
 | `documentation`, `version` dataset facets | `description`, `versionIdentifier` | |
 | `dataSource`, `storage`, `catalog`, `symlinks`, `hierarchy`, `tags`, `datasetType`, `lifecycleStateChange` dataset facets | additional properties | |
-| `lifecycleStateChange` RENAME | asset's `displayName`, `resourceName`, `namespacePath` (and `pathName`, `qualifiedName` when it used this connector's convention) updated in place | The repository is bi-temporal so the previous names remain visible at their point in time. |
-| `lifecycleStateChange` DROP | asset archived (`Memento`) or deleted according to the connector's delete method | The dropped dataset takes no further part in the event's lineage. |
-| `schema` dataset facet | `TabularSchemaType` + `TabularColumn`s (nested fields as nested attributes; type in `TypeEmbeddedAttribute`; ordinal position on the parent relationship) | Optional (`catalogSchemas`); only when the asset has no schema. |
-| inputs → job → outputs | `DataFlow` relationships (input asset → process, process → output asset) | Duplicate relationships are avoided by querying (and caching) existing ones. |
-| `columnLineage` dataset facet, field entries of the `lineage` facets | `LineageMapping` between `TabularColumn`s | label/description from the transformations. |
-| DATASET entries of the `lineage` job/dataset facets | `DataFlow` | |
+| `lifecycleStateChange` RENAME (assets this connector created) | asset's `displayName`, `resourceName`, `namespacePath` (and `pathName`, `qualifiedName` when it used this connector's convention) updated in place | The repository is bi-temporal so the previous names remain visible at their point in time. |
+| `lifecycleStateChange` DROP (assets this connector created) | asset archived (`Memento`) or deleted according to the connector's delete method | The dropped dataset takes no further part in the event's lineage. |
+| `schema` dataset facet | `TabularSchemaType` + `TabularColumn`s (nested fields as nested attributes; type in `TypeEmbeddedAttribute`; ordinal position on the parent relationship) | Optional (`catalogSchemas`); only for assets this connector created, and only when the asset has no schema - the columns of a catalogued table come from the technology connector. |
+| inputs → job → outputs | `DataFlow` relationships (input → process, process → output) | When a dataset is a table, the `DataFlow` is also created between the process and the table's schema (or database) asset, so the lineage is visible at the asset level as well as in detail.  Duplicate relationships are avoided by querying (and caching) existing ones. |
+| `columnLineage` dataset facet, field entries of the `lineage` facets | `DataMapping` between columns, and between the tables that hold them | label/description from the transformations. |
+| DATASET entries of the `lineage` job/dataset facets | `DataFlow` (and a `DataMapping` when both ends are tables) | |
+| Abstractions over a dataset (`TabularDataSet`, `TabularDataSetCollection`) | `DataSetContent` from the abstraction to the element it is a view over | One relationship for each information supply chain (DataSetContent is multi-link). |
 | `inputStatistics`, `outputStatistics`, `dataQualityMetrics` | `ResourceProfileAnnotation` (profileCounts, profileDoubles, profileDates) | Optional (`captureStatistics`). |
 | `dataQualityAssertions`, `test` run facet | `QualityAnnotation` (dimension = assertion/test type, score 100/0, expected/actual/severity in the description, SQL in `expression`) | Optional (`captureDataQuality`). |
 | Annotations | `SurveyReport` per event, anchored to the run (or job), `ReportOriginator` → run/job, `ReportSubject` → dataset, `AssociatedAnnotation` → dataset/process | Created only when the event carries statistics or quality results. |
 | Write times and statistics | `DataScope` classification on output assets | Optional (`updateDataScope`); see below. |
 | Run frequency and volume | `RunMetrics` classification on the job's process | Always maintained; see below. |
 
-### Matching jobs and datasets to existing elements
+### Matching jobs to existing elements
 
 The OpenLineage namespace and name are extracted from the technology, so they are the most reliable identity
-for a resource, and other connectors record the same values in `namespacePath` and `resourceName`.  For each job
-and dataset the connector:
+for a resource.  For each job the connector:
 
-1. looks for the element it would have created itself (`{typeName}::{namespace}::{name}`, or the legacy job name);
-2. otherwise searches the catalog for assets whose `resourceName` equals the name and whose `namespacePath` equals
-   the namespace;
-3. uses the match if there is exactly one and its type is the expected type or a subtype of it;
-4. otherwise (no match, several matches, or an incompatible type) creates a new element and links every match to it
-   with a `PeerDuplicateLink` in DISCOVERED status (source = connector name, notes explain the match), leaving the
-   decision to the duplicate management process (stewards or the Mendel automated duplicate manager).
+1. looks for the process it would have created itself (`DeployedSoftwareComponent::{namespace}::{name}`, or the
+   legacy job name);
+2. otherwise searches the catalog for processes whose `resourceName` equals the name and whose `namespacePath`
+   equals the namespace, and uses the match if there is exactly one and it is a `DeployedSoftwareComponent`;
+3. otherwise creates a new process and links every match to it with a `PeerDuplicateLink` in DISCOVERED status
+   (source = connector name, notes explain the match), leaving the decision to the duplicate management process
+   (stewards or the Mendel automated duplicate manager).
 
-Other technologies' naming conventions can be plugged into `findMatchingAssets` as they are discovered.
+A run from the governance action publisher (one with the `egeria_governanceAction` facet naming a process) is not
+catalogued as a job.  `OpenLineageGovernanceActionResolver` (in the Open Integration Framework, shared with the
+Lovelace services) finds the elements behind it from the facet's `processName` and `processStepName`:
+
+* the lineage is attached to the `GovernanceActionProcess` that the run's process instance is governed by - the
+  same element that provisioning services such as Wedgwood connect their own lineage to when they are asked for
+  top-level lineage, so the two views of a delivery meet at one process;
+* the `RunMetrics` classification is kept on the `GovernanceActionProcessStep`, because each step of a process runs
+  separately (RunMetrics is valid on a Process and on a GovernanceActionProcessStep);
+* the `GovernanceActionProcessInstance` already represents the run, so no run element is created and survey
+  reports are anchored to the instance.
+
+None of these are assets, so they are read through the open metadata store.
+
+### Matching datasets to the physical landscape
+
+The lineage from OpenLineage events is attached to the elements that describe the physical landscape - the
+catalogued tables, topics and files - and the higher level abstractions over them (tabular data sets and tabular
+data set collections, such as the data sets of digital products) are linked above them with `DataSetContent`.
+
+`OpenLineageDataSetResolver` (in the Open Integration Framework, so the Lovelace services use the same rules) finds
+every element that describes a dataset:
+
+* the element named by the dataset, for datasets in the `egeria` namespace (this is how the governance action
+  publisher names action targets that have no OpenLineage identity);
+* the elements whose `resourceName` and `namespacePath` are the dataset's name and namespace;
+* the elements catalogued by Egeria's technology connectors, found through the endpoints of their connections.
+  Egeria's technology connectors do not name what they catalogue the OpenLineage way: they name servers by their
+  logical server name and record the host and port only in the endpoints.  Namespaces are compared after they are
+  reduced to the OpenLineage spelling of the scheme (`postgresql` → `postgres`, `sqlserver` → `mssql`, `athena` →
+  `awsathena`, ...) with the technology's default port filled in, so `postgres://db` matches the endpoint
+  `jdbc:postgresql://db:5432/sales` (see `OpenLineageNamespace`).
+
+| Namespace | Found through | Physical element |
+|-----------|---------------|------------------|
+| `postgres`, `mssql`, `oracle`, `db2` with name `{database}.{schema}.{table}` | an endpoint whose JDBC URL names the host, port and database → its connection → the `RelationalDatabase` (or `DeployedDatabaseSchema`) asset → the `RelationalTable` the JDBC integration connector named `{databaseQN}::{schema}::{table}` (or `{schemaQN}::{table}`; Oracle and Db2 names are also tried in upper case) | The `RelationalTable`, with the `DeployedDatabaseSchema` (or, if the schema is not catalogued, the `RelationalDatabase`) as its asset. |
+| the same, with name `{database}.{schema}` | as above | The `DeployedDatabaseSchema`. |
+| `kafka` with a topic name | an endpoint whose network address is the topic name, and whose connection's `bootstrap.servers` includes the broker | The `Topic`. |
+| `file` (local file system) | the data stores whose `pathName` is the dataset name | The file or folder. |
+| `unitycatalog` with name `{catalog}.{schema}.{table}` | the qualified name the Unity Catalog connectors give a table (`Unity Catalog Table::{server URL}::{full name}`) | The `VirtualRelationalTable`. |
+
+The matches are divided into two lists:
+
+* **Physical elements.**  The first is used for the dataset: elements catalogued by technology connectors come
+  before elements created from OpenLineage events (named `{typeName}::{namespace}::{name}`), and within each group
+  the oldest comes first.  Each other physical element is linked to it with a `PeerDuplicateLink` in DISCOVERED
+  status, if they are not already linked.  A new asset is only created when there is no physical element.
+* **Abstractions** - `TabularDataSet` and `TabularDataSetCollection` assets that are not ones this connector
+  created.  They never take lineage.  Those whose endpoint names the dataset's schema are found too: a collection
+  over the schema that holds a table is linked to the table's schema asset, and a tabular data set whose display
+  name is `{database}.{schema}.{table}` is linked to the table.  Each is linked with a `DataSetContent` relationship
+  (data set at end 1, content at end 2) for the event's information supply chain, if there is not one already.
+  An abstraction that is the dataset itself (for example a collection named in the `egeria` namespace) is resolved
+  through its own endpoint to the physical element it is a view over; if there is none, the abstraction itself is
+  used rather than creating a new asset.
+
+The dataset facets only update the properties of assets this connector created; elements catalogued by technology
+connectors gain an ownership classification if they have none, and the OpenLineage identity (`resourceName` and
+`namespacePath`) if they have neither.  Renames and drops are only applied to assets this connector created.
+Results are cached for a few minutes.
+
+### Creating datasets and jobs that are not catalogued
+
+A dataset or job that nothing describes yet is created from a catalog template, so that it has the right open
+metadata type and technology type (`deployedImplementationType`).  The templates create just the asset (most of
+these technologies have no connectors yet); the connector supplies the names, the OpenLineage identity and the
+properties from the facets, which replace the template's values.  The technology types and template types are in
+`org.odpi.openmetadata.adapters.connectors.controls`, and the templates are in the core content pack (or, for
+Postgres, SQL Server, Oracle, Db2 and Unity Catalog tables, in that technology's content pack).  When a template is
+not loaded - for example because the Postgres content pack is not - the asset is created directly with the same type
+and technology type.
+
+| Dataset namespace scheme | Template (technology type) | Open metadata type |
+|--------------------------|----------------------------|--------------------|
+| `postgres`, `mssql`, `oracle`, `db2` | PostgreSQL / Microsoft SQL Server / Oracle / Db2 Table | `DataSet` |
+| `sqlserver` (Azure Synapse), `awsathena`, `arn` (AWS Glue), `azurekusto`, `bigquery`, `fabric-warehouse`, `mysql`, `crate`, `hive`, `oceanbase`, `teradata`, `redshift`, `snowflake`, `spanner`, `trino` | Azure Synapse Analytics / Amazon Athena / AWS Glue / Azure Data Explorer / Google BigQuery / Microsoft Fabric Warehouse / MySQL / CrateDB / Apache Hive / OceanBase / Teradata / Amazon Redshift / Snowflake / Google Cloud Spanner / Trino Table | `DataSet` |
+| `unitycatalog` | Unity Catalog Table | `VirtualRelationalTable` |
+| `cassandra`, `azurecosmos`, `milvus` | Apache Cassandra Table / Azure Cosmos DB Collection / Milvus Collection | `DataSet` |
+| `s3`, `gs`, `wasbs`, `abfss`, `hdfs`, `dbfs` | Amazon S3 / Google Cloud Storage / Azure Blob Storage Object, Azure Data Lake Storage / Apache Hadoop HDFS / Databricks File System File - or the matching Folder / Directory when the name ends with `/` | `DataFile` / `DataFolder` |
+| `file` | Data File (technology type from the file's format, e.g. CSV Data File) / Data Folder | `DataFile` / `DataFolder` |
+| `box`, `filenet`, `mssharepoint` | Box File / IBM FileNet Document / Microsoft SharePoint Document | `Document` |
+| `kafka` | Apache Kafka Topic (the Kafka topic template, which also creates the topic's connection with its bootstrap servers) | `Topic` |
+| `pubsub` | Google Cloud Pub/Sub Topic, or Subscription for `subscription:` names | `Topic` / `DataFeed` |
+| `inmemory` | In-Memory Data Set | `DataSet` |
+| anything else | none - a generic `DataStore` that can be retyped to a more specific subtype later | `DataStore` |
+
+| `jobType` facet (integration / jobType) | Template (technology type) |
+|-----------------------------------------|----------------------------|
+| `AIRFLOW` / `DAG` | Apache Airflow DAG |
+| `AIRFLOW` / anything else | Apache Airflow Task - and its parent job (from the `parent` run facet) is created as an Apache Airflow DAG |
+| `SPARK` | Apache Spark Job |
+| `DEBEZIUM` | Debezium Connector Task |
+| `SQL`, or jobType `QUERY` | SQL Job |
+| anything else | none - a generic `DeployedSoftwareComponent` |
+
+### Information supply chains
+
+Every lineage relationship created from an event (`DataFlow`, `ControlFlow`, `DataMapping`) and every
+`DataSetContent` link to an abstraction is tagged with the event's information supply chain.  It comes from:
+
+1. Egeria's `egeria_informationSupplyChain` run facet, which any producer can add - for example an Apache Airflow DAG
+   (see "Egeria's custom facets" below); otherwise
+2. the `iscQualifiedName` in the `egeria_governanceAction` run facet that the governance action publisher adds.
+
+The same data flow can be part of several information supply chains, so a relationship is only reused if it is
+tagged with the same one.
+
+### Egeria's custom facets
+
+Both are run facets, named with the `egeria_` prefix as the OpenLineage spec requires for custom facets.  Their
+schemas are in the Open Integration Framework
+(`src/main/resources/openlineage/facets/1-0-0/`) and their `_schemaURL`s point at
+`https://egeria-project.org/openlineage/facets/1-0-0/{facet}.json`.
+
+| Facet | Schema | Content |
+|-------|--------|---------|
+| `egeria_governanceAction` | `EgeriaGovernanceActionRunFacet.json` | Added by the governance action publisher: `iscQualifiedName`, `engineActionGUID`, `governanceEngineName`, `requestType`, `governanceActionTypeName`, `processName`, `processStepName`. |
+| `egeria_informationSupplyChain` | `EgeriaInformationSupplyChainRunFacet.json` | `iscQualifiedName` - the information supply chain the run is part of.  For producers outside Egeria, such as Apache Airflow DAGs. |
+
+An Apache Airflow DAG can add `egeria_informationSupplyChain` to its run events with the OpenLineage provider's
+custom run facets option (`[openlineage] custom_run_facets`, which names functions that return extra run facets).
+The facet looks like this in the event:
+
+```json
+"run": {
+  "runId": "...",
+  "facets": {
+    "egeria_informationSupplyChain": {
+      "_producer": "https://github.com/apache/airflow",
+      "_schemaURL": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
+      "iscQualifiedName": "InformationSupplyChain::Personalized Treatment Ordering Information Supply Chain"
+    }
+  }
+}
+```
 
 ### Parent jobs and containment
 
@@ -174,7 +308,7 @@ not to the size of the estate.
 **Capture on arrival (structural, low churn, needed immediately)**
 
 - Processes for jobs, parent/root jobs and job dependencies, data assets for datasets, schemas, and the
-  DataFlow / ControlFlow / ProcessHierarchy / LineageMapping relationships between them.  These change
+  DataFlow / ControlFlow / ProcessHierarchy / DataMapping relationships between them.  These change
   only when the pipeline changes, so they are written once and then only re-validated (a lookup per event).
   This is what makes lineage queries answerable straight away.
 - Descriptive facets (documentation, ownership, sql, source code location, tags, storage, catalog).  Also

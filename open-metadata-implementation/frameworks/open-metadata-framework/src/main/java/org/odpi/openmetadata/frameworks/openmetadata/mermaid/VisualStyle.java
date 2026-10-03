@@ -17,8 +17,8 @@ public enum VisualStyle
     EXTERNAL_ID(Colour.WHITE.getColourNumber(), Colour.MEDIUM_VIOLET_RED.getColourNumber(), Colour.SLATE.getColourNumber(),"sl-rect"),
     FEEDBACK(Colour.BLACK.getColourNumber(), Colour.MEDIUM_PURPLE.getColourNumber(), Colour.SLATE.getColourNumber(),"flag"),
     TAG(Colour.YELLOW_GREEN.getColourNumber(), Colour.DARK_MAGENTA.getColourNumber(), Colour.SLATE.getColourNumber(),"delay"),
-    MEMENTO(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
-    PROMISE(Colour.SLATE.getColourNumber(), Colour.LIGHT_CYAN.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
+    MEMENTO(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.AZURE.getColourNumber(),"notch-pent"),
+    PROMISE(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.AZURE.getColourNumber(),"datastore"),
     TEMPLATE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"card"),
     VALID_VALUE_SET(Colour.PALE_ROSE.getColourNumber(), Colour.BLACK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(),"hex"),
     REFERENCE_DATA_VALUE(Colour.DARK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(), Colour.DARK_ROSE.getColourNumber(),"hex"),
@@ -74,6 +74,13 @@ public enum VisualStyle
     DATA_DISTRIBUTION_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "das"),
     DOCUMENT_PUBLISHING_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "odd"),
     INSIGHT_MODEL_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PLUM.getColourNumber(), Colour.BLACK.getColourNumber(), "stadium"),
+
+    PROPOSED_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.LIGHT_YELLOW.getColourNumber(), Colour.SLATE.getColourNumber(), "rect"),
+    IN_DEVELOPMENT_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.PAPAYA_WHIP.getColourNumber(), Colour.SLATE.getColourNumber(), "rect"),
+    STANDBY_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.SILVER.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    DISABLED_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.DARK_GRAY.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    REJECTED_SOLUTION_COMPONENT(Colour.BLACK.getColourNumber(), Colour.ROSY_BROWN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    FAILED_SOLUTION_COMPONENT(Colour.WHITE.getColourNumber(), Colour.ORANGE_RED.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 
     SOLUTION_PORT(Colour.WHITE.getColourNumber(), Colour.MAUVE.getColourNumber(), Colour.PINKY.getColourNumber(), "delay"),
 

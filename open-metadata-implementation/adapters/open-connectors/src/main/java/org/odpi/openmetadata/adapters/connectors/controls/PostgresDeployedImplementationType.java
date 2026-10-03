@@ -15,6 +15,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 public enum PostgresDeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
+     * A table in a PostgreSQL database.  OpenLineage names it postgres://{host}:{port} + {database}.{schema}.{table}.
+     */
+    POSTGRESQL_TABLE("f5edc367-6a11-4115-bf59-85278928f405",
+                     "PostgreSQL Table",
+                     DeployedImplementationType.DATA_SET,
+                     OpenMetadataType.DATA_SET.typeName,
+                     null,
+                     "A table in a PostgreSQL database.  OpenLineage names it postgres://{host}:{port} + {database}.{schema}.{table}.",
+                     "https://www.postgresql.org/",
+                     null,
+                     null,
+                     null),
+
+    /**
      * A database hosted on a PostgreSQL server.
      */
     POSTGRESQL_DATABASE("ff56fc56-c4a1-469e-8040-472e8fe54694",

@@ -2646,7 +2646,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (contentStatusList.contains(authoredReferenceableProperties.getContentStatus()))
+                    else if ((authoredReferenceableProperties.getContentStatus() != null) && (contentStatusList.contains(authoredReferenceableProperties.getContentStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

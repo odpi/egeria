@@ -15,6 +15,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 public enum MSSQLDeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
+     * A table in a Microsoft SQL Server database.  OpenLineage names it mssql://{host}:{port} + {database}.{schema}.{table}.
+     */
+    MSSQL_TABLE("f6c437ea-871a-4200-95cb-de6927da5e2c",
+                "Microsoft SQL Server Table",
+                DeployedImplementationType.DATA_SET,
+                OpenMetadataType.DATA_SET.typeName,
+                null,
+                "A table in a Microsoft SQL Server database.  OpenLineage names it mssql://{host}:{port} + {database}.{schema}.{table}.",
+                "https://www.microsoft.com/en-gb/sql-server",
+                null,
+                null,
+                null),
+
+    /**
      * A database hosted on a Microsoft SQL Server.
      */
     MSSQL_DATABASE("1852931a-0118-4c30-867a-49e7c31fbcab",

@@ -68,6 +68,7 @@ public class OraclePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.ORACLE_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.ORACLE_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.ORACLE_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.ORACLE_CONTENT_PACK);
 

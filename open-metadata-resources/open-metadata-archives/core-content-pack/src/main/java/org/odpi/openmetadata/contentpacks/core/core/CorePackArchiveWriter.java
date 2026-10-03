@@ -5,7 +5,7 @@ package org.odpi.openmetadata.contentpacks.core.core;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.EgeriaRoleDefinition;
 import org.odpi.openmetadata.adapters.connectors.ExceptionTypeDefinition;
-import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductPerspectiveDefinition;
@@ -32,6 +32,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.users.AccessOperat
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
@@ -690,6 +691,24 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType);
         }
 
+        /*
+         * Technology types for resources from many technologies that are identified by their resource name within
+         * a namespace (for example by OpenLineage).
+         */
+        List<DeployedImplementationTypeDefinition> resourceTechnologyTypes = new ArrayList<>();
+
+        resourceTechnologyTypes.addAll(Arrays.asList(DataWarehouseDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(NoSQLDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(FileStoreDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(DocumentManagementDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(EventStreamDeployedImplementationType.values()));
+        resourceTechnologyTypes.addAll(Arrays.asList(DataPipelineDeployedImplementationType.values()));
+
+        for (DeployedImplementationTypeDefinition deployedImplementationType : resourceTechnologyTypes)
+        {
+            this.addDeployedImplementationType(deployedImplementationType);
+        }
+
 
         /*
          * Add the valid values for the assignmentType property.
@@ -744,6 +763,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addTabularDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
 
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();
@@ -762,6 +782,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add information supply chains.
          */
         super.addInformationSupplyChains();
+        this.addSampleInformationSupplyChain();
 
         /*
          * Add Egeria's common solution definitions
@@ -1620,5 +1641,222 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.LABEL.name, DataType.STRING.getDisplayName(), OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, null, value.getValue(), value.ordinal());
         }
+    }
+
+
+    /**
+     * Add a sample information supply chain that exercises every area of the information supply chain mermaid graph:
+     * a solution component for each deployment status (plus one with the Promise classification, which starts the chain) for the Design and
+     * Status areas, digital products for the Data Mesh area, data and process assets for the Data Fabric area, and infrastructure and a software capability
+     * for the System Fabric area.  Everything is named "SAMPLE" so that it is obvious that it is not real content.
+     */
+    private void addSampleInformationSupplyChain()
+    {
+        final String iscQName = "SAMPLE-InformationSupplyChain:Deployment-Status-Demonstration";
+
+        String iscGUID = archiveHelper.addInformationSupplyChain(null,
+                                                                 false,
+                                                                 null,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+                                                                 iscQName,
+                                                                 "SAMPLE Information Supply Chain - Deployment Status Demonstration",
+                                                                 "A sample information supply chain that is only here to show how the areas of an information supply chain are displayed.  It does not describe a real information supply chain and may be deleted.",
+                                                                 "SAMPLE-ISC-001",
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null);
+
+        archiveHelper.addMemberToCollection(ContentCollectionDefinition.EGERIA_SUPPLY_CHAINS.getGUID(), iscGUID, null);
+
+        /*
+         * One solution component for each deployment status, plus one that carries the Promise classification.
+         * They are chained together with solution linking wires that belong to the supply chain.
+         */
+        Map<String, DeploymentStatus> componentStatuses = new LinkedHashMap<>();
+
+        componentStatuses.put("Promise", DeploymentStatus.PROPOSED);
+        componentStatuses.put("Proposed", DeploymentStatus.PROPOSED);
+        componentStatuses.put("Under Development", DeploymentStatus.UNDER_DEVELOPMENT);
+        componentStatuses.put("Development Complete", DeploymentStatus.DEVELOPMENT_COMPLETE);
+        componentStatuses.put("Approved For Deployment", DeploymentStatus.APPROVED_FOR_DEPLOYMENT);
+        componentStatuses.put("Rejected", DeploymentStatus.REJECTED);
+        componentStatuses.put("Standby", DeploymentStatus.STANDBY);
+        componentStatuses.put("Active", DeploymentStatus.ACTIVE);
+        componentStatuses.put("Disabled", DeploymentStatus.DISABLED);
+        componentStatuses.put("Failed", DeploymentStatus.FAILED);
+        componentStatuses.put("Other", DeploymentStatus.OTHER);
+
+        String previousComponentGUID = null;
+
+        for (String statusName : componentStatuses.keySet())
+        {
+            DeploymentStatus deploymentStatus = componentStatuses.get(statusName);
+            boolean          isPromise        = "Promise".equals(statusName);
+            String           displayName      = "SAMPLE Solution Component - " + statusName;
+            String           userDefinedStatus = null;
+
+            if (deploymentStatus == DeploymentStatus.OTHER)
+            {
+                userDefinedStatus = "Awaiting vendor";
+            }
+
+            String componentGUID = archiveHelper.addSolutionComponent(null,
+                                                                      "SAMPLE-SolutionComponent:" + statusName.replace(' ', '-'),
+                                                                      null,
+                                                                      displayName,
+                                                                      "A sample solution component with a deployment status of " + statusName + ".  It is only here to show how the status of a solution component is displayed.",
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      deploymentStatus,
+                                                                      userDefinedStatus,
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      isPromise ? archiveHelper.getPromiseClassification(deploymentStatus) : null);
+
+            archiveHelper.addMemberToCollection(iscGUID, componentGUID, null);
+
+            if (previousComponentGUID != null)
+            {
+                archiveHelper.addSolutionLinkingWireRelationship(previousComponentGUID,
+                                                                 componentGUID,
+                                                                 "sample flow",
+                                                                 "A sample link between two sample solution components.",
+                                                                 List.of(iscQName));
+            }
+
+            previousComponentGUID = componentGUID;
+        }
+
+        /*
+         * Data fabric: a source file, a process and a target data set.
+         */
+        String sourceFileGUID = archiveHelper.addDataAsset(OpenMetadataType.DATA_FILE.typeName,
+                                                           "SAMPLE-DataFile:Source",
+                                                           "SAMPLE Source Data File",
+                                                           "/samples/sample-source.csv",
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           "A sample data file that is only here to show the data fabric area of an information supply chain.",
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null);
+
+        String processGUID = archiveHelper.addProcessAsset(OpenMetadataType.PROCESS.typeName,
+                                                           "SAMPLE-Process:Load",
+                                                           "SAMPLE Load Process",
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           "A sample process that is only here to show the data fabric area of an information supply chain.",
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null,
+                                                           null);
+
+        String targetDataSetGUID = archiveHelper.addDataAsset(OpenMetadataType.DATA_SET.typeName,
+                                                              "SAMPLE-DataSet:Target",
+                                                              "SAMPLE Target Data Set",
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              "A sample data set that is only here to show the data fabric area of an information supply chain.",
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null);
+
+        /*
+         * System fabric: a host and a database manager running on it.
+         */
+        String hostGUID = archiveHelper.addInfrastructureAsset(OpenMetadataType.HOST.typeName,
+                                                               "SAMPLE-Host:Server",
+                                                               "SAMPLE Host",
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               "A sample host that is only here to show the system fabric area of an information supply chain.",
+                                                               DeploymentStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null);
+
+        String databaseManagerGUID = archiveHelper.addSoftwareCapability(OpenMetadataType.DATABASE_MANAGER.typeName,
+                                                                         "SAMPLE-DatabaseManager:Database-Manager",
+                                                                         "SAMPLE Database Manager",
+                                                                         "A sample software capability that is only here to show the system fabric area of an information supply chain.",
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         (List<Classification>) null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null);
+
+        /*
+         * Data mesh: a provider product that packages the target data set and a consumer product that depends on it.
+         */
+        String providerProductGUID = archiveHelper.addCollection(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                 null,
+                                                                 OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                 OpenMetadataType.COLLECTION.typeName,
+                                                                 null,
+                                                                 null,
+                                                                 "SAMPLE-DigitalProduct:Provider",
+                                                                 "SAMPLE Digital Product - Provider",
+                                                                 "A sample digital product that is only here to show the data mesh area of an information supply chain.",
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null);
+
+        String consumerProductGUID = archiveHelper.addCollection(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                 null,
+                                                                 OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                 OpenMetadataType.COLLECTION.typeName,
+                                                                 null,
+                                                                 null,
+                                                                 "SAMPLE-DigitalProduct:Consumer",
+                                                                 "SAMPLE Digital Product - Consumer",
+                                                                 "A sample digital product that depends on the sample provider product.  It is only here to show the data mesh area of an information supply chain.",
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null);
+
+        archiveHelper.addLineageRelationship(targetDataSetGUID, providerProductGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample packaged as", iscQName);
+        /*
+         * A DigitalProductDependency has the dependent (consuming) product at end 1 and the product it depends on at end 2,
+         * so, unlike the data lineage relationships, it points against the flow of data.
+         */
+        archiveHelper.addLineageRelationship(consumerProductGUID, providerProductGUID, OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, "sample depends on", iscQName);
+
+        archiveHelper.addLineageRelationship(sourceFileGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "sample extract", iscQName);
+        archiveHelper.addLineageRelationship(processGUID, targetDataSetGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "sample load", iscQName);
+        archiveHelper.addLineageRelationship(targetDataSetGUID, databaseManagerGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample hosted by", iscQName);
+        archiveHelper.addLineageRelationship(databaseManagerGUID, hostGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample runs on", iscQName);
     }
 }

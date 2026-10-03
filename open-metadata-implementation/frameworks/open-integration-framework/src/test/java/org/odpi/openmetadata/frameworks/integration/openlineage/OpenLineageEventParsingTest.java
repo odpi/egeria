@@ -72,6 +72,15 @@ public class OpenLineageEventParsingTest
         assertEquals(runFacets.getNominalTime().getNominalStartTime(), "2026-09-08T13:00:00Z");
         assertEquals(runFacets.getNominalTime().getNominalEndTime(), "2026-09-08T14:00:00Z");
 
+        assertEquals(runFacets.getEgeriaGovernanceAction().getIscQualifiedName(), "InformationSupplyChain::Orders");
+        assertEquals(runFacets.getEgeriaGovernanceAction().getRequestType(), "provision-tabular-data-set");
+        assertEquals(runFacets.getEgeriaGovernanceAction().getProcessStepName(), "Copy orders");
+        assertEquals(runFacets.getEgeriaGovernanceAction().get_schemaURL(), URI.create(OpenLineageEgeriaGovernanceActionRunFacet.SCHEMA_URL));
+        assertTrue((runFacets.getAdditionalProperties() == null) || (! runFacets.getAdditionalProperties().containsKey(OpenLineageEgeriaGovernanceActionRunFacet.FACET_NAME)), "The Egeria facet should be parsed into its own bean");
+        assertEquals(runFacets.getEgeriaInformationSupplyChain().getIscQualifiedName(), "InformationSupplyChain::Orders");
+        assertEquals(runFacets.getEgeriaInformationSupplyChain().get_schemaURL(), URI.create(OpenLineageEgeriaInformationSupplyChainRunFacet.SCHEMA_URL));
+        assertTrue((runFacets.getAdditionalProperties() == null) || (! runFacets.getAdditionalProperties().containsKey(OpenLineageEgeriaInformationSupplyChainRunFacet.FACET_NAME)), "The Egeria facet should be parsed into its own bean");
+
         assertEquals(runFacets.getEnvironmentVariables().getEnvironmentVariables().size(), 2);
         assertEquals(runFacets.getEnvironmentVariables().getEnvironmentVariables().get(1).getValue(), "eu-west-1");
 

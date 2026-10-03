@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage;
 
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaGovernanceActionRunFacet;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,6 +142,12 @@ public class OpenLineageRunHistory
         public final Key                    job;
         public final Map<String, RunRecord> runs  = new LinkedHashMap<>();
         public final List<TestRecord>       tests = new ArrayList<>();
+
+        /**
+         * The egeria_governanceAction facet of the latest run of the job, if the job is a step of a governance
+         * action process reported by the governance action publisher (null otherwise).
+         */
+        public OpenLineageEgeriaGovernanceActionRunFacet governanceAction = null;
 
         /**
          * Constructor.

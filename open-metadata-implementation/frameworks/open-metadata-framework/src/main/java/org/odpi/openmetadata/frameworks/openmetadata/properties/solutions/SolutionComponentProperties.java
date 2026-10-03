@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -23,6 +24,8 @@ public class SolutionComponentProperties extends DesignModelElementProperties
 {
     private String solutionComponentType             = null;
     private String plannedDeployedImplementationType = null;
+    private DeploymentStatus deploymentStatus            = null;
+    private String           userDefinedDeploymentStatus       = null;
 
 
     /**
@@ -48,6 +51,8 @@ public class SolutionComponentProperties extends DesignModelElementProperties
         {
             this.solutionComponentType             = template.getSolutionComponentType();
             this.plannedDeployedImplementationType = template.getPlannedDeployedImplementationType();
+            this.deploymentStatus                  = template.getDeploymentStatus();
+            this.userDefinedDeploymentStatus             = template.getUserDefinedDeploymentStatus();
         }
     }
 
@@ -97,6 +102,51 @@ public class SolutionComponentProperties extends DesignModelElementProperties
 
 
     /**
+     * Return the deployment status of the solution component.  If it is not set, the component is assumed to be
+     * deployed and active.
+     *
+     * @return enum
+     */
+    public DeploymentStatus getDeploymentStatus()
+    {
+        return deploymentStatus;
+    }
+
+
+    /**
+     * Set up the deployment status of the solution component.
+     *
+     * @param deploymentStatus enum
+     */
+    public void setDeploymentStatus(DeploymentStatus deploymentStatus)
+    {
+        this.deploymentStatus = deploymentStatus;
+    }
+
+
+    /**
+     * Return the locally defined deployment status.  It is used when the deploymentStatus is set to OTHER.
+     *
+     * @return string
+     */
+    public String getUserDefinedDeploymentStatus()
+    {
+        return userDefinedDeploymentStatus;
+    }
+
+
+    /**
+     * Set up the locally defined deployment status.  It is used when the deploymentStatus is set to OTHER.
+     *
+     * @param userDefinedDeploymentStatus string
+     */
+    public void setUserDefinedDeploymentStatus(String userDefinedDeploymentStatus)
+    {
+        this.userDefinedDeploymentStatus = userDefinedDeploymentStatus;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -107,6 +157,8 @@ public class SolutionComponentProperties extends DesignModelElementProperties
         return "SolutionComponentProperties{" +
                 "solutionComponentType='" + solutionComponentType + '\'' +
                 ", plannedDeployedImplementationType='" + plannedDeployedImplementationType + '\'' +
+                ", deploymentStatus=" + deploymentStatus +
+                ", userDefinedDeploymentStatus='" + userDefinedDeploymentStatus + '\'' +
                 "} " + super.toString();
     }
 
@@ -133,7 +185,9 @@ public class SolutionComponentProperties extends DesignModelElementProperties
             return false;
         }
         return Objects.equals(solutionComponentType, that.solutionComponentType) &&
-                Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType);
+                Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType) &&
+                deploymentStatus == that.deploymentStatus &&
+                Objects.equals(userDefinedDeploymentStatus, that.userDefinedDeploymentStatus);
     }
 
 
@@ -145,6 +199,6 @@ public class SolutionComponentProperties extends DesignModelElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), solutionComponentType, plannedDeployedImplementationType);
+        return Objects.hash(super.hashCode(), solutionComponentType, plannedDeployedImplementationType, deploymentStatus, userDefinedDeploymentStatus);
     }
 }

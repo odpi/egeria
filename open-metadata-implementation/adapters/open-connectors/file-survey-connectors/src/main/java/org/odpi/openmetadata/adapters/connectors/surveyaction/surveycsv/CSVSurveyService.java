@@ -358,6 +358,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                 if (dataField.getDataFieldName().equals(schemaAttributeDisplayName))
                                 {
                                     dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getRelatedElement().getElementHeader().getGUID());
+                                    dataField.setMatchingRelationshipGUID(schemaAttribute.getRelationshipHeader().getGUID());
                                     found = true;
                                     break;
                                 }
@@ -396,6 +397,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                         {
                             updateSchemaAttribute(openMetadataStore,
                                                   dataField.getMatchingSchemaAttributeGUID(),
+                                                  dataField.getMatchingRelationshipGUID(),
                                                   dataField);
                         }
 
@@ -534,6 +536,8 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      *
      * @param openMetadataStore client to access the open metadata repositories
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
+     * @param attributeForSchemaGUID unique identifier of the AttributeForSchema relationship that links the schema
+     *                               attribute to its schema type - it holds the column's position
      * @param dataField details of the latest retrieved values
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository not working
@@ -541,6 +545,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
      */
     private void updateSchemaAttribute(OpenMetadataStore openMetadataStore,
                                        String            schemaAttributeGUID,
+                                       String            attributeForSchemaGUID,
                                        DataField         dataField) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
@@ -549,11 +554,23 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                              OpenMetadataProperty.DISPLAY_NAME.name,
                                                              dataField.getDataFieldName());
 
-        elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                          OpenMetadataProperty.POSITION.name,
-                                                          dataField.getDataFieldPosition());
-
         openMetadataStore.updateMetadataElementInStore(schemaAttributeGUID, false, elementProperties);
+
+        /*
+         * As in addSchemaAttributeToSchemaType, the position belongs on the AttributeForSchema relationship.
+         * Setting it on the column is refused with OMRS-REPOSITORY-400-028, which failed every survey after
+         * the first.
+         */
+        if (attributeForSchemaGUID != null)
+        {
+            ElementProperties relationshipProperties = propertyHelper.addIntProperty(null,
+                                                                                     OpenMetadataProperty.POSITION.name,
+                                                                                     dataField.getDataFieldPosition());
+
+            openMetadataStore.updateRelatedElementsInStore(attributeForSchemaGUID,
+                                                           openMetadataStore.getUpdateOptions(true),
+                                                           relationshipProperties);
+        }
 
         ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                       OpenMetadataProperty.SCHEMA_TYPE_NAME.name,
@@ -579,6 +596,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
         private       int                                 dataFieldPosition           = 0;
         private final ResourceProfileAnnotationProperties resourceProfileAnnotation   = new ResourceProfileAnnotationProperties();
         private       String                              matchingSchemaAttributeGUID = null;
+        private       String                              matchingRelationshipGUID    = null;
 
 
         /**
@@ -665,6 +683,28 @@ public class CSVSurveyService extends SurveyActionServiceConnector
         public void setMatchingSchemaAttributeGUID(String matchingSchemaAttributeGUID)
         {
             this.matchingSchemaAttributeGUID = matchingSchemaAttributeGUID;
+        }
+
+
+        /**
+         * Return the unique identifier of the AttributeForSchema relationship for the matching schema attribute.
+         *
+         * @return string guid
+         */
+        public String getMatchingRelationshipGUID()
+        {
+            return matchingRelationshipGUID;
+        }
+
+
+        /**
+         * Set up the unique identifier of the AttributeForSchema relationship for the matching schema attribute.
+         *
+         * @param matchingRelationshipGUID string guid
+         */
+        public void setMatchingRelationshipGUID(String matchingRelationshipGUID)
+        {
+            this.matchingRelationshipGUID = matchingRelationshipGUID;
         }
 
 

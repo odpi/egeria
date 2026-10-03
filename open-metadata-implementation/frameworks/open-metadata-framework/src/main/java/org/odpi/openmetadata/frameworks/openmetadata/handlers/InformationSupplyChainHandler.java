@@ -385,16 +385,16 @@ public class InformationSupplyChainHandler extends CollectionHandler
             {
                 auditLog.logException(methodName,
                                       OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
+                                                                                                       methodName,
                                                                                                        localServiceName,
-                                                                                                               error.getMessage()),
+                                                                                                       error.getMessage()),
                                       error);
             }
 
             throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
+                                                                                                               methodName,
                                                                                                                localServiceName,
-                                                                                                                       error.getMessage()),
+                                                                                                               error.getMessage()),
                                               error.getClass().getName(),
                                               methodName,
                                               error);

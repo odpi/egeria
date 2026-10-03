@@ -2301,12 +2301,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 }
                 else
                 {
-                    throw new PropertyServerException(GenericHandlersErrorCode.INVALID_ENGINE_ACTION_STATUS.getMessageDefinition(userId,
-                                                                                                                                 engineActionGUID,
-                                                                                                                                 processingEngineUserId,
-                                                                                                                                 status.name()),
-                                                      this.getClass().getName(),
-                                                      methodName);
+                    throw new InvalidParameterException(GenericHandlersErrorCode.INVALID_ENGINE_ACTION_STATUS.getMessageDefinition(userId,
+                                                                                                                                   engineActionGUID,
+                                                                                                                                   processingEngineUserId,
+                                                                                                                                   status.name()),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        guidParameterName);
                 }
 
             }
@@ -2322,12 +2323,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            throw new PropertyServerException(GenericHandlersErrorCode.MISSING_ENGINE_ACTION.getMessageDefinition(engineActionGUID,
+            throw new InvalidParameterException(GenericHandlersErrorCode.MISSING_ENGINE_ACTION.getMessageDefinition(engineActionGUID,
                                                                                                                   guidParameterName,
                                                                                                                   serviceName,
                                                                                                                   methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+                                                this.getClass().getName(),
+                                                methodName,
+                                                guidParameterName);
         }
     }
 

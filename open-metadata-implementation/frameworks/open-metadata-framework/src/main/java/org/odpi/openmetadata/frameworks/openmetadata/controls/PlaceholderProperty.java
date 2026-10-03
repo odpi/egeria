@@ -124,6 +124,15 @@ public enum PlaceholderProperty
                 "my_asset"),
 
     /**
+     * The namespace that the resource name is unique within - for example, the OpenLineage namespace of a dataset
+     * or job, such as postgres://host:5432.
+     */
+    NAMESPACE_PATH ("namespacePath",
+                    "The namespace that the resource name is unique within - for example, the OpenLineage namespace of a dataset or job, such as postgres://host:5432.",
+                    DataType.STRING.getDisplayName(),
+                    "snowflake://myorg-myaccount"),
+
+    /**
      * The technology type for the element.
      */
     DEPLOYED_IMPLEMENTATION_TYPE ("deployedImplementationType",
@@ -560,6 +569,56 @@ public enum PlaceholderProperty
         return placeholderPropertyTypes;
     }
 
+
+
+    /**
+     * Retrieve the placeholder properties for a resource identified by its resource name within a namespace (for
+     * example a dataset or job identified by OpenLineage).
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getResourcePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DISPLAY_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(RESOURCE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(NAMESPACE_PATH.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve the placeholder properties for a file identified by its resource name within a namespace.
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getFileResourcePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = getResourcePlaceholderPropertyTypes();
+
+        placeholderPropertyTypes.add(FILE_PATH_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve the placeholder properties for a folder identified by its resource name within a namespace.
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getFolderResourcePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = getResourcePlaceholderPropertyTypes();
+
+        placeholderPropertyTypes.add(DIRECTORY_PATH_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
 
 
     /**

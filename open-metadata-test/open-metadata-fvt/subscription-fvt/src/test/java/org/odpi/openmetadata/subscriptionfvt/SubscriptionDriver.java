@@ -45,6 +45,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class SubscriptionDriver
 {
     /**
+     * The information supply chain that the subscriptions are taken out for.  It is passed to the provisioning
+     * pipeline, so it appears on the lineage the pipeline records.
+     */
+    static final String ISC_QUALIFIED_NAME = "InformationSupplyChain::subscription-fvt";
+
+    /**
      * The subscriptions taken out during this run, keyed by product and type - see
      * {@link #takeOutSubscription}.
      */
@@ -315,7 +321,7 @@ class SubscriptionDriver
                                                                                            null,
                                                                                            null,
                                                                                            null,
-                                                                                           null);
+                                                                                           ISC_QUALIFIED_NAME);
 
         assertNotNull(processInstanceGUID,
                       "Asking to subscribe to " + productName + " with a " + subscriptionIdentifier

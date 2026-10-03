@@ -1998,18 +1998,21 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach a data set to another asset (typically a data store) that is supplying the data.
+     * Attach a data set to another asset (typically a data store) that is supplying the data.  DataSetContent is
+     * multi-link: the same data set may be linked to the same content more than once, for example once for each
+     * information supply chain (iscQualifiedName) it is part of.
      *
      * @param userId                 userId of the user making the request
      * @param dataSetGUID          unique identifier of the data set
      * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param makeAnchorOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDataSetContent(String                   userId,
+    public String linkDataSetContent(String                   userId,
                                    String                   dataSetGUID,
                                    String                   dataContentAssetGUID,
                                    MakeAnchorOptions        makeAnchorOptions,
@@ -2025,17 +2028,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(dataSetGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(dataContentAssetGUID, end2GUIDParameterName, methodName);
 
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                        dataSetGUID,
-                                                        dataContentAssetGUID,
-                                                        makeAnchorOptions,
-                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                               dataSetGUID,
+                                                               dataContentAssetGUID,
+                                                               makeAnchorOptions,
+                                                               relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach a data set from another asset that was supplying the data and is no more.
+     * Detach a data set from another asset that was supplying the data and is no more.  Every DataSetContent
+     * relationship between the two elements is removed.  Use detachDataSetContentRelationship to remove just one.
      *
      * @param userId                 userId of the user making the request.
      * @param dataSetGUID          unique identifier of the data set
@@ -2065,6 +2069,63 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         dataSetGUID,
                                                         dataContentAssetGUID,
                                                         deleteOptions);
+    }
+
+
+    /**
+     * Update the properties of one DataSetContent relationship.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param updateOptions          options for the request
+     * @param relationshipProperties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateDataSetContent(String                   userId,
+                                     String                   relationshipGUID,
+                                     UpdateOptions            updateOptions,
+                                     DataSetContentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName                    = "updateDataSetContent";
+        final String relationshipGUIDParameterName = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Remove one DataSetContent relationship, leaving any others between the same elements in place.
+     *
+     * @param userId           userId of the user making the request.
+     * @param relationshipGUID unique identifier of the relationship
+     * @param deleteOptions    options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataSetContentRelationship(String        userId,
+                                                 String        relationshipGUID,
+                                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName                    = "detachDataSetContentRelationship";
+        final String relationshipGUIDParameterName = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, relationshipGUID, deleteOptions);
     }
 
 
@@ -2963,7 +3024,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         processes.add(openMetadataRootElement);
                     }
-                    else if (activityStatusList.contains(processProperties.getActivityStatus()))
+                    else if ((processProperties.getActivityStatus() != null) && (activityStatusList.contains(processProperties.getActivityStatus())))
                     {
                         processes.add(openMetadataRootElement);
                     }
@@ -2999,7 +3060,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (activityStatusList.contains(actionTargetProperties.getActivityStatus()))
+                    else if ((actionTargetProperties.getActivityStatus() != null) && (activityStatusList.contains(actionTargetProperties.getActivityStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -3111,7 +3172,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (contentStatusList.contains(dataAssetProperties.getContentStatus()))
+                    else if ((dataAssetProperties.getContentStatus() != null) && (contentStatusList.contains(dataAssetProperties.getContentStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }
@@ -3223,7 +3284,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                     {
                         rootElements.add(openMetadataRootElement);
                     }
-                    else if (deploymentStatusList.contains(infrastructureProperties.getDeploymentStatus()))
+                    else if ((infrastructureProperties.getDeploymentStatus() != null) && (deploymentStatusList.contains(infrastructureProperties.getDeploymentStatus())))
                     {
                         rootElements.add(openMetadataRootElement);
                     }

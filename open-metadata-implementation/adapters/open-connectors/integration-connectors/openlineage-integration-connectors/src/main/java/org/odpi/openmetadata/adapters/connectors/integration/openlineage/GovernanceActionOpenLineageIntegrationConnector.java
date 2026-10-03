@@ -14,8 +14,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopic
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -27,7 +31,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -40,6 +47,19 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
 {
     private static final URI    producer = URI.create("https://egeria-project.org/");
     private static final String defaultNameSpace = "GovernanceActions";
+
+    /**
+     * Namespace for datasets that are identified by the qualified name of their asset in open metadata.
+     */
+    public static final String EGERIA_NAMESPACE = OpenLineageNamespace.EGERIA_NAMESPACE;
+
+    private static final String      FILE_NAMESPACE                   = "file";
+    private static final Set<String> OBJECT_STORE_SCHEMES             = Set.of("s3", "s3a", "gs", "wasbs");
+    private static final String      ACTION_TARGET_PARAMETER_PREFIX   = "actionTarget:";
+    private static final String      DESTINATION_ACTION_TARGET_PREFIX = "destination";
+    private static final String      OUTPUT_ACTION_TARGET_PREFIX      = "output";
+    private static final String      RECEIVED_GUARDS_PARAMETER        = "receivedGuards";
+    private static final String      COMPLETION_GUARDS_PARAMETER      = "completionGuards";
     private final        ZoneId zoneId   = ZoneId.systemDefault();
 
     private String namespace = defaultNameSpace;
@@ -286,92 +306,309 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
             }
 
             runFacets.setNominalTime(nominalTimeRunFacet);
+            runFacets.setEgeriaGovernanceAction(getGovernanceActionRunFacet(engineAction.getElementHeader().getGUID(), engineActionProperties));
 
-            run.setFacets(runFacets);
+            /*
+             * The request parameters, guards and action target roles describe how the governance action was
+             * invoked rather than the data it worked on, so they are passed as execution parameters.
+             */
+            Map<String, OpenLineageExecutionParametersRunFacetParameter> parameters    = new LinkedHashMap<>();
+            List<OpenLineageInputDataSet>                                inputDataSets  = new ArrayList<>();
+            List<OpenLineageOutputDataSet>                               outputDataSets = new ArrayList<>();
 
-            event.setRun(run);
-
-            List<OpenLineageInputDataSet> inputDataSets = new ArrayList<>();
+            if (engineActionProperties.getRequestParameters() != null)
+            {
+                for (Map.Entry<String, String> requestParameter : engineActionProperties.getRequestParameters().entrySet())
+                {
+                    addParameter(parameters, requestParameter.getKey(), requestParameter.getKey(), requestParameter.getValue());
+                }
+            }
 
             if (engineAction.getActionTargets() != null)
             {
                 for (RelatedMetadataElementSummary actionTarget : engineAction.getActionTargets())
                 {
-                    if (actionTarget != null)
+                    if ((actionTarget != null) && (actionTarget.getRelatedElement() != null))
                     {
-                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
+                        String actionTargetName = null;
 
                         if (actionTarget.getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties)
                         {
-                            inputDataSet.setName(actionTargetProperties.getActionTargetName());
+                            actionTargetName = actionTargetProperties.getActionTargetName();
                         }
 
-                        inputDataSet.setNamespace(namespace);
+                        addParameter(parameters,
+                                     ACTION_TARGET_PARAMETER_PREFIX + actionTargetName,
+                                     actionTargetName,
+                                     getElementName(actionTarget.getRelatedElement()));
 
-                        inputDataSets.add(inputDataSet);
+                        DataSetIdentity dataSetIdentity = getDataSetIdentity(actionTarget.getRelatedElement());
+
+                        if (dataSetIdentity != null)
+                        {
+                            if (isOutputActionTarget(actionTargetName))
+                            {
+                                OpenLineageOutputDataSet outputDataSet = new OpenLineageOutputDataSet();
+
+                                outputDataSet.setNamespace(dataSetIdentity.namespace());
+                                outputDataSet.setName(dataSetIdentity.name());
+
+                                outputDataSets.add(outputDataSet);
+                            }
+                            else
+                            {
+                                OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
+
+                                inputDataSet.setNamespace(dataSetIdentity.namespace());
+                                inputDataSet.setName(dataSetIdentity.name());
+
+                                inputDataSets.add(inputDataSet);
+                            }
+                        }
                     }
                 }
             }
 
             if (engineActionProperties.getReceivedGuards() != null)
             {
-                for (String guard : engineActionProperties.getReceivedGuards())
-                {
-                    if (guard != null)
-                    {
-                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
-
-                        inputDataSet.setName(guard);
-                        inputDataSet.setNamespace(namespace);
-
-                        inputDataSets.add(inputDataSet);
-                    }
-                }
+                addParameter(parameters, RECEIVED_GUARDS_PARAMETER, RECEIVED_GUARDS_PARAMETER, String.join(", ", engineActionProperties.getReceivedGuards()));
             }
 
-            if (engineActionProperties.getRequestParameters() != null)
+            if ((engineActionProperties.getCompletionTime() != null) && (engineActionProperties.getCompletionGuards() != null))
             {
-                for (String requestParameter : engineActionProperties.getRequestParameters().values())
-                {
-                    if (requestParameter != null)
-                    {
-                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
-
-                        inputDataSet.setName(requestParameter);
-                        inputDataSet.setNamespace(namespace);
-
-                        inputDataSets.add(inputDataSet);
-                    }
-                }
+                addParameter(parameters, COMPLETION_GUARDS_PARAMETER, COMPLETION_GUARDS_PARAMETER, String.join(", ", engineActionProperties.getCompletionGuards()));
             }
 
+            if (! parameters.isEmpty())
+            {
+                OpenLineageExecutionParametersRunFacet executionParametersRunFacet = new OpenLineageExecutionParametersRunFacet();
+
+                executionParametersRunFacet.set_producer(producer);
+                executionParametersRunFacet.setParameters(new ArrayList<>(parameters.values()));
+
+                runFacets.setExecutionParameters(executionParametersRunFacet);
+            }
+
+            run.setFacets(runFacets);
+
+            event.setRun(run);
             event.setInputs(inputDataSets);
 
-            if (engineActionProperties.getCompletionTime() != null)
+            if (! outputDataSets.isEmpty())
             {
-                List<OpenLineageOutputDataSet> outputDataSets = new ArrayList<>();
-
-                if (engineActionProperties.getCompletionGuards() != null)
-                {
-                    for (String guard : engineActionProperties.getCompletionGuards())
-                    {
-                        if (guard != null)
-                        {
-                            OpenLineageOutputDataSet outputDataSet = new OpenLineageOutputDataSet();
-
-                            outputDataSet.setName(guard);
-                            outputDataSet.setNamespace(namespace);
-
-                            outputDataSets.add(outputDataSet);
-                        }
-                    }
-                }
-
                 event.setOutputs(outputDataSets);
             }
 
             integrationContext.publishOpenLineageRunEvent(event);
         }
+    }
+
+
+    /**
+     * Add an execution parameter, giving it a unique key if the key is already in use (for example, when
+     * several action targets share the same action target name).
+     *
+     * @param parameters parameters accumulated so far
+     * @param key preferred key for the parameter
+     * @param name name of the parameter
+     * @param value value of the parameter - the parameter is skipped if this is null
+     */
+    private void addParameter(Map<String, OpenLineageExecutionParametersRunFacetParameter> parameters,
+                              String                                                       key,
+                              String                                                       name,
+                              String                                                       value)
+    {
+        if (value != null)
+        {
+            String uniqueKey = key;
+            int    count     = 1;
+
+            while (parameters.containsKey(uniqueKey))
+            {
+                count++;
+                uniqueKey = key + ":" + count;
+            }
+
+            OpenLineageExecutionParametersRunFacetParameter parameter = new OpenLineageExecutionParametersRunFacetParameter();
+
+            parameter.setKey(uniqueKey);
+            parameter.setName(name);
+            parameter.setValue(value);
+
+            parameters.put(uniqueKey, parameter);
+        }
+    }
+
+
+    /**
+     * Return the name used to identify an element in the execution parameters: its qualified name, or its
+     * unique identifier if it has no qualified name.
+     *
+     * @param element element to name
+     * @return qualified name or guid
+     */
+    private String getElementName(MetadataElementSummary element)
+    {
+        if ((element.getProperties() instanceof ReferenceableProperties referenceableProperties) &&
+            (referenceableProperties.getQualifiedName() != null))
+        {
+            return referenceableProperties.getQualifiedName();
+        }
+
+        return element.getElementHeader().getGUID();
+    }
+
+
+    /**
+     * Return Egeria's run facet describing the governance action behind the run.
+     *
+     * @param engineActionGUID unique identifier of the engine action
+     * @param engineActionProperties properties of the engine action
+     * @return facet
+     */
+    private OpenLineageEgeriaGovernanceActionRunFacet getGovernanceActionRunFacet(String                 engineActionGUID,
+                                                                                  EngineActionProperties engineActionProperties)
+    {
+        OpenLineageEgeriaGovernanceActionRunFacet governanceActionRunFacet = new OpenLineageEgeriaGovernanceActionRunFacet();
+
+        governanceActionRunFacet.set_producer(producer);
+        governanceActionRunFacet.setIscQualifiedName(engineActionProperties.getISCQualifiedName());
+        governanceActionRunFacet.setEngineActionGUID(engineActionGUID);
+        governanceActionRunFacet.setGovernanceEngineName(engineActionProperties.getExecutorEngineName());
+        governanceActionRunFacet.setRequestType(engineActionProperties.getRequestType());
+        governanceActionRunFacet.setGovernanceActionTypeName(engineActionProperties.getGovernanceActionTypeName());
+        governanceActionRunFacet.setProcessName(engineActionProperties.getProcessName());
+        governanceActionRunFacet.setProcessStepName(engineActionProperties.getProcessStepName());
+
+        return governanceActionRunFacet;
+    }
+
+
+    /**
+     * Is the action target one that the governance action writes to?  Governance services name the targets they
+     * write to with a "destination" or "output" prefix (for example, destinationFolder or destinationDataSet for the
+     * provisioning services); every other action target is treated as an input.
+     *
+     * @param actionTargetName name of the action target
+     * @return boolean
+     */
+    private boolean isOutputActionTarget(String actionTargetName)
+    {
+        if (actionTargetName == null)
+        {
+            return false;
+        }
+
+        String lowerCaseName = actionTargetName.toLowerCase();
+
+        return (lowerCaseName.startsWith(DESTINATION_ACTION_TARGET_PREFIX)) || (lowerCaseName.startsWith(OUTPUT_ACTION_TARGET_PREFIX));
+    }
+
+
+    /**
+     * The namespace and name of an OpenLineage dataset.
+     *
+     * @param namespace dataset namespace
+     * @param name dataset name
+     */
+    private record DataSetIdentity(String namespace, String name) {}
+
+
+    /**
+     * Return the OpenLineage dataset identity of an action target.  Only data assets are datasets; other action
+     * targets (servers, processes, collections, ...) are reported in the execution parameters only.
+     * The dataset's identity is chosen in this order:
+     * <ul>
+     *     <li>the asset's namespacePath and resourceName, which hold the OpenLineage namespace and name for assets
+     *     catalogued from OpenLineage events or by connectors that follow the OpenLineage naming conventions (a
+     *     namespacePath that is not shaped like an OpenLineage namespace, such as a Unity Catalog catalog.schema
+     *     prefix, is ignored);</li>
+     *     <li>the data store's pathName, split into a namespace and name as described in the OpenLineage naming
+     *     conventions for file systems and object stores;</li>
+     *     <li>otherwise the "egeria" namespace and the asset's qualified name, which the OpenLineage cataloguer
+     *     resolves back to the asset.</li>
+     * </ul>
+     *
+     * @param element action target element
+     * @return dataset identity or null if the element is not a data asset
+     */
+    private DataSetIdentity getDataSetIdentity(MetadataElementSummary element)
+    {
+        if ((element.getElementHeader() == null) ||
+            (! propertyHelper.isTypeOf(element.getElementHeader(), OpenMetadataType.DATA_ASSET.typeName)))
+        {
+            return null;
+        }
+
+        if ((element.getProperties() instanceof AssetProperties assetProperties) &&
+            (OpenLineageNamespace.isOpenLineageNamespace(assetProperties.getNamespacePath())) && (assetProperties.getResourceName() != null))
+        {
+            return new DataSetIdentity(assetProperties.getNamespacePath(), assetProperties.getResourceName());
+        }
+
+        if ((element.getProperties() instanceof DataStoreProperties dataStoreProperties) &&
+            (dataStoreProperties.getPathName() != null) && (! dataStoreProperties.getPathName().isBlank()))
+        {
+            DataSetIdentity pathIdentity = getIdentityFromPathName(dataStoreProperties.getPathName());
+
+            if (pathIdentity != null)
+            {
+                return pathIdentity;
+            }
+        }
+
+        return new DataSetIdentity(EGERIA_NAMESPACE, getElementName(element));
+    }
+
+
+    /**
+     * Split a data store's path name into an OpenLineage namespace and name.  A path with a scheme
+     * (for example s3://bucket/key or hdfs://namenode:8020/path) has the scheme and authority as its namespace;
+     * a plain path is in the local file system, whose namespace is "file".  Object store names are object keys,
+     * so they have no leading slash.
+     *
+     * @param pathName path name from the data store
+     * @return dataset identity or null if the path could not be converted
+     */
+    private DataSetIdentity getIdentityFromPathName(String pathName)
+    {
+        int schemeSeparator = pathName.indexOf("://");
+
+        /*
+         * A single letter before the colon is a Windows drive letter rather than a scheme.
+         */
+        if (schemeSeparator > 1)
+        {
+            String scheme    = pathName.substring(0, schemeSeparator).toLowerCase();
+            String remainder = pathName.substring(schemeSeparator + 3);
+            int    pathStart = remainder.indexOf('/');
+            String authority = (pathStart < 0) ? remainder : remainder.substring(0, pathStart);
+            String path      = (pathStart < 0) ? "" : remainder.substring(pathStart);
+
+            if ("file".equals(scheme))
+            {
+                if (path.isEmpty())
+                {
+                    return null;
+                }
+
+                return new DataSetIdentity(authority.isEmpty() ? FILE_NAMESPACE : FILE_NAMESPACE + "://" + authority, path);
+            }
+
+            if (OBJECT_STORE_SCHEMES.contains(scheme) && path.startsWith("/"))
+            {
+                path = path.substring(1);
+            }
+
+            if ((authority.isEmpty()) || (path.isEmpty()))
+            {
+                return null;
+            }
+
+            return new DataSetIdentity(scheme + "://" + authority, path);
+        }
+
+        return new DataSetIdentity(FILE_NAMESPACE, pathName);
     }
 
 

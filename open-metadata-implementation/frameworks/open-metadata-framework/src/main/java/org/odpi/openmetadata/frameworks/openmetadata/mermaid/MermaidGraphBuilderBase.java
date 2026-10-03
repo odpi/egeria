@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
@@ -1058,6 +1059,106 @@ public class MermaidGraphBuilderBase
         }
 
         return VisualStyle.DEFAULT_SOLUTION_COMPONENT;
+    }
+
+
+    /**
+     * Map the deployment status of a solution component to a visual style.  A component that is active, or has no
+     * status, is assumed to be deployed and keeps the supplied style.  The promise classification is not considered
+     * here - it overrides the deployment status because the component's real-world counterpart has not been delivered.
+     *
+     * @param deploymentStatus status of the solution component (may be null)
+     * @param defaultVisualStyle style to use if the status does not call for anything special
+     * @return visual style enum
+     */
+    protected VisualStyle getVisualStyleForDeploymentStatus(DeploymentStatus deploymentStatus,
+                                                            VisualStyle      defaultVisualStyle)
+    {
+        if (deploymentStatus != null)
+        {
+            switch (deploymentStatus)
+            {
+                case PROPOSED, APPROVED_FOR_DEPLOYMENT ->
+                {
+                    return VisualStyle.PROPOSED_SOLUTION_COMPONENT;
+                }
+                case UNDER_DEVELOPMENT, DEVELOPMENT_COMPLETE ->
+                {
+                    return VisualStyle.IN_DEVELOPMENT_SOLUTION_COMPONENT;
+                }
+                case STANDBY ->
+                {
+                    return VisualStyle.STANDBY_SOLUTION_COMPONENT;
+                }
+                case DISABLED ->
+                {
+                    return VisualStyle.DISABLED_SOLUTION_COMPONENT;
+                }
+                case REJECTED ->
+                {
+                    return VisualStyle.REJECTED_SOLUTION_COMPONENT;
+                }
+                case FAILED ->
+                {
+                    return VisualStyle.FAILED_SOLUTION_COMPONENT;
+                }
+                default ->
+                {
+                    return defaultVisualStyle;
+                }
+            }
+        }
+
+        return defaultVisualStyle;
+    }
+
+
+    /**
+     * Add a node for a solution component that reflects how far its implementation has progressed.
+     * If the component has the Promise classification, the promise style is used because its real-world counterpart
+     * has not been delivered.  Otherwise, the style is set from the deployment status.  When the status is anything
+     * other than active, it is also shown in the node's label so that the status is still visible when the diagram
+     * is rendered without colour.
+     *
+     * @param elementSummary solution component
+     * @param nodeName unique name for the node - this allows the same component to appear in more than one area
+     * @param defaultVisualStyle style to use for a component that is deployed
+     */
+    protected void appendNewSolutionComponentNode(MetadataElementSummary elementSummary,
+                                                  String                 nodeName,
+                                                  VisualStyle            defaultVisualStyle)
+    {
+        VisualStyle         visualStyle          = this.getVisualStyleForEntity(elementSummary.getElementHeader(), defaultVisualStyle);
+        Map<String, String> additionalProperties = null;
+
+        if (elementSummary.getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
+        {
+            DeploymentStatus deploymentStatus = solutionComponentProperties.getDeploymentStatus();
+
+            if ((deploymentStatus != null) && (deploymentStatus != DeploymentStatus.ACTIVE))
+            {
+                String statusName = deploymentStatus.getDisplayName();
+
+                if ((deploymentStatus == DeploymentStatus.OTHER) && (solutionComponentProperties.getUserDefinedDeploymentStatus() != null))
+                {
+                    statusName = solutionComponentProperties.getUserDefinedDeploymentStatus();
+                }
+
+                additionalProperties = new HashMap<>();
+                additionalProperties.put("Deployment Status", statusName);
+            }
+
+            if ((elementSummary.getElementHeader().getPromise() == null) && (elementSummary.getElementHeader().getMemento() == null))
+            {
+                visualStyle = this.getVisualStyleForDeploymentStatus(deploymentStatus, visualStyle);
+            }
+        }
+
+        this.appendNewMermaidNode(nodeName,
+                                  this.getNodeDisplayName(elementSummary),
+                                  this.getTypeNameForEntity(elementSummary.getElementHeader()),
+                                  additionalProperties,
+                                  visualStyle);
     }
 
 

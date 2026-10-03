@@ -576,23 +576,25 @@ public class AssetClient extends ConnectorContextClientBase
      * @param dataContentAssetGUID          unique identifier of the second person profile
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
+     * @return unique identifier of the new relationship
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkDataSetContent(String                   dataSetGUID,
+    public String linkDataSetContent(String                   dataSetGUID,
                                    String                   dataContentAssetGUID,
                                    MakeAnchorOptions        metadataSourceOptions,
                                    DataSetContentProperties relationshipProperties) throws InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        assetHandler.linkDataSetContent(connectorUserId, dataSetGUID, dataContentAssetGUID, metadataSourceOptions, relationshipProperties);
+        return assetHandler.linkDataSetContent(connectorUserId, dataSetGUID, dataContentAssetGUID, metadataSourceOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach a data set from another asset that was supplying the data and is no more.
+     * Detach a data set from another asset that was supplying the data and is no more.  Every DataSetContent
+     * relationship between the two elements is removed.
      *
      * @param dataSetGUID          unique identifier of the first person profile
      * @param dataContentAssetGUID          unique identifier of the second person profile
@@ -608,6 +610,44 @@ public class AssetClient extends ConnectorContextClientBase
                                                                          UserNotAuthorizedException
     {
         assetHandler.detachDataSetContent(connectorUserId, dataSetGUID, dataContentAssetGUID, deleteOptions);
+    }
+
+
+    /**
+     * Update the properties of one DataSetContent relationship.
+     *
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param updateOptions          options for the request
+     * @param relationshipProperties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateDataSetContent(String                   relationshipGUID,
+                                     UpdateOptions            updateOptions,
+                                     DataSetContentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        assetHandler.updateDataSetContent(connectorUserId, relationshipGUID, updateOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove one DataSetContent relationship, leaving any others between the same elements in place.
+     *
+     * @param relationshipGUID unique identifier of the relationship
+     * @param deleteOptions    options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataSetContentRelationship(String        relationshipGUID,
+                                                 DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        assetHandler.detachDataSetContentRelationship(connectorUserId, relationshipGUID, deleteOptions);
     }
 
 

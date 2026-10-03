@@ -1051,6 +1051,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param sourceElementGUID unique identifier of the element that describes the source of the data.
      * @param iscQualifiedName     qualifiedName of the information supply chain
      * @param label label for when the lineage relationship is visualized
+     * @param description description of the lineage relationship
      * @param formula expression summary
      * @param formulaType language used to express the formula
      * @param queryId identifier for the process query - DataMapping Relationship
@@ -1095,10 +1096,10 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.DESCRIPTION.name, description);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.FORMULA.name, formula);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.FORMULA_TYPE.name, formulaType);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY_ID.name, formulaType);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY.name, formulaType);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.GUARD.name, formulaType);
-        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LINE_NUMBER.name, formulaType);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY_ID.name, queryId);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.QUERY.name, query);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.GUARD.name, guard);
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, OpenMetadataProperty.LINE_NUMBER.name, lineNumber);
 
         String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName;
         if (relationshipName != null)

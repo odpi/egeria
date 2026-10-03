@@ -374,7 +374,9 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Add the RunMetrics classification to record statistics about the runs of a process.
+     * Add the RunMetrics classification to record statistics about the runs of a process.  It is valid on a
+     * Process and on a GovernanceActionProcessStep, since each step of a governance action process runs separately
+     * and its runs are profiled separately.
      *
      * @return classification def
      */
@@ -384,6 +386,12 @@ public class OpenMetadataTypesArchive
                                                                                  null,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
                                                                                  false);
+
+        List<TypeDefLink> validEntityDefs = new ArrayList<>(classificationDef.getValidEntityDefs());
+
+        validEntityDefs.add(new TypeDefLink(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName)));
+
+        classificationDef.setValidEntityDefs(validEntityDefs);
 
         /*
          * Build the attributes
@@ -423,6 +431,29 @@ public class OpenMetadataTypesArchive
     private void update0210DataStores()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataScopeClassification());
+        this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
+    }
+
+
+    /**
+     * DataSetContent carries an iscQualifiedName.  The same data set may be built over the same content for more
+     * than one information supply chain, and each needs its own relationship, so DataSetContent becomes multi-link.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataSetContentRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
     }
 
 
@@ -990,6 +1021,7 @@ public class OpenMetadataTypesArchive
     private void update0610Annotations()
     {
         this.archiveBuilder.addTypeDefPatch(updateReportedAnnotationRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateAssociatedAnnotationRelationship());
     }
 
 
@@ -1016,6 +1048,42 @@ public class OpenMetadataTypesArchive
     }
 
 
+    /**
+     * The annotation end of AssociatedAnnotation was declared AT_MOST_ONE, meaning an element could have only one
+     * associated annotation.  An element gains a new annotation from every survey (and several of different kinds
+     * from one survey), so the repository handler's read path discarded all but the latest - reporting it as
+     * deduplication (OMAG-REPOSITORY-HANDLER-0014).
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateAssociatedAnnotationRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "associatedAnnotations";
+        final String                     end2AttributeDescription     = "The annotations describing the element or its real-world counterpart.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -1031,6 +1099,9 @@ public class OpenMetadataTypesArchive
      * DigitalProductDependency is a subtype of LineageRelationship and so inherits iscQualifiedName.  The same
      * dependency between two digital products may be used by more than one information supply chain, and each
      * needs its own relationship.  multiLink is not inherited from the super type, so it is set explicitly here.
+     * <br>
+     * End 1 (the products that depend on a product) was declared AT_MOST_ONE, so a product could only be used by
+     * one other product, and reads discarded all but one of its consumers.  A product can support many others.
      *
      * @return patch
      */
@@ -1046,6 +1117,20 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateMultiLink(true);
         typeDefPatch.setMultiLink(true);
 
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "usedByDigitalProducts";
+        final String                     end1AttributeDescription     = "The digital services dependent on the others.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
         return typeDefPatch;
     }
 
@@ -1058,6 +1143,39 @@ public class OpenMetadataTypesArchive
     private void update0735SolutionPortsAndWires()
     {
         this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateSolutionComponentEntity());
+    }
+
+
+    /**
+     * SolutionComponent gains deploymentStatus, which shows how far the implementation of the component has progressed,
+     * and userDefinedDeploymentStatus, which holds a locally defined status when deploymentStatus is OTHER.  Together with the
+     * Promise classification, they allow an information supply chain to show which of its solution components are
+     * still planned, in development or live.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSolutionComponentEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_COMPONENT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DEPLOYMENT_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_DEPLOYMENT_STATUS));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 

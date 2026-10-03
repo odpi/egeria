@@ -23,9 +23,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
@@ -35,6 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
@@ -237,6 +239,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
                     String dataStructureFolderGUID = getCollectionFolder(dataSharingHubGUID, dataDictionaryGUID, collectionFolderProperties);
 
+                    seedDataStructures(dataStructureFolderGUID, dataStructures);
+
                     /*
                      * Process the members of the data sharing hub
                      */
@@ -244,11 +248,11 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                     {
                         for (RelatedMetadataElementSummary member : dataSharingHubElement.getCollectionMembers())
                         {
-                            if ((member != null) && (member.getRelatedElement().getProperties() instanceof DataStoreProperties dataStoreProperties))
+                            if ((member != null) && (member.getRelatedElement().getProperties() instanceof DataAssetProperties dataAssetProperties))
                             {
                                 auditLog.logMessage(methodName, LiskovAuditCode.REFRESHING_DATA_HUB_STORE.getMessageDefinition(connectorName,
                                                                                                                                member.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                                               dataStoreProperties.getDisplayName(),
+                                                                                                                               dataAssetProperties.getDisplayName(),
                                                                                                                                member.getRelatedElement().getElementHeader().getGUID(),
                                                                                                                                dataSharingHubProperties.getDisplayName(),
                                                                                                                                dataSharingHubGUID));
@@ -325,62 +329,47 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
     }
 
     /**
-     * Loads the existing content of the data dictionary into the supplied maps to use when refreshing each data store.
+     * Load the data structures already in the data dictionary, along with the data fields that are members of
+     * each one.  Data structures are shared by every schema with the same set of data fields, and seeding the map
+     * means that sharing survives from one refresh to the next, whatever order the schemas are processed in.
      *
-     * @param member         retrieved member of the data dictionary
-     * @param dataFields     map of data fields
-     * @param dataStructures map of data structures
+     * @param dataStructuresFolderGUID unique identifier of the folder containing the data structures
+     * @param dataStructures           map of data structure GUID to the GUIDs of its member data fields
      * @throws InvalidParameterException  the parameters are invalid
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void retrieveDataDictionaryElements(RelatedMetadataElementSummary member,
-                                                Map<String, String>           dataFields,
-                                                Map<String, Set<String>>      dataStructures) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    private void seedDataStructures(String                   dataStructuresFolderGUID,
+                                    Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
-        if ((member != null) && (member.getRelatedElement().getProperties() instanceof ReferenceableProperties dataDictionaryElementProperties))
+        CollectionClient        collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.COLLECTION_FOLDER.typeName);
+        DataStructureClient     dataStructureClient = integrationContext.getDataStructureClient();
+        OpenMetadataRootElement dataStructuresFolder = collectionClient.getCollectionByGUID(dataStructuresFolderGUID, collectionClient.getGetOptions());
+
+        if ((dataStructuresFolder != null) && (dataStructuresFolder.getCollectionMembers() != null))
         {
-            if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_FIELD.typeName))
+            for (RelatedMetadataElementSummary member : dataStructuresFolder.getCollectionMembers())
             {
-                dataFields.put(dataDictionaryElementProperties.getQualifiedName(), member.getRelatedElement().getElementHeader().getGUID());
-            }
-            else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_STRUCTURE.typeName))
-            {
-                Set<String> dataFieldMembers = new HashSet<>();
-
-                if ((member instanceof RelatedMetadataHierarchySummary hierarchyMember) && (hierarchyMember.getNestedElements() != null))
+                if ((member != null) && (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_STRUCTURE.typeName)))
                 {
-                    for (RelatedMetadataElementSummary nestedDataField : hierarchyMember.getNestedElements())
+                    String                  dataStructureGUID = member.getRelatedElement().getElementHeader().getGUID();
+                    OpenMetadataRootElement dataStructure     = dataStructureClient.getDataStructureByGUID(dataStructureGUID, dataStructureClient.getGetOptions());
+                    Set<String>             dataFieldGUIDs    = new HashSet<>();
+
+                    if ((dataStructure != null) && (dataStructure.getContainsDataFields() != null))
                     {
-                        if ((nestedDataField != null) && (propertyHelper.isTypeOf(nestedDataField.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_FIELD.typeName)))
+                        for (RelatedMetadataElementSummary dataField : dataStructure.getContainsDataFields())
                         {
-                            dataFieldMembers.add(nestedDataField.getRelatedElement().getElementHeader().getGUID());
+                            if (dataField != null)
+                            {
+                                dataFieldGUIDs.add(dataField.getRelatedElement().getElementHeader().getGUID());
+                            }
                         }
                     }
-                }
 
-                dataStructures.put(dataDictionaryElementProperties.getQualifiedName(), dataFieldMembers);
-            }
-            else if (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.COLLECTION_FOLDER.typeName))
-            {
-                /*
-                 * Need to process the subfolders.
-                 */
-                CollectionClient collectionClient = integrationContext.getCollectionClient(OpenMetadataType.COLLECTION_FOLDER.typeName);
-
-                OpenMetadataRootElement subFolder = collectionClient.getCollectionByGUID(member.getRelatedElement().getElementHeader().getGUID(), collectionClient.getGetOptions());
-
-                if (subFolder != null)
-                {
-                    if (subFolder.getCollectionMembers() != null)
-                    {
-                        for (RelatedMetadataElementSummary subMember : subFolder.getCollectionMembers())
-                        {
-                            retrieveDataDictionaryElements(subMember, dataFields, dataStructures);
-                        }
-                    }
+                    dataStructures.put(dataStructureGUID, dataFieldGUIDs);
                 }
             }
         }
@@ -410,7 +399,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         try
         {
-            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_STORE.typeName);
+            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_ASSET.typeName);
 
             OpenMetadataRootElement dataStoreElement = assetClient.getAssetByGUID(dataStoreGUID, assetClient.getGetOptions());
 
@@ -536,13 +525,17 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             auditLog.logMessage(methodName,
                                 LiskovAuditCode.REFRESHING_CSV_FILE.getMessageDefinition(connectorName,
                                                                                          csvFileProperties.getFileName(),
-                                                                                         dataStoreElement.getElementHeader().getGUID()));
+                                                                                         csvFileProperties.getQualifiedName(),
+                                                                                         dataStoreElement.getElementHeader().getGUID(),
+                                                                                         dataSharingHubQualifiedName,
+                                                                                         dataSharingHubGUID));
 
             if ((dataStoreElement.getSchemaType() instanceof RelatedMetadataHierarchySummary schemaType) && (schemaType.getNestedElements() != null))
             {
                 refreshDataStructure(dataFieldsFolderGUID,
                                      dataStructuresFolderGUID,
                                      dataStoreElement.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                                     null,
                                      csvFileProperties.getFileName(),
                                      schemaType.getNestedElements(),
                                      dataSharingHubGUID,
@@ -623,26 +616,60 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                 (dataStoreElement.getSchemaType() instanceof RelatedMetadataHierarchySummary schemaType) &&
                 (schemaType.getNestedElements() != null))
         {
-            refreshDataStructure(dataFieldsFolderGUID,
-                                 dataStructuresFolderGUID,
-                                 dataStoreElement.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
-                                 databaseSchemaProperties.getDisplayName(),
-                                 schemaType.getNestedElements(),
-                                 dataSharingHubGUID,
-                                 dataSharingHubQualifiedName,
-                                 dataStructures);
+            /*
+             * The first level of the schema is the tables.  Each table becomes a data structure, and its
+             * columns (the next level down) become the data fields.  The database and schema names scope the
+             * data structure's qualified name, since table names repeat across schemas and databases.
+             */
+            String schemaScopeName = databaseSchemaProperties.getDisplayName();
+
+            if (dataStoreElement.getDataSetContent() != null)
+            {
+                for (RelatedMetadataElementSummary database : dataStoreElement.getDataSetContent())
+                {
+                    if ((database != null) &&
+                            (propertyHelper.isTypeOf(database.getRelatedElement().getElementHeader(), OpenMetadataType.DATABASE.typeName)) &&
+                            (database.getRelatedElement().getProperties() instanceof AssetProperties databaseProperties))
+                    {
+                        schemaScopeName = databaseProperties.getDisplayName() + "::" + schemaScopeName;
+                        break;
+                    }
+                }
+            }
+
+            for (RelatedMetadataElementSummary table : schemaType.getNestedElements())
+            {
+                if ((table instanceof RelatedMetadataHierarchySummary tableHierarchy) &&
+                        (tableHierarchy.getNestedElements() != null) &&
+                        (table.getRelatedElement().getProperties() instanceof SchemaAttributeProperties tableProperties))
+                {
+                    refreshDataStructure(dataFieldsFolderGUID,
+                                         dataStructuresFolderGUID,
+                                         table.getRelatedElement().getElementHeader().getGUID(),
+                                         schemaScopeName,
+                                         tableProperties.getDisplayName(),
+                                         tableHierarchy.getNestedElements(),
+                                         dataSharingHubGUID,
+                                         dataSharingHubQualifiedName,
+                                         dataStructures);
+                }
+            }
         }
     }
 
 
     /**
-     * Refreshes the metadata for a Relational Database Schema based on the provided parameters. This method extracts the data structure and
-     * data fields for each database table attached to the data store.
+     * Refreshes the data structure and data fields that describe one schema element - a CSV file's schema type or
+     * a database table.  A data field is maintained for each schema attribute, and a data structure for the
+     * set of data fields.
      *
      * @param dataFieldsFolderGUID     Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID Globally unique identifier (GUID) for the folder containing data structures.
-     * @param schemaGUID               unique identifier of the schema being refreshed.
-     * @param schemaName               display name of the schema being refreshed.
+     * @param schemaGUID               unique identifier of the schema element (schema type or table) being refreshed.
+     * @param schemaScopeName          name of the scope that the schema element belongs to ("database::schema" for a
+     *                                 table; null for a CSV file).  It is part of the data structure's qualified name so
+     *                                 same-named tables in different schemas and databases get different data structures.
+     * @param schemaName               display name of the schema element being refreshed.
      * @param schemaAttributes         list of schema attributes.
      * @param dataSharingHubGUID              Globally unique identifier (GUID) of the data sharing hub associated with the data store.
      * @param dataSharingHubQualifiedName     Globally unique name of the data sharing hub associated with the data store.
@@ -654,6 +681,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
     private void refreshDataStructure(String                              dataFieldsFolderGUID,
                                       String                              dataStructuresFolderGUID,
                                       String                              schemaGUID,
+                                      String                              schemaScopeName,
                                       String                              schemaName,
                                       List<RelatedMetadataElementSummary> schemaAttributes,
                                       String                              dataSharingHubGUID,
@@ -662,6 +690,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
+        final String methodName = "refreshDataStructure";
+
         Set<String> dataFieldGUIDs = new HashSet<>();
 
         /*
@@ -704,16 +734,23 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         if (dataStructureGUID == null)
         {
             String dataStructureName = normalizeName(schemaName);
+            String qualifiedName     = OpenMetadataType.DATA_STRUCTURE.typeName + "::" + dataSharingHubGUID + "::";
+            String description       = "Data structure for " + schemaName;
+
+            if (schemaScopeName != null)
+            {
+                qualifiedName = qualifiedName + schemaScopeName + "::";
+                description   = description + " in schema " + schemaScopeName;
+            }
 
             DataStructureProperties dataStructureProperties = new DataStructureProperties();
 
-            dataStructureProperties.setQualifiedName(OpenMetadataType.DATA_STRUCTURE.typeName + "::" + dataSharingHubGUID + "::" + dataStructureName);
-            dataStructureProperties.setDisplayName(normalizeName(schemaName));
-            dataStructureProperties.setDescription("Data structure for " + schemaName + " in the data sharing hub " + dataSharingHubQualifiedName);
+            dataStructureProperties.setQualifiedName(qualifiedName + dataStructureName);
+            dataStructureProperties.setDisplayName(dataStructureName);
+            dataStructureProperties.setDescription(description + " in the data sharing hub " + dataSharingHubQualifiedName);
 
             dataStructureGUID = getDataStructure(dataSharingHubGUID,
                                                  dataSharingHubQualifiedName,
-                                                 schemaGUID,
                                                  dataStructuresFolderGUID,
                                                  dataStructureProperties);
 
@@ -724,6 +761,52 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             for (String dataFieldGUID : dataFieldGUIDs)
             {
                 dataStructureClient.linkMemberDataField(dataStructureGUID, dataFieldGUID, dataStructureClient.getMakeAnchorOptions(false), null);
+            }
+        }
+
+        /*
+         * Every schema that matches the data structure is linked to it - not just the one that caused it to be created.
+         */
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+        ImplementedByProperties    implementedByProperties    = new ImplementedByProperties();
+
+        implementedByProperties.setDesignStep("data-abstraction");
+
+        governanceDefinitionClient.linkDesignToImplementation(dataStructureGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), implementedByProperties);
+
+        /*
+         * A schema is implemented by exactly one of this hub's data structures.  Links left from earlier refreshes -
+         * for example, before the data structures were shared, or when the schema's columns have since changed -
+         * are removed.  Data structures from other data sharing hubs are left alone.
+         */
+        String                     hubDataStructurePrefix     = OpenMetadataType.DATA_STRUCTURE.typeName + "::" + dataSharingHubGUID + "::";
+        OpenMetadataStore          openMetadataStore          = integrationContext.getOpenMetadataStore();
+        RelatedMetadataElementList relatedMetadataElementList = openMetadataStore.getRelatedMetadataElements(schemaGUID,
+                                                                                                             2,
+                                                                                                             OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                                                             0,
+                                                                                                             openMetadataStore.getMaxPagingSize());
+
+        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+        {
+            for (RelatedMetadataElement design : relatedMetadataElementList.getElementList())
+            {
+                if ((design != null) &&
+                        (! dataStructureGUID.equals(design.getElement().getElementGUID())) &&
+                        (propertyHelper.isTypeOf(design.getElement(), OpenMetadataType.DATA_STRUCTURE.typeName)))
+                {
+                    String designQualifiedName = propertyHelper.getStringProperty(connectorName,
+                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                  design.getElement().getElementProperties(),
+                                                                                  methodName);
+
+                    if ((designQualifiedName != null) && (designQualifiedName.startsWith(hubDataStructurePrefix)))
+                    {
+                        governanceDefinitionClient.detachDesignFromImplementation(design.getElement().getElementGUID(),
+                                                                                  schemaGUID,
+                                                                                  governanceDefinitionClient.getDeleteOptions(false));
+                    }
+                }
             }
         }
     }
@@ -823,8 +906,11 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         }
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+        ImplementedByProperties    implementedByProperties    = new ImplementedByProperties();
 
-        governanceDefinitionClient.linkDesignToImplementation(dataFieldGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), null);
+        implementedByProperties.setDesignStep("data-abstraction");
+
+        governanceDefinitionClient.linkDesignToImplementation(dataFieldGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), implementedByProperties);
 
         return dataFieldGUID;
     }
@@ -835,7 +921,6 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      *
      * @param dataSharingHubGUID Unique identifier of the DataSharingHub where the DataStructure resides or will be created.
      * @param dataSharingHubQualifiedName Qualified name of the DataSharingHub where the DataStructure resides or will be created.
-     * @param schemaGUID unique identifier from the data store's schema.
      * @param dataStructuresCollectionGUID Unique identifier of the DataStructures collection where the DataStructure resides or will be created.
      * @param dataStructuresProperties The properties of the DataStructure to retrieve or create.
      *
@@ -847,7 +932,6 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      */
     private String getDataStructure(String                  dataSharingHubGUID,
                                     String                  dataSharingHubQualifiedName,
-                                    String                  schemaGUID,
                                     String                  dataStructuresCollectionGUID,
                                     DataStructureProperties dataStructuresProperties) throws UserNotAuthorizedException,
                                                                                              InvalidParameterException,
@@ -883,10 +967,6 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                                         dataSharingHubQualifiedName,
                                                                                         dataSharingHubGUID));
         }
-
-        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
-
-        governanceDefinitionClient.linkDesignToImplementation(dataStructureGUID, schemaGUID, governanceDefinitionClient.getMakeAnchorOptions(false), null);
 
         return dataStructureGUID;
     }
@@ -1096,22 +1176,37 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         String assetGUID = assetElement.getElementHeader().getGUID();
 
         /*
-         * The cataloguing governance action types have the integration connector that will do the cataloguing
-         * set up as a predefined action target.  If the element is already one of its catalog targets then
-         * cataloguing is already enabled.
+         * The governance action types that enable cataloguing of an existing element have the integration
+         * connector that will do the cataloguing set up as a predefined action target.  If the element is already
+         * one of its catalog targets then cataloguing is already enabled.
+         *
+         * A technology type's catalog resources also include governance action types that create a new element
+         * from a template (such as create-file-folder).  They have no integration connector target.  The element
+         * already exists here, so they are skipped - running them would request a pointless create on every refresh.
          */
+        boolean enablesCatalogTarget = false;
+
         if (governanceActionType.getPredefinedTargetForAction() != null)
         {
             for (RelatedMetadataElementSummary predefinedTarget : governanceActionType.getPredefinedTargetForAction())
             {
                 if ((predefinedTarget != null) &&
                         (predefinedTarget.getRelationshipProperties() instanceof TargetForGovernanceActionProperties targetForGovernanceActionProperties) &&
-                        (ActionTarget.INTEGRATION_CONNECTOR.getName().equals(targetForGovernanceActionProperties.getActionTargetName())) &&
-                        (getCatalogTargetGUIDs(predefinedTarget.getRelatedElement().getElementHeader().getGUID()).contains(assetGUID)))
+                        (ActionTarget.INTEGRATION_CONNECTOR.getName().equals(targetForGovernanceActionProperties.getActionTargetName())))
                 {
-                    return;
+                    if (getCatalogTargetGUIDs(predefinedTarget.getRelatedElement().getElementHeader().getGUID()).contains(assetGUID))
+                    {
+                        return;
+                    }
+
+                    enablesCatalogTarget = true;
                 }
             }
+        }
+
+        if (! enablesCatalogTarget)
+        {
+            return;
         }
 
         String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);

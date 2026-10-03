@@ -91,6 +91,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
+        this.addResourceCatalogTemplates(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
         this.addOSSUCCatalogCatalogTemplate();
         this.addUCSchemaCatalogTemplate();
         this.addUCVolumeCatalogTemplate();

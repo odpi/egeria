@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaGovernanceActionRunFacet.json",
+  "$defs": {
+    "EgeriaGovernanceActionRunFacet": {
+      "allOf": [
+        {
+          "$ref": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunFacet"
+        },
+        {
+          "type": "object",
+          "description": "Describes the Egeria governance action (engine action) that a run represents.",
+          "properties": {
+            "iscQualifiedName": {
+              "description": "Qualified name of the information supply chain that the governance action is part of.",
+              "type": "string"
+            },
+            "engineActionGUID": {
+              "description": "Unique identifier of the engine action that describes this run.",
+              "type": "string"
+            },
+            "governanceEngineName": {
+              "description": "Name of the governance engine that ran the governance action.",
+              "type": "string"
+            },
+            "requestType": {
+              "description": "Request type that selected the governance service.",
+              "type": "string"
+            },
+            "governanceActionTypeName": {
+              "description": "Name of the governance action type that the engine action was created from.",
+              "type": "string"
+            },
+            "processName": {
+              "description": "Name of the governance action process that the engine action is part of.",
+              "type": "string"
+            },
+            "processStepName": {
+              "description": "Name of the governance action process step that the engine action implements.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      ],
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "egeria_governanceAction": {
+      "$ref": "#/$defs/EgeriaGovernanceActionRunFacet"
+    }
+  }
+}

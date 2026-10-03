@@ -1139,6 +1139,7 @@ public class OpenMetadataHandlerBase
                                                                                  rootElement.getSubDataValueSpecifications(),
                                                                                  1,
                                                                                  OpenMetadataType.DATA_VALUE_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                 null,
                                                                                  queryOptions,
                                                                                  1));
 
@@ -1146,6 +1147,7 @@ public class OpenMetadataHandlerBase
                                                                          rootElement.getPartOfDataClasses(),
                                                                          1,
                                                                          OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
+                                                                         null,
                                                                          queryOptions,
                                                                          1));
 
@@ -1153,6 +1155,10 @@ public class OpenMetadataHandlerBase
                                                                         rootElement.getNestedDataFields(),
                                                                         1,
                                                                         OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                       List.of(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                               OpenMetadataType.DATA_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                               OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                               OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName),
                                                                         queryOptions,
                                                                         1));
 
@@ -1160,6 +1166,10 @@ public class OpenMetadataHandlerBase
                                                                           rootElement.getContainsDataFields(),
                                                                           1,
                                                                           OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                         List.of(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                 OpenMetadataType.DATA_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                 OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName),
                                                                           queryOptions,
                                                                           1));
 
@@ -1167,6 +1177,7 @@ public class OpenMetadataHandlerBase
                                                                rootElement.getNoteLogs(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                                               null,
                                                                queryOptions,
                                                                1));
 
@@ -1174,6 +1185,7 @@ public class OpenMetadataHandlerBase
                                                                rootElement.getComments(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                               null,
                                                                queryOptions,
                                                                1));
 
@@ -1181,6 +1193,7 @@ public class OpenMetadataHandlerBase
                                                                rootElement.getManagedProjects(),
                                                                1,
                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                               null,
                                                                queryOptions,
                                                                1));
 
@@ -1188,6 +1201,7 @@ public class OpenMetadataHandlerBase
                                                                       rootElement.getManagingProjects(),
                                                                       2,
                                                                       OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                      null,
                                                                       queryOptions,
                                                                       1));
 
@@ -1195,12 +1209,14 @@ public class OpenMetadataHandlerBase
                                                                         rootElement.getDependsOnProjects(),
                                                                         1,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                                        null,
                                                                         queryOptions,
                                                                         1));
             rootElement.setDependentProjects(this.getElementHierarchies(userId,
                                                                         rootElement.getDependentProjects(),
                                                                         2,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                                                        null,
                                                                         queryOptions,
                                                                         1));
 
@@ -1208,6 +1224,7 @@ public class OpenMetadataHandlerBase
                                                                     rootElement.getImplementedBy(),
                                                                     1,
                                                                     OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    null,
                                                                     queryOptions,
                                                                     1));
 
@@ -1215,6 +1232,7 @@ public class OpenMetadataHandlerBase
                                                                     rootElement.getDerivedFrom(),
                                                                     2,
                                                                     OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    null,
                                                                     queryOptions,
                                                                     1));
 
@@ -1222,6 +1240,7 @@ public class OpenMetadataHandlerBase
                                                                     rootElement.getPerformsRoles(),
                                                                     1,
                                                                     OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                    null,
                                                                     queryOptions,
                                                                     1));
 
@@ -1229,6 +1248,7 @@ public class OpenMetadataHandlerBase
                                                                rootElement.getSubTeams(),
                                                                1,
                                                                OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
+                                                               null,
                                                                queryOptions,
                                                                1));
 
@@ -1237,26 +1257,33 @@ public class OpenMetadataHandlerBase
                                                                         1,
                                                                         OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
                                                                         List.of(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
-                                                                                OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName),
+                                                                                OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.DATA_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName),
                                                                         queryOptions,
                                                                         1));
 
             rootElement.setSchemaType(this.getElementHierarchy(userId,
                                                                rootElement.getSchemaType(),
                                                                1,
-                                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
-                                                               List.of(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                               List.of(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName),
+                                                               List.of(OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName),
+                                                                       OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.DATA_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName),
                                                                queryOptions,
                                                                1,
                                                                new ArrayList<>()));
@@ -1366,7 +1393,7 @@ public class OpenMetadataHandlerBase
                 rootElement.setPortDelegatingTo(this.getElementHierarchy(userId,
                                                                          rootElement.getPortDelegatingTo(),
                                                                          1,
-                                                                         OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                                         List.of(OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName),
                                                                          null,
                                                                          queryOptions,
                                                                          1,
@@ -1419,6 +1446,7 @@ public class OpenMetadataHandlerBase
                                                                             rootElement.getCollectionMembers(),
                                                                             1,
                                                                             OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                            null,
                                                                             queryOptions,
                                                                             1));
             }
@@ -1662,33 +1690,6 @@ public class OpenMetadataHandlerBase
      * @param retrievedElements elements to query against
      * @param parentEnd start at end 1 or 2?
      * @param relationshipName name of the relationship to iteratively follow
-     * @param queryOptions callers query options
-     * @param currentDepth how far away are we from the original element?
-     * @return the hierarchy under/over this element
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws PropertyServerException    a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
-                                                                        List<RelatedMetadataElementSummary> retrievedElements,
-                                                                        int                                 parentEnd,
-                                                                        String                              relationshipName,
-                                                                        QueryOptions                        queryOptions,
-                                                                        int                                 currentDepth) throws InvalidParameterException,
-                                                                                                                                 PropertyServerException,
-                                                                                                                                 UserNotAuthorizedException
-    {
-        return this.getElementHierarchies(userId, retrievedElements, parentEnd, relationshipName, null, queryOptions, currentDepth);
-    }
-
-
-    /**
-     * Return the nested elements to the required depth.
-     *
-     * @param userId calling user
-     * @param retrievedElements elements to query against
-     * @param parentEnd start at end 1 or 2?
-     * @param relationshipName name of the relationship to iteratively follow
      * @param sideRelationshipNames additional side relationships to capture (maybe null)
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
@@ -1728,7 +1729,7 @@ public class OpenMetadataHandlerBase
                         results.add(getElementHierarchy(userId,
                                                         retrievedElement,
                                                         parentEnd,
-                                                        relationshipName,
+                                                        relationshipName == null ? null : List.of(relationshipName),
                                                         prunedSideRelationshipNames,
                                                         queryOptions,
                                                         currentDepth,
@@ -1823,7 +1824,10 @@ public class OpenMetadataHandlerBase
      * @param userId calling user
      * @param retrievedElement element to query against
      * @param parentEnd start at end 1 or 2?
-     * @param relationshipName name of the relationship to follow
+     * @param hierarchyRelationshipNames names of the relationships to follow down the hierarchy (maybe null).  More than
+     *                                   one is needed where the structure is built from different relationship types -
+     *                                   for example, a schema type links to its attributes with AttributeForSchema, and
+     *                                   they link to their nested attributes with NestedSchemaAttribute.
      * @param sideRelationshipNames additional side relationships to capture (maybe null)
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
@@ -1836,7 +1840,7 @@ public class OpenMetadataHandlerBase
     protected RelatedMetadataElementSummary getElementHierarchy(String                        userId,
                                                                 RelatedMetadataElementSummary retrievedElement,
                                                                 int                           parentEnd,
-                                                                String                        relationshipName,
+                                                                List<String>                  hierarchyRelationshipNames,
                                                                 List<String>                  sideRelationshipNames,
                                                                 QueryOptions                  queryOptions,
                                                                 int                           currentDepth,
@@ -1854,14 +1858,15 @@ public class OpenMetadataHandlerBase
                 workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
 
                 /*
-                 * If there are no side relationships, then we can optimize and only receive the main hierarchical relationship.
+                 * If there are no side relationships and only one hierarchical relationship, then we can optimize and
+                 * only receive the main hierarchical relationship.
                  */
                 String receiveRelationshipName = null;
                 int    receiveParentEnd = 0;
 
-                if (sideRelationshipNames == null)
+                if ((sideRelationshipNames == null) && (hierarchyRelationshipNames != null) && (hierarchyRelationshipNames.size() == 1))
                 {
-                    receiveRelationshipName = relationshipName;
+                    receiveRelationshipName = hierarchyRelationshipNames.get(0);
                     receiveParentEnd = parentEnd;
                 }
 
@@ -1887,7 +1892,7 @@ public class OpenMetadataHandlerBase
                             /*
                              * Look for parent/child relationships
                              */
-                            if ((relationshipName != null) && (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName)))
+                            if (this.isHierarchyRelationship(relatedMetadataElement, hierarchyRelationshipNames))
                             {
                                 /*
                                  * The relationship is a parent/child relationship type.
@@ -1903,11 +1908,11 @@ public class OpenMetadataHandlerBase
                                     {
                                         RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
-                                        coveredRelationshipsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                                        coveredRelationshipsGUIDs.add(relatedMetadataElement.getRelationshipGUID());
                                         nestedElements.add(getElementHierarchy(userId,
                                                                                nestedElement,
                                                                                parentEnd,
-                                                                               relationshipName,
+                                                                               hierarchyRelationshipNames,
                                                                                sideRelationshipNames,
                                                                                workingQueryOptions,
                                                                                currentDepth + 1,
@@ -1951,6 +1956,31 @@ public class OpenMetadataHandlerBase
         }
 
         return retrievedElement;
+    }
+
+
+    /**
+     * Is the relationship one of the types that make up the hierarchy?
+     *
+     * @param relatedMetadataElement relationship to test
+     * @param hierarchyRelationshipNames names of the relationships that make up the hierarchy (maybe null)
+     * @return boolean
+     */
+    private boolean isHierarchyRelationship(RelatedMetadataElement relatedMetadataElement,
+                                            List<String>           hierarchyRelationshipNames)
+    {
+        if (hierarchyRelationshipNames != null)
+        {
+            for (String hierarchyRelationshipName : hierarchyRelationshipNames)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, hierarchyRelationshipName))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 

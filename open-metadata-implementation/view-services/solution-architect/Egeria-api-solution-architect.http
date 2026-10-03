@@ -648,6 +648,21 @@ Content-Type: application/json
 
 ###
 
+# @name getInformationSupplyChainsByName (sample)
+# Returns the list of information supply chains with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "SAMPLE-ISC-001",
+  "forLineage" : true
+}
+
+
+
+###
+
 # @name getInformationSupplyChainsByName - with full request body
 # Returns the list of information supply chains with a particular name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
