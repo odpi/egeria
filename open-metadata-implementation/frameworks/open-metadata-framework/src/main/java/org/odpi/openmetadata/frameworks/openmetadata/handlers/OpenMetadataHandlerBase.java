@@ -395,15 +395,48 @@ public class OpenMetadataHandlerBase
             workingQueryOptions.setStartFrom(0);
             workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
 
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+            /*
+             * When the caller only wants certain relationship types, ask the repository for just those types
+             * rather than retrieving every relationship and discarding most of them: an element can have thousands
+             * of relationships (survey annotations, for example).  Each type name also matches its subtypes.  A
+             * relationship that matches more than one of the requested types is returned once.  An empty list asks
+             * for no relationships.
+             */
+            List<String> relationshipTypeNames = new ArrayList<>();
+
+            if (queryOptions.getIncludeOnlyRelationships() == null)
             {
-                relatedMetadataElements.addAll(this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions));
+                relationshipTypeNames.add(null);
             }
+            else
+            {
+                relationshipTypeNames.addAll(new LinkedHashSet<>(queryOptions.getIncludeOnlyRelationships()));
+            }
+
+            List<RelatedMetadataElement> retrievedRelationships = new ArrayList<>();
+            Set<String>                  retrievedGUIDs         = new HashSet<>();
+
+            for (String relationshipTypeName : relationshipTypeNames)
+            {
+                RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                                      openMetadataElement.getElementGUID(),
+                                                                                                                      0,
+                                                                                                                      relationshipTypeName,
+                                                                                                                      workingQueryOptions);
+                if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+                {
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+                    {
+                        if ((relatedMetadataElement != null) &&
+                                ((relatedMetadataElement.getRelationshipGUID() == null) || (retrievedGUIDs.add(relatedMetadataElement.getRelationshipGUID()))))
+                        {
+                            retrievedRelationships.add(relatedMetadataElement);
+                        }
+                    }
+                }
+            }
+
+            relatedMetadataElements.addAll(this.getRelevantRelationships(retrievedRelationships, queryOptions));
 
             return relatedMetadataElements;
         }
@@ -445,6 +478,7 @@ public class OpenMetadataHandlerBase
                         if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipType))
                         {
                             relevantRelationships.add(relatedMetadataElement);
+                            break;
                         }
                     }
                 }

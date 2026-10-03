@@ -575,6 +575,133 @@ public class QueryBuilder
 
 
     /**
+     * Return the test of the property value for a comparison operator, as applied to a row of an attribute table.
+     *
+     * @param operator comparison operator (not IS_NULL)
+     * @param propertyValue value to compare with (already escaped and converted)
+     * @return SQL condition, an empty string if any value matches (NOT_NULL), or null if the operator is not supported
+     */
+    private String getPropertyValueCondition(PropertyComparisonOperator operator,
+                                             Object                     propertyValue)
+    {
+        switch (operator)
+        {
+            case EQ ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " = '" + propertyValue + "'";
+            }
+            case NEQ ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " != '" + propertyValue + "'";
+            }
+            case LT ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " < '" + propertyValue + "'";
+            }
+            case LTE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " <= '" + propertyValue + "'";
+            }
+            case GT ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " > '" + propertyValue + "'";
+            }
+            case GTE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " >= '" + propertyValue + "'";
+            }
+            case LIKE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case NOT_LIKE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not like '%" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case CASE_INSENSITIVE_LIKE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case CASE_INSENSITIVE_NOT_LIKE ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not ilike '%" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case STARTS_WITH ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case ENDS_WITH ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "'";
+            }
+            case CASE_INSENSITIVE_STARTS_WITH ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "%'";
+            }
+            case CASE_INSENSITIVE_ENDS_WITH ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "'";
+            }
+            case CASE_INSENSITIVE_EQ ->
+            {
+                return RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "'";
+            }
+            case NOT_NULL ->
+            {
+                return "";
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the test that a row of the attribute table must pass for a property condition, when the condition is
+     * of the "exists a matching attribute row" kind.  Conditions of this kind that are combined with "or" are merged
+     * into a single sub-select (see getPropertyComparisonFromPropertyConditions).
+     *
+     * @param topLevelPropertyName name of top level property name
+     * @param leafPropertyName name of leaf property to look for
+     * @param operator operator
+     * @param propertyValue value to look for
+     * @param propertyTableName name of attribute table
+     * @return SQL condition on the attribute table, or null if the condition is not of this kind (a property in a
+     * dedicated column of the header table, an IS_NULL test or an unsupported operator)
+     */
+    private String getPropertyRowCondition(String                     topLevelPropertyName,
+                                           String                     leafPropertyName,
+                                           PropertyComparisonOperator operator,
+                                           Object                     propertyValue,
+                                           String                     propertyTableName)
+    {
+        String propertyColumn = this.mapPropertyNameToColumn(leafPropertyName, RepositoryColumn.ATTRIBUTE_NAME.getColumnName());
+
+        if ((propertyTableName == null) || (operator == null) || (operator == PropertyComparisonOperator.IS_NULL) ||
+                ! (propertyColumn.equals(RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) || propertyColumn.equals(RepositoryColumn.PROPERTY_NAME.getColumnName())))
+        {
+            return null;
+        }
+
+        String valueCondition = this.getPropertyValueCondition(operator, this.getSQLValue(propertyColumn, propertyValue));
+
+        if (valueCondition == null)
+        {
+            return null;
+        }
+
+        String propertyNameMatchClause = this.getPropertyNameMatchClause(propertyTableName, topLevelPropertyName, leafPropertyName);
+
+        if (propertyNameMatchClause == null)
+        {
+            return valueCondition.isEmpty() ? "true" : valueCondition;
+        }
+
+        return valueCondition.isEmpty() ? propertyNameMatchClause : propertyNameMatchClause + " and " + valueCondition;
+    }
+
+
+    /**
      * Generate the clause for a particular property
      *
      * @param topLevelPropertyName name of top level property name
@@ -635,72 +762,11 @@ public class QueryBuilder
                     sqlClause = " exists (" + rowMatchClause + " and " + propertyNameMatchClause;
                 }
 
-                switch (operator)
+                String valueCondition = this.getPropertyValueCondition(operator, propertyValue);
+
+                if (valueCondition != null)
                 {
-                    case EQ ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " = '" + propertyValue + "') ";
-                    }
-                    case NEQ ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " != '" + propertyValue + "') ";
-                    }
-                    case LT ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " < '" + propertyValue + "') ";
-                    }
-                    case LTE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " <= '" + propertyValue + "') ";
-                    }
-                    case GT ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " > '" + propertyValue + "') ";
-                    }
-                    case GTE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " >= '" + propertyValue + "') ";
-                    }
-                    case LIKE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case NOT_LIKE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not like '%" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case CASE_INSENSITIVE_LIKE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case CASE_INSENSITIVE_NOT_LIKE ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not ilike '%" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case STARTS_WITH ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case ENDS_WITH ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '%" + this.getSafeLikePattern(propertyValue) + "') ";
-                    }
-                    case CASE_INSENSITIVE_STARTS_WITH ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "%') ";
-                    }
-                    case CASE_INSENSITIVE_ENDS_WITH ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '%" + this.getSafeLikePattern(propertyValue) + "') ";
-                    }
-                    case CASE_INSENSITIVE_EQ ->
-                    {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ilike '" + this.getSafeLikePattern(propertyValue) + "') ";
-                    }
-                    case NOT_NULL ->
-                    {
-                        return sqlClause + ") ";
-                    }
+                    return valueCondition.isEmpty() ? sqlClause + ") " : sqlClause + " and " + valueCondition + ") ";
                 }
             }
         }
@@ -1075,126 +1141,123 @@ public class QueryBuilder
     {
         if ((searchProperties != null) && (searchProperties.getConditions() != null) && (! searchProperties.getConditions().isEmpty()))
         {
-            String matchOperand = " and ";
+            boolean matchAny     = (searchProperties.getMatchCriteria() == MatchCriteria.ANY);
+            String  matchOperand = matchAny ? " or " : " and ";
 
-            if (searchProperties.getMatchCriteria() == MatchCriteria.ANY)
-            {
-                matchOperand = " or ";
-            }
-
-            StringBuilder stringBuilder = new StringBuilder();
-            boolean       firstProperty = true;
+            /*
+             * With "or", the conditions that each test for an attribute row - "exists (select 1 from <attribute table>
+             * where <same instance> and <property name> and <property value>)" - are collected and tested by a single
+             * sub-select: "(guid, version) in (select guid, version from <attribute table> where <condition 1> or
+             * <condition 2> ...)".  The two are equivalent, but PostgreSQL can only drive the sub-select from the
+             * indexes on the attribute table; for an "or" of exists sub-queries it scans the whole header table.
+             */
+            List<String> clauses             = new ArrayList<>();
+            List<String> rowConditions       = new ArrayList<>();
+            List<String> rowConditionClauses = new ArrayList<>();
 
             for (PropertyCondition propertyCondition : searchProperties.getConditions())
             {
                 if (propertyCondition.getNestedConditions() != null)
                 {
-                    if (firstProperty)
-                    {
-                        stringBuilder.append(" (");
-                        firstProperty = false;
-                    }
-                    else
-                    {
-                        stringBuilder.append(matchOperand);
-                    }
-
-                    stringBuilder.append(this.getPropertyComparisonFromPropertyConditions(propertyCondition.getNestedConditions(),
-                                                                                          principleTableName,
-                                                                                          propertyTableName,
-                                                                                          topLevelPropertyName));
+                    clauses.add(this.getPropertyComparisonFromPropertyConditions(propertyCondition.getNestedConditions(),
+                                                                                 principleTableName,
+                                                                                 propertyTableName,
+                                                                                 topLevelPropertyName));
                 }
                 else
                 {
-                    String leafPropertyName = propertyCondition.getProperty();
-
+                    String                leafPropertyName      = propertyCondition.getProperty();
                     InstancePropertyValue instancePropertyValue = propertyCondition.getValue();
 
-                    if (firstProperty)
+                    if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                     {
-                        stringBuilder.append(" (");
-                        firstProperty = false;
-                    }
-                    else
-                    {
-                        stringBuilder.append(matchOperand);
-                    }
-
-                    if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
-                    {
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
-                        {
-                            stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
-                                                                                        leafPropertyName,
-                                                                                        propertyCondition.getOperator(),
-                                                                                        this.escapePropertyValue(primitivePropertyValue.getPrimitiveValue()),
-                                                                                        principleTableName,
-                                                                                        propertyTableName));
-                        }
-                        else
-                        {
-                            stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
-                                                                                        leafPropertyName,
-                                                                                        propertyCondition.getOperator(),
-                                                                                        primitivePropertyValue.getPrimitiveValue(),
-                                                                                        principleTableName,
-                                                                                        propertyTableName));
-                        }
-                    }
-                    else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
-                    {
-                        stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
-                                                                                    leafPropertyName,
-                                                                                    propertyCondition.getOperator(),
-                                                                                    this.escapePropertyValue(enumPropertyValue.getSymbolicName()),
-                                                                                    principleTableName,
-                                                                                    propertyTableName));
-                    }
-                    else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
-                    {
-                        stringBuilder.append(getPropertyComparisonFromInstanceProperties(mapPropertyValue.getMapValues(),
-                                                                                         leafPropertyName,
-                                                                                         propertyCondition.getOperator(),
-                                                                                         propertyCondition.getOperator(),
-                                                                                         matchOperand,
-                                                                                         principleTableName,
-                                                                                         propertyTableName));
+                        clauses.add(getPropertyComparisonFromInstanceProperties(mapPropertyValue.getMapValues(),
+                                                                                leafPropertyName,
+                                                                                propertyCondition.getOperator(),
+                                                                                propertyCondition.getOperator(),
+                                                                                matchOperand,
+                                                                                principleTableName,
+                                                                                propertyTableName));
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
                     {
-                        stringBuilder.append(getPropertyComparisonFromInstanceProperties(arrayPropertyValue.getArrayValues(),
-                                                                                         leafPropertyName,
-                                                                                         propertyCondition.getOperator(),
-                                                                                         propertyCondition.getOperator(),
-                                                                                         matchOperand,
-                                                                                         principleTableName,
-                                                                                         propertyTableName));
+                        clauses.add(getPropertyComparisonFromInstanceProperties(arrayPropertyValue.getArrayValues(),
+                                                                                leafPropertyName,
+                                                                                propertyCondition.getOperator(),
+                                                                                propertyCondition.getOperator(),
+                                                                                matchOperand,
+                                                                                principleTableName,
+                                                                                propertyTableName));
                     }
                     else if (instancePropertyValue instanceof StructPropertyValue structPropertyValue)
                     {
-                        stringBuilder.append(getPropertyComparisonFromInstanceProperties(structPropertyValue.getAttributes(),
-                                                                                         leafPropertyName,
-                                                                                         propertyCondition.getOperator(),
-                                                                                         propertyCondition.getOperator(),
-                                                                                         matchOperand,
-                                                                                         principleTableName,
-                                                                                         propertyTableName));
+                        clauses.add(getPropertyComparisonFromInstanceProperties(structPropertyValue.getAttributes(),
+                                                                                leafPropertyName,
+                                                                                propertyCondition.getOperator(),
+                                                                                propertyCondition.getOperator(),
+                                                                                matchOperand,
+                                                                                principleTableName,
+                                                                                propertyTableName));
                     }
-                    else // null property value
+                    else
                     {
-                        stringBuilder.append(this.getNestedPropertyComparisonClause(topLevelPropertyName,
-                                                                                    leafPropertyName,
-                                                                                    propertyCondition.getOperator(),
-                                                                                    null,
-                                                                                    principleTableName,
-                                                                                    propertyTableName));
+                        Object comparisonValue = null; // null property value
+
+                        if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+                        {
+                            if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                            {
+                                comparisonValue = this.escapePropertyValue(primitivePropertyValue.getPrimitiveValue());
+                            }
+                            else
+                            {
+                                comparisonValue = primitivePropertyValue.getPrimitiveValue();
+                            }
+                        }
+                        else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
+                        {
+                            comparisonValue = this.escapePropertyValue(enumPropertyValue.getSymbolicName());
+                        }
+
+                        String clause = this.getNestedPropertyComparisonClause(topLevelPropertyName,
+                                                                               leafPropertyName,
+                                                                               propertyCondition.getOperator(),
+                                                                               comparisonValue,
+                                                                               principleTableName,
+                                                                               propertyTableName);
+
+                        String rowCondition = matchAny ? this.getPropertyRowCondition(topLevelPropertyName,
+                                                                                      leafPropertyName,
+                                                                                      propertyCondition.getOperator(),
+                                                                                      comparisonValue,
+                                                                                      propertyTableName) : null;
+                        if (rowCondition == null)
+                        {
+                            clauses.add(clause);
+                        }
+                        else
+                        {
+                            rowConditions.add(rowCondition);
+                            rowConditionClauses.add(clause);
+                        }
                     }
                 }
             }
 
-            stringBuilder.append(") ");
+            if (rowConditions.size() == 1)
+            {
+                clauses.add(rowConditionClauses.get(0));
+            }
+            else if (rowConditions.size() > 1)
+            {
+                clauses.add(" (" + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + ", " +
+                                    RepositoryColumn.VERSION.getColumnName(principleTableName) + ") in (select " +
+                                    RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) + ", " +
+                                    RepositoryColumn.VERSION.getColumnName(propertyTableName) + " from " + propertyTableName +
+                                    " where (" + String.join(") or (", rowConditions) + ")) ");
+            }
 
-            return stringBuilder.toString();
+            return " (" + String.join(matchOperand, clauses) + ") ";
         }
 
         return " ";
