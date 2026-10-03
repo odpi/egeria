@@ -184,7 +184,7 @@ public class InformationSupplyChainMermaidGraphBuilderTest
         assertEquals(component.size(), 2);
         assertEquals(component.get(0)[1], "rect", "design shape");
         assertEquals(fill(graph, component.get(0)[0]), VisualStyle.DEFAULT_SOLUTION_COMPONENT.getFillColour());
-        assertEquals(component.get(1)[1], "notch-pent", "status shape");
+        assertEquals(component.get(1)[1], VisualStyle.PROMISE.getShape(), "status shape");
         assertEquals(fill(graph, component.get(1)[0]), VisualStyle.PROMISE.getFillColour());
     }
 
