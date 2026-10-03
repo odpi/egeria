@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database;
 
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc.PostgresErrorCode;
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.NestedPropertyName;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
@@ -812,8 +813,16 @@ public class QueryBuilder
         }
         else
         {
+            /*
+             * Nested property names are stored escaped (see NestedPropertyName), so the leaf name is escaped the
+             * same way.  The second test stops a leaf name such as "coco" matching the end of an escaped key
+             * containing a colon, such as "tag\\:coco".
+             */
+            String leafPattern = escapePropertyValue(getSafeLikePattern(NestedPropertyName.escape(leafPropertyName)));
+
             return RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + escapePropertyValue(topLevelPropertyName) + "' and " +
-                   RepositoryColumn.PROPERTY_NAME.getColumnName(propertyTableName) + " like '%:" + escapePropertyValue(getSafeLikePattern(leafPropertyName)) + "'";
+                   RepositoryColumn.PROPERTY_NAME.getColumnName(propertyTableName) + " like '%:" + leafPattern + "' and " +
+                   RepositoryColumn.PROPERTY_NAME.getColumnName(propertyTableName) + " not like '%\\\\:" + leafPattern + "'";
         }
     }
 
