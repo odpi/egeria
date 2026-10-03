@@ -68,6 +68,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -578,13 +579,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
          */
         OpenMetadataRootElement existingProcess = processClient.getAssetByUniqueName(qualifiedName,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                     processClient.getGetOptions());
+                                                                                     elementOnly(processClient.getGetOptions()));
 
         if (existingProcess == null)
         {
             existingProcess = processClient.getAssetByUniqueName(LEGACY_JOB_QUALIFIED_NAME_PREFIX + name,
                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                 processClient.getGetOptions());
+                                                                 elementOnly(processClient.getGetOptions()));
         }
 
         List<OpenMetadataRootElement> matchingProcesses = findMatchingAssets(namespace, name);
@@ -1103,7 +1104,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             OpenMetadataRootElement existingRun = processClient.getAssetByUniqueName(qualifiedName,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                     processClient.getGetOptions());
+                                                                                     elementOnly(processClient.getGetOptions()));
 
             ProcessProperties runProperties = new ProcessProperties();
             Map<String, String> additionalProperties = new HashMap<>();
@@ -1273,7 +1274,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
              * Always re-read the process so that the metrics are built on the latest classification.  A process step
              * is not an asset, so the element is retrieved generically.
              */
-            OpenMetadataRootElement process = classificationClient.getRootElementByGUID(jobProcess.guid(), classificationClient.getGetOptions());
+            OpenMetadataRootElement process = classificationClient.getRootElementByGUID(jobProcess.guid(), elementOnly(classificationClient.getGetOptions()));
 
             RunMetricsProperties runMetrics        = null;
             boolean              classified        = false;
@@ -1736,7 +1737,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             }
 
             SchemaAttributeClient   schemaAttributeClient = myContext.getSchemaAttributeClient();
-            OpenMetadataRootElement table                 = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), schemaAttributeClient.getGetOptions());
+            OpenMetadataRootElement table                 = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), elementOnly(schemaAttributeClient.getGetOptions()));
 
             asset                = new CataloguedElement(primary.guid(), primary.qualifiedName(), table, true, parentAsset);
             ownedByThisConnector = false;
@@ -1748,7 +1749,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         }
         else
         {
-            OpenMetadataRootElement existingAsset = assetClient.getAssetByGUID(primary.guid(), assetClient.getGetOptions());
+            OpenMetadataRootElement existingAsset = assetClient.getAssetByGUID(primary.guid(), elementOnly(assetClient.getGetOptions()));
 
             asset                = new CataloguedElement(primary.guid(), primary.qualifiedName(), existingAsset);
             ownedByThisConnector = primary.createdFromOpenLineage();
@@ -1868,7 +1869,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             SchemaTypeClient schemaTypeClient = myContext.getSchemaTypeClient();
 
-            if (schemaTypeClient.getSchemaTypeForAsset(assetGUID, schemaTypeClient.getGetOptions()) == null)
+            if (schemaTypeClient.getSchemaTypeForAsset(assetGUID, elementOnly(schemaTypeClient.getGetOptions())) == null)
             {
                 createSchema(assetGUID, getQualifiedName(existingAsset), facets.getSchema(), eventDescription);
             }
@@ -1906,7 +1907,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             AssetClient assetClient = myContext.getAssetClient();
 
-            if (assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, assetClient.getGetOptions()) != null)
+            if (assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, elementOnly(assetClient.getGetOptions())) != null)
             {
                 logEventIgnored(eventDescription, "the rename of " + previousNamespace + "/" + previousName + " cannot be applied because an asset already exists for " + namespace + "/" + name);
                 return;
@@ -1916,7 +1917,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             OpenMetadataRootElement previousAsset = assetClient.getAssetByUniqueName(previousQualifiedName,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                     assetClient.getGetOptions());
+                                                                                     elementOnly(assetClient.getGetOptions()));
 
             if (previousAsset == null)
             {
@@ -2169,7 +2170,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         int         pageSize    = myContext.getMaxPageSize();
         int         startFrom   = 0;
 
-        List<OpenMetadataRootElement> candidates = assetClient.getAssetsByName(name, assetClient.getQueryOptions(startFrom, pageSize));
+        List<OpenMetadataRootElement> candidates = assetClient.getAssetsByName(name, elementOnly(assetClient.getQueryOptions(startFrom, pageSize)));
 
         while ((candidates != null) && (! candidates.isEmpty()))
         {
@@ -2190,7 +2191,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             }
 
             startFrom  = startFrom + pageSize;
-            candidates = assetClient.getAssetsByName(name, assetClient.getQueryOptions(startFrom, pageSize));
+            candidates = assetClient.getAssetsByName(name, elementOnly(assetClient.getQueryOptions(startFrom, pageSize)));
         }
 
         return matchingAssets;
@@ -2363,7 +2364,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             try
             {
-                loaded = (assetClient.getAssetByGUID(template.getTemplateGUID(), assetClient.getGetOptions()) != null);
+                loaded = (assetClient.getAssetByGUID(template.getTemplateGUID(), elementOnly(assetClient.getGetOptions())) != null);
             }
             catch (InvalidParameterException unknownTemplate)
             {
@@ -3337,7 +3338,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         if (! asset.schemaAttribute())
         {
-            schemaType = schemaTypeClient.getSchemaTypeForAsset(asset.guid(), schemaTypeClient.getGetOptions());
+            schemaType = schemaTypeClient.getSchemaTypeForAsset(asset.guid(), elementOnly(schemaTypeClient.getGetOptions()));
 
             if (schemaType == null)
             {
@@ -3358,11 +3359,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if ((level == 0) && (schemaType != null))
             {
-                attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), elementOnly(schemaAttributeClient.getQueryOptions(startFrom, pageSize)));
             }
             else
             {
-                attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), elementOnly(schemaAttributeClient.getQueryOptions(startFrom, pageSize)));
             }
 
             while ((attributes != null) && (! attributes.isEmpty()) && (found == null))
@@ -3390,11 +3391,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 if ((level == 0) && (schemaType != null))
                 {
-                    attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                    attributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElementHeader().getGUID(), elementOnly(schemaAttributeClient.getQueryOptions(startFrom, pageSize)));
                 }
                 else
                 {
-                    attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), schemaAttributeClient.getQueryOptions(startFrom, pageSize));
+                    attributes = schemaAttributeClient.getNestedSchemaAttributes((level == 0) ? asset.guid() : current.getElementHeader().getGUID(), elementOnly(schemaAttributeClient.getQueryOptions(startFrom, pageSize)));
                 }
             }
 
@@ -3520,12 +3521,30 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient();
 
-            return schemaAttributeClient.getSchemaAttributeByGUID(asset.guid(), schemaAttributeClient.getGetOptions());
+            return schemaAttributeClient.getSchemaAttributeByGUID(asset.guid(), elementOnly(schemaAttributeClient.getGetOptions()));
         }
 
         AssetClient assetClient = myContext.getAssetClient();
 
-        return assetClient.getAssetByGUID(asset.guid(), assetClient.getGetOptions());
+        return assetClient.getAssetByGUID(asset.guid(), elementOnly(assetClient.getGetOptions()));
+    }
+
+
+    /**
+     * Limit a request to the element itself.  This connector reads only the header (GUID, type, classifications
+     * such as Ownership, DataScope and RunMetrics) and the properties of the elements it retrieves, never their
+     * related elements.  The default graph query depth would retrieve several levels of related elements -
+     * thousands of them for an asset that has accumulated, for example, survey annotations - only to discard them.
+     *
+     * @param options options from a client
+     * @param <T> GetOptions or QueryOptions
+     * @return the same options with a graph query depth of zero
+     */
+    private <T extends GetOptions> T elementOnly(T options)
+    {
+        options.setGraphQueryDepth(0);
+
+        return options;
     }
 
 
@@ -4600,7 +4619,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             try
             {
-                OpenMetadataRootElement profile = actorProfileClient.getActorProfileByUserId(candidate, actorProfileClient.getGetOptions());
+                OpenMetadataRootElement profile = actorProfileClient.getActorProfileByUserId(candidate, elementOnly(actorProfileClient.getGetOptions()));
 
                 if (profile != null)
                 {
@@ -4616,7 +4635,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             try
             {
-                List<OpenMetadataRootElement> profiles = actorProfileClient.getActorProfilesByName(candidate, actorProfileClient.getQueryOptions());
+                List<OpenMetadataRootElement> profiles = actorProfileClient.getActorProfilesByName(candidate, elementOnly(actorProfileClient.getQueryOptions()));
 
                 if ((profiles != null) && (profiles.size() == 1) && (profiles.get(0) != null))
                 {
