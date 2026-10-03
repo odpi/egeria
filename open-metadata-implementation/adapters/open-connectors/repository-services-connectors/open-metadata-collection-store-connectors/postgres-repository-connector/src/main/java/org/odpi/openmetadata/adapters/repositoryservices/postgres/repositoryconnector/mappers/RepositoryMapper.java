@@ -254,7 +254,8 @@ public class RepositoryMapper extends BaseMapper
 
         for (String attributeName : attributeRows.keySet())
         {
-            instanceProperties.setProperty(attributeName, this.getInstancePropertyValue(attributeName, attributeRows.get(attributeName)));
+            instanceProperties.setProperty(NestedPropertyName.unescape(attributeName),
+                                           this.getInstancePropertyValue(attributeName, attributeRows.get(attributeName)));
         }
 
         if ((instanceProperties.getPropertyCount() > 0 ) ||
@@ -563,24 +564,68 @@ public class RepositoryMapper extends BaseMapper
     private InstanceProperties getNestedProperties(String                           attributeName,
                                                    List<Map<String, JDBCDataValue>> additionalRows) throws RepositoryErrorException
     {
-        List<Map<String, JDBCDataValue>> nestedRows = new ArrayList<>();
+        List<Map<String, JDBCDataValue>> nestedRows    = new ArrayList<>();
+        List<PropertyNameStruct>         nestedNames   = new ArrayList<>();
+        Map<String, String>              principleRows = new HashMap<>();
 
         for (Map<String, JDBCDataValue> row : additionalRows)
         {
-            Map<String, JDBCDataValue> nestedRow = new HashMap<>(row);
-
             PropertyNameStruct propertyNameStruct = new PropertyNameStruct(attributeName,
                                                                            super.getStringPropertyFromColumn(RepositoryColumn.PROPERTY_NAME.getColumnName(),
                                                                                                              row,
                                                                                                              true));
+            nestedNames.add(propertyNameStruct);
 
-            nestedRow.put(RepositoryColumn.ATTRIBUTE_NAME.getColumnName(), new JDBCDataValue(propertyNameStruct.getNextParentAttributeName(), ColumnType.STRING.getJdbcType()));
-            nestedRow.put(RepositoryColumn.PROPERTY_NAME.getColumnName(), new JDBCDataValue(propertyNameStruct.getNestedPropertyName(), ColumnType.STRING.getJdbcType()));
+            if (propertyNameStruct.getNestedPropertyName().equals(propertyNameStruct.getNextParentAttributeName()))
+            {
+                principleRows.put(propertyNameStruct.getNextParentAttributeName(),
+                                  super.getStringPropertyFromColumn(RepositoryColumn.PROPERTY_CATEGORY.getColumnName(), row, false));
+            }
+        }
+
+        for (int i = 0; i < additionalRows.size(); i++)
+        {
+            Map<String, JDBCDataValue> row                = additionalRows.get(i);
+            PropertyNameStruct         propertyNameStruct = nestedNames.get(i);
+            Map<String, JDBCDataValue> nestedRow          = new HashMap<>(row);
+
+            String nextParentAttributeName = propertyNameStruct.getNextParentAttributeName();
+            String nestedPropertyName      = propertyNameStruct.getNestedPropertyName();
+
+            /*
+             * Before nested property names were escaped, a map key containing a colon (such as tag:coco) was stored
+             * as if it were a nested map (additionalProperties:tag:coco) with no row for the "map" itself.  A row
+             * like this - a simple value below a name that has no collection row of its own - is read back as a
+             * single key made of the rest of the path.
+             */
+            if ((! nestedPropertyName.equals(nextParentAttributeName)) &&
+                    (! isCollectionCategory(principleRows.get(nextParentAttributeName))) &&
+                    (! isCollectionCategory(super.getStringPropertyFromColumn(RepositoryColumn.PROPERTY_CATEGORY.getColumnName(), row, false))))
+            {
+                nextParentAttributeName = nestedPropertyName;
+            }
+
+            nestedRow.put(RepositoryColumn.ATTRIBUTE_NAME.getColumnName(), new JDBCDataValue(nextParentAttributeName, ColumnType.STRING.getJdbcType()));
+            nestedRow.put(RepositoryColumn.PROPERTY_NAME.getColumnName(), new JDBCDataValue(nestedPropertyName, ColumnType.STRING.getJdbcType()));
 
             nestedRows.add(nestedRow);
         }
 
         return this.getInstanceProperties(null, nestedRows, false);
+    }
+
+
+    /**
+     * Is this property category one whose values are stored in nested rows?
+     *
+     * @param propertyCategory value of the property category column (may be null)
+     * @return boolean
+     */
+    private boolean isCollectionCategory(String propertyCategory)
+    {
+        return InstancePropertyCategory.MAP.getName().equals(propertyCategory) ||
+               InstancePropertyCategory.ARRAY.getName().equals(propertyCategory) ||
+               InstancePropertyCategory.STRUCT.getName().equals(propertyCategory);
     }
 
 
@@ -603,9 +648,9 @@ public class RepositoryMapper extends BaseMapper
         {
             final String methodName = "PropertyNameStruct";
 
-            String[] propertyNameParts = fullPropertyName.split(":");
+            List<String> propertyNameParts = NestedPropertyName.split(fullPropertyName);
 
-            if (propertyNameParts.length < 2)
+            if (propertyNameParts.size() < 2)
             {
                 throw new RepositoryErrorException(PostgresErrorCode.INVALID_REPOSITORY_VALUE.getMessageDefinition(repositoryName,
                                                                                                                    RepositoryColumn.PROPERTY_NAME.getColumnName(),
@@ -615,7 +660,7 @@ public class RepositoryMapper extends BaseMapper
                                                    this.getClass().getName(),
                                                    methodName);
             }
-            else if (! parentAttributeName.equals(propertyNameParts[0]))
+            else if (! parentAttributeName.equals(propertyNameParts.get(0)))
             {
                 throw new RepositoryErrorException(PostgresErrorCode.INVALID_REPOSITORY_VALUE.getMessageDefinition(repositoryName,
                                                                                                                    RepositoryColumn.PROPERTY_NAME.getColumnName(),
@@ -626,25 +671,11 @@ public class RepositoryMapper extends BaseMapper
                                                    methodName);
             }
 
-            boolean firstPartOfName = true;
-            StringBuilder stringBuilder = new StringBuilder();
-
-            this.nextParentAttributeName = propertyNameParts[1];
-            for (int i=1; i<propertyNameParts.length; i++)
-            {
-                if (firstPartOfName)
-                {
-                    firstPartOfName = false;
-                }
-                else
-                {
-                    stringBuilder.append(":");
-                }
-
-                stringBuilder.append(propertyNameParts[i]);
-            }
-
-            this.nestedPropertyName = stringBuilder.toString();
+            /*
+             * The parts keep their escaping: they are unescaped only when they become property names.
+             */
+            this.nextParentAttributeName = propertyNameParts.get(1);
+            this.nestedPropertyName = String.join(":", propertyNameParts.subList(1, propertyNameParts.size()));
         }
 
 
@@ -963,7 +994,7 @@ public class RepositoryMapper extends BaseMapper
                 }
                 else
                 {
-                    qualifiedPropertyName = parentPropertyName + ":" + propertyName;
+                    qualifiedPropertyName = parentPropertyName + ":" + NestedPropertyName.escape(propertyName);
                 }
 
                 if (parentAttributeName == null)
