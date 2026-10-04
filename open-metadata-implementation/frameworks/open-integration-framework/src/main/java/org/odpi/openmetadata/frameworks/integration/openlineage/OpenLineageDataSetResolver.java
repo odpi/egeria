@@ -148,6 +148,16 @@ public class OpenLineageDataSetResolver
     private final PropertyHelper                 propertyHelper = new PropertyHelper();
     private final Map<String, CachedResolution>  cache          = new ConcurrentHashMap<>();
 
+    /*
+     * The connection plumbing the resolver walks - endpoints, the connections to them and the assets of those
+     * connections - is cached for the same time as the resolutions.  Without it every dataset not already resolved
+     * walks every endpoint on its server again: with a catalogued data set per digital product, each with its own
+     * connection and endpoint, that is hundreds of repository calls per dataset.
+     */
+    private record CachedElements(List<OpenMetadataElement> elements, long expiryTime) {}
+
+    private final Map<String, CachedElements> plumbingCache = new ConcurrentHashMap<>();
+
 
     /**
      * Constructor.
@@ -495,10 +505,7 @@ public class OpenLineageDataSetResolver
         String  schemaName   = nameParts[1];
         String  tableName    = (nameParts.length == 3) ? nameParts[2] : null;
 
-        for (OpenMetadataElement endpoint : findElements(OpenMetadataType.ENDPOINT.typeName,
-                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                         location.host(),
-                                                         PropertyComparisonOperator.CASE_INSENSITIVE_LIKE))
+        for (OpenMetadataElement endpoint : findEndpoints(location.host(), PropertyComparisonOperator.CASE_INSENSITIVE_LIKE))
         {
             OpenLineageNamespace address = OpenLineageNamespace.fromNetworkAddress(getStringProperty(endpoint, OpenMetadataProperty.NETWORK_ADDRESS.name));
 
@@ -727,10 +734,7 @@ public class OpenLineageDataSetResolver
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        for (OpenMetadataElement endpoint : findElements(OpenMetadataType.ENDPOINT.typeName,
-                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                         topicName,
-                                                         PropertyComparisonOperator.EQ))
+        for (OpenMetadataElement endpoint : findEndpoints(topicName, PropertyComparisonOperator.EQ))
         {
             for (OpenMetadataElement connection : getRelatedElements(endpoint.getElementGUID(), OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName))
             {
@@ -1066,6 +1070,14 @@ public class OpenLineageDataSetResolver
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
+        String         cacheKey = "related|" + elementGUID + "|" + relationshipTypeName;
+        CachedElements cached   = plumbingCache.get(cacheKey);
+
+        if ((cached != null) && (cached.expiryTime() > System.currentTimeMillis()))
+        {
+            return new ArrayList<>(cached.elements());
+        }
+
         List<OpenMetadataElement> elements  = new ArrayList<>();
         OpenMetadataStore         store     = context.getOpenMetadataStore();
         int                       pageSize  = context.getMaxPageSize();
@@ -1092,7 +1104,44 @@ public class OpenLineageDataSetResolver
             related   = store.getRelatedMetadataElements(elementGUID, 0, relationshipTypeName, startFrom, pageSize);
         }
 
+        plumbingCache.put(cacheKey, new CachedElements(new ArrayList<>(elements), System.currentTimeMillis() + CACHE_MILLISECONDS));
+
         return elements;
+    }
+
+
+    /**
+     * Find the endpoints with a network address matching a value, caching the result for the same time as the
+     * resolutions.
+     *
+     * @param value value to match against the network address
+     * @param operator comparison operator
+     * @return endpoints
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<OpenMetadataElement> findEndpoints(String                     value,
+                                                    PropertyComparisonOperator operator) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        String         cacheKey = "endpoints|" + operator + "|" + value;
+        CachedElements cached   = plumbingCache.get(cacheKey);
+
+        if ((cached != null) && (cached.expiryTime() > System.currentTimeMillis()))
+        {
+            return new ArrayList<>(cached.elements());
+        }
+
+        List<OpenMetadataElement> endpoints = findElements(OpenMetadataType.ENDPOINT.typeName,
+                                                           OpenMetadataProperty.NETWORK_ADDRESS.name,
+                                                           value,
+                                                           operator);
+
+        plumbingCache.put(cacheKey, new CachedElements(new ArrayList<>(endpoints), System.currentTimeMillis() + CACHE_MILLISECONDS));
+
+        return endpoints;
     }
 
 
