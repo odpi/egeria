@@ -168,7 +168,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         solutionComponentGUID = this.deleteAsCatalogTargetGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                                                   UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER,
                                                                                   "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/",
-                                                                                  RequestTypeDefinition.DELETE_UC_SERVER);
+                                                                                  RequestTypeDefinition.DELETE_DB_UC_SERVER);
 
         additionalSolutionComponents.add(solutionComponentGUID);
 

@@ -62,8 +62,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
-     * @param excludeNames list of catalogs to ignore (and include all others)
-     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
+     * @param excludeNames list of tables to ignore (and include all others)
+     * @param includeNames list of tables to include (and ignore all others) - overrides excludeNames
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException connector disconnected
      * @throws InvalidParameterException missing template
@@ -127,7 +127,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                                           UserNotAuthorizedException,
                                                                                                           ConnectorCheckedException
     {
-        RelatedElementsIterator tableIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator tableIterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,
@@ -154,13 +154,13 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 {
                     TableInfo tableInfo = null;
 
-                    String tableName = relationalTableProperties.getResourceName();
+                    String tableFullName = relationalTableProperties.getResourceName();
 
-                    if (context.elementShouldBeCatalogued(tableName, excludeNames, includeNames))
+                    if ((tableFullName != null) && (shouldBeCatalogued(getShortName(tableFullName))))
                     {
                         try
                         {
-                            tableInfo = ucConnector.getTable(tableName);
+                            tableInfo = ucConnector.getTable(tableFullName);
                         }
                         catch (Exception missing)
                         {
@@ -232,7 +232,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                         {
                             for (TableInfo tableInfo : ucTableList)
                             {
-                                if (tableInfo != null)
+                                if ((tableInfo != null) && (shouldBeCatalogued(tableInfo.getName())))
                                 {
                                     if (ucFullNameToEgeriaGUID.get(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName()) == null)
                                     {

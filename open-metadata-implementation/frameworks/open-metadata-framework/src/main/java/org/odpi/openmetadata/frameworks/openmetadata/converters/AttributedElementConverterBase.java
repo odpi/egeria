@@ -616,7 +616,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
              * Area 6
              */
             attributedMetadataElement.setReportedAnnotations(super.getRelatedElements(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setFromSurveyReport(super.getRelatedElement(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setFromSurveyReports(super.getRelatedElements(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
             attributedMetadataElement.setAnnotationExtensions(super.getRelatedElements(OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setPreviousAnnotations(super.getRelatedElements(OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName, relatedMetadataElements, true));

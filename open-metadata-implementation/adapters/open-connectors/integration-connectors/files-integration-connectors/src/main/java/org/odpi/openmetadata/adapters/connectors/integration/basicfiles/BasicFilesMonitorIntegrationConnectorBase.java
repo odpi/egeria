@@ -269,12 +269,20 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
 
             /*
              * Before returning the list of directories, make sure all are still valid - and they are properly set up.
+             * The list is walked with an explicit iterator because entries are removed as it goes: removing
+             * through the list inside a for-each loop throws ConcurrentModificationException on the next step,
+             * which fails the whole refresh - and the integration daemon then stops refreshing this connector,
+             * so a catalog target added later is never picked up.
              */
-            for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
+            Iterator<DirectoryToMonitor> directoryIterator = directoriesToMonitor.iterator();
+
+            while (directoryIterator.hasNext())
             {
+                DirectoryToMonitor directoryToMonitor = directoryIterator.next();
+
                 if ((directoryToMonitor.catalogTargetGUID != null) && (! activeCatalogTargets.contains(directoryToMonitor.catalogTargetGUID)))
                 {
-                    directoriesToMonitor.remove(directoryToMonitor);
+                    directoryIterator.remove();
                 }
 
                 /* Todo - bring the file listening back once we are sure of the thread management

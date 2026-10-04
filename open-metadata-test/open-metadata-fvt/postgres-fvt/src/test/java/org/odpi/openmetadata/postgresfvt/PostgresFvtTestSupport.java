@@ -363,6 +363,13 @@ final class PostgresFvtTestSupport
                                       + " (id integer primary key, description varchar(80))");
             statement.execute("insert into " + getSchemaName() + "." + getTableName()
                                       + " values (1, 'first row'), (2, 'second row'), (3, 'third row')");
+
+            /*
+             * Gathered now rather than left to autovacuum, so that pg_stats has a row for each column of the
+             * new table by the time the survey reads it.  Without one the survey sees the table but none of
+             * its columns.
+             */
+            statement.execute("analyze " + getSchemaName() + "." + getTableName());
         }
 
         System.out.println("postgres-fvt: prepared database " + databaseName + " on " + getServerHost() + ":" + getServerPort()

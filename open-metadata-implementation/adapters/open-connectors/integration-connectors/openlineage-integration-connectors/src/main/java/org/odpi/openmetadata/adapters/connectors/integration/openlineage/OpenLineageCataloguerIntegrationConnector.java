@@ -3929,23 +3929,17 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 annotationRequest.properties().setQualifiedName(reportProperties.getQualifiedName() + QUALIFIED_NAME_SEPARATOR +
                                                                         annotationRequest.properties().getAnnotationType() + QUALIFIED_NAME_SEPARATOR + annotationCount);
 
-                NewElementOptions annotationOptions = new NewElementOptions(annotationClient.getMetadataSourceOptions());
+                /*
+                 * The annotation is anchored to the report's own anchor - the process - and is reused if an
+                 * earlier event recorded exactly the same thing for the element it describes.  An annotation
+                 * with no described element describes the process.
+                 */
+                String describedElementGUID = (annotationRequest.describedElement() == null) ? null : annotationRequest.describedElement().guid();
 
-                annotationOptions.setAnchorGUID(reportGUID);
-                annotationOptions.setIsOwnAnchor(false);
-                annotationOptions.setParentGUID(reportGUID);
-                annotationOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
-                annotationOptions.setParentAtEnd1(true);
-
-                String annotationGUID = annotationClient.createAnnotation(annotationOptions, null, annotationRequest.properties(), null);
+                annotationClient.addAnnotationToReport(reportAnchor.guid(), reportGUID, describedElementGUID, annotationRequest.properties());
 
                 if (annotationRequest.describedElement() != null)
                 {
-                    annotationClient.linkAnnotationToDescribedElement(annotationRequest.describedElement().guid(),
-                                                                      annotationGUID,
-                                                                      new MakeAnchorOptions(annotationClient.getMetadataSourceOptions()),
-                                                                      null);
-
                     if ((! annotationRequest.describedElement().guid().equals(reportAnchor.guid())) && (subjectGUIDs.add(annotationRequest.describedElement().guid())))
                     {
                         reportClient.linkReportSubject(annotationRequest.describedElement().guid(), reportGUID, new MakeAnchorOptions(reportClient.getMetadataSourceOptions()), null);

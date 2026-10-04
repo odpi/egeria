@@ -27,6 +27,18 @@ public enum SurveyRequestParameter
      */
     IGNORE_ANALYSIS_STEPS ("ignoreAnalysisSteps", "Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.", "array<string>", "step3,step4"),
 
+
+    /**
+     * Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes precedence over the exclude list.
+     */
+    INCLUDE_SCHEMA_NAMES ("includeSchemaNames", "Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes precedence over the exclude list.  It overrides the configuration property of the same name.", "array<string>", "schema1,schema2"),
+
+
+    /**
+     * Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.
+     */
+    EXCLUDE_SCHEMA_NAMES ("excludeSchemaNames", "Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.  It overrides the configuration property of the same name.", "array<string>", "schema1,schema2"),
+
     ;
 
     public final String           name;
@@ -100,7 +112,7 @@ public enum SurveyRequestParameter
 
 
     /**
-     * Retrieve all the defined request parameters
+     * Retrieve the request parameters that every survey action service supports.
      *
      * @return list of request parameter types
      */
@@ -108,10 +120,25 @@ public enum SurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        for (SurveyRequestParameter requestParameter : SurveyRequestParameter.values())
-        {
-            requestParameterTypes.add(requestParameter.getRequestParameterType());
-        }
+        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(IGNORE_ANALYSIS_STEPS.getRequestParameterType());
+
+        return requestParameterTypes;
+    }
+
+
+    /**
+     * Retrieve the request parameters supported by a survey action service that can be limited to some of the
+     * schemas it finds.
+     *
+     * @return list of request parameter types
+     */
+    public static List<RequestParameterType> getSchemaSurveyRequestParameterTypes()
+    {
+        List<RequestParameterType> requestParameterTypes = getRequestParameterTypes();
+
+        requestParameterTypes.add(INCLUDE_SCHEMA_NAMES.getRequestParameterType());
+        requestParameterTypes.add(EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
 
         return requestParameterTypes;
     }

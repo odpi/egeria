@@ -1030,6 +1030,11 @@ public class OpenMetadataTypesArchive
      * LabeledRelationshipProperties and so expects label and description to be present.  Its sibling
      * AnnotationExtension already inherits from LabeledRelationship; this brings ReportedAnnotation into line
      * so that the two properties the bean reads and writes actually exist in the type system.
+     * <br>
+     * The survey report end also changes from AT_MOST_ONE to ANY_NUMBER.  An annotation is now reused by every
+     * survey run that finds the same thing - it is anchored to the surveyed asset and linked to each survey
+     * report that reported it - so an annotation can belong to many reports.  At AT_MOST_ONE the repository
+     * handler's read path would discard all but the latest of them.
      *
      * @return patch
      */
@@ -1043,6 +1048,20 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName));
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "fromSurveyReports";
+        final String                     end1AttributeDescription     = "The reports that the annotation belongs to.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SURVEY_REPORT.typeName),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

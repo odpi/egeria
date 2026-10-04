@@ -125,6 +125,8 @@ public enum UnityCatalogSurveyRequestParameter
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
         requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.INCLUDE_SCHEMA_NAMES.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
 
         return requestParameterTypes;
     }
@@ -141,6 +143,8 @@ public enum UnityCatalogSurveyRequestParameter
 
         requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.INCLUDE_SCHEMA_NAMES.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
 
         return requestParameterTypes;
     }

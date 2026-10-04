@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -95,16 +96,33 @@ public class RequestedCatalogTarget extends CatalogTarget
     /**
      * Indicates that the catalog target processor is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
+     * <br><br>
+     * The connector to the target is started unless it is already running.  The catalog targets manager
+     * starts it too, and a connector does not have to tolerate a second start: a topic connector opens
+     * another consumer on the topic each time, and every event is then delivered once per start.
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        if (connectorToTarget != null)
+        if ((connectorToTarget != null) && (! isStarted(connectorToTarget)))
         {
             connectorToTarget.start();
         }
+    }
+
+
+    /**
+     * Return whether a connector has already been started.  Only connectors built on ConnectorBase record
+     * this, so any other connector is assumed not to have been.
+     *
+     * @param connector connector to test
+     * @return true if it is known to be running
+     */
+    public static boolean isStarted(Connector connector)
+    {
+        return (connector instanceof ConnectorBase connectorBase) && (connectorBase.isActive());
     }
 
 

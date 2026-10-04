@@ -512,7 +512,7 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
              * Area 6
              */
             super.addRelatedElementSummaries(openMetadataRootElement.getReportedAnnotations(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
-            super.addRelatedElementSummary(openMetadataRootElement.getFromSurveyReport(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getFromSurveyReports(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getAnnotationExtensions(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getPreviousAnnotations(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getAssociatedAnnotations(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);

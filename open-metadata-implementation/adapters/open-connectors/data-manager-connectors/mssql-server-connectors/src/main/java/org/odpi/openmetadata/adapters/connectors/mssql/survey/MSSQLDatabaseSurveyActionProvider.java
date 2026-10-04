@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.mssql.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLTarget;
@@ -26,8 +28,11 @@ public class MSSQLDatabaseSurveyActionProvider extends SurveyActionServiceProvid
     public MSSQLDatabaseSurveyActionProvider()
     {
         super(EgeriaOpenConnectorDefinition.MSSQL_DATABASE_SURVEY_ACTION_SERVICE,
-              connectorClassName, null);
+              connectorClassName,
+              MSSQLConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = MSSQLConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(
                 new DeployedImplementationTypeDefinition[]{MSSQLDeployedImplementationType.MSSQL_DATABASE});
         super.supportedActionTargetTypes = MSSQLTarget.getMSSQLDatabaseActionTargetTypes();

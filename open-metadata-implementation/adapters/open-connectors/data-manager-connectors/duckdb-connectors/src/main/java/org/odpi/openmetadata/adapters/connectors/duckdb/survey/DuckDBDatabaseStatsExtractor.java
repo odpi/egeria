@@ -31,21 +31,74 @@ import java.util.UUID;
 public class DuckDBDatabaseStatsExtractor
 {
     private final List<String>                 validDatabases;
+    private final List<String>                 excludedSchemas;
+    private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
     /**
-     * Constructor sets up the list of databases to process and the connection to the database.
+     * Constructor sets up the list of databases to process and the connection to the database.  Every schema
+     * in those databases is surveyed.
      *
      * @param validDatabases               list of database names
      * @param surveyActionServiceConnector calling connector
      */
-    public DuckDBDatabaseStatsExtractor(List<String>                  validDatabases,
+    public DuckDBDatabaseStatsExtractor(List<String>                 validDatabases,
+                                        SurveyActionServiceConnector surveyActionServiceConnector)
+    {
+        this(validDatabases, null, null, surveyActionServiceConnector);
+    }
+
+
+    /**
+     * Constructor sets up the list of databases to process, the schemas within them to survey, and the
+     * connection to the database.
+     *
+     * @param validDatabases               list of database names
+     * @param excludedSchemas              schemas to leave out (null means none are excluded)
+     * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
+     *                                     takes precedence over excludedSchemas
+     * @param surveyActionServiceConnector calling connector
+     */
+    public DuckDBDatabaseStatsExtractor(List<String>                 validDatabases,
+                                        List<String>                 excludedSchemas,
+                                        List<String>                 includedSchemas,
                                         SurveyActionServiceConnector surveyActionServiceConnector)
     {
         this.validDatabases               = validDatabases;
+        this.excludedSchemas              = excludedSchemas;
+        this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+    }
+
+
+    /**
+     * Determine whether a schema should be surveyed.  Only the caller's lists decide: the include list, if
+     * there is one, and failing that the exclude list.  No schema is left out by name otherwise - DuckDB's
+     * internal schemas are already filtered out by the queries that list schemas and views.  This follows SurveyContext.elementShouldBeSurveyed, which applies the same rule to database
+     * names.
+     *
+     * @param schemaName name of the schema
+     * @return flag indicating whether to gather statistics for the schema
+     */
+    boolean schemaShouldBeSurveyed(String schemaName)
+    {
+        if (schemaName == null)
+        {
+            return false;
+        }
+
+        if (includedSchemas != null)
+        {
+            return includedSchemas.contains(schemaName);
+        }
+        else if (excludedSchemas != null)
+        {
+            return ! excludedSchemas.contains(schemaName);
+        }
+
+        return true;
     }
 
 
@@ -62,7 +115,12 @@ public class DuckDBDatabaseStatsExtractor
             databaseResults.put(databaseName, new DatabaseDetails(databaseName));
         }
 
-        final String databaseSizeSQLCommand = "SELECT * FROM pragma_database_size();";
+        /*
+         * DuckDB names each database after its file, which need not match the name Egeria has for the asset,
+         * so the surveyed database's row is found with current_database().  The databases ATTACH-ed to it
+         * have rows too, and are reported separately by the federation extractor.
+         */
+        final String databaseSizeSQLCommand = "SELECT * FROM pragma_database_size() WHERE database_name = current_database();";
 
         try
         {
@@ -74,6 +132,11 @@ public class DuckDBDatabaseStatsExtractor
                 String databaseName = resultSet.getString("database_name");
 
                 DatabaseDetails currentDatabase = databaseResults.get(databaseName);
+
+                if ((currentDatabase == null) && (validDatabases.size() == 1))
+                {
+                    currentDatabase = databaseResults.get(validDatabases.get(0));
+                }
 
                 if (currentDatabase != null)
                 {
@@ -108,6 +171,10 @@ public class DuckDBDatabaseStatsExtractor
     /**
      * Extract detailed information about the schemas, tables and columns in a database using DuckDB's own
      * catalog metadata table functions.
+     * <br><br>
+     * Those functions list every database the connection can see, including those ATTACH-ed to it, so each
+     * query is limited to current_database().  Otherwise a table in an attached database would be counted in
+     * the surveyed database's schema of the same name - and every attached database has a "main" schema.
      *
      * @param databaseName          name of database that is connected to
      * @param databaseSQLConnection connection to the named database
@@ -116,10 +183,10 @@ public class DuckDBDatabaseStatsExtractor
     void getSchemaStatistics(String              databaseName,
                              java.sql.Connection databaseSQLConnection) throws SQLException
     {
-        final String duckdbSchemasSQLCommand = "SELECT * FROM duckdb_schemas() WHERE NOT internal;";
-        final String duckdbTablesSQLCommand  = "SELECT * FROM duckdb_tables();";
-        final String duckdbViewsSQLCommand   = "SELECT * FROM duckdb_views() WHERE NOT internal;";
-        final String duckdbColumnsSQLCommand = "SELECT * FROM duckdb_columns();";
+        final String duckdbSchemasSQLCommand = "SELECT * FROM duckdb_schemas() WHERE database_name = current_database() AND NOT internal;";
+        final String duckdbTablesSQLCommand  = "SELECT * FROM duckdb_tables() WHERE database_name = current_database();";
+        final String duckdbViewsSQLCommand   = "SELECT * FROM duckdb_views() WHERE database_name = current_database() AND NOT internal;";
+        final String duckdbColumnsSQLCommand = "SELECT * FROM duckdb_columns() WHERE database_name = current_database();";
 
         try
         {
@@ -132,7 +199,7 @@ public class DuckDBDatabaseStatsExtractor
             }
 
             /*
-             * Ensure every non-internal schema is represented, even if it has no tables or views.
+             * Ensure every non-internal schema that is to be surveyed is represented, even if it has no tables or views.
              */
             PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbSchemasSQLCommand);
             ResultSet         resultSet         = preparedStatement.executeQuery();
@@ -141,7 +208,7 @@ public class DuckDBDatabaseStatsExtractor
             {
                 String schemaName = resultSet.getString("schema_name");
 
-                if (schemaName != null)
+                if (schemaShouldBeSurveyed(schemaName))
                 {
                     databaseDetails.getSchemaDetails(schemaName);
                 }
@@ -161,7 +228,7 @@ public class DuckDBDatabaseStatsExtractor
                 String schemaName = resultSet.getString("schema_name");
                 String tableName  = resultSet.getString("table_name");
 
-                if ((schemaName != null) && (tableName != null))
+                if ((schemaShouldBeSurveyed(schemaName)) && (tableName != null))
                 {
                     SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
                     TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
@@ -188,7 +255,7 @@ public class DuckDBDatabaseStatsExtractor
                 String schemaName = resultSet.getString("schema_name");
                 String viewName   = resultSet.getString("view_name");
 
-                if ((schemaName != null) && (viewName != null))
+                if ((schemaShouldBeSurveyed(schemaName)) && (viewName != null))
                 {
                     SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
                     TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
@@ -214,7 +281,7 @@ public class DuckDBDatabaseStatsExtractor
                 String schemaName = resultSet.getString("schema_name");
                 String tableName  = resultSet.getString("table_name");
 
-                if ((schemaName != null) && (tableName != null) && (databaseDetails.getSchemaDetails(schemaName).hasTable(tableName)))
+                if ((schemaShouldBeSurveyed(schemaName)) && (tableName != null) && (databaseDetails.hasTable(schemaName, tableName)))
                 {
                     String  columnName    = resultSet.getString("column_name");
                     String  columnType    = resultSet.getString("data_type");
@@ -252,6 +319,18 @@ public class DuckDBDatabaseStatsExtractor
 
             throw sqlException;
         }
+    }
+
+
+    /**
+     * Return the information gathered about a database.
+     *
+     * @param databaseName name of the database
+     * @return details, or null if nothing has been gathered for it
+     */
+    DatabaseDetails getDatabaseDetails(String databaseName)
+    {
+        return databaseResults.get(databaseName);
     }
 
 
@@ -482,6 +561,24 @@ public class DuckDBDatabaseStatsExtractor
             }
 
             return schemaDetails;
+        }
+
+
+        /**
+         * Determine whether a table (or view) has already been recorded for the named schema.  Unlike
+         * getSchemaDetails, this never creates a schema entry, so asking about a schema that is not being
+         * surveyed leaves no trace in the results.
+         *
+         * @param schemaName name of schema
+         * @param tableName  name of table or view
+         * @return flag indicating whether the table is known
+         */
+        boolean hasTable(String schemaName,
+                         String tableName)
+        {
+            SchemaDetails schemaDetails = schemas.get(schemaName);
+
+            return (schemaDetails != null) && (schemaDetails.hasTable(tableName));
         }
 
 

@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.DuckDBDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBTarget;
@@ -34,8 +36,10 @@ public class DuckDBDatabaseSurveyActionProvider extends SurveyActionServiceProvi
     {
         super(EgeriaOpenConnectorDefinition.DUCKDB_DATABASE_SURVEY_ACTION_SERVICE,
               connectorClassName,
-              null);
+              DuckDBConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = DuckDBConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DuckDBDeployedImplementationType.DUCKDB_DATABASE});
         super.supportedActionTargetTypes = DuckDBTarget.getDuckDBDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {

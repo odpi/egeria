@@ -74,6 +74,16 @@ against each suite below.
   ./gradlew :open-metadata-test:open-metadata-fvt:postgres-fvt:test -PrunPostgresFvtNoKafka
   ```
 
+* **[unity-catalog-fvt](unity-catalog-fvt)** - tests the **Unity Catalog connectors** and the **Unity Catalog
+  content pack** the same way postgres-fvt tests the PostgreSQL ones: it stands up a metadata access store, an
+  integration daemon, an engine host and a view server, and drives the content pack's processes through the
+  Automated Curation API against two real Unity Catalog servers - one only ever read, the other where the
+  suite creates and deletes a catalog of its own.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:unity-catalog-fvt:test -PrunUnityCatalogFvt
+  ```
+
 * **[files-fvt](files-fvt)** - tests the **file connectors** and the **Files content pack** that drives them:
   the folder and file survey services, the folder cataloguers, the file and folder governance actions, and the
   catalog templates the cataloguer chooses between. Built the same way as postgres-fvt - it stands up a

@@ -332,6 +332,8 @@ public enum UnityCatalogConfigurationProperty
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
         recognizedConfigurationProperties.add(UnityCatalogConfigurationProperty.CATALOG_NAME.getName());
+        recognizedConfigurationProperties.add(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName());
+        recognizedConfigurationProperties.add(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -347,6 +349,8 @@ public enum UnityCatalogConfigurationProperty
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
         configurationPropertyTypes.add(UnityCatalogConfigurationProperty.CATALOG_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
+        configurationPropertyTypes.add(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
@@ -381,6 +385,40 @@ public enum UnityCatalogConfigurationProperty
 
         configurationPropertyTypes.add(UnityCatalogConfigurationProperty.CATALOG_NAME.getConfigurationPropertyType());
         configurationPropertyTypes.add(UnityCatalogConfigurationProperty.SCHEMA_NAME.getConfigurationPropertyType());
+
+        return configurationPropertyTypes;
+    }
+
+
+    /**
+     * Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+     * schemas they find.  The same names can be passed as request parameters, which take precedence.
+     *
+     * @return list of property names
+     */
+    public static List<String> getSchemaSurveyConfigPropertyNames()
+    {
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+
+        recognizedConfigurationProperties.add(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName());
+        recognizedConfigurationProperties.add(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName());
+
+        return recognizedConfigurationProperties;
+    }
+
+
+    /**
+     * Retrieve the defined configuration properties for the survey action services that can be limited to some
+     * of the schemas they find.
+     *
+     * @return list of configuration property types
+     */
+    public static List<ConfigurationPropertyType> getSchemaSurveyConfigurationPropertyTypes()
+    {
+        List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
+
+        configurationPropertyTypes.add(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
+        configurationPropertyTypes.add(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }

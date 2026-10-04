@@ -904,36 +904,22 @@ public class QueryBuilder
     {
         String guidClause = null;
 
-        if (endEntityGUIDs != null)
+        if ((endEntityGUIDs != null) && (! endEntityGUIDs.isEmpty()))
         {
-            String matchComparison  = negate ? " != " : " = ";
-            String guidMatchOperand = negate ? " and " : " or ";
+            /*
+             * Listed with IN rather than joined with OR (or with AND when negated), for the reason given on
+             * getGUIDListClause: a long chain is planned as a parallel, JIT-compiled query.
+             */
+            String inOperator = negate ? " not in (" : " in (";
 
-            StringBuilder guidBuilder = new StringBuilder(" (");
-
-            boolean firstGUID = true;
-
-            for (String endEntityGUID : endEntityGUIDs)
-            {
-                if (firstGUID)
-                {
-                    firstGUID = false;
-                }
-                else
-                {
-                    guidBuilder.append(guidMatchOperand);
-                }
-
-                guidBuilder.append(endColumnName);
-                guidBuilder.append(matchComparison);
-                guidBuilder.append("'");
-                guidBuilder.append(endEntityGUID);
-                guidBuilder.append("'");
-            }
-
-            guidBuilder.append(") ");
-
-            guidClause = guidBuilder.toString();
+            guidClause = " (" + endColumnName + inOperator + this.getQuotedGUIDList(endEntityGUIDs) + ")) ";
+        }
+        else if (endEntityGUIDs != null)
+        {
+            /*
+             * An empty list still constrains the end, as it always has.
+             */
+            guidClause = " () ";
         }
 
         String typeClause = null;
@@ -2122,6 +2108,13 @@ public class QueryBuilder
 
     /**
      * Derive the SQL clause that searches for a list of guids.
+     * <br>
+     * The guids are listed with IN rather than joined with OR.  The two are equivalent, but PostgreSQL plans a
+     * long OR chain as a bitmap OR of one index scan per guid, which for a list of a thousand or more is costed
+     * high enough to run as a parallel query and, past the JIT threshold, to be JIT-compiled - and that is the
+     * combination that crashes some PostgreSQL builds (a parallel worker segfaults and the server terminates
+     * every connection while it recovers).  An IN list is planned as a single index scan over the array of
+     * values: cheaper, serial and not JIT-compiled.
      *
      * @return SQL command fragment
      */
@@ -2129,32 +2122,42 @@ public class QueryBuilder
     {
         if ((guidList != null) && (! guidList.isEmpty()))
         {
-            StringBuilder stringBuilder = new StringBuilder(" and (");
-            boolean       firstGUID = true;
-
-            for (String guid : guidList)
-            {
-                if (firstGUID)
-                {
-                    firstGUID = false;
-                }
-                else
-                {
-                    stringBuilder.append(" or ");
-                }
-
-                stringBuilder.append(RepositoryColumn.INSTANCE_GUID.getColumnName());
-                stringBuilder.append(" = '");
-                stringBuilder.append(escapePropertyValue(guid));
-                stringBuilder.append("' ");
-            }
-
-            stringBuilder.append(") ");
-
-            return stringBuilder.toString();
+            return " and (" + RepositoryColumn.INSTANCE_GUID.getColumnName() + " in (" + this.getQuotedGUIDList(guidList) + ")) ";
         }
 
         return " ";
+    }
+
+
+    /**
+     * Return a list of guids as a comma-separated list of escaped, quoted SQL literals, ready to go inside the
+     * brackets of an IN clause.
+     *
+     * @param guids guids to list - must not be empty
+     * @return SQL fragment
+     */
+    private String getQuotedGUIDList(List<String> guids)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean       firstGUID     = true;
+
+        for (String guid : guids)
+        {
+            if (firstGUID)
+            {
+                firstGUID = false;
+            }
+            else
+            {
+                stringBuilder.append(", ");
+            }
+
+            stringBuilder.append("'");
+            stringBuilder.append(escapePropertyValue(guid));
+            stringBuilder.append("'");
+        }
+
+        return stringBuilder.toString();
     }
 
 

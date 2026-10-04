@@ -4,10 +4,15 @@ package org.odpi.openmetadata.bitolfvt;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ConsumerGroupDescription;
+import org.apache.kafka.clients.admin.GroupListing;
+import org.apache.kafka.clients.admin.ListGroupsOptions;
+import org.apache.kafka.clients.admin.MemberDescription;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.TopicExistsException;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.Assumptions;
@@ -34,6 +39,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,11 +104,6 @@ public class KafkaReceiverFVT
          */
         integrationDaemon.refreshConnector(IntegrationConnectorDefinition.BITOL_EVENT_RECEIVER.getConnectorName());
 
-        /*
-         * Produce the document.  It is sent again on each poll until the agreement appears: the receiver's
-         * consumer joins the topic asynchronously and a message sent before it is subscribed would otherwise be
-         * missed, and a document that is catalogued twice is simply updated the second time.
-         */
         String       rawDocument  = BitolFvtTestSupport.readSampleDocument(CONTRACT_DOCUMENT).replaceFirst("\nversion: 1\\.0\\.0", "\nversion: " + NEW_VERSION);
         DataContract dataContract = BitolDocumentFormatter.parseDataContract(rawDocument);
 
@@ -111,20 +112,31 @@ public class KafkaReceiverFVT
         String qualifiedName = BitolMapperBase.getDocumentQualifiedName(dataContract.getKind(), dataContract.getId(), dataContract.getVersion());
 
         long timeoutMilliseconds = OMAGPlatformExtension.getLongProperty("bitol.fvt.refresh.timeout.seconds", 120) * 1000;
+        long pollMilliseconds    = OMAGPlatformExtension.getLongProperty("bitol.fvt.refresh.poll.seconds", 2) * 1000;
         long giveUpTime          = System.currentTimeMillis() + timeoutMilliseconds;
 
-        OpenMetadataElement agreement = null;
+        /*
+         * The receiver's consumer joins the topic asynchronously, so the document is not produced until the
+         * consumer has been assigned the topic's partition.  From then on it cannot be missed: on its first
+         * assignment the consumer winds back to the time it started, so even a message that lands before it
+         * fetches is read.  The document is then produced exactly once.  It used to be resent on every poll
+         * until the agreement appeared, which buried the cataloguer under copies of the same contract - each
+         * one fully reprocessed - so the copy that mattered was still queued when the wait ran out.
+         */
+        waitForTopicConsumer(kafkaEndpoint, giveUpTime);
 
         try (KafkaProducer<String, String> producer = newProducer(kafkaEndpoint))
         {
-            while ((agreement == null) && (System.currentTimeMillis() < giveUpTime))
-            {
-                producer.send(new ProducerRecord<>(TOPIC_NAME, dataContract.getId(), rawDocument)).get();
+            producer.send(new ProducerRecord<>(TOPIC_NAME, dataContract.getId(), rawDocument)).get();
+        }
 
-                Thread.sleep(OMAGPlatformExtension.getLongProperty("bitol.fvt.refresh.poll.seconds", 2) * 1000);
+        OpenMetadataElement agreement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
-                agreement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
-            }
+        while ((agreement == null) && (System.currentTimeMillis() < giveUpTime))
+        {
+            Thread.sleep(pollMilliseconds);
+
+            agreement = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
         }
 
         if (agreement == null)
@@ -168,6 +180,61 @@ public class KafkaReceiverFVT
                 throw error;
             }
         }
+    }
+
+
+    /**
+     * Wait until a consumer group has a live member that has been assigned this test's topic.  Only the
+     * receiver consumes the topic, so that member is the receiver's consumer.  A group left behind by an
+     * earlier run has no members, so it does not count.
+     *
+     * @param kafkaEndpoint broker
+     * @param giveUpTime time to stop waiting
+     * @throws Exception the receiver never started consuming the topic, or the broker could not be asked
+     */
+    private void waitForTopicConsumer(String kafkaEndpoint,
+                                      long   giveUpTime) throws Exception
+    {
+        Properties properties = new Properties();
+
+        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaEndpoint);
+        properties.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "15000");
+
+        try (AdminClient adminClient = AdminClient.create(properties))
+        {
+            while (System.currentTimeMillis() < giveUpTime)
+            {
+                List<String> groupIds = new ArrayList<>();
+
+                for (GroupListing groupListing : adminClient.listGroups(ListGroupsOptions.forConsumerGroups()).all().get())
+                {
+                    groupIds.add(groupListing.groupId());
+                }
+
+                if (! groupIds.isEmpty())
+                {
+                    for (ConsumerGroupDescription groupDescription : adminClient.describeConsumerGroups(groupIds).all().get().values())
+                    {
+                        for (MemberDescription member : groupDescription.members())
+                        {
+                            for (TopicPartition topicPartition : member.assignment().topicPartitions())
+                            {
+                                if (TOPIC_NAME.equals(topicPartition.topic()))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Thread.sleep(500);
+            }
+        }
+
+        fail("The Bitol Event Receiver never started consuming Kafka topic " + TOPIC_NAME + " at " + kafkaEndpoint
+                     + ": no consumer was assigned the topic's partition.  Check the integration daemon's audit log in"
+                     + " build/bitol-fvt-data/logs/audit.log for BITOL-INTEGRATION-CONNECTOR-0001 (the receiver attached to the topic).");
     }
 
 

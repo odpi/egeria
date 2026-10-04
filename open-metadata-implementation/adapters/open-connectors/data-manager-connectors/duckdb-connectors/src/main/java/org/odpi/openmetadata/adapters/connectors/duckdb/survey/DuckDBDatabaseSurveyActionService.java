@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
+import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode;
 import org.odpi.openmetadata.adapters.connectors.duckdb.utilities.DuckDBUtils;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
@@ -85,7 +86,16 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
 
                 List<String> validDatabases = Collections.singletonList(databaseName);
 
-                DuckDBDatabaseStatsExtractor statsExtractor = new DuckDBDatabaseStatsExtractor(validDatabases, this);
+                List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(DuckDBConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(DuckDBConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                DuckDBDatabaseStatsExtractor statsExtractor = new DuckDBDatabaseStatsExtractor(validDatabases,
+                                                                                               excludedSchemas,
+                                                                                               includedSchemas,
+                                                                                               this);
 
                 statsExtractor.getDatabaseStatistics(jdbcConnection);
 

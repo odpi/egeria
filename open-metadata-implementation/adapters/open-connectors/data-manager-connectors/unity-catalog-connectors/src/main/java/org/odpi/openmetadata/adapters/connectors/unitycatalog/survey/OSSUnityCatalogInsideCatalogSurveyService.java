@@ -77,6 +77,12 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
             long volumeCount   = 0;
             long modelCount    = 0;
 
+            List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                        null);
+
+            List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                        null);
+
             if (catalogName != null)
             {
                 List<SchemaInfo> schemaInfos = ucConnector.listSchemas(catalogName);
@@ -85,7 +91,7 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
                 {
                     for (SchemaInfo schemaInfo : schemaInfos)
                     {
-                        if (schemaInfo != null)
+                        if ((schemaInfo != null) && (surveyContext.elementShouldBeSurveyed(schemaInfo.getName(), excludedSchemas, includedSchemas)))
                         {
                             ResourceProperties resourceProperties = new ResourceProperties();
 
@@ -226,7 +232,7 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
             RelationalDataManagerMeasurement relationalDataManagerMeasurement = new RelationalDataManagerMeasurement();
 
             relationalDataManagerMeasurement.setResourceName(catalogName);
-            relationalDataManagerMeasurement.setSchemaCount(tableCount);
+            relationalDataManagerMeasurement.setSchemaCount(schemaCount);
             relationalDataManagerMeasurement.setTableCount(tableCount);
             relationalDataManagerMeasurement.setColumnCount(columnCount);
 

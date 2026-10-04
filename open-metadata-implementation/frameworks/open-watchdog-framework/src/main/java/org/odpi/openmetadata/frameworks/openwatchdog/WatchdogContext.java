@@ -723,8 +723,6 @@ public class WatchdogContext extends ConnectorContextBase
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        this.completionStatus = status;
-
         Map<String, String> combinedRequestParameters = new HashMap<>();
 
         if (requestParameters != null)
@@ -744,6 +742,14 @@ public class WatchdogContext extends ConnectorContextBase
                                                           outputGuards,
                                                           newActionTargets,
                                                           completionMessage);
+
+        /*
+         * The status is held locally only once the engine action has been updated.  The engine host uses it
+         * to decide whether the service has already reported its outcome: if it is set and the update did not
+         * happen - the metadata access store was unreachable, say - a service that then fails is never
+         * recorded as failed, and its engine action, and any process waiting on it, stays IN_PROGRESS for ever.
+         */
+        this.completionStatus = status;
     }
 
 

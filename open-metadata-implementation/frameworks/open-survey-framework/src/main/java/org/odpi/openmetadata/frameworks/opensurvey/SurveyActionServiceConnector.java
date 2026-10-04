@@ -420,6 +420,40 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
 
     /**
+     * Retrieve a comma-separated list of strings that controls the survey.  It may be supplied as a request
+     * parameter on the request that started this survey, or as a configuration property of this service's
+     * connection.  The request parameter takes precedence, so that a single survey can be scoped differently
+     * from the service's standing configuration.
+     * <br>
+     * Survey services must look in both places: the request parameters reach the service through the survey
+     * context, not through its connection, so reading only the configuration properties silently ignores
+     * anything the requester asked for.
+     *
+     * @param propertyName name of the request parameter / configuration property
+     * @param defaultValue value to use if neither is set (may be null)
+     * @return list of strings, or the default value if the property is not set
+     * @throws UserNotAuthorizedException the service is no longer active
+     */
+    protected List<String> getArrayRequestOrConfigurationProperty(String       propertyName,
+                                                                  List<String> defaultValue) throws UserNotAuthorizedException
+    {
+        if (surveyContext != null)
+        {
+            Map<String, String> requestParameters = surveyContext.getRequestParameters();
+
+            if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+            {
+                String[] options = requestParameters.get(propertyName).split(",");
+
+                return new ArrayList<>(Arrays.asList(options));
+            }
+        }
+
+        return super.getArrayConfigurationProperty(propertyName, connectionBean.getConfigurationProperties(), defaultValue);
+    }
+
+
+    /**
      * Transfer common properties into an annotation.
      *
      * @param annotation       output annotation
@@ -479,11 +513,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
                                 String               annotationTypeName,
                                 String               subjectName) throws UserNotAuthorizedException
     {
-        String surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
-        String qualifier        = (subjectName == null) ? "" : "::" + subjectName;
+        String assetGUID = surveyContext.getAssetGUID();
+        String qualifier = (subjectName == null) ? "" : "::" + subjectName;
+        String typeName  = (annotation.getAnnotationType() == null) ? annotationTypeName :  annotation.getAnnotationType();
+        String name      = (subjectName == null) ? "" : " (" + subjectName + ") ";
 
-        annotation.setQualifiedName(surveyReportGUID + "::" + annotationTypeName + qualifier + "::" + new Date());
-        annotation.setDisplayName(annotationTypeName + qualifier + " for survey report " + surveyReportGUID);
+        Date   discoveryDate = new Date();
+
+        annotation.setQualifiedName(assetGUID + "::" + annotationTypeName + qualifier + "::" + discoveryDate.getTime());
+        annotation.setDisplayName(typeName + name);
+        annotation.setDescription("First discovered " + discoveryDate + " in survey report " + surveyContext.getAnnotationStore().getSurveyReportGUID());
         annotation.setAnnotationType(annotationTypeName);
     }
 

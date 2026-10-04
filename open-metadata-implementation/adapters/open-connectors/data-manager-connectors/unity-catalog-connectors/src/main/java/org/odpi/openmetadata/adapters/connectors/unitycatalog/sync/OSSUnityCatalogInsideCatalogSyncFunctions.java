@@ -62,8 +62,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
-     * @param excludeNames list of catalogs to ignore (and include all others)
-     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
+     * @param excludeNames list of functions to ignore (and include all others)
+     * @param includeNames list of functions to include (and ignore all others) - overrides excludeNames
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException connector disconnected
      * @throws InvalidParameterException missing template
@@ -129,7 +129,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "refreshEgeriaFunctions";
 
-        RelatedElementsIterator functionIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator functionIterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                                catalogTargetName,
                                                                                connectorName,
                                                                                parentGUID,
@@ -154,7 +154,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                 {
                     FunctionInfo functionInfo = null;
 
-                    if (context.elementShouldBeCatalogued(assetProperties.getResourceName(), excludeNames, includeNames))
+                    if ((assetProperties.getResourceName() != null) && (shouldBeCatalogued(getShortName(assetProperties.getResourceName()))))
                     {
                         try
                         {
@@ -230,7 +230,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                         {
                             for (FunctionInfo functionInfo : ucFunctionList)
                             {
-                                if (functionInfo != null)
+                                if ((functionInfo != null) && (shouldBeCatalogued(functionInfo.getName())))
                                 {
                                     if (ucFullNameToEgeriaGUID.get(functionInfo.getFull_name()) == null)
                                     {

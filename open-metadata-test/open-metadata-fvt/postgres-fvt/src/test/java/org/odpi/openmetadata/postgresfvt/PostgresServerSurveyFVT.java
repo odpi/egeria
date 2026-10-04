@@ -102,13 +102,20 @@ public class PostgresServerSurveyFVT
             Map<String, String> requestParameters = new HashMap<>(PostgresFvtTestSupport.serverTemplatePlaceholders(serverName));
 
             /*
-             * Both of these are passed to every step of the process.  Step 1 ignores them, step 2 uses the
-             * database list to scope the survey, and step 3 uses the report directory.  A process's request
+             * These are passed to every step of the process.  Step 1 ignores them, step 2 uses the database
+             * and schema lists to scope the survey, and step 3 uses the report directory.  A process's request
              * parameters are shared by all of its steps, which is why a name that means nothing to one step
              * does no harm.
+             *
+             * The schema list matters as much as the database list.  The suite's database is, by default, the
+             * shared one that every FVT suite's repository lives in - and a local quickstart's too - so an
+             * unscoped survey writes an annotation for every column of a dozen repository schemas and cannot
+             * finish inside the wait.  Only the schema this suite builds is surveyed.
              */
             requestParameters.put(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
                                   PostgresFvtTestSupport.getDatabaseName());
+            requestParameters.put(PostgresConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                  PostgresFvtTestSupport.getSchemaName());
             requestParameters.put("reportDirectory", REPORT_DIRECTORY);
 
             String processInstanceGUID = new AutomatedCurationClient().initiateGovernanceActionProcess(CREATE_AND_SURVEY_PROCESS,
@@ -246,13 +253,13 @@ public class PostgresServerSurveyFVT
     /**
      * Survey an asset and then delete it, and check that the survey report and every annotation on it went too.
      * <br>
-     * A survey leaves a subgraph behind it, and that subgraph is two anchors deep: the report is anchored to the
-     * asset it describes, and each annotation is anchored to the report that reports it.  So deleting the asset
-     * has to reach the annotations <em>through</em> the report - one level further than a cascade that only
-     * looks at what is anchored directly to the element being deleted.
+     * A survey leaves a subgraph behind it, all of it anchored to the asset: the report, and each annotation
+     * the report reports.  Annotations are anchored to the asset rather than to a report because one annotation
+     * is reused by every survey run that finds the same thing, so it can belong to many reports.  Deleting the
+     * asset must therefore take the report and every annotation with it.
      * <br>
      * This is worth its own test because getting it wrong is invisible.  The asset goes, the report goes, the
-     * delete reports success, and the annotations simply stay - orphaned, anchored to a report that no longer
+     * delete reports success, and the annotations simply stay - orphaned, anchored to an asset that no longer
      * exists, and unreachable by any search that goes through an anchor, so nothing tidies them up afterwards
      * either.  They accumulate silently until a later survey of the same asset trips over one of them: the
      * report printer walks a soft-deleted annotation, that step fails, and the failure surfaces as "the survey
@@ -284,6 +291,8 @@ public class PostgresServerSurveyFVT
 
             requestParameters.put(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
                                   PostgresFvtTestSupport.getDatabaseName());
+            requestParameters.put(PostgresConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                  PostgresFvtTestSupport.getSchemaName());
             requestParameters.put("reportDirectory", REPORT_DIRECTORY);
 
             String processInstanceGUID = new AutomatedCurationClient().initiateGovernanceActionProcess(CREATE_AND_SURVEY_PROCESS,
@@ -336,15 +345,14 @@ public class PostgresServerSurveyFVT
                        "The delete process completed but " + qualifiedName + " is still in the repository.");
 
             /*
-             * One level down: the report, which is anchored to the asset.
+             * The report, which is anchored to the asset.
              */
             assertTrue(isGone(openMetadataStore, surveyReportGUID),
                        "The asset was deleted but its survey report " + surveyReportGUID + " is still retrievable."
                                + "  The report is anchored to the asset, so a cascading delete should have taken it.");
 
             /*
-             * Two levels down, and the point of the test: the annotations, which are anchored to the report
-             * rather than to the asset.
+             * The point of the test: the annotations, which are anchored to the asset too.
              */
             List<String> survivors = new ArrayList<>();
 
@@ -359,10 +367,9 @@ public class PostgresServerSurveyFVT
             assertTrue(survivors.isEmpty(),
                        survivors.size() + " of the " + annotationGUIDs.size() + " annotation(s) on survey report "
                                + surveyReportGUID + " survived the delete of the asset they belong to: " + survivors
-                               + ".  Each annotation is anchored to the report and the report to the asset, so the cascade has"
-                               + " to follow anchors through two levels to reach them.  Survivors mean it stopped at the"
-                               + " report, and nothing will ever find them again - they are anchored to an element that no"
-                               + " longer exists.");
+                               + ".  Each annotation is anchored to the asset, so a cascading delete should have taken it."
+                               + "  Survivors are anchored to an element that no longer exists, and nothing will ever find"
+                               + " them again.");
 
             System.out.println("postgres-fvt: delete of " + serverName + " removed the asset, its report and all "
                                        + annotationGUIDs.size() + " annotation(s)");
@@ -372,9 +379,9 @@ public class PostgresServerSurveyFVT
         finally
         {
             /*
-             * Best-effort, and harmless when the delete process did its job.  The report goes before the asset
-             * because it is anchored to it, and the annotations before the report for the same reason - so a
-             * partial failure above still leaves nothing for the next run.
+             * Best-effort, and harmless when the delete process did its job.  The annotations and the report go
+             * before the asset because they are anchored to it - so a partial failure above still leaves nothing
+             * for the next run.
              */
             for (String annotationGUID : annotationGUIDs)
             {

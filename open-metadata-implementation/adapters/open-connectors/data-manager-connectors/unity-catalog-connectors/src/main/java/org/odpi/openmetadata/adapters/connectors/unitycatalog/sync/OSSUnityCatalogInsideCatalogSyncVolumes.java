@@ -67,8 +67,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
-     * @param excludeNames list of catalogs to ignore (and include all others)
-     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
+     * @param excludeNames list of volumes to ignore (and include all others)
+     * @param includeNames list of volumes to include (and ignore all others) - overrides excludeNames
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
@@ -152,7 +152,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException, ConnectorCheckedException
     {
-        RelatedElementsIterator volumeIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator volumeIterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,
@@ -177,13 +177,13 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                 {
                     VolumeInfo volumeInfo = null;
 
-                    String volumeName = dataFileCollectionProperties.getResourceName();
+                    String volumeFullName = dataFileCollectionProperties.getResourceName();
 
-                    if (context.elementShouldBeCatalogued(volumeName, excludeNames, includeNames))
+                    if ((volumeFullName != null) && (shouldBeCatalogued(getShortName(volumeFullName))))
                     {
                         try
                         {
-                            volumeInfo = ucConnector.getVolume(volumeName);
+                            volumeInfo = ucConnector.getVolume(volumeFullName);
                         }
                         catch (Exception missing)
                         {
@@ -254,7 +254,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                         {
                             for (VolumeInfo volumeInfo : ucVolumeList)
                             {
-                                if (volumeInfo != null)
+                                if ((volumeInfo != null) && (shouldBeCatalogued(volumeInfo.getName())))
                                 {
                                     if (ucFullNameToEgeriaGUID.get(volumeInfo.getFull_name()) == null)
                                     {

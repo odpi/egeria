@@ -105,12 +105,11 @@ public class MSSQLServerSurveyActionService extends SurveyActionServiceConnector
                 }
                 else
                 {
-                    List<String> excludedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                         connectionBean.getConfigurationProperties(),
-                                                                                         Collections.emptyList());
+                    List<String> excludedDatabases = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                                  Collections.emptyList());
 
-                    List<String> includedDatabases = super.getArrayConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                         connectionBean.getConfigurationProperties());
+                    List<String> includedDatabases = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                                  null);
 
                     List<String> surveyDatabases = new ArrayList<>();
 
@@ -122,7 +121,15 @@ public class MSSQLServerSurveyActionService extends SurveyActionServiceConnector
                         }
                     }
 
+                    List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
+                    List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
                     MSSQLDatabaseStatsExtractor statsExtractor = new MSSQLDatabaseStatsExtractor(surveyDatabases,
+                                                                                                 excludedSchemas,
+                                                                                                 includedSchemas,
                                                                                                  this);
 
                     statsExtractor.getDatabaseStatistics(jdbcConnection);

@@ -3579,7 +3579,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              * that away: the query answers with the same first page however many times it is asked, so
              * re-reading from zero discovers the first page and stops.  Anything beyond it is never found,
              * and since the anchor itself is still deleted, those members are left anchored to an element
-             * that has gone.  A survey report with more annotations than one page is exactly that case.
+             * that has gone.  An asset with more survey annotations than one page is exactly that case.
              */
             int startingFrom = 0;
 
@@ -3607,14 +3607,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                          * Every member is queued as an anchor in its own right, and its own deletion deferred
                          * until the reverse walk, so that anything anchored to it is found first.
                          *
-                         * A member does not have to be its own anchor to own a subgraph.  A survey report is
-                         * anchored to the asset it describes, and the report's annotations are anchored to the
-                         * report - so deleting the asset has to reach the annotations through the report, two
-                         * anchors deep.  Queueing only self-anchored members stopped at the report and left
-                         * every annotation behind: orphaned, invisible to a marker sweep, and eventually the
-                         * reason a later survey of the same asset fails.  A member with nothing anchored to it
-                         * costs one query that returns nothing, and anchorsProcessed keeps the traversal
-                         * finite.
+                         * A member does not have to be its own anchor to own a subgraph.  Annotations are now
+                         * anchored to the asset that their survey reports describe, but annotations created
+                         * before they were shared between surveys are anchored to the survey report that
+                         * created them - and that report is anchored to the asset.  Deleting the asset has to
+                         * reach those annotations through the report, two anchors deep.  Queueing only
+                         * self-anchored members stopped at the report and left every one of them behind:
+                         * orphaned, invisible to a marker sweep, and eventually the reason a later survey of
+                         * the same asset fails.  A member with nothing anchored to it costs one query that
+                         * returns nothing, and anchorsProcessed keeps the traversal finite.
                          */
                         anchorsToProcess.add(member.getGUID());
                         nestedAnchorGUIDs.add(member.getGUID());
@@ -4049,8 +4050,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         /*
          * Discovery is breadth-first and every member is queued as an anchor in its own right, because a
-         * member does not have to be its own anchor to own a subgraph - a survey report is anchored to its
-         * asset and its annotations are anchored to the report, so the chain is two anchors deep.
+         * member does not have to be its own anchor to own a subgraph - an annotation created before
+         * annotations were shared between surveys is anchored to its survey report, which is anchored to the
+         * asset, so the chain is two anchors deep.
          *
          * Nothing is removed during discovery, so - unlike the delete cascade, which relies on the result set
          * shrinking - each anchor's members are paged through with an advancing offset.

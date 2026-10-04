@@ -296,6 +296,45 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
 
     /**
+     * Determine whether an element should be synchronized, using this class's include and exclude lists.  The
+     * lists name elements by their own name - a schema, table, volume, function or model name without the
+     * catalog and schema prefix - and each subclass applies them to elements found in Unity Catalog as well as
+     * to elements already in open metadata, so an excluded element is neither created nor maintained in either
+     * direction.  With neither list set every element is synchronized.
+     *
+     * @param name name of the element (without the catalog and schema prefix)
+     * @return flag indicating whether the element is synchronized
+     */
+    protected boolean shouldBeCatalogued(String name)
+    {
+        if ((excludeNames == null) && (includeNames == null))
+        {
+            return true;
+        }
+
+        return context.elementShouldBeCatalogued(name, excludeNames, includeNames);
+    }
+
+
+    /**
+     * Extract an element's own name from its UC full name, which is the names of the element and its parents
+     * separated by dots - catalog.schema for a schema, catalog.schema.name for everything inside a schema.
+     *
+     * @param fullName full name of the element
+     * @return element's own name, or null if there is no full name
+     */
+    protected String getShortName(String fullName)
+    {
+        if (fullName == null)
+        {
+            return null;
+        }
+
+        return fullName.substring(fullName.lastIndexOf('.') + 1);
+    }
+
+
+    /**
      * Delete an element from open metadata.
      *
      * @param memberElement element to delete

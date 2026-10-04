@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogMetric;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
@@ -74,6 +75,12 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
             long volumeCount   = 0;
             long modelCount    = 0;
 
+            List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                        null);
+
+            List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                        null);
+
             List<CatalogInfo> catalogInfos = ucConnector.listCatalogs();
 
             if (catalogInfos != null)
@@ -103,7 +110,7 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                         {
                             for (SchemaInfo schemaInfo : schemaInfos)
                             {
-                                if (schemaInfo != null)
+                                if ((schemaInfo != null) && (surveyContext.elementShouldBeSurveyed(schemaInfo.getName(), excludedSchemas, includedSchemas)))
                                 {
                                     resourceProperties = new ResourceProperties();
 

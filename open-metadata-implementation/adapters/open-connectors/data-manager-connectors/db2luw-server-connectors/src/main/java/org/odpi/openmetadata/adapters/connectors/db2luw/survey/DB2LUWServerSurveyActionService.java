@@ -69,8 +69,8 @@ public class DB2LUWServerSurveyActionService extends SurveyActionServiceConnecto
              * configuration: includeDatabaseList if supplied, otherwise just the single database this connection
              * already names.
              */
-            List<String> includedDatabases = super.getArrayConfigurationProperty(DB2LUWConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                  connectionBean.getConfigurationProperties());
+            List<String> includedDatabases = super.getArrayRequestOrConfigurationProperty(DB2LUWConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                          null);
 
             List<String> validDatabases = new ArrayList<>();
 
@@ -91,9 +91,8 @@ public class DB2LUWServerSurveyActionService extends SurveyActionServiceConnecto
             }
             else
             {
-                List<String> excludedDatabases = super.getArrayConfigurationProperty(DB2LUWConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                      connectionBean.getConfigurationProperties(),
-                                                                                      Collections.emptyList());
+                List<String> excludedDatabases = super.getArrayRequestOrConfigurationProperty(DB2LUWConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                              Collections.emptyList());
 
                 List<String> surveyDatabases = new ArrayList<>();
 
@@ -105,8 +104,16 @@ public class DB2LUWServerSurveyActionService extends SurveyActionServiceConnecto
                     }
                 }
 
+                List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(DB2LUWConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(DB2LUWConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
                 DB2LUWDatabaseStatsExtractor statsExtractor = new DB2LUWDatabaseStatsExtractor(surveyDatabases,
-                                                                                                this);
+                                                                                               excludedSchemas,
+                                                                                               includedSchemas,
+                                                                                               this);
 
                 annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
 

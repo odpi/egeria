@@ -50,8 +50,8 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
-     * @param excludeNames list of catalogs to ignore (and include all others)
-     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
+     * @param excludeNames list of registered models to ignore (and include all others)
+     * @param includeNames list of registered models to include (and ignore all others) - overrides excludeNames
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      * @throws InvalidParameterException the template is missing
@@ -115,7 +115,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                                                                                           UserNotAuthorizedException,
                                                                                                           ConnectorCheckedException
     {
-        RelatedElementsIterator modelIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator modelIterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                             catalogTargetName,
                                                                             connectorName,
                                                                             parentGUID,
@@ -140,13 +140,13 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                 {
                     RegisteredModelInfo registeredModelInfo = null;
 
-                    String modelName = deployedAnalyticsModelProperties.getResourceName();
+                    String modelFullName = deployedAnalyticsModelProperties.getResourceName();
 
-                    if (context.elementShouldBeCatalogued(modelName, excludeNames, includeNames))
+                    if ((modelFullName != null) && (shouldBeCatalogued(getShortName(modelFullName))))
                     {
                         try
                         {
-                            registeredModelInfo = ucConnector.getRegisteredModel(modelName);
+                            registeredModelInfo = ucConnector.getRegisteredModel(modelFullName);
                         }
                         catch (Exception missing)
                         {
@@ -218,7 +218,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                         {
                             for (RegisteredModelInfo modelInfo : infoList)
                             {
-                                if (modelInfo != null)
+                                if ((modelInfo != null) && (shouldBeCatalogued(modelInfo.getName())))
                                 {
                                     if (ucFullNameToEgeriaGUID.get(modelInfo.getFull_name()) == null)
                                     {

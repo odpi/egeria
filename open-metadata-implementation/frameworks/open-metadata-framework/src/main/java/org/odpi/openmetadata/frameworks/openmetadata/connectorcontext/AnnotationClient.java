@@ -104,6 +104,58 @@ public class AnnotationClient extends ConnectorContextClientBase
 
 
     /**
+     * Add an annotation to a survey report, reusing a matching annotation from an earlier survey if there is
+     * one, so that repeated surveys of a resource that has not changed add no new annotations.  The annotation
+     * is anchored to the element the survey report describes, linked to the report through ReportedAnnotation,
+     * and linked to the element it describes through AssociatedAnnotation.  The matching, reuse and migration
+     * rules are described on AnnotationHandler.addAnnotationToReport.
+     *
+     * @param anchorGUID unique identifier of the element the survey report describes - the annotation's anchor
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param describedElementGUID unique identifier of the element the annotation describes (null for the anchor)
+     * @param properties properties of the annotation
+     * @return unique identifier of the annotation - new or reused
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addAnnotationToReport(String               anchorGUID,
+                                        String               surveyReportGUID,
+                                        String               describedElementGUID,
+                                        AnnotationProperties properties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        AnnotationHandler.AnnotationResult annotationResult = annotationHandler.addAnnotationToReport(connectorUserId,
+                                                                                                      anchorGUID,
+                                                                                                      surveyReportGUID,
+                                                                                                      describedElementGUID,
+                                                                                                      properties,
+                                                                                                      this.getMetadataSourceOptions(),
+                                                                                                      this.getQueryOptions());
+
+        if ((annotationResult == null) || (annotationResult.annotationGUID() == null))
+        {
+            return null;
+        }
+
+        if (parentContext.getActivityReportWriter() != null)
+        {
+            if (annotationResult.created())
+            {
+                parentContext.getActivityReportWriter().reportElementCreation(annotationResult.annotationGUID());
+            }
+            else
+            {
+                parentContext.getActivityReportWriter().reportElementUpdate(annotationResult.annotationGUID());
+            }
+        }
+
+        return annotationResult.annotationGUID();
+    }
+
+
+    /**
      * Create a new metadata element to represent an annotation using an existing element as a template.
      * The template defines additional classifications and relationships that should be added to the new annotation.
      *
