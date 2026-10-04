@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
@@ -30,8 +32,10 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
     {
         super(EgeriaOpenConnectorDefinition.POSTGRES_DATABASE_SURVEY_ACTION_SERVICE,
               connectorClassName,
-              null);
+              PostgresConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = PostgresConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {

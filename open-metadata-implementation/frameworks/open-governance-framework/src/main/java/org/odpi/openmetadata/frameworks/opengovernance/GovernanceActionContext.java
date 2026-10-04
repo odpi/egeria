@@ -312,9 +312,13 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        this.completionStatus = status;
-
         governanceCompletionClient.recordCompletionStatus(userId, engineActionGUID, requestParameters, status, outputGuards, null, null);
+
+        /*
+         * Held locally only once the engine action has been updated - see the recordCompletionStatus
+         * variant that takes a completion message string.
+         */
+        this.completionStatus = status;
     }
 
 
@@ -337,9 +341,13 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        this.completionStatus = status;
-
         governanceCompletionClient.recordCompletionStatus(userId, engineActionGUID, requestParameters, status, outputGuards, newActionTargets, null);
+
+        /*
+         * Held locally only once the engine action has been updated - see the recordCompletionStatus
+         * variant that takes a completion message string.
+         */
+        this.completionStatus = status;
     }
 
 
@@ -391,8 +399,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        this.completionStatus = status;
-
         Map<String, String> combinedRequestParameters = new HashMap<>();
 
         if (requestParameters != null)
@@ -412,6 +418,14 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                           outputGuards,
                                                           newActionTargets,
                                                           completionMessage);
+
+        /*
+         * The status is held locally only once the engine action has been updated.  The engine host uses it
+         * to decide whether the service has already reported its outcome: if it is set and the update did not
+         * happen - the metadata access store was unreachable, say - a service that then fails is never
+         * recorded as failed, and its engine action, and any process waiting on it, stays IN_PROGRESS for ever.
+         */
+        this.completionStatus = status;
     }
 
 

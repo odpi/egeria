@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -66,7 +67,15 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
 
                 List<String> validDatabases = Collections.singletonList(databaseName);
 
+                List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
                 PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(validDatabases,
+                                                                                                   excludedSchemas,
+                                                                                                   includedSchemas,
                                                                                                    this);
 
                 statsExtractor.getDatabaseStatistics(jdbcConnection);

@@ -354,16 +354,10 @@ public class LovelaceOpenLineageDataQualitySummaryService extends LovelaceOpenLi
         properties.setExplanation("Derived by " + governanceServiceName + " from the OpenLineage log store.");
         properties.setSampleSize(passed + failed + skipped);
 
-        NewElementOptions annotationOptions = new NewElementOptions(annotationClient.getMetadataSourceOptions());
-
-        annotationOptions.setAnchorGUID(reportGUID);
-        annotationOptions.setIsOwnAnchor(false);
-        annotationOptions.setParentGUID(reportGUID);
-        annotationOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
-        annotationOptions.setParentAtEnd1(true);
-
-        String annotationGUID = annotationClient.createAnnotation(annotationOptions, null, properties, null);
-
-        annotationClient.linkAnnotationToDescribedElement(elementGUID, annotationGUID, new MakeAnchorOptions(annotationClient.getMetadataSourceOptions()), null);
+        /*
+         * The annotation is anchored to the element the report describes - the report's own anchor - and is
+         * reused if an earlier summary recorded exactly the same thing for the element.
+         */
+        annotationClient.addAnnotationToReport(elementGUID, reportGUID, elementGUID, properties);
     }
 }

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
@@ -28,8 +29,9 @@ public class OSSUnityCatalogServerSurveyProvider extends SurveyActionServiceProv
     {
         super(EgeriaOpenConnectorDefinition.OSS_UNITY_CATALOG_SERVER_SURVEY_ACTION_SERVICE,
               connectorClassName,
-              null);
+              UnityCatalogConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = UnityCatalogConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER});
         super.supportedActionTargetTypes = UnityCatalogTarget.getServerActionTargetTypes();
         super.supportedRequestParameters = UnityCatalogSurveyRequestParameter.getServerSurveyRequestParameterTypes();

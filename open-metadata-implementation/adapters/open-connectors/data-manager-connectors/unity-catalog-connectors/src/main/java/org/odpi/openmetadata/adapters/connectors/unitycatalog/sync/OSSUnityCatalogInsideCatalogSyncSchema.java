@@ -60,8 +60,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
-     * @param excludeNames list of catalogs to ignore (and include all others)
-     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
+     * @param excludeNames list of schemas to ignore (and include all others)
+     * @param includeNames list of schemas to include (and ignore all others) - overrides excludeNames
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      * @throws InvalidParameterException no template
@@ -144,7 +144,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         /*
          * Iterate through the schema attached to the parent catalog.
          */
-        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator iterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                        catalogTargetName,
                                                                        connectorName,
                                                                        parentGUID,
@@ -165,7 +165,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                 /*
                  * Check that this is a UC Schema.
                  */
-                if (UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(assetProperties.getDeployedImplementationType()))
+                if ((UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(assetProperties.getDeployedImplementationType())) &&
+                    (shouldBeCatalogued(getShortName(assetProperties.getResourceName()))))
                 {
                     SchemaInfo schemaInfo = null;
 
@@ -189,6 +190,17 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     }
 
                     this.takeAction(memberAction, nextElement, schemaInfo, parentGUID, parentRelationshipTypeName, relationshipProperties);
+
+                    /*
+                     * The tables, volumes, functions and models found in Unity Catalog are attached to their
+                     * schema by looking the schema up in this map, so every schema that is still in both places
+                     * is recorded - not only one created on this refresh.  Without this, an object added to a
+                     * schema after the schema was first catalogued is never synchronized.
+                     */
+                    if ((schemaInfo != null) && (memberAction != MemberAction.DELETE_INSTANCE_IN_OPEN_METADATA))
+                    {
+                        ucFullNameToEgeriaGUID.put(schemaInfo.getFull_name(), nextElement.getElement().getElementHeader().getGUID());
+                    }
                 }
             }
         }
@@ -219,7 +231,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         /*
          * Iterate through the schema attached to the parent catalog.
          */
-        RelatedElementsIterator iterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+        RelatedElementsIterator iterator = new RelatedElementsIterator(metadataCollectionGUID,
                                                                        catalogTargetName,
                                                                        connectorName,
                                                                        parentGUID,
@@ -240,9 +252,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                 /*
                  * Check that this is a UC Schema.
                  */
-                if (UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(assetProperties.getDeployedImplementationType()))
+                if ((UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(assetProperties.getDeployedImplementationType())) &&
+                    (shouldBeCatalogued(getShortName(assetProperties.getResourceName()))))
                 {
-
                     OSSUnityCatalogInsideCatalogSyncVolumes syncVolumes = new OSSUnityCatalogInsideCatalogSyncVolumes(connectorName,
                                                                                                                       context,
                                                                                                                       catalogTargetName,
@@ -361,7 +373,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         {
             for (SchemaInfo schemaInfo : ucSchemaList)
             {
-                if (schemaInfo != null)
+                if ((schemaInfo != null) && (shouldBeCatalogued(schemaInfo.getName())))
                 {
                     if (ucFullNameToEgeriaGUID.get(schemaInfo.getFull_name()) == null)
                     {

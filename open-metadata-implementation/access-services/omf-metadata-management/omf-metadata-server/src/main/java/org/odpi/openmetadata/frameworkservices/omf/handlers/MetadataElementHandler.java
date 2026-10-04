@@ -3614,7 +3614,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                end2ParameterName,
                                                parent.getGUID(),
                                                parent.getType().getTypeDefName(),
-                                               this.getDomainName(child),
+                                               this.getDomainName(parent),
                                                anchorScopeGUIDs,
                                                forLineage,
                                                forDuplicateProcessing,

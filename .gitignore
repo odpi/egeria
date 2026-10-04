@@ -90,6 +90,7 @@ test-case-details/*.json
 
 # Test results
 open-metadata-test/open-metadata-fvt/files-fvt/surveys/**
+open-metadata-test/open-metadata-fvt/unity-catalog-fvt/surveys/**
 
 # Dynamic data used by egeria
 data/**

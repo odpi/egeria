@@ -261,7 +261,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         {
             for (CatalogInfo catalogInfo : ucCatalogList)
             {
-                if (catalogInfo != null)
+                /*
+                 * The include and exclude lists apply to catalogs found in Unity Catalog as well as to those
+                 * already in open metadata.  Without this check every catalog on the server was catalogued, and
+                 * handed to the inside-catalog synchronizer, whatever includeCatalogNames said.
+                 */
+                if ((catalogInfo != null) && (context.elementShouldBeCatalogued(catalogInfo.getName(), excludeNames, includeNames)))
                 {
                     if (ucFullNameToEgeriaGUID.get(catalogInfo.getName()) == null)
                     {
@@ -594,6 +599,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                 catalogTargetProperties.setCatalogTargetName(ucCatalogName);
                 catalogTargetProperties.setMetadataCollectionQualifiedName(metadataCollectionName);
                 catalogTargetProperties.setTemplates(templates);
+
+                /*
+                 * The catalog is synchronized in the same direction as the server it belongs to - a server
+                 * catalogued only from Unity Catalog must not have its catalogs written back to it.
+                 */
+                catalogTargetProperties.setPermittedSynchronization(targetPermittedSynchronization);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();
 

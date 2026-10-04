@@ -128,6 +128,26 @@ public enum MSSQLConfigurationProperty
                         false),
 
     /**
+     * Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes
+     * precedence over the exclude list.
+     */
+    INCLUDE_SCHEMA_NAMES ("includeSchemaNames",
+                          "Provides a list of schema names that should be surveyed.  Other schemas are ignored.  " +
+                                  "This takes precedence over the exclude list.",
+                          "array<string>",
+                          "schema1,schema2",
+                          false),
+
+    /**
+     * Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.
+     */
+    EXCLUDE_SCHEMA_NAMES ("excludeSchemaNames",
+                          "Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.",
+                          "array<string>",
+                          "schema1,schema2",
+                          false),
+
+    /**
      * Unique identifier of the integration connector that is able to catalog the contents of a Microsoft SQL Server database.
      */
     FRIENDSHIP_GUID ("MSSQLFriendshipGUID",
@@ -299,6 +319,40 @@ public enum MSSQLConfigurationProperty
         configurationPropertyTypes.add(MSSQLConfigurationProperty.SCHEMA_DESCRIPTION.getConfigurationPropertyType());
         configurationPropertyTypes.add(MSSQLConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
         configurationPropertyTypes.add(MSSQLConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
+
+        return configurationPropertyTypes;
+    }
+
+
+    /**
+     * Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+     * schemas they find.  The same names can be passed as request parameters, which take precedence.
+     *
+     * @return list of property names
+     */
+    public static List<String> getSchemaSurveyConfigPropertyNames()
+    {
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName());
+        recognizedConfigurationProperties.add(MSSQLConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName());
+
+        return recognizedConfigurationProperties;
+    }
+
+
+    /**
+     * Retrieve the defined configuration properties for the survey action services that can be limited to some
+     * of the schemas they find.
+     *
+     * @return list of configuration property types
+     */
+    public static List<ConfigurationPropertyType> getSchemaSurveyConfigurationPropertyTypes()
+    {
+        List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
+
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.INCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
+        configurationPropertyTypes.add(MSSQLConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }

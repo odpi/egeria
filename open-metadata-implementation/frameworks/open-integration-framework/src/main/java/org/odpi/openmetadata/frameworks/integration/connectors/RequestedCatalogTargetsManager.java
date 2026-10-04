@@ -667,7 +667,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     private void startConnector(RequestedCatalogTarget catalogTarget,
                                 String                 methodName)
     {
-        if (catalogTarget.getConnectorToTarget() != null)
+        if ((catalogTarget.getConnectorToTarget() != null) && (! RequestedCatalogTarget.isStarted(catalogTarget.getConnectorToTarget())))
         {
             try
             {

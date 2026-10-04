@@ -27,12 +27,15 @@ import java.util.UUID;
 public class MSSQLDatabaseStatsExtractor
 {
     private final List<String>                 validDatabases;
+    private final List<String>                 excludedSchemas;
+    private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
     /**
-     * Constructor sets up the list of databases to process and the connection to the database.
+     * Constructor sets up the list of databases to process and the connection to the database.  Every schema
+     * in those databases is surveyed.
      *
      * @param validDatabases               list of database names
      * @param surveyActionServiceConnector calling connector
@@ -40,8 +43,58 @@ public class MSSQLDatabaseStatsExtractor
     public MSSQLDatabaseStatsExtractor(List<String>                validDatabases,
                                        SurveyActionServiceConnector surveyActionServiceConnector)
     {
+        this(validDatabases, null, null, surveyActionServiceConnector);
+    }
+
+
+    /**
+     * Constructor sets up the list of databases to process, the schemas within them to survey, and the
+     * connection to the database.
+     *
+     * @param validDatabases               list of database names
+     * @param excludedSchemas              schemas to leave out (null means none are excluded)
+     * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
+     *                                     takes precedence over excludedSchemas
+     * @param surveyActionServiceConnector calling connector
+     */
+    public MSSQLDatabaseStatsExtractor(List<String>                validDatabases,
+                                       List<String>                excludedSchemas,
+                                       List<String>                includedSchemas,
+                                       SurveyActionServiceConnector surveyActionServiceConnector)
+    {
         this.validDatabases               = validDatabases;
+        this.excludedSchemas              = excludedSchemas;
+        this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+    }
+
+
+    /**
+     * Determine whether a schema should be surveyed.  Microsoft SQL Server's own catalog schemas (sys and
+     * INFORMATION_SCHEMA) never are.  Otherwise the include list, if there is one, decides; failing that, the
+     * exclude list does.  This follows SurveyContext.elementShouldBeSurveyed, which applies the same rule to
+     * database names.
+     *
+     * @param schemaName name of the schema
+     * @return flag indicating whether to gather statistics for the schema
+     */
+    boolean schemaShouldBeSurveyed(String schemaName)
+    {
+        if ((schemaName == null) || (schemaName.equals("sys")) || (schemaName.equals("INFORMATION_SCHEMA")))
+        {
+            return false;
+        }
+
+        if (includedSchemas != null)
+        {
+            return includedSchemas.contains(schemaName);
+        }
+        else if (excludedSchemas != null)
+        {
+            return ! excludedSchemas.contains(schemaName);
+        }
+
+        return true;
     }
 
 
@@ -273,7 +326,7 @@ public class MSSQLDatabaseStatsExtractor
                 {
                     String schemaName = resultSet.getString("schemaname");
 
-                    if ((schemaName != null) && (!schemaName.equals("sys")) && (!schemaName.equals("INFORMATION_SCHEMA")))
+                    if (schemaShouldBeSurveyed(schemaName))
                     {
                         String  tableName              = resultSet.getString("tablename");
                         String  columnName             = resultSet.getString("columnname");
@@ -310,7 +363,7 @@ public class MSSQLDatabaseStatsExtractor
                 {
                     String schemaName = resultSet.getString("schemaname");
 
-                    if ((schemaName != null) && (!schemaName.equals("sys")) && (!schemaName.equals("INFORMATION_SCHEMA")))
+                    if (schemaShouldBeSurveyed(schemaName))
                     {
                         String  tableName            = resultSet.getString("tablename");
                         String  tableOwner           = resultSet.getString("tableowner");
@@ -353,7 +406,7 @@ public class MSSQLDatabaseStatsExtractor
                 {
                     String schemaName = resultSet.getString("schemaname");
 
-                    if ((schemaName != null) && (!schemaName.equals("sys")) && (!schemaName.equals("INFORMATION_SCHEMA")))
+                    if (schemaShouldBeSurveyed(schemaName))
                     {
                         String viewName   = resultSet.getString("viewname");
                         String viewOwner  = resultSet.getString("viewowner");
@@ -380,7 +433,7 @@ public class MSSQLDatabaseStatsExtractor
                 {
                     String schemaName = resultSet.getString("schemaname");
 
-                    if ((schemaName != null) && (!schemaName.equals("sys")) && (!schemaName.equals("INFORMATION_SCHEMA")))
+                    if (schemaShouldBeSurveyed(schemaName))
                     {
                         String viewName   = resultSet.getString("viewname");
                         String viewOwner  = resultSet.getString("viewowner");

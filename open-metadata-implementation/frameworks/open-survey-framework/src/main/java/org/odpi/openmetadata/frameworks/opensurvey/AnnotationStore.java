@@ -542,7 +542,7 @@ public class AnnotationStore
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return annotationHandler.getAnnotationsForElement(userId, surveyReportGUID, this.getQueryOptions(startFrom, pageSize));
+        return annotationHandler.getNewAnnotations(userId, surveyReportGUID, this.getQueryOptions(startFrom, pageSize));
     }
 
 
@@ -581,13 +581,19 @@ public class AnnotationStore
 
 
     /**
-     * Add a new annotation to the annotation store as a top level annotation linked directly off of the report.
+     * Add an annotation to this survey report.  If an earlier survey run recorded the same annotation against
+     * the same element, that annotation is reused - linked to this report as well - rather than a duplicate
+     * being created, so repeated surveys of a resource that has not changed add no new annotations.
+     * <br>
+     * Annotations are anchored to the surveyed asset rather than to a survey report, because one annotation
+     * can be reported by many survey reports.  Each report links the annotations it reported through
+     * ReportedAnnotation, and each annotation is linked to the element it describes through
+     * AssociatedAnnotation.
      *
      * @param annotationProperties  annotation object
-     * @param associatedElementGUID unique identifier of the element to associate this annotation with
-     *                              (it is associated with the survey report automatically).
-     *                              This value may be null to indicate that it is only to be linked to the report.
-     * @return unique identifier of new annotation
+     * @param associatedElementGUID unique identifier of the element that the annotation describes.  If this
+     *                              is null, the annotation describes the surveyed asset.
+     * @return unique identifier of the annotation - new or reused
      * @throws InvalidParameterException  the annotation is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException    there was a problem adding the annotation to the annotation store.
@@ -597,42 +603,11 @@ public class AnnotationStore
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        AnnotationHandler.AnnotationResult annotationResult = this.addOrReuseAnnotation(annotationProperties, associatedElementGUID);
 
-        NewElementOptions newElementOptions = new NewElementOptions(this.getMakeAnchorOptions());
-
-        /*
-         * The annotation is anchored to the survey report that reports it, and the report is anchored to the
-         * asset it describes.  That makes both deletes work: removing the report takes its annotations with
-         * it, and removing the asset takes the report and, through it, the annotations.  Anchoring the
-         * annotation to the asset directly gave only the second of those, so a report removed on its own left
-         * every annotation it reported behind - orphaned, and invisible to any search that goes through an
-         * anchor.
-         */
-        newElementOptions.setAnchorGUID(surveyReportGUID);
-        newElementOptions.setIsOwnAnchor(false);
-
-        newElementOptions.setParentGUID(surveyReportGUID);
-        newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
-
-        String annotationGUID = annotationHandler.createAnnotation(userId,
-                                                                   newElementOptions,
-                                                                   null,
-                                                                   annotationProperties,
-                                                                   null);
-
-        if (annotationGUID != null)
+        if (annotationResult != null)
         {
-            if (associatedElementGUID != null)
-            {
-                annotationHandler.linkAnnotationToDescribedElement(userId,
-                                                                   associatedElementGUID,
-                                                                   annotationGUID,
-                                                                   new MakeAnchorOptions(newElementOptions),
-                                                                   null);
-            }
-
-            return annotationGUID;
+            return annotationResult.annotationGUID();
         }
 
         return null;
@@ -640,32 +615,65 @@ public class AnnotationStore
 
 
     /**
-     * Add a new annotation and link it to an existing annotation.
+     * Add an annotation to this survey report, reusing a matching annotation from an earlier survey run if
+     * there is one.  The matching, reuse and migration rules are described on
+     * AnnotationHandler.addAnnotationToReport.
+     *
+     * @param annotationProperties  annotation object
+     * @param associatedElementGUID unique identifier of the element that the annotation describes (null for the asset)
+     * @return unique identifier of the annotation, and whether it was created
+     * @throws InvalidParameterException  the annotation is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException    there was a problem adding the annotation to the annotation store.
+     */
+    private AnnotationHandler.AnnotationResult addOrReuseAnnotation(AnnotationProperties annotationProperties,
+                                                                    String               associatedElementGUID) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
+    {
+        return annotationHandler.addAnnotationToReport(userId,
+                                                       assetGUID,
+                                                       surveyReportGUID,
+                                                       associatedElementGUID,
+                                                       annotationProperties,
+                                                       this.getMakeAnchorOptions(),
+                                                       this.getQueryOptions());
+    }
+
+
+    /**
+     * Add an annotation and link it to an existing annotation that it extends.  An annotation reused from an
+     * earlier survey run is already linked to the annotation it extends, so the link is only made for a new one.
      *
      * @param parentAnnotationGUID unique identifier of the annotation that this new one is to be attached to
      * @param annotationProperties annotation object
-     * @return unique identifier of new annotation
+     * @return unique identifier of the annotation - new or reused
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException    there was a problem saving annotations in the annotation store.
      */
-    public String addAnnotationExtension(String parentAnnotationGUID,
+    public String addAnnotationExtension(String               parentAnnotationGUID,
                                          AnnotationProperties annotationProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        String annotationGUID = this.addAnnotation(annotationProperties, null);
+        AnnotationHandler.AnnotationResult annotationResult = this.addOrReuseAnnotation(annotationProperties, null);
 
-        if ((annotationGUID != null) && (parentAnnotationGUID != null))
+        if (annotationResult == null)
+        {
+            return null;
+        }
+
+        if ((annotationResult.created()) && (annotationResult.annotationGUID() != null) && (parentAnnotationGUID != null))
         {
             annotationHandler.linkAnnotationToItsPredecessor(userId,
                                                              parentAnnotationGUID,
-                                                             annotationGUID,
+                                                             annotationResult.annotationGUID(),
                                                              getMakeAnchorOptions(),
                                                              null);
         }
 
-        return null;
+        return annotationResult.annotationGUID();
     }
 
 
@@ -785,7 +793,12 @@ public class AnnotationStore
     protected QueryOptions getQueryOptions(int startFrom,
                                            int pageSize)
     {
-        return new QueryOptions(getGetOptions());
+        QueryOptions queryOptions = new QueryOptions(getGetOptions());
+
+        queryOptions.setStartFrom(startFrom);
+        queryOptions.setPageSize(pageSize);
+
+        return queryOptions;
     }
 
 

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.oracle.survey;
 
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.oracle.ffdc.OracleAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -66,8 +67,16 @@ public class OracleDatabaseSurveyActionService extends SurveyActionServiceConnec
 
                 List<String> validDatabases = Collections.singletonList(databaseName);
 
+                List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
                 OracleDatabaseStatsExtractor statsExtractor = new OracleDatabaseStatsExtractor(validDatabases,
-                                                                                                this);
+                                                                                               excludedSchemas,
+                                                                                               includedSchemas,
+                                                                                               this);
 
                 statsExtractor.getDatabaseStatistics(jdbcConnection);
 

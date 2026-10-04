@@ -4,23 +4,32 @@
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * AnnotationHandler provides methods to define all types of annotations and their relationships
@@ -128,6 +137,304 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                replacementClassifications,
                                                placeholderProperties,
                                                parentRelationshipProperties);
+    }
+
+
+    /**
+     * The outcome of adding an annotation to a survey report: the annotation's unique identifier and whether
+     * it was created by the call or was an existing annotation that has been reused.
+     *
+     * @param annotationGUID unique identifier of the annotation
+     * @param created was the annotation created by this call
+     */
+    public record AnnotationResult(String  annotationGUID,
+                                   boolean created) { }
+
+
+    /**
+     * Add an annotation to a survey report, reusing a matching annotation from an earlier survey if there is
+     * one, so that repeated surveys of a resource that has not changed add no new annotations.
+     * <br>
+     * Annotations are anchored to the element the survey report describes - the report's own anchor - rather
+     * than to a report, because one annotation can be reported by many survey reports.  Each report links the
+     * annotations it reported through ReportedAnnotation, and each annotation is linked to the element it
+     * describes through AssociatedAnnotation.
+     * <br>
+     * The candidates for reuse are the annotations linked to the described element through
+     * AssociatedAnnotation.  One matches when it is of the same type and all its properties are equal, apart
+     * from those that identify the survey that created it - see
+     * {@link #annotationMatches(AnnotationProperties, OpenMetadataRootElement)}.  Of several matches the
+     * oldest is kept.  The others are left over from before annotations were reused: each was created for,
+     * and anchored to, a single survey report.  Their reports are linked to the oldest annotation instead and
+     * they are deleted - along with any relationships of their own - so this migration happens once for each
+     * annotation.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the element the survey report describes - the annotation's anchor
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param describedElementGUID unique identifier of the element the annotation describes (null for the anchor)
+     * @param annotationProperties properties of the annotation
+     * @param metadataSourceOptions external source, effective time and lineage options for the requests
+     * @param queryOptions options for retrieving the existing annotations
+     * @return unique identifier of the annotation - new or reused - and whether it was created
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public AnnotationResult addAnnotationToReport(String                userId,
+                                                  String                anchorGUID,
+                                                  String                surveyReportGUID,
+                                                  String                describedElementGUID,
+                                                  AnnotationProperties  annotationProperties,
+                                                  MetadataSourceOptions metadataSourceOptions,
+                                                  QueryOptions          queryOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        String elementGUID = describedElementGUID;
+
+        if (elementGUID == null)
+        {
+            elementGUID = anchorGUID;
+        }
+
+        /*
+         * Find the existing annotations that match the new one, and the oldest of them.
+         */
+        List<OpenMetadataRootElement> matchingAnnotations = new ArrayList<>();
+        OpenMetadataRootElement       oldestAnnotation    = null;
+
+        List<OpenMetadataRootElement> existingAnnotations = this.getAnnotationsForElement(userId, elementGUID, queryOptions);
+
+        if (existingAnnotations != null)
+        {
+            for (OpenMetadataRootElement existingAnnotation : existingAnnotations)
+            {
+                if ((existingAnnotation != null) && (this.annotationMatches(annotationProperties, existingAnnotation)))
+                {
+                    matchingAnnotations.add(existingAnnotation);
+
+                    if ((oldestAnnotation == null) || (this.getCreateTime(existingAnnotation).before(this.getCreateTime(oldestAnnotation))))
+                    {
+                        oldestAnnotation = existingAnnotation;
+                    }
+                }
+            }
+        }
+
+        if (oldestAnnotation == null)
+        {
+            NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+
+            newElementOptions.setAnchorGUID(anchorGUID);
+            newElementOptions.setIsOwnAnchor(false);
+
+            newElementOptions.setParentGUID(surveyReportGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName);
+
+            String annotationGUID = this.createAnnotation(userId, newElementOptions, null, annotationProperties, null);
+
+            if (annotationGUID != null)
+            {
+                this.linkAnnotationToDescribedElement(userId, elementGUID, annotationGUID, new MakeAnchorOptions(metadataSourceOptions), null);
+            }
+
+            return new AnnotationResult(annotationGUID, true);
+        }
+
+        String oldestAnnotationGUID = oldestAnnotation.getElementHeader().getGUID();
+
+        /*
+         * The oldest annotation is anchored to the report's subject and linked to this report.  An annotation
+         * from before annotations were reused is anchored to the report that created it.
+         */
+        this.anchorAnnotation(userId, oldestAnnotation, anchorGUID, metadataSourceOptions);
+
+        Set<String> oldestAnnotationReportGUIDs = this.getSurveyReportGUIDs(oldestAnnotation);
+
+        if (! oldestAnnotationReportGUIDs.contains(surveyReportGUID))
+        {
+            this.attachAnnotationToReport(userId, surveyReportGUID, oldestAnnotationGUID, new MakeAnchorOptions(metadataSourceOptions), null);
+            oldestAnnotationReportGUIDs.add(surveyReportGUID);
+        }
+
+        /*
+         * Every other match is a duplicate.  Its reports are linked to the oldest annotation, and it is deleted.
+         */
+        for (OpenMetadataRootElement duplicateAnnotation : matchingAnnotations)
+        {
+            String duplicateAnnotationGUID = duplicateAnnotation.getElementHeader().getGUID();
+
+            if (! oldestAnnotationGUID.equals(duplicateAnnotationGUID))
+            {
+                for (String duplicateReportGUID : this.getSurveyReportGUIDs(duplicateAnnotation))
+                {
+                    if (! oldestAnnotationReportGUIDs.contains(duplicateReportGUID))
+                    {
+                        this.attachAnnotationToReport(userId, duplicateReportGUID, oldestAnnotationGUID, new MakeAnchorOptions(metadataSourceOptions), null);
+                        oldestAnnotationReportGUIDs.add(duplicateReportGUID);
+                    }
+                }
+
+                this.deleteAnnotation(userId, duplicateAnnotationGUID, new DeleteOptions(metadataSourceOptions));
+            }
+        }
+
+        return new AnnotationResult(oldestAnnotationGUID, false);
+    }
+
+
+    /**
+     * Determine whether an existing annotation records the same thing as a new one.  It must be of the same
+     * type, and all of its properties must be equal apart from those that identify the survey that created
+     * it: the qualified name, display name and description, which record when and in which survey it was
+     * first discovered.  The effective dates and
+     * extended properties are not compared either, because an annotation read back from the repository carries
+     * them differently from one that has just been built.
+     *
+     * @param annotationProperties properties of the new annotation
+     * @param existingAnnotation existing annotation
+     * @return true if they match
+     */
+    private boolean annotationMatches(AnnotationProperties    annotationProperties,
+                                      OpenMetadataRootElement existingAnnotation)
+    {
+        if ((annotationProperties != null) &&
+            (existingAnnotation.getElementHeader() != null) &&
+            (existingAnnotation.getProperties() instanceof AnnotationProperties existingProperties) &&
+            (existingProperties.getClass() == annotationProperties.getClass()))
+        {
+            existingProperties.setQualifiedName(annotationProperties.getQualifiedName());
+            existingProperties.setDisplayName(annotationProperties.getDisplayName());
+            existingProperties.setDescription(annotationProperties.getDescription());
+            existingProperties.setEffectiveFrom(annotationProperties.getEffectiveFrom());
+            existingProperties.setEffectiveTo(annotationProperties.getEffectiveTo());
+            existingProperties.setExtendedProperties(annotationProperties.getExtendedProperties());
+
+            return annotationProperties.equals(existingProperties);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return the time an annotation was created, so the oldest of several can be chosen.
+     *
+     * @param annotation annotation
+     * @return creation time (the epoch if it is not known, so an annotation with no time is treated as the oldest)
+     */
+    private Date getCreateTime(OpenMetadataRootElement annotation)
+    {
+        if ((annotation.getElementHeader().getVersions() != null) && (annotation.getElementHeader().getVersions().getCreateTime() != null))
+        {
+            return annotation.getElementHeader().getVersions().getCreateTime();
+        }
+
+        return new Date(0L);
+    }
+
+
+    /**
+     * Return the unique identifiers of the survey reports that an annotation is linked to.
+     *
+     * @param annotation annotation
+     * @return set of survey report GUIDs (may be empty)
+     */
+    private Set<String> getSurveyReportGUIDs(OpenMetadataRootElement annotation)
+    {
+        Set<String> surveyReportGUIDs = new HashSet<>();
+
+        if (annotation.getFromSurveyReports() != null)
+        {
+            for (RelatedMetadataElementSummary surveyReport : annotation.getFromSurveyReports())
+            {
+                if ((surveyReport != null) && (surveyReport.getRelatedElement() != null) && (surveyReport.getRelatedElement().getElementHeader() != null))
+                {
+                    surveyReportGUIDs.add(surveyReport.getRelatedElement().getElementHeader().getGUID());
+                }
+            }
+        }
+
+        return surveyReportGUIDs;
+    }
+
+
+    /**
+     * Make sure an existing annotation is anchored to the supplied anchor.  An annotation created before
+     * annotations were reused is anchored to the survey report that created it.
+     *
+     * @param userId calling user
+     * @param annotation annotation
+     * @param anchorGUID unique identifier of the anchor
+     * @param metadataSourceOptions external source, effective time and lineage options for the requests
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    private void anchorAnnotation(String                  userId,
+                                  OpenMetadataRootElement annotation,
+                                  String                  anchorGUID,
+                                  MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        if ((annotation.getElementHeader().getAnchor() != null) &&
+            (annotation.getElementHeader().getAnchor().getClassificationProperties() instanceof AnchorsProperties currentAnchor) &&
+            (anchorGUID.equals(currentAnchor.getAnchorGUID())))
+        {
+            return;
+        }
+
+        OpenMetadataElement anchor = openMetadataClient.getMetadataElementByGUID(userId, anchorGUID, new GetOptions(metadataSourceOptions));
+
+        AnchorsProperties anchorsProperties = new AnchorsProperties();
+
+        anchorsProperties.setAnchorGUID(anchorGUID);
+
+        if ((anchor != null) && (anchor.getType() != null))
+        {
+            anchorsProperties.setAnchorTypeName(anchor.getType().getTypeName());
+            anchorsProperties.setAnchorDomainName(this.getAnchorDomainName(anchor.getType()));
+        }
+
+        UpdateOptions updateOptions = new UpdateOptions(metadataSourceOptions);
+
+        updateOptions.setMergeUpdate(true);
+
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            annotation.getElementHeader().getGUID(),
+                                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            new OpenMetadataClassificationBuilder().getElementProperties(anchorsProperties));
+    }
+
+
+    /**
+     * Return the domain of an anchor's type: the most general type below Referenceable and OpenMetadataRoot,
+     * for example Asset for a DataSet.
+     *
+     * @param anchorType type of the anchor
+     * @return domain name
+     */
+    private String getAnchorDomainName(ElementType anchorType)
+    {
+        String domainName = anchorType.getTypeName();
+
+        if (anchorType.getSuperTypeNames() != null)
+        {
+            for (String superTypeName : anchorType.getSuperTypeNames())
+            {
+                if ((! OpenMetadataType.OPEN_METADATA_ROOT.typeName.equals(superTypeName)) &&
+                    (! OpenMetadataType.REFERENCEABLE.typeName.equals(superTypeName)))
+                {
+                    domainName = superTypeName;
+                }
+            }
+        }
+
+        return domainName;
     }
 
 

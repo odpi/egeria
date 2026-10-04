@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.db2luw.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWTarget;
@@ -26,8 +28,11 @@ public class DB2LUWDatabaseSurveyActionProvider extends SurveyActionServiceProvi
     public DB2LUWDatabaseSurveyActionProvider()
     {
         super(EgeriaOpenConnectorDefinition.DB2LUW_DATABASE_SURVEY_ACTION_SERVICE,
-              connectorClassName, null);
+              connectorClassName,
+              DB2LUWConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = DB2LUWConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(
                 new DeployedImplementationTypeDefinition[]{DB2LUWDeployedImplementationType.DB2LUW_DATABASE});
         super.supportedActionTargetTypes = DB2LUWTarget.getDB2LUWDatabaseActionTargetTypes();

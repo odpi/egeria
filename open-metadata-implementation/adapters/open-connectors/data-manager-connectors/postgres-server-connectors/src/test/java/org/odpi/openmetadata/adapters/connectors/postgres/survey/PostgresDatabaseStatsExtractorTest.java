@@ -4,13 +4,18 @@ package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 
 /**
  * Verify that PostgresDatabaseStatsExtractor correctly converts PostgreSQL's raw pg_stats.n_distinct
  * catalog value into an actual number-of-distinct-values estimate, per PostgreSQL's documented semantics
- * (see https://www.postgresql.org/docs/current/view-pg-stats.html).
+ * (see https://www.postgresql.org/docs/current/view-pg-stats.html), and that it surveys only the schemas
+ * that the includeSchemaNames and excludeSchemaNames properties allow.
  */
 public class PostgresDatabaseStatsExtractorTest
 {
@@ -57,5 +62,52 @@ public class PostgresDatabaseStatsExtractorTest
     @Test public void testZeroRowCountWithNegativeRatioYieldsZero()
     {
         assertEquals(PostgresDatabaseStatsExtractor.calculateNumberOfDistinctValues(-1.0, 0L), 0L);
+    }
+
+
+    /**
+     * With neither list set, every user schema is surveyed - but never PostgreSQL's own catalog schemas.
+     */
+    @Test public void testUnfilteredSurveyCoversUserSchemasOnly()
+    {
+        PostgresDatabaseStatsExtractor extractor = new PostgresDatabaseStatsExtractor(List.of("db"), null);
+
+        assertTrue(extractor.schemaShouldBeSurveyed("public"));
+        assertTrue(extractor.schemaShouldBeSurveyed("repository_qs_metadata_store"));
+        assertFalse(extractor.schemaShouldBeSurveyed("pg_catalog"));
+        assertFalse(extractor.schemaShouldBeSurveyed("information_schema"));
+        assertFalse(extractor.schemaShouldBeSurveyed(null));
+    }
+
+
+    /**
+     * The exclude list removes the schemas it names and nothing else.
+     */
+    @Test public void testExcludedSchemasAreSkipped()
+    {
+        PostgresDatabaseStatsExtractor extractor = new PostgresDatabaseStatsExtractor(List.of("db"),
+                                                                                      List.of("repository_qs_metadata_store"),
+                                                                                      null,
+                                                                                      null);
+
+        assertFalse(extractor.schemaShouldBeSurveyed("repository_qs_metadata_store"));
+        assertTrue(extractor.schemaShouldBeSurveyed("public"));
+    }
+
+
+    /**
+     * The include list names the only schemas surveyed, and wins over the exclude list - but it cannot bring
+     * the catalog schemas back in.
+     */
+    @Test public void testIncludedSchemasTakePrecedence()
+    {
+        PostgresDatabaseStatsExtractor extractor = new PostgresDatabaseStatsExtractor(List.of("db"),
+                                                                                      List.of("postgres_fvt_schema"),
+                                                                                      List.of("postgres_fvt_schema", "pg_catalog"),
+                                                                                      null);
+
+        assertTrue(extractor.schemaShouldBeSurveyed("postgres_fvt_schema"));
+        assertFalse(extractor.schemaShouldBeSurveyed("public"));
+        assertFalse(extractor.schemaShouldBeSurveyed("pg_catalog"));
     }
 }

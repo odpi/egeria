@@ -86,6 +86,28 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
 
 
     /**
+     * Return the direction of synchronization for this catalog target.  It is the value set on the catalog
+     * target itself - which the server synchronizer copies from its own catalog target when it hands the
+     * catalog on - or, if none is set, both directions.
+     * <br>
+     * It must not be taken from the integration context.  That value is not the catalog target's, and when it
+     * is null every element already in open metadata is classified as an unknown action - so tables added to
+     * or dropped from Unity Catalog after the first refresh are never synchronized.
+     *
+     * @return permitted synchronization
+     */
+    private PermittedSynchronization getTargetPermittedSynchronization()
+    {
+        if (super.getPermittedSynchronization() == null)
+        {
+            return PermittedSynchronization.BOTH_DIRECTIONS;
+        }
+
+        return super.getPermittedSynchronization();
+    }
+
+
+    /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
@@ -124,7 +146,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                                         metadataCollectionGUID,
                                         integrationContext.getMetadataSourceQualifiedName(),
                                         ucFullNameToEgeriaGUID,
-                                        integrationContext.getPermittedSynchronization(),
+                                        this.getTargetPermittedSynchronization(),
                                         ucResourceConnector,
                                         ucServerEndpoint,
                                         this.getTemplates(),

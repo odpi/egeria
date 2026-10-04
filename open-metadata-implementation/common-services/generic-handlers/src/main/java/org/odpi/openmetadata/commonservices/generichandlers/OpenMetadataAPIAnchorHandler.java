@@ -1343,13 +1343,13 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
 
     /**
-     * Walk the graph to locate the anchor for an annotation.  An annotation is anchored to the survey report
-     * that reported it, and the report is in turn anchored to the asset it describes.
+     * Walk the graph to locate the anchor for an annotation.  An annotation is anchored to the asset that the
+     * survey report that reported it describes - that is, to the report's own anchor.
      * <br>
-     * Anchoring an annotation to its report rather than straight to the asset is what makes both deletes work:
-     * deleting the report takes its annotations with it, and deleting the asset takes the report and - through
-     * it - the annotations.  Anchoring them to the asset directly gave only the second of those, so a report
-     * removed on its own left every annotation it reported behind.
+     * An annotation is reused by every survey run that finds the same thing, so it can be reported by many
+     * survey reports and cannot belong to any one of them.  Anchoring it to the asset means deleting a report
+     * leaves the annotations other reports share, and deleting the asset takes them all.  This matches the
+     * anchor AnnotationStore gives an annotation when it creates it.
      *
      * @param userId calling user
      * @param annotationGUID unique identifier of the comment (it is assumed that the anchorGUID property of this instance is null)
@@ -1404,9 +1404,31 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                         if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.SURVEY_REPORT.typeName))
                         {
                             /*
-                             * The report itself is the anchor - it is not followed on to the asset.  The report
-                             * carries its own Anchors classification naming the asset, so the chain from asset
-                             * to report to annotation is complete without repeating it here.
+                             * The report's own anchor - the asset it describes - is the annotation's anchor.
+                             */
+                            final String surveyReportGUIDParameterName = "surveyReportGUID";
+
+                            EntityDetail surveyReport = repositoryHandler.getEntityByGUID(userId,
+                                                                                          proxy.getGUID(),
+                                                                                          surveyReportGUIDParameterName,
+                                                                                          OpenMetadataType.SURVEY_REPORT.typeName,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+
+                            if (surveyReport != null)
+                            {
+                                AnchorIdentifiers reportAnchors = this.getAnchorsFromAnchorsClassification(surveyReport, methodName);
+
+                                if ((reportAnchors != null) && (reportAnchors.anchorGUID != null))
+                                {
+                                    return reportAnchors;
+                                }
+                            }
+
+                            /*
+                             * A report with no anchor of its own is the best anchor there is.
                              */
                             AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
 
@@ -2323,7 +2345,9 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
 
     /**
-     * Classify an element with the Anchors classification.
+     * Classify an element with the Anchors classification, or move it to a new anchor if it already has one.
+     * An element that is already anchored keeps its zone membership, and its anchor scope too unless a new
+     * one is supplied; the anchor itself is always replaced by the one supplied.
      *
      * @param userId calling user
      * @param anchoredElement element to add the classification to
@@ -2393,7 +2417,12 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
                                                OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                null,
-                                               builder.getAnchorsProperties(anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, anchorIdentifiers.anchorDomainName, anchorIdentifiers.anchorScopeGUIDs, anchorIdentifiers.zoneMembership, methodName),
+                                               builder.getAnchorsProperties(anchorGUID,
+                                                                            anchorTypeName,
+                                                                            anchorDomainName,
+                                                                            (anchorScopeGUIDs == null) ? anchorIdentifiers.anchorScopeGUIDs : anchorScopeGUIDs,
+                                                                            anchorIdentifiers.zoneMembership,
+                                                                            methodName),
                                                forLineage,
                                                forDuplicateProcessing,
                                                effectiveTime,

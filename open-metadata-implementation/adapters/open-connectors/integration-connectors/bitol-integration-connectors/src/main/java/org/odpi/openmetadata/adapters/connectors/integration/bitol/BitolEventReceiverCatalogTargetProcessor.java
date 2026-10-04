@@ -51,16 +51,14 @@ public class BitolEventReceiverCatalogTargetProcessor extends CatalogTargetProce
 
 
     /**
-     * Register the listener with the topic connector and start it.
+     * Register the listener with the topic connector.  The connector is started by the catalog targets
+     * manager once this processor is set up - starting it here as well opened the topic a second time.
      *
      * @param topicConnector connector to the topic
      * @param listener listener to receive the events
-     * @throws ConnectorCheckedException problem starting the topic connector
-     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     private void registerTopicConnector(OpenMetadataTopicConnector topicConnector,
-                                        OpenMetadataTopicListener  listener) throws ConnectorCheckedException,
-                                                                                    UserNotAuthorizedException
+                                        OpenMetadataTopicListener  listener)
     {
         final String methodName = "registerTopicConnector";
 
@@ -78,11 +76,6 @@ public class BitolEventReceiverCatalogTargetProcessor extends CatalogTargetProce
                                     BitolIntegrationConnectorAuditCode.TOPIC_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
                                                                                                                          endpoint.getNetworkAddress(),
                                                                                                                          connectionDetails.getDisplayName()));
-            }
-
-            if (! topicConnector.isActive())
-            {
-                topicConnector.start();
             }
         }
     }

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.mssql.survey;
 
+import org.odpi.openmetadata.adapters.connectors.mssql.controls.MSSQLConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mssql.ffdc.MSSQLAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -66,7 +67,15 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
 
                 List<String> validDatabases = Collections.singletonList(databaseName);
 
+                List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
+                List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(MSSQLConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                            null);
+
                 MSSQLDatabaseStatsExtractor statsExtractor = new MSSQLDatabaseStatsExtractor(validDatabases,
+                                                                                             excludedSchemas,
+                                                                                             includedSchemas,
                                                                                              this);
 
                 statsExtractor.getDatabaseStatistics(jdbcConnection);

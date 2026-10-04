@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.oracle.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.oracle.controls.OracleTarget;
@@ -26,8 +28,11 @@ public class OracleDatabaseSurveyActionProvider extends SurveyActionServiceProvi
     public OracleDatabaseSurveyActionProvider()
     {
         super(EgeriaOpenConnectorDefinition.ORACLE_DATABASE_SURVEY_ACTION_SERVICE,
-              connectorClassName, null);
+              connectorClassName,
+              OracleConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
+        super.supportedConfigurationProperties = OracleConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(
                 new DeployedImplementationTypeDefinition[]{OracleDeployedImplementationType.ORACLE_DATABASE});
         super.supportedActionTargetTypes = OracleTarget.getOracleDatabaseActionTargetTypes();

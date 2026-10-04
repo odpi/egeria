@@ -7,8 +7,10 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionEl
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RelatedEngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
@@ -158,7 +160,16 @@ class EngineActionWaiter
      * <br>
      * The chain is followed one step at a time: each finished action names the actions that follow it, and a
      * step that has been triggered but not yet picked up appears as a follow-on before it has a status of its
-     * own.  A completed action with no follow-ons is the end of that branch.
+     * own.
+     * <br>
+     * A completed action with no follow-ons is <em>not</em> on its own the end of the process.  The engine marks
+     * a step complete first and creates the actions its completion guards trigger afterwards, so a step read in
+     * between looks like the last one - seen as a two-step process reporting that it ran one.  The process
+     * instance itself is what says the run is over: it is given a completion time only once a step with no
+     * successors finishes and nothing else in the process is still running.  So once every step reached so far
+     * has finished, the finished steps are read again for late follow-ons until the process instance has its
+     * completion time.  A run whose guards matched no next step never gets one; that is waited out to the
+     * timeout and the steps found are returned, so the caller's step count reports the shortfall.
      *
      * @param processInstanceGUID the GUID returned when the process was initiated
      * @param description what was asked for, used in the failure message
@@ -181,36 +192,101 @@ class EngineActionWaiter
 
         toVisit.add(firstEngineActionGUID);
 
-        while (! toVisit.isEmpty())
+        long giveUpTime = System.currentTimeMillis() + timeoutMilliseconds;
+
+        while (true)
         {
-            String engineActionGUID = toVisit.iterator().next();
-
-            toVisit.remove(engineActionGUID);
-            visited.add(engineActionGUID);
-
-            EngineActionElement engineAction = waitForCompletion(engineActionGUID,
-                                                                  description + " (step " + (completedActions.size() + 1) + ")");
-
-            completedActions.add(engineAction);
-
-            if (engineAction.getFollowOnActions() != null)
+            while (! toVisit.isEmpty())
             {
-                for (RelatedEngineActionElement followOnAction : engineAction.getFollowOnActions())
-                {
-                    if ((followOnAction != null) && (followOnAction.getRelatedAction() != null))
-                    {
-                        String followOnGUID = followOnAction.getRelatedAction().getGUID();
+                String engineActionGUID = toVisit.iterator().next();
 
-                        if ((followOnGUID != null) && (! visited.contains(followOnGUID)))
-                        {
-                            toVisit.add(followOnGUID);
-                        }
+                toVisit.remove(engineActionGUID);
+                visited.add(engineActionGUID);
+
+                EngineActionElement engineAction = waitForCompletion(engineActionGUID,
+                                                                      description + " (step " + (completedActions.size() + 1) + ")");
+
+                completedActions.add(engineAction);
+
+                addFollowOnActions(engineAction, visited, toVisit);
+            }
+
+            if ((isProcessInstanceComplete(processInstanceGUID)) || (System.currentTimeMillis() >= giveUpTime))
+            {
+                return completedActions;
+            }
+
+            Thread.sleep(pollMilliseconds);
+
+            /*
+             * Read the finished steps again.  A follow-on that was linked after its predecessor was first read
+             * is picked up here and the walk carries on from it.  The refreshed copy replaces the stale one so
+             * that the caller sees each step's follow-ons as they finally stood.
+             */
+            int stepIndex = 0;
+
+            for (String finishedActionGUID : visited)
+            {
+                EngineActionElement finishedAction = getEngineAction(finishedActionGUID);
+
+                if (finishedAction != null)
+                {
+                    completedActions.set(stepIndex, finishedAction);
+
+                    addFollowOnActions(finishedAction, visited, toVisit);
+                }
+
+                stepIndex++;
+            }
+        }
+    }
+
+
+    /**
+     * Queue the follow-on actions of a finished step that have not been reached yet.
+     *
+     * @param engineAction finished step
+     * @param visited steps already reached
+     * @param toVisit steps still to wait for
+     */
+    private void addFollowOnActions(EngineActionElement engineAction,
+                                    Set<String>         visited,
+                                    Set<String>         toVisit)
+    {
+        if (engineAction.getFollowOnActions() != null)
+        {
+            for (RelatedEngineActionElement followOnAction : engineAction.getFollowOnActions())
+            {
+                if ((followOnAction != null) && (followOnAction.getRelatedAction() != null))
+                {
+                    String followOnGUID = followOnAction.getRelatedAction().getGUID();
+
+                    if ((followOnGUID != null) && (! visited.contains(followOnGUID)))
+                    {
+                        toVisit.add(followOnGUID);
                     }
                 }
             }
         }
+    }
 
-        return completedActions;
+
+    /**
+     * Determine whether the engine has declared the process run finished.  It does that by setting the process
+     * instance's completion time, which it only does when a step with no successors completes and no other
+     * action in the process is still running.
+     *
+     * @param processInstanceGUID the GUID returned when the process was initiated
+     * @return true once the process instance has a completion time
+     * @throws Exception problem reading the process instance
+     */
+    private boolean isProcessInstanceComplete(String processInstanceGUID) throws Exception
+    {
+        OpenMetadataElement processInstance = openMetadataStore.getMetadataElementByGUID(processInstanceGUID);
+
+        return (processInstance != null)
+                && (processInstance.getElementProperties() != null)
+                && (processInstance.getElementProperties().getPropertyValue(OpenMetadataProperty.COMPLETION_TIME.name) != null);
     }
 
 

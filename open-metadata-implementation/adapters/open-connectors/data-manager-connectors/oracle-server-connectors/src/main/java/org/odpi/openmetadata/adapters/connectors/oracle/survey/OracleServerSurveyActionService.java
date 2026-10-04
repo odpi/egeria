@@ -106,12 +106,11 @@ public class OracleServerSurveyActionService extends SurveyActionServiceConnecto
                 }
                 else
                 {
-                    List<String> excludedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                          connectionBean.getConfigurationProperties(),
-                                                                                          Collections.emptyList());
+                    List<String> excludedDatabases = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                                  Collections.emptyList());
 
-                    List<String> includedDatabases = super.getArrayConfigurationProperty(OracleConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                          connectionBean.getConfigurationProperties());
+                    List<String> includedDatabases = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                                  null);
 
                     List<String> surveyDatabases = new ArrayList<>();
 
@@ -123,8 +122,16 @@ public class OracleServerSurveyActionService extends SurveyActionServiceConnecto
                         }
                     }
 
+                    List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
+                    List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(OracleConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
                     OracleDatabaseStatsExtractor statsExtractor = new OracleDatabaseStatsExtractor(surveyDatabases,
-                                                                                                    this);
+                                                                                                   excludedSchemas,
+                                                                                                   includedSchemas,
+                                                                                                   this);
 
                     statsExtractor.getDatabaseStatistics(jdbcConnection);
 

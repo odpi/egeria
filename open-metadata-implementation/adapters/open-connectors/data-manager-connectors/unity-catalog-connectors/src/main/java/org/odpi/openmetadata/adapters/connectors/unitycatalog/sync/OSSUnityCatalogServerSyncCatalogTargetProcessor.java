@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
@@ -181,6 +182,24 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
 
 
     /**
+     * Return the direction of synchronization for this catalog target: the value set on the catalog target
+     * itself or, if none is set, both directions.  The server synchronizer passes it on to the catalog
+     * targets it creates for the inside-catalog synchronizer.
+     *
+     * @return permitted synchronization
+     */
+    private PermittedSynchronization getTargetPermittedSynchronization()
+    {
+        if (super.getPermittedSynchronization() == null)
+        {
+            return PermittedSynchronization.BOTH_DIRECTIONS;
+        }
+
+        return super.getPermittedSynchronization();
+    }
+
+
+    /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
@@ -207,7 +226,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                                                                                                     metadataCollectionGUID,
                                                                                                     metadataCollectionName,
                                                                                                     defaultFriendshipGUID,
-                                                                                                    super.getPermittedSynchronization(),
+                                                                                                    this.getTargetPermittedSynchronization(),
                                                                                                     ucResourceConnector,
                                                                                                     this.getNetworkAddress(),
                                                                                                     super.getTemplates(),
@@ -323,7 +342,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                                                                                                         metadataCollectionGUID,
                                                                                                         metadataCollectionName,
                                                                                                         defaultFriendshipGUID,
-                                                                                                        super.getPermittedSynchronization(),
+                                                                                                        this.getTargetPermittedSynchronization(),
                                                                                                         ucResourceConnector,
                                                                                                         this.getNetworkAddress(),
                                                                                                         super.getTemplates(),

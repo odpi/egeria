@@ -100,12 +100,11 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 }
                 else
                 {
-                    List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                                         connectionBean.getConfigurationProperties(),
-                                                                                         Collections.singletonList("postgres"));
+                    List<String> excludedDatabases = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                                                  Collections.singletonList("postgres"));
 
-                    List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                                         connectionBean.getConfigurationProperties());
+                    List<String> includedDatabases = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                                                  null);
 
                     List<String> surveyDatabases = new ArrayList<>();
 
@@ -117,7 +116,15 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                         }
                     }
 
+                    List<String> excludedSchemas = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
+                    List<String> includedSchemas = super.getArrayRequestOrConfigurationProperty(PostgresConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                                                null);
+
                     PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(surveyDatabases,
+                                                                                                       excludedSchemas,
+                                                                                                       includedSchemas,
                                                                                                        this);
 
                     statsExtractor.getDatabaseStatistics(jdbcConnection);
