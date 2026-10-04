@@ -108,9 +108,17 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)" class="member-name-link">MSSQLDatabaseStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)" class="member-name-link">MSSQLDatabaseStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedSchemas,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedSchemas,
  <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</code></div>
 <div class="col-last even-row-color">
+<div class="block">Constructor sets up the list of databases to process, the schemas within them to survey, and the
+ connection to the database.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)" class="member-name-link">MSSQLDatabaseStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Constructor sets up the list of databases to process and the connection to the database.</div>
 </div>
 </div>
@@ -139,10 +147,30 @@ loadScripts(document, 'script');</script>
 <h3>MSSQLDatabaseStatsExtractor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MSSQLDatabaseStatsExtractor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
  <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</span></div>
-<div class="block">Constructor sets up the list of databases to process and the connection to the database.</div>
+<div class="block">Constructor sets up the list of databases to process and the connection to the database.  Every schema
+ in those databases is surveyed.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>validDatabases</code> - list of database names</dd>
+<dd><code>surveyActionServiceConnector</code> - calling connector</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)">
+<h3>MSSQLDatabaseStatsExtractor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MSSQLDatabaseStatsExtractor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedSchemas,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedSchemas,
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</span></div>
+<div class="block">Constructor sets up the list of databases to process, the schemas within them to survey, and the
+ connection to the database.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>validDatabases</code> - list of database names</dd>
+<dd><code>excludedSchemas</code> - schemas to leave out (null means none are excluded)</dd>
+<dd><code>includedSchemas</code> - the only schemas to survey (null means all that are not excluded);
+                                     takes precedence over excludedSchemas</dd>
 <dd><code>surveyActionServiceConnector</code> - calling connector</dd>
 </dl>
 </section>

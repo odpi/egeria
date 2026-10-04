@@ -121,13 +121,21 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#FINAL_ANALYSIS_STEP" class="member-name-link">FINAL_ANALYSIS_STEP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Provides a list of schema names that should not be surveyed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FINAL_ANALYSIS_STEP" class="member-name-link">FINAL_ANALYSIS_STEP</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Property name to control how much profiling the survey action service does.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Provide a list of analysis steps to ignore.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides a list of schema names that should be surveyed.</div>
 </div>
 </div>
 </section>
@@ -195,21 +203,27 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRequestParameterTypes()" class="member-name-link">getRequestParameterTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Retrieve all the defined request parameters</div>
+<div class="block">Retrieve the request parameters that every survey action service supports.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyRequestParameterTypes()" class="member-name-link">getSchemaSurveyRequestParameterTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the request parameters supported by a survey action service that can be limited to some of the
+ schemas it finds.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -245,6 +259,20 @@ the order they are declared.</div>
 <h3>IGNORE_ANALYSIS_STEPS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">IGNORE_ANALYSIS_STEPS</span></div>
 <div class="block">Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_SCHEMA_NAMES">
+<h3>INCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">INCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes precedence over the exclude list.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_SCHEMA_NAMES">
+<h3>EXCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">EXCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.</div>
 </section>
 </li>
 </ul>
@@ -366,7 +394,19 @@ not permitted.)</div>
 <section class="detail" id="getRequestParameterTypes()">
 <h3>getRequestParameterTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getRequestParameterTypes</span>()</div>
-<div class="block">Retrieve all the defined request parameters</div>
+<div class="block">Retrieve the request parameters that every survey action service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of request parameter types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaSurveyRequestParameterTypes()">
+<h3>getSchemaSurveyRequestParameterTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyRequestParameterTypes</span>()</div>
+<div class="block">Retrieve the request parameters supported by a survey action service that can be limited to some of the
+ schemas it finds.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of request parameter types</dd>

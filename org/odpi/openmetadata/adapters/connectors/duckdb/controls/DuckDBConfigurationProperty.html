@@ -143,9 +143,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The userId to store in the userId attribute of the connection.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Provides a list of schema names that should not be surveyed.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of the integration connector that is able to catalog the contents of a JDBC database.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides a list of schema names that should be surveyed.</div>
 </div>
 </div>
 </section>
@@ -228,6 +236,18 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the request parameter.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyConfigPropertyNames()" class="member-name-link">getSchemaSurveyConfigPropertyNames</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+ schemas they find.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyConfigurationPropertyTypes()" class="member-name-link">getSchemaSurveyConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the survey action services that can be limited to some
+ of the schemas they find.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
@@ -313,6 +333,21 @@ the order they are declared.</div>
  federation relationships that were set up in a different session.  Each entry is a complete SQL statement,
  for example "ATTACH 'host=myhost dbname=mydb user=myuser password=mypassword' AS mypg (TYPE POSTGRES,
  READ_ONLY)" - including any INSTALL/LOAD statements needed for the relevant DuckDB extension.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_SCHEMA_NAMES">
+<h3>INCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes
+ precedence over the exclude list.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_SCHEMA_NAMES">
+<h3>EXCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.controls">DuckDBConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.</div>
 </section>
 </li>
 <li>
@@ -476,6 +511,30 @@ not permitted.)</div>
 <div class="block">Retrieve the defined configuration properties for the DuckDB Database Integration connector.  This includes
  the three generic file system properties defined in FileSystemConfigurationProperty - see
  <a href="#getDuckDBDatabaseIntegrationConnectorNames()"><code>getDuckDBDatabaseIntegrationConnectorNames()</code></a> for more details on why these are needed.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaSurveyConfigPropertyNames()">
+<h3>getSchemaSurveyConfigPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyConfigPropertyNames</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+ schemas they find.  The same names can be passed as request parameters, which take precedence.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaSurveyConfigurationPropertyTypes()">
+<h3>getSchemaSurveyConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the survey action services that can be limited to some
+ of the schemas they find.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of configuration property types</dd>

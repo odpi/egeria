@@ -141,17 +141,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Provides a list of pluggable database (PDB) names that should not be catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Provides a list of schema names that should not be surveyed.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Unique identifier of the integration connector that is able to catalog the contents of an Oracle pluggable database.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The host IP address or domain name of the database server.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCLUDE_DATABASE_LIST" class="member-name-link">INCLUDE_DATABASE_LIST</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCLUDE_DATABASE_LIST" class="member-name-link">INCLUDE_DATABASE_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Provides a list of pluggable databases (PDBs) that should be catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides a list of schema names that should be surveyed.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
 <div class="col-last even-row-color">
@@ -267,6 +275,18 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOracleTabularDataSourceConfigurationPropertyTypes()" class="member-name-link">getOracleTabularDataSourceConfigurationPropertyTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve the defined configuration properties for the Oracle tabular data source connector</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyConfigPropertyNames()" class="member-name-link">getSchemaSurveyConfigPropertyNames</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+ schemas they find.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyConfigurationPropertyTypes()" class="member-name-link">getSchemaSurveyConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the survey action services that can be limited to some
+ of the schemas they find.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
@@ -392,6 +412,21 @@ the order they are declared.</div>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.controls">OracleConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_DATABASE_LIST</span></div>
 <div class="block">Provides a list of pluggable databases (PDBs) that should be catalogued.  If not set, or null, or *, all PDBs except the
  excluded databases are catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_SCHEMA_NAMES">
+<h3>INCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.controls">OracleConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should be surveyed.  Other schemas are ignored.  This takes
+ precedence over the exclude list.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_SCHEMA_NAMES">
+<h3>EXCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.controls">OracleConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provides a list of schema names that should not be surveyed.  Only schemas not in this list are surveyed.</div>
 </section>
 </li>
 <li>
@@ -580,6 +615,30 @@ not permitted.)</div>
 <h3>getOracleTabularDataSourceConfigurationPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getOracleTabularDataSourceConfigurationPropertyTypes</span>()</div>
 <div class="block">Retrieve the defined configuration properties for the Oracle tabular data source connector</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaSurveyConfigPropertyNames()">
+<h3>getSchemaSurveyConfigPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyConfigPropertyNames</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the survey action services that can be limited to some of the
+ schemas they find.  The same names can be passed as request parameters, which take precedence.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaSurveyConfigurationPropertyTypes()">
+<h3>getSchemaSurveyConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the survey action services that can be limited to some
+ of the schemas they find.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of configuration property types</dd>

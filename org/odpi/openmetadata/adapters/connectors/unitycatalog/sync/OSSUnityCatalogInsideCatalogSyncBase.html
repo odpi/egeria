@@ -317,55 +317,66 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the qualified name of an element using UnityCatalog's full name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCCatalogFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCCatalogFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShortName(java.lang.String)" class="member-name-link">getShortName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the comment for a UC element from the description attribute in an egeria element.</div>
+<div class="block">Extract an element's own name from its UC full name, which is the names of the element and its parents
+ separated by dots - catalog.schema for a schema, catalog.schema.name for everything inside a schema.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCCommentFomMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCCommentFomMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCCatalogFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCCatalogFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the comment for a UC element from the description attribute in an egeria element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCNameFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCNameFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCCommentFomMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCCommentFomMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the comment for a UC element from the description attribute in an egeria element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCNameFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCNameFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the name of a UC element from the name attribute in an egeria element (which is the full name).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCPropertiesFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCPropertiesFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCPropertiesFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCPropertiesFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the properties for a UC element from the additionalProperties attribute in an egeria element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCSchemaFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCSchemaFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCSchemaFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCSchemaFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the schema name for a UC element from the description attribute in an egeria element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCStorageLocationFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCStorageLocationFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUCStorageLocationFromMember(org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">getUCStorageLocationFromMember</a><wbr>(<a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the storage location from the</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noMismatchInExternalIdentifier(java.lang.String,org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">noMismatchInExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;thirdPartyExternalIdentifier,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noMismatchInExternalIdentifier(java.lang.String,org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">noMismatchInExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;thirdPartyExternalIdentifier,
  <a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check that the name of the third party element has not changed with respect to Egeria.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshEgeria(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)" class="member-name-link">refreshEgeria</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshEgeria(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)" class="member-name-link">refreshEgeria</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../../frameworks/openmetadata/properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in Egeria.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties,org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties,org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../../../frameworks/openmetadata/properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipProperties,
  <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in UC.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldBeCatalogued(java.lang.String)" class="member-name-link">shouldBeCatalogued</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Determine whether an element should be synchronized, using this class's include and exclude lists.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwBadBeanClass(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)" class="member-name-link">throwBadBeanClass</a><wbr>(<a href="../../../../frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a>&nbsp;expectedType,
@@ -689,6 +700,37 @@ loadScripts(document, 'script');</script>
 <dd><code>fullName</code> - dotted name</dd>
 <dt>Returns:</dt>
 <dd>qualified name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="shouldBeCatalogued(java.lang.String)">
+<h3>shouldBeCatalogued</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">shouldBeCatalogued</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+<div class="block">Determine whether an element should be synchronized, using this class's include and exclude lists.  The
+ lists name elements by their own name - a schema, table, volume, function or model name without the
+ catalog and schema prefix - and each subclass applies them to elements found in Unity Catalog as well as
+ to elements already in open metadata, so an excluded element is neither created nor maintained in either
+ direction.  With neither list set every element is synchronized.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>name</code> - name of the element (without the catalog and schema prefix)</dd>
+<dt>Returns:</dt>
+<dd>flag indicating whether the element is synchronized</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getShortName(java.lang.String)">
+<h3>getShortName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getShortName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span></div>
+<div class="block">Extract an element's own name from its UC full name, which is the names of the element and its parents
+ separated by dots - catalog.schema for a schema, catalog.schema.name for everything inside a schema.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>fullName</code> - full name of the element</dd>
+<dt>Returns:</dt>
+<dd>element's own name, or null if there is no full name</dd>
 </dl>
 </section>
 </li>
