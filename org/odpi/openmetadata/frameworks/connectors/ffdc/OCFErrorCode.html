@@ -229,12 +229,16 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last odd-row-color">
 <div class="block">OCF-CONNECTION-400-003 - Null connectorType property passed in connection {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTOR" class="member-name-link">UNKNOWN_CONNECTOR</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED" class="member-name-link">SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OCF-CONNECTOR-400-012 - The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONNECTOR" class="member-name-link">UNKNOWN_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OCF-CONNECTOR-500-007 - Unknown Connector Java class {0} for Connector {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONNECTOR_PROVIDER" class="member-name-link">UNKNOWN_CONNECTOR_PROVIDER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONNECTOR_PROVIDER" class="member-name-link">UNKNOWN_CONNECTOR_PROVIDER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OCF-CONNECTION-400-005 - Unknown Connector Provider class {0} passed in connection {1}</div>
 </div>
 </div>
@@ -427,6 +431,13 @@ the order they are declared.</div>
 <h3>MISSING_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">MISSING_ELEMENT</span></div>
 <div class="block">OCF-CONNECTOR-400-011 - {0} element {1} does not exist</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED">
+<h3>SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></span>&nbsp;<span class="element-name">SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED</span></div>
+<div class="block">OCF-CONNECTOR-400-012 - The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected</div>
 </section>
 </li>
 <li>
