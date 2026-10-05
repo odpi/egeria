@@ -19,7 +19,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.gover
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -107,7 +109,7 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
                                                                                                                      null,
                                                                                                                      null,
                                                                                                                      null,
-                                                                                                                     null,
+                                                                                                                     this.getRequestParameters(),
                                                                                                                      connectorName,
                                                                                                                      null,
                                                                                                                      null);
@@ -142,4 +144,42 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
     }
 
 
+    /**
+     * Return the catalog target's configuration properties as request parameters for the governance action it starts.
+     *
+     * @return request parameters or null
+     */
+    private Map<String,String> getRequestParameters()
+    {
+        return getRequestParameters(this.getConfigurationProperties());
+    }
+
+
+    /**
+     * Convert configuration properties to request parameters.  Request parameters are strings, so each value is
+     * converted with toString(): a list becomes "[a, b]", which ConnectorBase.getArrayValue() reads back as a list.
+     * Properties with no value are left out.
+     *
+     * @param configProperties configuration properties (may be null)
+     * @return request parameters or null
+     */
+    static Map<String,String> getRequestParameters(Map<String, Object> configProperties)
+    {
+        if (configProperties != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            for (String key : configProperties.keySet())
+            {
+                if ((key != null) && (configProperties.get(key) != null))
+                {
+                    requestParameters.put(key, configProperties.get(key).toString());
+                }
+            }
+
+            return requestParameters;
+        }
+
+        return null;
+    }
 }

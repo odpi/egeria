@@ -18,7 +18,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.samples.archiveutilities.ArchiveVersionStabilizer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -385,7 +387,7 @@ public class CocoTypesArchiveWriter extends OMRSArchiveWriter
         {
             System.out.println("Writing to file: " + cocoTypesArchiveFileName);
 
-            super.writeOpenMetadataArchive(cocoTypesArchiveFileName, this.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(cocoTypesArchiveFileName, this.getStabilizedArchive(cocoTypesArchiveFileName));
         }
         catch (Exception error)
         {
@@ -411,11 +413,33 @@ public class CocoTypesArchiveWriter extends OMRSArchiveWriter
             }
 
             System.out.println("Writing to file: " + pathName);
-            super.writeOpenMetadataArchive(pathName, this.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(pathName, this.getStabilizedArchive(pathName));
         }
         catch (Exception error)
         {
             System.out.println("error is " + error);
         }
+    }
+
+
+    /**
+     * Return the archive to write, with the types that are unchanged since the edition already at the path keeping
+     * their previous versions.  The version number above is the build time, and a type's version is what tells the
+     * servers of a cohort that it has been updated, so stamping unchanged types with it on every build announced
+     * changes that had not happened.
+     *
+     * @param pathName path the archive is about to be written to
+     * @return archive
+     */
+    private OpenMetadataArchive getStabilizedArchive(String pathName)
+    {
+        OpenMetadataArchive openMetadataArchive = this.getOpenMetadataArchive();
+
+        if (new File(pathName).exists())
+        {
+            new ArchiveVersionStabilizer().stabilizeVersions(openMetadataArchive, super.readOpenMetadataArchive(pathName));
+        }
+
+        return openMetadataArchive;
     }
 }

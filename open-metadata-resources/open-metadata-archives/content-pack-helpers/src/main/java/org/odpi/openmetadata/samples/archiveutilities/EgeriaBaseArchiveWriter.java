@@ -19,8 +19,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWrit
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.io.File;
 import java.util.*;
@@ -443,7 +441,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                      projectDefinition.getMission(),
                                      projectDefinition.getDescription(),
                                      projectDefinition.getURL(),
-                                     new Date(),
+                                     creationDate,
                                      null,
                                      null,
                                      null,
@@ -603,55 +601,74 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Return the version number stamped on the elements of the previous edition of this archive, or zero if there
-     * is no previous edition to read (or it cannot be understood).
-     * <br>
-     * Every element in an archive carries the same version number, so the first one found answers the question.
+     * Return the highest version number stamped on the elements of the previous edition of this archive, or zero if
+     * there is no previous edition to read (or it cannot be understood).  The elements of an edition do not all
+     * share one version: an element that has not changed keeps the version it had - see writeOpenMetadataArchive().
      *
      * @param archiveFileName name of the file this archive is written to
      * @return version number of the previous edition, or zero
      */
     private long getPreviousVersionNumber(String archiveFileName)
     {
-        File archiveFile = new File(ARCHIVE_FOLDER_NAME + "/" + archiveFileName);
+        File archiveFile = this.getPreviousEditionFile(archiveFileName, null);
 
-        if (! archiveFile.exists())
-        {
-            archiveFile = new File(archiveFileName);
-        }
-
-        if (! archiveFile.exists())
+        if (archiveFile == null)
         {
             return 0;
         }
 
-        OpenMetadataArchive previousArchive = super.readOpenMetadataArchive(archiveFile.getPath());
+        long previousVersionNumber = new ArchiveVersionStabilizer().getHighestVersion(super.readOpenMetadataArchive(archiveFile.getPath()));
 
-        if ((previousArchive != null) && (previousArchive.getArchiveInstanceStore() != null))
+        if (previousVersionNumber == 0)
         {
-            List<EntityDetail> entities = previousArchive.getArchiveInstanceStore().getEntities();
+            /*
+             * Say so rather than falling back on the build time in silence: in a release build that fallback is the
+             * very thing this method exists to avoid.
+             */
+            System.out.println("Unable to read the previous version number from " + archiveFile.getPath()
+                                       + ".  Falling back on the build time for the version number.");
+        }
 
-            if ((entities != null) && (! entities.isEmpty()))
+        return previousVersionNumber;
+    }
+
+
+    /**
+     * Return the file holding the previous edition of this archive, or null if there is none.  The archive is written
+     * to the requested folder if one is given, and otherwise into the content-packs folder or the working directory.
+     *
+     * @param archiveFileName name of the file this archive is written to
+     * @param pathName path the archive is about to be written to, or null if not known yet
+     * @return file or null
+     */
+    private File getPreviousEditionFile(String archiveFileName,
+                                        String pathName)
+    {
+        if (pathName != null)
+        {
+            File archiveFile = new File(pathName);
+
+            if (archiveFile.exists())
             {
-                return entities.get(0).getVersion();
-            }
-
-            List<Relationship> relationships = previousArchive.getArchiveInstanceStore().getRelationships();
-
-            if ((relationships != null) && (! relationships.isEmpty()))
-            {
-                return relationships.get(0).getVersion();
+                return archiveFile;
             }
         }
 
-        /*
-         * Say so rather than falling back on the build time in silence: in a release build that fallback is the very
-         * thing this method exists to avoid.
-         */
-        System.out.println("Unable to read the previous version number from " + archiveFile.getPath()
-                                   + ".  Falling back on the build time for the version number.");
+        File archiveFile = new File(ARCHIVE_FOLDER_NAME + "/" + archiveFileName);
 
-        return 0;
+        if (archiveFile.exists())
+        {
+            return archiveFile;
+        }
+
+        archiveFile = new File(archiveFileName);
+
+        if (archiveFile.exists())
+        {
+            return archiveFile;
+        }
+
+        return null;
     }
 
 
@@ -671,8 +688,25 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                 pathName = folderName + "/" + archiveFileName;
             }
 
+            OpenMetadataArchive openMetadataArchive = this.getOpenMetadataArchive();
+
+            /*
+             * Elements that have not changed since the previous edition keep the version they had, so that
+             * rebuilding an archive without changing its content reproduces it exactly, and a repository reloading
+             * it only replaces what has changed.
+             */
+            File previousEditionFile = this.getPreviousEditionFile(archiveFileName, pathName);
+
+            if (previousEditionFile != null)
+            {
+                int keptCount = new ArchiveVersionStabilizer().stabilizeVersions(openMetadataArchive,
+                                                                                 super.readOpenMetadataArchive(previousEditionFile.getPath()));
+
+                System.out.println("Kept the previous version of " + keptCount + " unchanged elements from " + previousEditionFile.getPath());
+            }
+
             System.out.println("Writing to file: " + pathName);
-            super.writeOpenMetadataArchive(pathName, this.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(pathName, openMetadataArchive);
         }
         catch (Exception error)
         {

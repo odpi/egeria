@@ -9,7 +9,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 193 |
+| **Number of messages** | 192 |
 | **Message identifiers begin** | `OMRS-` |
 | **Java class** | `org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode` |
 | **Module** | [open-metadata-implementation/repository-services/repository-services-apis](../../open-metadata-implementation/repository-services/repository-services-apis) |
@@ -117,7 +117,6 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-ARCHIVE-MANAGER-400-001](#omrs-archive-manager-400-001) | 400 | An open metadata archive configured for server {0} is not accessible |
 | [OMRS-LOCAL-REPOSITORY-400-001](#omrs-local-repository-400-001) | 400 | The repository event mapper configured for the local repository for server {0} is not accessible |
 | [OMRS-LOCAL-REPOSITORY-400-002](#omrs-local-repository-400-002) | 400 | The local repository is not able to re-home the instance {0} of type {1} ({2}) because it is not managing the repository with the requested home metadata collection of {3}.  This local repository is managing the {4} metadata collection |
-| [OMRS-ENTERPRISE-REPOSITORY-400-001](#omrs-enterprise-repository-400-001) | 400 | Conflicting TypeDefs have been detected |
 | [OMRS-ARCHIVE-BUILDER-400-001](#omrs-archive-builder-400-001) | 400 | The same type {0} of category {1} has been added twice to an open metadata archive. First version was {2} and the second was {3} |
 | [OMRS-ARCHIVE-BUILDER-400-002](#omrs-archive-builder-400-002) | 400 | The {0} instance {1} has been added twice to an open metadata archive. First version was {2} and the second was {3} |
 | [OMRS-ARCHIVE-BUILDER-400-003](#omrs-archive-builder-400-003) | 400 | The same type name {0} has been added twice to an open metadata archive. First version was {1} and the second was {2} |
@@ -2229,27 +2228,6 @@ The system can not continue processing the request.
 **User action**
 
 Retry the request on the repository with the requested metadata collection identifier or retry the request on this repository with the local metadata collection identifier.
-
-
-----
-
-### OMRS-ENTERPRISE-REPOSITORY-400-001
-
-> Conflicting TypeDefs have been detected
-
-|  |  |
-|---|---|
-| **Java constant** | `OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS` |
-| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
-| **Message inserts** | none |
-
-**System action**
-
-The system cannot create a reliable list of TypeDefs for the enterprise.
-
-**User action**
-
-Details of the conflicts and the steps necessary to repair the situation can be found in the audit log. Retry the request when the cohort configuration is correct.
 
 
 ----

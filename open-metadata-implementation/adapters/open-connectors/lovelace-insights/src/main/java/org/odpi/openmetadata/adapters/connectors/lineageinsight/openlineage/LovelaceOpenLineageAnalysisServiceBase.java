@@ -149,16 +149,17 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
                 }
             }
 
-            if ((logStoreDirectory == null) && (requestParameters != null) && (requestParameters.get(OpenLineageAnalysisRequestParameter.LOG_STORE_DIRECTORY.getName()) != null))
+            if (logStoreDirectory == null)
             {
-                logStoreDirectory = new File(requestParameters.get(OpenLineageAnalysisRequestParameter.LOG_STORE_DIRECTORY.getName()));
-                logStoreName      = logStoreDirectory.getAbsolutePath();
+                logStoreDirectory = getLogStoreDirectory(requestParameters);
+
+                logStoreName = logStoreDirectory.getAbsolutePath();
             }
 
-            if ((logStoreDirectory == null) || (! logStoreDirectory.isDirectory()))
+            if (! logStoreDirectory.isDirectory())
             {
                 AuditLogMessageDefinition messageDefinition = LovelaceInsightAuditCode.OPEN_LINEAGE_NO_LOG_STORE.getMessageDefinition(governanceServiceName,
-                                                                                                                                       (logStoreDirectory == null) ? "<null>" : logStoreDirectory.getAbsolutePath());
+                                                                                                                                      logStoreDirectory.getAbsolutePath());
                 logRecord(methodName, messageDefinition);
 
                 List<String> outputGuards = new ArrayList<>();
@@ -545,5 +546,26 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
     protected void put(Map<String, String> map, String key, double value)
     {
         map.put(key, String.format("%.2f", value));
+    }
+
+
+    /**
+     * Return the log store directory to use when no log store action target is supplied: the directory named in the
+     * logStoreDirectory request parameter, or else the directory the file-based OpenLineage log store publisher
+     * writes to by default (logs/openlineage, relative to the platform's working directory).
+     *
+     * @param requestParameters request parameters for this run (may be null)
+     * @return log store directory
+     */
+    static File getLogStoreDirectory(Map<String, String> requestParameters)
+    {
+        String name = OpenLineageAnalysisRequestParameter.LOG_STORE_DIRECTORY.getExample();
+
+        if ((requestParameters != null) && (requestParameters.get(OpenLineageAnalysisRequestParameter.LOG_STORE_DIRECTORY.getName()) != null))
+        {
+            name = requestParameters.get(OpenLineageAnalysisRequestParameter.LOG_STORE_DIRECTORY.getName());
+        }
+
+        return new File(name);
     }
 }

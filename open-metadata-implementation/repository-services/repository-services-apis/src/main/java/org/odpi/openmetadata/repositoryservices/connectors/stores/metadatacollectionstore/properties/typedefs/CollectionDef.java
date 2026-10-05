@@ -107,14 +107,21 @@ public class CollectionDef extends AttributeTypeDef
         this.collectionDefCategory = collectionDefCategory;
 
         this.argumentCount = collectionDefCategory.getArgumentCount();
-        this.argumentTypes = new ArrayList<>();
 
         /*
-         * Set up the type of the elements stored in the collection as "unknown".  This is like an initialized Java generic.
+         * Set up the type of the elements stored in the collection as "unknown" - like an initialized Java generic -
+         * unless the argument types are already set for this category.  They may be: the order in which Jackson
+         * calls the setters follows the order of the properties in the JSON, so when argumentTypes comes first
+         * (as it does when the properties are sorted alphabetically) resetting them here would lose them.
          */
-        for (int i=0; i<argumentCount; i++)
+        if ((argumentTypes == null) || (argumentTypes.size() != argumentCount))
         {
-            argumentTypes.add(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+            this.argumentTypes = new ArrayList<>();
+
+            for (int i=0; i<argumentCount; i++)
+            {
+                argumentTypes.add(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+            }
         }
     }
 

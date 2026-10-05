@@ -24,40 +24,6 @@ import java.util.List;
 public interface OMRSRepositoryValidator
 {
     /**
-     * Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
-     * all known typedefs.
-     *
-     * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
-     * If a new TypeDef is present, it is added to the enterprise list.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param typeDefs    list of TypeDefs.
-     * @param methodName  calling method
-     * @throws RepositoryErrorException  a conflicting or invalid TypeDef has been returned
-     */
-    void   validateEnterpriseTypeDefs(String        sourceName,
-                                      List<TypeDef> typeDefs,
-                                      String        methodName) throws RepositoryErrorException;
-
-
-    /**
-     * Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
-     * all known typedefs.
-     *
-     * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
-     * If a new TypeDef is present, it is added to the enterprise list.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param attributeTypeDefs  list of AttributeTypeDefs.
-     * @param methodName          calling method
-     * @throws RepositoryErrorException  a conflicting or invalid AttributeTypeDef has been returned
-     */
-    void   validateEnterpriseAttributeTypeDefs(String                 sourceName,
-                                               List<AttributeTypeDef> attributeTypeDefs,
-                                               String                 methodName) throws RepositoryErrorException;
-
-
-    /**
      * Return boolean indicating whether the TypeDef/AttributeTypeDef is in use in the repository.
      *
      * @param sourceName  source of the request (used for logging)

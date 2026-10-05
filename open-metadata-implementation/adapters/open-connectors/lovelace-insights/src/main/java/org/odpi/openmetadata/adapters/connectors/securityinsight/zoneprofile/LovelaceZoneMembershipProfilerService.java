@@ -182,8 +182,8 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
      * @throws PropertyServerException if there is a problem accessing the metadata store.
      * @throws UserNotAuthorizedException if the user is not authorized to perform this operation.
      */
-    private long countZoneMembers(String classificationName,
-                                  String zoneName,
+    private long countZoneMembers(String            classificationName,
+                                  String            zoneName,
                                   Map<String, Long> membershipCounts,
                                   Map<String, Long> allMembershipCounts) throws InvalidParameterException,
                                                                                 PropertyServerException,

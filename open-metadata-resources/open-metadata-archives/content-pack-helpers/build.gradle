@@ -15,6 +15,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     implementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 

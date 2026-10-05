@@ -34,7 +34,7 @@ test {
 }
 
 application {
-    mainClass = 'org.odpi.openmetadata.samples.archiveutilities.CocoArchivesWriter'
+    mainClass = 'org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.CloudInformationModelArchiveWriter'
 }
 
 shadowJar {
