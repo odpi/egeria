@@ -25,14 +25,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # tag=v7.0.1
         name: Checkout source
       - name: Set up JDK
-        uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # tag=v6.0.0
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # tag=v6.0.1
         with:
           java-version: '21'
           distribution: 'temurin'
       # setup-gradle validates the Gradle wrapper checksums itself - validate-wrappers
       # defaults to true - which is why there is no separate wrapper-validation step.
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # tag=v6.3.0
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # tag=v6.4.0
         with:
           cache-read-only: false
       # Just build but don't publish (yet)
@@ -49,22 +49,22 @@ jobs:
           branch: gh-pages
           folder: build/docs/javadoc
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # tag=v3.12.0
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # tag=v4.4.1
       - name: Login to container registry (Quay.io)
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # tag=v3.7.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # tag=v4.6.0
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_IO_USERNAME }}
           password: ${{ secrets.QUAY_IO_ACCESS_TOKEN }}
       - name: Login to container registry (Docker Hub)
-        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # tag=v3.7.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # tag=v4.6.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       # QEMU is needed for ARM64 build for egeria-configure
       # egeria-configure needs to install utilities
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # tag=v3.7.0
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # tag=v4.4.0
       - name: Set Release version env variable
         run: |
           echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
@@ -74,7 +74,7 @@ jobs:
           cp -f container.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
       - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # tag=v5.4.0
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # tag=v7.4.0
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
@@ -82,7 +82,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # tag=v5.4.0
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # tag=v7.4.0
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:${{ env.VERSION }}
