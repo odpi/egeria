@@ -158,7 +158,7 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processEvent(java.lang.String)" class="member-name-link">processEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Method to pass an event received on the topic.</div>
+<div class="block">Pass an event received from the topic to each registered listener.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -233,7 +233,13 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
 <section class="detail" id="processEvent(java.lang.String)">
 <h3>processEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</span></div>
-<div class="block">Method to pass an event received on the topic.</div>
+<div class="block">Pass an event received from the topic to each registered listener.
+ <br><br>
+ This method is deliberately not synchronized.  A listener may call into its server, and if that code holds
+ a lock of its own while disconnecting this connector - which needs this connector's lock - the two threads
+ deadlock.  That is what happened when an engine host shut down while an engine action event was being
+ delivered.  The events from a topic arrive on a single listener thread, so they are still delivered one at
+ a time and in order.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicListener.html#processEvent(java.lang.String)">processEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../repositoryservices/connectors/openmetadatatopic/OpenMetadataTopicListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic">OpenMetadataTopicListener</a></code></dd>

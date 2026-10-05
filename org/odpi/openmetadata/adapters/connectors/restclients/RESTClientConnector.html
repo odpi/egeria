@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li>Field</li>
+<li><a href="#field-detail">Field</a></li>
 <li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -65,7 +65,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -122,6 +122,30 @@ implements <a href="RESTClientCalls.html" title="interface in org.odpi.openmetad
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final long</code></div>
+<div class="col-second even-row-color"><code><a href="#DEFAULT_REQUEST_TIMEOUT_SECONDS" class="member-name-link">DEFAULT_REQUEST_TIMEOUT_SECONDS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">How long a REST call waits for its response unless configured otherwise: long enough for the slowest
+ legitimate calls, such as loading a large archive, but finite.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#REQUEST_TIMEOUT_PROPERTY" class="member-name-link">REQUEST_TIMEOUT_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Name of the connection configuration property that sets how long a REST call may wait for its response,
+ in seconds.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#REQUEST_TIMEOUT_SYSTEM_PROPERTY" class="member-name-link">REQUEST_TIMEOUT_SYSTEM_PROPERTY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Name of the JVM system property that sets the same limit for every REST client connector that does not
+ set it in its connection.</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../frameworks/connectors/ConnectorBase.html#auditLog">auditLog</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
@@ -158,9 +182,16 @@ implements <a href="RESTClientCalls.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestTimeoutSeconds()" class="member-name-link">getRequestTimeoutSeconds</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return how long a REST call may wait for its response, in seconds: the requestTimeoutSeconds
+ configuration property of the connection if it is set, otherwise the
+ egeria.rest.client.request.timeout.seconds system property, otherwise <a href="#DEFAULT_REQUEST_TIMEOUT_SECONDS"><code>DEFAULT_REQUEST_TIMEOUT_SECONDS</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
 </div>
@@ -187,6 +218,63 @@ implements <a href="RESTClientCalls.html" title="interface in org.odpi.openmetad
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="REQUEST_TIMEOUT_PROPERTY">
+<h3>REQUEST_TIMEOUT_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">REQUEST_TIMEOUT_PROPERTY</span></div>
+<div class="block">Name of the connection configuration property that sets how long a REST call may wait for its response,
+ in seconds.  Zero means no limit.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector.REQUEST_TIMEOUT_PROPERTY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="REQUEST_TIMEOUT_SYSTEM_PROPERTY">
+<h3>REQUEST_TIMEOUT_SYSTEM_PROPERTY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">REQUEST_TIMEOUT_SYSTEM_PROPERTY</span></div>
+<div class="block">Name of the JVM system property that sets the same limit for every REST client connector that does not
+ set it in its connection.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector.REQUEST_TIMEOUT_SYSTEM_PROPERTY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DEFAULT_REQUEST_TIMEOUT_SECONDS">
+<h3>DEFAULT_REQUEST_TIMEOUT_SECONDS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">DEFAULT_REQUEST_TIMEOUT_SECONDS</span></div>
+<div class="block">How long a REST call waits for its response unless configured otherwise: long enough for the slowest
+ legitimate calls, such as loading a large archive, but finite.  Without a limit a call to a server that
+ never answers - one that has deadlocked, for example - waits for ever, and so does whatever made it.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector.DEFAULT_REQUEST_TIMEOUT_SECONDS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -207,6 +295,20 @@ implements <a href="RESTClientCalls.html" title="interface in org.odpi.openmetad
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getRequestTimeoutSeconds()">
+<h3>getRequestTimeoutSeconds</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRequestTimeoutSeconds</span>()</div>
+<div class="block">Return how long a REST call may wait for its response, in seconds: the requestTimeoutSeconds
+ configuration property of the connection if it is set, otherwise the
+ egeria.rest.client.request.timeout.seconds system property, otherwise <a href="#DEFAULT_REQUEST_TIMEOUT_SECONDS"><code>DEFAULT_REQUEST_TIMEOUT_SECONDS</code></a>.
+ Zero (or a negative or unreadable value) means no limit.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>number of seconds, or 0 for no limit</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getConnectorComponentDescription()">
 <h3>getConnectorComponentDescription</h3>
