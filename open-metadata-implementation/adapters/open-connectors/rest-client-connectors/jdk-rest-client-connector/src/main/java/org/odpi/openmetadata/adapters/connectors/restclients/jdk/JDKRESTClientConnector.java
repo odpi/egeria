@@ -433,6 +433,17 @@ public class JDKRESTClientConnector extends RESTClientConnector
             requestBuilder.header("Content-Type", contentType);
         }
 
+        /*
+         * The client has a connect timeout but, without this, no limit on waiting for the response - so a call to
+         * a server that never answers waited for ever.  An overrun ends the call with an HttpTimeoutException.
+         */
+        long requestTimeoutSeconds = getRequestTimeoutSeconds();
+
+        if (requestTimeoutSeconds > 0)
+        {
+            requestBuilder.timeout(Duration.ofSeconds(requestTimeoutSeconds));
+        }
+
         for (Map.Entry<String, String> header : headers.entrySet())
         {
             if (header.getValue() != null)

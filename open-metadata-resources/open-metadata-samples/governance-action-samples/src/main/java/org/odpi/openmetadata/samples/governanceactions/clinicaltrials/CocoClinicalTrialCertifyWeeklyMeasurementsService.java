@@ -105,8 +105,8 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
             {
                 messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(surveyActionServiceName,
                                                                                                         CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
-                completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
-                outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
+                completionStatus = SurveyActionGuard.MISSING_CERTIFICATION_TYPE.getCompletionStatus();
+                outputGuards.add(SurveyActionGuard.MISSING_CERTIFICATION_TYPE.getName());
             }
             else if (stewardGUID == null)
             {

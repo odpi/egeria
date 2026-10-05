@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.spring;
 
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -92,6 +94,36 @@ public class SpringRESTClientConnector extends RESTClientConnector
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+    }
+
+
+    /**
+     * Initialize the connector and apply the request timeout from its connection - see
+     * {@link #getRequestTimeoutSeconds()}.  The REST template's default request factory waits for a response
+     * for ever, so a call to a server that never answered hung its caller.
+     *
+     * @param connectorInstanceId unique id for the connector instance useful for messages etc
+     * @param connectionDetails POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException the connector could not be initialized
+     */
+    @Override
+    public void initialize(String     connectorInstanceId,
+                           Connection connectionDetails) throws ConnectorCheckedException
+    {
+        super.initialize(connectorInstanceId, connectionDetails);
+
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+
+        requestFactory.setConnectTimeout(java.time.Duration.ofSeconds(30));
+
+        long requestTimeoutSeconds = getRequestTimeoutSeconds();
+
+        if (requestTimeoutSeconds > 0)
+        {
+            requestFactory.setReadTimeout(java.time.Duration.ofSeconds(requestTimeoutSeconds));
+        }
+
+        restTemplate.setRequestFactory(requestFactory);
     }
 
 

@@ -15,6 +15,17 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors')
+    testRuntimeOnly project(':open-metadata-implementation:user-security:token-manager')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    testImplementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testRuntimeOnly 'com.fasterxml.jackson.core:jackson-databind'
+    testRuntimeOnly 'org.slf4j:slf4j-api'
 
 }
 
@@ -22,4 +33,9 @@ description = 'JDK REST Client Connector'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    scanForTestClasses = false
 }
