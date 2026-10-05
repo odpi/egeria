@@ -3505,6 +3505,94 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Retrieve the engine actions that are approved to run on a governance engine and that no engine host has
+     * claimed yet.  An engine host sweeps for these every few seconds in case it missed the event announcing
+     * them.  It used to page through every active engine action on the server - with their action targets and
+     * requesters - and discard the ones for other engines and in other states.  Both selections are now pushed
+     * into the repository.
+     *
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of engine action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public List<B> getApprovedEngineActions(String       userId,
+                                            String       governanceEngineGUID,
+                                            int          startFrom,
+                                            int          pageSize,
+                                            Date         effectiveTime,
+                                            String       methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String guidParameterName = "governanceEngineGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        conditions.add(this.getExactStringCondition(OpenMetadataProperty.EXECUTOR_ENGINE_GUID.name,
+                                                    governanceEngineGUID,
+                                                    methodName));
+
+        PropertyCondition statusCondition = new PropertyCondition();
+
+        statusCondition.setNestedConditions(this.getActivityStatusSearchProperties(List.of(ActivityStatus.APPROVED), methodName));
+
+        conditions.add(statusCondition);
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
+                                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                              null,
+                                                                              searchProperties,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              false,
+                                                                              false,
+                                                                              startFrom,
+                                                                              queryPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+        if (retrievedEntities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail nextEngineAction : retrievedEntities)
+            {
+                B bean = this.getReadableEngineAction(userId, nextEngineAction, effectiveTime, methodName);
+
+                if (bean != null)
+                {
+                    results.add(bean);
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in progress and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *

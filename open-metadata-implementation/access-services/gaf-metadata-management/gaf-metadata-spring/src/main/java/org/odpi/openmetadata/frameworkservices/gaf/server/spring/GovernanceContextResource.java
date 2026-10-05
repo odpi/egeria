@@ -72,6 +72,34 @@ public class GovernanceContextResource
 
 
     /**
+     * Retrieve the engine actions that are approved to run on a governance engine and that no engine host has
+     * claimed yet.  An engine host sweeps for these in case it missed the event announcing them.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     *
+     * @return list of engine action elements or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @GetMapping(path = "/governance-engines/{governanceEngineGUID}/approved-engine-actions")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public EngineActionElementsResponse getApprovedEngineActions(@PathVariable String serverName,
+                                                                 @PathVariable String userId,
+                                                                 @PathVariable String governanceEngineGUID,
+                                                                 @RequestParam int    startFrom,
+                                                                 @RequestParam int    pageSize)
+    {
+        return restAPI.getApprovedEngineActions(serverName, userId, governanceEngineGUID, startFrom, pageSize);
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *

@@ -56,12 +56,25 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
 
 
     /**
+     * The YAML secrets file can save and delete secrets collections.
+     *
+     * @return true
+     */
+    @Override
+    public boolean isSecretsCollectionUpdateSupported()
+    {
+        return true;
+    }
+
+
+    /**
      * Save the requested secrets collection in the secrets store.
      *
      * @param collectionName           collectionName for the save
      * @param newSecretsCollection associated collection details
      * @throws ConnectorCheckedException a problem with the connector
      */
+    @Override
     public void saveSecretsCollection(String            collectionName,
                                       SecretsCollection newSecretsCollection) throws ConnectorCheckedException
     {
@@ -107,6 +120,7 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
      * @param collectionName name for the lookup
      * @throws ConnectorCheckedException a problem with the connector
      */
+    @Override
     public void deleteSecretsCollection(String collectionName) throws ConnectorCheckedException
     {
         final String methodName = "deleteSecretsCollection";

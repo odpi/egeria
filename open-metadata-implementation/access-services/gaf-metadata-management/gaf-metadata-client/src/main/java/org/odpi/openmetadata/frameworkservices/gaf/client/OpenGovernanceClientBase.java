@@ -464,6 +464,47 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient implements Go
 
 
     /**
+     * Retrieve the engine actions that are approved to run on a governance engine and that no engine host has
+     * claimed yet.  An engine host uses this to find engine actions whose announcing event it missed.
+     *
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     * @return list of engine action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public List<EngineActionElement> getApprovedEngineActions(String userId,
+                                                              String governanceEngineGUID,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "getApprovedEngineActions";
+        final String guidParameterName = "governanceEngineGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-context-service/users/{1}/governance-engines/{2}/approved-engine-actions?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
+
+        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          governanceEngineGUID,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *

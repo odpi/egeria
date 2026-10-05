@@ -38,6 +38,28 @@ public interface GovernanceCompletionInterface
 
 
     /**
+     * Retrieve the engine actions that are approved to run on a governance engine and that no engine host has
+     * claimed yet.  An engine host uses this to find engine actions whose announcing event it missed.
+     *
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     * @return list of engine action elements
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    List<EngineActionElement> getApprovedEngineActions(String userId,
+                                                       String governanceEngineGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
      * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *

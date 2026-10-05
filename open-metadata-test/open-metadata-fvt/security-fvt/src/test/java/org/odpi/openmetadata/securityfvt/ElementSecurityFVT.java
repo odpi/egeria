@@ -33,9 +33,11 @@ import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.OWNED_ZONE
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.RESTRICTED_ZONE;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.STEWARD_USER_ID;
 import static org.odpi.openmetadata.securityfvt.OMAGPlatformExtension.UNLISTED_ZONE;
+import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_ANCHOR_ACCESS;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_ELEMENT_ACCESS;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.UNAUTHORIZED_INSTANCE_CREATE;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.assertRefused;
+import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.createAnchoredCollection;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.createCollection;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.deleteElement;
 import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.getElement;
@@ -68,8 +70,8 @@ import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.zonesOf;
  * employee and the digital account are in no group; they differ in account type, which is what the
  * dynamic groups turn on.
  * <br><br>
- * Every element is created as its own anchor, so the decision is always made on the element's own
- * classifications; the anchor-based methods of the interface are not exercised here.
+ * Elements are created as their own anchor, so the decision is made on the element's own classifications -
+ * except in the test of an anchored member, which has no zones of its own and so is decided on its anchor's.
  */
 @ExtendWith(OMAGPlatformExtension.class)
 public class ElementSecurityFVT
@@ -181,6 +183,40 @@ public class ElementSecurityFVT
 
         assertFalse(searchFinds(client, userId, element),
                     userId + " should not find the element in a search because " + why);
+    }
+
+
+    /**
+     * An element with no zones of its own is decided on its anchor's zones.  A user who may not read the anchor
+     * is refused an explicit read of the member, with the anchor named - and a search leaves the member out
+     * without complaint, as it does for an element refused on its own zones.  The anchor check used to refuse
+     * the search too, so one such member in a result set failed the whole search; the engine host's sweep for
+     * missed engine actions failed that way on an action target anchored to a secured element.
+     *
+     * @throws Exception unexpected failure in the test
+     */
+    @Test
+    void aMemberOfARestrictedAnchorIsFilteredFromSearches() throws Exception
+    {
+        CreatedElement anchor = create(stewardClient, STEWARD_USER_ID, "restricted-anchor", List.of(RESTRICTED_ZONE), null);
+        CreatedElement member = createAnchoredCollection(stewardClient, STEWARD_USER_ID, "anchored-member", anchor.guid());
+
+        createdGUIDs.add(0, member.guid());
+
+        assertNull(zonesOf(getElement(stewardClient, STEWARD_USER_ID, member.guid())),
+                   "The member should have no zones of its own, so its anchor's zones decide");
+
+        assertVisibleTo(stewardClient, STEWARD_USER_ID, member, "the steward may read its anchor");
+
+        assertRefused(UNAUTHORIZED_ANCHOR_ACCESS,
+                      EMPLOYEE_USER_ID,
+                      () -> getElement(employeeClient, EMPLOYEE_USER_ID, member.guid()),
+                      EMPLOYEE_USER_ID + " reading the member explicitly, which should be refused because its anchor is restricted,");
+
+        boolean found = assertDoesNotThrow(() -> searchFinds(employeeClient, EMPLOYEE_USER_ID, member),
+                                           "A search that matches a member of a restricted anchor should leave it out, not fail");
+
+        assertFalse(found, EMPLOYEE_USER_ID + " should not find the member in a search because its anchor is restricted");
     }
 
 

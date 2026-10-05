@@ -536,22 +536,36 @@ public abstract class GovernanceEngineHandler
 
     /**
      * Look for engine actions that were skipped - typically because the events were missed.  This runs every few
-     * seconds, so an error that stops it is logged when it first happens and then only if it changes.  (The
-     * metadata server leaves out of each page any engine action this engine's user cannot read in full, so one such
-     * action no longer stops the sweep.)
+     * seconds, so it only asks for the engine actions approved to run on this engine that nobody has claimed:
+     * it used to read every active engine action on the server, with their targets, and discard the rest.
+     * Claiming an action takes it out of that set, so a later page can start beyond one or two actions that are
+     * still waiting - the next sweep picks them up.
+     * <br>
+     * An error that stops the sweep is logged when it first happens and then only if it changes.  (The metadata
+     * server leaves out of each page any engine action this engine's user cannot read in full, so one such action
+     * does not stop the sweep.)
      */
     public void startMissedEngineActions()
     {
         final String methodName = "startMissedEngineActions";
+
+        if (governanceEngineGUID == null)
+        {
+            /*
+             * The engine's configuration has not been retrieved yet, so there is nothing to look for.
+             */
+            return;
+        }
 
         int startFrom = 0;
         int pageSize  = 10;
 
         try
         {
-            List<EngineActionElement> activeEngineActions = engineActionClient.getActiveEngineActions(engineUserId,
-                                                                                                      startFrom,
-                                                                                                      pageSize);
+            List<EngineActionElement> activeEngineActions = engineActionClient.getApprovedEngineActions(engineUserId,
+                                                                                                        governanceEngineGUID,
+                                                                                                        startFrom,
+                                                                                                        pageSize);
 
             while (activeEngineActions != null)
             {
@@ -578,9 +592,10 @@ public abstract class GovernanceEngineHandler
                 }
 
                 startFrom           = startFrom + pageSize;
-                activeEngineActions = engineActionClient.getActiveEngineActions(engineUserId,
-                                                                                startFrom,
-                                                                                pageSize);
+                activeEngineActions = engineActionClient.getApprovedEngineActions(engineUserId,
+                                                                                  governanceEngineGUID,
+                                                                                  startFrom,
+                                                                                  pageSize);
             }
 
             lastSweepError = null;

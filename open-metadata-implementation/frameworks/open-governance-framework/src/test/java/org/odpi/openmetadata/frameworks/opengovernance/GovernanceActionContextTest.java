@@ -154,6 +154,12 @@ public class GovernanceActionContextTest
         }
 
         @Override
+        public List<EngineActionElement> getApprovedEngineActions(String userId, String governanceEngineGUID, int startFrom, int pageSize)
+        {
+            return null;
+        }
+
+        @Override
         public List<EngineActionElement> getActiveClaimedEngineActions(String userId, String governanceEngineGUID, int startFrom, int pageSize)
         {
             return null;

@@ -204,6 +204,15 @@ public enum OCFErrorCode implements ExceptionMessageSet
                 "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
+     * OCF-CONNECTOR-400-012 - The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected
+     */
+    SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED(400, "OCF-CONNECTOR-400-012",
+                "The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected",
+                "The connector does not support changes to its secrets collections.  Nothing has been changed.",
+                "Use a secrets store whose connector supports saving secrets collections, such as the YAML secrets file connector.  Calling isSecretsCollectionUpdateSupported() before the request avoids this error.",
+                "https://egeria-project.org/frameworks/ocf/overview/"),
+
+    /**
      * OCF-CONNECTION-500-001 - OCF method detected an unexpected exception
      */
     CAUGHT_EXCEPTION(500, "OCF-CONNECTION-500-001",

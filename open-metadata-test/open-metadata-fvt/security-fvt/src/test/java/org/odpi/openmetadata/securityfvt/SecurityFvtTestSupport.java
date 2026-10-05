@@ -68,6 +68,7 @@ final class SecurityFvtTestSupport
     static final String UNAUTHORIZED_SERVER_ACCESS   = "OPEN-METADATA-SECURITY-403-002";
     static final String UNAUTHORIZED_SERVICE_ACCESS  = "OPEN-METADATA-SECURITY-403-003";
     static final String UNAUTHORIZED_SERVICE_OPERATION_ACCESS = "OPEN-METADATA-SECURITY-403-006";
+    static final String UNAUTHORIZED_ANCHOR_ACCESS   = "OPEN-METADATA-SECURITY-403-007";
     static final String UNAUTHORIZED_INSTANCE_CREATE = "OPEN-METADATA-SECURITY-403-008";
     static final String UNKNOWN_USER                 = "OPEN-METADATA-SECURITY-403-017";
     static final String UNAUTHORIZED_ELEMENT_ACCESS  = "OPEN-METADATA-SECURITY-403-020";
@@ -323,6 +324,45 @@ final class SecurityFvtTestSupport
                                                           OpenMetadataType.COLLECTION.typeName,
                                                           newElementOptions,
                                                           initialClassifications.isEmpty() ? null : initialClassifications,
+                                                          new NewElementProperties(properties),
+                                                          null);
+
+        return new CreatedElement(guid, qualifiedName);
+    }
+
+
+    /**
+     * Create a collection that is a member of another, and anchored to it.  It has no zones of its own, so the
+     * security decisions about it are made on its anchor's zones.
+     *
+     * @param client client acting as the creator
+     * @param userId user to create as
+     * @param tag short label to make the element's names recognisable
+     * @param anchorGUID collection to anchor the new collection to
+     * @return the new element's GUID and qualified name
+     * @throws Exception creation failed - including because it was refused
+     */
+    static CreatedElement createAnchoredCollection(EgeriaOpenMetadataStoreClient client,
+                                                   String                        userId,
+                                                   String                        tag,
+                                                   String                        anchorGUID) throws Exception
+    {
+        String qualifiedName = "SecurityFVT:" + tag + ":" + UUID.randomUUID();
+
+        ElementProperties properties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Security FVT " + tag);
+
+        NewElementOptions newElementOptions = new NewElementOptions();
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(anchorGUID);
+        newElementOptions.setParentGUID(anchorGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+        newElementOptions.setParentAtEnd1(true);
+
+        String guid = client.createMetadataElementInStore(userId,
+                                                          OpenMetadataType.COLLECTION.typeName,
+                                                          newElementOptions,
+                                                          null,
                                                           new NewElementProperties(properties),
                                                           null);
 

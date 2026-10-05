@@ -893,6 +893,57 @@ public class OpenGovernanceRESTServices
 
 
     /**
+     * Retrieve the engine actions that are approved to run on a governance engine and that no engine host has
+     * claimed yet.  An engine host sweeps for these in case it missed the event announcing them.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId userId of caller
+     * @param governanceEngineGUID unique identifier of governance engine
+     * @param startFrom starting from position
+     * @param pageSize maximum elements to return
+     *
+     * @return list of engine action elements or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public EngineActionElementsResponse getApprovedEngineActions(String serverName,
+                                                                 String userId,
+                                                                 String governanceEngineGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize)
+    {
+        final String methodName = "getApprovedEngineActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        EngineActionElementsResponse response = new EngineActionElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
+
+            response.setElements(handler.getApprovedEngineActions(userId,
+                                                                  governanceEngineGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  new Date(),
+                                                                  methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *
