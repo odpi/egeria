@@ -4,6 +4,7 @@ package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
+import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
@@ -453,7 +455,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                              String                       secretsStoreGUID,
                                              SecretsCollectionRequestBody requestBody)
     {
-        final String methodName    = "createClientSideSecret";
+        final String methodName    = "saveClientSideSecret";
         final String parameterName = "requestBody.secretsCollection.collectionName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
@@ -477,13 +479,16 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if ((requestBody.getSecretsCollection() != null) && (requestBody.getSecretsCollection().getCollectionName() != null))
                 {
-                    if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+                    YAMLSecretsFileConnector yamlSecretsFileConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
+
+                    try
                     {
-                        connector.start();
-
+                        yamlSecretsFileConnector.start();
                         yamlSecretsFileConnector.saveSecretsCollection(requestBody.getSecretsCollection().getCollectionName(), requestBody.getSecretsCollection());
-
-                        connector.disconnect();
+                    }
+                    finally
+                    {
+                        yamlSecretsFileConnector.disconnect();
                     }
                 }
                 else
@@ -525,7 +530,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                NameRequestBody requestBody)
     {
         final String methodName    = "deleteClientSideSecret";
-        final String parameterName = "requestBody.secretsCollection.collectionName";
+        final String parameterName = "requestBody.name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -548,13 +553,16 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getName() != null)
                 {
-                    if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+                    YAMLSecretsFileConnector yamlSecretsFileConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
+
+                    try
                     {
-                        connector.start();
-
+                        yamlSecretsFileConnector.start();
                         yamlSecretsFileConnector.deleteSecretsCollection(requestBody.getName());
-
-                        connector.disconnect();
+                    }
+                    finally
+                    {
+                        yamlSecretsFileConnector.disconnect();
                     }
                 }
                 else
@@ -574,6 +582,44 @@ public class AutomatedCurationRESTServices extends TokenController
 
         restCallLogger.logRESTCallReturn(token, response);
         return response;
+    }
+
+
+    /**
+     * Return the asset's connector as a secrets store that can save and delete secrets collections.  Only the
+     * YAML secrets file connector can.  Any other connector - or none - is an error: the save and delete calls
+     * used to skip it silently and report success.
+     *
+     * @param connector connector for the secrets store asset
+     * @param secretsStoreGUID unique identifier of the secrets store asset
+     * @param methodName calling method
+     * @return connector that can write secrets collections
+     * @throws InvalidParameterException the asset's connector cannot write secrets collections
+     */
+    static YAMLSecretsFileConnector getWritableSecretsStore(Connector connector,
+                                                            String    secretsStoreGUID,
+                                                            String    methodName) throws InvalidParameterException
+    {
+        final String parameterName = "secretsStoreGUID";
+
+        if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+        {
+            return yamlSecretsFileConnector;
+        }
+
+        String connectorClassName = "<none>";
+
+        if (connector != null)
+        {
+            connectorClassName = connector.getClass().getName();
+        }
+
+        throw new InvalidParameterException(OMAGCommonErrorCode.CONNECTOR_DOES_NOT_SUPPORT_OPERATION.getMessageDefinition(methodName,
+                                                                                                                       secretsStoreGUID,
+                                                                                                                       connectorClassName),
+                                            AutomatedCurationRESTServices.class.getName(),
+                                            methodName,
+                                            parameterName);
     }
 
 

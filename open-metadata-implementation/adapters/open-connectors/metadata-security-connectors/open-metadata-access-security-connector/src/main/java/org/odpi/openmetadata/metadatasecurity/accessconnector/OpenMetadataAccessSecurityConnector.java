@@ -1457,8 +1457,8 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
             throwUnauthorizedAnchorAccess(userId,
                                           AccessOperation.READ.getName(),
-                                          anchorEntity.getGUID(),
                                           anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
                                           methodName);
         }
     }
@@ -2376,8 +2376,8 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
             throwUnauthorizedAnchorAccess(userId,
                                            AccessOperation.CLASSIFY.getName(),
-                                           anchorEntity.getGUID(),
                                            anchorEntity.getType().getTypeDefName(),
+                                           anchorEntity.getGUID(),
                                            methodName);
         }
     }
@@ -2442,8 +2442,8 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
             throwUnauthorizedAnchorAccess(userId,
                                           AccessOperation.DECLASSIFY.getName(),
-                                          anchorEntity.getGUID(),
                                           anchorEntity.getType().getTypeDefName(),
+                                          anchorEntity.getGUID(),
                                           methodName);
         }
     }

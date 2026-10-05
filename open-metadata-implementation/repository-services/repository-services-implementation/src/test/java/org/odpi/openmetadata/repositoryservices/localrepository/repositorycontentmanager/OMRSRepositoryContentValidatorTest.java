@@ -10,7 +10,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
@@ -21,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.expectThrows;
 
@@ -290,5 +296,52 @@ public class OMRSRepositoryContentValidatorTest
 
         assertTrue((! error.getReportedErrorMessage().contains("OMRS-REPOSITORY-400-084")),
                    "ordinary text was rejected as containing a null character.  Actual: " + error.getReportedErrorMessage());
+    }
+
+
+    /**
+     * Retrieving an attribute type by its identifiers must look it up by GUID and name.  The validator used to pass
+     * the GUID parameter's name as the GUID and the GUID as the name, so every deleteAttributeTypeDef (and
+     * reIdentifyAttributeTypeDef) failed with "unknown TypeDef" for an enum the server listed.  This test uses a real
+     * content manager - the metadata collection tests mock the validator, so they never reached this code.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testAttributeTypeDefRetrievedByItsIdentifiers() throws Exception
+    {
+        AuditLog                     auditLog       = new AuditLog(null, 1, ComponentDevelopmentStatus.IN_DEVELOPMENT, null, null, null);
+        OMRSRepositoryContentManager contentManager = new OMRSRepositoryContentManager("testUserId", auditLog);
+        EnumDef                      enumDef        = new EnumDef();
+
+        enumDef.setGUID("118441be-6e03-4442-96c6-e431f75fcb3f");
+        enumDef.setName("CuisineType");
+        enumDef.setVersion(1);
+        enumDef.setVersionName("1.0");
+
+        contentManager.addAttributeTypeDef("unittest", enumDef);
+
+        OMRSRepositoryContentValidator validator = new OMRSRepositoryContentValidator(contentManager);
+
+        AttributeTypeDef retrieved = validator.getValidAttributeTypeDefFromIds("unittest",
+                                                                               "obsoleteTypeDefGUID",
+                                                                               "obsoleteTypeDefName",
+                                                                               enumDef.getGUID(),
+                                                                               enumDef.getName(),
+                                                                               "deleteAttributeTypeDef");
+
+        assertSame(retrieved, contentManager.getAttributeTypeDef("unittest", enumDef.getGUID(), "test"));
+        assertEquals(retrieved.getName(), "CuisineType");
+
+        /*
+         * A name that does not belong to the GUID is still rejected.
+         */
+        expectThrows(InvalidParameterException.class,
+                     () -> validator.getValidAttributeTypeDefFromIds("unittest",
+                                                                     "obsoleteTypeDefGUID",
+                                                                     "obsoleteTypeDefName",
+                                                                     enumDef.getGUID(),
+                                                                     "SomeOtherEnum",
+                                                                     "deleteAttributeTypeDef"));
     }
 }

@@ -27,7 +27,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 68 | 635 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Exception messages | 68 | 636 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
 | Audit log messages | 106 | 1014 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
@@ -82,7 +82,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
 | [Frameworks](frameworks) | 11 | 127 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
-| [Common Services](common-services) | 11 | 183 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
+| [Common Services](common-services) | 11 | 184 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 41 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
@@ -196,7 +196,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMAG-ADMIN-` | Audit log messages | 8 | [OMAGAdminAuditCode](admin-services/OMAGAdminAuditCode.md) |
 | `OMAG-ADMIN-` | Exception messages | 45 | [OMAGAdminErrorCode](admin-services/OMAGAdminErrorCode.md) |
 | `OMAG-COMMON-` | Audit log messages | 2 | [OMAGCommonAuditCode](common-services/OMAGCommonAuditCode.md) |
-| `OMAG-COMMON-` | Exception messages | 32 | [OMAGCommonErrorCode](common-services/OMAGCommonErrorCode.md) |
+| `OMAG-COMMON-` | Exception messages | 33 | [OMAGCommonErrorCode](common-services/OMAGCommonErrorCode.md) |
 | `OMAG-CONNECTORS-` | Audit log messages | 10 | [OMAGConnectorAuditCode](connectors/system-connectors/OMAGConnectorAuditCode.md) |
 | `OMAG-CONNECTORS-` | Exception messages | 3 | [OMAGConnectorErrorCode](connectors/system-connectors/OMAGConnectorErrorCode.md) |
 | `OMAG-GENERIC-HANDLERS-` | Audit log messages | 15 | [GenericHandlersAuditCode](common-services/GenericHandlersAuditCode.md) |

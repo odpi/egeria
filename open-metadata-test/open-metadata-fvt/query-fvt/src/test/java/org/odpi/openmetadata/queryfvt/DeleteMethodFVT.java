@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.EndMatchCriteria;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
@@ -194,6 +195,122 @@ public class DeleteMethodFVT
         {
             QueryFvtTestSupport.purgeElement(openMetadataStore, targetGUID);
             QueryFvtTestSupport.purgeElement(openMetadataStore, otherGUID);
+        }
+    }
+
+
+    /**
+     * Archiving an asset with anchored members archives all of them, even when the caller does not ask for
+     * lineage.  The archive used to classify each member as a Memento and then rename it - and the rename's read
+     * could not see a Memento without forLineage - so it failed after archiving only the endpoint, leaving the
+     * connection and the asset live.  The asset itself, passed in as OpenMetadataRoot, was never renamed at all.
+     *
+     * @throws Exception problem talking to the server
+     */
+    @Test
+    void lookForLineageArchivesAssetWithAnchoredMembers() throws Exception
+    {
+        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext();
+        CollectionClient      collectionClient  = connectorContext.getCollectionClient();
+        OpenMetadataStore      openMetadataStore = connectorContext.getOpenMetadataStore();
+        PropertyHelper         propertyHelper    = new PropertyHelper();
+
+        String assetQualifiedName      = QueryFvtTestSupport.newQualifiedName("ArchiveAsset");
+        String connectionQualifiedName = QueryFvtTestSupport.newQualifiedName("ArchiveConnection");
+        String endpointQualifiedName   = QueryFvtTestSupport.newQualifiedName("ArchiveEndpoint");
+        String otherQualifiedName      = QueryFvtTestSupport.newQualifiedName("ArchiveLineageOther");
+
+        String assetGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.CSV_FILE.typeName,
+                                                                          null,
+                                                                          null,
+                                                                          true,
+                                                                          null,
+                                                                          this.getQualifiedNameProperties(propertyHelper, assetQualifiedName),
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          true);
+        String connectionGUID = null;
+        String endpointGUID   = null;
+        String otherGUID      = null;
+
+        try
+        {
+            connectionGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.CONNECTION.typeName,
+                                                                            null,
+                                                                            assetGUID,
+                                                                            false,
+                                                                            null,
+                                                                            this.getQualifiedNameProperties(propertyHelper, connectionQualifiedName),
+                                                                            assetGUID,
+                                                                            OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                                            null,
+                                                                            true);
+            endpointGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.ENDPOINT.typeName,
+                                                                          null,
+                                                                          assetGUID,
+                                                                          false,
+                                                                          null,
+                                                                          this.getQualifiedNameProperties(propertyHelper, endpointQualifiedName),
+                                                                          connectionGUID,
+                                                                          OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                          null,
+                                                                          true);
+
+            NewElementOptions newElementOptions = new NewElementOptions();
+            newElementOptions.setIsOwnAnchor(true);
+
+            CollectionProperties otherProperties = new CollectionProperties();
+            otherProperties.setQualifiedName(otherQualifiedName);
+            otherProperties.setDisplayName("query-fvt Archive Lineage Other Collection");
+
+            otherGUID = collectionClient.createCollection(newElementOptions, null, otherProperties, null);
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                           assetGUID,
+                                                           otherGUID,
+                                                           null,
+                                                           null,
+                                                           null);
+
+            /*
+             * The lineage relationship sends the delete down the archive path.  forLineage is left false, as a
+             * caller would normally leave it.
+             */
+            DeleteOptions deleteOptions = new DeleteOptions();
+            deleteOptions.setDeleteMethod(DeleteMethod.LOOK_FOR_LINEAGE);
+            deleteOptions.setCascadedDelete(true);
+
+            openMetadataStore.deleteMetadataElementInStore(assetGUID, deleteOptions);
+
+            GetOptions lineageOptions = new GetOptions();
+            lineageOptions.setForLineage(true);
+
+            for (String guid : List.of(assetGUID, connectionGUID, endpointGUID))
+            {
+                OpenMetadataElement archived = openMetadataStore.getMetadataElementByGUID(guid, lineageOptions);
+
+                assertTrue(archived != null, "Archived element " + guid + " cannot be read with forLineage");
+                assertTrue(hasMementoClassification(archived),
+                           archived.getType().getTypeName() + " " + guid + " was not classified as a Memento");
+
+                String qualifiedName = propertyHelper.getStringProperty("DeleteMethodFVT",
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        archived.getElementProperties(),
+                                                                        "lookForLineageArchivesAssetWithAnchoredMembers");
+
+                assertTrue((qualifiedName != null) && (qualifiedName.contains("_archivedOn_")),
+                           archived.getType().getTypeName() + " " + guid + " was not renamed: " + qualifiedName);
+            }
+        }
+        finally
+        {
+            QueryFvtTestSupport.purgeElement(openMetadataStore, assetGUID);
+
+            if (otherGUID != null)
+            {
+                QueryFvtTestSupport.purgeElement(openMetadataStore, otherGUID);
+            }
         }
     }
 
@@ -482,5 +599,11 @@ public class DeleteMethodFVT
         }
 
         return false;
+    }
+
+
+    private NewElementProperties getQualifiedNameProperties(PropertyHelper propertyHelper, String qualifiedName)
+    {
+        return new NewElementProperties(propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName));
     }
 }

@@ -286,6 +286,15 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                 "https://egeria-project.org/services/ffdc-services/"),
 
     /**
+     * OMAG-COMMON-400-034 - The {0} operation cannot be performed on asset {1} because its connector, {2}, does not support it
+     */
+    CONNECTOR_DOES_NOT_SUPPORT_OPERATION(400, "OMAG-COMMON-400-034",
+                "The {0} operation cannot be performed on asset {1} because its connector, {2}, does not support it",
+                "The system cannot perform the request because the asset's connector does not provide the operation.  Nothing has been changed.",
+                "Check that the asset is the one intended, and that its connection names a connector that supports this operation.  For example, only a YAML secrets file connector can save or delete a secrets collection.",
+                "https://egeria-project.org/services/ffdc-services/"),
+
+    /**
      * OMAG-COMMON-404-001 - The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}
      */
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",

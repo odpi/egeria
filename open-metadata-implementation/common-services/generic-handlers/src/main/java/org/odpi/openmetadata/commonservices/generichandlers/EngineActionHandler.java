@@ -25,6 +25,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 /**
@@ -33,6 +36,8 @@ import java.util.*;
  */
 public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
+    private static final Logger log = LoggerFactory.getLogger(EngineActionHandler.class);
+
     /**
      * Serializes the claiming of engine actions - see claimEngineAction.
      */
@@ -2059,6 +2064,42 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
     /**
+     * Return an engine action for a list of results, or null if the caller is not allowed to read all of it.
+     * Building an engine action reads its action targets and requesters, and a caller may be refused one of
+     * those - for example a target anchored to an element in a zone the caller cannot see.  That refusal used to
+     * fail the whole query, so one unreadable engine action hid every other one on the same page.  An engine host
+     * sweeping for missed engine actions every few seconds hit the same page, and the same refusal, every time and
+     * never reached the pages after it.  The engine action is now left out of the results instead.
+     *
+     * @param userId identifier of calling user
+     * @param primaryEntity entity of the engine action request
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return bean or null
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private B getReadableEngineAction(String       userId,
+                                      EntityDetail primaryEntity,
+                                      Date         effectiveTime,
+                                      String       methodName) throws InvalidParameterException,
+                                                                      PropertyServerException
+    {
+        try
+        {
+            return this.getEngineAction(userId, primaryEntity, effectiveTime, methodName);
+        }
+        catch (UserNotAuthorizedException notAuthorized)
+        {
+            log.debug("Engine action {} left out of the results of {} because user {} cannot read all of it: {}",
+                      primaryEntity.getGUID(), methodName, userId, notAuthorized.getMessage());
+
+            return null;
+        }
+    }
+
+
+    /**
      * Request the status of an executing engine action request.
      *
      * @param userId identifier of calling user
@@ -3278,7 +3319,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
+                B bean = this.getReadableEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3448,7 +3489,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
+                B bean = this.getReadableEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3548,7 +3589,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail nextEngineAction : retrievedEntities)
             {
-                B bean = this.getEngineAction(userId, nextEngineAction, effectiveTime, methodName);
+                B bean = this.getReadableEngineAction(userId, nextEngineAction, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3622,7 +3663,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail entityDetail : entities)
             {
-                B bean = this.getEngineAction(userId, entityDetail, effectiveTime, methodName);
+                B bean = this.getReadableEngineAction(userId, entityDetail, effectiveTime, methodName);
 
                 if (bean != null)
                 {
@@ -3703,7 +3744,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (EntityDetail entityDetail : entities)
             {
-                B bean = this.getEngineAction(userId, entityDetail, effectiveTime, methodName);
+                B bean = this.getReadableEngineAction(userId, entityDetail, effectiveTime, methodName);
 
                 if (bean != null)
                 {

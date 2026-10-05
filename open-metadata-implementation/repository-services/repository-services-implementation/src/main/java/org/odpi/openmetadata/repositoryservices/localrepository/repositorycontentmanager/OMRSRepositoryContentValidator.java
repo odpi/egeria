@@ -874,7 +874,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         try
         {
-            return repositoryContentManager.getAttributeTypeDef(sourceName, guidParameterName, guid, methodName);
+            return repositoryContentManager.getAttributeTypeDef(sourceName, guid, name, methodName);
         }
         catch (TypeErrorException error)
         {

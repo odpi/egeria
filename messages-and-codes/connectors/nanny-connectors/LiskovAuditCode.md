@@ -32,7 +32,7 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 | [LISKOV-DATA-HUB-MANAGER-0018](#liskov-data-hub-manager-0018) | INFO | The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4}) |
 | [LISKOV-DATA-HUB-MANAGER-0019](#liskov-data-hub-manager-0019) | INFO | The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5}) |
 | [LISKOV-DATA-HUB-MANAGER-0020](#liskov-data-hub-manager-0020) | INFO | The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5} |
-| [LISKOV-DATA-HUB-MANAGER-0021](#liskov-data-hub-manager-0021) | INFO | The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} |
+| [LISKOV-DATA-HUB-MANAGER-0021](#liskov-data-hub-manager-0021) | INFO | The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} because {6} |
 | [LISKOV-DATA-HUB-MANAGER-0022](#liskov-data-hub-manager-0022) | INFO | The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4}) |
 
 ----
@@ -270,13 +270,13 @@ No action is required.  This message is for monitoring the set up of the catalog
 
 ### LISKOV-DATA-HUB-MANAGER-0021
 
-> The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}
+> The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} because {6}
 
 |  |  |
 |---|---|
 | **Java constant** | `LiskovAuditCode.STARTING_SURVEY` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}` |
 
 **System action**
 
