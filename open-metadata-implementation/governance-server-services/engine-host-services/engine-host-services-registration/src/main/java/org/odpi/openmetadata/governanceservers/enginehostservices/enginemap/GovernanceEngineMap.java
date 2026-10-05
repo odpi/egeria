@@ -376,10 +376,23 @@ public class GovernanceEngineMap
 
     /**
      * Shutdown all engines ...
+     * <br><br>
+     * The handlers are copied under the map's lock and shut down outside it.  Shutting a handler down
+     * disconnects its event client, which waits for the client connector's lock - and that connector holds its
+     * own lock while it delivers an event, which calls back into this map for the engine handler.  Shutting down
+     * while holding the map's lock therefore deadlocked whenever an event arrived during the shutdown: the server
+     * shutdown request never returned.
      */
-    public synchronized void shutdown()
+    public void shutdown()
     {
-        for (GovernanceEngineHandlerProperties handler : governanceEngineHandlerMap.values())
+        List<GovernanceEngineHandlerProperties> handlers;
+
+        synchronized (this)
+        {
+            handlers = new ArrayList<>(governanceEngineHandlerMap.values());
+        }
+
+        for (GovernanceEngineHandlerProperties handler : handlers)
         {
             if (handler != null)
             {
