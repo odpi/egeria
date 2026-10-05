@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,6 +67,8 @@ public class MissedEngineActionSweepTest
             {
             }
         };
+
+        governanceEngineHandler.governanceEngineGUID = "test-governance-engine-guid";
     }
 
 
@@ -77,7 +80,7 @@ public class MissedEngineActionSweepTest
     @Test
     public void testRepeatedErrorIsLoggedOnce() throws Exception
     {
-        when(engineActionClient.getActiveEngineActions(anyString(), anyInt(), anyInt()))
+        when(engineActionClient.getApprovedEngineActions(anyString(), anyString(), anyInt(), anyInt()))
                 .thenThrow(new IllegalStateException("metadata store unavailable"));
 
         for (int sweep = 0; sweep < 5; sweep++)
@@ -99,7 +102,7 @@ public class MissedEngineActionSweepTest
     {
         IllegalStateException unavailable = new IllegalStateException("metadata store unavailable");
 
-        when(engineActionClient.getActiveEngineActions(anyString(), anyInt(), anyInt()))
+        when(engineActionClient.getApprovedEngineActions(anyString(), anyString(), anyInt(), anyInt()))
                 .thenThrow(unavailable)                                          /* logged */
                 .thenThrow(unavailable)                                          /* not logged */
                 .thenThrow(new IllegalArgumentException("something different"))  /* logged */
@@ -112,5 +115,42 @@ public class MissedEngineActionSweepTest
         }
 
         verify(auditLog, times(3)).logException(anyString(), any(AuditLogMessageDefinition.class), any(Throwable.class));
+    }
+
+
+    /**
+     * The sweep asks for the engine actions approved to run on its own engine, not for every active engine action.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testSweepAsksOnlyForThisEnginesApprovedActions() throws Exception
+    {
+        /*
+         * Null is the end of the results.  (Mockito would otherwise answer with an empty list, which only means a
+         * page was filtered out, so the sweep would keep paging.)
+         */
+        when(engineActionClient.getApprovedEngineActions(anyString(), anyString(), anyInt(), anyInt())).thenReturn(null);
+
+        governanceEngineHandler.startMissedEngineActions();
+
+        verify(engineActionClient, times(1)).getApprovedEngineActions("testengineuser", "test-governance-engine-guid", 0, 10);
+        verify(engineActionClient, never()).getActiveEngineActions(anyString(), anyInt(), anyInt());
+    }
+
+
+    /**
+     * Before the engine's configuration has been retrieved there is no engine to ask about, so nothing is queried.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testNoSweepBeforeEngineIsKnown() throws Exception
+    {
+        governanceEngineHandler.governanceEngineGUID = null;
+
+        governanceEngineHandler.startMissedEngineActions();
+
+        verify(engineActionClient, never()).getApprovedEngineActions(anyString(), anyString(), anyInt(), anyInt());
     }
 }

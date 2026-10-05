@@ -1455,11 +1455,27 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                 return;
             }
 
-            throwUnauthorizedAnchorAccess(userId,
-                                          AccessOperation.READ.getName(),
-                                          anchorEntity.getType().getTypeDefName(),
-                                          anchorEntity.getGUID(),
-                                          methodName);
+            /*
+             * As for an element refused on its own zones: an explicit read is refused, naming the anchor, while
+             * a search result is filtered out.  The anchor's refusal used to be reported for search results
+             * too, so every member of a secured anchor that a search came across was logged as an unauthorized
+             * access attempt.
+             */
+            if (isExplicitGetRequest)
+            {
+                throwUnauthorizedAnchorAccess(userId,
+                                              AccessOperation.READ.getName(),
+                                              anchorEntity.getType().getTypeDefName(),
+                                              anchorEntity.getGUID(),
+                                              methodName);
+            }
+            else
+            {
+                throwFilteredElement(userId,
+                                     AccessOperation.READ.getName(),
+                                     requestedEntity.getGUID(),
+                                     methodName);
+            }
         }
     }
 

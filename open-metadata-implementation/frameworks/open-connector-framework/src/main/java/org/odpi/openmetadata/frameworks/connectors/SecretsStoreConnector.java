@@ -7,7 +7,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.SecretsCollection;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.SecurityAccessControl;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -189,6 +191,66 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * @throws ConnectorCheckedException a problem with the connector
      */
     abstract public long   getRefreshTimeInterval() throws ConnectorCheckedException;
+
+
+    /**
+     * Return whether this connector can save and delete whole secrets collections - see saveSecretsCollection()
+     * and deleteSecretsCollection().  Most secrets stores are read-only to Egeria, so the default is false.
+     *
+     * @return boolean
+     */
+    public boolean isSecretsCollectionUpdateSupported()
+    {
+        return false;
+    }
+
+
+    /**
+     * Create or replace a secrets collection in the secrets store.  A connector that supports this overrides it,
+     * along with isSecretsCollectionUpdateSupported().
+     *
+     * @param collectionName name of the collection
+     * @param newSecretsCollection the collection's contents
+     * @throws ConnectorCheckedException this connector does not support changes to its secrets collections,
+     *                                   or there was a problem saving the collection
+     */
+    public void saveSecretsCollection(String            collectionName,
+                                      SecretsCollection newSecretsCollection) throws ConnectorCheckedException
+    {
+        throw this.getSecretsCollectionUpdateNotSupported("saveSecretsCollection", collectionName);
+    }
+
+
+    /**
+     * Remove a secrets collection from the secrets store.  A connector that supports this overrides it, along
+     * with isSecretsCollectionUpdateSupported().
+     *
+     * @param collectionName name of the collection
+     * @throws ConnectorCheckedException this connector does not support changes to its secrets collections,
+     *                                   or there was a problem deleting the collection
+     */
+    public void deleteSecretsCollection(String collectionName) throws ConnectorCheckedException
+    {
+        throw this.getSecretsCollectionUpdateNotSupported("deleteSecretsCollection", collectionName);
+    }
+
+
+    /**
+     * Build the exception for a secrets collection update this connector does not support.
+     *
+     * @param methodName operation requested
+     * @param collectionName collection named on the request
+     * @return exception to throw
+     */
+    private ConnectorCheckedException getSecretsCollectionUpdateNotSupported(String methodName,
+                                                                             String collectionName)
+    {
+        return new ConnectorCheckedException(OCFErrorCode.SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED.getMessageDefinition(this.getClass().getName(),
+                                                                                                                      methodName,
+                                                                                                                      collectionName),
+                                             this.getClass().getName(),
+                                             methodName);
+    }
 
 
     /**

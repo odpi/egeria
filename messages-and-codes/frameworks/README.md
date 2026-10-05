@@ -6,14 +6,14 @@
 
 The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely.
 
-This directory documents 127 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 128 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
 
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
-| [OCFErrorCode](OCFErrorCode.md) | Exception messages | `OCF-` | 26 | <https://egeria-project.org/frameworks/ocf/overview/> |
+| [OCFErrorCode](OCFErrorCode.md) | Exception messages | `OCF-` | 27 | <https://egeria-project.org/frameworks/ocf/overview/> |
 | [OGFAuditCode](OGFAuditCode.md) | Audit log messages | `OPEN-GOVERNANCE-ACTION-` | 2 | <https://egeria-project.org/frameworks/ogf/overview/> |
 | [OGFErrorCode](OGFErrorCode.md) | Exception messages | `OPEN-GOVERNANCE-ACTION-` | 2 | <https://egeria-project.org/frameworks/ogf/overview/> |
 | [OIFAuditCode](OIFAuditCode.md) | Audit log messages | `OIF-CONNECTOR-` | 22 | <https://egeria-project.org/frameworks/oif/overview/> |

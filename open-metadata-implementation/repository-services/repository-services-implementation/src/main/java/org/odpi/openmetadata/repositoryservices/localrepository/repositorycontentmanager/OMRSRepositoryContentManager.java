@@ -1837,14 +1837,17 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         for (TypeDef typeDef : typeDefs)
         {
-            if (validTypeId(sourceName, typeDef.getGUID(), typeDef.getName()))
+            if (this.isNewType(typeDef.getGUID(), typeDef.getName()))
             {
-                if (!isKnownType(sourceName, typeDef.getGUID(), typeDef.getName()))
-                {
-                    knownTypeDefNames.put(typeDef.getName(), typeDef);
-                }
+                /*
+                 * Known through the enterprise but not supported by the local repository.  It is cached like
+                 * any other known type, so it can be found by GUID and its properties looked up.  (This branch
+                 * used to sit behind validTypeId(), which is false for a type that is not yet known, so a new
+                 * type was reported as conflicting instead of being added.)
+                 */
+                this.cacheTypeDef(sourceName, typeDef, false);
             }
-            else
+            else if (! validTypeId(sourceName, typeDef.getGUID(), typeDef.getName()))
             {
                 throw new RepositoryErrorException(OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS.getMessageDefinition(),
                                                    this.getClass().getName(),
@@ -1872,20 +1875,37 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
         {
-            if (validTypeId(sourceName, attributeTypeDef.getGUID(), attributeTypeDef.getName()))
+            if (this.isNewType(attributeTypeDef.getGUID(), attributeTypeDef.getName()))
             {
-                if (!isKnownType(sourceName, attributeTypeDef.getGUID(), attributeTypeDef.getName()))
-                {
-                    knownAttributeTypeDefNames.put(attributeTypeDef.getName(), attributeTypeDef);
-                }
+                /*
+                 * Known through the enterprise but not supported by the local repository - see
+                 * validateEnterpriseTypeDefs().
+                 */
+                this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
             }
-            else
+            else if (! validTypeId(sourceName, attributeTypeDef.getGUID(), attributeTypeDef.getName()))
             {
                 throw new RepositoryErrorException(OMRSErrorCode.CONFLICTING_ENTERPRISE_TYPEDEFS.getMessageDefinition(),
                                                    this.getClass().getName(),
                                                    methodName);
             }
         }
+    }
+
+
+    /**
+     * Return whether a type's name and GUID are both unknown - neither as a TypeDef nor as an AttributeTypeDef.
+     * A type whose name or GUID is already in use is not new: it is either the known type or a conflict with it.
+     *
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
+     * @return boolean
+     */
+    private boolean isNewType(String typeGUID, String typeName)
+    {
+        return (typeGUID != null) && (typeName != null) &&
+               (knownTypeDefNames.get(typeName) == null) && (knownTypeDefGUIDs.get(typeGUID) == null) &&
+               (knownAttributeTypeDefNames.get(typeName) == null) && (knownAttributeTypeDefGUIDs.get(typeGUID) == null);
     }
 
 

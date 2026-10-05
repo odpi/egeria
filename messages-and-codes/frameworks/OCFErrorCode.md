@@ -9,7 +9,7 @@ The OCF error code is used to define first failure data capture (FFDC) for error
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 26 |
+| **Number of messages** | 27 |
 | **Message identifiers begin** | `OCF-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-connector-framework](../../open-metadata-implementation/frameworks/open-connector-framework) |
@@ -40,6 +40,7 @@ The OCF error code is used to define first failure data capture (FFDC) for error
 | [OCF-CONNECTOR-400-009](#ocf-connector-400-009) | 400 | The {0} connector cannot proceed with is processing of {1} because the configuration property called {2} was not supplied |
 | [OCF-CONNECTOR-400-010](#ocf-connector-400-010) | 400 | The {0} connector cannot proceed with is processing because the endpoint address is null |
 | [OCF-CONNECTOR-400-011](#ocf-connector-400-011) | 400 | {0} element {1} does not exist |
+| [OCF-CONNECTOR-400-012](#ocf-connector-400-012) | 400 | The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected |
 | [OCF-CONNECTION-500-001](#ocf-connection-500-001) | 500 | OCF method detected an unexpected exception |
 | [OCF-CONNECTOR-500-002](#ocf-connector-500-002) | 500 | No information about the asset {0} has been returned from the asset store for connector {1} |
 | [OCF-CONNECTOR-500-006](#ocf-connector-500-006) | 500 | The class name for the connector is not set up |
@@ -445,6 +446,27 @@ The connector terminates because it can not find an element that it depends on.
 **User action**
 
 Ensure the element is correctly identified and exists in the metadata repository.  Then retry the request.
+
+
+----
+
+### OCF-CONNECTOR-400-012
+
+> The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected
+
+|  |  |
+|---|---|
+| **Java constant** | `OCFErrorCode.SECRETS_COLLECTION_UPDATE_NOT_SUPPORTED` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The connector does not support changes to its secrets collections.  Nothing has been changed.
+
+**User action**
+
+Use a secrets store whose connector supports saving secrets collections, such as the YAML secrets file connector.  Calling isSecretsCollectionUpdateSupported() before the request avoids this error.
 
 
 ----

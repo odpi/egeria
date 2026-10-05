@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 
-import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -11,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
@@ -479,16 +479,16 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if ((requestBody.getSecretsCollection() != null) && (requestBody.getSecretsCollection().getCollectionName() != null))
                 {
-                    YAMLSecretsFileConnector yamlSecretsFileConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
+                    SecretsStoreConnector secretsStoreConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
 
                     try
                     {
-                        yamlSecretsFileConnector.start();
-                        yamlSecretsFileConnector.saveSecretsCollection(requestBody.getSecretsCollection().getCollectionName(), requestBody.getSecretsCollection());
+                        secretsStoreConnector.start();
+                        secretsStoreConnector.saveSecretsCollection(requestBody.getSecretsCollection().getCollectionName(), requestBody.getSecretsCollection());
                     }
                     finally
                     {
-                        yamlSecretsFileConnector.disconnect();
+                        secretsStoreConnector.disconnect();
                     }
                 }
                 else
@@ -553,16 +553,16 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getName() != null)
                 {
-                    YAMLSecretsFileConnector yamlSecretsFileConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
+                    SecretsStoreConnector secretsStoreConnector = getWritableSecretsStore(connector, secretsStoreGUID, methodName);
 
                     try
                     {
-                        yamlSecretsFileConnector.start();
-                        yamlSecretsFileConnector.deleteSecretsCollection(requestBody.getName());
+                        secretsStoreConnector.start();
+                        secretsStoreConnector.deleteSecretsCollection(requestBody.getName());
                     }
                     finally
                     {
-                        yamlSecretsFileConnector.disconnect();
+                        secretsStoreConnector.disconnect();
                     }
                 }
                 else
@@ -586,9 +586,9 @@ public class AutomatedCurationRESTServices extends TokenController
 
 
     /**
-     * Return the asset's connector as a secrets store that can save and delete secrets collections.  Only the
-     * YAML secrets file connector can.  Any other connector - or none - is an error: the save and delete calls
-     * used to skip it silently and report success.
+     * Return the asset's connector as a secrets store that can save and delete secrets collections - one whose
+     * isSecretsCollectionUpdateSupported() is true, such as the YAML secrets file connector.  Any other connector,
+     * or none, is an error: the save and delete calls used to skip it silently and report success.
      *
      * @param connector connector for the secrets store asset
      * @param secretsStoreGUID unique identifier of the secrets store asset
@@ -596,15 +596,15 @@ public class AutomatedCurationRESTServices extends TokenController
      * @return connector that can write secrets collections
      * @throws InvalidParameterException the asset's connector cannot write secrets collections
      */
-    static YAMLSecretsFileConnector getWritableSecretsStore(Connector connector,
-                                                            String    secretsStoreGUID,
-                                                            String    methodName) throws InvalidParameterException
+    static SecretsStoreConnector getWritableSecretsStore(Connector connector,
+                                                         String    secretsStoreGUID,
+                                                         String    methodName) throws InvalidParameterException
     {
         final String parameterName = "secretsStoreGUID";
 
-        if (connector instanceof YAMLSecretsFileConnector yamlSecretsFileConnector)
+        if ((connector instanceof SecretsStoreConnector secretsStoreConnector) && (secretsStoreConnector.isSecretsCollectionUpdateSupported()))
         {
-            return yamlSecretsFileConnector;
+            return secretsStoreConnector;
         }
 
         String connectorClassName = "<none>";

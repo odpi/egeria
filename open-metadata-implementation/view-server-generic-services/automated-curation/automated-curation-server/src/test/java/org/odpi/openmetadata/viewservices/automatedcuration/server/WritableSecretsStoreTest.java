@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsFileConnector;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.testng.annotations.Test;
@@ -12,9 +13,10 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.expectThrows;
 
 /**
- * saveClientSideSecret and deleteClientSideSecret can only write through a YAML secrets file connector.  They used
- * to skip any other connector silently and report success, so a caller was told a secret had been saved when it had
- * not.  They now fail with OMAG-COMMON-400-034 instead.
+ * saveClientSideSecret and deleteClientSideSecret can only write through a secrets store connector that supports
+ * secrets collection updates, such as the YAML secrets file connector.  They used to skip any other connector
+ * silently and report success, so a caller was told a secret had been saved when it had not.  They now fail with
+ * OMAG-COMMON-400-034 instead.
  */
 public class WritableSecretsStoreTest
 {
@@ -32,6 +34,24 @@ public class WritableSecretsStoreTest
         YAMLSecretsFileConnector connector = new YAMLSecretsFileConnector();
 
         assertSame(AutomatedCurationRESTServices.getWritableSecretsStore(connector, SECRETS_STORE_GUID, "saveClientSideSecret"), connector);
+    }
+
+
+    /**
+     * A secrets store connector that cannot update its collections - the read-only YAML secrets store - is rejected.
+     */
+    @Test
+    public void testReadOnlySecretsStoreIsRejected()
+    {
+        YAMLSecretsStoreConnector connector = new YAMLSecretsStoreConnector();
+
+        InvalidParameterException error = expectThrows(InvalidParameterException.class,
+                                                       () -> AutomatedCurationRESTServices.getWritableSecretsStore(connector,
+                                                                                                                   SECRETS_STORE_GUID,
+                                                                                                                   "saveClientSideSecret"));
+
+        assertTrue(error.getMessage().contains("OMAG-COMMON-400-034"), error.getMessage());
+        assertTrue(error.getMessage().contains(YAMLSecretsStoreConnector.class.getName()), error.getMessage());
     }
 
 
