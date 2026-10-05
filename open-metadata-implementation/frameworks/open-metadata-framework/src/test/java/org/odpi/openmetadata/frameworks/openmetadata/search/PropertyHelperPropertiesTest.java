@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.search;
 
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -280,27 +281,60 @@ public class PropertyHelperPropertiesTest
 
 
     /**
-     * The map view unwraps primitives to their java values and hands anything else back as the property
-     * value it is.  Callers that display or index properties generically rely on the first half; callers
-     * that then look for a map or an array rely on the second.
+     * The map view gives plain java values all the way down: primitives as their values, arrays as lists in
+     * index order, and maps as maps.  It used to hand arrays and maps back as property value objects, so a
+     * list held in a map - a catalog target's array configuration property - reached a connector as an
+     * ArrayTypePropertyValue that could not be read as the list it was.
      */
     @Test
-    public void thePropertiesMapUnwrapsPrimitivesAndPassesTheRestThrough()
+    public void thePropertiesMapGivesJavaValues()
     {
         ElementProperties properties = new ElementProperties();
 
         propertyHelper.addStringProperty(properties, "qualifiedName", "widget-1");
         propertyHelper.addIntProperty(properties, "domainIdentifier", 42);
-        propertyHelper.addStringArrayProperty(properties, "zoneMembership", List.of("sandbox"));
+        propertyHelper.addStringArrayProperty(properties, "zoneMembership", List.of("sandbox", "quarantine"));
 
         Map<String, Object> asMap = propertyHelper.getElementPropertiesAsMap(properties);
 
         assertEquals(asMap.size(), 3);
         assertEquals(asMap.get("qualifiedName"), "widget-1");
         assertEquals(asMap.get("domainIdentifier"), 42);
-        assertTrue(asMap.get("zoneMembership") instanceof ArrayTypePropertyValue,
-                   "a non-primitive should come through as its property value, not as a java collection");
+        assertEquals(asMap.get("zoneMembership"), List.of("sandbox", "quarantine"));
 
         assertNull(propertyHelper.getElementPropertiesAsMap(null));
+    }
+
+
+    /**
+     * A map&lt;string,object&gt; property holding a list, a number and a nested map reads back as it was written -
+     * the list in its original order, even with more than ten elements, where sorting the keys as strings would
+     * put element 10 after element 1.
+     */
+    @Test
+    public void aMapPropertyHoldingAListReadsBackAsWritten()
+    {
+        List<String> longList = new ArrayList<>();
+
+        for (int index = 0; index < 12; index++)
+        {
+            longList.add("value-" + index);
+        }
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put("excludedSurveyRequestTypes", List.of("survey-folder-and-files", "survey-all-folders"));
+        configurationProperties.put("minimumSurveyIntervalDays", 2);
+        configurationProperties.put("longList", longList);
+        configurationProperties.put("nested", Map.of("inner", "value"));
+
+        ElementProperties properties = propertyHelper.addMapProperty(null, "configurationProperties", configurationProperties);
+
+        Map<String, Object> readBack = propertyHelper.getMapFromProperty(SOURCE_NAME, "configurationProperties", properties, METHOD_NAME);
+
+        assertEquals(readBack.get("excludedSurveyRequestTypes"), List.of("survey-folder-and-files", "survey-all-folders"));
+        assertEquals(readBack.get("minimumSurveyIntervalDays"), 2);
+        assertEquals(readBack.get("longList"), longList);
+        assertEquals(readBack.get("nested"), Map.of("inner", "value"));
     }
 }

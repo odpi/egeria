@@ -678,7 +678,21 @@ public abstract class GovernanceEngineHandler
                  */
                 if (latestEngineActionElement.getActionStatus() == ActivityStatus.APPROVED)
                 {
-                    engineActionClient.claimEngineAction(engineUserId, engineActionGUID);
+                    try
+                    {
+                        engineActionClient.claimEngineAction(engineUserId, engineActionGUID);
+                    }
+                    catch (InvalidParameterException alreadyClaimed)
+                    {
+                        /*
+                         * The engine action was claimed between reading it and claiming it - typically by this
+                         * engine host acting on a second notification of the same engine action.  The claim that
+                         * succeeded runs it, so there is nothing more to do here.
+                         */
+                        log.debug("Engine action " + engineActionGUID + " for engine " + governanceEngineName +
+                                          " was not started: it has already been claimed (" + alreadyClaimed.getMessage() + ")");
+                        return;
+                    }
 
                     runGovernanceService(engineActionGUID,
                                          latestEngineActionElement.getRequestType(),

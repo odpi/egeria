@@ -31,9 +31,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.SurveyReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionExecutorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -55,8 +57,8 @@ import java.util.*;
 /**
  * Maintains the data dictionary for a single data sharing hub.  On each refresh it works through the data stores
  * that are members of the hub and, for each one, ensures that the contents of the member are being catalogued,
- * requests a fresh survey of it, and then abstracts the data fields and data structures found in its schema into
- * the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
+ * requests a survey of it when one is due, and then abstracts the data fields and data structures found in its
+ * schema into the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
  * that the content packs register against the member's technology type, so they run asynchronously in a governance
  * engine and their results are picked up by a later refresh.
  */
@@ -75,6 +77,20 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                             ActivityStatus.PAUSED);
 
     /*
+     * The survey reports retrieved are filtered by the survey that produced them.  This is the page size used to
+     * work back through an asset's reports, most recent first, until enough of the right survey are found.
+     */
+    private static final int surveyReportPageSize = 20;
+
+    /*
+     * The results of comparing two survey reports.  The key is the GUID of the newer report followed by the GUID
+     * of the older one, and the value is true if the newer report found a change.  Survey reports do not change
+     * once the survey is complete, so a result holds for the life of this processor, and each pair of reports is
+     * only compared once however many refreshes ask about it.
+     */
+    private final Map<String, Boolean> surveyReportComparisons = new HashMap<>();
+
+    /*
      * These caches are rebuilt on each refresh.  They ensure that each element is only considered once, and that
      * the supporting definitions are only retrieved once, no matter how many members of the data sharing hub use them.
      */
@@ -88,6 +104,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      * every survey registered for a member's technology type is run.
      */
     private Set<String> excludedSurveys = new HashSet<>();
+
+    /*
+     * Decides when each member is next surveyed - see SurveySchedule.  It is rebuilt on each refresh from the
+     * minimumSurveyIntervalDays and maximumSurveyIntervalDays configuration properties.
+     */
+    private SurveySchedule surveySchedule = new SurveySchedule(SurveySchedule.DEFAULT_MINIMUM_INTERVAL_DAYS,
+                                                               SurveySchedule.DEFAULT_MAXIMUM_INTERVAL_DAYS);
 
     /**
      * Constructor
@@ -140,6 +163,10 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         catalogTargetCache.clear();
 
         excludedSurveys = this.getExcludedSurveys();
+        surveySchedule  = new SurveySchedule(this.getSurveyIntervalDays(LiskovConfigurationProperty.MINIMUM_SURVEY_INTERVAL_DAYS.getName(),
+                                                                        SurveySchedule.DEFAULT_MINIMUM_INTERVAL_DAYS),
+                                             this.getSurveyIntervalDays(LiskovConfigurationProperty.MAXIMUM_SURVEY_INTERVAL_DAYS.getName(),
+                                                                        SurveySchedule.DEFAULT_MAXIMUM_INTERVAL_DAYS));
 
         try
         {
@@ -981,8 +1008,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Ensure that the contents of the supplied element are being catalogued, and request a new survey so that
-     * the description of its contents is as complete and as up-to-date as possible.  Cataloguing is only requested
+     * Ensure that the contents of the supplied element are being catalogued, and request a new survey when one
+     * is due so that the description of its contents stays complete and up-to-date.  Cataloguing is only requested
      * if it is not already set up.  Both types of request run asynchronously in a governance engine, so their
      * results are picked up on a subsequent refresh.  Each element is only considered once per refresh.
      *
@@ -1222,9 +1249,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Request a new survey of the supplied element so that the description of its contents is as complete and as
-     * up-to-date as possible.  A new survey is requested on each refresh unless the survey requested on a previous
-     * refresh is still running.
+     * Request a new survey of the supplied element if one is due - see {@link SurveySchedule}.  A
+     * survey is never requested while one requested on a previous refresh is still running.
      *
      * @param assetElement      element to survey
      * @param assetProperties   properties of the element to survey
@@ -1255,6 +1281,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         String assetGUID = assetElement.getElementHeader().getGUID();
 
+        SurveySchedule.Decision decision = this.isSurveyDue(assetGUID, getRequestType(governanceActionType, governanceActionTypeProperties));
+
+        if (! decision.due())
+        {
+            return;
+        }
+
         String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);
 
         auditLog.logMessage(methodName,
@@ -1263,7 +1296,288 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                                  assetElement.getElementHeader().getType().getTypeName(),
                                                                                  assetProperties.getDisplayName(),
                                                                                  assetGUID,
-                                                                                 governanceActionTypeProperties.getQualifiedName()));
+                                                                                 governanceActionTypeProperties.getQualifiedName(),
+                                                                                 decision.reason()));
+    }
+
+
+    /**
+     * Return the request type that the governance action type passes to its survey engine.  The survey action
+     * engine records it as the purpose of each survey report it creates, which is how the reports from this
+     * survey are told apart from those of any other survey of the same element.  It is a property of the
+     * GovernanceActionExecutor relationship.  Should that not be available, the request type is taken from the
+     * end of the governance action type's qualified name, which the content packs build from the engine name and
+     * request type (for example, FileSurvey::survey-folder).
+     *
+     * @param governanceActionType governance action type
+     * @param governanceActionTypeProperties its properties
+     * @return request type, or null if it cannot be determined
+     */
+    private String getRequestType(OpenMetadataRootElement        governanceActionType,
+                                  GovernanceActionTypeProperties governanceActionTypeProperties)
+    {
+        if ((governanceActionType.getGovernanceActionExecutor() != null) &&
+                (governanceActionType.getGovernanceActionExecutor().getRelationshipProperties() instanceof GovernanceActionExecutorProperties governanceActionExecutorProperties) &&
+                (governanceActionExecutorProperties.getRequestType() != null))
+        {
+            return governanceActionExecutorProperties.getRequestType();
+        }
+
+        String qualifiedName = governanceActionTypeProperties.getQualifiedName();
+
+        if (qualifiedName != null)
+        {
+            int requestTypeStart = qualifiedName.lastIndexOf("::");
+
+            if (requestTypeStart >= 0)
+            {
+                return qualifiedName.substring(requestTypeStart + 2);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Determine whether a survey of an element is due - see {@link SurveySchedule} for the rules.  The schedule
+     * is worked out from the element's survey reports, so nothing about it is stored.
+     *
+     * @param assetGUID unique identifier of the element to survey
+     * @param requestType request type of the survey - recorded as the purpose of its survey reports
+     * @return whether a survey should be requested, and why
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private SurveySchedule.Decision isSurveyDue(String assetGUID,
+                                                String requestType) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        if (requestType == null)
+        {
+            /*
+             * The survey's reports cannot be identified, so there is no history to go on.
+             */
+            return new SurveySchedule.Decision(true, "its survey reports cannot be identified because the survey's request type is not known");
+        }
+
+        List<OpenMetadataRootElement> surveyReports          = new ArrayList<>();
+        List<OpenMetadataRootElement> completedSurveyReports = new ArrayList<>();
+
+        this.getRecentSurveyReports(assetGUID, requestType, surveyReports, completedSurveyReports);
+
+        Date latestSurveyTime = surveyReports.isEmpty() ? null : this.getSurveyTime(surveyReports.get(0));
+
+        return surveySchedule.decide(latestSurveyTime,
+                                          completedSurveyReports.size(),
+                                          surveyIndex -> this.surveyFoundChange(completedSurveyReports.get(surveyIndex),
+                                                                                completedSurveyReports.get(surveyIndex + 1)),
+                                          System.currentTimeMillis());
+    }
+
+
+    /**
+     * Return one of the survey interval configuration properties.
+     *
+     * @param propertyName name of the configuration property
+     * @param defaultDays value to use if the property is not set
+     * @return number of days
+     */
+    private int getSurveyIntervalDays(String propertyName,
+                                      int    defaultDays)
+    {
+        Map<String, Object> configurationProperties = this.getConfigurationProperties();
+
+        if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+        {
+            return super.getIntConfigurationProperty(propertyName, configurationProperties);
+        }
+
+        return defaultDays;
+    }
+
+
+    /**
+     * Retrieve the most recent survey reports for an element that were produced by the requested survey, newest
+     * first.  The element's reports are read a page at a time, most recently created first, and stop as soon as
+     * the survey schedule has all the completed reports it can need.  An element that has been
+     * surveyed for a long time may have a great many reports, and none beyond these are read.
+     *
+     * @param assetGUID unique identifier of the surveyed element
+     * @param requestType request type of the survey - recorded as the purpose of its survey reports
+     * @param surveyReports all the matching reports found, newest first
+     * @param completedSurveyReports the matching reports whose survey completed, newest first
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void getRecentSurveyReports(String                        assetGUID,
+                                        String                        requestType,
+                                        List<OpenMetadataRootElement> surveyReports,
+                                        List<OpenMetadataRootElement> completedSurveyReports) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        AnnotationClient annotationClient = integrationContext.getAnnotationClient();
+        int              startFrom        = 0;
+
+        QueryOptions queryOptions = annotationClient.getQueryOptions(startFrom, surveyReportPageSize);
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> retrievedReports = annotationClient.getSurveyReportsForElement(assetGUID, queryOptions);
+
+        while ((retrievedReports != null) && (! retrievedReports.isEmpty()))
+        {
+            for (OpenMetadataRootElement retrievedReport : retrievedReports)
+            {
+                if ((retrievedReport != null) &&
+                        (retrievedReport.getProperties() instanceof SurveyReportProperties surveyReportProperties) &&
+                        (requestType.equals(surveyReportProperties.getPurpose())))
+                {
+                    surveyReports.add(retrievedReport);
+
+                    if (surveyReportProperties.getCompletionTime() != null)
+                    {
+                        completedSurveyReports.add(retrievedReport);
+
+                        if (completedSurveyReports.size() >= surveySchedule.getCompletedSurveysNeeded())
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            startFrom = startFrom + surveyReportPageSize;
+
+            queryOptions = annotationClient.getQueryOptions(startFrom, surveyReportPageSize);
+            queryOptions.setGraphQueryDepth(0);
+
+            retrievedReports = annotationClient.getSurveyReportsForElement(assetGUID, queryOptions);
+        }
+    }
+
+
+    /**
+     * Return the time that a survey started.
+     *
+     * @param surveyReport survey report
+     * @return start time - the report's creation time if the survey did not record one
+     */
+    private Date getSurveyTime(OpenMetadataRootElement surveyReport)
+    {
+        if (surveyReport.getProperties() instanceof SurveyReportProperties surveyReportProperties)
+        {
+            if (surveyReportProperties.getStartTime() != null)
+            {
+                return surveyReportProperties.getStartTime();
+            }
+
+            if (surveyReportProperties.getCreatedTime() != null)
+            {
+                return surveyReportProperties.getCreatedTime();
+            }
+        }
+
+        return surveyReport.getElementHeader().getVersions().getCreateTime();
+    }
+
+
+    /**
+     * Determine whether a survey found a change since the survey before it.  An annotation that a later survey
+     * finds again is reused rather than recreated, so two surveys that found the same things report exactly the
+     * same annotations.  A change is a new annotation, or an annotation the earlier survey reported that the later
+     * one did not.
+     * <br><br>
+     * The numbers of annotations are compared first, because the repository counts them without returning them.
+     * Different numbers are a change.  Equal numbers are not proof of no change - an annotation can drop out of
+     * one survey and come back in the next, reused from an earlier one - so only then are the annotations'
+     * unique identifiers retrieved and compared.
+     *
+     * @param newerSurveyReport report of the later survey
+     * @param olderSurveyReport report of the survey before it
+     * @return true if the later survey found a change
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private boolean surveyFoundChange(OpenMetadataRootElement newerSurveyReport,
+                                      OpenMetadataRootElement olderSurveyReport) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        String comparisonKey = newerSurveyReport.getElementHeader().getGUID() + "/" + olderSurveyReport.getElementHeader().getGUID();
+
+        Boolean foundChange = surveyReportComparisons.get(comparisonKey);
+
+        if (foundChange == null)
+        {
+            String newerSurveyReportGUID = newerSurveyReport.getElementHeader().getGUID();
+            String olderSurveyReportGUID = olderSurveyReport.getElementHeader().getGUID();
+
+            AnnotationClient annotationClient = integrationContext.getAnnotationClient();
+
+            if (annotationClient.countReportedAnnotations(newerSurveyReportGUID, annotationClient.getQueryOptions()) !=
+                    annotationClient.countReportedAnnotations(olderSurveyReportGUID, annotationClient.getQueryOptions()))
+            {
+                foundChange = true;
+            }
+            else
+            {
+                foundChange = ! getReportedAnnotationGUIDs(newerSurveyReportGUID).equals(getReportedAnnotationGUIDs(olderSurveyReportGUID));
+            }
+
+            surveyReportComparisons.put(comparisonKey, foundChange);
+        }
+
+        return foundChange;
+    }
+
+
+    /**
+     * Return the unique identifiers of the annotations reported by a survey report.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @return set of annotation GUIDs - may be empty but not null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private Set<String> getReportedAnnotationGUIDs(String surveyReportGUID) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        Set<String> annotationGUIDs = new HashSet<>();
+
+        AnnotationClient annotationClient = integrationContext.getAnnotationClient();
+        int              startFrom        = 0;
+
+        QueryOptions queryOptions = annotationClient.getQueryOptions(startFrom, annotationClient.getMaxPagingSize());
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> annotations = annotationClient.getNewAnnotations(surveyReportGUID, queryOptions);
+
+        while ((annotations != null) && (! annotations.isEmpty()))
+        {
+            for (OpenMetadataRootElement annotation : annotations)
+            {
+                if (annotation != null)
+                {
+                    annotationGUIDs.add(annotation.getElementHeader().getGUID());
+                }
+            }
+
+            startFrom = startFrom + annotationClient.getMaxPagingSize();
+
+            queryOptions = annotationClient.getQueryOptions(startFrom, annotationClient.getMaxPagingSize());
+            queryOptions.setGraphQueryDepth(0);
+
+            annotations = annotationClient.getNewAnnotations(surveyReportGUID, queryOptions);
+        }
+
+        return annotationGUIDs;
     }
 
 
