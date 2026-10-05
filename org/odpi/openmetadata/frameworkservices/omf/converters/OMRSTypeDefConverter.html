@@ -141,7 +141,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the repository services' version of a new type definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefPatch(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch,java.lang.String)" class="member-name-link">getTypeDefPatch</a><wbr>(<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;openMetadataTypeDefPatch,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefPatch(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch,java.lang.String)" class="member-name-link">getTypeDefPatch</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;openMetadataTypeDefPatch,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the repository services' version of a patch to a type definition.</div>
@@ -206,15 +207,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypeDefPatch(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch,java.lang.String)">
+<section class="detail" id="getTypeDefPatch(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefPatch,java.lang.String)">
 <h3>getTypeDefPatch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a></span>&nbsp;<span class="element-name">getTypeDefPatch</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;openMetadataTypeDefPatch,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefPatch.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefPatch</a></span>&nbsp;<span class="element-name">getTypeDefPatch</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDefPatch.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefPatch</a>&nbsp;openMetadataTypeDefPatch,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the repository services' version of a patch to a type definition.  The version the patch creates
- defaults to the one after the version it applies to.</div>
+ defaults to the one after the version it applies to.  The repository requires a patch to say who made it and
+ when, and the caller's patch has no fields for either, so they are set here from the calling user and the
+ current time.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>userId</code> - calling user - recorded as the patch's updatedBy</dd>
 <dd><code>openMetadataTypeDefPatch</code> - patch from the caller</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>

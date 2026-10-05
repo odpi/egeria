@@ -528,7 +528,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="startMissedEngineActions()">
 <h3>startMissedEngineActions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startMissedEngineActions</span>()</div>
-<div class="block">Look for engine actions that were skipped - typically because the events were missed.</div>
+<div class="block">Look for engine actions that were skipped - typically because the events were missed.  This runs every few
+ seconds, so an error that stops it is logged when it first happens and then only if it changes.  (The
+ metadata server leaves out of each page any engine action this engine's user cannot read in full, so one such
+ action no longer stops the sweep.)</div>
 </section>
 </li>
 <li>
