@@ -139,6 +139,16 @@ subprojects {
             }
         }
 
+        // The FVT suites bound how long they wait for each server to shut down (default 120 seconds).  The
+        // limit can be changed with -Dfvt.shutdown.timeout.seconds=<n> on the Gradle command line; a system
+        // property given to Gradle does not reach the test JVM unless it is forwarded like this.
+        def fvtShutdownTimeout = providers.systemProperty('fvt.shutdown.timeout.seconds')
+        tasks.withType(Test).configureEach {
+            if (fvtShutdownTimeout.isPresent()) {
+                systemProperty 'fvt.shutdown.timeout.seconds', fvtShutdownTimeout.get()
+            }
+        }
+
         // compile flags
         tasks.withType(JavaCompile) {
             options.release = 21
