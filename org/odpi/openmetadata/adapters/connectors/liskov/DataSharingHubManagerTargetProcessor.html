@@ -106,8 +106,8 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></span></div>
 <div class="block">Maintains the data dictionary for a single data sharing hub.  On each refresh it works through the data stores
  that are members of the hub and, for each one, ensures that the contents of the member are being catalogued,
- requests a fresh survey of it, and then abstracts the data fields and data structures found in its schema into
- the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
+ requests a survey of it when one is due, and then abstracts the data fields and data structures found in its
+ schema into the hub's data dictionary.  The cataloguing and survey requests are made by starting the governance action types
  that the content packs register against the member's technology type, so they run asynchronously in a governance
  engine and their results are picked up by a later refresh.</div>
 </section>

@@ -124,6 +124,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">An optional list of the surveys that should not be run against the members of a data sharing hub.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#MAXIMUM_SURVEY_INTERVAL_DAYS" class="member-name-link">MAXIMUM_SURVEY_INTERVAL_DAYS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The most days between surveys of a member of a data sharing hub.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#MINIMUM_SURVEY_INTERVAL_DAYS" class="member-name-link">MINIMUM_SURVEY_INTERVAL_DAYS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The fewest days between surveys of a member of a data sharing hub.</div>
+</div>
 </div>
 </section>
 </li>
@@ -195,24 +203,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the configuration property.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRecognizedConfigurationPropertyNames()" class="member-name-link">getRecognizedConfigurationPropertyNames</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the names of the configuration properties that the Liskov Data Sharing Hub Manager recognizes.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether this value is also used as a placeholder property.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -241,6 +254,20 @@ the order they are declared.</div>
 <h3>EXCLUDED_SURVEY_REQUEST_TYPES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDED_SURVEY_REQUEST_TYPES</span></div>
 <div class="block">An optional list of the surveys that should not be run against the members of a data sharing hub.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MINIMUM_SURVEY_INTERVAL_DAYS">
+<h3>MINIMUM_SURVEY_INTERVAL_DAYS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a></span>&nbsp;<span class="element-name">MINIMUM_SURVEY_INTERVAL_DAYS</span></div>
+<div class="block">The fewest days between surveys of a member of a data sharing hub.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MAXIMUM_SURVEY_INTERVAL_DAYS">
+<h3>MAXIMUM_SURVEY_INTERVAL_DAYS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.controls">LiskovConfigurationProperty</a></span>&nbsp;<span class="element-name">MAXIMUM_SURVEY_INTERVAL_DAYS</span></div>
+<div class="block">The most days between surveys of a member of a data sharing hub.</div>
 </section>
 </li>
 </ul>
@@ -372,6 +399,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRecognizedConfigurationPropertyNames()">
+<h3>getRecognizedConfigurationPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRecognizedConfigurationPropertyNames</span>()</div>
+<div class="block">Return the names of the configuration properties that the Liskov Data Sharing Hub Manager recognizes.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
 </dl>
 </section>
 </li>
