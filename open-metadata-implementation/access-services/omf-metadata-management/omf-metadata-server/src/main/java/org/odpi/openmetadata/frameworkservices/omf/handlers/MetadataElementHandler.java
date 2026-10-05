@@ -1201,7 +1201,18 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         for (String propertyName : omfProperties.getPropertyValueMap().keySet())
         {
-            InstancePropertyValue instancePropertyValue = this.getInstancePropertyValue(omfProperties.getPropertyValue(propertyName), true);
+            PropertyValue nestedValue = omfProperties.getPropertyValue(propertyName);
+
+            /*
+             * A map can hold an entry with no value.  It is left out, as it always was when nested values were
+             * converted through the map view - a primitive property value with no value is refused.
+             */
+            if ((nestedValue instanceof PrimitiveTypePropertyValue nestedPrimitiveValue) && (nestedPrimitiveValue.getPrimitiveValue() == null))
+            {
+                continue;
+            }
+
+            InstancePropertyValue instancePropertyValue = this.getInstancePropertyValue(nestedValue, true);
 
             if (instancePropertyValue != null)
             {
