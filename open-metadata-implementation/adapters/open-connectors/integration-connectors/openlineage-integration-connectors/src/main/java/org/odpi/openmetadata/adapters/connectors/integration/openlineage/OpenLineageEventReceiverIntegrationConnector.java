@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogT
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,6 +26,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
  */
 public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegrationConnectorBase implements OpenMetadataTopicListener
 {
+    private static final Logger log = LoggerFactory.getLogger(OpenLineageEventReceiverIntegrationConnector.class);
+
     /**
      * Default constructor
      */
@@ -40,6 +44,15 @@ public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegra
     public void processEvent(String event)
     {
         final String methodName = "processEvent";
+
+        /*
+         * Logged at debug so that a lost event can be traced: without it there is no record of whether an event
+         * reached this connector at all, or was lost on the way from the topic.
+         */
+        if (log.isDebugEnabled())
+        {
+            log.debug("{} received an OpenLineage event from its topic: {}", connectorName, event);
+        }
 
         try
         {

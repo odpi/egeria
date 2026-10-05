@@ -7,13 +7,11 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.security:spring-security-ldap'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'com.nimbusds:nimbus-jose-jwt'
     implementation 'org.springframework.security:spring-security-crypto'
-    implementation 'io.lettuce:lettuce-core'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:repository-services:repository-services-client')
@@ -28,7 +26,6 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-core'
     implementation 'org.springframework.boot:spring-boot'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.ldap:spring-ldap-core'
     implementation 'org.springframework:spring-beans'
     runtimeOnly 'javax.xml.bind:jaxb-api'

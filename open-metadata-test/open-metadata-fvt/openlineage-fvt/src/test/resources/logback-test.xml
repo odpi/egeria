@@ -37,6 +37,36 @@
 
     <logger name="org.odpi.openmetadata.openlineagefvt" level="INFO" />
 
+    <!--
+        Kafka diagnostics, written to their own file so that the console stays readable.  The Kafka listener test
+        has lost an event intermittently, and the audit log cannot say why: it records neither when the consumer
+        was assigned its partition, nor where it chose to start reading, nor whether the event ever reached the
+        listener connector.  These loggers record all three.
+    -->
+    <appender name="KAFKA_LOG_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>build/openlineage-fvt-data/logs/kafka.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.kafka.clients.consumer.internals.ConsumerCoordinator" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA_LOG_FILE" />
+    </logger>
+    <logger name="org.apache.kafka.clients.consumer.internals.SubscriptionState" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA_LOG_FILE" />
+    </logger>
+    <logger name="org.apache.kafka.clients.consumer.internals.ClassicKafkaConsumer" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA_LOG_FILE" />
+    </logger>
+    <logger name="org.odpi.openmetadata.adapters.eventbus.topic.kafka" level="INFO" additivity="false">
+        <appender-ref ref="KAFKA_LOG_FILE" />
+    </logger>
+    <logger name="org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationConnector" level="DEBUG" additivity="false">
+        <appender-ref ref="KAFKA_LOG_FILE" />
+    </logger>
+
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

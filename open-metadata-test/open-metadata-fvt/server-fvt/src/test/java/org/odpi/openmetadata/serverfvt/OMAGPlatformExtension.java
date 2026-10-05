@@ -414,7 +414,6 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         properties.put("springdoc.api-docs.path", "/v3/api-docs");
 
         properties.put("management.health.cassandra.enabled", "false");
-        properties.put("management.health.redis.enabled", "false");
         properties.put("management.health.ldap.enabled", "false");
 
         properties.put("logging.level.root", "WARN");

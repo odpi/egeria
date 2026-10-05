@@ -102,6 +102,8 @@ public enum SurveyActionGuard
      * Return details of the guards used on a survey that is validating the structure and content of data.
      * Each check produces a Qualify AnnotationProperties.  If all checks pass, the certification is added to the asset.
      * If any checks fail, a request for action is created for the asset, linking the failing quality annotations.
+     * Survey-completed is produced alongside data-certified or data-not-certified when the checks have run.
+     * Survey-invalid and survey-failed are set by the framework and the engine if the survey cannot run.
      *
      * @return guard types
      */
@@ -109,10 +111,12 @@ public enum SurveyActionGuard
     {
         List<GuardType> guardTypes = new ArrayList<>();
 
+        guardTypes.add(SURVEY_COMPLETED.getGuardType());
         guardTypes.add(DATA_CERTIFIED.getGuardType());
         guardTypes.add(DATA_NOT_CERTIFIED.getGuardType());
         guardTypes.add(MISSING_CERTIFICATION_TYPE.getGuardType());
         guardTypes.add(MISSING_SCHEMA_TYPE.getGuardType());
+        guardTypes.add(SURVEY_INVALID.getGuardType());
         guardTypes.add(SURVEY_FAILED.getGuardType());
 
         return guardTypes;

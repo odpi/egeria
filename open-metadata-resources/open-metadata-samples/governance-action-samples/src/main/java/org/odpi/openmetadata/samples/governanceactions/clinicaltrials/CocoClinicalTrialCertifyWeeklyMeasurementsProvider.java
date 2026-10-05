@@ -27,6 +27,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsProvider extends SurveyAc
                 AnalysisStep.CHECK_ACTION_TARGETS, AnalysisStep.CHECK_ASSET, AnalysisStep.SCHEMA_VALIDATION, AnalysisStep.DATA_VALIDATION, AnalysisStep.PRODUCE_ACTIONS});
 
         producedGuards = SurveyActionGuard.getDataValidationSurveyGuardTypes();
+        producedGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getGuardType());
         producedAnnotationTypes = CocoClinicalTrialsAnnotationType.getCertifyWeeklyMeasurementsSurveyAnnotationTypeTypes();
     }
 }
