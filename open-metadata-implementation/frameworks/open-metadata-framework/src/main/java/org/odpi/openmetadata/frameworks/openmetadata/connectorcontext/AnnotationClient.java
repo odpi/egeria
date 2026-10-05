@@ -575,6 +575,47 @@ public class AnnotationClient extends ConnectorContextClientBase
 
 
     /**
+     * Return the number of annotations reported by a survey report (ReportedAnnotation relationship).  The
+     * repository counts the relationships itself, so this is far cheaper than retrieving the annotations when
+     * only the number is wanted.
+     *
+     * @param surveyReportGUID       unique identifier of the survey report
+     * @param queryOptions           multiple options to control the query
+     * @return number of annotations
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public long countReportedAnnotations(String       surveyReportGUID,
+                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        return annotationHandler.countReportedAnnotations(connectorUserId, surveyReportGUID, queryOptions);
+    }
+
+
+    /**
+     * Returns the survey reports that describe the supplied element (ReportSubject relationship), most recently
+     * created first.
+     *
+     * @param elementGUID            unique identifier of the element that the reports describe
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getSurveyReportsForElement(String       elementGUID,
+                                                                    QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        return annotationHandler.getSurveyReportsForElement(connectorUserId, elementGUID, queryOptions);
+    }
+
+
+    /**
      * Returns the list of annotations that describe the supplied element (AssociatedAnnotation relationship).
      *
      * @param elementGUID              unique identifier of the starting element

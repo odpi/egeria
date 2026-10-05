@@ -449,9 +449,9 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setFollowOnProcessSteps(super.getRelatedElements(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDependedOnProcessSteps(super.getRelatedElements(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName);
-            attributedMetadataElement.setGovernanceActionExecutor(super.getRelatedElement(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setSupportsGovernanceActions(super.getRelatedElements(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName);
+            attributedMetadataElement.setGovernanceActionExecutor(super.getRelatedElement(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setSupportsGovernanceActions(super.getRelatedElements(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setSupportedIntegrationConnectors(super.getRelatedElements(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setIncludedInIntegrationGroups(super.getRelatedElements(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName, relatedMetadataElements, true));

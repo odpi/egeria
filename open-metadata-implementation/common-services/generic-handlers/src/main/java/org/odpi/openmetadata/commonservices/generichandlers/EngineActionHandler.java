@@ -34,6 +34,11 @@ import java.util.*;
 public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     /**
+     * Serializes the claiming of engine actions - see claimEngineAction.
+     */
+    private static final Object claimLock = new Object();
+
+    /**
      * The activity statuses that mean an engine action is still in progress - it has been requested but has
      * not yet reached a terminal state.
      * <br><br>
@@ -2223,6 +2228,41 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   String       methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
+    {
+        /*
+         * A claim reads the engine action, checks that nobody has claimed it, and then updates it.  Two claims
+         * arriving together could both pass the check and both succeed, and the engine action would then run
+         * twice.  An engine host can make two claims for the same engine action - it hears of new engine actions
+         * through events, which may arrive more than once, and it also sweeps for unclaimed engine actions - so
+         * the claims are made one at a time.  The second then finds the engine action already claimed and is
+         * refused.  A claim is a single read and update, so serializing them costs very little.
+         */
+        synchronized (claimLock)
+        {
+            this.claimUnclaimedEngineAction(userId, engineActionGUID, effectiveTime, methodName);
+        }
+    }
+
+
+    /**
+     * Allocate the execution of an engine action to the caller if no other caller has claimed it.  Called with
+     * the claim lock held - see claimEngineAction.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid, or the engine action is already claimed.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void claimUnclaimedEngineAction(String       userId,
+                                            String       engineActionGUID,
+                                            Date         effectiveTime,
+                                            String       methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String guidParameterName = "engineActionGUID";
 

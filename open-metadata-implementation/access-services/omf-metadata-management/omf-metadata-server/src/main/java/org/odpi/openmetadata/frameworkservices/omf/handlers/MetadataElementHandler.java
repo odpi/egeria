@@ -1112,6 +1112,29 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     private InstancePropertyValue getInstancePropertyValue(PropertyValue propertyValue) throws InvalidParameterException
     {
+        return this.getInstancePropertyValue(propertyValue, false);
+    }
+
+
+    /**
+     * Convert the omf property value to the OMRS InstancePropertyValue.
+     * <br><br>
+     * The values inside a map, array or struct are converted the same way, one by one.  They used to be handed
+     * to the repository helper as plain java values, which it understands only for primitives: anything else -
+     * a list held in a map&lt;string,object&gt;, such as a catalog target's array configuration properties -
+     * was stored as a primitive of unknown type wrapping an omf property value object, and could not be read
+     * back as what it had been.
+     *
+     * @param propertyValue omf property value
+     * @param nested true if the value is held inside a map, array or struct.  The type of a nested value is
+     *               worked out from its content when it is added (for example "array&lt;object&gt;"), so it is
+     *               not required to name an attribute type that the repository knows.
+     * @return OMRS InstancePropertyValue
+     * @throws InvalidParameterException invalid property specification
+     */
+    private InstancePropertyValue getInstancePropertyValue(PropertyValue propertyValue,
+                                                           boolean       nested) throws InvalidParameterException
+    {
         if (propertyValue != null)
         {
             final String methodName = "getInstancePropertyValue";
@@ -1119,33 +1142,109 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             AttributeTypeDef typeDef = repositoryHelper.getAttributeTypeDefByName(serviceName, propertyValue.getTypeName());
 
-            invalidParameterHandler.validateObject(typeDef, typeParameterName, methodName);
+            if (! nested)
+            {
+                invalidParameterHandler.validateObject(typeDef, typeParameterName, methodName);
+            }
 
             if (propertyValue instanceof ArrayTypePropertyValue omfPropertyValue)
             {
                 return this.getArrayPropertyValue(typeDef,
+                                                  propertyValue.getTypeName(),
                                                   omfPropertyValue.getArrayCount(),
-                                                  propertyHelper.getElementPropertiesAsMap(omfPropertyValue.getArrayValues()));
+                                                  this.getNestedInstanceProperties(omfPropertyValue.getArrayValues()));
             }
             else if (propertyValue instanceof EnumTypePropertyValue omfPropertyValue)
             {
-                return this.getEnumPropertyValue(typeDef, omfPropertyValue.getSymbolicName());
+                return this.getEnumPropertyValue(typeDef, propertyValue.getTypeName(), omfPropertyValue.getSymbolicName());
             }
             else if (propertyValue instanceof MapTypePropertyValue omfPropertyValue)
             {
-                return this.getMapPropertyValue(typeDef, propertyHelper.getElementPropertiesAsMap(omfPropertyValue.getMapValues()));
+                return this.getMapPropertyValue(typeDef,
+                                                propertyValue.getTypeName(),
+                                                this.getNestedInstanceProperties(omfPropertyValue.getMapValues()));
             }
             else if (propertyValue instanceof PrimitiveTypePropertyValue omfPropertyValue)
             {
-                return this.getPrimitivePropertyValue(typeDef, omfPropertyValue.getPrimitiveTypeCategory(), omfPropertyValue.getPrimitiveValue());
+                return this.getPrimitivePropertyValue(typeDef,
+                                                      propertyValue.getTypeName(),
+                                                      omfPropertyValue.getPrimitiveTypeCategory(),
+                                                      omfPropertyValue.getPrimitiveValue());
             }
             else if (propertyValue instanceof StructTypePropertyValue omfPropertyValue)
             {
-                return this.getStructPropertyValue(typeDef, propertyHelper.getElementPropertiesAsMap(omfPropertyValue.getAttributes()));
+                return this.getStructPropertyValue(typeDef,
+                                                   propertyValue.getTypeName(),
+                                                   this.getNestedInstanceProperties(omfPropertyValue.getAttributes()));
             }
         }
 
         return null;
+    }
+
+
+    /**
+     * Convert the values held inside a map, array or struct.
+     *
+     * @param omfProperties the nested values
+     * @return OMRS instance properties, or null if there are none
+     * @throws InvalidParameterException invalid property specification
+     */
+    private InstanceProperties getNestedInstanceProperties(ElementProperties omfProperties) throws InvalidParameterException
+    {
+        if ((omfProperties == null) || (omfProperties.getPropertyValueMap() == null) || (omfProperties.getPropertyValueMap().isEmpty()))
+        {
+            return null;
+        }
+
+        InstanceProperties instanceProperties = new InstanceProperties();
+
+        for (String propertyName : omfProperties.getPropertyValueMap().keySet())
+        {
+            PropertyValue nestedValue = omfProperties.getPropertyValue(propertyName);
+
+            /*
+             * A map can hold an entry with no value.  It is left out, as it always was when nested values were
+             * converted through the map view - a primitive property value with no value is refused.
+             */
+            if ((nestedValue instanceof PrimitiveTypePropertyValue nestedPrimitiveValue) && (nestedPrimitiveValue.getPrimitiveValue() == null))
+            {
+                continue;
+            }
+
+            InstancePropertyValue instancePropertyValue = this.getInstancePropertyValue(nestedValue, true);
+
+            if (instancePropertyValue != null)
+            {
+                instanceProperties.setProperty(propertyName, instancePropertyValue);
+            }
+        }
+
+        return instanceProperties;
+    }
+
+
+    /**
+     * Fill in the type of an OMRS property value - from the attribute type definition if the repository knows
+     * the type, otherwise from the type name the omf value carried.
+     *
+     * @param omrsPropertyValue value to fill in
+     * @param typeDef attribute type definition, or null
+     * @param typeName type name from the omf value
+     */
+    private void setPropertyValueType(InstancePropertyValue omrsPropertyValue,
+                                      AttributeTypeDef      typeDef,
+                                      String                typeName)
+    {
+        if (typeDef != null)
+        {
+            omrsPropertyValue.setTypeGUID(typeDef.getGUID());
+            omrsPropertyValue.setTypeName(typeDef.getName());
+        }
+        else
+        {
+            omrsPropertyValue.setTypeName(typeName);
+        }
     }
 
 
@@ -1158,31 +1257,18 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private ArrayPropertyValue getArrayPropertyValue(AttributeTypeDef     typeDef,
-                                                     int                  arrayCount,
-                                                     Map<String, Object>  arrayValues) throws InvalidParameterException
+    private ArrayPropertyValue getArrayPropertyValue(AttributeTypeDef   typeDef,
+                                                     String             typeName,
+                                                     int                arrayCount,
+                                                     InstanceProperties arrayValues)
     {
-        final String methodName = "getArrayPropertyValue";
-
-        ArrayPropertyValue
-                omrsPropertyValue = new ArrayPropertyValue();
+        ArrayPropertyValue omrsPropertyValue = new ArrayPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ARRAY);
-        omrsPropertyValue.setTypeGUID(typeDef.getGUID());
-        omrsPropertyValue.setTypeName(typeDef.getName());
+        this.setPropertyValueType(omrsPropertyValue, typeDef, typeName);
         omrsPropertyValue.setArrayCount(arrayCount);
-
-        try
-        {
-            omrsPropertyValue.setArrayValues(repositoryHelper.addPropertyMapToInstance(serviceName, null, arrayValues, methodName));
-        }
-        catch (OMFCheckedExceptionBase error)
-        {
-            final String parameterName = "searchProperties";
-
-            throw new InvalidParameterException(error, parameterName);
-        }
+        omrsPropertyValue.setArrayValues(arrayValues);
 
         return omrsPropertyValue;
     }
@@ -1197,8 +1283,24 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException invalid property specification
      */
     private EnumPropertyValue getEnumPropertyValue(AttributeTypeDef typeDef,
+                                                   String           typeName,
                                                    String           symbolicName) throws InvalidParameterException
     {
+        if (typeDef == null)
+        {
+            /*
+             * A nested enum whose type the repository does not know - its symbolic name is all there is.
+             */
+            EnumPropertyValue omrsPropertyValue = new EnumPropertyValue();
+
+            omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+            omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ENUM);
+            omrsPropertyValue.setTypeName(typeName);
+            omrsPropertyValue.setSymbolicName(symbolicName);
+
+            return omrsPropertyValue;
+        }
+
         final String methodName                = "getEnumPropertyValue";
         final String symbolicNameParameterName = "symbolicName";
         final String propertyParameterName     = "omrsPropertyValue";
@@ -1248,28 +1350,16 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private MapPropertyValue getMapPropertyValue(AttributeTypeDef    typeDef,
-                                                 Map<String, Object> mapValues) throws InvalidParameterException
+    private MapPropertyValue getMapPropertyValue(AttributeTypeDef   typeDef,
+                                                 String             typeName,
+                                                 InstanceProperties mapValues)
     {
-        final String methodName = "getMapPropertyValue";
-
         MapPropertyValue omrsPropertyValue = new MapPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.MAP);
-        omrsPropertyValue.setTypeGUID(typeDef.getGUID());
-        omrsPropertyValue.setTypeName(typeDef.getName());
-
-        try
-        {
-            omrsPropertyValue.setMapValues(repositoryHelper.addPropertyMapToInstance(serviceName, null, mapValues, methodName));
-        }
-        catch (OMFCheckedExceptionBase error)
-        {
-            final String parameterName = "searchProperties";
-
-            throw new InvalidParameterException(error, parameterName);
-        }
+        this.setPropertyValueType(omrsPropertyValue, typeDef, typeName);
+        omrsPropertyValue.setMapValues(mapValues);
 
         return omrsPropertyValue;
     }
@@ -1285,6 +1375,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws InvalidParameterException invalid property specification
      */
     private PrimitivePropertyValue getPrimitivePropertyValue(AttributeTypeDef      typeDef,
+                                                             String                typeName,
                                                              PrimitiveTypeCategory primitiveTypeCategory,
                                                              Object                primitiveValue) throws InvalidParameterException
     {
@@ -1300,8 +1391,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
-        omrsPropertyValue.setTypeGUID(typeDef.getGUID());
-        omrsPropertyValue.setTypeName(typeDef.getName());
+        this.setPropertyValueType(omrsPropertyValue, typeDef, typeName);
         omrsPropertyValue.setPrimitiveDefCategory(this.getPrimitiveDefCategory(primitiveTypeCategory));
         omrsPropertyValue.setPrimitiveValue(primitiveValue);
 
@@ -1363,29 +1453,16 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private StructPropertyValue getStructPropertyValue(AttributeTypeDef    typeDef,
-                                                       Map<String, Object> attributes) throws InvalidParameterException
+    private StructPropertyValue getStructPropertyValue(AttributeTypeDef   typeDef,
+                                                       String             typeName,
+                                                       InstanceProperties attributes)
     {
-        final String methodName = "getStructPropertyValue";
-
-        StructPropertyValue
-                omrsPropertyValue = new StructPropertyValue();
+        StructPropertyValue omrsPropertyValue = new StructPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.STRUCT);
-        omrsPropertyValue.setTypeGUID(typeDef.getGUID());
-        omrsPropertyValue.setTypeName(typeDef.getName());
-
-        try
-        {
-            omrsPropertyValue.setAttributes(repositoryHelper.addPropertyMapToInstance(serviceName, null, attributes, methodName));
-        }
-        catch (OMFCheckedExceptionBase error)
-        {
-            final String parameterName = "searchProperties";
-
-            throw new InvalidParameterException(error, parameterName);
-        }
+        this.setPropertyValueType(omrsPropertyValue, typeDef, typeName);
+        omrsPropertyValue.setAttributes(attributes);
 
         return omrsPropertyValue;
     }

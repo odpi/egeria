@@ -904,8 +904,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                                          InstanceProperties properties,
                                                                          String             methodName)
     {
-        final String thisMethodName = "getStringArrayStringMapFromProperty";
-
         Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
 
         if (mapFromProperty != null)
@@ -916,19 +914,18 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             {
                 Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
 
-                if (actualPropertyValue instanceof HashMap)
+                /*
+                 * The map view gives each array as a java list, in its original order.  It used to give a map
+                 * keyed by the element indexes, whose values() came back in no particular order.
+                 */
+                if (actualPropertyValue instanceof List<?> arrayValues)
                 {
-                    /*
-                     * There are values to extract
-                     */
-                    HashMap<Object, Object> propertyValue = (HashMap<Object, Object>) actualPropertyValue;
                     List<String> unpackedValue = new ArrayList<>();
 
-                    for (Object value : propertyValue.values())
+                    for (Object value : arrayValues)
                     {
-                        unpackedValue.add(value.toString());
+                        unpackedValue.add(value == null ? null : value.toString());
                     }
-                    log.debug(thisMethodName + " found that array property " + propertyName + " has elements: " + unpackedValue);
 
                     stringArrayMap.put(mapPropertyName, unpackedValue);
                 }
@@ -1063,6 +1060,167 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Build an array property value from a java collection or array held in a map&lt;string,object&gt;.  The array
+     * is typed array&lt;string&gt; or array&lt;int&gt; when every element is of that type - the two array attribute
+     * types the open metadata types define - and array&lt;object&gt; otherwise.  Each element is converted the
+     * same way as a map value, so lists and maps can nest.
+     * <br><br>
+     * A list in a map used to fall through to the catch-all and be stored as a primitive of unknown type wrapping
+     * the java list, which a repository cannot store faithfully and nobody could read back as a list.
+     *
+     * @param sourceName caller
+     * @param arrayObject java collection or array
+     * @param methodName calling method
+     * @return array property value
+     */
+    private ArrayPropertyValue getNestedArrayPropertyValue(String sourceName,
+                                                           Object arrayObject,
+                                                           String methodName)
+    {
+        Collection<?> elements = (arrayObject instanceof Object[] objectArray) ? Arrays.asList(objectArray) : (Collection<?>) arrayObject;
+
+        Map<String, Object> indexedElements = new LinkedHashMap<>();
+        boolean             allStrings      = true;
+        boolean             allIntegers     = true;
+        int                 index           = 0;
+
+        for (Object element : elements)
+        {
+            allStrings  = allStrings  && (element instanceof String);
+            allIntegers = allIntegers && (element instanceof Integer);
+
+            indexedElements.put(Integer.toString(index), element);
+            index++;
+        }
+
+        ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+        arrayPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+
+        if ((index > 0) && (allStrings))
+        {
+            arrayPropertyValue.setTypeGUID(stringArrayTypeGUID);
+            arrayPropertyValue.setTypeName(stringArrayTypeName);
+        }
+        else if ((index > 0) && (allIntegers))
+        {
+            arrayPropertyValue.setTypeGUID(intArrayTypeGUID);
+            arrayPropertyValue.setTypeName(intArrayTypeName);
+        }
+        else
+        {
+            arrayPropertyValue.setTypeName("array<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName() + ">");
+        }
+
+        arrayPropertyValue.setArrayCount(index);
+        arrayPropertyValue.setArrayValues(this.addPropertyMapToInstance(sourceName, null, indexedElements, methodName));
+
+        return arrayPropertyValue;
+    }
+
+
+    /**
+     * Return a map with string keys - the keys of a map property are always strings.
+     *
+     * @param map map with keys of any type
+     * @return map with string keys
+     */
+    private Map<String, Object> getStringKeyedMap(Map<?, ?> map)
+    {
+        Map<String, Object> stringKeyedMap = new LinkedHashMap<>();
+
+        for (Map.Entry<?, ?> entry : map.entrySet())
+        {
+            if (entry.getKey() != null)
+            {
+                stringKeyedMap.put(entry.getKey().toString(), entry.getValue());
+            }
+        }
+
+        return stringKeyedMap;
+    }
+
+
+    /**
+     * Convert a property value into the plain java value it holds: a primitive's value, an enum's symbolic name,
+     * an array as a list in index order, and a map or struct as a map - converting what they hold the same way.
+     * These are also the shapes {@link #addPropertyMapToInstance} accepts, so a map read back can be written
+     * again.
+     *
+     * @param propertyValue value to convert
+     * @return java value, or null
+     */
+    public Object getJavaValue(InstancePropertyValue propertyValue)
+    {
+        if (propertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+        {
+            return primitivePropertyValue.getPrimitiveValue();
+        }
+        else if (propertyValue instanceof EnumPropertyValue enumPropertyValue)
+        {
+            return enumPropertyValue.getSymbolicName();
+        }
+        else if (propertyValue instanceof ArrayPropertyValue arrayPropertyValue)
+        {
+            List<Object> arrayValues = new ArrayList<>();
+
+            if ((arrayPropertyValue.getArrayValues() != null) && (arrayPropertyValue.getArrayValues().getInstanceProperties() != null))
+            {
+                Map<String, InstancePropertyValue> elements = arrayPropertyValue.getArrayValues().getInstanceProperties();
+                List<String>                       indexes  = new ArrayList<>(elements.keySet());
+
+                /*
+                 * The elements are keyed by their index.  The keys are sorted as numbers, so that element 10
+                 * follows element 9 rather than element 1.
+                 */
+                indexes.sort(Comparator.comparingLong(this::getArrayIndex).thenComparing(Comparator.naturalOrder()));
+
+                for (String elementIndex : indexes)
+                {
+                    Object element = this.getJavaValue(elements.get(elementIndex));
+
+                    if (element != null)
+                    {
+                        arrayValues.add(element);
+                    }
+                }
+            }
+
+            return arrayValues;
+        }
+        else if (propertyValue instanceof MapPropertyValue mapPropertyValue)
+        {
+            return this.getInstancePropertiesAsMap(mapPropertyValue.getMapValues());
+        }
+        else if (propertyValue instanceof StructPropertyValue structPropertyValue)
+        {
+            return this.getInstancePropertiesAsMap(structPropertyValue.getAttributes());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an array element's key as a number for sorting.  A key that is not a number sorts last.
+     *
+     * @param index key of the array element
+     * @return index as a number
+     */
+    private long getArrayIndex(String index)
+    {
+        try
+        {
+            return Long.parseLong(index);
+        }
+        catch (NumberFormatException notANumber)
+        {
+            return Long.MAX_VALUE;
+        }
+    }
+
+
+    /**
      * Convert an instance properties object into a map.
      *
      * @param instanceProperties packed properties
@@ -1080,43 +1238,16 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             {
                 for (String mapPropertyName : instancePropertyValues.keySet())
                 {
-                    InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(mapPropertyName);
+                    /*
+                     * Nested values are converted to plain java values all the way down - see getJavaValue.
+                     * An array used to come back as a map keyed by its indexes, and a struct as the property
+                     * value object itself.
+                     */
+                    Object javaValue = this.getJavaValue(instanceProperties.getPropertyValue(mapPropertyName));
 
-                    if (actualPropertyValue != null)
+                    if (javaValue != null)
                     {
-                        if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
-                        {
-                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
-
-                            resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
-                        }
-                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
-                        {
-                            EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
-                            resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
-                        }
-                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
-                        {
-                            MapPropertyValue  mapPropertyValue = (MapPropertyValue) actualPropertyValue;
-
-                            resultingMap.put(mapPropertyName, mapPropertyValue.valueAsObject());
-                        }
-                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ARRAY)
-                        {
-                            ArrayPropertyValue  arrayPropertyValue = (ArrayPropertyValue) actualPropertyValue;
-
-                            resultingMap.put(mapPropertyName, arrayPropertyValue.valueAsObject());
-                        }
-                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.STRUCT)
-                        {
-                            StructPropertyValue structPropertyValue = (StructPropertyValue) actualPropertyValue;
-
-                            resultingMap.put(mapPropertyName, structPropertyValue);
-                        }
-                        else
-                        {
-                            resultingMap.put(mapPropertyName, actualPropertyValue);
-                        }
+                        resultingMap.put(mapPropertyName, javaValue);
                     }
                 }
             }
@@ -2023,6 +2154,121 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param methodName calling method name
      * @return instance properties object.
      */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InstanceProperties addIntArrayPropertyToInstance(String              sourceName,
+                                                            InstanceProperties  properties,
+                                                            String              propertyName,
+                                                            List<Integer>       arrayValues,
+                                                            String              methodName)
+    {
+        if (arrayValues != null)
+        {
+            InstanceProperties resultingProperties = (properties == null) ? new InstanceProperties() : properties;
+
+            ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+            arrayPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+            arrayPropertyValue.setTypeGUID(intArrayTypeGUID);
+            arrayPropertyValue.setTypeName(intArrayTypeName);
+            arrayPropertyValue.setArrayCount(arrayValues.size());
+
+            int index = 0;
+            for (Integer arrayValue : arrayValues)
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+                primitivePropertyValue.setPrimitiveValue(arrayValue);
+
+                arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+                index++;
+            }
+
+            resultingProperties.setProperty(propertyName, arrayPropertyValue);
+
+            return resultingProperties;
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Integer> getIntArrayProperty(String             sourceName,
+                                             String             propertyName,
+                                             InstanceProperties properties,
+                                             String             methodName)
+    {
+        final String thisMethodName = "getIntArrayProperty";
+
+        if (properties != null)
+        {
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
+            {
+                try
+                {
+                    List<Integer> results = new ArrayList<>();
+
+                    for (Object arrayValue : (List<?>) this.getJavaValue(arrayPropertyValue))
+                    {
+                        if (arrayValue instanceof Number number)
+                        {
+                            results.add(number.intValue());
+                        }
+                        else if (arrayValue != null)
+                        {
+                            results.add(Integer.parseInt(arrayValue.toString()));
+                        }
+                    }
+
+                    return results;
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Integer> removeIntArrayProperty(String             sourceName,
+                                                String             propertyName,
+                                                InstanceProperties properties,
+                                                String             methodName)
+    {
+        List<Integer> retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntArrayProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
     @Override
     public InstanceProperties addMapPropertyToInstance(String              sourceName,
                                                        InstanceProperties  properties,
@@ -2789,6 +3035,33 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
+                else if ((mapPropertyValue instanceof Collection<?>) || (mapPropertyValue instanceof Object[]))
+                {
+                    resultingProperties.setProperty(mapPropertyName, this.getNestedArrayPropertyValue(sourceName, mapPropertyValue, methodName));
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof Map<?, ?> nestedMap)
+                {
+                    MapPropertyValue nestedMapPropertyValue = new MapPropertyValue();
+
+                    nestedMapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    nestedMapPropertyValue.setTypeGUID(objectMapTypeGUID);
+                    nestedMapPropertyValue.setTypeName(objectMapTypeName);
+                    nestedMapPropertyValue.setMapValues(this.addPropertyMapToInstance(sourceName, null, this.getStringKeyedMap(nestedMap), methodName));
+                    resultingProperties.setProperty(mapPropertyName, nestedMapPropertyValue);
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof Enum<?> enumValue)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                    primitivePropertyValue.setPrimitiveValue(enumValue.name());
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }

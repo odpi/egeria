@@ -1507,6 +1507,43 @@ public class PropertyHelper
 
 
     /**
+     * Add the supplied integer array property to an element properties object (attribute type array&lt;int&gt;).
+     * If the element properties object supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param arrayValues contents of the array
+     * @return resulting element properties object
+     */
+    public ElementProperties addIntArrayProperty(ElementProperties properties,
+                                                 String            propertyName,
+                                                 List<Integer>     arrayValues)
+    {
+        if ((arrayValues != null) && (! arrayValues.isEmpty()))
+        {
+            ElementProperties resultingProperties = (properties == null) ? new ElementProperties() : properties;
+
+            ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+            arrayTypePropertyValue.setTypeName("array<int>");
+            arrayTypePropertyValue.setArrayCount(arrayValues.size());
+
+            int index = 0;
+            for (Integer arrayValue : arrayValues)
+            {
+                arrayTypePropertyValue.setArrayValue(index, getPrimitivePropertyValue(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT, arrayValue));
+                index++;
+            }
+
+            resultingProperties.setProperty(propertyName, arrayTypePropertyValue);
+
+            return resultingProperties;
+        }
+
+        return properties;
+    }
+
+
+    /**
      * Add a string array into a property value.
      *
      * @param arrayValues list of values
@@ -1717,7 +1754,11 @@ public class PropertyHelper
                 MapTypePropertyValue mapPropertyValue = new MapTypePropertyValue();
 
                 mapPropertyValue.setMapValues(mapElementProperties);
-                mapPropertyValue.setTypeName("map<string,array<string>");
+                /*
+                 * There is no map<string, array<string>> attribute type: the type archive declares a property of
+                 * that data type as map<string,object>, so that is the type the value has to carry.
+                 */
+                mapPropertyValue.setTypeName("map<string,object>");
                 resultingProperties.setProperty(propertyName, mapPropertyValue);
 
 
@@ -1875,8 +1916,15 @@ public class PropertyHelper
                     resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
-                else if (mapPropertyValue instanceof List<?> propertyAsList)
+                else if ((mapPropertyValue instanceof Collection<?>) || (mapPropertyValue instanceof Object[]))
                 {
+                    /*
+                     * Any ordered collection or array is stored as an array.  Its type names its elements' type if
+                     * they all share one, and is array<object> if they do not - naming the type of whichever element
+                     * happened to come last, as this once did, mislabels a mixed list.
+                     */
+                    Collection<?> propertyAsList = (mapPropertyValue instanceof Object[] objectArray) ? Arrays.asList(objectArray) : (Collection<?>) mapPropertyValue;
+
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
                     String elementType = "object";
@@ -1886,33 +1934,42 @@ public class PropertyHelper
                         int index = 0;
 
                         Map<String, Object> arrayPropertyAsMap = new HashMap<>();
+                        Set<String>         elementTypes       = new HashSet<>();
 
                         for (Object arrayValueObject : propertyAsList)
                         {
                             if (arrayValueObject instanceof String)
                             {
-                                elementType = "string";
+                                elementTypes.add("string");
                             }
                             else if (arrayValueObject instanceof Boolean)
                             {
-                                elementType = "boolean";
+                                elementTypes.add("boolean");
                             }
                             else if (arrayValueObject instanceof Integer)
                             {
-                                elementType = "int";
+                                elementTypes.add("int");
                             }
                             else if (arrayValueObject instanceof Long)
                             {
-                                elementType = "long";
+                                elementTypes.add("long");
                             }
                             else if (arrayValueObject instanceof Date)
                             {
-                                elementType = "date";
+                                elementTypes.add("date");
                             }
-
+                            else
+                            {
+                                elementTypes.add("object");
+                            }
 
                             arrayPropertyAsMap.put(Integer.toString(index), arrayValueObject);
                             index++;
+                        }
+
+                        if (elementTypes.size() == 1)
+                        {
+                            elementType = elementTypes.iterator().next();
                         }
 
                         arrayTypePropertyValue.setArrayValues(addPropertyMap(null, arrayPropertyAsMap));
@@ -1993,7 +2050,12 @@ public class PropertyHelper
                         }
                     }
 
-                    if (elementType != null)
+                    /*
+                     * A map whose values share a type is named for it (map<string,string> for example); any other
+                     * map is map<string,object>.  This once tested elementType != null, which named every
+                     * single-typed map map<string,object> and every other one map<string,null>.
+                     */
+                    if (elementType == null)
                     {
                         elementType = "object";
                     }
@@ -2001,6 +2063,24 @@ public class PropertyHelper
                     mapTypePropertyValue.setTypeName("map<string," + elementType + ">");
 
                     resultingProperties.setProperty(mapPropertyName, mapTypePropertyValue);
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof PropertyValue propertyValue)
+                {
+                    /*
+                     * Already a property value - for example from a map read before getElementPropertiesAsMap
+                     * converted nested values to java ones.
+                     */
+                    resultingProperties.setProperty(mapPropertyName, propertyValue);
+                    propertyCount++;
+                }
+                else if (mapPropertyValue instanceof Enum<?> enumValue)
+                {
+                    PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                    primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getDisplayName());
+                    primitiveTypePropertyValue.setPrimitiveValue(enumValue.name());
+                    resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                     propertyCount++;
                 }
                 else if (mapPropertyValue != null)
@@ -3179,6 +3259,89 @@ public class PropertyHelper
 
 
     /**
+     * Locates and extracts an integer array property (attribute type array&lt;int&gt;) and returns its values in
+     * their original order.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested array property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return list of integers or null if the property is not present
+     */
+    public List<Integer> getIntArrayProperty(String            sourceName,
+                                             String            propertyName,
+                                             ElementProperties properties,
+                                             String            methodName)
+    {
+        final String thisMethodName = "getIntArrayProperty";
+
+        if (properties != null)
+        {
+            PropertyValue propertyValue = properties.getPropertyValue(propertyName);
+
+            if (propertyValue instanceof ArrayTypePropertyValue arrayTypePropertyValue)
+            {
+                try
+                {
+                    List<Integer> results = new ArrayList<>();
+
+                    for (Object arrayValue : (List<?>) this.getJavaValue(arrayTypePropertyValue))
+                    {
+                        if (arrayValue instanceof Number number)
+                        {
+                            results.add(number.intValue());
+                        }
+                        else if (arrayValue != null)
+                        {
+                            results.add(Integer.parseInt(arrayValue.toString()));
+                        }
+                    }
+
+                    return results;
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts an integer array property (attribute type array&lt;int&gt;) and removes it from the
+     * properties.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested array property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return list of integers or null if the property is not present
+     */
+    public List<Integer> removeIntArrayProperty(String            sourceName,
+                                                String            propertyName,
+                                                ElementProperties properties,
+                                                String            methodName)
+    {
+        List<Integer> retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntArrayProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      * If the property is found, it is removed from the InstanceProperties structure.
      * If the property is not a map property then a logic exception is thrown.
@@ -3731,14 +3894,19 @@ public class PropertyHelper
 
             for (String mapPropertyName : mapFromProperty.keySet())
             {
-                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
-
-                if (actualPropertyValue instanceof ArrayTypePropertyValue arrayPropertyValue)
+                /*
+                 * The map view gives each array as a java list, in its original order.
+                 */
+                if ((mapFromProperty.get(mapPropertyName) instanceof List<?> arrayValues) && (! arrayValues.isEmpty()))
                 {
-                    if (arrayPropertyValue.getArrayCount() > 0)
+                    List<String> stringValues = new ArrayList<>();
+
+                    for (Object arrayValue : arrayValues)
                     {
-                        listStringMap.put(mapPropertyName, getPropertiesAsArray(arrayPropertyValue.getArrayValues()));
+                        stringValues.add(arrayValue == null ? null : arrayValue.toString());
                     }
+
+                    listStringMap.put(mapPropertyName, stringValues);
                 }
             }
 
@@ -3797,18 +3965,11 @@ public class PropertyHelper
             {
                 for (String mapPropertyName : propertyValues.keySet())
                 {
-                    PropertyValue actualPropertyValue = properties.getPropertyValue(mapPropertyName);
+                    Object javaValue = this.getJavaValue(properties.getPropertyValue(mapPropertyName));
 
-                    if (actualPropertyValue != null)
+                    if (javaValue != null)
                     {
-                        if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
-                        {
-                            resultingMap.put(mapPropertyName, primitiveTypePropertyValue.getPrimitiveValue());
-                        }
-                        else
-                        {
-                            resultingMap.put(mapPropertyName, actualPropertyValue);
-                        }
+                        resultingMap.put(mapPropertyName, javaValue);
                     }
                 }
             }
@@ -3817,6 +3978,89 @@ public class PropertyHelper
         }
 
         return null;
+    }
+
+
+    /**
+     * Convert a property value into the plain java value it holds: a primitive's value, an enum's symbolic name,
+     * an array as a list in index order, and a map or struct as a map - converting what they hold the same way.
+     * <br><br>
+     * The map view of a set of properties used to unwrap only primitives and hand anything else back as the
+     * property value object.  A list held in a map&lt;string,object&gt; - a catalog target's array configuration
+     * property, for example - then reached the caller as an ArrayTypePropertyValue, whose toString() is not the
+     * list, and a connector splitting it on commas found nothing it recognised.  These are also the shapes
+     * {@link #addPropertyMap} accepts, so a map read back can be written again.
+     *
+     * @param propertyValue value to convert
+     * @return java value, or null
+     */
+    public Object getJavaValue(PropertyValue propertyValue)
+    {
+        if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+        {
+            return primitiveTypePropertyValue.getPrimitiveValue();
+        }
+        else if (propertyValue instanceof EnumTypePropertyValue enumTypePropertyValue)
+        {
+            return enumTypePropertyValue.getSymbolicName();
+        }
+        else if (propertyValue instanceof ArrayTypePropertyValue arrayTypePropertyValue)
+        {
+            List<Object> arrayValues = new ArrayList<>();
+
+            if ((arrayTypePropertyValue.getArrayValues() != null) && (arrayTypePropertyValue.getArrayValues().getPropertyValueMap() != null))
+            {
+                /*
+                 * The elements are keyed by their index.  The keys are sorted as numbers, so that element 10
+                 * follows element 9 rather than element 1.
+                 */
+                Map<String, PropertyValue> elements = arrayTypePropertyValue.getArrayValues().getPropertyValueMap();
+                List<String>               indexes  = new ArrayList<>(elements.keySet());
+
+                indexes.sort(Comparator.comparingLong(this::getArrayIndex).thenComparing(Comparator.naturalOrder()));
+
+                for (String index : indexes)
+                {
+                    Object element = this.getJavaValue(elements.get(index));
+
+                    if (element != null)
+                    {
+                        arrayValues.add(element);
+                    }
+                }
+            }
+
+            return arrayValues;
+        }
+        else if (propertyValue instanceof MapTypePropertyValue mapTypePropertyValue)
+        {
+            return this.getElementPropertiesAsMap(mapTypePropertyValue.getMapValues());
+        }
+        else if (propertyValue instanceof StructTypePropertyValue structTypePropertyValue)
+        {
+            return this.getElementPropertiesAsMap(structTypePropertyValue.getAttributes());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return an array element's key as a number for sorting.  A key that is not a number sorts last.
+     *
+     * @param index key of the array element
+     * @return index as a number
+     */
+    private long getArrayIndex(String index)
+    {
+        try
+        {
+            return Long.parseLong(index);
+        }
+        catch (NumberFormatException notANumber)
+        {
+            return Long.MAX_VALUE;
+        }
     }
 
 

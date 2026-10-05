@@ -145,6 +145,19 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      */
     static final IntegrationGroupDefinition INTEGRATION_GROUP = IntegrationGroupDefinition.FILES;
 
+    /**
+     * The Core content pack's integration group for the Liskov Data Sharing Hub Manager.  Liskov keeps the
+     * members of a data sharing hub catalogued and surveyed, and the members this suite gives it are folders -
+     * so it runs alongside the Files group, against the same engine host, and its surveys are the Files
+     * content pack's.  It is in its own group because that is how the Core content pack ships it.
+     */
+    static final IntegrationGroupDefinition LISKOV_INTEGRATION_GROUP = IntegrationGroupDefinition.LISKOV;
+
+    /**
+     * Every integration group the integration daemon runs.
+     */
+    static final List<IntegrationGroupDefinition> INTEGRATION_GROUPS = List.of(INTEGRATION_GROUP, LISKOV_INTEGRATION_GROUP);
+
     static final List<GovernanceEngineDefinition> GOVERNANCE_ENGINES = List.of(GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                                                                                GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                                                                                GovernanceEngineDefinition.STEWARDSHIP_ENGINE);
@@ -333,7 +346,10 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                  * An activated governance server is not yet a ready one - see the class comment.
                  */
                 waitForGovernanceEngines();
-                waitForIntegrationGroup();
+                for (IntegrationGroupDefinition integrationGroup : INTEGRATION_GROUPS)
+                {
+                    waitForIntegrationGroup(integrationGroup);
+                }
 
                 started = true;
             }
@@ -594,13 +610,16 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         addAuditLogDestinations(configurationClient);
 
-        IntegrationGroupConfig integrationGroupConfig = new IntegrationGroupConfig();
+        for (IntegrationGroupDefinition integrationGroup : INTEGRATION_GROUPS)
+        {
+            IntegrationGroupConfig integrationGroupConfig = new IntegrationGroupConfig();
 
-        integrationGroupConfig.setIntegrationGroupQualifiedName(INTEGRATION_GROUP.getQualifiedName());
-        integrationGroupConfig.setOMAGServerName(METADATA_STORE_NAME);
-        integrationGroupConfig.setOMAGServerPlatformRootURL(platformURLRoot);
+            integrationGroupConfig.setIntegrationGroupQualifiedName(integrationGroup.getQualifiedName());
+            integrationGroupConfig.setOMAGServerName(METADATA_STORE_NAME);
+            integrationGroupConfig.setOMAGServerPlatformRootURL(platformURLRoot);
 
-        configurationClient.configureIntegrationGroup(integrationGroupConfig);
+            configurationClient.configureIntegrationGroup(integrationGroupConfig);
+        }
     }
 
 
@@ -777,9 +796,10 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * runtime classpath.  Either way the run cannot do what it is here to do, so both are reported now with
      * the connector's own failing exception message rather than being left for a test to trip over later.
      *
+     * @param integrationGroup the integration group to wait for
      * @throws Exception the integration group did not start
      */
-    private void waitForIntegrationGroup() throws Exception
+    private void waitForIntegrationGroup(IntegrationGroupDefinition integrationGroup) throws Exception
     {
         IntegrationDaemon integrationDaemon = getIntegrationDaemonClient();
 
@@ -804,7 +824,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                  * groups from the metadata access store after start-up returns, so an early poll landing
                  * before that is ordinary, not a failure.
                  */
-                summary = integrationDaemon.getIntegrationGroupSummary(INTEGRATION_GROUP.getQualifiedName());
+                summary = integrationDaemon.getIntegrationGroupSummary(integrationGroup.getQualifiedName());
             }
             catch (Exception notReadyYet)
             {
@@ -825,14 +845,14 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                         if (connectorReport.getFailingExceptionMessage() != null)
                         {
                             throw new IllegalStateException("Integration connector " + connectorReport.getConnectorName() + " in group "
-                                                                    + INTEGRATION_GROUP.getQualifiedName() + " failed to start: "
+                                                                    + integrationGroup.getQualifiedName() + " failed to start: "
                                                                     + connectorReport.getFailingExceptionMessage()
                                                                     + ".  If this is a class loading problem, the connector's module is"
                                                                     + " missing from files-fvt's test runtime classpath.");
                         }
                     }
 
-                    System.out.println("files-fvt: integration group " + INTEGRATION_GROUP.getQualifiedName() + " running with "
+                    System.out.println("files-fvt: integration group " + integrationGroup.getQualifiedName() + " running with "
                                                + connectorReports.size() + " connector(s)");
                     return;
                 }
@@ -841,10 +861,10 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             Thread.sleep(pollMilliseconds);
         }
 
-        throw new IllegalStateException("Integration group " + INTEGRATION_GROUP.getQualifiedName() + " on " + INTEGRATION_DAEMON_NAME
+        throw new IllegalStateException("Integration group " + integrationGroup.getQualifiedName() + " on " + INTEGRATION_DAEMON_NAME
                                                 + " did not reach RUNNING with connectors within " + (timeoutMilliseconds / 1000)
-                                                + " seconds (last known status: " + lastKnownStatus + ").  Check that the Files"
-                                                + " content pack loaded into " + METADATA_STORE_NAME + ".");
+                                                + " seconds (last known status: " + lastKnownStatus + ").  Check that the content pack"
+                                                + " that defines it loaded into " + METADATA_STORE_NAME + ".");
     }
 
 
