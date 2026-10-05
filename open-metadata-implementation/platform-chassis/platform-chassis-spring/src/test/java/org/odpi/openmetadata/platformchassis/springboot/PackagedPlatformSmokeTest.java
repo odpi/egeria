@@ -150,7 +150,6 @@ public class PackagedPlatformSmokeTest
                 "-Dscan.packages=org.odpi.openmetadata.*",
                 "-Dspringdoc.api-docs.enabled=false",
                 "-Dmanagement.health.cassandra.enabled=false",
-                "-Dmanagement.health.redis.enabled=false",
                 "-Dmanagement.health.ldap.enabled=false",
                 "-Dplatform.configstore.provider=org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider",
                 "-Dplatform.configstore.endpoint=data/servers/{0}/config/{0}.config",

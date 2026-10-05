@@ -566,6 +566,16 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         int partitionID=partition.partition();
                         String partitionTopic = partition.topic();
 
+                        /*
+                         * The end of the partition is read BEFORE asking for the first message published since this
+                         * connector started.  If nothing has been published since then, the consumer starts from this
+                         * end offset.  It used to call seekToEnd() after the query instead, and the end was only fixed
+                         * when position() was called - so a message written between the query and that call was
+                         * neither found by the query nor read from the end it moved past, and was lost for good.  A
+                         * test that published straight after attaching a listener lost its event that way now and then.
+                         */
+                        long endOffsetBeforeQuery = consumer.endOffsets(Collections.singleton(partition)).get(partition);
+
                         // query offset by timestamp (when we started connector) - NULL if there are no messages later than this offset
                         long reqStartTime=KafkaOpenMetadataEventConsumer.this.startTime;
                         log.info("Querying for offset by timestamp: {}",reqStartTime);
@@ -609,12 +619,13 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                              * published in between is stepped over rather than read.  On a cohort's
                              * registration topic that is a member's registration, and a registration is sent
                              * once - the member is simply never heard from, and the server waits for it for
-                             * ever.  Pinning the end as it stands now closes the window.
+                             * ever.  Pinning the end closes the window - and it must be the end as it was before
+                             * the query above, or a message written in between is stepped over just the same.
                              */
-                            consumer.seekToEnd(Collections.singleton(partition));
+                            consumer.seek(partition, endOffsetBeforeQuery);
 
                             log.info("No missed events found for partition {} and topic {} - starting at end offset {}",
-                                    partitionID, partitionTopic, consumer.position(partition));
+                                    partitionID, partitionTopic, endOffsetBeforeQuery);
                         }
                     }
                 }

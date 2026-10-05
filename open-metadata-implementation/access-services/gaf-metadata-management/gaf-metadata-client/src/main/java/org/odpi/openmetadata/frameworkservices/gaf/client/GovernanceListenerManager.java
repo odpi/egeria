@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListene
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceAuditCode;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,17 +50,30 @@ public class GovernanceListenerManager
      * @param event event object - call getEventType to find out what type of event.
      * @throws InvalidParameterException the event is incomplete
      */
-    public synchronized void processEvent(OpenMetadataOutTopicEvent event) throws InvalidParameterException
+    public void processEvent(OpenMetadataOutTopicEvent event) throws InvalidParameterException
     {
         final String actionDescription = "Process Watchdog Event";
 
         if (event != null)
         {
-            for (String connectorId : listenerMap.keySet())
+            /*
+             * The listeners are copied under the lock and called outside it.  A watchdog listener runs governance
+             * service code, and a governance service that is being disconnected removes its listener - which
+             * needs this lock.  Calling the listeners while holding it could deadlock the event thread against
+             * the thread disconnecting the service.
+             */
+            Map<String, WatchdogListener> listeners;
+
+            synchronized (this)
+            {
+                listeners = new LinkedHashMap<>(listenerMap);
+            }
+
+            for (String connectorId : listeners.keySet())
             {
                 if (connectorId != null)
                 {
-                    WatchdogListener watchdogListener = listenerMap.get(connectorId);
+                    WatchdogListener watchdogListener = listeners.get(connectorId);
 
                     if (watchdogListener != null)
                     {
@@ -137,10 +151,14 @@ public class GovernanceListenerManager
      */
     private class WatchdogListener
     {
-        private WatchdogGovernanceListener  listener                 = null;
-        private List<OpenMetadataEventType> interestingEventTypes    = null;
-        private List<String>                interestingMetadataTypes = null;
-        private String                      specificInstance         = null;
+        /*
+         * Volatile because events are delivered outside the manager's lock (see processEvent) while
+         * registerListener can replace the specification under it.
+         */
+        private volatile WatchdogGovernanceListener  listener                 = null;
+        private volatile List<OpenMetadataEventType> interestingEventTypes    = null;
+        private volatile List<String>                interestingMetadataTypes = null;
+        private volatile String                      specificInstance         = null;
 
         WatchdogListener()
         {

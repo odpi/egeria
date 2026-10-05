@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileLogAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AttributedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -781,6 +784,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
         if (returnBean instanceof AttributedMetadataElement bean)
         {
             this.addRelationshipsToBean(relationships, bean);
+            this.addResourceProfileLogGUIDs(bean);
         }
 
         return returnBean;
@@ -809,9 +813,42 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
         if (returnBean instanceof AttributedMetadataElement bean)
         {
             this.addRelationshipsToBean(relationships, bean);
+            this.addResourceProfileLogGUIDs(bean);
             bean.setRelatedBy(super.getRelatedBy(beanClass, primaryElement, methodName));
         }
 
         return returnBean;
+    }
+
+
+    /**
+     * Fill in the log file GUIDs of a resource profile log annotation.  They are not stored with the annotation:
+     * each is a ResourceProfileData relationship from the annotation to a log file, so they are only known once
+     * the relationships have been read.  Without this, an annotation read back always had an empty
+     * resourceProfileLogGUIDs although its log files were linked to it.
+     *
+     * @param bean bean whose relationships have been added
+     */
+    private void addResourceProfileLogGUIDs(AttributedMetadataElement bean)
+    {
+        if ((bean instanceof OpenMetadataRootElement rootElement) &&
+                (rootElement.getProperties() instanceof ResourceProfileLogAnnotationProperties resourceProfileLogAnnotationProperties) &&
+                (bean.getResourceProfileData() != null))
+        {
+            List<String> resourceProfileLogGUIDs = new ArrayList<>();
+
+            for (RelatedMetadataElementSummary resourceProfileData : bean.getResourceProfileData())
+            {
+                if ((resourceProfileData != null) && (resourceProfileData.getRelatedElement() != null))
+                {
+                    resourceProfileLogGUIDs.add(resourceProfileData.getRelatedElement().getElementHeader().getGUID());
+                }
+            }
+
+            if (! resourceProfileLogGUIDs.isEmpty())
+            {
+                resourceProfileLogAnnotationProperties.setResourceProfileLogGUIDs(resourceProfileLogGUIDs);
+            }
+        }
     }
 }

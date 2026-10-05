@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * OMFOutTopicClientConnector is the java base class implementation of
@@ -23,7 +24,11 @@ public class OMFOutTopicClientConnector extends OpenMetadataTopicListenerConnect
 {
     private static final Logger log = LoggerFactory.getLogger(OMFOutTopicClientConnector.class);
 
-    private final List<OpenMetadataEventListener> internalEventListeners = new ArrayList<>();
+    /*
+     * The listeners are held in a copy-on-write list so that events can be delivered without holding this
+     * connector's lock - see processEvent.
+     */
+    private final List<OpenMetadataEventListener> internalEventListeners = new CopyOnWriteArrayList<>();
 
 
     /**
@@ -59,8 +64,19 @@ public class OMFOutTopicClientConnector extends OpenMetadataTopicListenerConnect
      *
      * @param event inbound event
      */
+    /**
+     * Pass an event received from the topic to each registered listener.
+     * <br><br>
+     * This method is deliberately not synchronized.  A listener may call into its server, and if that code holds
+     * a lock of its own while disconnecting this connector - which needs this connector's lock - the two threads
+     * deadlock.  That is what happened when an engine host shut down while an engine action event was being
+     * delivered.  The events from a topic arrive on a single listener thread, so they are still delivered one at
+     * a time and in order.
+     *
+     * @param event inbound event
+     */
     @Override
-    public synchronized void processEvent(String event)
+    public void processEvent(String event)
     {
         if (event != null)
         {
