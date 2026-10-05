@@ -772,7 +772,7 @@ public class OpenMetadataStoreRESTServices
                 OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(userId, serverName, methodName);
                 OMRSTypeDefConverter   converter          = new OMRSTypeDefConverter(repositoryHelper, instanceHandler.getServiceName());
 
-                TypeDef updatedTypeDef = metadataCollection.updateTypeDef(userId, converter.getTypeDefPatch(requestBody, methodName));
+                TypeDef updatedTypeDef = metadataCollection.updateTypeDef(userId, converter.getTypeDefPatch(userId, requestBody, methodName));
 
                 response.setTypeDef(this.getOpenMetadataTypeDef(updatedTypeDef, false, false, repositoryHelper));
             }

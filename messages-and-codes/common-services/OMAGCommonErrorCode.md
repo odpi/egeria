@@ -9,7 +9,7 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 32 |
+| **Number of messages** | 33 |
 | **Message identifiers begin** | `OMAG-COMMON-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/ffdc-services](../../open-metadata-implementation/common-services/ffdc-services) |
@@ -49,6 +49,7 @@ The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for 
 | [OMAG-COMMON-400-031](#omag-common-400-031) | 400 | A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3} |
 | [OMAG-COMMON-400-032](#omag-common-400-032) | 400 | The value {0} passed on the {1} parameter of the {2} operation is invalid |
 | [OMAG-COMMON-400-033](#omag-common-400-033) | 400 | Unable to create a client to call the {0} server at {1}; the error was {2} |
+| [OMAG-COMMON-400-034](#omag-common-400-034) | 400 | The {0} operation cannot be performed on asset {1} because its connector, {2}, does not support it |
 | [OMAG-COMMON-404-001](#omag-common-404-001) | 404 | The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3} |
 | [OMAG-COMMON-409-001](#omag-common-409-001) | 409 | Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is defined as a unique property and value {4} is not available for use |
 | [OMAG-COMMON-500-001](#omag-common-500-001) | 500 | Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3} |
@@ -640,6 +641,27 @@ The system cannot issue requests to the server because the client that calls it 
 **User action**
 
 Use the error message to determine what is wrong.  The server name and platform URL root are the usual causes, but the client also needs whatever it authenticates with - a secrets store, for example - to be reachable and to hold credentials the server accepts.
+
+
+----
+
+### OMAG-COMMON-400-034
+
+> The {0} operation cannot be performed on asset {1} because its connector, {2}, does not support it
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGCommonErrorCode.CONNECTOR_DOES_NOT_SUPPORT_OPERATION` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot perform the request because the asset's connector does not provide the operation.  Nothing has been changed.
+
+**User action**
+
+Check that the asset is the one intended, and that its connection names a connector that supports this operation.  For example, only a YAML secrets file connector can save or delete a secrets collection.
 
 
 ----

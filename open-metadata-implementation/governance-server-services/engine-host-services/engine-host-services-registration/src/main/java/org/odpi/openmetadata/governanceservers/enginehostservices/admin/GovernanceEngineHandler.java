@@ -62,6 +62,12 @@ public abstract class GovernanceEngineHandler
     private static final long configurationRefreshIntervalMS = 1000L * 60L * 10L;
 
     private Date lastRefreshTime        = null;
+
+    /*
+     * The error that stopped the last sweep for missed engine actions, if it failed.  The sweep runs every few
+     * seconds, so the same error is only logged again once a sweep has succeeded or the error has changed.
+     */
+    private String lastSweepError = null;
     private Date lastServiceRefreshTime = null;
 
     /**
@@ -529,7 +535,10 @@ public abstract class GovernanceEngineHandler
 
 
     /**
-     * Look for engine actions that were skipped - typically because the events were missed.
+     * Look for engine actions that were skipped - typically because the events were missed.  This runs every few
+     * seconds, so an error that stops it is logged when it first happens and then only if it changes.  (The
+     * metadata server leaves out of each page any engine action this engine's user cannot read in full, so one such
+     * action no longer stops the sweep.)
      */
     public void startMissedEngineActions()
     {
@@ -573,14 +582,27 @@ public abstract class GovernanceEngineHandler
                                                                                 startFrom,
                                                                                 pageSize);
             }
+
+            lastSweepError = null;
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  EngineHostServicesAuditCode.UNEXPECTED_EXCEPTION_DURING_RESTART.getMessageDefinition(methodName,
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       error.getMessage()),
-                                  error);
+            String sweepError = error.getClass().getName() + ": " + error.getMessage();
+
+            if (sweepError.equals(lastSweepError))
+            {
+                log.debug("Sweep for missed engine actions failed again with the same error: {}", sweepError);
+            }
+            else
+            {
+                lastSweepError = sweepError;
+
+                auditLog.logException(methodName,
+                                      EngineHostServicesAuditCode.UNEXPECTED_EXCEPTION_DURING_RESTART.getMessageDefinition(methodName,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
+                                      error);
+            }
         }
     }
 

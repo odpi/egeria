@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -196,15 +197,19 @@ public class OMRSTypeDefConverter
 
     /**
      * Return the repository services' version of a patch to a type definition.  The version the patch creates
-     * defaults to the one after the version it applies to.
+     * defaults to the one after the version it applies to.  The repository requires a patch to say who made it and
+     * when, and the caller's patch has no fields for either, so they are set here from the calling user and the
+     * current time.
      *
+     * @param userId calling user - recorded as the patch's updatedBy
      * @param openMetadataTypeDefPatch patch from the caller
      * @param methodName calling method
      * @return TypeDefPatch
      * @throws InvalidParameterException the patch refers to a type that is not known or uses a value the
      *                                   repository cannot represent
      */
-    public TypeDefPatch getTypeDefPatch(OpenMetadataTypeDefPatch openMetadataTypeDefPatch,
+    public TypeDefPatch getTypeDefPatch(String                   userId,
+                                        OpenMetadataTypeDefPatch openMetadataTypeDefPatch,
                                         String                   methodName) throws InvalidParameterException
     {
         final String parameterName = "typeDefPatch";
@@ -223,6 +228,8 @@ public class OMRSTypeDefConverter
         typeDefPatch.setApplyToVersion(openMetadataTypeDefPatch.getApplyToVersion());
         typeDefPatch.setUpdateToVersion(updateToVersion);
         typeDefPatch.setNewVersionName(this.getVersionName(openMetadataTypeDefPatch.getNewVersionName(), updateToVersion));
+        typeDefPatch.setUpdatedBy(userId);
+        typeDefPatch.setUpdateTime(new Date());
         typeDefPatch.setTypeDefStatus(this.getEnum(TypeDefStatus.class,
                                                    openMetadataTypeDefPatch.getTypeDefStatus(),
                                                    null,

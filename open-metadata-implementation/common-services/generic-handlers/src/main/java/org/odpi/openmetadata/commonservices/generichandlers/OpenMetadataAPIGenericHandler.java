@@ -43,6 +43,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      */
     private static final int cascadeTraversalPageSize = 100;
 
+    /*
+     * Added to the qualified name of an element when it is archived, followed by the date.
+     */
+    private static final String archivedQualifiedNameMarker = "_archivedOn_";
+
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
 
     /**
@@ -2934,17 +2939,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Classify as a Memento any entity if it is anchored to the anchor entity.
+     * One element found by the archive walk, with what is needed to archive it.
+     *
+     * @param entity the entity as it was read
+     * @param guidParameterName name of the parameter that supplied its GUID
+     * @param classificationOrigin whether the Memento classification is assigned to it or propagated from the anchor
+     */
+    private record ArchiveTarget(EntityDetail entity, String guidParameterName, ClassificationOrigin classificationOrigin) {}
+
+
+    /**
+     * Walk from an entity to every entity anchored to the same anchor and add each one to the list of elements to
+     * archive, deepest first, with the starting entity last.  Nothing is changed: the walk finishes before any element
+     * is archived, so a failure to read part of the hierarchy leaves everything as it was.
+     * <br>
+     * The walk reads with forLineage set whatever the caller asked for.  An element that an earlier, failed archive
+     * already classified as a Memento is invisible otherwise, and the walk would skip it and everything beyond it.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param anchorEntity entity anchor to match against
-     * @param processedGUIDs entities that have already been processed
-     * @param potentialAnchoredEntity entity to validate
-     * @param classificationOriginGUID original entity that the Memento classification  was attached to
-     * @param classificationProperties properties for the classification
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param entity entity to start from
+     * @param entityGUIDParameterName name of the parameter that supplied the entity's GUID
+     * @param classificationOrigin whether the Memento classification is assigned to this entity or propagated
+     * @param anchorEntity anchor that the anchored elements must share - null means elements anchored to this entity
+     * @param processedGUIDs entities already visited
+     * @param archiveTargets list to add the elements to
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
@@ -2952,61 +2970,80 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @throws PropertyServerException problem in the repository services
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
-    private void archiveAnchoredEntity(String             userId,
-                                       String             externalSourceGUID,
-                                       String             externalSourceName,
-                                       EntityDetail       anchorEntity,
-                                       List<String>       processedGUIDs,
-                                       EntityProxy        potentialAnchoredEntity,
-                                       String             classificationOriginGUID,
-                                       InstanceProperties classificationProperties,
-                                       boolean            forLineage,
-                                       boolean            forDuplicateProcessing,
-                                       Date               effectiveTime,
-                                       String             methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private void collectArchiveTargets(String               userId,
+                                       EntityDetail         entity,
+                                       String               entityGUIDParameterName,
+                                       ClassificationOrigin classificationOrigin,
+                                       EntityDetail         anchorEntity,
+                                       List<String>         processedGUIDs,
+                                       List<ArchiveTarget>  archiveTargets,
+                                       boolean              forDuplicateProcessing,
+                                       Date                 effectiveTime,
+                                       String               methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
-        /*
-         * Only need to progress if anchor entity exists.
-         */
-        if (anchorEntity != null)
+        final String anchoredEntityParameterName = "potentialAnchoredEntity";
+
+        processedGUIDs.add(entity.getGUID());
+
+        String       entityTypeName      = entity.getType().getTypeDefName();
+        EntityDetail anchorToMatch       = anchorEntity == null ? entity : anchorEntity;
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       entity,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       true,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
         {
-            final String guidParameterName = "potentialAnchoredEntity";
+            Relationship relationship = iterator.getNext();
+            EntityProxy  otherEnd     = repositoryHandler.getOtherEnd(entity.getGUID(), entityTypeName, relationship, 0, methodName);
 
-            if ((potentialAnchoredEntity != null) && (potentialAnchoredEntity.getType() != null))
+            if ((otherEnd != null) && (otherEnd.getType() != null) && (! processedGUIDs.contains(otherEnd.getGUID())))
             {
-                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                        potentialAnchoredEntity.getGUID(),
-                                                                        guidParameterName,
-                                                                        potentialAnchoredEntity.getType().getTypeDefName(),
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
+                EntityDetail otherEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                             otherEnd.getGUID(),
+                                                                             anchoredEntityParameterName,
+                                                                             otherEnd.getType().getTypeDefName(),
+                                                                             true,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName);
 
-                AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(entity, methodName);
+                AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(otherEntity, methodName);
 
-                if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID.equals(anchorEntity.getGUID())))
+                if ((anchorIdentifiers != null) && (anchorToMatch.getGUID().equals(anchorIdentifiers.anchorGUID)))
                 {
-                    this.archiveBeanInRepository(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 entity.getGUID(),
-                                                 guidParameterName,
-                                                 potentialAnchoredEntity.getType().getTypeDefName(),
-                                                 ClassificationOrigin.PROPAGATED,
-                                                 classificationOriginGUID,
-                                                 classificationProperties,
-                                                 anchorEntity,
-                                                 processedGUIDs,
-                                                 forLineage,
-                                                 forDuplicateProcessing,
-                                                 effectiveTime,
-                                                 methodName);
+                    this.collectArchiveTargets(userId,
+                                               otherEntity,
+                                               anchoredEntityParameterName,
+                                               ClassificationOrigin.PROPAGATED,
+                                               anchorEntity,
+                                               processedGUIDs,
+                                               archiveTargets,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
                 }
             }
         }
+
+        archiveTargets.add(new ArchiveTarget(entity, entityGUIDParameterName, classificationOrigin));
     }
 
 
@@ -3091,7 +3128,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
     /**
      * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
      * been deleted or archived.  Note that this classification is propagated to all elements with the same
-     * AnchorGUID.
+     * AnchorGUID, and each Referenceable has "_archivedOn_" and the date added to its qualified name.
+     * <br>
+     * The work is done in two passes.  The first finds every element to archive and changes nothing.  The second
+     * archives them, deepest first: each element's qualified name is changed while it is still visible, and only
+     * then is it classified as a Memento.  (Classifying first made the element invisible to the read that the
+     * rename does, so the archive failed after classifying the first anchored element and left the rest live.)
+     * A step that an earlier, failed attempt already completed is skipped, so the archive can be retried.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -3108,7 +3151,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     * @return GUID of archived entity
+     * @return archived entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -3131,9 +3174,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        /*
-         * This is to pick up any errors in the iteration through the anchored elements.
-         */
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
         EntityDetail targetEntity = repositoryHandler.getEntityByGUID(userId,
@@ -3147,120 +3187,104 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (targetEntity != null)
         {
-            processedGUIDs.add(targetEntity.getGUID());
+            /*
+             * Pass 1: find everything to archive.
+             */
+            List<ArchiveTarget> archiveTargets = new ArrayList<>();
+
+            this.collectArchiveTargets(userId,
+                                       targetEntity,
+                                       entityGUIDParameterName,
+                                       classificationOrigin,
+                                       anchorEntity,
+                                       processedGUIDs,
+                                       archiveTargets,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
 
             /*
-             * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is archived.
+             * Pass 2: archive each element, deepest first.  The element's own type is used rather than the type
+             * the caller named, which may be a supertype such as OpenMetadataRoot - otherwise the Referenceable test
+             * fails and the element keeps its qualified name.
              */
-            RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
-                                                                                           invalidParameterHandler,
-                                                                                           userId,
-                                                                                           targetEntity,
-                                                                                           entityTypeName,
-                                                                                           null,
-                                                                                           null,
-                                                                                           0,
-                                                                                           null,
-                                                                                           null,
-                                                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                                                           null,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing,
-                                                                                           0,
-                                                                                           invalidParameterHandler.getMaxPagingSize(),
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-            while (iterator.moreToReceive())
+            for (ArchiveTarget archiveTarget : archiveTargets)
             {
-                Relationship relationship = iterator.getNext();
-                EntityProxy  otherEnd     = repositoryHandler.getOtherEnd(targetEntity.getGUID(), entityTypeName, relationship, 0, methodName);
+                EntityDetail archiveEntity      = archiveTarget.entity();
+                String       archiveEntityType  = archiveEntity.getType().getTypeDefName();
+                String       archiveEntityGUID  = archiveEntity.getGUID();
 
-                if (! processedGUIDs.contains(otherEnd.getGUID()))
+                if (repositoryHelper.isTypeOf(serviceName, archiveEntityType, OpenMetadataType.REFERENCEABLE.typeName))
                 {
-                    if (anchorEntity == null)
+                    String currentQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     archiveEntity.getProperties(),
+                                                                                     methodName);
+
+                    if ((currentQualifiedName != null) && (! currentQualifiedName.contains(archivedQualifiedNameMarker)))
                     {
-                        this.archiveAnchoredEntity(userId,
-                                                   externalSourceGUID,
-                                                   externalSourceName,
-                                                   targetEntity,
-                                                   processedGUIDs,
-                                                   otherEnd,
-                                                   classificationOriginGUID,
-                                                   classificationProperties,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   effectiveTime,
-                                                   methodName);
-                    }
-                    else
-                    {
-                        this.archiveAnchoredEntity(userId,
-                                                   externalSourceGUID,
-                                                   externalSourceName,
-                                                   anchorEntity,
-                                                   processedGUIDs,
-                                                   otherEnd,
-                                                   classificationOriginGUID,
-                                                   classificationProperties,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   effectiveTime,
-                                                   methodName);
+                        this.updateBeanPropertyInRepository(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            archiveEntityGUID,
+                                                            archiveTarget.guidParameterName(),
+                                                            archiveEntity.getType().getTypeDefGUID(),
+                                                            archiveEntityType,
+                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                            currentQualifiedName + archivedQualifiedNameMarker + new Date(),
+                                                            true,
+                                                            forDuplicateProcessing,
+                                                            effectiveTime,
+                                                            methodName);
                     }
                 }
-            }
 
-            repositoryHandler.classifyEntity(userId,
-                                             null,
-                                             null,
-                                             targetEntity.getGUID(),
-                                             targetEntity,
-                                             entityGUIDParameterName,
-                                             entityTypeName,
-                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID,
-                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
-                                             classificationOrigin,
-                                             classificationOriginGUID,
-                                             classificationProperties,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-
-
-            /*
-             * Update the qualified name in the archived entity.
-             */
-            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
-            {
-                String qualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                          targetEntity.getProperties(),
-                                                                          methodName) + "_archivedOn_" + new Date();
-
-                String entityTypeGUID = invalidParameterHandler.validateTypeName(entityTypeName,
-                                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                                 serviceName,
-                                                                                 methodName,
-                                                                                 repositoryHelper);
-                this.updateBeanPropertyInRepository(userId,
-                                                    externalSourceGUID,
-                                                    externalSourceName,
-                                                    entityGUID,
-                                                    entityGUIDParameterName,
-                                                    entityTypeGUID,
-                                                    entityTypeName,
-                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                    qualifiedName,
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
+                if (! this.hasMementoClassification(archiveEntity))
+                {
+                    repositoryHandler.classifyEntity(userId,
+                                                     null,
+                                                     null,
+                                                     archiveEntityGUID,
+                                                     null,
+                                                     archiveTarget.guidParameterName(),
+                                                     archiveEntityType,
+                                                     OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID,
+                                                     OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
+                                                     archiveTarget.classificationOrigin(),
+                                                     classificationOriginGUID,
+                                                     classificationProperties,
+                                                     true,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+                }
             }
         }
 
         return targetEntity;
+    }
+
+
+    /**
+     * Return whether an entity already has the Memento classification.
+     *
+     * @param entity entity to test
+     * @return boolean
+     */
+    private boolean hasMementoClassification(EntityDetail entity)
+    {
+        if (entity.getClassifications() != null)
+        {
+            for (Classification classification : entity.getClassifications())
+            {
+                if ((classification != null) && (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getName())))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 
