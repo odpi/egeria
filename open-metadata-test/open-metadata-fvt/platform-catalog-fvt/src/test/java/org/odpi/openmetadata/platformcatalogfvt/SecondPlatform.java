@@ -462,13 +462,34 @@ class SecondPlatform
         {
             for (String serverName : new String[]{INTEGRATION_DAEMON_NAME, METADATA_STORE_NAME})
             {
+                /*
+                 * The shutdown request is bounded: a server that never finishes shutting down would otherwise
+                 * hang the suite here, before the process is destroyed.
+                 */
+                java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor(runnable ->
+                {
+                    Thread thread = new Thread(runnable, "fvt-shutdown: second platform " + serverName);
+                    thread.setDaemon(true);
+                    return thread;
+                });
+
                 try
                 {
-                    this.getPlatformServicesClient().shutdownServer(serverName);
+                    executor.submit(() -> { this.getPlatformServicesClient().shutdownServer(serverName); return null; })
+                            .get(Long.getLong("fvt.shutdown.timeout.seconds", 120L), java.util.concurrent.TimeUnit.SECONDS);
+                }
+                catch (java.util.concurrent.TimeoutException overrun)
+                {
+                    System.out.println("Shutting down server " + serverName + " on the second platform did not finish in time;"
+                                               + " destroying the process anyway.");
                 }
                 catch (Exception ignoredShutdownFailure)
                 {
                     // Best-effort - the process is about to be destroyed anyway.
+                }
+                finally
+                {
+                    executor.shutdownNow();
                 }
             }
 

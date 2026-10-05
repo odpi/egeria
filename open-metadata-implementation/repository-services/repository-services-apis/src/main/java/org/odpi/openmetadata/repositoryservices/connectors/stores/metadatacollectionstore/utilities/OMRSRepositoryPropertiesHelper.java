@@ -709,6 +709,56 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Add the supplied integer array property (attribute type array&lt;int&gt;) to an instance properties object.
+     * If the instance properties object supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param arrayValues contents of the array
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addIntArrayPropertyToInstance(String             sourceName,
+                                                     InstanceProperties properties,
+                                                     String             propertyName,
+                                                     List<Integer>      arrayValues,
+                                                     String             methodName);
+
+
+    /**
+     * Locates and extracts an integer array property (attribute type array&lt;int&gt;) and returns its values in
+     * their original order.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested array property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return list of integers or null if the property is not present
+     */
+    List<Integer> getIntArrayProperty(String             sourceName,
+                                      String             propertyName,
+                                      InstanceProperties properties,
+                                      String             methodName);
+
+
+    /**
+     * Locates and extracts an integer array property (attribute type array&lt;int&gt;) and removes it from the
+     * properties.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested array property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return list of integers or null if the property is not present
+     */
+    List<Integer> removeIntArrayProperty(String             sourceName,
+                                         String             propertyName,
+                                         InstanceProperties properties,
+                                         String             methodName);
+
+
+    /**
      * If the supplied array property is not null, add it to an instance properties object.  The supplied array is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.

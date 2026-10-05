@@ -937,6 +937,101 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     }
 
 
+    /*
+     * Shutting down is bounded.  A server whose shutdown never returns - a deadlock inside it, for example - used
+     * to hang the whole Gradle run in close(), because the REST call has no timeout.  Each step now runs on a
+     * daemon thread with a limit, and close() fails with a message saying what hung if any step overran, so the
+     * problem is reported as a failure rather than as a run that never finishes.
+     */
+    private static final long SHUTDOWN_TIMEOUT_SECONDS = Long.getLong("fvt.shutdown.timeout.seconds", 120L);
+
+    private static volatile String shutdownTimeoutFailure = null;
+
+
+    /**
+     * A shutdown step that may throw.
+     */
+    @FunctionalInterface
+    private interface ShutdownStep
+    {
+        void run() throws Exception;
+    }
+
+
+    /**
+     * Run one shutdown step, waiting at most {@link #SHUTDOWN_TIMEOUT_SECONDS} for it.  An overrun is recorded so
+     * that close() can report it once the remaining steps have had their chance to run.
+     *
+     * @param description what is being shut down, for the failure message
+     * @param step the shutdown step
+     * @throws Exception the step failed or overran
+     */
+    private static void runWithShutdownTimeout(String       description,
+                                               ShutdownStep step) throws Exception
+    {
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor(runnable ->
+        {
+            Thread thread = new Thread(runnable, "fvt-shutdown: " + description);
+            thread.setDaemon(true);
+            return thread;
+        });
+
+        try
+        {
+            executor.submit(() -> { step.run(); return null; }).get(SHUTDOWN_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);
+        }
+        catch (java.util.concurrent.TimeoutException overrun)
+        {
+            String message = "Shutting down " + description + " did not finish within " + SHUTDOWN_TIMEOUT_SECONDS
+                    + " seconds.  Run jstack against the Gradle test worker while it is stuck: a server that never"
+                    + " finishes shutting down is usually deadlocked, and jstack reports the threads involved.";
+
+            System.out.println(message);
+
+            if (shutdownTimeoutFailure == null)
+            {
+                shutdownTimeoutFailure = message;
+            }
+
+            throw new IllegalStateException(message, overrun);
+        }
+        finally
+        {
+            executor.shutdownNow();
+        }
+    }
+
+
+    /**
+     * Close the platform, waiting at most {@link #SHUTDOWN_TIMEOUT_SECONDS}, and then fail if any shutdown step
+     * overran.  This is the last step of close(), so the failure is raised once everything has been tried.
+     *
+     * @param platform the platform's application context
+     */
+    private static void closePlatformWithTimeout(AutoCloseable platform)
+    {
+        try
+        {
+            runWithShutdownTimeout("the platform", platform::close);
+        }
+        catch (Exception closeFailure)
+        {
+            if (shutdownTimeoutFailure == null)
+            {
+                System.out.println("Problem closing the platform: " + closeFailure.getMessage());
+            }
+        }
+
+        String failure = shutdownTimeoutFailure;
+
+        if (failure != null)
+        {
+            shutdownTimeoutFailure = null;
+            throw new AssertionError(failure);
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      */
@@ -961,7 +1056,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                  */
                 for (String serverName : new String[]{INTEGRATION_DAEMON_NAME, ENGINE_HOST_NAME, METADATA_STORE_NAME})
                 {
-                    platformServicesClient.shutdownServer(serverName);
+                    runWithShutdownTimeout("server " + serverName, () -> platformServicesClient.shutdownServer(serverName));
                 }
             }
             catch (Exception ignoredShutdownFailure)
@@ -971,7 +1066,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
             try
             {
-                platformContext.close();
+                closePlatformWithTimeout(platformContext);
             }
             catch (Exception error)
             {

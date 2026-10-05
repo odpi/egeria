@@ -136,7 +136,7 @@ public enum LiskovAuditCode implements AuditLogMessageSet
      */
     STARTING_SURVEY("LISKOV-DATA-HUB-MANAGER-0021",
                     AuditLogRecordSeverityLevel.INFO,
-                    "The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}",
+                    "The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} because {6}",
                     "The connector has requested a new survey of a member of a data sharing hub so that the latest characteristics of its contents are available to the data sharing hub's owner.",
                     "No action is required.  This message is for monitoring the surveying of the members of a data sharing hub.",
                     "https://egeria-project.org/concepts/data-sharing-hub/"),

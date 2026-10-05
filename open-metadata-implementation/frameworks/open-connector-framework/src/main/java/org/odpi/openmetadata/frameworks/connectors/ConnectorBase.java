@@ -398,6 +398,82 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Return the values of an array configuration property or request parameter.  The value may arrive as a
+     * collection or an array - a configuration property declared as array&lt;string&gt; is usually stored that
+     * way - or as a single comma-separated string, with or without the square brackets that a list acquires
+     * when it is converted to a string.  Each value is trimmed and empty values are dropped.
+     * <br><br>
+     * Splitting the value's toString() on commas, as these methods once did, only works for the string form: a
+     * list renders as "[a, b, c]", so the first value kept its opening bracket, the last its closing one, and
+     * the others a leading space - and none of them matched the value they were meant to.
+     *
+     * @param arrayOption value of the property
+     * @return list of strings - empty if there is no value
+     */
+    public static List<String> getArrayValue(Object arrayOption)
+    {
+        List<String> values = new ArrayList<>();
+
+        if (arrayOption instanceof Collection<?> collection)
+        {
+            for (Object element : collection)
+            {
+                addArrayValue(values, element);
+            }
+        }
+        else if (arrayOption instanceof Object[] array)
+        {
+            for (Object element : array)
+            {
+                addArrayValue(values, element);
+            }
+        }
+        else if (arrayOption != null)
+        {
+            /*
+             * A list that has been through a string conversion on its way here - when it is stored in a
+             * property that holds strings, for example - arrives as "[a, b, c]".  The brackets are removed so
+             * that it gives the same values as the list did.
+             */
+            String arrayString = arrayOption.toString().trim();
+
+            if ((arrayString.startsWith("[")) && (arrayString.endsWith("]")))
+            {
+                arrayString = arrayString.substring(1, arrayString.length() - 1);
+            }
+
+            for (String element : arrayString.split(","))
+            {
+                addArrayValue(values, element);
+            }
+        }
+
+        return values;
+    }
+
+
+    /**
+     * Add one value to an array property's list of values, trimmed, unless it is empty.
+     *
+     * @param values list to add to
+     * @param value value to add
+     */
+    private static void addArrayValue(List<String> values,
+                                      Object       value)
+    {
+        if (value != null)
+        {
+            String trimmedValue = value.toString().trim();
+
+            if (! trimmedValue.isEmpty())
+            {
+                values.add(trimmedValue);
+            }
+        }
+    }
+
+
+    /**
      * Retrieve a configuration property that is a comma-separated list of strings.
      *
      * @param propertyName name of property
@@ -415,9 +491,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return getArrayValue(arrayOption);
             }
         }
 
@@ -443,9 +517,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return getArrayValue(arrayOption);
             }
         }
 
@@ -476,9 +548,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return getArrayValue(arrayOption);
             }
         }
 

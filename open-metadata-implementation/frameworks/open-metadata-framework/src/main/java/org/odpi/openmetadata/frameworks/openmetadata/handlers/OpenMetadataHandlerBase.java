@@ -390,6 +390,15 @@ public class OpenMetadataHandlerBase
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
         workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // All types of entities
 
+        /*
+         * The caller's sequencing order applies to the elements they asked for, not to the relationships
+         * attached to each one.  Those come back most recently created first, so that when an element has more
+         * relationships than one page holds - survey reports and annotations, for example - the page holds the
+         * newest ones, and lists such as the reports of an asset read newest first.
+         */
+        workingQueryOptions.setSequencingOrder(SequencingOrder.CREATION_DATE_RECENT);
+        workingQueryOptions.setSequencingProperty(null);
+
         if (queryOptions.getGraphQueryDepth() > 0)
         {
             workingQueryOptions.setStartFrom(0);
@@ -1890,6 +1899,8 @@ public class OpenMetadataHandlerBase
                 workingQueryOptions.setStartFrom(0);
                 workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
                 workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
+                workingQueryOptions.setSequencingOrder(SequencingOrder.CREATION_DATE_RECENT); // newest relationships first - see getElementRelatedElements
+                workingQueryOptions.setSequencingProperty(null);
 
                 /*
                  * If there are no side relationships and only one hierarchical relationship, then we can optimize and

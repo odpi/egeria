@@ -25,7 +25,7 @@ public class DataSharingHubManagerProvider extends IntegrationConnectorProvider
     {
         super(EgeriaOpenConnectorDefinition.DATA_SHARING_HUB_MANAGER_INTEGRATION_CONNECTOR,
               connectorClassName,
-              null);
+              LiskovConfigurationProperty.getRecognizedConfigurationPropertyNames());
 
         super.supportedConfigurationProperties = LiskovConfigurationProperty.getConfigurationPropertyTypes();
     }

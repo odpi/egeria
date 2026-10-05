@@ -24,6 +24,24 @@ public enum LiskovConfigurationProperty
                                   "survey-folder,survey-folder-and-files,survey-all-folders",
                                   false),
 
+    /**
+     * The fewest days between surveys of a member of a data sharing hub.
+     */
+    MINIMUM_SURVEY_INTERVAL_DAYS("minimumSurveyIntervalDays",
+                                 "The fewest days between surveys of a member of a data sharing hub.  A member that has never been surveyed is surveyed straight away.  After that, the interval between surveys starts at this number of days and grows by a day each time a survey finds no change, up to maximumSurveyIntervalDays.  When a survey finds a change, the interval drops back to this number of days.  The default is 1.",
+                                 DataType.INT.getDisplayName(),
+                                 "1",
+                                 false),
+
+    /**
+     * The most days between surveys of a member of a data sharing hub.
+     */
+    MAXIMUM_SURVEY_INTERVAL_DAYS("maximumSurveyIntervalDays",
+                                 "The most days between surveys of a member of a data sharing hub.  The interval between surveys grows by a day each time a survey finds no change, and stops growing at this number of days.  A value below minimumSurveyIntervalDays is treated as minimumSurveyIntervalDays.  The default is 7.",
+                                 DataType.INT.getDisplayName(),
+                                 "7",
+                                 false),
+
     ;
 
     public final String  name;
@@ -108,6 +126,24 @@ public enum LiskovConfigurationProperty
     public boolean isPlaceholder()
     {
         return isPlaceholder;
+    }
+
+
+    /**
+     * Return the names of the configuration properties that the Liskov Data Sharing Hub Manager recognizes.
+     *
+     * @return list of property names
+     */
+    public static List<String> getRecognizedConfigurationPropertyNames()
+    {
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+
+        for (LiskovConfigurationProperty configurationProperty : LiskovConfigurationProperty.values())
+        {
+            recognizedConfigurationProperties.add(configurationProperty.getName());
+        }
+
+        return recognizedConfigurationProperties;
     }
 
 

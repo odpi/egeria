@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -775,9 +776,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return ConnectorBase.getArrayValue(arrayOption);
             }
         }
 
@@ -803,9 +802,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return ConnectorBase.getArrayValue(arrayOption);
             }
         }
 
@@ -836,9 +833,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             {
                 Object arrayOption = configurationProperties.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return ConnectorBase.getArrayValue(arrayOption);
             }
         }
 

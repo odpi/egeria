@@ -89,6 +89,7 @@ dependencies {
     // one runs on the engine host, the other in the integration daemon.
     testImplementation project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     testImplementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
     // The resource connectors the assets themselves are opened through - a folder survey reaches its folder
     // through BasicFolderConnector, and a file survey reaches its file through the file connectors.  They are
     // needed at runtime whether or not a test names them.

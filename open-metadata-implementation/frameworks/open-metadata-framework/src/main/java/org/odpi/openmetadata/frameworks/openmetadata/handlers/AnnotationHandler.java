@@ -238,6 +238,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
             if (annotationGUID != null)
             {
                 this.linkAnnotationToDescribedElement(userId, elementGUID, annotationGUID, new MakeAnchorOptions(metadataSourceOptions), null);
+                this.linkResourceProfileLogs(userId, annotationGUID, annotationProperties, metadataSourceOptions);
             }
 
             return new AnnotationResult(annotationGUID, true);
@@ -281,7 +282,50 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
             }
         }
 
+        this.linkResourceProfileLogs(userId, oldestAnnotationGUID, annotationProperties, metadataSourceOptions);
+
         return new AnnotationResult(oldestAnnotationGUID, false);
+    }
+
+
+    /**
+     * Link a resource profile log annotation to the log files that hold its detail (ResourceProfileData).
+     * A survey writes a new log file each time it runs and names it in resourceProfileLogGUIDs.  That property
+     * is carried by these relationships rather than stored with the annotation, so without them the log files
+     * are only reachable from the survey report.  When an annotation is reused, the new survey's log file is
+     * linked alongside the earlier ones, so the annotation keeps a log from each survey that reported it.
+     *
+     * @param userId calling user
+     * @param annotationGUID unique identifier of the annotation
+     * @param annotationProperties properties supplied by the survey
+     * @param metadataSourceOptions external source, effective time and lineage options for the requests
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    private void linkResourceProfileLogs(String                userId,
+                                         String                annotationGUID,
+                                         AnnotationProperties  annotationProperties,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        if ((annotationGUID != null) &&
+                (annotationProperties instanceof ResourceProfileLogAnnotationProperties resourceProfileLogAnnotationProperties) &&
+                (resourceProfileLogAnnotationProperties.getResourceProfileLogGUIDs() != null))
+        {
+            for (String resourceProfileLogGUID : resourceProfileLogAnnotationProperties.getResourceProfileLogGUIDs())
+            {
+                if (resourceProfileLogGUID != null)
+                {
+                    this.linkResourceProfileData(userId,
+                                                 annotationGUID,
+                                                 resourceProfileLogGUID,
+                                                 new MakeAnchorOptions(metadataSourceOptions),
+                                                 null);
+                }
+            }
+        }
     }
 
 
@@ -289,7 +333,9 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
      * Determine whether an existing annotation records the same thing as a new one.  It must be of the same
      * type, and all of its properties must be equal apart from those that identify the survey that created
      * it: the qualified name, display name and description, which record when and in which survey it was
-     * first discovered.  The effective dates and
+     * first discovered.  A resource profile log annotation's log file GUIDs are not compared either: each survey
+     * writes a new log file, and the GUIDs are carried by ResourceProfileData relationships rather than stored
+     * with the annotation, so an annotation read back never has them.  The effective dates and
      * extended properties are not compared either, because an annotation read back from the repository carries
      * them differently from one that has just been built.
      *
@@ -311,6 +357,12 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
             existingProperties.setEffectiveFrom(annotationProperties.getEffectiveFrom());
             existingProperties.setEffectiveTo(annotationProperties.getEffectiveTo());
             existingProperties.setExtendedProperties(annotationProperties.getExtendedProperties());
+
+            if ((existingProperties instanceof ResourceProfileLogAnnotationProperties existingLogProperties) &&
+                    (annotationProperties instanceof ResourceProfileLogAnnotationProperties newLogProperties))
+            {
+                existingLogProperties.setResourceProfileLogGUIDs(newLogProperties.getResourceProfileLogGUIDs());
+            }
 
             return annotationProperties.equals(existingProperties);
         }
@@ -1041,6 +1093,83 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                             OpenMetadataType.ANNOTATION.typeName,
                                             queryOptions,
+                                            methodName);
+    }
+
+
+    /**
+     * Return the number of annotations reported by a survey report (ReportedAnnotation relationship).  The
+     * repository counts the relationships itself, so this is far cheaper than retrieving the annotations when
+     * only the number is wanted.
+     *
+     * @param userId                 userId of the user making the request
+     * @param surveyReportGUID       unique identifier of the survey report
+     * @param queryOptions           multiple options to control the query
+     * @return number of annotations
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public long countReportedAnnotations(String       userId,
+                                         String       surveyReportGUID,
+                                         QueryOptions queryOptions) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "countReportedAnnotations";
+        final String guidPropertyName = "surveyReportGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(surveyReportGUID, guidPropertyName, methodName);
+
+        return openMetadataClient.countRelationshipsBetweenMetadataElements(userId,
+                                                                            OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                            null,
+                                                                            Collections.singletonList(surveyReportGUID),
+                                                                            null,
+                                                                            null,
+                                                                            OpenMetadataType.ANNOTATION.typeName,
+                                                                            EndMatchCriteria.BOTH,
+                                                                            null,
+                                                                            new QueryOptions(queryOptions));
+    }
+
+
+    /**
+     * Returns the survey reports that describe the supplied element (ReportSubject relationship), most recently
+     * created first, so a caller interested in the latest surveys can retrieve a small first page rather than
+     * every report the element has accumulated.
+     *
+     * @param userId                 userId of the user making the request
+     * @param elementGUID            unique identifier of the element that the reports describe
+     * @param queryOptions           multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getSurveyReportsForElement(String       userId,
+                                                                    String       elementGUID,
+                                                                    QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "getSurveyReportsForElement";
+        final String guidPropertyName = "elementGUID";
+
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.SURVEY_REPORT.typeName);
+        workingQueryOptions.setSequencingOrder(SequencingOrder.CREATION_DATE_RECENT);
+        workingQueryOptions.setSequencingProperty(null);
+
+        return super.getRelatedRootElements(userId,
+                                            elementGUID,
+                                            guidPropertyName,
+                                            1,
+                                            OpenMetadataType.REPORT_SUBJECT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SURVEY_REPORT.typeName,
+                                            workingQueryOptions,
                                             methodName);
     }
 

@@ -403,7 +403,7 @@ final class FilesFvtTestSupport
      * The folders this suite builds, one per test that needs one of its own.
      */
     static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template", "actions", "destination",
-                                                        "datafolder", "filetypes", "watchdog");
+                                                        "datafolder", "filetypes", "watchdog", "liskov");
 
     /**
      * Name of the folder nested inside each folder under test.

@@ -113,9 +113,58 @@ The purpose of the data dictionary is to abstract the data structures away from 
 A data dictionary is only as good as the descriptions of the data stores it is built from, so on each refresh Liskov also works to improve those descriptions.  Egeria's content packs define [governance action types](https://egeria-project.org/concepts/governance-action-type/) that catalog and survey each type of technology, and link them to the [technology type](https://egeria-project.org/concepts/deployed-implementation-type/) they support with a `ResourceList` relationship.  Liskov follows those links from each member's `deployedImplementationType` and, for every member it encounters:
 
 * **Enables cataloguing if it is not already enabled.**  The cataloguing governance action types carry the integration connector that will do the cataloguing as a predefined action target, so Liskov treats cataloguing as already enabled when the member is one of that connector's catalog targets.  Otherwise it starts the governance action type, passing the member as the `newAsset` action target.  This is what reveals the contents of a member - cataloguing a file system directory, for example, creates the assets for the files inside it, and those files are then surveyed in their own right on a later refresh.
-* **Requests a survey.**  A new survey is started on every refresh so that the description of the member's contents stays up to date.
+* **Requests a survey when one is due.**  A member that has never been surveyed is surveyed straight away.  After that, how often it is surveyed depends on how often its surveys find something new - see [Survey schedule](#survey-schedule) below.
 
 Both kinds of request run asynchronously in a governance engine, so their results are picked up by a later refresh.  A request is skipped when an engine action started from the same governance action type is already running, or waiting to run, against the same member - so an outstanding request from an earlier refresh is never duplicated.
+
+### Survey schedule
+
+Surveying a data store takes resources from both the data store and Egeria, and a data store that has stopped changing does not need surveying every day.  So the interval between surveys of a member adapts to how often it changes:
+
+* A member that has never been surveyed is surveyed straight away.
+* After that, the interval starts at the minimum (one day by default).
+* Each time a survey finds no change since the survey before it, the interval grows by a day, up to the maximum (seven days by default).
+* As soon as a survey finds a change, the interval drops back to the minimum and the cycle repeats.
+
+So a data store that keeps changing is surveyed daily, and one that has stopped changing is surveyed after 1 day, then 2, then 3 and so on, up to once a week.
+
+The time is measured from the start of the latest survey, whether or not it completed, so a survey that keeps failing is retried at the minimum interval rather than on every refresh.  A survey that falls due within the next two hours counts as due.  This is because each survey starts a little after the refresh that requested it, and without that allowance the next day's refresh would find a little less than a day had passed and every one-day interval would become two.
+
+Nothing about the schedule is stored.  It is worked out from the member's survey reports on each refresh, so it survives a restart of the integration daemon.  Each schedule is kept separately for each survey of each member: the survey action engine records the survey's request type (for example, `survey-folder`) as the `purpose` of each survey report it creates, and Liskov matches on that.
+
+#### How survey reports are compared
+
+A survey "found no change" when it reported exactly the same annotations as the survey before it.  This works because an annotation that a later survey finds again is reused rather than recreated.  An annotation matches an earlier one when it is of the same type and all its properties are equal, apart from its qualified name, display name, description, effective dates and extended properties.  A resource profile log annotation - whose detail is written to a log file, a new one for each survey - also ignores which log files it refers to; each survey's log file is linked to the annotation instead.  So two surveys that found the same things report the same annotations, and anything they found differently produces a new annotation.
+
+Two reports are compared in two steps:
+
+1. **Count the annotations each report reported.**  The repository counts the `ReportedAnnotation` relationships without returning them, so this is cheap.  Different counts are a change.
+2. **If the counts are equal, compare the annotations' unique identifiers.**  Equal counts are not proof of no change: an annotation can drop out of one survey and come back in the next, reused from an earlier survey, leaving the counts equal and the sets different.  Any difference in either direction - a new annotation, or one the earlier report had that the later one does not - is a change.
+
+The result for each pair of reports is cached for as long as the connector runs, since completed survey reports do not change.
+
+The work is kept to what the decision needs:
+
+* Nothing is compared within the minimum interval of the latest survey, nor once the maximum interval has passed.
+* Otherwise the reports are compared only as far back as the time since the latest survey requires, stopping at the first change.
+* The member's survey reports are read newest first, a page at a time, and reading stops once enough completed reports from the same survey have been found.  A member that has been surveyed for years may have thousands of reports; at most a handful are read.
+
+Some consequences are worth knowing:
+
+* **A survey that records a value that changes on every run will always find a change.**  Examples are row counts on a busy table, file sizes, or any time held in an annotation property.  That member stays on the minimum interval.  For a busy table this is intended; for a survey that merely records when it ran, it means the member is never given a longer interval.
+* **Changes only to the ignored properties are not seen.**  A change to just the extended properties or effective dates of an annotation reuses the annotation, so it does not count as a change.  Nor does a change that shows only inside a profile log file - a folder survey's file name counts, for example - though a change in the number or types of files is seen through the folder survey's other annotations.
+* **Reports from before annotations were reused always look different**, because each one had its own annotations.  The interval starts to grow once two surveys made with annotation reuse have run in a row.
+
+#### Configuring the schedule
+
+| Configuration property | Default | Meaning |
+|---|---|---|
+| `minimumSurveyIntervalDays` | 1 | The fewest days between surveys of a member, and the interval the schedule returns to when a survey finds a change. |
+| `maximumSurveyIntervalDays` | 7 | The most days between surveys of a member.  A value below `minimumSurveyIntervalDays` is treated as `minimumSurveyIntervalDays`, which gives a fixed interval. |
+
+Like `excludedSurveyRequestTypes` below, these can be set on the connector's connection to apply to every data sharing hub, or on an individual catalog target to apply to just that hub.
+
+### Choosing which surveys run
 
 By default every survey that is registered for a member's technology type is run.  Most technology types register exactly one, but a file system directory registers four (`survey-folder`, `survey-folder-and-files`, `survey-all-folders` and `survey-all-folders-and-files`).  Where that is more surveying than is wanted, the `excludedSurveyRequestTypes` configuration property takes a comma-separated list of the surveys to skip.  Each value is either the survey's request type (for example, `survey-folder`) or the qualified name of its governance action type (for example, `FileSurvey::survey-folder`).  The property can be set on the connector's connection to apply to every data sharing hub, or on an individual catalog target to apply to just that hub.
 

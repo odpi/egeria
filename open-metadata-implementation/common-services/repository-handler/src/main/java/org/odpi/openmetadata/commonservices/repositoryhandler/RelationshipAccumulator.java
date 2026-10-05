@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +32,13 @@ public class RelationshipAccumulator
     private final AuditLog               auditLog;
     private final String                 methodName;
 
+    /*
+     * Every map in this class is a LinkedHashMap.  The repositories return relationships in the order the caller
+     * asked for - most recently created first, for example - and the lists returned from here are built from
+     * these maps' values, so a HashMap would hand them back in an arbitrary order and quietly undo the
+     * sequencing.  A LinkedHashMap keeps the order the relationships arrived in, and replacing a value with a
+     * newer version of the same relationship leaves it in its original position.
+     */
     private Map<String, List<Relationship>> relationshipMap = null;
 
     private static final Logger log = LoggerFactory.getLogger(RelationshipAccumulator.class);
@@ -132,7 +139,7 @@ public class RelationshipAccumulator
         {
             if (relationshipMap == null)
             {
-                relationshipMap = new HashMap<>();
+                relationshipMap = new LinkedHashMap<>();
             }
 
             /*
@@ -241,7 +248,7 @@ public class RelationshipAccumulator
      */
     private List<Relationship> removeDuplicateRelationshipInstances(List<Relationship> initialRelationships)
     {
-        Map<String, Relationship> usedRelationshipGUIDs = new HashMap<>();
+        Map<String, Relationship> usedRelationshipGUIDs = new LinkedHashMap<>();
 
         for (Relationship retrievedRelationship : initialRelationships)
         {
@@ -324,7 +331,7 @@ public class RelationshipAccumulator
                      * This map links the combination of the GUIDs from end 1 and end 2 to the relationship.
                      * Looking for the same relationship between the same entities.
                      */
-                    Map<String, Relationship> uniLinkMap = new HashMap<>();
+                    Map<String, Relationship> uniLinkMap = new LinkedHashMap<>();
 
                     for (Relationship deDuplicatedRelationship : deDuplicatedRelationships)
                     {
@@ -357,7 +364,7 @@ public class RelationshipAccumulator
                     /*
                      * Considering situations where there are multiple results for relationship where only one element is allowed.
                      */
-                    Map<String, Relationship> usedEntityGUIDs = new HashMap<>();
+                    Map<String, Relationship> usedEntityGUIDs = new LinkedHashMap<>();
                     List<Relationship> validEnd1Relationships;
 
                     /*
@@ -406,7 +413,7 @@ public class RelationshipAccumulator
                                 if (! usedEntityGUIDs.isEmpty())
                                 {
                                     log.debug("Independent ends for type " + relationshipTypeName);
-                                    usedEntityGUIDs = new HashMap<>();
+                                    usedEntityGUIDs = new LinkedHashMap<>();
                                 }
                             }
                         }

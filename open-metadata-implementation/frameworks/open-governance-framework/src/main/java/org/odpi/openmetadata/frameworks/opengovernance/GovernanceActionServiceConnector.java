@@ -11,8 +11,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.ffdc.OGFErrorCode;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -145,9 +143,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
             {
                 Object arrayOption = requestParameters.get(propertyName);
 
-                String[] options = arrayOption.toString().split(",");
-
-                return new ArrayList<>(Arrays.asList(options));
+                return ConnectorBase.getArrayValue(arrayOption);
             }
         }
 
