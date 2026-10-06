@@ -46,7 +46,7 @@ ext.javadocStrictModules = [
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '6.2-SNAPSHOT'
+    version = '6.3-SNAPSHOT'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'

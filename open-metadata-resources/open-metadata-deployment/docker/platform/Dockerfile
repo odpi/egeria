@@ -20,7 +20,7 @@
 # list digest, so the linux/amd64 + linux/arm64 build in merge-v6.yml still resolves both.
 FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:c1ace6c4a54563bc2912d753b898fcacb9b1c30010cd153419ddd3aa5bbf3b56
 
-ARG version=6.2-SNAPSHOT
+ARG version=6.3-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
