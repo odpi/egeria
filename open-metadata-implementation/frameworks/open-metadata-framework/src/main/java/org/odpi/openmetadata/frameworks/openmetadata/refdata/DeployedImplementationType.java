@@ -668,7 +668,11 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                     null,
                                     "A database schema hosted on a relational database server callable through a JDBC Driver.",
-                                    "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
+                                    "https://en.wikipedia.org/wiki/Java_Database_Connectivity",
+                                    "5bc11357-1200-43c6-9c41-737eed91d1f8",
+                                    SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
+                                    "JDBC-RELATIONAL-DATABASE-SCHEMA",
+                                    null),
 
     /**
      * A virtual machine (VM) is a software implementation of a machine (computer) that executes programs like a physical machine
