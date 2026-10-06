@@ -347,22 +347,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="block">Validate that the time parameters are not inverted ('from' later than 'to').</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateEnterpriseAttributeTypeDefs(java.lang.String,java.util.List,java.lang.String)" class="member-name-link">validateEnterpriseAttributeTypeDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;&nbsp;attributeTypeDefs,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
- all known typedefs.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateEnterpriseTypeDefs(java.lang.String,java.util.List,java.lang.String)" class="member-name-link">validateEnterpriseTypeDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;typeDefs,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
- all known typedefs.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateEntityCanBeRehomed(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader,java.lang.String)" class="member-name-link">validateEntityCanBeRehomed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
  <a href="../../connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance,
@@ -977,52 +961,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="validateEnterpriseTypeDefs(java.lang.String,java.util.List,java.lang.String)">
-<h3>validateEnterpriseTypeDefs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateEnterpriseTypeDefs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDef</a>&gt;&nbsp;typeDefs,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                throws <span class="exceptions"><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
- all known typedefs.
- A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
- If a new TypeDef is present, it is added to the enterprise list.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html#validateEnterpriseTypeDefs(java.lang.String,java.util.List,java.lang.String)">validateEnterpriseTypeDefs</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryValidator</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>sourceName</code> - source of the request (used for logging)</dd>
-<dd><code>typeDefs</code> - list of TypeDefs.</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a conflicting or invalid TypeDef has been returned</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateEnterpriseAttributeTypeDefs(java.lang.String,java.util.List,java.lang.String)">
-<h3>validateEnterpriseAttributeTypeDefs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateEnterpriseAttributeTypeDefs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/stores/metadatacollectionstore/properties/typedefs/AttributeTypeDef.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">AttributeTypeDef</a>&gt;&nbsp;attributeTypeDefs,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                         throws <span class="exceptions"><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
- all known typedefs.
- A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
- If a new TypeDef is present, it is added to the enterprise list.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html#validateEnterpriseAttributeTypeDefs(java.lang.String,java.util.List,java.lang.String)">validateEnterpriseAttributeTypeDefs</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryValidator.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryValidator</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>sourceName</code> - source of the request (used for logging)</dd>
-<dd><code>attributeTypeDefs</code> - list of AttributeTypeDefs.</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - a conflicting or invalid AttributeTypeDef has been returned</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="isActiveType(java.lang.String,java.lang.String,java.lang.String)">
 <h3>isActiveType</h3>
