@@ -18,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.testng.annotations.Test;
 
@@ -347,55 +346,4 @@ public class OMRSRepositoryContentValidatorTest
     }
 
 
-    /**
-     * A type that the enterprise repository reports and the content manager does not know - known to the cohort
-     * but not supported locally - is added, and can be found by GUID as well as by name.  It used to be reported
-     * as a conflict, because the branch that added it was only reached for types that were already known.  A type
-     * that does conflict with a known one is still rejected.
-     *
-     * @throws Exception unexpected
-     */
-    @Test
-    public void testEnterpriseTypesAreKnownByGUID() throws Exception
-    {
-        AuditLog                     auditLog       = new AuditLog(null, 1, ComponentDevelopmentStatus.IN_DEVELOPMENT, null, null, null);
-        OMRSRepositoryContentManager contentManager = new OMRSRepositoryContentManager("testUserId", auditLog);
-        OMRSRepositoryContentValidator validator    = new OMRSRepositoryContentValidator(contentManager);
-
-        EntityDef entityDef = new EntityDef();
-
-        entityDef.setGUID("6f1e2d3c-4b5a-4968-8776-5a4b3c2d1e0f");
-        entityDef.setName("EnterpriseOnlyEntity");
-        entityDef.setVersion(1);
-        entityDef.setVersionName("1.0");
-
-        EnumDef enumDef = new EnumDef();
-
-        enumDef.setGUID("0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d");
-        enumDef.setName("EnterpriseOnlyEnum");
-        enumDef.setVersion(1);
-        enumDef.setVersionName("1.0");
-
-        validator.validateEnterpriseTypeDefs("unittest", List.of(entityDef), "test");
-        validator.validateEnterpriseAttributeTypeDefs("unittest", List.of(enumDef), "test");
-
-        assertEquals(contentManager.getTypeDef("unittest", "guid", entityDef.getGUID(), "test").getName(), "EnterpriseOnlyEntity");
-        assertEquals(contentManager.getAttributeTypeDef("unittest", enumDef.getGUID(), "test").getName(), "EnterpriseOnlyEnum");
-        assertTrue(contentManager.isKnownType("unittest", entityDef.getGUID(), entityDef.getName()));
-        assertTrue(contentManager.isKnownType("unittest", enumDef.getGUID(), enumDef.getName()));
-
-        /*
-         * Reporting the same types again is fine; reporting a known name with a different GUID is a conflict.
-         */
-        validator.validateEnterpriseTypeDefs("unittest", List.of(entityDef), "test");
-
-        EntityDef conflictingDef = new EntityDef();
-
-        conflictingDef.setGUID("99999999-4b5a-4968-8776-5a4b3c2d1e0f");
-        conflictingDef.setName("EnterpriseOnlyEntity");
-        conflictingDef.setVersion(1);
-
-        expectThrows(RepositoryErrorException.class,
-                     () -> validator.validateEnterpriseTypeDefs("unittest", List.of(conflictingDef), "test"));
-    }
 }

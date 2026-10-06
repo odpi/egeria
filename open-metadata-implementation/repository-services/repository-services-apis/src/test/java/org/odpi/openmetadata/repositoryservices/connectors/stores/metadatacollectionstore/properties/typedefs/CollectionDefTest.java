@@ -245,4 +245,35 @@ public class CollectionDefTest
 
         assertFalse(testObject.hashCode() == anotherObject.hashCode());
     }
+
+
+    /**
+     * The argument types survive deserialization whatever order the properties are in.  Setting the category used
+     * to reset them to "unknown", so JSON that listed argumentTypes before collectionDefCategory - as an archive
+     * written with its properties sorted alphabetically does - lost them.
+     *
+     * @throws Exception unexpected
+     */
+    @Test public void testArgumentTypesSurviveAnyPropertyOrder() throws Exception
+    {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String argumentTypesFirst = "{\"class\":\"CollectionDef\",\"argumentCount\":2,"
+                + "\"argumentTypes\":[\"OM_PRIMITIVE_TYPE_STRING\",\"OM_PRIMITIVE_TYPE_STRING\"],"
+                + "\"category\":\"COLLECTION\",\"collectionDefCategory\":\"OM_COLLECTION_MAP\",\"name\":\"map<string,string>\"}";
+
+        CollectionDef collectionDef = objectMapper.readValue(argumentTypesFirst, CollectionDef.class);
+
+        assertEquals(collectionDef.getArgumentTypes(),
+                     List.of(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING));
+
+        /*
+         * A category set on its own still starts with unknown argument types.
+         */
+        CollectionDef newCollectionDef = new CollectionDef();
+
+        newCollectionDef.setCollectionDefCategory(CollectionDefCategory.OM_COLLECTION_ARRAY);
+
+        assertEquals(newCollectionDef.getArgumentTypes(), List.of(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN));
+    }
 }

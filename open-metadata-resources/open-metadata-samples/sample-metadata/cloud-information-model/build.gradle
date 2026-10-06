@@ -19,6 +19,7 @@ dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation 'com.github.jsonld-java:jsonld-java'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Sample Archive Builder for the Cloud Information Model'
@@ -34,7 +35,7 @@ test {
 }
 
 application {
-    mainClass = 'org.odpi.openmetadata.samples.archiveutilities.CocoArchivesWriter'
+    mainClass = 'org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.CloudInformationModelArchiveWriter'
 }
 
 shadowJar {

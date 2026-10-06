@@ -15,7 +15,13 @@ dependencies {
     implementation 'commons-io:commons-io'
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
-    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
+    testImplementation 'org.slf4j:slf4j-api'
 }
 
 description = 'Open Metadata Archive File Connector'

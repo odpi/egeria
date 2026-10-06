@@ -1447,7 +1447,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
             if (validateZoneAccess(userId,
                                    anchorEntity.getClassifications(),
                                    AccessOperation.READ,
-                                   requestedEntity.getMaintainedBy(), // todo is this right or should it be the anchor entity's?
+                                   requestedEntity.getMaintainedBy(),
                                    repositoryHelper,
                                    serviceName,
                                    methodName))

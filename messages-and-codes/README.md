@@ -27,7 +27,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 68 | 637 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Exception messages | 68 | 636 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
 | Audit log messages | 106 | 1014 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
@@ -88,7 +88,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [View Services](view-services) | 25 | 122 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
 | [Engine Services](engine-services) | 8 | 59 | The engine services run the governance services of a particular governance service type in an Engine Host server. |
 | [Governance Server Services](governance-server-services) | 4 | 87 | The governance server services host the connectors and governance services that run outside of a metadata access server - such as the integration daemon and the engine host. |
-| [Repository Services](repository-services) | 2 | 324 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
+| [Repository Services](repository-services) | 2 | 323 | The Open Metadata Repository Services (OMRS) manage the exchange of metadata between the repositories of an open metadata repository cohort.  This is the oldest and largest set of messages in Egeria. |
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
@@ -215,7 +215,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMES-WATCHDOG-ACTION-400-` | Exception messages | 3 | [WatchdogActionErrorCode](engine-services/WatchdogActionErrorCode.md) |
 | `OMF-SERVICES-` | Audit log messages | 11 | [OMFServicesAuditCode](access-services/OMFServicesAuditCode.md) |
 | `OMF-SERVICES-` | Exception messages | 10 | [OMFServicesErrorCode](access-services/OMFServicesErrorCode.md) |
-| `OMRS-` | Exception messages | 193 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
+| `OMRS-` | Exception messages | 192 | [OMRSErrorCode](repository-services/OMRSErrorCode.md) |
 | `OMRS-AUDIT-` | Audit log messages | 131 | [OMRSAuditCode](repository-services/OMRSAuditCode.md) |
 | `OMVS-ACTION-AUTHOR-` | Audit log messages | 5 | [ActionAuthorAuditCode](view-services/ActionAuthorAuditCode.md) |
 | `OMVS-ACTOR-MANAGER-` | Audit log messages | 5 | [ActorManagerAuditCode](view-server-generic-services/ActorManagerAuditCode.md) |

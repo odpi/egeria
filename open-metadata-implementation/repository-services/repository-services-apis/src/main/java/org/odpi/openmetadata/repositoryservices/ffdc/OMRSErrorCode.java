@@ -949,16 +949,6 @@ public enum OMRSErrorCode implements ExceptionMessageSet
                                      "https://egeria-project.org/services/omrs/"),
 
     /**
-     * OMRS-ENTERPRISE-REPOSITORY-400-001 - Conflicting TypeDefs have been detected
-     */
-    CONFLICTING_ENTERPRISE_TYPEDEFS(400, "OMRS-ENTERPRISE-REPOSITORY-400-001",
-            "Conflicting TypeDefs have been detected",
-            "The system cannot create a reliable list of TypeDefs for the enterprise.",
-            "Details of the conflicts and the steps necessary to repair the situation can be found in the audit log. " +
-                                  "Retry the request when the cohort configuration is correct.",
-                                  "https://egeria-project.org/services/omrs/"),
-
-    /**
      * OMRS-ARCHIVE-BUILDER-400-001 - The same type {0} of category {1} has been added twice to an open metadata archive.
      * First version was {2} and the second was {3}
      */

@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc.FileBasedOpenMetadataArchiveStoreConnectorAuditCode;
@@ -40,7 +43,16 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(FileBasedOpenMetadataArchiveStoreConnector.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    /*
+     * Properties are written in alphabetical order, and map entries in key order, so that writing the same archive
+     * contents always produces the same file.  Without this, Jackson takes the order of properties found through
+     * getters (such as TypeDefAttribute.isIndexable()) from Java reflection, which may differ from one run of the
+     * JVM to the next, and a content pack rebuilt with no changes could still come out different.
+     */
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+                                                                .enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                                                                .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                                                                .build();
     private static final ObjectWriter OBJECT_WRITER = OBJECT_MAPPER.writer();
     private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
 
@@ -152,7 +164,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
             }
             else
             {
-                String archiveStoreFileContents = OBJECT_WRITER.writeValueAsString(archiveContents);
+                String archiveStoreFileContents = getArchiveFileContents(archiveContents);
 
                 FileUtils.writeStringToFile(archiveStoreFile, archiveStoreFileContents, (String)null,false);
             }
@@ -161,6 +173,19 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
         {
             log.debug("Unusable Server config Store :(", ioException);
         }
+    }
+
+
+    /**
+     * Return the contents of an archive as they are written to its file.
+     *
+     * @param archiveContents archive
+     * @return JSON
+     * @throws IOException the archive could not be converted
+     */
+    static String getArchiveFileContents(OpenMetadataArchive archiveContents) throws IOException
+    {
+        return OBJECT_WRITER.writeValueAsString(archiveContents);
     }
 
 

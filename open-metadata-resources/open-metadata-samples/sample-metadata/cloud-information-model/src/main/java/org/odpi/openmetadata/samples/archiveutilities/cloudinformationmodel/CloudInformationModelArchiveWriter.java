@@ -297,17 +297,14 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                     {
                                                         for (Link linkOption : ((LinkChoice) link).getLinkChoices())
                                                         {
-                                                            if (! existingProperties.contains(linkOption.getGUID()))
+                                                            String attributeQualifiedName = "DataField::" + model.getModelTechnicalName() + "::" + linkOption.getTechnicalName();
+
+                                                            linkOption.setGUID(getDataFieldGUID(archiveHelper.queryGUID(attributeQualifiedName),
+                                                                                                linkOption.getGUID(),
+                                                                                                attributeQualifiedName));
+
+                                                            if (this.isNewDataField(linkOption.getGUID(), existingProperties))
                                                             {
-                                                                String attributeQualifiedName = "DataField::" + model.getModelTechnicalName() + "::" + linkOption.getTechnicalName();
-
-                                                                if (linkOption.getGUID() == null)
-                                                                {
-                                                                    linkOption.setGUID(UUID.randomUUID().toString());
-                                                                }
-
-                                                                archiveHelper.setGUID(attributeQualifiedName, linkOption.getGUID());
-
                                                                 String dataFieldId = archiveHelper.addDataField(null,
                                                                                                                 null,
                                                                                                                 OpenMetadataType.DATA_FIELD.typeName,
@@ -332,36 +329,36 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
                                                             archiveHelper.addNestedDataField(concept.getGUID(), linkOption.getGUID(), 0, 1, 1);
                                                         }
                                                     }
-                                                    else if (! existingProperties.contains(link.getGUID()))
+                                                    else
                                                     {
                                                         String attributeQualifiedName = "DataField::" + model.getModelTechnicalName() + "::" + link.getTechnicalName();
 
-                                                        if (link.getGUID() == null)
+                                                        link.setGUID(getDataFieldGUID(archiveHelper.queryGUID(attributeQualifiedName),
+                                                                                      link.getGUID(),
+                                                                                      attributeQualifiedName));
+
+                                                        if (this.isNewDataField(link.getGUID(), existingProperties))
                                                         {
-                                                            link.setGUID(UUID.randomUUID().toString());
+                                                            String dataFieldId = archiveHelper.addDataField(null,
+                                                                                                            null,
+                                                                                                            OpenMetadataType.DATA_FIELD.typeName,
+                                                                                                            OpenMetadataType.DATA_FIELD.typeName,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            attributeQualifiedName,
+                                                                                                            link.getDisplayName(),
+                                                                                                            link.getDescription(),
+                                                                                                            model.getModelVersion(),
+                                                                                                            null,
+                                                                                                            link.getRangeConceptName(),
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            null);
+
+                                                            assert(link.getGUID().equals(dataFieldId));
+
+                                                            existingProperties.add(link.getGUID());
                                                         }
-
-                                                        archiveHelper.setGUID(attributeQualifiedName, link.getGUID());
-
-                                                        String dataFieldId = archiveHelper.addDataField(null,
-                                                                                                        null,
-                                                                                                        OpenMetadataType.DATA_FIELD.typeName,
-                                                                                                        OpenMetadataType.DATA_FIELD.typeName,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        attributeQualifiedName,
-                                                                                                        link.getDisplayName(),
-                                                                                                        link.getDescription(),
-                                                                                                        model.getModelVersion(),
-                                                                                                        null,
-                                                                                                        link.getRangeConceptName(),
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        null);
-
-                                                        assert(link.getGUID().equals(dataFieldId));
-
-                                                        existingProperties.add(link.getGUID());
                                                     }
 
                                                     archiveHelper.addNestedDataField(concept.getGUID(), link.getGUID(), 0, 1, 1);
@@ -550,6 +547,74 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
         {
             System.out.println("error is " + error);
         }
+    }
+
+
+    /**
+     * Return the GUID to use for the data field that represents a link, and record it in the GUID map.
+     * <br>
+     * The GUID map is what keeps an element's GUID the same from one build of the archive to the next, so a GUID it
+     * already holds for the data field is used, whatever the model says.  Only a data field the map does not know yet
+     * takes the link's GUID from the model - or, if the model gives it none, a new one.  The link's GUID used to be
+     * written over the map's: links without an identifier in the model were given a random GUID on every build, and
+     * the GUID map refused to write the archive because the GUIDs of shipped elements had changed.
+     *
+     * @param mappedGUID GUID the GUID map holds for the data field's qualified name, or null
+     * @param modelGUID GUID the model gives the link, or null
+     * @param qualifiedName qualified name of the data field
+     * @return GUID for the data field
+     */
+    private String getDataFieldGUID(String mappedGUID,
+                                    String modelGUID,
+                                    String qualifiedName)
+    {
+        String guid = chooseDataFieldGUID(mappedGUID, modelGUID);
+
+        if (guid == null)
+        {
+            return archiveHelper.getGUID(qualifiedName);
+        }
+
+        archiveHelper.setGUID(qualifiedName, guid);
+
+        return guid;
+    }
+
+
+    /**
+     * Return whether the data field for a link still needs to be added to the archive.  The list of existing properties
+     * starts again for each subject area, but a data field's qualified name does not include the subject area, so the
+     * same link appearing in two subject areas is the same data field.  It used to be added once for each, under
+     * different GUIDs, which also changed the GUID map's entry for it on every build.
+     *
+     * @param dataFieldGUID GUID of the data field
+     * @param existingProperties GUIDs of the properties already added for this subject area
+     * @return boolean
+     */
+    private boolean isNewDataField(String       dataFieldGUID,
+                                   List<String> existingProperties)
+    {
+        return (! existingProperties.contains(dataFieldGUID)) && (archiveBuilder.queryEntity(dataFieldGUID) == null);
+    }
+
+
+    /**
+     * Choose the GUID for a data field: the one the GUID map already holds, else the one from the model.  Null means
+     * neither is known and a new GUID is needed.
+     *
+     * @param mappedGUID GUID the GUID map holds for the data field, or null
+     * @param modelGUID GUID the model gives the link, or null
+     * @return GUID or null
+     */
+    static String chooseDataFieldGUID(String mappedGUID,
+                                      String modelGUID)
+    {
+        if (mappedGUID != null)
+        {
+            return mappedGUID;
+        }
+
+        return modelGUID;
     }
 
 

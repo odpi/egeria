@@ -117,6 +117,41 @@ public class ContentPackIntegrityTest
     /**
      * Every entity in a shipped pack has its identity recorded in a committed GUID map.
      */
+    /**
+     * Only the GUID maps that an archive writer reads may sit at the top of the repository.  The check above
+     * counts every map it finds there, so a stray map - left behind by an archive that no longer exists - would
+     * hide an identity that no writer actually preserves.  archiveGUIDMap.json was such a map: it came from a
+     * sample removed long ago and shared no identity with anything that ships.
+     * <br>
+     * Add a map here when a new archive writer starts keeping one.
+     */
+    @Test
+    public void everyCommittedGUIDMapBelongsToAnArchiveWriter()
+    {
+        Set<String> expectedMaps = Set.of("EgeriaContentPacksGUIDMap.json",  // core-content-pack, coco-metadata-archives
+                                          "SimpleCatalogGUIDMap.json",       // simple-catalogs
+                                          "BigGlossaryGUIDMap.json",         // big-glossaries
+                                          "CloudInformationModelGUIDMap.json"); // cloud-information-model (built on demand)
+
+        Set<String> committedMaps = new HashSet<>();
+
+        try (Stream<Path> files = Files.list(repositoryRoot()))
+        {
+            files.map(path -> path.getFileName().toString())
+                 .filter(name -> name.endsWith(GUID_MAP_SUFFIX))
+                 .filter(name -> ! name.startsWith("Used"))
+                 .forEach(committedMaps::add);
+        }
+        catch (IOException error)
+        {
+            throw new UncheckedIOException(error);
+        }
+
+        assertEquals(committedMaps, expectedMaps,
+                     "The GUID maps at the top of the repository should be exactly those the archive writers read");
+    }
+
+
     @Test
     public void everyShippedIdentityIsRecordedInAGUIDMap()
     {

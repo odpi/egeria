@@ -20,7 +20,7 @@ public enum OpenLineageAnalysisRequestParameter
                         "Directory holding the OpenLineage log store written by the file-based OpenLineage log store integration connector.  " +
                                 "Used when no log store action target is supplied.",
                         "string",
-                        "/data/openlineage/logs"),
+                        "logs/openlineage"),
 
     /**
      * Number of days of history to analyse.
