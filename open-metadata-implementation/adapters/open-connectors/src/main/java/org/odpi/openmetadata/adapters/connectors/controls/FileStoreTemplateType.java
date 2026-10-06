@@ -305,7 +305,7 @@ public enum FileStoreTemplateType implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "6.2-SNAPSHOT";
+        return "6.2";
     }
 
 

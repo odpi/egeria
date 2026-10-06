@@ -22,7 +22,7 @@ import java.util.Map;
 public class ConnectorContextClientBase
 {
     protected final PropertyHelper propertyHelper = new PropertyHelper();
-    protected final String         egeriaRelease  = "6.2-SNAPSHOT";
+    protected final String         egeriaRelease  = "6.2";
 
     protected final ConnectorContextBase parentContext;
     protected final String               localServerName;
