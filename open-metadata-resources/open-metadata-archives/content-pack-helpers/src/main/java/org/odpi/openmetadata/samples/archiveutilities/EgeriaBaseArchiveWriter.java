@@ -41,7 +41,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     /*
      * Specific values for initializing TypeDefs
      */
-    protected static final String versionName   = "6.2-SNAPSHOT";
+    protected static final String versionName   = "6.2";
 
     /*
      * A version name ending in this suffix means the branch is still under development.

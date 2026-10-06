@@ -68,7 +68,7 @@ public interface OpenConnectorDefinition
      */
     default String getVersionIdentifier()
     {
-        return "6.2-SNAPSHOT";
+        return "6.2";
     }
 
 
