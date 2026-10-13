@@ -103,7 +103,8 @@ loadScripts(document, 'script');</script>
 <div class="block">OpenMetadataRelationshipDef describes a type of relationship.  A relationship links two entities together.
  The OpenMetadataRelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
  defines if this relationship allows classifications to propagate through it and how many instances of this
- relationship type are allowed between two elements in a single direction.</div>
+ relationship type are allowed between two elements in a single direction.  The relationship purpose
+ describes why the relationship type exists.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -185,30 +186,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the relationship category.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enums/OpenMetadataRelationshipPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataRelationshipPurpose</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipPurpose()" class="member-name-link">getRelationshipPurpose</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the purpose of the relationship type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndDef1(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipEndDef)" class="member-name-link">setEndDef1</a><wbr>(<a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipEndDef</a>&nbsp;endDef1)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndDef1(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipEndDef)" class="member-name-link">setEndDef1</a><wbr>(<a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipEndDef</a>&nbsp;endDef1)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the details associated with the first end of the relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndDef2(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipEndDef)" class="member-name-link">setEndDef2</a><wbr>(<a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipEndDef</a>&nbsp;endDef2)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndDef2(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipEndDef)" class="member-name-link">setEndDef2</a><wbr>(<a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipEndDef</a>&nbsp;endDef2)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the details associated with the second end of the relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropagationRule(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataClassificationPropagationRule)" class="member-name-link">setPropagationRule</a><wbr>(<a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a>&nbsp;propagationRule)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropagationRule(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataClassificationPropagationRule)" class="member-name-link">setPropagationRule</a><wbr>(<a href="OpenMetadataClassificationPropagationRule.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataClassificationPropagationRule</a>&nbsp;propagationRule)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the rule that determines if classifications are propagated across this relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipCategory)" class="member-name-link">setRelationshipCategory</a><wbr>(<a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a>&nbsp;relationshipCategory)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipCategory)" class="member-name-link">setRelationshipCategory</a><wbr>(<a href="OpenMetadataRelationshipCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationshipCategory</a>&nbsp;relationshipCategory)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the relationship category.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipPurpose(org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose)" class="member-name-link">setRelationshipPurpose</a><wbr>(<a href="../enums/OpenMetadataRelationshipPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataRelationshipPurpose</a>&nbsp;relationshipPurpose)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the purpose of the relationship type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -365,6 +376,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>relationshipCategory</code> - enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelationshipPurpose()">
+<h3>getRelationshipPurpose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../enums/OpenMetadataRelationshipPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataRelationshipPurpose</a></span>&nbsp;<span class="element-name">getRelationshipPurpose</span>()</div>
+<div class="block">Return the purpose of the relationship type.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setRelationshipPurpose(org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose)">
+<h3>setRelationshipPurpose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipPurpose</span><wbr><span class="parameters">(<a href="../enums/OpenMetadataRelationshipPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataRelationshipPurpose</a>&nbsp;relationshipPurpose)</span></div>
+<div class="block">Set up the purpose of the relationship type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>relationshipPurpose</code> - enum</dd>
 </dl>
 </section>
 </li>
