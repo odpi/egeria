@@ -2996,6 +2996,172 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param metadataElementGUID unique identifier of the metadata element to undo
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is invalid in some way
+     * @throws UserNotAuthorizedException the user is not authorized to update this element
+     * @throws PropertyServerException a problem with the metadata store, including an element with no previous version
+     */
+    public void undoMetadataElementUpdate(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  metadataElementGUID,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        EntityDetail originalEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        metadataElementGUID,
+                                                                        guidParameterName,
+                                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        super.undoBeanUpdateInRepository(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         originalEntity,
+                                         guidParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive
+     * changed is restored with it - see OpenMetadataAPIGenericHandler.restoreBeanInRepository.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param metadataElementGUID unique identifier of the deleted or archived metadata element
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the element is unknown, or is neither deleted nor archived
+     * @throws UserNotAuthorizedException the user is not authorized to restore this element
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    public void restoreMetadataElementInStore(String  userId,
+                                              String  externalSourceGUID,
+                                              String  externalSourceName,
+                                              String  metadataElementGUID,
+                                              boolean forDuplicateProcessing,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        super.restoreBeanInRepository(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      metadataElementGUID,
+                                      guidParameterName,
+                                      forDuplicateProcessing,
+                                      methodName);
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this relationship
+     * @param externalSourceName      unique name of the software capability that owns this relationship
+     * @param relationshipGUID unique identifier of the relationship to undo
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is invalid in some way
+     * @throws UserNotAuthorizedException the user is not authorized to update this relationship
+     * @throws PropertyServerException a problem with the metadata store, including a relationship with no previous version
+     */
+    public void undoRelationshipUpdate(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  relationshipGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String guidParameterName = "relationshipGUID";
+
+        super.undoRelationshipUpdateInRepository(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 relationshipGUID,
+                                                 guidParameterName,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this relationship
+     * @param externalSourceName      unique name of the software capability that owns this relationship
+     * @param relationshipGUID unique identifier of the deleted relationship
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the relationship is unknown, is not deleted, or an end is not active
+     * @throws UserNotAuthorizedException the user is not authorized to restore this relationship
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    public void restoreRelationshipInStore(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  relationshipGUID,
+                                           boolean forDuplicateProcessing,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String guidParameterName = "relationshipGUID";
+
+        super.restoreRelationshipInRepository(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              relationshipGUID,
+                                              guidParameterName,
+                                              forDuplicateProcessing,
+                                              methodName);
+    }
+
+
+    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param userId caller's userId

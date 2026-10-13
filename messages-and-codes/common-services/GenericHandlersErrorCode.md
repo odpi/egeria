@@ -9,7 +9,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 26 |
+| **Number of messages** | 27 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -29,6 +29,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 | [OMAG-GENERIC-HANDLERS-400-011](#omag-generic-handlers-400-011) | 400 | Unable to initiate an instance of the {0} governance action process because the name is not recognized |
 | [OMAG-GENERIC-HANDLERS-400-013](#omag-generic-handlers-400-013) | 400 | Unable to initiate an instance of the {0} governance action type because the name is not recognized |
 | [OMAG-GENERIC-HANDLERS-400-014](#omag-generic-handlers-400-014) | 400 | The {0} element carries the TemplateSubstitute classification but has no SourcedFrom relationship to the template it stands in for, so the {1} request has no template to work from |
+| [OMAG-GENERIC-HANDLERS-400-015](#omag-generic-handlers-400-015) | 400 | The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore |
 | [OMAG-GENERIC-HANDLERS-403-001](#omag-generic-handlers-403-001) | 403 | The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it was not created by the requesting user {5} |
 | [OMAG-GENERIC-HANDLERS-403-002](#omag-generic-handlers-403-002) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3} |
 | [OMAG-GENERIC-HANDLERS-403-006](#omag-generic-handlers-403-006) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed |
@@ -214,6 +215,27 @@ The system cannot create an element from this template because the TemplateSubst
 **User action**
 
 Either attach a SourcedFrom relationship from the substitute to the template it stands in for, or remove the TemplateSubstitute classification so that the element is used as a template in its own right.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-400-015
+
+> The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersErrorCode.NOTHING_TO_RESTORE` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot restore this element because it is active.  Restore reverses a soft delete or an archive.
+
+**User action**
+
+Check that the unique identifier is for the element that was deleted or archived.  An element that was purged can not be restored: it is no longer in the repository.
 
 
 ----

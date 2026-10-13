@@ -4440,6 +4440,17 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     actualValue = primitivePropertyValue;
                 }
+                else if (OpenMetadataProperty.LAST_OPERATION_ID.name.equals(propertyName))
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitivePropertyValue.setPrimitiveValue(instanceHeader.getLastOperationId());
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                    actualValue = primitivePropertyValue;
+                }
                 else if (OpenMetadataProperty.INSTANCE_PROVENANCE_TYPE.name.equals(propertyName))
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();

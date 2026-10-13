@@ -59,7 +59,8 @@ public enum RepositoryTable implements PostgreSQLTable
                    RepositoryColumn.INSTANCE_LICENCE,
                    RepositoryColumn.REIDENTIFIED_FROM_GUID},
            new RepositoryColumn[]{
-                   RepositoryColumn.LAST_REQUEST_ID}
+                   RepositoryColumn.LAST_REQUEST_ID,
+                   RepositoryColumn.LAST_OPERATION_ID}
     ),
 
     /**
@@ -94,7 +95,8 @@ public enum RepositoryTable implements PostgreSQLTable
                          RepositoryColumn.INSTANCE_LICENCE,
                          RepositoryColumn.REIDENTIFIED_FROM_GUID},
                  new RepositoryColumn[]{
-                         RepositoryColumn.LAST_REQUEST_ID}
+                         RepositoryColumn.LAST_REQUEST_ID,
+                   RepositoryColumn.LAST_OPERATION_ID}
     ),
 
 
@@ -124,7 +126,8 @@ public enum RepositoryTable implements PostgreSQLTable
                            RepositoryColumn.UPDATE_TIME,
                            RepositoryColumn.STATUS_ON_DELETE},
                    new RepositoryColumn[]{
-                           RepositoryColumn.LAST_REQUEST_ID}
+                           RepositoryColumn.LAST_REQUEST_ID,
+                   RepositoryColumn.LAST_OPERATION_ID}
     ),
 
     /**

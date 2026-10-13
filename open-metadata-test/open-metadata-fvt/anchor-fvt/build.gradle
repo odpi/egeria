@@ -1,0 +1,114 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for anchor support: the Anchors classification
+// that groups the elements of an anchored graph together, and the operations that act on a whole graph -
+// cascaded delete, archive and purge.  Each test builds its own small graph (an asset, its schema, columns
+// with peer links between them, an element anchored to a member) against a real repository and checks
+// exactly which elements each operation takes.
+//
+// It needs a reachable PostgreSQL server (or none, for the in-memory variant), so it is NOT part of the
+// default build - it only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:anchor-fvt:test -PrunAnchorFvt
+//   ./gradlew :open-metadata-test:open-metadata-fvt:anchor-fvt:test -PrunAnchorFvtInMemory
+//
+// Database connection details and the platform's own port are controlled from
+// src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process via SpringApplication.run(...).
+    // user-authn is excluded: it wires in a login/token Spring Security chain that needs a real user
+    // directory and credentials, which this hermetic, no-auth platform does not set up.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    // Connectors needed to configure and run a metadata access store server backed by PostgreSQL
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    // The same suite also runs against the in-memory repository (-PrunAnchorFvtInMemory), which needs no
+    // database.  The delete of an anchor finds its members with a query on the Anchors classification, and
+    // the two repositories answer it by quite different means - SQL versus retrieve-then-filter in Java.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+
+    // Clients used to configure, start and exercise the server
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    // The admin services client's checked exceptions (InvalidParameterException and friends) are OCF
+    // types, so this stays on the compile classpath even though the suite builds no Connection objects.
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+
+
+    // In-process Spring Boot startup/shutdown
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+
+    // A permit-all security filter chain is needed so that every request still gets an (anonymous)
+    // Authentication in the SecurityContext - the admin/platform REST controllers require one to be
+    // present even though this suite's platform has no real user directory configured.
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Anchor Support Functional Verification Tests (anchor-fvt)'
+
+// These properties are read here, at configuration time, rather than inside the onlyIf closure.  onlyIf
+// is evaluated during execution, and reaching for `project` then is unsupported with the configuration
+// cache.  The suite runs against one local repository per invocation.
+def runAgainstPostgreSQL = project.hasProperty('runAnchorFvt')
+def runAgainstInMemory   = project.hasProperty('runAnchorFvtInMemory')
+def runThisSuite         = runAgainstPostgreSQL || runAgainstInMemory
+
+// Asking for both at once is refused rather than resolved to one of them: the run would report on a
+// repository the command line says it is not testing.
+if (runAgainstPostgreSQL && runAgainstInMemory)
+{
+    throw new GradleException('Specify either -PrunAnchorFvt or -PrunAnchorFvtInMemory, not both - ' +
+                                      'each run exercises one repository.')
+}
+
+test {
+    useJUnitPlatform()
+
+    // Optional, opt-in suite: the PostgreSQL variant needs a reachable server, so it is skipped unless
+    // explicitly requested.
+    onlyIf { runThisSuite }
+
+    // Which repository OMAGPlatformExtension stands up.  Named and shaped like cts-fvt's equivalent
+    // setting, which does the same job for the conformance suite.
+    systemProperty 'anchor.fvt.repository', runAgainstInMemory ? 'inmemory' : 'postgres'
+
+    // Single JVM fork - the tests share one running platform/server (see OMAGPlatformExtension) and
+    // are not designed to run concurrently against it.  No fixed timeout: loading the full content-packs
+    // set into a real PostgreSQL repository can legitimately take a long time, and this suite is never
+    // part of an automated/CI budget - it is only ever run deliberately, by hand.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+}
+
+// Resolves logging conflicts between the various connectors pulled in by the platform chassis
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}

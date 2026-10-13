@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 
 import java.util.Objects;
 
@@ -16,7 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * OpenMetadataRelationshipDef describes a type of relationship.  A relationship links two entities together.
  * The OpenMetadataRelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
  * defines if this relationship allows classifications to propagate through it and how many instances of this
- * relationship type are allowed between two elements in a single direction.
+ * relationship type are allowed between two elements in a single direction.  The relationship purpose
+ * describes why the relationship type exists.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,6 +29,7 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
     private OpenMetadataRelationshipEndDef            endDef1              = null;
     private OpenMetadataRelationshipEndDef            endDef2              = null;
     private OpenMetadataRelationshipCategory          relationshipCategory = null;
+    private OpenMetadataRelationshipPurpose           relationshipPurpose  = null;
 
 
     /**
@@ -53,6 +56,7 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
             this.endDef1              = templateTypeDef.getEndDef1();
             this.endDef2              = templateTypeDef.getEndDef2();
             this.relationshipCategory = templateTypeDef.getRelationshipCategory();
+            this.relationshipPurpose  = templateTypeDef.getRelationshipPurpose();
         }
     }
 
@@ -162,6 +166,28 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
 
 
     /**
+     * Return the purpose of the relationship type.
+     *
+     * @return enum
+     */
+    public OpenMetadataRelationshipPurpose getRelationshipPurpose()
+    {
+        return relationshipPurpose;
+    }
+
+
+    /**
+     * Set up the purpose of the relationship type.
+     *
+     * @param relationshipPurpose enum
+     */
+    public void setRelationshipPurpose(OpenMetadataRelationshipPurpose relationshipPurpose)
+    {
+        this.relationshipPurpose = relationshipPurpose;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -174,6 +200,7 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
                 ", relationshipCategory=" + relationshipCategory +
+                ", relationshipPurpose=" + relationshipPurpose +
                 "} " + super.toString();
     }
 
@@ -202,7 +229,8 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
         return propagationRule == that.propagationRule &&
                Objects.equals(endDef1, that.endDef1) &&
                Objects.equals(endDef2, that.endDef2) &&
-               relationshipCategory == that.relationshipCategory;
+               relationshipCategory == that.relationshipCategory &&
+               relationshipPurpose == that.relationshipPurpose;
     }
 
 
@@ -214,6 +242,6 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, relationshipCategory);
+        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, relationshipCategory, relationshipPurpose);
     }
 }

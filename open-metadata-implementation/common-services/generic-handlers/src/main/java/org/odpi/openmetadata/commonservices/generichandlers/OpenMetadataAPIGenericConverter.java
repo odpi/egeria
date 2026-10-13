@@ -1064,6 +1064,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         elementVersions.setMaintainedBy(header.getMaintainedBy());
         elementVersions.setVersion(header.getVersion());
         elementVersions.setLastRequestId(header.getLastRequestId());
+        elementVersions.setLastOperationId(header.getLastOperationId());
 
         return elementVersions;
     }

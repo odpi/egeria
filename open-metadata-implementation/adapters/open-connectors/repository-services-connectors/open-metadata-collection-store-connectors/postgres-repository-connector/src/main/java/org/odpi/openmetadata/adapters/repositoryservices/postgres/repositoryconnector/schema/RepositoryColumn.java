@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 public enum RepositoryColumn implements PostgreSQLColumn
 {
     LAST_REQUEST_ID("last_request_id", ColumnType.STRING, "Unique identifier of the last requestId to update the element.",  false),
+    LAST_OPERATION_ID("last_operation_id", ColumnType.STRING, "Unique identifier of the operation - a single command such as a delete, an archive or a create from a template - that wrote this version of the element.",  false),
     LOCAL_METADATA_COLLECTION_GUID("local_metadata_collection_guid", ColumnType.STRING, "Unique identifier of the local repository's metadata collection.", true),
     SERVER_NAME("server_name", ColumnType.STRING, "Unique name of the server that is hosting this repository.", true),
     SCHEMA_VERSION("schema_version", ColumnType.STRING, "Version of this database schema to manage schema migration.", true),

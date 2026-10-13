@@ -81,6 +81,10 @@ public class OMRSTypeDefConverter
             relationshipDef.setEndDef1(this.getRelationshipEndDef(openMetadataRelationshipDef.getEndDef1(), parameterName + ".endDef1", methodName));
             relationshipDef.setEndDef2(this.getRelationshipEndDef(openMetadataRelationshipDef.getEndDef2(), parameterName + ".endDef2", methodName));
             relationshipDef.setMultiLink(openMetadataRelationshipDef.getRelationshipCategory() == OpenMetadataRelationshipCategory.MULTI_LINK);
+            if (openMetadataRelationshipDef.getRelationshipPurpose() != null)
+            {
+                relationshipDef.setRelationshipPurpose(openMetadataRelationshipDef.getRelationshipPurpose().name());
+            }
 
             typeDef = relationshipDef;
         }

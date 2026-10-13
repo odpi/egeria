@@ -1300,6 +1300,15 @@ public class DatabaseStore implements AutoCloseable
                 queryBuilder.setGUIDList(entityGUIDs);
                 queryBuilder.setAsOfTime(asOfTime);
 
+                /*
+                 * These are the ends of relationships that have already been selected, so they are needed whatever
+                 * their status.  The default filter leaves out DELETED entities, and a deleted relationship found by a
+                 * search that includes deleted relationships - restore looks for exactly those - often has a deleted
+                 * end.  Without it the relationship was built with no end and the mapping failed.  An empty list
+                 * means every status.
+                 */
+                queryBuilder.setLimitResultsByStatus(new ArrayList<>());
+
                 List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
                                                                                                     RepositoryTable.ENTITY.getTableName(),
                                                                                                     queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
