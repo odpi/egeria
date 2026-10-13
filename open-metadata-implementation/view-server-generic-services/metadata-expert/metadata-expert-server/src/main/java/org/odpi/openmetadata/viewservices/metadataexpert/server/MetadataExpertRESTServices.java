@@ -663,6 +663,192 @@ public class MetadataExpertRESTServices extends TokenController
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse undoMetadataElementUpdate(String                    serverName,
+                                                  String                    urlMarker,
+                                                  String                    metadataElementGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "undoMetadataElementUpdate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.undoMetadataElementUpdate(userId, metadataElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+     * the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+     * can not be restored.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse restoreMetadataElementInStore(String                    serverName,
+                                                      String                    urlMarker,
+                                                      String                    metadataElementGUID,
+                                                      MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "restoreMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.restoreMetadataElementInStore(userId, metadataElementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse undoRelationshipUpdate(String                    serverName,
+                                               String                    urlMarker,
+                                               String                    relationshipGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "undoRelationshipUpdate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.undoRelationshipUpdate(userId, relationshipGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse restoreRelationshipInStore(String                    serverName,
+                                                   String                    urlMarker,
+                                                   String                    relationshipGUID,
+                                                   MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "restoreRelationshipInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            handler.restoreRelationshipInStore(userId, relationshipGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param serverName     name of server instance to route request to

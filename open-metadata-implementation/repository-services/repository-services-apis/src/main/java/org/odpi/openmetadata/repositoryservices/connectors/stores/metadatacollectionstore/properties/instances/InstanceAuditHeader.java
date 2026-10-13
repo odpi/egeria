@@ -129,6 +129,14 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     private InstanceStatus statusOnDelete = null;
 
     /*
+     * Identifies the operation - a single command such as a delete, an archive or a create from a template - that
+     * wrote this version of the instance.  Every instance one command writes carries the same value, so the scope
+     * of the command can be found again: restore uses it to bring back what one delete or archive changed.  Unlike
+     * lastRequestId, it is set by the server for each command and can not be supplied or shared by a caller.
+     */
+    private String         lastOperationId = null;
+
+    /*
      * Used by connector implementations that are mapping between an existing repository and open metadata.
      * It provides space for the connector to stash identifiers and other values that help them to map
      * instances stored with the open metadata equivalent.  These values should be maintained by the
@@ -171,6 +179,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
             this.currentStatus          = template.getStatus();
             this.lastRequestId          = template.getLastRequestId();
             this.statusOnDelete         = template.getStatusOnDelete();
+            this.lastOperationId        = template.getLastOperationId();
             this.mappingProperties      = template.getMappingProperties();
         }
     }
@@ -555,6 +564,30 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
 
     /**
+     * Return the identifier of the operation that wrote this version of the instance.  Every instance written by
+     * the same command - a delete cascading through an anchored graph, an archive, a create from a template -
+     * carries the same value.  It is null for a version written outside such a command.
+     *
+     * @return string identifier, or null
+     */
+    public String getLastOperationId()
+    {
+        return lastOperationId;
+    }
+
+
+    /**
+     * Set up the identifier of the operation that wrote this version of the instance.
+     *
+     * @param lastOperationId string identifier, or null
+     */
+    public void setLastOperationId(String lastOperationId)
+    {
+        this.lastOperationId = lastOperationId;
+    }
+
+
+    /**
      * Return the additional properties used by the master repository to map to stored instances.
      *
      * @return property map
@@ -612,6 +645,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 ", currentStatus=" + currentStatus +
                 ", lastRequestId=" + lastRequestId +
                 ", statusOnDelete=" + statusOnDelete +
+                ", lastOperationId=" + lastOperationId +
                 ", mappingProperties=" + mappingProperties +
                 '}';
     }
@@ -642,6 +676,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 currentStatus == that.currentStatus &&
                 Objects.equals(lastRequestId, that.lastRequestId) &&
                 statusOnDelete == that.statusOnDelete &&
+                Objects.equals(lastOperationId, that.lastOperationId) &&
                 Objects.equals(mappingProperties, that.mappingProperties);
     }
 
@@ -655,6 +690,6 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     {
         return Objects.hash(super.hashCode(), type, instanceProvenanceType, metadataCollectionId,
                             metadataCollectionName, replicatedBy, instanceLicense, createdBy, updatedBy, maintainedBy,
-                            createTime, updateTime, version, currentStatus, lastRequestId, statusOnDelete, mappingProperties);
+                            createTime, updateTime, version, currentStatus, lastRequestId, statusOnDelete, lastOperationId, mappingProperties);
     }
 }

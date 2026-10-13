@@ -22,6 +22,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.platformchassis.springboot.OMAGServerPlatform;
@@ -135,15 +137,122 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     }
 
 
+    /*
+     * How long to wait for a refresh of Mendel that started after the request for it.
+     */
+    private static final long MENDEL_REFRESH_TIMEOUT_MILLIS = 120_000L;
+
+
     /**
-     * Ask the integration daemon to refresh Mendel now, and wait for the call to return.  The refresh is
-     * synchronous, so when this returns the connector has finished its three passes.
+     * Ask the integration daemon to refresh Mendel now, and wait until a refresh that started after this call has
+     * finished, so that it has seen every change the test made before calling.
+     * <br>
+     * The refresh request is synchronous only when the connector is idle.  If a refresh is already running - one
+     * triggered by the events from the test's own changes, or the periodic one - the daemon drops the request and
+     * returns at once, while the running refresh may have started before the test's changes.  A test that then
+     * looked at the results raced that refresh and lost, intermittently.  So this waits until no refresh is
+     * running, makes the request, and then waits until the connector reports a refresh that finished after the
+     * request.  Any refresh that started after the idle check began after the test's changes.
      *
-     * @throws Exception the refresh failed
+     * @throws Exception the refresh failed, or did not finish in time
      */
     public static void refreshMendel() throws Exception
     {
-        getIntegrationDaemonClient().refreshConnector(MENDEL_CONNECTOR_NAME);
+        IntegrationDaemon integrationDaemon = getIntegrationDaemonClient();
+        long              deadline          = System.currentTimeMillis() + MENDEL_REFRESH_TIMEOUT_MILLIS;
+
+        waitForMendelToBeIdle(integrationDaemon, deadline);
+
+        java.util.Date requested = new java.util.Date();
+
+        integrationDaemon.refreshConnector(MENDEL_CONNECTOR_NAME);
+
+        while (System.currentTimeMillis() < deadline)
+        {
+            IntegrationConnectorReport report = getMendelReport(integrationDaemon);
+
+            if ((report != null)
+                    && (report.getConnectorStatus() != IntegrationConnectorStatus.REFRESHING)
+                    && (report.getLastRefreshTime() != null)
+                    && (! report.getLastRefreshTime().before(requested)))
+            {
+                return;
+            }
+
+            Thread.sleep(200);
+        }
+
+        throw new IllegalStateException("Mendel did not complete a refresh within " + (MENDEL_REFRESH_TIMEOUT_MILLIS / 1000) + " seconds of it being requested");
+    }
+
+
+    /**
+     * Wait until Mendel is not in the middle of a refresh, so that a refresh request is not dropped.
+     *
+     * @param integrationDaemon client
+     * @param deadline time to give up
+     * @throws Exception the status could not be retrieved, or the refresh did not finish in time
+     */
+    private static void waitForMendelToBeIdle(IntegrationDaemon integrationDaemon,
+                                              long              deadline) throws Exception
+    {
+        while (System.currentTimeMillis() < deadline)
+        {
+            IntegrationConnectorReport report = getMendelReport(integrationDaemon);
+
+            if ((report == null) || (report.getConnectorStatus() != IntegrationConnectorStatus.REFRESHING))
+            {
+                return;
+            }
+
+            Thread.sleep(200);
+        }
+
+        throw new IllegalStateException("Mendel was still refreshing after " + (MENDEL_REFRESH_TIMEOUT_MILLIS / 1000) + " seconds");
+    }
+
+
+    /**
+     * Return the integration daemon's report on Mendel.
+     *
+     * @param integrationDaemon client
+     * @return report, or null if Mendel is not known to the daemon
+     * @throws Exception the status could not be retrieved
+     */
+    private static IntegrationConnectorReport getMendelReport(IntegrationDaemon integrationDaemon) throws Exception
+    {
+        IntegrationDaemonStatus status = integrationDaemon.getIntegrationDaemonStatus();
+
+        if (status != null)
+        {
+            List<IntegrationConnectorReport> reports = new ArrayList<>();
+
+            if (status.getIntegrationConnectorReports() != null)
+            {
+                reports.addAll(status.getIntegrationConnectorReports());
+            }
+
+            if (status.getIntegrationGroupSummaries() != null)
+            {
+                for (IntegrationGroupSummary groupSummary : status.getIntegrationGroupSummaries())
+                {
+                    if ((groupSummary != null) && (groupSummary.getIntegrationConnectorReports() != null))
+                    {
+                        reports.addAll(groupSummary.getIntegrationConnectorReports());
+                    }
+                }
+            }
+
+            for (IntegrationConnectorReport report : reports)
+            {
+                if ((report != null) && (MENDEL_CONNECTOR_NAME.equals(report.getConnectorName())))
+                {
+                    return report;
+                }
+            }
+        }
+
+        return null;
     }
 
 

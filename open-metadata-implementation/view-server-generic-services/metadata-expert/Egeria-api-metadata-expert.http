@@ -234,6 +234,43 @@ Content-Type: application/json
 
 
 ###
+# @name undoMetadataElementUpdate
+# Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/undo
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name restoreMetadataElementInStore
+# Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+# the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+# can not be restored.  The element may be any of the elements the delete or archive removed.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/restore
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
 # @name updateMetadataElementEffectivityInStore
 # Update the effectivity dates control the visibility of the element through specific APIs.
 
@@ -446,6 +483,41 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+# @name undoRelationshipUpdate
+# Undo the last update to a relationship, restoring its previous properties.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{relationshipGUID}}/undo
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name restoreRelationshipInStore
+# Restore a soft-deleted relationship.  Both its ends must be active.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{relationshipGUID}}/restore
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
 
 ###
 

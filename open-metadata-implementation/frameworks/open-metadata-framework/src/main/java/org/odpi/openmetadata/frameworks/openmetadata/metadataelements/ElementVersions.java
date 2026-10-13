@@ -29,6 +29,7 @@ public class ElementVersions
     private Date         updateTime    = null;
     private long         version       = 0L;
     private String       lastRequestId = null;
+    private String       lastOperationId = null;
 
 
     /**
@@ -55,6 +56,7 @@ public class ElementVersions
             this.updateTime = template.getUpdateTime();
             this.version = template.getVersion();
             this.lastRequestId = template.getLastRequestId();
+            this.lastOperationId = template.getLastOperationId();
         }
     }
 
@@ -204,6 +206,30 @@ public class ElementVersions
 
 
     /**
+     * Return the identifier of the operation that wrote this version of the element.  Every element written by the
+     * same command - a delete cascading through an anchored graph, an archive, a create from a template - carries the
+     * same value.  It is null for a version written outside such a command.
+     *
+     * @return string identifier, or null
+     */
+    public String getLastOperationId()
+    {
+        return lastOperationId;
+    }
+
+
+    /**
+     * Set up the identifier of the operation that wrote this version of the element.
+     *
+     * @param lastOperationId string identifier, or null
+     */
+    public void setLastOperationId(String lastOperationId)
+    {
+        this.lastOperationId = lastOperationId;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -219,6 +245,7 @@ public class ElementVersions
                 ", updateTime=" + updateTime +
                 ", version=" + version +
                 ", lastRequestId='" + lastRequestId + '\'' +
+                ", lastOperationId='" + lastOperationId + '\'' +
                 '}';
     }
 
@@ -246,7 +273,8 @@ public class ElementVersions
                        Objects.equals(maintainedBy, that.maintainedBy) &&
                        Objects.equals(createTime, that.createTime) &&
                        Objects.equals(updateTime, that.updateTime) &&
-                       Objects.equals(lastRequestId, that.lastRequestId);
+                       Objects.equals(lastRequestId, that.lastRequestId) &&
+                       Objects.equals(lastOperationId, that.lastOperationId);
     }
 
 
@@ -258,6 +286,6 @@ public class ElementVersions
     @Override
     public int hashCode()
     {
-        return Objects.hash(createdBy, updatedBy, maintainedBy, createTime, updateTime, version, lastRequestId);
+        return Objects.hash(createdBy, updatedBy, maintainedBy, createTime, updateTime, version, lastRequestId, lastOperationId);
     }
 }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconte
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.requestid.RequestId;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OperationId;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -35,6 +36,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentHelper.class);
 
     private static final RequestId requestId = new RequestId();
+    private static final OperationId operationId = new OperationId();
 
     private final OMRSRepositoryContentManager repositoryContentManager;
 
@@ -832,6 +834,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setUpdatedBy(userName);
         entity.setMaintainedBy(Collections.singletonList(userName));
         entity.setLastRequestId(requestId.getRequestId());
+        entity.setLastOperationId(operationId.getOperationId());
         entity.setGUID(guid);
         entity.setVersion(1L);
 
@@ -890,6 +893,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 classification.setUpdatedBy(userName);
                 classification.setMaintainedBy(Collections.singletonList(userName));
                 classification.setLastRequestId(requestId.getRequestId());
+                classification.setLastOperationId(operationId.getOperationId());
                 classification.setVersion(1L);
                 classification.setType(repositoryContentManager.getInstanceType(sourceName,
                                                                                 TypeDefCategory.CLASSIFICATION_DEF,
@@ -957,6 +961,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         relationship.setUpdatedBy(userName);
         relationship.setMaintainedBy(Collections.singletonList(userName));
         relationship.setLastRequestId(requestId.getRequestId());
+        relationship.setLastOperationId(operationId.getOperationId());
         relationship.setGUID(guid);
         relationship.setVersion(1L);
 
@@ -1853,6 +1858,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         updatedInstance.setUpdatedBy(userId);
         updatedInstance.setUpdateTime(new Date());
         updatedInstance.setLastRequestId(requestId.getRequestId());
+        updatedInstance.setLastOperationId(operationId.getOperationId());
 
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
@@ -1889,6 +1895,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         updatedInstance.setUpdatedBy(userId);
         updatedInstance.setUpdateTime(new Date());
         updatedInstance.setLastRequestId(requestId.getRequestId());
+        updatedInstance.setLastOperationId(operationId.getOperationId());
 
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
@@ -1925,6 +1932,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         updatedInstance.setUpdatedBy(userId);
         updatedInstance.setUpdateTime(new Date());
         updatedInstance.setLastRequestId(requestId.getRequestId());
+        updatedInstance.setLastOperationId(operationId.getOperationId());
 
         long currentVersion = originalInstance.getVersion();
         updatedInstance.setVersion(currentVersion+1);
@@ -2099,6 +2107,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setMetadataCollectionId(metadataCollectionId);
         entity.setCreateTime(new Date());
         entity.setLastRequestId(requestId.getRequestId());
+        entity.setLastOperationId(operationId.getOperationId());
         entity.setCreatedBy(userName);
         entity.setGUID(guid);
         entity.setVersion(1L);

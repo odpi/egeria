@@ -335,6 +335,108 @@ public class MetadataExpertResource
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/undo")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse undoMetadataElementUpdate(@PathVariable String                    serverName,
+                                                  @PathVariable String                    urlMarker,
+                                                  @PathVariable String                    metadataElementGUID,
+                                                  @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.undoMetadataElementUpdate(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+     * the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+     * can not be restored.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/restore")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse restoreMetadataElementInStore(@PathVariable String                    serverName,
+                                                      @PathVariable String                    urlMarker,
+                                                      @PathVariable String                    metadataElementGUID,
+                                                      @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.restoreMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{relationshipGUID}/undo")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse undoRelationshipUpdate(@PathVariable String                    serverName,
+                                               @PathVariable String                    urlMarker,
+                                               @PathVariable String                    relationshipGUID,
+                                               @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.undoRelationshipUpdate(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    @PostMapping(path = "/related-elements/{relationshipGUID}/restore")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    public VoidResponse restoreRelationshipInStore(@PathVariable String                    serverName,
+                                                   @PathVariable String                    urlMarker,
+                                                   @PathVariable String                    relationshipGUID,
+                                                   @RequestBody(required = false)  MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.restoreRelationshipInStore(serverName, urlMarker, relationshipGUID, requestBody);
+    }
+
+
+    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param serverName     name of server instance to route request to

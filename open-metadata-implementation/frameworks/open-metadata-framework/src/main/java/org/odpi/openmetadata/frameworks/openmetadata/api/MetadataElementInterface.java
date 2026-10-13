@@ -1204,4 +1204,78 @@ public interface MetadataElementInterface
                                       DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException;
+
+
+    /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    void undoMetadataElementUpdate(String                userId,
+                                   String                metadataElementGUID,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+     * the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+     * can not be restored.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element is neither deleted nor archived
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    void restoreMetadataElementInStore(String                userId,
+                                       String                metadataElementGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param userId                 caller's userId
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    void undoRelationshipUpdate(String                userId,
+                                String                relationshipGUID,
+                                MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param userId                 caller's userId
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship is not deleted, or one of its ends is not active
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    void restoreRelationshipInStore(String                userId,
+                                    String                relationshipGUID,
+                                    MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
 }

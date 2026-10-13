@@ -1646,6 +1646,84 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void undoMetadataElementUpdate(String                metadataElementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        openMetadataClient.undoMetadataElementUpdate(connectorUserId, metadataElementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+     * the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+     * can not be restored.
+     *
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element is neither deleted nor archived
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void restoreMetadataElementInStore(String                metadataElementGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        openMetadataClient.restoreMetadataElementInStore(connectorUserId, metadataElementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void undoRelationshipUpdate(String                relationshipGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        openMetadataClient.undoRelationshipUpdate(connectorUserId, relationshipGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship is not deleted, or one of its ends is not active
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    public void restoreRelationshipInStore(String                relationshipGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        openMetadataClient.restoreRelationshipInStore(connectorUserId, relationshipGUID, metadataSourceOptions);
+    }
+
+
+    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update

@@ -2086,6 +2086,10 @@ public class QueryBuilder
         {
             return RepositoryColumn.LAST_REQUEST_ID.getColumnName();
         }
+        else if (OpenMetadataProperty.LAST_OPERATION_ID.name.equals(propertyName))
+        {
+            return RepositoryColumn.LAST_OPERATION_ID.getColumnName();
+        }
         else if (OpenMetadataProperty.CREATED_BY.name.equals(propertyName))
         {
             return RepositoryColumn.CREATED_BY.getColumnName();

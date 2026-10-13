@@ -30,6 +30,11 @@ public enum OpenMetadataProperty
     LAST_REQUEST_ID("lastRequestId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the last requestId to update the element.", "3ca9fa1f-7eaf-4a6d-a49d-ecb320296559", "c08bf63a-001a-4e03-b6cb-73b7dd11a9ba", PropertyCategory.HEADER),
 
     /**
+     * Unique identifier of the operation - a single command such as a delete, an archive or a create from a template - that wrote this version of the element.
+     */
+    LAST_OPERATION_ID("lastOperationId", DataType.STRING, DataType.STRING.getDisplayName(), "Unique identifier of the operation - a single command such as a delete, an archive or a create from a template - that wrote this version of the element.  Every element the same command writes carries the same value.", "c765faa4-a1dc-4fd9-bcee-af5c8801a89e", "c8367e42-2a0e-48b3-ac23-044a68d5de22", PropertyCategory.HEADER),
+
+    /**
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
     METADATA_COLLECTION_ID("metadataCollectionId", DataType.STRING, DataType.STRING.getDisplayName(), "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e", PropertyCategory.HEADER),

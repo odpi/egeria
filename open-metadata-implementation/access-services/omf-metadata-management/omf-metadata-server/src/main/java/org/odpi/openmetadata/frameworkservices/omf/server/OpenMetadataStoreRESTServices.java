@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.omf.server;
 
+import org.odpi.openmetadata.commonservices.generichandlers.RelationshipPurposeResolver;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -3763,6 +3765,210 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse undoMetadataElementUpdate(String                    serverName,
+                                                  String                    userId,
+                                                  String                    metadataElementGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "undoMetadataElementUpdate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            MetadataSourceRequestBody options = (requestBody == null) ? new MetadataSourceRequestBody() : requestBody;
+
+            handler.undoMetadataElementUpdate(userId,
+                                              options.getExternalSourceGUID(),
+                                              options.getExternalSourceName(),
+                                              metadataElementGUID,
+                                              options.getForLineage(),
+                                              options.getForDuplicateProcessing(),
+                                              options.getEffectiveTime(),
+                                              methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed is restored with it.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse restoreMetadataElementInStore(String                    serverName,
+                                                      String                    userId,
+                                                      String                    metadataElementGUID,
+                                                  MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "restoreMetadataElementInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            MetadataSourceRequestBody options = (requestBody == null) ? new MetadataSourceRequestBody() : requestBody;
+
+            handler.restoreMetadataElementInStore(userId,
+                                                  options.getExternalSourceGUID(),
+                                                  options.getExternalSourceName(),
+                                                  metadataElementGUID,
+                                                  options.getForDuplicateProcessing(),
+                                                  methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to undo
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse undoRelationshipUpdate(String                    serverName,
+                                               String                    userId,
+                                               String                    relationshipGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "undoRelationshipUpdate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            MetadataSourceRequestBody options = (requestBody == null) ? new MetadataSourceRequestBody() : requestBody;
+
+            handler.undoRelationshipUpdate(userId,
+                                           options.getExternalSourceGUID(),
+                                           options.getExternalSourceName(),
+                                           relationshipGUID,
+                                           options.getForLineage(),
+                                           options.getForDuplicateProcessing(),
+                                           options.getEffectiveTime(),
+                                           methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier of the relationship
+     * @param requestBody external source and query options - may be null
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is invalid in some way, or there is nothing to restore
+     *  UserNotAuthorizedException the user is not authorized to make this change
+     *  PropertyServerException a problem with the metadata store
+     */
+    public VoidResponse restoreRelationshipInStore(String                    serverName,
+                                                   String                    userId,
+                                                   String                    relationshipGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "restoreRelationshipInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            MetadataSourceRequestBody options = (requestBody == null) ? new MetadataSourceRequestBody() : requestBody;
+
+            handler.restoreRelationshipInStore(userId,
+                                               options.getExternalSourceGUID(),
+                                               options.getExternalSourceName(),
+                                               relationshipGUID,
+                                               options.getForDuplicateProcessing(),
+                                               methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Update the effectivity dates control the visibility of the element through specific APIs.
      *
      * @param serverName     name of server instance to route request to
@@ -4219,7 +4425,7 @@ public class OpenMetadataStoreRESTServices
                                                          String                    userId,
                                                          String                    metadataElementGUID,
                                                          String                    classificationName,
-                                                         MetadataSourceRequestBody requestBody)
+                                                 MetadataSourceRequestBody requestBody)
     {
         final String methodName = "declassifyMetadataElementInStore";
         final String metadataElementGUIDParameterName = "metadataElementGUID";
@@ -5076,6 +5282,7 @@ public class OpenMetadataStoreRESTServices
                 openMetadataRelationshipDef.setPropagationRule(this.getPropagationRule(relationshipDef.getPropagationRule()));
                 openMetadataRelationshipDef.setEndDef1(this.getRelationshipEndDef(relationshipDef.getEndDef1()));
                 openMetadataRelationshipDef.setEndDef2(this.getRelationshipEndDef(relationshipDef.getEndDef2()));
+                openMetadataRelationshipDef.setRelationshipPurpose(this.getRelationshipPurpose(relationshipDef, repositoryHelper));
                 if (relationshipDef.getMultiLink())
                 {
                     openMetadataRelationshipDef.setRelationshipCategory(OpenMetadataRelationshipCategory.MULTI_LINK);
@@ -5562,6 +5769,22 @@ public class OpenMetadataStoreRESTServices
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the purpose of the relationship type, inheriting it from a super type if needed.
+     *
+     * @param relationshipDef omrs type
+     * @param repositoryHelper repository helper
+     * @return open metadata enum
+     */
+    private OpenMetadataRelationshipPurpose getRelationshipPurpose(RelationshipDef      relationshipDef,
+                                                                   OMRSRepositoryHelper repositoryHelper)
+    {
+        final String methodName = "getRelationshipPurpose";
+
+        return RelationshipPurposeResolver.getRelationshipPurpose(methodName, relationshipDef, repositoryHelper);
     }
 
 

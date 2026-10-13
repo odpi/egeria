@@ -113,71 +113,84 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             log.debug("Creating new element of type " + entityTypeName + " using template " + templateGUID);
         }
 
-        templateProgress = createBeanFromTemplate(userId,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  true,
-                                                  templateProgress,
-                                                  templateGUID,
-                                                  templateGUIDParameterName,
-                                                  entityTypeGUID,
-                                                  entityTypeName,
-                                                  uniqueParameterValue,
-                                                  uniqueParameterName,
-                                                  propertyBuilder,
-                                                  deepCopy,
-                                                  templateSubstitute,
-                                                  allowRetrieve,
-                                                  placeholderProperties,
-                                                  methodName);
+        /*
+         * One operation: every element and relationship the copy creates carries the same lastOperationId, so the
+         * scope of the copy can be checked afterwards.
+         */
+        boolean startedOperation = this.startOperation();
 
-        if (templateProgress.newBeanCreated)
+        try
         {
-            /*
-             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
-             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
-             */
-            if (log.isDebugEnabled())
+            templateProgress = createBeanFromTemplate(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      true,
+                                                      templateProgress,
+                                                      templateGUID,
+                                                      templateGUIDParameterName,
+                                                      entityTypeGUID,
+                                                      entityTypeName,
+                                                      uniqueParameterValue,
+                                                      uniqueParameterName,
+                                                      propertyBuilder,
+                                                      deepCopy,
+                                                      templateSubstitute,
+                                                      allowRetrieve,
+                                                      placeholderProperties,
+                                                      methodName);
+
+            if (templateProgress.newBeanCreated)
             {
-                log.debug("Adding SourcedFrom relationship from new element " + templateProgress.newBeanGUID + " of type " + entityTypeName + " to template " + templateGUID);
+                /*
+                 * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
+                 * updated, there is a possibility of making complementary changes to the entities that were derived from it.
+                 */
+                if (log.isDebugEnabled())
+                {
+                    log.debug("Adding SourcedFrom relationship from new element " + templateProgress.newBeanGUID + " of type " + entityTypeName + " to template " + templateGUID);
+                }
+
+                InstanceProperties relationshipProperties = null;
+
+                if (templateProgress.sourceVersionNumber != 0)
+                {
+                    relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                                        null,
+                                                                                        OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
+                                                                                        templateProgress.sourceVersionNumber,
+                                                                                        methodName);
+                }
+
+                repositoryHandler.createRelationship(localServerUserId,
+                                                     OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     templateProgress.newBeanGUID,
+                                                     templateGUID,
+                                                     relationshipProperties,
+                                                     methodName);
+
+                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
+                {
+                    auditLog.logMessage(assetActionDescription,
+                                        OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                                      entityTypeName,
+                                                                                                                      templateProgress.newBeanGUID,
+                                                                                                                      methodName,
+                                                                                                                      serviceName));
+                }
+
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.TEMPLATE_MAPPING_SUMMARY.getMessageDefinition(templateGUID,
+                                                                                                           entityTypeName,
+                                                                                                           templateProgress.newBeanGUID,
+                                                                                                           templateProgress.coveredEntityGUIDMap.toString(),
+                                                                                                           templateProgress.coveredRelationshipGUIDMap.toString()));
             }
-
-            InstanceProperties relationshipProperties = null;
-
-            if (templateProgress.sourceVersionNumber != 0)
-            {
-                relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
-                                                                                    null,
-                                                                                    OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
-                                                                                    templateProgress.sourceVersionNumber,
-                                                                                    methodName);
-            }
-
-            repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 templateProgress.newBeanGUID,
-                                                 templateGUID,
-                                                 relationshipProperties,
-                                                 methodName);
-
-            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
-            {
-                auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
-                                                                                                                  entityTypeName,
-                                                                                                                  templateProgress.newBeanGUID,
-                                                                                                                  methodName,
-                                                                                                                  serviceName));
-            }
-
-            auditLog.logMessage(methodName,
-                                GenericHandlersAuditCode.TEMPLATE_MAPPING_SUMMARY.getMessageDefinition(templateGUID,
-                                                                                                       entityTypeName,
-                                                                                                       templateProgress.newBeanGUID,
-                                                                                                       templateProgress.coveredEntityGUIDMap.toString(),
-                                                                                                       templateProgress.coveredRelationshipGUIDMap.toString()));
+        }
+        finally
+        {
+            this.endOperation(startedOperation);
         }
 
         return templateProgress.newBeanGUID;
@@ -197,12 +210,11 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         String              previousTemplateGUID       = null; /* GUID of last template entity processed - prevents processing a relationship twice */
         Map<String, String> coveredEntityGUIDMap       = new HashMap<>(); /* Map of template entity GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
         Map<String, String> coveredRelationshipGUIDMap = new HashMap<>(); /* Map of template relationship GUIDs to new relationship GUIDs that have been processed - prevents replicating the same relationship twice */
-        List<String>        templateAnchorGUIDs        = new ArrayList<>(); /* List of anchor GUIDs associated with the template - to allow nested anchors to be handled */
-        String              beanAnchorGUID             = null; /* value of the anchor to set into the new beans */
-        String              beanAnchorTypeName         = null; /* value of the anchor to set into the new beans */
-        String              beanAnchorDomainName       = null; /* value of the anchor to set into the new beans */
-        List<String>        beanAnchorScopeGUIDs       = null; /* value of the anchor to set into the new beans */
-        List<String>        beanZoneMembership         = null; /* value of the anchor to set into the new beans */
+        String              templateRootAnchorGUID     = null; /* the anchor of the template's anchored graph - the template itself unless the template is a member of another element's graph */
+        boolean             memberTemplate             = false; /* the template is anchored to another element, so only its own part of that element's graph is copied */
+        Map<String, String> anchorGUIDMap              = new HashMap<>(); /* Map of template anchor GUIDs to the anchor GUIDs for the new beans, for anchors that are not themselves copied */
+        Map<String, EntityDetail> newAnchorEntities    = new HashMap<>(); /* The anchors of the new beans, retrieved once each */
+        String              beanAnchorGUID             = null; /* the top-level new bean - the anchor for new beans whose template anchor is not mapped */
 
         /**
          * Standard toString for logging
@@ -218,11 +230,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     ", sourceVersionNumber=" + sourceVersionNumber +
                     ", previousTemplateGUID='" + previousTemplateGUID + '\'' +
                     ", coveredGUIDMap=" + coveredEntityGUIDMap +
-                    ", templateAnchorGUIDs=" + templateAnchorGUIDs +
+                    ", templateRootAnchorGUID='" + templateRootAnchorGUID + '\'' +
+                    ", memberTemplate=" + memberTemplate +
+                    ", anchorGUIDMap=" + anchorGUIDMap +
                     ", beanAnchorGUID='" + beanAnchorGUID + '\'' +
-                    ", beanAnchorTypeName='" + beanAnchorTypeName + '\'' +
-                    ", beanAnchorDomainName='" + beanAnchorDomainName + '\'' +
-                    ", beanZoneMembership='" + beanZoneMembership + '\'' +
                     '}';
         }
     }
@@ -377,37 +388,33 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                     forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
-            if (templateAnchorEntity != null)
-            {
-                if ((firstIteration) && (! templateGUID.equals(templateAnchorEntity.getGUID())))
-                {
-                    /*
-                     * Need to use the same anchor as the template because the template is anchored to another bean.
-                     * This occurs the first time through the iteration if the initial template object has an anchor.
-                     */
-                    templateProgress.beanAnchorGUID = templateAnchorEntity.getGUID();
-                    templateProgress.beanAnchorTypeName = templateAnchorEntity.getType().getTypeDefName();
-                    templateProgress.beanAnchorDomainName = this.getDomainName(templateAnchorEntity);
-                    templateProgress.beanAnchorScopeGUIDs = this.getAnchorScopeGUIDFromAnchorsClassification(templateAnchorEntity, methodName);
-                    templateProgress.beanZoneMembership   = this.getZoneMembershipFromClassification(templateAnchorEntity, methodName);
-                }
-
-                templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
-            }
-
-            if ((templateProgress.beanAnchorGUID != null) && (! propertyBuilder.isClassificationSet(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName)))
+            if (firstIteration)
             {
                 /*
-                 * A bean anchor has been set up on a previous iteration.  This value is typically set when the top-level bean is created
-                 * from the template.  The alternative is that the top-level template bean has an anchor.
+                 * A template that is anchored to another element is a member of that element's graph, and only its
+                 * own part of the graph is copied - see addAttachmentsFromTemplate.  The copy is not anchored to the
+                 * template's anchor: that would make it part of the template's graph.  It is anchored as the caller's
+                 * options say, as any other new element is.
                  */
-                propertyBuilder.setAnchors(userId,
-                                           templateProgress.beanAnchorGUID,
-                                           templateProgress.beanAnchorTypeName,
-                                           templateProgress.beanAnchorDomainName,
-                                           templateProgress.beanAnchorScopeGUIDs,
-                                           templateProgress.beanZoneMembership,
-                                           methodName);
+                if ((templateAnchorEntity == null) || (templateGUID.equals(templateAnchorEntity.getGUID())))
+                {
+                    templateProgress.templateRootAnchorGUID = templateGUID;
+                    templateProgress.memberTemplate         = false;
+                }
+                else
+                {
+                    templateProgress.templateRootAnchorGUID = templateAnchorEntity.getGUID();
+                    templateProgress.memberTemplate         = true;
+                }
+            }
+            else if (! propertyBuilder.isClassificationSet(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
+            {
+                /*
+                 * The new bean mirrors its template's anchor: the copy of whatever the template is anchored to.  An
+                 * element anchored to a member of the template's graph - an endpoint anchored to its connection - is
+                 * anchored to the copy of that member, not flattened onto the new top-level bean.
+                 */
+                this.setNewBeanAnchors(userId, templateEntity, templateProgress, propertyBuilder, forLineage, forDuplicateProcessing, effectiveTime, methodName);
             }
 
             /*
@@ -542,8 +549,16 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             if (firstIteration)
             {
                 templateProgress.beanAnchorGUID = newEntityGUID;
-                templateProgress.beanAnchorTypeName = templateEntity.getType().getTypeDefName();
-                templateProgress.beanAnchorDomainName = this.getDomainName(templateEntity);
+
+                if (templateProgress.memberTemplate)
+                {
+                    /*
+                     * The template's members share its anchor, which is not copied.  Their copies share the new
+                     * bean's anchor instead: the anchor the caller gave it, or the new bean itself if it has none.
+                     */
+                    templateProgress.anchorGUIDMap.put(templateProgress.templateRootAnchorGUID,
+                                                       this.getNewTopLevelAnchorGUID(userId, newEntityGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName));
+                }
             }
 
             if (deepCopy)
@@ -764,6 +779,29 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                         }
                         String nextBeanEntityGUID;
 
+                        /*
+                         * An element is copied when it is anchored to an element that has already been copied - the
+                         * template itself, or a member of its graph such as a connection with its endpoint - whichever
+                         * end of the relationship it is at.  When the template is a member of another element's graph,
+                         * an element sharing that anchor is copied only if it lies downstream of the element being
+                         * copied: at end 2 of a relationship whose purpose is STRUCTURAL or ATTACHMENT.  Its parent,
+                         * its siblings and the elements it is linked to for any other purpose belong to the template's
+                         * graph, not to the copy.
+                         *
+                         * When the template is the anchor of its graph, the whole graph is copied, so an element
+                         * anchored to a member is copied even if it is reached before that member has been.
+                         */
+                        boolean anchoredToCopiedEntity = (nextTemplateAnchorGUID != null)
+                                                                 && (! nextTemplateAnchorGUID.equals(nextTemplateEntity.getGUID()))
+                                                                 && ((templateProgress.coveredEntityGUIDMap.containsKey(nextTemplateAnchorGUID))
+                                                                         || ((! templateProgress.memberTemplate)
+                                                                                 && (this.isInTemplateGraph(userId, nextTemplateEntity, templateProgress, forLineage, forDuplicateProcessing, effectiveTime, methodName))));
+                        boolean downstreamMember = (templateProgress.memberTemplate)
+                                                           && (templateProgress.templateRootAnchorGUID.equals(nextTemplateAnchorGUID))
+                                                           && (! nextTemplateEntity.getGUID().equals(nextTemplateAnchorGUID))
+                                                           && (relationshipOneToTwo)
+                                                           && (this.isPartOfAnchoredGraph(relationship));
+
                         if (templateProgress.coveredEntityGUIDMap.containsKey(nextTemplateEntity.getGUID()))
                         {
                             /*
@@ -772,7 +810,19 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                              */
                             nextBeanEntityGUID = templateProgress.coveredEntityGUIDMap.get(nextTemplateEntity.getGUID());
                         }
-                        else if ((nextTemplateAnchorGUID == null) || (! templateProgress.templateAnchorGUIDs.contains(nextTemplateAnchorGUID)))
+                        else if ((! anchoredToCopiedEntity) && (! downstreamMember)
+                                && (templateProgress.memberTemplate)
+                                && (this.isInTemplateGraph(userId, nextTemplateEntity, templateProgress, forLineage, forDuplicateProcessing, effectiveTime, methodName)))
+                        {
+                            /*
+                             * Part of the template's own graph that is not being copied - the template's parent, a
+                             * sibling, the target of a non-structural link.  Linking the copy to it would join the copy to the
+                             * template's graph, so the relationship is not reproduced.  The caller attaches the copy
+                             * where it belongs with the parent options.
+                             */
+                            continue;
+                        }
+                        else if ((! anchoredToCopiedEntity) && (! downstreamMember))
                         {
                             /*
                              * The linked entity is either not got an anchorGUID or has a different anchorGUID.
@@ -792,12 +842,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                nextTemplateEntityTypeName,
                                                                OpenMetadataType.REFERENCEABLE.typeName)))
                             {
-                                /*
-                                 * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
-                                 * process so the GUID is stored as a potential anchor.
-                                 */
-                                templateProgress.templateAnchorGUIDs.add(nextTemplateEntity.getGUID());
-
                                 nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
                                 int nextQualifiedNameCount = 0;
 
@@ -924,5 +968,197 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         }
 
         return templateProgress;
+    }
+
+    /**
+     * Set the anchor for a new bean created from a template element that is not the top-level template.  The
+     * new bean is anchored to the copy of whatever the template element is anchored to.  Where that anchor is
+     * not copied - the anchor of a template that is itself a member of a graph - it is anchored to the new
+     * top-level bean's anchor instead, and where the template element records no anchor, to the new top-level bean.
+     *
+     * @param userId calling user
+     * @param templateEntity template element being copied
+     * @param templateProgress progress of the copy
+     * @param propertyBuilder builder for the new bean
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorized to read the anchor
+     */
+    private void setNewBeanAnchors(String                        userId,
+                                   EntityDetail                  templateEntity,
+                                   TemplateProgress              templateProgress,
+                                   OpenMetadataAPIGenericBuilder propertyBuilder,
+                                   boolean                       forLineage,
+                                   boolean                       forDuplicateProcessing,
+                                   Date                          effectiveTime,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String anchorGUIDParameterName = "newAnchorGUID";
+
+        AnchorIdentifiers templateAnchors     = this.getAnchorsFromAnchorsClassification(templateEntity, methodName);
+        String            templateAnchorGUID  = (templateAnchors == null) ? null : templateAnchors.anchorGUID;
+        String            newAnchorGUID       = null;
+
+        if (templateAnchorGUID != null)
+        {
+            newAnchorGUID = templateProgress.anchorGUIDMap.get(templateAnchorGUID);
+
+            if (newAnchorGUID == null)
+            {
+                newAnchorGUID = templateProgress.coveredEntityGUIDMap.get(templateAnchorGUID);
+            }
+        }
+
+        if (newAnchorGUID == null)
+        {
+            newAnchorGUID = templateProgress.beanAnchorGUID;
+        }
+
+        if (newAnchorGUID != null)
+        {
+            EntityDetail newAnchorEntity = templateProgress.newAnchorEntities.get(newAnchorGUID);
+
+            if (newAnchorEntity == null)
+            {
+                newAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                    newAnchorGUID,
+                                                                    anchorGUIDParameterName,
+                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+                templateProgress.newAnchorEntities.put(newAnchorGUID, newAnchorEntity);
+            }
+
+            if (newAnchorEntity != null)
+            {
+                propertyBuilder.setAnchors(userId,
+                                           newAnchorGUID,
+                                           newAnchorEntity.getType().getTypeDefName(),
+                                           this.getDomainName(newAnchorEntity),
+                                           this.getAnchorScopeGUIDFromAnchorsClassification(newAnchorEntity, methodName),
+                                           this.getZoneMembershipFromClassification(newAnchorEntity, methodName),
+                                           methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Return the anchor of a newly created top-level bean: the element named in its Anchors classification, or
+     * the bean itself when it is its own anchor or has none.
+     *
+     * @param userId calling user
+     * @param newEntityGUID the new top-level bean
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return anchor GUID
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorized to read the new bean
+     */
+    private String getNewTopLevelAnchorGUID(String  userId,
+                                            String  newEntityGUID,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        final String newEntityGUIDParameterName = "newEntityGUID";
+
+        EntityDetail newEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                   newEntityGUID,
+                                                                   newEntityGUIDParameterName,
+                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        AnchorIdentifiers anchors = this.getAnchorsFromAnchorsClassification(newEntity, methodName);
+
+        if ((anchors != null) && (anchors.anchorGUID != null))
+        {
+            return anchors.anchorGUID;
+        }
+
+        return newEntityGUID;
+    }
+
+
+    /**
+     * Is this element part of the template's anchored graph?  It is if it is the template's anchor, or if
+     * following the anchors from it - an endpoint to its connection, the connection to the database schema -
+     * reaches the template's anchor.
+     *
+     * @param userId calling user
+     * @param entity element to test
+     * @param templateProgress progress of the copy, which names the template's anchor
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return true if the element belongs to the template's graph
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorized to read an anchor
+     */
+    private boolean isInTemplateGraph(String           userId,
+                                      EntityDetail     entity,
+                                      TemplateProgress templateProgress,
+                                      boolean          forLineage,
+                                      boolean          forDuplicateProcessing,
+                                      Date             effectiveTime,
+                                      String           methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String anchorGUIDParameterName = "anchorGUID";
+
+        Set<String>  visitedGUIDs = new HashSet<>();
+        EntityDetail current      = entity;
+
+        while ((current != null) && (visitedGUIDs.add(current.getGUID())))
+        {
+            if (current.getGUID().equals(templateProgress.templateRootAnchorGUID))
+            {
+                return true;
+            }
+
+            AnchorIdentifiers anchors = this.getAnchorsFromAnchorsClassification(current, methodName);
+
+            if ((anchors == null) || (anchors.anchorGUID == null) || (anchors.anchorGUID.equals(current.getGUID())))
+            {
+                return false;
+            }
+
+            if (anchors.anchorGUID.equals(templateProgress.templateRootAnchorGUID))
+            {
+                return true;
+            }
+
+            current = repositoryHandler.getEntityByGUID(userId,
+                                                        anchors.anchorGUID,
+                                                        anchorGUIDParameterName,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+        }
+
+        return false;
     }
 }

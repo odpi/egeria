@@ -2051,6 +2051,57 @@ public class RepositoryHandler
 
 
     /**
+     * Undo the last update to a relationship, restoring its previous version.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param updatedRelationshipGUID unique identifier of the relationship to restore
+     * @param methodName calling method
+     * @return the relationship as it is now, after the undo
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing property server, including a relationship with no
+     * previous version or a repository that does not keep one
+     */
+    public Relationship undoRelationshipUpdate(String userId,
+                                               String externalSourceGUID,
+                                               String externalSourceName,
+                                               String updatedRelationshipGUID,
+                                               String methodName) throws UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String localMethodName = "undoRelationshipUpdate";
+
+        try
+        {
+            Relationship relationship = metadataCollection.undoRelationshipUpdate(userId, updatedRelationshipGUID);
+
+            if (relationship != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                relationship,
+                                                updatedRelationshipGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+
+            return relationship;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            throw error;
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Undo the last update to the requested entity.
      *
      * @param userId             unique identifier for requesting user.
@@ -2908,7 +2959,7 @@ public class RepositoryHandler
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
         {
-            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+            this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, true, methodName);
         }
         catch (Exception error)
         {
@@ -2936,6 +2987,34 @@ public class RepositoryHandler
                             String methodName) throws UserNotAuthorizedException,
                                                       PropertyServerException
     {
+        this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, false, methodName);
+    }
+
+
+    /**
+     * Purge an entity, recording in the audit log when the purge stands in for a soft delete that the
+     * repository does not support.  A purge that was asked for is not reported that way: the message says the
+     * repository cannot soft-delete, which is untrue of a purge requested on purpose, and a cascaded purge of a
+     * large anchored graph filled the log with it.
+     *
+     * @param userId             calling user
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param entityTypeGUID     type of entity to delete
+     * @param entityTypeName     name of the entity's type
+     * @param insteadOfSoftDelete the purge is being done because the repository could not soft-delete the entity
+     * @param methodName         name of calling method
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void purgeEntity(String  userId,
+                             String  obsoleteEntityGUID,
+                             String  entityTypeGUID,
+                             String  entityTypeName,
+                             boolean insteadOfSoftDelete,
+                             String  methodName) throws UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
         final String localMethodName = "purgeEntity";
 
         final String typeGUIDParameterName = "entityTypeGUID";
@@ -2952,12 +3031,15 @@ public class RepositoryHandler
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
 
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
-                                                                                              entityTypeName,
-                                                                                              entityTypeGUID,
-                                                                                              methodName,
-                                                                                              metadataCollection.getMetadataCollectionId(userId)));
+            if (insteadOfSoftDelete)
+            {
+                auditLog.logMessage(methodName,
+                                    RepositoryHandlerAuditCode.ENTITY_PURGED.getMessageDefinition(obsoleteEntityGUID,
+                                                                                                  entityTypeName,
+                                                                                                  entityTypeGUID,
+                                                                                                  methodName,
+                                                                                                  metadataCollection.getMetadataCollectionId(userId)));
+            }
         }
         catch (UserNotAuthorizedException error)
         {

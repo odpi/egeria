@@ -12,12 +12,36 @@ stack of their own - a PostgreSQL server, an Apache Kafka broker, or both; auth-
 neither and run in well under a minute. Each is started by naming its property on the command line, shown
 against each suite below.
 
+To run everything in one go - the unit tests, every suite below except cts-fvt, and the aggregated coverage
+report - use [run-all-fvts.zsh](run-all-fvts.zsh):
+
+```
+open-metadata-test/open-metadata-fvt/run-all-fvts.zsh
+```
+
+It takes about 45 minutes. It runs the suites one at a time, because they share the PostgreSQL server and
+bind ports, and writes a log per step plus `summary.txt` to `build/fvt-runs/<date-time>`, or to the
+directory given as its argument. It stops before starting if PostgreSQL on localhost:5442 is not answering.
+Each suite needs the same services as when run on its own, so start Kafka and Unity Catalog first for the
+suites that use them.
+
 * **[query-fvt](query-fvt)** - gives the repository query surface a thorough workout against a real
   PostgreSQL repository: paging, sorting, subtype filtering, status (soft-delete) filtering, complex property
   and classification search, `asOfTime` historical queries, and `graphQueryDepth`.
 
   ```
   ./gradlew :open-metadata-test:open-metadata-fvt:query-fvt:test -PrunQueryFvt
+  ```
+
+* **[anchor-fvt](anchor-fvt)** - tests **anchor support**: the Anchors classification that groups an anchored
+  graph together, and the operations that act on a graph - delete, archive, purge, templated create and restore. Each
+  test builds a small catalogued database schema and checks exactly which elements an operation takes: an
+  anchor takes its whole graph, an anchored member takes only what lies downstream of it, and peer links such
+  as foreign keys and lineage mappings are never followed.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:anchor-fvt:test -PrunAnchorFvt
+  ./gradlew :open-metadata-test:open-metadata-fvt:anchor-fvt:test -PrunAnchorFvtInMemory
   ```
 
 * **[type-fvt](type-fvt)** - tests the **open metadata type system itself**. Where query-fvt asks whether the

@@ -114,6 +114,16 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                    "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-015 - The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore
+     */
+    NOTHING_TO_RESTORE(400, "OMAG-GENERIC-HANDLERS-400-015",
+                       "The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore",
+                       "The system cannot restore this element because it is active.  Restore reverses a soft delete or an archive.",
+                       "Check that the unique identifier is for the element that was deleted or archived.  An element that was " +
+                               "purged can not be restored: it is no longer in the repository.",
+                       "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */

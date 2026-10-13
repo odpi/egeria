@@ -2172,6 +2172,144 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Undo the last update to a metadata element, restoring its previous version.  Undo works on the one element.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    @Override
+    public void undoMetadataElementUpdate(String                userId,
+                                          String                metadataElementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName        = "undoMetadataElementUpdate";
+        final String guidParameterName = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/undo";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
+                                        serverName,
+                                        userId,
+                                        metadataElementGUID);
+    }
+
+
+    /**
+     * Reverse the delete or archive that removed a metadata element.  Everything the same delete or archive changed -
+     * the members a cascaded delete removed, the elements an archive classified - is restored with it.  A purged element
+     * can not be restored.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the metadata element
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the element is neither deleted nor archived
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    @Override
+    public void restoreMetadataElementInStore(String                userId,
+                                              String                metadataElementGUID,
+                                              MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        final String methodName        = "restoreMetadataElementInStore";
+        final String guidParameterName = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/restore";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
+                                        serverName,
+                                        userId,
+                                        metadataElementGUID);
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param userId                 caller's userId
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship has no previous version
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    @Override
+    public void undoRelationshipUpdate(String                userId,
+                                       String                relationshipGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String methodName        = "undoRelationshipUpdate";
+        final String guidParameterName = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/related-elements/{2}/undo";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
+                                        serverName,
+                                        userId,
+                                        relationshipGUID);
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship.  Both its ends must be active.
+     *
+     * @param userId                 caller's userId
+     * @param relationshipGUID       unique identifier of the relationship
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  the unique identifier is invalid in some way, or the relationship is not deleted, or one of its ends is not active
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store
+     */
+    @Override
+    public void restoreRelationshipInStore(String                userId,
+                                           String                relationshipGUID,
+                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        final String methodName        = "restoreRelationshipInStore";
+        final String guidParameterName = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/related-elements/{2}/restore";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new MetadataSourceRequestBody(metadataSourceOptions),
+                                        serverName,
+                                        userId,
+                                        relationshipGUID);
+    }
+
+
+    /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
      * assigned when it was created.  The effectivity dates control the visibility of the element
      * through specific APIs.

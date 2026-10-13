@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OperationId;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * Added to the qualified name of an element when it is archived, followed by the date.
      */
     private static final String archivedQualifiedNameMarker = "_archivedOn_";
+
+    /*
+     * The operation running on this thread.  Every instance a single command writes - a delete, an archive, a
+     * create from a template, a restore - is stamped with its identifier, so that the scope of the command can be
+     * found again.  Restore uses it to bring back exactly what one delete or archive changed.
+     */
+    private static final OperationId operationId = new OperationId();
 
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
 
@@ -2939,6 +2948,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Is this relationship part of the structure of an anchored graph?  Only relationships whose purpose is
+     * STRUCTURAL or ATTACHMENT are followed when an operation (delete, archive, create from template) starts on
+     * an anchored element.  Any other purpose - or none - links the element to something independent of it.
+     *
+     * @param relationship relationship to test
+     * @return true if the relationship is followed through the anchored graph
+     */
+    protected boolean isPartOfAnchoredGraph(Relationship relationship)
+    {
+        if ((relationship != null) && (relationship.getType() != null))
+        {
+            OpenMetadataRelationshipPurpose purpose = RelationshipPurposeResolver.getRelationshipPurpose(serviceName,
+                                                                                                       relationship.getType().getTypeDefName(),
+                                                                                                       repositoryHelper);
+
+            return (purpose != null) && (purpose.isPartOfAnchoredGraph());
+        }
+
+        return false;
+    }
+
+
+    /**
      * One element found by the archive walk, with what is needed to archive it.
      *
      * @param entity the entity as it was read
@@ -2955,12 +2987,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * <br>
      * The walk reads with forLineage set whatever the caller asked for.  An element that an earlier, failed archive
      * already classified as a Memento is invisible otherwise, and the walk would skip it and everything beyond it.
+     * <br><br>
+     * Archiving an anchor takes its whole anchored graph, so the walk follows relationships at either end.  Archiving
+     * an element that is anchored to something else must not: its siblings and its anchor carry the same anchorGUID
+     * as its own descendants, so a walk in both directions climbs to the anchor and takes the entire graph with it.
+     * In that case an element sharing the anchor is only collected when it is at end 2 of a relationship -
+     * downstream of the element being archived - and the relationship's purpose is STRUCTURAL or ATTACHMENT
+     * (see isPartOfAnchoredGraph); the anchor itself never is.  Any other relationship links the element to
+     * something independent of it, not part of it.
+     * <br><br>
+     * An element anchored to one of the elements already collected is always collected, whichever end it is at.
+     * The anchorGUID is whatever the element was created with, so an element can be anchored to a member of the
+     * graph rather than to its root - and then the anchorGUID says on its own that it belongs to this archive.
      *
      * @param userId calling user
      * @param entity entity to start from
      * @param entityGUIDParameterName name of the parameter that supplied the entity's GUID
      * @param classificationOrigin whether the Memento classification is assigned to this entity or propagated
      * @param anchorEntity anchor that the anchored elements must share - null means elements anchored to this entity
+     * @param downstreamOnly collect elements sharing the anchor only where they are at end 2 of a parent-child relationship
      * @param processedGUIDs entities already visited
      * @param archiveTargets list to add the elements to
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -2975,6 +3020,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                        String               entityGUIDParameterName,
                                        ClassificationOrigin classificationOrigin,
                                        EntityDetail         anchorEntity,
+                                       boolean              downstreamOnly,
                                        List<String>         processedGUIDs,
                                        List<ArchiveTarget>  archiveTargets,
                                        boolean              forDuplicateProcessing,
@@ -3014,7 +3060,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             Relationship relationship = iterator.getNext();
             EntityProxy  otherEnd     = repositoryHandler.getOtherEnd(entity.getGUID(), entityTypeName, relationship, 0, methodName);
 
-            if ((otherEnd != null) && (otherEnd.getType() != null) && (! processedGUIDs.contains(otherEnd.getGUID())))
+            /*
+             * The anchor carries its own GUID as its anchorGUID, so it would match below; it is reachable from one
+             * of its members, and is never part of archiving that member.
+             */
+            if ((otherEnd != null) && (otherEnd.getType() != null) && (! processedGUIDs.contains(otherEnd.getGUID()))
+                    && (! anchorToMatch.getGUID().equals(otherEnd.getGUID())))
             {
                 EntityDetail otherEntity = repositoryHandler.getEntityByGUID(userId,
                                                                              otherEnd.getGUID(),
@@ -3027,13 +3078,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
                 AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(otherEntity, methodName);
 
-                if ((anchorIdentifiers != null) && (anchorToMatch.getGUID().equals(anchorIdentifiers.anchorGUID)))
+                if (anchorIdentifiers == null)
+                {
+                    continue;
+                }
+
+                boolean anchoredToCollectedEntity = processedGUIDs.contains(anchorIdentifiers.anchorGUID);
+                boolean sharesAnchor              = anchorToMatch.getGUID().equals(anchorIdentifiers.anchorGUID);
+                boolean isDownstream              = (entity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
+                                                            && (otherEnd.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
+                                                            && (this.isPartOfAnchoredGraph(relationship));
+
+                if (anchoredToCollectedEntity || (sharesAnchor && ((! downstreamOnly) || isDownstream)))
                 {
                     this.collectArchiveTargets(userId,
                                                otherEntity,
                                                anchoredEntityParameterName,
                                                ClassificationOrigin.PROPAGATED,
                                                anchorEntity,
+                                               downstreamOnly,
                                                processedGUIDs,
                                                archiveTargets,
                                                forDuplicateProcessing,
@@ -3049,7 +3112,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
     /**
      * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
-     * been deleted or archived. Note, this method is designed to work only on anchor entities or entities with no anchor.
+     * been deleted or archived.  Archiving an anchor archives its anchored graph; archiving an element that is anchored
+     * to something else archives that element and the elements anchored to the same anchor that lie downstream of it.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -3096,32 +3160,33 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                         methodName);
 
         /*
-         * At this point, archiving is only supported on the anchor entity.  This needs to change (eg to be able to archive schema elements)
-         * by adding logic very similar to the templating logic that makes sure the archive processing travels down the hierarchy and does not
-         * cover the whole anchored entity.
+         * One operation: every Memento it writes and every rename it makes carries the same lastOperationId, which
+         * is how restore finds what this archive changed.
          */
-        invalidParameterHandler.validateAnchorGUID(entityGUID,
-                                                   entityGUIDParameterName,
-                                                   anchorEntity,
-                                                   entityGUID,
-                                                   entityTypeName,
-                                                   methodName);
+        boolean startedOperation = this.startOperation();
 
-        EntityDetail entity = this.archiveBeanInRepository(userId,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
-                                                           entityGUID,
-                                                           entityGUIDParameterName,
-                                                           entityTypeName,
-                                                           ClassificationOrigin.ASSIGNED,
-                                                           entityGUID,
-                                                           classificationProperties,
-                                                           anchorEntity,
-                                                           new ArrayList<>(),
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
+        try
+        {
+            this.archiveBeanInRepository(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         entityGUID,
+                                         entityGUIDParameterName,
+                                         entityTypeName,
+                                         ClassificationOrigin.ASSIGNED,
+                                         entityGUID,
+                                         classificationProperties,
+                                         anchorEntity,
+                                         new ArrayList<>(),
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         methodName);
+        }
+        finally
+        {
+            this.endOperation(startedOperation);
+        }
     }
 
 
@@ -3191,12 +3256,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              * Pass 1: find everything to archive.
              */
             List<ArchiveTarget> archiveTargets = new ArrayList<>();
+            boolean             isAnchored     = (anchorEntity != null) && (! anchorEntity.getGUID().equals(targetEntity.getGUID()));
 
             this.collectArchiveTargets(userId,
                                        targetEntity,
                                        entityGUIDParameterName,
                                        classificationOrigin,
                                        anchorEntity,
+                                       isAnchored,
                                        processedGUIDs,
                                        archiveTargets,
                                        forDuplicateProcessing,
@@ -3206,8 +3273,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             /*
              * Pass 2: archive each element, deepest first.  The element's own type is used rather than the type
              * the caller named, which may be a supertype such as OpenMetadataRoot - otherwise the Referenceable test
-             * fails and the element keeps its qualified name.
+             * fails and the element keeps its qualified name.  Every Referenceable in the tree is renamed, and all
+             * with the same date, so the elements archived together can be recognised as one archive.
              */
+            String archivedSuffix = archivedQualifiedNameMarker + new Date();
+
             for (ArchiveTarget archiveTarget : archiveTargets)
             {
                 EntityDetail archiveEntity      = archiveTarget.entity();
@@ -3231,7 +3301,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                             archiveEntity.getType().getTypeDefGUID(),
                                                             archiveEntityType,
                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                            currentQualifiedName + archivedQualifiedNameMarker + new Date(),
+                                                            currentQualifiedName + archivedSuffix,
                                                             true,
                                                             forDuplicateProcessing,
                                                             effectiveTime,
@@ -3266,10 +3336,33 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Return whether an entity already has the Memento classification.
+     * Return the Memento classification of an entity - present when the entity is archived.
      *
      * @param entity entity to test
-     * @return boolean
+     * @return the classification, or null
+     */
+    private Classification getMementoClassification(EntityDetail entity)
+    {
+        if (entity.getClassifications() != null)
+        {
+            for (Classification classification : entity.getClassifications())
+            {
+                if ((classification != null) && (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getName())))
+                {
+                    return classification;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Does the entity carry the Memento classification?
+     *
+     * @param entity entity to test
+     * @return true if it is archived
      */
     private boolean hasMementoClassification(EntityDetail entity)
     {
@@ -3318,6 +3411,61 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
+        this.deleteIfAppropriatelyAnchoredEntity(anchorEntityGUID,
+                                                 deletedEntityGUIDs,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 potentialAnchoredEntity,
+                                                 false,
+                                                 cascadedDelete,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
+    }
+
+
+    /**
+     * Remove an entity if it is anchored to any of the deleted entities, or if it lies downstream of the entity
+     * being deleted and shares its anchor.
+     * <br><br>
+     * The Anchors classification names the root of the anchored graph, so the descendants of an anchored element
+     * carry the same anchorGUID as its siblings and the anchor itself carries its own GUID.  The anchorGUID alone
+     * can not tell them apart: the direction of the relationship does.  An element at end 2 of a relationship from
+     * the entity being deleted is downstream of it and goes with it, provided it is anchored to the same anchor; an
+     * element at end 1 is upstream and is left alone, as is the anchor wherever it is found.  Only relationships
+     * whose purpose is STRUCTURAL or ATTACHMENT are followed (see isPartOfAnchoredGraph): an element at end 2 of an
+     * assignment, membership, association, peer or lineage relationship is independent of the deleted element.
+     *
+     * @param anchorEntityGUID original entity's anchor
+     * @param deletedEntityGUIDs entities that have been deleted
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param potentialAnchoredEntity entity to validate
+     * @param isDownstream the potential anchored entity is at end 2 of a parent-child relationship with the entity being deleted
+     * @param cascadedDelete     boolean indicating whether the delete request can cascade to dependent elements
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorize to issue this request
+     */
+    private void deleteIfAppropriatelyAnchoredEntity(String       anchorEntityGUID,
+                                                     Set<String>  deletedEntityGUIDs,
+                                                     String       externalSourceGUID,
+                                                     String       externalSourceName,
+                                                     EntityProxy  potentialAnchoredEntity,
+                                                     boolean      isDownstream,
+                                                     boolean      cascadedDelete,
+                                                     boolean      forLineage,
+                                                     boolean      forDuplicateProcessing,
+                                                     Date         effectiveTime,
+                                                     String       methodName) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
         final String guidParameterName = "potentialAnchoredEntity";
 
         /*
@@ -3338,7 +3486,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
 
         /*
-         * Only need to progress if anchor entity exists.
+         * Only need to progress if the linked entity still exists.
          */
         EntityDetail entity = repositoryHandler.getEntityByGUID(localServerUserId,
                                                                 potentialAnchoredEntity.getGUID(),
@@ -3355,10 +3503,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
             {
-                /*
-                 * Only delete if the anchor matches one of the deleted entities.
-                 */
-                if (deletedEntityGUIDs.contains(anchorIdentifiers.anchorGUID))
+                boolean anchoredToDeletedEntity = deletedEntityGUIDs.contains(anchorIdentifiers.anchorGUID);
+                boolean downstreamOfSameAnchor  = (isDownstream)
+                                                    && (anchorIdentifiers.anchorGUID.equals(anchorEntityGUID))
+                                                    && (! entity.getGUID().equals(anchorEntityGUID));
+
+                if (anchoredToDeletedEntity || downstreamOfSameAnchor)
                 {
                     this.deleteAnchoredBeanInRepository(localServerUserId,
                                                         externalSourceGUID,
@@ -3370,7 +3520,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                         cascadedDelete,
                                                         null,
                                                         null,
-                                                        anchorEntityGUID,
+                                                        anchorIdentifiers.anchorGUID,
                                                         deletedEntityGUIDs,
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -3757,21 +3907,664 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          */
         Set<String> deletedEntityGUIDs = new LinkedHashSet<>();
 
-        this.deleteBeanInRepository(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    entityGUID,
-                                    entityGUIDParameterName,
-                                    entityTypeGUID,
-                                    entityTypeName,
-                                    cascadedDelete,
-                                    validatingPropertyName,
-                                    validatingPropertyValue,
-                                    deletedEntityGUIDs,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    effectiveTime,
-                                    methodName);
+        /*
+         * This is one operation, however far it cascades.  Starting it here stamps every instance it soft-deletes
+         * with the same lastOperationId; an operation already running on this thread - one that has cascaded into
+         * this call - keeps its own.
+         */
+        boolean startedOperation = this.startOperation();
+
+        try
+        {
+            this.deleteBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        entityGUID,
+                                        entityGUIDParameterName,
+                                        entityTypeGUID,
+                                        entityTypeName,
+                                        cascadedDelete,
+                                        validatingPropertyName,
+                                        validatingPropertyValue,
+                                        deletedEntityGUIDs,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
+                                        methodName);
+        }
+        finally
+        {
+            this.endOperation(startedOperation);
+        }
+    }
+
+
+    /**
+     * Start an operation on this thread, unless one is already running.  Every instance written until it ends
+     * is stamped with its identifier.
+     *
+     * @return true if this call started the operation, and so must end it
+     */
+    protected boolean startOperation()
+    {
+        return operationId.startOperation();
+    }
+
+
+    /**
+     * End the operation running on this thread if the caller started it.
+     *
+     * @param startedOperation the value returned by {@link #startOperation()}
+     */
+    protected void endOperation(boolean startedOperation)
+    {
+        if (startedOperation)
+        {
+            operationId.endOperation();
+        }
+    }
+
+
+    /**
+     * Reverse the delete or archive of an element.  The element can be any element that the delete or archive
+     * removed - the one it was requested on or one it cascaded to - and everything the same operation removed is
+     * brought back with it, since restoring part of an anchored graph would leave members anchored to an element
+     * that is still gone.
+     * <ul>
+     *     <li>A soft-deleted element's last version was written by the delete that removed it, so it carries that
+     *     delete's lastOperationId.  Every deleted entity carrying the same lastOperationId is restored, and then
+     *     every deleted relationship carrying it whose two ends are both active - those inside the restored graph and
+     *     those to elements outside it that still exist.  An element removed by an earlier, separate delete carries
+     *     a different lastOperationId and stays deleted.  An element deleted before operation ids were recorded is
+     *     restored on its own.</li>
+     *     <li>An archived element carries a Memento classification written by the archive, so the Memento carries
+     *     the archive's lastOperationId.  Every element whose Memento carries it has the classification removed and
+     *     the archive suffix taken off its qualified name.  An archive removes no relationships, so there are none
+     *     to restore.  An archive made before operation ids were recorded is found by walking from the element the
+     *     archive was requested on, which its Memento names.</li>
+     *     <li>A purged element is no longer in the repository and can not be restored.</li>
+     * </ul>
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityGUID unique identifier of the deleted or archived element
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException the element is unknown, or is neither deleted nor archived
+     * @throws PropertyServerException a problem restoring the elements in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    public void restoreBeanInRepository(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  entityGUID,
+                                        String  entityGUIDParameterName,
+                                        boolean forDuplicateProcessing,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
+
+        boolean startedOperation = this.startOperation();
+
+        try
+        {
+            this.restoreBean(userId, externalSourceGUID, externalSourceName, entityGUID, entityGUIDParameterName, forDuplicateProcessing, methodName);
+        }
+        finally
+        {
+            this.endOperation(startedOperation);
+        }
+    }
+
+
+    /**
+     * Restore an element and whatever else the delete or archive that removed it changed.  See restoreBeanInRepository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityGUID unique identifier of the deleted or archived element
+     * @param entityGUIDParameterName name of parameter supplying the GUID
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException the element is unknown, or is neither deleted nor archived
+     * @throws PropertyServerException a problem restoring the elements in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private void restoreBean(String  userId,
+                             String  externalSourceGUID,
+                             String  externalSourceName,
+                             String  entityGUID,
+                             String  entityGUIDParameterName,
+                             boolean forDuplicateProcessing,
+                             String  methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
+    {
+        EntityDetail entity = repositoryHandler.getEntityIncludingDeleted(userId, entityGUID, methodName);
+
+        if (entity == null)
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        entityGUID,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+            return;
+        }
+
+        /*
+         * Restoring an element puts back what a delete removed, so it needs the authority to delete it.
+         */
+        securityVerifier.validateUserForElementDelete(userId, entity, repositoryHelper, serviceName, methodName);
+
+        if (entity.getStatus() == InstanceStatus.DELETED)
+        {
+            this.restoreDeletedBeans(userId, externalSourceGUID, externalSourceName, entity, forDuplicateProcessing, methodName);
+        }
+        else if (this.getMementoClassification(entity) != null)
+        {
+            this.restoreArchivedBeans(userId, externalSourceGUID, externalSourceName, entity, forDuplicateProcessing, methodName);
+        }
+        else
+        {
+            throw new InvalidParameterException(GenericHandlersErrorCode.NOTHING_TO_RESTORE.getMessageDefinition(entity.getType().getTypeDefName(),
+                                                                                                                 entityGUID,
+                                                                                                                 methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                entityGUIDParameterName);
+        }
+    }
+
+
+    /**
+     * Restore everything removed by the soft delete that removed the supplied entity.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param deletedEntity the deleted entity
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException a problem restoring the elements in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private void restoreDeletedBeans(String       userId,
+                                     String       externalSourceGUID,
+                                     String       externalSourceName,
+                                     EntityDetail deletedEntity,
+                                     boolean      forDuplicateProcessing,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        if (deletedEntity.getLastOperationId() == null)
+        {
+            repositoryHandler.restoreEntity(userId, externalSourceGUID, externalSourceName, deletedEntity.getGUID(), methodName);
+
+            return;
+        }
+
+        SearchProperties     operationSearch   = this.getOperationIdSearchProperties(deletedEntity.getLastOperationId());
+        List<InstanceStatus> deletedOnly      = Collections.singletonList(InstanceStatus.DELETED);
+
+        /*
+         * Everything is found before anything is restored.  A restored instance drops out of the search for
+         * deleted instances, so restoring while paging would move the pages underneath the search.
+         */
+        List<String> entityGUIDs = new ArrayList<>();
+        int          startFrom   = 0;
+
+        List<EntityDetail> entities = repositoryHandler.findEntities(userId, null, null, operationSearch, deletedOnly, null, null, null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT, true, forDuplicateProcessing,
+                                                                     startFrom, cascadeTraversalPageSize, null, methodName);
+
+        while ((entities != null) && (! entities.isEmpty()))
+        {
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    entityGUIDs.add(entity.getGUID());
+                }
+            }
+
+            startFrom = startFrom + entities.size();
+            entities  = repositoryHandler.findEntities(userId, null, null, operationSearch, deletedOnly, null, null, null,
+                                                       SequencingOrder.CREATION_DATE_RECENT, true, forDuplicateProcessing,
+                                                       startFrom, cascadeTraversalPageSize, null, methodName);
+        }
+
+        if (! entityGUIDs.contains(deletedEntity.getGUID()))
+        {
+            entityGUIDs.add(deletedEntity.getGUID());
+        }
+
+        for (String guid : entityGUIDs)
+        {
+            repositoryHandler.restoreEntity(userId, externalSourceGUID, externalSourceName, guid, methodName);
+        }
+
+        List<Relationship> deletedRelationships = new ArrayList<>();
+
+        startFrom = 0;
+
+        List<Relationship> relationships = repositoryHandler.findRelationships(userId, null, null, false, null, null, null, null, null,
+                                                                               operationSearch, deletedOnly, null, null,
+                                                                               SequencingOrder.CREATION_DATE_RECENT, forDuplicateProcessing,
+                                                                               startFrom, cascadeTraversalPageSize, null, methodName);
+
+        while ((relationships != null) && (! relationships.isEmpty()))
+        {
+            deletedRelationships.addAll(relationships);
+
+            startFrom     = startFrom + relationships.size();
+            relationships = repositoryHandler.findRelationships(userId, null, null, false, null, null, null, null, null,
+                                                                operationSearch, deletedOnly, null, null,
+                                                                SequencingOrder.CREATION_DATE_RECENT, forDuplicateProcessing,
+                                                                startFrom, cascadeTraversalPageSize, null, methodName);
+        }
+
+        /*
+         * A relationship comes back only if both its ends are active again.  An end outside the restored graph
+         * that has since been deleted by something else keeps the relationship deleted with it.
+         */
+        for (Relationship relationship : deletedRelationships)
+        {
+            if ((relationship != null)
+                    && (this.isActiveEntity(userId, relationship.getEntityOneProxy(), forDuplicateProcessing, methodName))
+                    && (this.isActiveEntity(userId, relationship.getEntityTwoProxy(), forDuplicateProcessing, methodName)))
+            {
+                repositoryHandler.restoreRelationship(userId, externalSourceGUID, externalSourceName, relationship.getGUID(), methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Reverse the archive that archived the supplied entity: remove the Memento classification from every
+     * element the archive classified, and take the archive suffix off their qualified names.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param archivedEntity an archived entity
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException a problem updating the elements in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private void restoreArchivedBeans(String       userId,
+                                      String       externalSourceGUID,
+                                      String       externalSourceName,
+                                      EntityDetail archivedEntity,
+                                      boolean      forDuplicateProcessing,
+                                      String       methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String archiveRootGUIDParameterName = "archiveRootGUID";
+
+        Classification memento = this.getMementoClassification(archivedEntity);
+
+        if (memento.getLastOperationId() != null)
+        {
+            /*
+             * Every Memento the archive wrote carries its lastOperationId.  The search reads with forLineage so
+             * that the archived elements are visible to it.
+             */
+            ClassificationCondition mementoCondition = new ClassificationCondition();
+
+            mementoCondition.setName(OpenMetadataType.MEMENTO_CLASSIFICATION.typeName);
+            mementoCondition.setMatchProperties(this.getOperationIdSearchProperties(memento.getLastOperationId()));
+
+            SearchClassifications archivedByOperation = new SearchClassifications();
+
+            archivedByOperation.setConditions(Collections.singletonList(mementoCondition));
+            archivedByOperation.setMatchCriteria(MatchCriteria.ALL);
+
+            List<EntityDetail> archivedEntities = new ArrayList<>();
+            int                startFrom        = 0;
+
+            List<EntityDetail> entities = repositoryHandler.findEntities(userId, null, null, null, null, archivedByOperation, null, null,
+                                                                         SequencingOrder.CREATION_DATE_RECENT, true, forDuplicateProcessing,
+                                                                         startFrom, cascadeTraversalPageSize, null, methodName);
+
+            while ((entities != null) && (! entities.isEmpty()))
+            {
+                archivedEntities.addAll(entities);
+
+                startFrom = startFrom + entities.size();
+                entities  = repositoryHandler.findEntities(userId, null, null, null, null, archivedByOperation, null, null,
+                                                           SequencingOrder.CREATION_DATE_RECENT, true, forDuplicateProcessing,
+                                                           startFrom, cascadeTraversalPageSize, null, methodName);
+            }
+
+            for (EntityDetail entity : archivedEntities)
+            {
+                if (entity != null)
+                {
+                    this.restoreArchivedBean(userId, externalSourceGUID, externalSourceName, entity, archiveRootGUIDParameterName, forDuplicateProcessing, methodName);
+                }
+            }
+
+            return;
+        }
+
+        /*
+         * An archive made before operation ids were recorded.  The Memento names the element the archive was
+         * requested on; the archive is reversed from there.
+         */
+        String         archiveRootGUID = memento.getClassificationOriginGUID();
+        EntityDetail   archiveRoot     = archivedEntity;
+
+        if ((archiveRootGUID != null) && (! archiveRootGUID.equals(archivedEntity.getGUID())))
+        {
+            archiveRoot = repositoryHandler.getEntityByGUID(userId,
+                                                            archiveRootGUID,
+                                                            archiveRootGUIDParameterName,
+                                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                            true,
+                                                            forDuplicateProcessing,
+                                                            null,
+                                                            methodName);
+        }
+
+        /*
+         * The archive took the root and the elements the archive walk reaches from it; the same walk finds them
+         * again.  Only those carrying a Memento from this archive are restored - an element archived separately
+         * keeps its own.
+         */
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(archiveRoot, methodName);
+        EntityDetail      anchorEntity      = archiveRoot;
+        boolean           isAnchored        = (anchorIdentifiers != null)
+                                                      && (anchorIdentifiers.anchorGUID != null)
+                                                      && (! anchorIdentifiers.anchorGUID.equals(archiveRoot.getGUID()));
+
+        if (isAnchored)
+        {
+            anchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                             anchorIdentifiers.anchorGUID,
+                                                             archiveRootGUIDParameterName,
+                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                             true,
+                                                             forDuplicateProcessing,
+                                                             null,
+                                                             methodName);
+        }
+
+        List<ArchiveTarget> archiveTargets = new ArrayList<>();
+
+        this.collectArchiveTargets(userId,
+                                   archiveRoot,
+                                   archiveRootGUIDParameterName,
+                                   ClassificationOrigin.ASSIGNED,
+                                   anchorEntity,
+                                   isAnchored,
+                                   new ArrayList<>(),
+                                   archiveTargets,
+                                   forDuplicateProcessing,
+                                   null,
+                                   methodName);
+
+        for (ArchiveTarget archiveTarget : archiveTargets)
+        {
+            EntityDetail   entity         = archiveTarget.entity();
+            Classification entityMemento  = this.getMementoClassification(entity);
+
+            if ((entityMemento != null)
+                    && ((entityMemento.getClassificationOriginGUID() == null) || (entityMemento.getClassificationOriginGUID().equals(archiveRoot.getGUID()))))
+            {
+                this.restoreArchivedBean(userId, externalSourceGUID, externalSourceName, entity, archiveTarget.guidParameterName(), forDuplicateProcessing, methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Restore one archived entity: remove its Memento classification and take the archive suffix off its
+     * qualified name.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entity the archived entity
+     * @param entityGUIDParameterName name of the parameter supplying its GUID
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException problem with the parameters
+     * @throws PropertyServerException a problem updating the entity in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    private void restoreArchivedBean(String       userId,
+                                     String       externalSourceGUID,
+                                     String       externalSourceName,
+                                     EntityDetail entity,
+                                     String       entityGUIDParameterName,
+                                     boolean      forDuplicateProcessing,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        Classification entityMemento = this.getMementoClassification(entity);
+
+        if (entityMemento != null)
+        {
+            repositoryHandler.declassifyEntity(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               entity.getGUID(),
+                                               entity,
+                                               entityGUIDParameterName,
+                                               entity.getType().getTypeDefName(),
+                                               OpenMetadataType.MEMENTO_CLASSIFICATION.typeGUID,
+                                               OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
+                                               entityMemento,
+                                               true,
+                                               forDuplicateProcessing,
+                                               null,
+                                               methodName);
+
+            String qualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                      entity.getProperties(),
+                                                                      methodName);
+
+            if ((qualifiedName != null) && (qualifiedName.contains(archivedQualifiedNameMarker)))
+            {
+                this.updateBeanPropertyInRepository(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    entity.getGUID(),
+                                                    entityGUIDParameterName,
+                                                    entity.getType().getTypeDefGUID(),
+                                                    entity.getType().getTypeDefName(),
+                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                    qualifiedName.substring(0, qualifiedName.lastIndexOf(archivedQualifiedNameMarker)),
+                                                    true,
+                                                    forDuplicateProcessing,
+                                                    null,
+                                                    methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Restore a soft-deleted relationship on its own.  Both its ends must be active.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param relationshipGUID unique identifier of the deleted relationship
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @throws InvalidParameterException the relationship is unknown, is not deleted, or an end is not active
+     * @throws PropertyServerException a problem restoring the relationship in the repositories
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    public void restoreRelationshipInRepository(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  relationshipGUID,
+                                                String  relationshipGUIDParameterName,
+                                                boolean forDuplicateProcessing,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipIncludingDeleted(userId, relationshipGUID, methodName);
+
+        if (relationship == null)
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        relationshipGUID,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+            return;
+        }
+
+        if (relationship.getStatus() != InstanceStatus.DELETED)
+        {
+            throw new InvalidParameterException(GenericHandlersErrorCode.NOTHING_TO_RESTORE.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                 relationshipGUID,
+                                                                                                                 methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                relationshipGUIDParameterName);
+        }
+
+        /*
+         * The ends are read as ordinary, active elements: a relationship to an element that is itself deleted can
+         * not come back on its own, and the read refuses.
+         */
+        this.validateRelationshipChange(userId, relationship, false, true, forDuplicateProcessing, null, methodName);
+
+        repositoryHandler.restoreRelationship(userId, externalSourceGUID, externalSourceName, relationshipGUID, methodName);
+    }
+
+
+    /**
+     * Undo the last update to a relationship, restoring its previous properties.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param relationshipGUID unique identifier of the relationship
+     * @param relationshipGUIDParameterName name of parameter supplying the GUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return the relationship after the undo
+     * @throws InvalidParameterException the relationship is unknown
+     * @throws PropertyServerException a problem in the repositories, including a relationship with no previous version
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    public Relationship undoRelationshipUpdateInRepository(String  userId,
+                                                           String  externalSourceGUID,
+                                                           String  externalSourceName,
+                                                           String  relationshipGUID,
+                                                           String  relationshipGUIDParameterName,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            null,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        this.validateRelationshipChange(userId, relationship, false, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
+        return repositoryHandler.undoRelationshipUpdate(userId, externalSourceGUID, externalSourceName, relationshipGUID, methodName);
+    }
+
+
+    /**
+     * Search properties matching the instances written by one operation.
+     *
+     * @param operationIdValue the operation's identifier
+     * @return search properties
+     */
+    private SearchProperties getOperationIdSearchProperties(String operationIdValue)
+    {
+        PrimitivePropertyValue operationIdPropertyValue = new PrimitivePropertyValue();
+
+        operationIdPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        operationIdPropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+        operationIdPropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        operationIdPropertyValue.setPrimitiveValue(operationIdValue);
+
+        PropertyCondition operationIdCondition = new PropertyCondition();
+
+        operationIdCondition.setProperty(OpenMetadataProperty.LAST_OPERATION_ID.name);
+        operationIdCondition.setOperator(PropertyComparisonOperator.EQ);
+        operationIdCondition.setValue(operationIdPropertyValue);
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(Collections.singletonList(operationIdCondition));
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        return searchProperties;
+    }
+
+
+    /**
+     * Is the entity at one end of a relationship active?
+     *
+     * @param userId calling user
+     * @param entityProxy the end
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param methodName calling method
+     * @return true if an ordinary read returns it
+     */
+    private boolean isActiveEntity(String      userId,
+                                   EntityProxy entityProxy,
+                                   boolean     forDuplicateProcessing,
+                                   String      methodName)
+    {
+        final String entityGUIDParameterName = "relationshipEnd.getGUID()";
+
+        try
+        {
+            return repositoryHandler.getEntityByGUID(userId,
+                                                     entityProxy.getGUID(),
+                                                     entityGUIDParameterName,
+                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                     true,
+                                                     forDuplicateProcessing,
+                                                     null,
+                                                     methodName) != null;
+        }
+        catch (Exception notActive)
+        {
+            return false;
+        }
     }
 
 
@@ -3880,7 +4673,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              * discovering them by descending through the relationships.  See deleteAnchoredMembersByQuery for
              * why that matters and for what happens on a repository that cannot answer the query: it returns
              * false, and the traversal below finds the members exactly as it always did.
+             *
+             * The checks that may refuse this delete are made first.  deleteAnchoredBeanInRepository makes them
+             * too, but only once the members are gone: by then a database schema with tables has been emptied
+             * and passes the check that it is empty, so a delete that should have been refused goes through.
              */
+            securityVerifier.validateUserForElementDelete(userId,
+                                                          entity,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          methodName);
+
+            if (! cascadedDelete)
+            {
+                this.validateCascadedDelete(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            entity,
+                                            false,
+                                            deletedEntityGUIDs,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime);
+            }
+
             this.deleteAnchoredMembersByQuery(userId,
                                               externalSourceGUID,
                                               externalSourceName,
@@ -4387,15 +5203,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             /*
              * Ascertain if the entity at the other end of the relationship should be deleted
              */
+            EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(),
+                                                                 entityTypeName,
+                                                                 relationship,
+                                                                 0,
+                                                                 methodName);
+
             this.deleteIfAppropriatelyAnchoredEntity(anchorEntityGUID,
                                                      deletedEntityGUIDs,
                                                      externalSourceGUID,
                                                      externalSourceName,
-                                                     repositoryHandler.getOtherEnd(startingEntity.getGUID(),
-                                                                                   entityTypeName,
-                                                                                   relationship,
-                                                                                   0,
-                                                                                   methodName),
+                                                     otherEnd,
+                                                     (startingEntity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
+                                                             && (otherEnd.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
+                                                             && (this.isPartOfAnchoredGraph(relationship)),
                                                      cascadedDelete,
                                                      forLineage,
                                                      forDuplicateProcessing,
@@ -5219,10 +6040,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 final String elementGUIDParameterName = "asset.getGUID()";
 
+                /*
+                 * The deployed element is at end 1 of DeployedOn; end 2 is the infrastructure being deleted, and
+                 * deleting it again from here recursed until the stack ran out.
+                 */
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
-                                            relationship.getEntityTwoProxy().getGUID(),
+                                            relationship.getEntityOneProxy().getGUID(),
                                             elementGUIDParameterName,
                                             OpenMetadataType.ASSET.typeGUID,
                                             OpenMetadataType.ASSET.typeName,

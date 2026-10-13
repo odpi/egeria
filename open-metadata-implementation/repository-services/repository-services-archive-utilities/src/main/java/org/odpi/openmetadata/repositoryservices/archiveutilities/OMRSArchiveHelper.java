@@ -1321,13 +1321,20 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                                    TypeDefLink                   superType,
                                                    ClassificationPropagationRule propagationRule)
     {
-        return this.getBasicRelationshipDef(type.typeGUID,
-                                            type.typeName,
-                                            superType,
-                                            type.description,
-                                            type.descriptionGUID,
-                                            type.wikiURL,
-                                            propagationRule);
+        RelationshipDef relationshipDef = this.getBasicRelationshipDef(type.typeGUID,
+                                                                       type.typeName,
+                                                                       superType,
+                                                                       type.description,
+                                                                       type.descriptionGUID,
+                                                                       type.wikiURL,
+                                                                       propagationRule);
+
+        if (type.relationshipPurpose != null)
+        {
+            relationshipDef.setRelationshipPurpose(type.relationshipPurpose.name());
+        }
+
+        return relationshipDef;
     }
 
 

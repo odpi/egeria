@@ -15,7 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * RelationshipDef describes the type of a relationship.  A relationships links two entities together.
  * The RelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
- * defines if this relationship allows classifications to propagate through it.
+ * defines if this relationship allows classifications to propagate through it.  The relationship purpose
+ * is informational for the repository; it describes why the relationship type exists so that higher
+ * layers can decide how to navigate through it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,6 +28,7 @@ public class RelationshipDef extends TypeDef
     private RelationshipEndDef            endDef1                  = null;
     private RelationshipEndDef            endDef2                  = null;
     private boolean                       multiLink                = false;
+    private String                        relationshipPurpose      = null;
 
 
     /**
@@ -71,6 +74,7 @@ public class RelationshipDef extends TypeDef
             this.endDef1 = templateTypeDef.getEndDef1();
             this.endDef2 = templateTypeDef.getEndDef2();
             this.multiLink = templateTypeDef.getMultiLink();
+            this.relationshipPurpose = templateTypeDef.getRelationshipPurpose();
         }
     }
 
@@ -180,6 +184,29 @@ public class RelationshipDef extends TypeDef
 
 
     /**
+     * Return the purpose of the relationship type.  This is informational for the repository.
+     * Open metadata uses the names from the OpenMetadataRelationshipPurpose enum.
+     *
+     * @return string name of the purpose
+     */
+    public String getRelationshipPurpose()
+    {
+        return relationshipPurpose;
+    }
+
+
+    /**
+     * Set up the purpose of the relationship type.  This is informational for the repository.
+     *
+     * @param relationshipPurpose string name of the purpose
+     */
+    public void setRelationshipPurpose(String relationshipPurpose)
+    {
+        this.relationshipPurpose = relationshipPurpose;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -192,6 +219,7 @@ public class RelationshipDef extends TypeDef
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
                 ", multiLink=" + multiLink +
+                ", relationshipPurpose='" + relationshipPurpose + '\'' +
                 "} " + super.toString();
     }
 
@@ -221,7 +249,8 @@ public class RelationshipDef extends TypeDef
         return multiLink == that.multiLink &&
                        propagationRule == that.propagationRule &&
                        Objects.equals(endDef1, that.endDef1) &&
-                       Objects.equals(endDef2, that.endDef2);
+                       Objects.equals(endDef2, that.endDef2) &&
+                       Objects.equals(relationshipPurpose, that.relationshipPurpose);
     }
 
 
@@ -233,6 +262,6 @@ public class RelationshipDef extends TypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, multiLink);
+        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, multiLink, relationshipPurpose);
     }
 }
