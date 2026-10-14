@@ -60,6 +60,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExceptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -67,6 +68,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl;
 import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
@@ -182,6 +184,10 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                      softwareServerPlatformProperties.getQualifiedName(),
                                      platformProperties.getPlatformSecurityConnection(),
                                      omagServerPlatformConnector);
+
+                        checkGovernanceZones(platformElement,
+                                             softwareServerPlatformProperties.getQualifiedName(),
+                                             omagServerPlatformConnector);
                     }
 
                     /*
@@ -752,6 +758,78 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                          ExceptionTypeDefinition.CLEAR_TEXT_PASSWORD,
                                          null,
                                          outstandingExceptions);
+        }
+    }
+
+
+    /**
+     * Check that each governance zone defined in open metadata has a security access control in the platform's
+     * user directory.  A zone without one locks every user out of the elements that are only in that zone, so an
+     * exception is raised on the zone's element.  The exception is removed once the control has been defined.
+     *
+     * @param platformElement current platform element
+     * @param platformQualifiedName unique name of the platform
+     * @param omagServerPlatformConnector connector to the platform
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException property server exception
+     * @throws UserNotAuthorizedException user not authorized exception
+     */
+    private void checkGovernanceZones(OpenMetadataRootElement     platformElement,
+                                      String                      platformQualifiedName,
+                                      OMAGServerPlatformConnector omagServerPlatformConnector) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        OpenMetadataStore          openMetadataStore          = integrationContext.getOpenMetadataStore();
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ZONE.typeName);
+        SearchOptions              searchOptions              = governanceDefinitionClient.getSearchOptions(0, integrationContext.getMaxPageSize());
+        List<OpenMetadataRootElement> zoneElements = governanceDefinitionClient.findGovernanceDefinitions(null, searchOptions);
+
+        while (zoneElements != null)
+        {
+            for (OpenMetadataRootElement zoneElement : zoneElements)
+            {
+                if ((zoneElement != null) &&
+                        (zoneElement.getProperties() instanceof GovernanceZoneProperties governanceZoneProperties) &&
+                        (governanceZoneProperties.getIdentifier() != null))
+                {
+                    /*
+                     * The zone's identifier is the name used in the ZoneMembership classification, and so it is
+                     * also the name of its security access control.
+                     */
+                    String zoneName = governanceZoneProperties.getIdentifier();
+
+                    List<String> outstandingExceptions = new ArrayList<>();
+
+                    OpenMetadataSecurityAccessControl accessControl = omagServerPlatformConnector.getSecurityAccessControl(zoneName);
+
+                    if ((accessControl == null) ||
+                            (accessControl.getAssociatedSecurityList() == null) ||
+                            (accessControl.getAssociatedSecurityList().isEmpty()))
+                    {
+                        outstandingExceptions.add(this.raiseException(openMetadataStore,
+                                                                      zoneElement.getExceptions(),
+                                                                      ExceptionTypeDefinition.MISSING_ZONE_ACCESS_CONTROL,
+                                                                      zoneElement.getElementHeader().getGUID(),
+                                                                      platformQualifiedName,
+                                                                      platformElement.getElementHeader().getGUID(),
+                                                                      "No security access control found for governance zone " + zoneName + " in OMAG server platform " + platformQualifiedName + ", so no user can access the elements that are only in this zone."));
+                    }
+
+                    /*
+                     * An exception raised by this platform on an earlier refresh means the access control has since
+                     * been defined.  The exceptions raised by the other platforms that this connector catalogues
+                     * are left alone.
+                     */
+                    this.clearResolvedExceptions(openMetadataStore,
+                                                 zoneElement.getExceptions(),
+                                                 ExceptionTypeDefinition.MISSING_ZONE_ACCESS_CONTROL,
+                                                 platformElement.getElementHeader().getGUID(),
+                                                 outstandingExceptions);
+                }
+            }
+
+            searchOptions.setStartFrom(searchOptions.getStartFrom() + integrationContext.getMaxPageSize());
+
+            zoneElements = governanceDefinitionClient.findGovernanceDefinitions(null, searchOptions);
         }
     }
 

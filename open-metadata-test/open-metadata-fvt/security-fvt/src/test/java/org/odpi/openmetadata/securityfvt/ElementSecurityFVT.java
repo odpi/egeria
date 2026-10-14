@@ -54,8 +54,8 @@ import static org.odpi.openmetadata.securityfvt.SecurityFvtTestSupport.zonesOf;
  * <br><br>
  * The rules the connector applies, and which test shows each:
  * <ul>
- *     <li>an element with no zones, or whose zones have no access control, is open to every admitted
- *     user;</li>
+ *     <li>an element with no zones is open to every admitted user;</li>
+ *     <li>a zone with no access control permits no-one;</li>
  *     <li>where a zone has a control, the list for the operation applies, and the DEFAULT list applies to
  *     every operation that has no list of its own;</li>
  *     <li>a user is on a list by role, by group, by account type through the dynamic groups, by owning
@@ -240,20 +240,42 @@ public class ElementSecurityFVT
 
 
     /**
-     * A zone that has no access control defined does not restrict anything.
+     * A zone that has no access control defined locks everyone out - even the stewards, who may do
+     * anything in every zone that is defined.
      *
      * @throws Exception unexpected failure in the test
      */
     @Test
-    void aZoneWithoutAnAccessControlIsOpen() throws Exception
+    void aZoneWithoutAnAccessControlPermitsNoOne() throws Exception
     {
-        CreatedElement element = create(stewardClient, STEWARD_USER_ID, "unlisted-zone", List.of(UNLISTED_ZONE), null);
+        assertRefused(UNAUTHORIZED_INSTANCE_CREATE,
+                      STEWARD_USER_ID,
+                      () -> create(stewardClient, STEWARD_USER_ID, "unlisted-by-steward", List.of(UNLISTED_ZONE), null),
+                      "Creating an element in the zone with no access control as the steward");
+        assertRefused(UNAUTHORIZED_INSTANCE_CREATE,
+                      EMPLOYEE_USER_ID,
+                      () -> create(employeeClient, EMPLOYEE_USER_ID, "unlisted-by-employee", List.of(UNLISTED_ZONE), null),
+                      "Creating an element in the zone with no access control as the employee");
+    }
 
-        assertEquals(List.of(UNLISTED_ZONE), zonesOf(getElement(stewardClient, STEWARD_USER_ID, element.guid())),
-                     "The element should carry the zone it was created in");
 
-        assertVisibleTo(employeeClient, EMPLOYEE_USER_ID, element, "its zone has no access control");
-        assertVisibleTo(digitalClient, DIGITAL_USER_ID, element, "its zone has no access control");
+    /**
+     * A zone with no access control does not hide an element that another of its zones permits.
+     *
+     * @throws Exception unexpected failure in the test
+     */
+    @Test
+    void aZoneWithoutAnAccessControlDoesNotOverrideTheElementsOtherZones() throws Exception
+    {
+        CreatedElement element = create(stewardClient, STEWARD_USER_ID, "unlisted-and-open", List.of(UNLISTED_ZONE, OPEN_ZONE), null);
+
+        List<String> zones = zonesOf(getElement(stewardClient, STEWARD_USER_ID, element.guid()));
+
+        assertTrue((zones != null) && (zones.size() == 2) && zones.containsAll(List.of(UNLISTED_ZONE, OPEN_ZONE)),
+                   "The element should carry the zones it was created in: " + zones);
+
+        assertVisibleTo(employeeClient, EMPLOYEE_USER_ID, element, "the open zone permits READ even though the unlisted zone permits no-one");
+        assertVisibleTo(digitalClient, DIGITAL_USER_ID, element, "the open zone permits READ even though the unlisted zone permits no-one");
     }
 
 
