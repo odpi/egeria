@@ -41,5 +41,11 @@ public class OSSUnityCatalogServerSurveyProvider extends SurveyActionServiceProv
                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
                 AnalysisStep.PRODUCE_INVENTORY});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getServerAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
     }
 }

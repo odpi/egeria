@@ -27,6 +27,15 @@ public class SequentialSurveyPipeline extends SurveyActionPipelineConnector
                 embeddedSurveyService.setSurveyContext(super.surveyContext);
                 embeddedSurveyService.start();
                 embeddedSurveyService.disconnect();
+
+                /*
+                 * The embedded services share the survey context, and so the finalAnalysisStep request parameter.
+                 * Once one of them completes the final analysis step, the rest of the pipeline is not run.
+                 */
+                if (embeddedSurveyService.hasReachedFinalAnalysisStep())
+                {
+                    break;
+                }
             }
         }
     }

@@ -181,6 +181,11 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             connector = super.performCheckAssetAnalysisStep(CSVFileStoreConnector.class,
                                                             OpenMetadataType.CSV_FILE.typeName);
 
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
             OpenMetadataRootElement          assetElement   = assetStore.getAssetProperties();
             CSVFileStoreConnector assetConnector = (CSVFileStoreConnector)connector;
             long                  recordCount    = assetConnector.getRecordCount();
@@ -200,6 +205,13 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                 annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
             }
 
+            /*
+             * Stopping here records the file measurements without examining the file's contents.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             /*
              * If a schema type is attached, it must be of the correct type so that information from the asset can
@@ -252,6 +264,15 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             schemaAnnotation.setAdditionalProperties(additionalProperties);
 
             annotationStore.addAnnotation(schemaAnnotation, schemaTypeGUID);
+
+            /*
+             * Stopping here records the columns found in the file.  The schema attributes are only created
+             * (or matched) when the data is profiled since their data types come from the values in each column.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
 

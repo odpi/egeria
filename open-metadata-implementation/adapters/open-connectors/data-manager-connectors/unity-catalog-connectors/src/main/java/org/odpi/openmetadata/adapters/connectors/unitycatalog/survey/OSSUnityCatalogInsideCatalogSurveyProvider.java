@@ -39,7 +39,16 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
         super.supportedActionTargetTypes = UnityCatalogTarget.getCatalogActionTargetTypes();
         super.supportedRequestParameters = UnityCatalogSurveyRequestParameter.getInsideCatalogSurveyRequestParameterTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_INVENTORY});
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getCatalogAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
     }
 }

@@ -42,6 +42,12 @@ public class FileSurveyService extends SurveyActionServiceConnector
              * the cast will fail.
              */
             connector = performCheckAssetAnalysisStep(BasicFileStore.class, OpenMetadataType.DATA_FILE.typeName);
+
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
             BasicFileStore assetConnector = (BasicFileStore)connector;
 
             File file = assetConnector.getFile();

@@ -28,6 +28,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RequestParameterType extends SpecificationProperty
 {
     /**
+     * Name of the entry in otherPropertyValues that lists the values a request parameter accepts, separated by
+     * commas.  It is set when only certain values are meaningful to the service.
+     */
+    public static final String VALID_VALUES = "validValues";
+
+    /**
      * The type name of the value for this parameter.
      */
     private String dataType = null;

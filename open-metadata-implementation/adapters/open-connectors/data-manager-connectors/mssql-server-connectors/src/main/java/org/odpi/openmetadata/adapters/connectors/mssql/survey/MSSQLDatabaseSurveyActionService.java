@@ -50,8 +50,10 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
             assetConnector.start();
 
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             String databaseName = assetConnector.getDatabaseName();
 
@@ -76,15 +78,50 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
                 MSSQLDatabaseStatsExtractor statsExtractor = new MSSQLDatabaseStatsExtractor(validDatabases,
                                                                                              excludedSchemas,
                                                                                              includedSchemas,
-                                                                                             this);
+                                                                                             this,
+                                                                                             auditLog,
+                                                                                             surveyActionServiceName);
 
-                statsExtractor.getDatabaseStatistics(jdbcConnection);
+                boolean    surveyStopped;
+                DataSource jdbcDataSource = assetConnector.getDataSource();
+                try (Connection jdbcConnection = jdbcDataSource.getConnection())
+                {
+                    /*
+                     * The survey only reads, so each query can be its own short transaction rather than one
+                     * transaction lasting the whole survey.  The pool restores auto-commit to off when the
+                     * connection is returned.
+                     */
+                    jdbcConnection.setAutoCommit(true);
 
-                annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+                    statsExtractor.getDatabaseStatistics(jdbcConnection);
 
-                statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
+                    /*
+                     * Stopping after measuring the database records its statistics without surveying its schemas.
+                     */
+                    surveyStopped = super.isFinalAnalysisStep();
 
-                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
+                    if (! surveyStopped)
+                    {
+                        annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+
+                        statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
+                    }
+                }
+
+                /*
+                 * The connection is released before the annotations are stored.
+                 */
+                List<AnnotationProperties> annotations;
+
+                if (surveyStopped)
+                {
+                    annotations = statsExtractor.getDatabaseAnnotations();
+                }
+                else
+                {
+                    annotations = statsExtractor.getAnnotations(databaseName);
+                }
+
                 if (annotations != null)
                 {
                     for (AnnotationProperties annotation : annotations)
@@ -96,8 +133,6 @@ public class MSSQLDatabaseSurveyActionService extends SurveyActionServiceConnect
                     }
                 }
             }
-
-            jdbcConnection.commit();
         }
         catch (ConnectorCheckedException error)
         {

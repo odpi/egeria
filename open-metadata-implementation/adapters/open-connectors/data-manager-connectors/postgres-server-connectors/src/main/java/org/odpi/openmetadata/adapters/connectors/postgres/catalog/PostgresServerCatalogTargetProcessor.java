@@ -36,6 +36,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -294,17 +295,19 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
             templates = configuredTemplates;
         }
 
-        try
+        /*
+         * The list of databases is read first, and the connection released, so that no database transaction
+         * is held open while the databases are catalogued.
+         */
+        List<String> databaseNames = new ArrayList<>();
+
+        final String sqlCommand1 = "SELECT datname, datistemplate, datallowconn from pg_database;";
+
+        DataSource jdbcDataSource = assetConnector.getDataSource();
+        try (Connection        jdbcConnection    = jdbcDataSource.getConnection();
+             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            final String sqlCommand1 = "SELECT datname, datistemplate, datallowconn from pg_database;";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 /*
@@ -317,22 +320,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
                     if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
                     {
-                        catalogDatabase(databaseName,
-                                        databaseServerGUID,
-                                        databaseManager,
-                                        templates,
-                                        configurationProperties);
+                        databaseNames.add(databaseName);
                     }
                 }
             }
 
-            resultSet.close();
-            preparedStatement.close();
             jdbcConnection.commit();
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
         }
         catch (Exception exception)
         {
@@ -342,6 +335,34 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                               methodName,
                                                                                               exception.getMessage()),
                                   exception);
+        }
+
+        /*
+         * A failure to catalog one database does not stop the others from being catalogued.
+         */
+        for (String databaseName : databaseNames)
+        {
+            try
+            {
+                catalogDatabase(databaseName,
+                                databaseServerGUID,
+                                databaseManager,
+                                templates,
+                                configurationProperties);
+            }
+            catch (ConnectorCheckedException exception)
+            {
+                throw exception;
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(methodName,
+                                      PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  exception.getClass().getName(),
+                                                                                                  methodName,
+                                                                                                  exception.getMessage()),
+                                      exception);
+            }
         }
     }
 
@@ -378,7 +399,7 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                     CapabilityAssetUseType.getOpenTypeName(),
                                                                                     CapabilityAssetUseType.OWNS.name());
 
-        String databaseTemplateGUID = templates.get(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID());
+        String databaseTemplateGUID = templates.get(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateName());
 
         if (databaseTemplateGUID == null)
         {

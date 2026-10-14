@@ -7,7 +7,15 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ColumnInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.FunctionInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.RegisteredModelInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -15,14 +23,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileLogAnnotationProperties;
 
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Common functions for the OSS Unity Catalog survey action services.
+ * <br><br>
+ * The surveys retrieve their information through the Unity Catalog REST API, one list call per type of resource
+ * in each schema.  Each call is made independently: if one fails (for example, because the survey's userId may
+ * not read a schema, or the element was deleted while the survey was running), the failure is logged and the
+ * survey continues, so that one inaccessible element leaves a gap in the results rather than ending the survey.
+ */
 public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnector
 {
     private static final String fullNameProperty                   = "Full Name";
@@ -32,47 +46,6 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
     private static final String lastUpdateProperty                 = "Last Update Date";
     private static final String lastUpdatedByProperty              = "Last Updated By";
     private static final String deployedImplementationTypeProperty = "Deployed Implementation Type";
-
-
-    /**
-     * This is the point after which the processing stops.  The default is PRODUCE_INVENTORY - which
-     * is the last analysis step.  It can be changed through configuration properties or
-     * request parameters passed when this survey action service is called.
-     */
-    protected String finalAnalysisStep = AnalysisStep.PRODUCE_INVENTORY.getName();
-
-
-    /**
-     * Retrieve any configured final analysis step
-     *
-     * @throws ConnectorCheckedException problem with context
-     * @throws UserNotAuthorizedException connector is disconnected
-     */
-    protected void setFinalAnalysisStep() throws ConnectorCheckedException,
-                                                 UserNotAuthorizedException
-    {
-        if (connectionBean.getConfigurationProperties() != null)
-        {
-            Object finalAnalysisStepPropertyObject = connectionBean.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
-
-            if (finalAnalysisStepPropertyObject != null)
-            {
-                finalAnalysisStep = finalAnalysisStepPropertyObject.toString();
-            }
-
-            /*
-             * The finalAnalysisStep property in requestParameters takes precedent over the value in the
-             * configuration properties.
-             */
-            if (surveyContext.getRequestParameters() != null)
-            {
-                if (surveyContext.getRequestParameters().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName()) != null)
-                {
-                    finalAnalysisStep = surveyContext.getRequestParameters().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
-                }
-            }
-        }
-    }
 
 
     /**
@@ -204,6 +177,169 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
 
     /**
+     * Build the inventory properties for a Unity Catalog element.
+     *
+     * @param element element retrieved from Unity Catalog
+     * @return inventory properties
+     */
+    protected ResourceProperties getResourceProperties(ElementBase element)
+    {
+        ResourceProperties resourceProperties = new ResourceProperties();
+
+        resourceProperties.description  = element.getComment();
+        resourceProperties.creationDate = new Date(element.getCreated_at());
+        resourceProperties.createdBy    = element.getCreated_by();
+        if (element.getUpdated_at() != 0L)
+        {
+            resourceProperties.lastUpdateDate = new Date(element.getUpdated_at());
+        }
+        resourceProperties.lastUpdatedBy = element.getUpdated_by();
+        resourceProperties.owner         = element.getOwner();
+
+        return resourceProperties;
+    }
+
+
+    /**
+     * Gather the volumes, tables (with their columns), registered models and functions in a schema.  Each type
+     * of resource is retrieved with its own call to Unity Catalog; a call that fails is logged and the others
+     * still contribute their results.
+     *
+     * @param ucConnector    connector to Unity Catalog
+     * @param catalogName    name of the catalog that owns the schema
+     * @param schemaName     name of the schema
+     * @param schemaContents accumulating results
+     */
+    protected void surveySchemaContents(OSSUnityCatalogResourceConnector ucConnector,
+                                        String                           catalogName,
+                                        String                           schemaName,
+                                        SchemaContents                   schemaContents)
+    {
+        final String schemaDescription = "schema " + catalogName + "." + schemaName;
+
+        try
+        {
+            List<VolumeInfo> volumeInfos = ucConnector.listVolumes(catalogName, schemaName);
+
+            if (volumeInfos != null)
+            {
+                for (VolumeInfo volumeInfo : volumeInfos)
+                {
+                    if (volumeInfo != null)
+                    {
+                        schemaContents.volumeList.put(volumeInfo.getFull_name(), this.getResourceProperties(volumeInfo));
+                        schemaContents.volumeCount ++;
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            this.logRetrievalFailure("volumes", schemaDescription, error);
+        }
+
+        try
+        {
+            List<TableInfo> tableInfos = ucConnector.listTables(catalogName, schemaName);
+
+            if (tableInfos != null)
+            {
+                for (TableInfo tableInfo : tableInfos)
+                {
+                    if (tableInfo != null)
+                    {
+                        String             tableName          = tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName();
+                        ResourceProperties resourceProperties = this.getResourceProperties(tableInfo);
+
+                        schemaContents.tableList.put(tableName, resourceProperties);
+                        schemaContents.tableCount ++;
+
+                        if (tableInfo.getColumns() != null)
+                        {
+                            for (ColumnInfo columnInfo : tableInfo.getColumns())
+                            {
+                                ResourceProperties columnResourceProperties = new ResourceProperties(resourceProperties);
+
+                                columnResourceProperties.description = columnInfo.getComment();
+                                schemaContents.columnList.put(tableName + "." + columnInfo.getName(), columnResourceProperties);
+                                schemaContents.columnCount ++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            this.logRetrievalFailure("tables", schemaDescription, error);
+        }
+
+        try
+        {
+            List<RegisteredModelInfo> registeredModelInfos = ucConnector.listRegisteredModels(catalogName, schemaName);
+
+            if (registeredModelInfos != null)
+            {
+                for (RegisteredModelInfo registeredModelInfo : registeredModelInfos)
+                {
+                    if (registeredModelInfo != null)
+                    {
+                        schemaContents.modelList.put(registeredModelInfo.getFull_name(), this.getResourceProperties(registeredModelInfo));
+                        schemaContents.modelCount ++;
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            this.logRetrievalFailure("registered models", schemaDescription, error);
+        }
+
+        try
+        {
+            List<FunctionInfo> functionInfos = ucConnector.listFunctions(catalogName, schemaName);
+
+            if (functionInfos != null)
+            {
+                for (FunctionInfo functionInfo : functionInfos)
+                {
+                    if (functionInfo != null)
+                    {
+                        schemaContents.functionList.put(functionInfo.getFull_name(), this.getResourceProperties(functionInfo));
+                        schemaContents.functionCount ++;
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            this.logRetrievalFailure("functions", schemaDescription, error);
+        }
+    }
+
+
+    /**
+     * Record that a call to Unity Catalog failed.  The survey carries on without its results.
+     *
+     * @param informationSought description of the information the call was retrieving
+     * @param elementName       description of the element the call was about
+     * @param error             the failure
+     */
+    protected void logRetrievalFailure(String    informationSought,
+                                       String    elementName,
+                                       Exception error)
+    {
+        final String methodName = "logRetrievalFailure";
+
+        logRecord(methodName, UCAuditCode.SURVEY_RETRIEVAL_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                                       informationSought,
+                                                                                       elementName,
+                                                                                       error.getClass().getName(),
+                                                                                       error.getMessage()));
+    }
+
+
+    /**
      * Add an inventory annotation to the survey report.
      *
      * @param inventoryName name of the inventory
@@ -304,6 +440,32 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
                     }
                 }
             }
+        }
+    }
+
+
+    /**
+     * The resources found in the schemas surveyed, accumulated across the schemas.
+     */
+    protected static class SchemaContents
+    {
+        protected final Map<String, ResourceProperties> functionList = new HashMap<>();
+        protected final Map<String, ResourceProperties> tableList    = new HashMap<>();
+        protected final Map<String, ResourceProperties> columnList   = new HashMap<>();
+        protected final Map<String, ResourceProperties> volumeList   = new HashMap<>();
+        protected final Map<String, ResourceProperties> modelList    = new HashMap<>();
+
+        protected long functionCount = 0;
+        protected long tableCount    = 0;
+        protected long columnCount   = 0;
+        protected long volumeCount   = 0;
+        protected long modelCount    = 0;
+
+        /**
+         * Default constructor
+         */
+        public SchemaContents()
+        {
         }
     }
 

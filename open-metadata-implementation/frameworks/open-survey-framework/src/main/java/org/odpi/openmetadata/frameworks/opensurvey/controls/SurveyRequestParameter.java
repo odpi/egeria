@@ -4,10 +4,13 @@
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RequestParameter provides some standard definitions for request parameters used to pass properties
@@ -17,15 +20,12 @@ import java.util.List;
 public enum SurveyRequestParameter
 {
     /**
-     * Property name to control how much profiling the survey action service does.
+     * The name of the last analysis step that the survey action service is to run.  The survey stops once this
+     * step is complete.  If the survey never reaches the named step, it runs to completion.  The values that a
+     * survey action service supports are listed, in the order it runs them, in the validValues property of its
+     * finalAnalysisStep supported request parameter.
      */
-    FINAL_ANALYSIS_STEP ("finalAnalysisStep", "Property name to control how much profiling the survey action service does.", "string", "Schema Extraction"),
-
-
-    /**
-     * Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.
-     */
-    IGNORE_ANALYSIS_STEPS ("ignoreAnalysisSteps", "Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.", "array<string>", "step3,step4"),
+    FINAL_ANALYSIS_STEP ("finalAnalysisStep", "The name of the last analysis step that the survey action service is to run.  The survey stops once this step is complete.  If the survey never reaches the named step, it runs to completion.  It overrides the configuration property of the same name.", "string", "Measure Resource"),
 
 
     /**
@@ -114,14 +114,15 @@ public enum SurveyRequestParameter
     /**
      * Retrieve the request parameters that every survey action service supports.
      *
+     * @param finalAnalysisSteps the analysis steps that the survey action service can stop after, in the order
+     *                           it runs them; null if they are not known
      * @return list of request parameter types
      */
-    public static List<RequestParameterType> getRequestParameterTypes()
+    public static List<RequestParameterType> getRequestParameterTypes(AnalysisStep[] finalAnalysisSteps)
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
-        requestParameterTypes.add(IGNORE_ANALYSIS_STEPS.getRequestParameterType());
+        requestParameterTypes.add(getFinalAnalysisStepType(finalAnalysisSteps));
 
         return requestParameterTypes;
     }
@@ -131,11 +132,13 @@ public enum SurveyRequestParameter
      * Retrieve the request parameters supported by a survey action service that can be limited to some of the
      * schemas it finds.
      *
+     * @param finalAnalysisSteps the analysis steps that the survey action service can stop after, in the order
+     *                           it runs them; null if they are not known
      * @return list of request parameter types
      */
-    public static List<RequestParameterType> getSchemaSurveyRequestParameterTypes()
+    public static List<RequestParameterType> getSchemaSurveyRequestParameterTypes(AnalysisStep[] finalAnalysisSteps)
     {
-        List<RequestParameterType> requestParameterTypes = getRequestParameterTypes();
+        List<RequestParameterType> requestParameterTypes = getRequestParameterTypes(finalAnalysisSteps);
 
         requestParameterTypes.add(INCLUDE_SCHEMA_NAMES.getRequestParameterType());
         requestParameterTypes.add(EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
@@ -143,6 +146,68 @@ public enum SurveyRequestParameter
         return requestParameterTypes;
     }
 
+
+    /**
+     * Return the description of the finalAnalysisStep request parameter for a particular survey action service.
+     * The analysis steps it can stop after are listed in the validValues property, separated by commas, so that
+     * a caller can discover them from the service's specification.
+     *
+     * @param finalAnalysisSteps the analysis steps that the survey action service can stop after, in the order
+     *                           it runs them; null if they are not known
+     * @return request parameter type
+     */
+    public static RequestParameterType getFinalAnalysisStepType(AnalysisStep[] finalAnalysisSteps)
+    {
+        RequestParameterType requestParameterType = FINAL_ANALYSIS_STEP.getRequestParameterType();
+
+        if ((finalAnalysisSteps != null) && (finalAnalysisSteps.length > 0))
+        {
+            StringBuilder validValues = new StringBuilder();
+
+            for (AnalysisStep analysisStep : finalAnalysisSteps)
+            {
+                if (! validValues.isEmpty())
+                {
+                    validValues.append(",");
+                }
+
+                validValues.append(analysisStep.getName());
+            }
+
+            Map<String, String> otherPropertyValues = new HashMap<>();
+
+            otherPropertyValues.put(RequestParameterType.VALID_VALUES, validValues.toString());
+
+            requestParameterType.setOtherPropertyValues(otherPropertyValues);
+            requestParameterType.setExample(finalAnalysisSteps[0].getName());
+        }
+
+        return requestParameterType;
+    }
+
+
+    /**
+     * Return the description of the finalAnalysisStep configuration property for a particular survey action
+     * service.  It sets the final analysis step for every survey the service runs, unless a request overrides it
+     * with the request parameter of the same name.
+     *
+     * @param finalAnalysisSteps the analysis steps that the survey action service can stop after, in the order
+     *                           it runs them; null if they are not known
+     * @return configuration property type
+     */
+    public static ConfigurationPropertyType getFinalAnalysisStepConfigurationPropertyType(AnalysisStep[] finalAnalysisSteps)
+    {
+        RequestParameterType      requestParameterType      = getFinalAnalysisStepType(finalAnalysisSteps);
+        ConfigurationPropertyType configurationPropertyType = new ConfigurationPropertyType();
+
+        configurationPropertyType.setName(requestParameterType.getName());
+        configurationPropertyType.setDescription("The name of the last analysis step that the survey action service is to run in every survey.  The survey stops once this step is complete.  If the survey never reaches the named step, it runs to completion.  A request can override it with the request parameter of the same name.");
+        configurationPropertyType.setDataType(requestParameterType.getDataType());
+        configurationPropertyType.setExample(requestParameterType.getExample());
+        configurationPropertyType.setOtherPropertyValues(requestParameterType.getOtherPropertyValues());
+
+        return configurationPropertyType;
+    }
 
 
     /**

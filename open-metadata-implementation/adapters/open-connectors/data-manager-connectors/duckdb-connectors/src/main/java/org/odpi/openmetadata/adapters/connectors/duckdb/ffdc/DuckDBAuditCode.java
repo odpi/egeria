@@ -161,6 +161,16 @@ public enum DuckDBAuditCode implements AuditLogMessageSet
                             "This should not normally happen - qualified names are expected to be unique.  Investigate how the duplicate elements were created and consider removing the redundant one(s).",
                             "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),
 
+    /**
+     * DUCKDB-CONNECTOR-0015 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+     */
+    SURVEY_QUERY_FAILED("DUCKDB-CONNECTOR-0015",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}",
+                        "The survey continues, but its results for this element are incomplete.",
+                        "Use the exception message to determine the cause of the error; it is often a DuckDB version that does not support the catalog function, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/"),
+
     ;
 
     private final String                     logMessageId;

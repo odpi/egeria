@@ -207,6 +207,16 @@ public enum UCAuditCode implements AuditLogMessageSet
                           "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem.",
                           "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
 
+    /**
+     * UNITY-CATALOG-CONNECTOR-0025 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+     */
+    SURVEY_RETRIEVAL_FAILED("UNITY-CATALOG-CONNECTOR-0025",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}",
+                            "The survey continues, but its results for this element are incomplete.",
+                            "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId in Unity Catalog, or an element that was deleted while the survey was running.  Once it is resolved, rerun the survey.",
+                            "https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/"),
+
     ;
 
     private final String                     logMessageId;

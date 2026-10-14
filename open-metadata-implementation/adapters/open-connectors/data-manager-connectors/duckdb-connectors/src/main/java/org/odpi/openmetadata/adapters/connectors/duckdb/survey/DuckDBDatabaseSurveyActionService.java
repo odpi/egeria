@@ -56,8 +56,10 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
             assetConnector.start();
 
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             String databaseName = assetConnector.getDatabaseName();
 
@@ -70,18 +72,6 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
             }
             else
             {
-                /*
-                 * DuckDB does not persist ATTACH-ed data sources in the database file between sessions, so this
-                 * connection must re-issue any configured ATTACH (and INSTALL/LOAD) statements itself before
-                 * federation discovery queries duckdb_databases() - otherwise it would never see any attached
-                 * databases, even though they were reachable when the file was originally set up.
-                 */
-                DuckDBUtils.runAttachStatements(jdbcConnection,
-                                                DuckDBUtils.getAttachStatements(connectionBean.getConfigurationProperties()),
-                                                auditLog,
-                                                surveyActionServiceName,
-                                                databaseName);
-
                 annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
                 List<String> validDatabases = Collections.singletonList(databaseName);
@@ -95,13 +85,9 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
                 DuckDBDatabaseStatsExtractor statsExtractor = new DuckDBDatabaseStatsExtractor(validDatabases,
                                                                                                excludedSchemas,
                                                                                                includedSchemas,
-                                                                                               this);
-
-                statsExtractor.getDatabaseStatistics(jdbcConnection);
-
-                annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
-
-                statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
+                                                                                               this,
+                                                                                               auditLog,
+                                                                                               surveyActionServiceName);
 
                 /*
                  * Federation discovery is unconditional - every DuckDB database survey also reports the databases
@@ -109,10 +95,63 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
                  */
                 DuckDBFederationExtractor federationExtractor = new DuckDBFederationExtractor(this, auditLog, surveyActionServiceName);
 
-                federationExtractor.discoverAttachedSources(jdbcConnection, databaseName);
-                federationExtractor.discoverExternalFileSources(jdbcConnection, databaseName);
+                boolean    surveyStopped;
+                DataSource jdbcDataSource = assetConnector.getDataSource();
+                try (Connection jdbcConnection = jdbcDataSource.getConnection())
+                {
+                    /*
+                     * The survey only reads, so each query can be its own short transaction rather than one
+                     * transaction lasting the whole survey.  The pool restores auto-commit to off when the
+                     * connection is returned.  This is set before the attach statements run so that each of
+                     * them is committed (or fails) on its own.
+                     */
+                    jdbcConnection.setAutoCommit(true);
 
-                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
+                    /*
+                     * DuckDB does not persist ATTACH-ed data sources in the database file between sessions, so this
+                     * connection must re-issue any configured ATTACH (and INSTALL/LOAD) statements itself before
+                     * federation discovery queries duckdb_databases() - otherwise it would never see any attached
+                     * databases, even though they were reachable when the file was originally set up.
+                     */
+                    DuckDBUtils.runAttachStatements(jdbcConnection,
+                                                    DuckDBUtils.getAttachStatements(connectionBean.getConfigurationProperties()),
+                                                    auditLog,
+                                                    surveyActionServiceName,
+                                                    databaseName);
+
+                    statsExtractor.getDatabaseStatistics(jdbcConnection);
+
+                    /*
+                     * Stopping after measuring the database records its statistics without surveying its schemas
+                     * or discovering its federated sources.
+                     */
+                    surveyStopped = super.isFinalAnalysisStep();
+
+                    if (! surveyStopped)
+                    {
+                        annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+
+                        statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
+
+                        federationExtractor.discoverAttachedSources(jdbcConnection, databaseName);
+                        federationExtractor.discoverExternalFileSources(jdbcConnection, databaseName);
+                    }
+                }
+
+                /*
+                 * The connection is released before the annotations are stored.
+                 */
+                List<AnnotationProperties> annotations;
+
+                if (surveyStopped)
+                {
+                    annotations = statsExtractor.getDatabaseAnnotations();
+                }
+                else
+                {
+                    annotations = statsExtractor.getAnnotations(databaseName);
+                }
+
                 if (annotations != null)
                 {
                     for (AnnotationProperties annotation : annotations)
@@ -132,8 +171,6 @@ public class DuckDBDatabaseSurveyActionService extends SurveyActionServiceConnec
                     }
                 }
             }
-
-            jdbcConnection.commit();
         }
         catch (ConnectorCheckedException error)
         {

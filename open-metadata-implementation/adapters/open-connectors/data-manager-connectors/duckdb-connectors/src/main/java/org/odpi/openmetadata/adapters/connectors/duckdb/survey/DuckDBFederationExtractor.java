@@ -30,7 +30,8 @@ import java.util.regex.Pattern;
  * </ul>
  * Both queries are wrapped defensively - not every DuckDB database makes use of federation features, and older
  * DuckDB versions may not support every table function used here, so failures are logged and processing continues
- * rather than failing the whole survey/catalog pass.
+ * rather than failing the whole survey/catalog pass.  The connections passed to it are expected to be in
+ * auto-commit mode, so a failed query has no transaction to roll back.
  */
 public class DuckDBFederationExtractor
 {
@@ -83,13 +84,11 @@ public class DuckDBFederationExtractor
         final String methodName        = "discoverAttachedSources";
         final String duckdbDatabasesSQL = "SELECT * FROM duckdb_databases() WHERE NOT internal;";
 
-        try
+        String currentDatabaseName = getCurrentDatabaseName(databaseJDBCConnection);
+
+        try (PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(duckdbDatabasesSQL);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            String currentDatabaseName = getCurrentDatabaseName(databaseJDBCConnection);
-
-            PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(duckdbDatabasesSQL);
-            ResultSet         resultSet         = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 String databaseName = resultSet.getString("database_name");
@@ -128,9 +127,6 @@ public class DuckDBFederationExtractor
                     }
                 }
             }
-
-            resultSet.close();
-            preparedStatement.close();
         }
         catch (Exception error)
         {
@@ -146,8 +142,6 @@ public class DuckDBFederationExtractor
                                                                                                   primaryDatabaseName,
                                                                                                   error.getMessage()));
             }
-
-            rollbackQuietly(databaseJDBCConnection);
         }
     }
 
@@ -164,11 +158,9 @@ public class DuckDBFederationExtractor
         final String methodName      = "discoverExternalFileSources";
         final String duckdbViewsSQL  = "SELECT * FROM duckdb_views();";
 
-        try
+        try (PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(duckdbViewsSQL);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(duckdbViewsSQL);
-            ResultSet         resultSet         = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 String viewName = resultSet.getString("view_name");
@@ -217,9 +209,6 @@ public class DuckDBFederationExtractor
                     }
                 }
             }
-
-            resultSet.close();
-            preparedStatement.close();
         }
         catch (Exception error)
         {
@@ -231,8 +220,6 @@ public class DuckDBFederationExtractor
                                                                                                   primaryDatabaseName,
                                                                                                   error.getMessage()));
             }
-
-            rollbackQuietly(databaseJDBCConnection);
         }
     }
 
@@ -307,8 +294,6 @@ public class DuckDBFederationExtractor
                                                                                                   tableName,
                                                                                                   error.getMessage()));
             }
-
-            rollbackQuietly(databaseJDBCConnection);
         }
 
         return columns;
@@ -359,8 +344,6 @@ public class DuckDBFederationExtractor
                                                                                                   databaseAlias,
                                                                                                   error.getMessage()));
             }
-
-            rollbackQuietly(databaseJDBCConnection);
         }
 
         return tableNames;
@@ -415,8 +398,6 @@ public class DuckDBFederationExtractor
                                                                                                   databaseAlias + "." + tableName,
                                                                                                   error.getMessage()));
             }
-
-            rollbackQuietly(databaseJDBCConnection);
         }
 
         return columns;
@@ -565,24 +546,6 @@ public class DuckDBFederationExtractor
         catch (SQLException notFound)
         {
             return false;
-        }
-    }
-
-
-    /**
-     * Roll back the connection, ignoring any error - used to clean up after a failed federation query.
-     *
-     * @param databaseJDBCConnection connection to roll back
-     */
-    private void rollbackQuietly(java.sql.Connection databaseJDBCConnection)
-    {
-        try
-        {
-            databaseJDBCConnection.rollback();
-        }
-        catch (Exception error)
-        {
-            // ignore
         }
     }
 }

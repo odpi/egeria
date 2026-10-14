@@ -54,6 +54,9 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();
 
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PRODUCE_ACTIONS, AnalysisStep.PRODUCE_INVENTORY});
+                AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_ACTIONS, AnalysisStep.PRODUCE_INVENTORY});
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_ACTIONS, AnalysisStep.PRODUCE_INVENTORY});
     }
 }

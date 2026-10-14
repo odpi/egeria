@@ -203,6 +203,16 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                 try (Connection duckdbConnection = this.openDuckDBConnection(databasePath))
                 {
                     /*
+                     * Federation cataloguing interleaves short DuckDB catalog queries with much slower calls to
+                     * the open metadata ecosystem.  Running in auto-commit mode means that each query is its own
+                     * transaction, so no DuckDB transaction is held open across those calls, and a failed query
+                     * does not affect the ones after it.  A pooled connection starts with auto-commit off (the
+                     * pool restores that when the connection is returned); one from DriverManager starts with it
+                     * on, so this only changes the pooled case.
+                     */
+                    duckdbConnection.setAutoCommit(true);
+
+                    /*
                      * DuckDB does not persist ATTACH-ed data sources in the database file between sessions, so
                      * this connection must re-issue any configured ATTACH (and INSTALL/LOAD) statements itself
                      * before federation discovery queries duckdb_databases().
@@ -244,7 +254,10 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Open a direct JDBC connection to the DuckDB database file/session.  This processor opens its own connection
      * (rather than always relying on connectorToTarget) because, on the very first refresh of a brand-new catalog
-     * target, connectorToTarget's connection may not yet describe the DuckDB file itself.
+     * target, connectorToTarget's connection may not yet describe the DuckDB file itself.  The caller must close
+     * the connection - for a pooled connection, that returns it to the pool.  The DriverManager URL is never given
+     * query parameters, since DuckDB treats a URL with a query string as the name of a different (new, empty)
+     * database file.
      *
      * @param databasePath path to the ".duckdb" file, or ":memory:"/null
      * @return JDBC connection

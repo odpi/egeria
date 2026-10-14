@@ -9,7 +9,7 @@ The PostgresAuditCode is used to define the message content for the OMRS Audit L
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 6 |
+| **Number of messages** | 9 |
 | **Message identifiers begin** | `POSTGRES-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/postgres-server-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/postgres-server-connectors) |
@@ -27,6 +27,9 @@ The PostgresAuditCode is used to define the message content for the OMRS Audit L
 | [POSTGRES-CONNECTOR-0004](#postgres-connector-0004) | INFO | The {0} integration connector is skipping PostgreSQL Database {1} ({2}) because it is already catalogued |
 | [POSTGRES-CONNECTOR-0007](#postgres-connector-0007) | INFO | The {0} PostgreSQL Server Connector has been supplied with a friendship connector with GUID {1} |
 | [POSTGRES-CONNECTOR-0009](#postgres-connector-0009) | INFO | The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to PostgreSQL Database Asset {3} for Database {4} |
+| [POSTGRES-CONNECTOR-0010](#postgres-connector-0010) | INFO | The {0} connector is skipping database {1} on PostgreSQL Database Server {2} because its userId {3} does not have the CONNECT privilege for it |
+| [POSTGRES-CONNECTOR-0011](#postgres-connector-0011) | ERROR | The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3} |
+| [POSTGRES-CONNECTOR-0012](#postgres-connector-0012) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -152,6 +155,69 @@ The connector has requested that its friendship connector starts to catalog a ne
 **User action**
 
 Verify that the cataloguing starts the next time that the friendship connector refreshes.
+
+
+----
+
+### POSTGRES-CONNECTOR-0010
+
+> The {0} connector is skipping database {1} on PostgreSQL Database Server {2} because its userId {3} does not have the CONNECT privilege for it
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresAuditCode.NO_CONNECT_PRIVILEGE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector continues with the remaining databases.
+
+**User action**
+
+This is expected if the database is deliberately out of reach of this userId.  Otherwise, grant the userId CONNECT on the database, or add the database to the excludeDatabaseList configuration property to stop this message.
+
+
+----
+
+### POSTGRES-CONNECTOR-0011
+
+> The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresAuditCode.DATABASE_NOT_SURVEYED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The survey report has no results for this database.  The survey continues with the remaining databases.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId or a database that is not accepting connections.  Once it is resolved, rerun the survey.
+
+
+----
+
+### POSTGRES-CONNECTOR-0012
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `PostgresAuditCode.SURVEY_QUERY_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId, a statement timeout set on the database server, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

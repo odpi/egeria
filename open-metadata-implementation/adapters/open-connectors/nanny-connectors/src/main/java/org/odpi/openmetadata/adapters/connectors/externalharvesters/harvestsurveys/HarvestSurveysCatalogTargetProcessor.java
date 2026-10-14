@@ -1721,10 +1721,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                      OpenMetadataProperty.RESOURCE_UPDATE_TIME.name,
                                                                      dataSourceMeasurementsAnnotation.getElementProperties(),
                                                                      methodName);
-            Date resourceLastAccessTime = propertyHelper.getDateProperty(connectorName,
-                                                                         OpenMetadataProperty.RESOURCE_LAST_ACCESSED_TIME.name,
-                                                                         dataSourceMeasurementsAnnotation.getElementProperties(),
-                                                                         methodName);
 
             long resourceSize = propertyHelper.getLongProperty(connectorName,
                                                                OpenMetadataProperty.SIZE.name,
@@ -1765,7 +1761,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                              resourceProperties.get(resourcePropertyName),
                                                                                                              resourceCreateTime,
                                                                                                              resourceUpdateTime,
-                                                                                                             resourceLastAccessTime,
                                                                                                              resourceSize,
                                                                                                              encoding);
 
@@ -1812,7 +1807,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @param resourceCreationTime time resource create (only for physical measurement annotation
      * @param resourceModificationTime time resource last modified (only for physical measurement annotation
      * @param resourceSize size of resource in bytes (only for physical measurement annotation
-     * @param resourceLastAccessTime last access time
      * @param encoding encoding
      * @return columns
      */
@@ -1827,7 +1821,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                            String                 measurementDisplayName,
                                                                            Date                   resourceCreationTime,
                                                                            Date                   resourceModificationTime,
-                                                                           Date                   resourceLastAccessTime,
                                                                            long                   resourceSize,
                                                                            String                 encoding)
     {
@@ -1847,7 +1840,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME, measurementDisplayName);
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_CREATION_TIME, resourceCreationTime);
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, resourceModificationTime);
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, resourceLastAccessTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_SIZE, resourceSize);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, encoding);
 
@@ -1899,7 +1891,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_CREATION_TIME, fileMeasurement.getCreationTime());
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, fileMeasurement.getLastModifiedTime());
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, fileMeasurement.getLastAccessedTime());
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_SIZE, fileMeasurement.getFileSize());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RECORD_COUNT, fileMeasurement.getRecordCount());
@@ -1955,7 +1946,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_CREATION_TIME, fileDirectoryMeasurement.getLastFileCreationTime());
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME, fileDirectoryMeasurement.getLastFileModificationTime());
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME, fileDirectoryMeasurement.getLastFileAccessedTime());
 
         return openMetadataRecord;
     }

@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.mssql.survey;
 
+import org.odpi.openmetadata.adapters.connectors.mssql.ffdc.MSSQLAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -23,6 +25,11 @@ import java.util.UUID;
  * them from Microsoft SQL Server's system catalog views and DMVs (sys.databases, sys.tables, sys.views,
  * sys.columns, sys.dm_db_partition_stats, sys.dm_db_index_operational_stats, sys.dm_db_stats_histogram)
  * instead of pg_catalog.  All of these sources are metadata/statistics only - no user data is read.
+ * <br><br>
+ * The connections passed to it are expected to be in auto-commit mode, so that every query is its own short
+ * transaction.  Each schema is surveyed with its own set of queries, and a query that fails is logged and
+ * skipped, so one inaccessible schema, missing permission or dropped table leaves a gap in the results rather
+ * than ending the survey.
  */
 public class MSSQLDatabaseStatsExtractor
 {
@@ -30,6 +37,8 @@ public class MSSQLDatabaseStatsExtractor
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
+    private final AuditLog                     auditLog;
+    private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
@@ -43,7 +52,7 @@ public class MSSQLDatabaseStatsExtractor
     public MSSQLDatabaseStatsExtractor(List<String>                validDatabases,
                                        SurveyActionServiceConnector surveyActionServiceConnector)
     {
-        this(validDatabases, null, null, surveyActionServiceConnector);
+        this(validDatabases, null, null, surveyActionServiceConnector, null, null);
     }
 
 
@@ -56,16 +65,22 @@ public class MSSQLDatabaseStatsExtractor
      * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
      *                                     takes precedence over excludedSchemas
      * @param surveyActionServiceConnector calling connector
+     * @param auditLog                     logging destination for queries that fail (may be null)
+     * @param surveyActionServiceName      name of the calling survey action service, for the audit log
      */
     public MSSQLDatabaseStatsExtractor(List<String>                validDatabases,
                                        List<String>                excludedSchemas,
                                        List<String>                includedSchemas,
-                                       SurveyActionServiceConnector surveyActionServiceConnector)
+                                       SurveyActionServiceConnector surveyActionServiceConnector,
+                                       AuditLog                    auditLog,
+                                       String                      surveyActionServiceName)
     {
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+        this.auditLog                     = auditLog;
+        this.surveyActionServiceName      = surveyActionServiceName;
     }
 
 
@@ -101,16 +116,14 @@ public class MSSQLDatabaseStatsExtractor
     /**
      * Retrieve statistics about each requested database.
      * This works whether connected to the master database or a user database, since sys.databases and
-     * sys.master_files are server-wide catalog views visible from any connection.
+     * sys.master_files are server-wide catalog views visible from any connection.  Every requested database
+     * gets an entry in the results, even if its statistics cannot be read, so that its schemas can still be
+     * surveyed.
      *
      * @param serverJDBCConnection connection to the SQL Server instance
-     * @throws SQLException            problem accessing the database
-     * @throws PropertyServerException problem create JSON properties
      */
-    void getDatabaseStatistics(java.sql.Connection serverJDBCConnection) throws SQLException, PropertyServerException
+    void getDatabaseStatistics(java.sql.Connection serverJDBCConnection)
     {
-        final String databasesSQLCommand = "SELECT name FROM sys.databases;";
-
         final String databaseActivitySQLCommand =
                 "SELECT d.name AS dbname, " +
                         "       SUM(ius.user_seeks + ius.user_scans + ius.user_lookups) AS rowsfetched, " +
@@ -119,42 +132,34 @@ public class MSSQLDatabaseStatsExtractor
                         "JOIN sys.databases d ON d.database_id = ius.database_id " +
                         "GROUP BY d.name;";
 
-        try
+        /*
+         * The size of every database in one query, matched by database_id rather than by name so that names
+         * needing quoting are not a problem.
+         */
+        final String databaseSizeSQLCommand =
+                "SELECT d.name AS dbname, SUM(CAST(mf.size AS BIGINT)) * 8 * 1024 AS databasesize " +
+                        "FROM sys.master_files mf " +
+                        "JOIN sys.databases d ON d.database_id = mf.database_id " +
+                        "GROUP BY d.name;";
+
+        for (String databaseName : validDatabases)
         {
-            /*
-             * Identify the requested databases that actually exist on this server.
-             */
-            PreparedStatement preparedStatement = serverJDBCConnection.prepareStatement(databasesSQLCommand);
+            RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            databaseMeasurement.setResourceName(databaseName);
+            databaseResults.put(databaseName, new DatabaseDetails(databaseMeasurement));
+        }
 
-            while (resultSet.next())
-            {
-                String databaseName = resultSet.getString("name");
-
-                if (validDatabases.contains(databaseName))
-                {
-                    RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
-
-                    databaseMeasurement.setResourceName(databaseName);
-
-                    databaseResults.put(databaseName, new DatabaseDetails(databaseMeasurement));
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Add the read/write activity counters.  Microsoft SQL Server does not expose a database-wide split of
-             * inserted/updated/deleted row counts the way PostgreSQL's pg_stat_database does (that granularity is
-             * only available per-table, via sys.dm_db_index_operational_stats, applied in getSchemaStatistics
-             * below), so rowsInserted/rowsDeleted are left at their default of zero at the database level.
-             */
-            preparedStatement = serverJDBCConnection.prepareStatement(databaseActivitySQLCommand);
-
-            resultSet = preparedStatement.executeQuery();
-
+        /*
+         * Add the read/write activity counters.  Microsoft SQL Server does not expose a database-wide split of
+         * inserted/updated/deleted row counts the way PostgreSQL's pg_stat_database does (that granularity is
+         * only available per-table, via sys.dm_db_index_operational_stats, applied in getSchemaStatistics
+         * below), so rowsInserted/rowsDeleted are left at their default of zero at the database level.
+         * This DMV needs the VIEW SERVER STATE permission.
+         */
+        try (PreparedStatement preparedStatement = serverJDBCConnection.prepareStatement(databaseActivitySQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
+        {
             while (resultSet.next())
             {
                 DatabaseDetails currentDatabase = databaseResults.get(resultSet.getString("dbname"));
@@ -164,51 +169,31 @@ public class MSSQLDatabaseStatsExtractor
                     currentDatabase.setActivity(resultSet.getLong("rowsfetched"), resultSet.getLong("rowsupdated"));
                 }
             }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("database activity statistics", "the database server", sqlException);
+        }
 
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Extract the total size of each database from sys.master_files (a server-wide catalog view).
-             */
-            for (String databaseName : validDatabases)
+        /*
+         * Extract the total size of each database from sys.master_files (a server-wide catalog view).
+         */
+        try (PreparedStatement preparedStatement = serverJDBCConnection.prepareStatement(databaseSizeSQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
+        {
+            while (resultSet.next())
             {
-                DatabaseDetails currentDatabase = databaseResults.get(databaseName);
+                DatabaseDetails currentDatabase = databaseResults.get(resultSet.getString("dbname"));
 
                 if (currentDatabase != null)
                 {
-                    final String databaseSizeSQLCommand =
-                            "SELECT SUM(CAST(size AS BIGINT)) * 8 * 1024 AS databasesize " +
-                                    "FROM sys.master_files WHERE database_id = DB_ID(N'" + databaseName + "');";
-
-                    preparedStatement = serverJDBCConnection.prepareStatement(databaseSizeSQLCommand);
-
-                    resultSet = preparedStatement.executeQuery();
-
-                    if (resultSet.next())
-                    {
-                        currentDatabase.setSize(resultSet.getLong("databasesize"));
-                    }
-
-                    resultSet.close();
-                    preparedStatement.close();
-
-                    databaseResults.put(databaseName, currentDatabase);
+                    currentDatabase.setSize(resultSet.getLong("databasesize"));
                 }
             }
         }
         catch (SQLException sqlException)
         {
-            try
-            {
-                serverJDBCConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
-
-            throw sqlException;
+            logQueryFailure("database sizes", "the database server", sqlException);
         }
     }
 
@@ -217,25 +202,91 @@ public class MSSQLDatabaseStatsExtractor
      * Extract detailed information about the schemas, tables and columns in a database.
      * This only returns information from the connected database - so the connection needs to be pointing at the
      * named user database rather than master.
+     * <br><br>
+     * Each schema is surveyed with its own queries, so a failure is confined to the schema (or the
+     * part of the schema) where it occurred.
      *
      * @param databaseName          name of database that is connected to
      * @param databaseSQLConnection connection to the named database
-     * @throws SQLException            problem accessing the database
+     * @throws SQLException the schemas in the database could not be listed
      */
-    void getSchemaStatistics(String databaseName,
+    void getSchemaStatistics(String              databaseName,
                              java.sql.Connection databaseSQLConnection) throws SQLException
+    {
+        /*
+         * Only schemas that own tables or views are of interest.  This skips the fixed database-role schemas
+         * (db_owner, db_datareader, ...) and guest, which exist in every database but are almost always empty.
+         */
+        final String schemasSQLCommand =
+                "SELECT s.name AS schemaname " +
+                        "FROM sys.schemas s " +
+                        "WHERE s.name NOT IN (N'sys', N'INFORMATION_SCHEMA') " +
+                        "  AND EXISTS (SELECT 1 FROM sys.objects o WHERE o.schema_id = s.schema_id AND o.type IN ('U', 'V')) " +
+                        "ORDER BY s.name;";
+
+        DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = new ArrayList<>();
+
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(schemasSQLCommand);
+                 ResultSet         resultSet         = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String schemaName = resultSet.getString("schemaname");
+
+                    if (schemaShouldBeSurveyed(schemaName))
+                    {
+                        schemaNames.add(schemaName);
+                    }
+                }
+            }
+
+            for (String schemaName : schemaNames)
+            {
+                if ((surveyActionServiceConnector != null) && (! surveyActionServiceConnector.isActive()))
+                {
+                    return;
+                }
+
+                this.getSchemaStatistics(databaseDetails, schemaName, databaseSQLConnection);
+            }
+
+            /*
+             * Count up instances of schema, tables and columns in database
+             */
+            databaseDetails.setUpCounts();
+        }
+    }
+
+
+    /**
+     * Extract detailed information about the tables and columns in a single schema.  Each query is
+     * independent: if one fails, it is logged and the others still contribute their results.
+     *
+     * @param databaseDetails       results for the database that is connected to
+     * @param schemaName            name of the schema to survey
+     * @param databaseSQLConnection connection to the database
+     */
+    private void getSchemaStatistics(DatabaseDetails     databaseDetails,
+                                     String              schemaName,
+                                     java.sql.Connection databaseSQLConnection)
     {
         /*
          * One row per column, giving its declared width/type/nullability plus a best-effort distinct-value estimate
          * and single most-common-value/frequency, both sourced from Microsoft SQL Server's own auto-collected
          * column statistics (sys.dm_db_stats_histogram) - an already-collected estimate, just like PostgreSQL's
-         * pg_stats (populated by ANALYZE), so no user data is scanned to build this annotation.
+         * pg_stats (populated by ANALYZE), so no user data is scanned to build this annotation.  When several
+         * statistics objects lead with the same column (an index and an auto-created statistic, for example),
+         * only the first is used; otherwise the distinct-value estimate would count the same values once per
+         * statistics object.
          */
         final String columnStatsSQLCommand =
-                "SELECT schemaname, tablename, columnname, avgwidth, typename, isnullable, mostcommonvalue, mostcommonfreq, ndistinct " +
+                "SELECT tablename, columnname, avgwidth, typename, isnullable, mostcommonvalue, mostcommonfreq, ndistinct " +
                         "FROM ( " +
-                        "    SELECT s.name AS schemaname, " +
-                        "           t.name AS tablename, " +
+                        "    SELECT t.name AS tablename, " +
                         "           c.name AS columnname, " +
                         "           c.max_length AS avgwidth, " +
                         "           ty.name AS typename, " +
@@ -248,377 +299,455 @@ public class MSSQLDatabaseStatsExtractor
                         "    JOIN sys.types ty ON c.user_type_id = ty.user_type_id " +
                         "    JOIN sys.tables t ON t.object_id = c.object_id " +
                         "    JOIN sys.schemas s ON s.schema_id = t.schema_id " +
-                        "    LEFT OUTER JOIN sys.stats_columns sc ON sc.object_id = c.object_id AND sc.column_id = c.column_id AND sc.stats_column_id = 1 " +
-                        "    LEFT OUTER JOIN sys.stats st ON st.object_id = sc.object_id AND st.stats_id = sc.stats_id " +
-                        "    OUTER APPLY sys.dm_db_stats_histogram(st.object_id, st.stats_id) h " +
-                        "    WHERE s.name NOT IN (N'sys', N'INFORMATION_SCHEMA') " +
+                        "    OUTER APPLY (SELECT TOP 1 sc.stats_id FROM sys.stats_columns sc " +
+                        "                 WHERE sc.object_id = c.object_id AND sc.column_id = c.column_id AND sc.stats_column_id = 1 " +
+                        "                 ORDER BY sc.stats_id) st " +
+                        "    OUTER APPLY sys.dm_db_stats_histogram(c.object_id, st.stats_id) h " +
+                        "    WHERE s.name = ? " +
                         ") ranked " +
                         "WHERE rn = 1;";
 
         /*
-         * One row per table, with insert/update/delete counts sourced from sys.dm_db_index_operational_stats -
-         * the direct Microsoft SQL Server analog of PostgreSQL's pg_stat_user_tables.n_tup_ins/n_tup_upd/n_tup_del.
+         * One row per table from the catalog views alone, so it only needs the permission to see the tables.
          */
         final String tablesSQLCommand =
-                "SELECT s.name AS schemaname, " +
-                        "       t.name AS tablename, " +
-                        "       COALESCE(USER_NAME(t.principal_id), SCHEMA_NAME(t.schema_id)) AS tableowner, " +
+                "SELECT t.name AS tablename, " +
+                        "       COALESCE(USER_NAME(t.principal_id), USER_NAME(s.principal_id)) AS tableowner, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM sys.indexes i WHERE i.object_id = t.object_id AND i.index_id > 0) THEN 1 ELSE 0 END AS hasindexes, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM sys.triggers tr WHERE tr.parent_id = t.object_id) THEN 1 ELSE 0 END AS hastriggers, " +
-                        "       CASE WHEN EXISTS (SELECT 1 FROM sys.security_predicates sp WHERE sp.target_object_id = t.object_id) THEN 1 ELSE 0 END AS hasrowsecurity, " +
+                        "       CASE WHEN EXISTS (SELECT 1 FROM sys.security_predicates sp WHERE sp.target_object_id = t.object_id) THEN 1 ELSE 0 END AS hasrowsecurity " +
+                        "FROM sys.tables t " +
+                        "JOIN sys.schemas s ON t.schema_id = s.schema_id " +
+                        "WHERE s.name = ?;";
+
+        /*
+         * One row per table with its insert/update/delete counts, sourced from sys.dm_db_index_operational_stats -
+         * the direct Microsoft SQL Server analog of PostgreSQL's pg_stat_user_tables.n_tup_ins/n_tup_upd/n_tup_del -
+         * and its size from sys.dm_db_partition_stats - the equivalent of PostgreSQL's pg_table_size().
+         * index_id IN (0,1) covers heap tables (0) and tables with a clustered index (1), which together
+         * represent the table's own data pages.  Both are located by object_id rather than by name, so names
+         * needing quoting are not a problem.  These DMVs need the VIEW DATABASE STATE permission, which is why
+         * they are kept apart from the catalog query above.
+         */
+        final String tableActivitySQLCommand =
+                "SELECT t.name AS tablename, " +
                         "       ISNULL(ops.n_tup_ins, 0) AS n_tup_ins, " +
                         "       ISNULL(ops.n_tup_upd, 0) AS n_tup_upd, " +
-                        "       ISNULL(ops.n_tup_del, 0) AS n_tup_del " +
+                        "       ISNULL(ops.n_tup_del, 0) AS n_tup_del, " +
+                        "       ISNULL(ps.tablesize, 0) AS tablesize " +
                         "FROM sys.tables t " +
                         "JOIN sys.schemas s ON t.schema_id = s.schema_id " +
                         "OUTER APPLY ( " +
                         "    SELECT SUM(leaf_insert_count) AS n_tup_ins, SUM(leaf_update_count) AS n_tup_upd, SUM(leaf_delete_count) AS n_tup_del " +
                         "    FROM sys.dm_db_index_operational_stats(DB_ID(), t.object_id, NULL, NULL) " +
                         ") ops " +
-                        "WHERE s.name NOT IN (N'sys', N'INFORMATION_SCHEMA');";
+                        "OUTER APPLY ( " +
+                        "    SELECT SUM(CAST(p.used_page_count AS BIGINT)) * 8 * 1024 AS tablesize " +
+                        "    FROM sys.dm_db_partition_stats p " +
+                        "    WHERE p.object_id = t.object_id AND p.index_id IN (0, 1) " +
+                        ") ps " +
+                        "WHERE s.name = ?;";
 
         /*
          * Plain views only - views with a unique clustered index (indexed views) are Microsoft SQL Server's closest
          * equivalent to PostgreSQL materialized views and are reported separately below.
          */
         final String viewsSQLCommand =
-                "SELECT s.name AS schemaname, v.name AS viewname, " +
-                        "       COALESCE(USER_NAME(v.principal_id), SCHEMA_NAME(v.schema_id)) AS viewowner, " +
+                "SELECT v.name AS viewname, " +
+                        "       COALESCE(USER_NAME(v.principal_id), USER_NAME(s.principal_id)) AS viewowner, " +
                         "       m.definition AS definition " +
                         "FROM sys.views v " +
                         "JOIN sys.schemas s ON v.schema_id = s.schema_id " +
                         "LEFT OUTER JOIN sys.sql_modules m ON m.object_id = v.object_id " +
-                        "WHERE s.name NOT IN (N'sys', N'INFORMATION_SCHEMA') " +
+                        "WHERE s.name = ? " +
                         "  AND NOT EXISTS (SELECT 1 FROM sys.indexes i WHERE i.object_id = v.object_id AND i.index_id = 1);";
 
         /*
          * Indexed views - always populated and indexed by definition.
          */
         final String indexedViewsSQLCommand =
-                "SELECT s.name AS schemaname, v.name AS viewname, " +
-                        "       COALESCE(USER_NAME(v.principal_id), SCHEMA_NAME(v.schema_id)) AS viewowner, " +
+                "SELECT v.name AS viewname, " +
+                        "       COALESCE(USER_NAME(v.principal_id), USER_NAME(s.principal_id)) AS viewowner, " +
                         "       m.definition AS definition " +
                         "FROM sys.views v " +
                         "JOIN sys.schemas s ON v.schema_id = s.schema_id " +
                         "LEFT OUTER JOIN sys.sql_modules m ON m.object_id = v.object_id " +
-                        "WHERE s.name NOT IN (N'sys', N'INFORMATION_SCHEMA') " +
+                        "WHERE s.name = ? " +
                         "  AND EXISTS (SELECT 1 FROM sys.indexes i WHERE i.object_id = v.object_id AND i.index_id = 1);";
 
-        try
+        final String qualifiedSchemaName = databaseDetails.getDatabaseMeasurements().getResourceName() + "." + schemaName;
+
+        /*
+         * Extract key stats about each column.  This builds up the basic structure of tables and columns and
+         * enables the calculation of the total number of tables and columns to be determined.  The declared
+         * column width is also used directly as the column's size measurement - unlike PostgreSQL,
+         * Microsoft SQL Server has no way to estimate the actual stored size of a column without scanning data,
+         * so the declared max_length is used as a metadata-only approximation.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            preparedStatement.setString(1, schemaName);
 
-            if (databaseDetails != null)
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                /*
-                 * Extract key stats about each column in each database.  This builds up the basic structure of
-                 * schemas, tables and columns and enables the calculation of the total number of schemas, tables
-                 * and columns to be determined.  The declared column width is also used directly as the column's
-                 * size measurement - unlike PostgreSQL's pg_column_size(), Microsoft SQL Server has no way to
-                 * estimate the actual stored size of a column without scanning data, so the declared max_length is
-                 * used as a metadata-only approximation.
-                 */
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand);
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
                 while (resultSet.next())
                 {
-                    String schemaName = resultSet.getString("schemaname");
+                    String  tableName              = resultSet.getString("tablename");
+                    String  columnName             = resultSet.getString("columnname");
+                    int     averageColumnWidth     = resultSet.getInt("avgwidth");
+                    long    numberOfDistinctValues = resultSet.getLong("ndistinct");
+                    String  mostCommonValue        = resultSet.getString("mostcommonvalue");
+                    String  mostCommonFrequency    = resultSet.getString("mostcommonfreq");
+                    String  columnTypeName         = resultSet.getString("typename");
+                    boolean columnNullable         = resultSet.getBoolean("isnullable");
 
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName              = resultSet.getString("tablename");
-                        String  columnName             = resultSet.getString("columnname");
-                        int     averageColumnWidth     = resultSet.getInt("avgwidth");
-                        long    numberOfDistinctValues = resultSet.getLong("ndistinct");
-                        String  mostCommonValue        = resultSet.getString("mostcommonvalue");
-                        String  mostCommonFrequency     = resultSet.getString("mostcommonfreq");
-                        String  columnTypeName         = resultSet.getString("typename");
-                        boolean columnNullable         = resultSet.getBoolean("isnullable");
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
+                    ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
 
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
-                        ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
-
-                        columnDetails.setColumnMeasurement(averageColumnWidth,
-                                                           numberOfDistinctValues,
-                                                           mostCommonValue,
-                                                           mostCommonFrequency,
-                                                           columnTypeName,
-                                                           !columnNullable);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract core information about the tables
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName            = resultSet.getString("tablename");
-                        String  tableOwner           = resultSet.getString("tableowner");
-                        boolean hasIndexes           = resultSet.getBoolean("hasindexes");
-                        boolean hasTriggers          = resultSet.getBoolean("hastriggers");
-                        boolean hasRowSecurity       = resultSet.getBoolean("hasrowsecurity");
-                        long    numberOfRowsInserted = resultSet.getLong("n_tup_ins");
-                        long    numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
-                        long    numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
-
-                        /*
-                         * Microsoft SQL Server has no equivalent of PostgreSQL's CREATE RULE feature, so hasRules is
-                         * always reported as false.
-                         */
-                        tableDetails.setTableMeasurements(tableOwner,
-                                                          hasIndexes,
-                                                          false,
-                                                          hasTriggers,
-                                                          hasRowSecurity,
-                                                          numberOfRowsInserted,
-                                                          numberOfRowsUpdated,
-                                                          numberOfRowsDeleted);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-
-                /*
-                 * Extract stats about the views
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String viewName   = resultSet.getString("viewname");
-                        String viewOwner  = resultSet.getString("viewowner");
-                        String definition = resultSet.getString("definition");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
-
-                        tableDetails.setViewDetails(viewOwner, definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract stats about the indexed views (Microsoft SQL Server's closest equivalent of a
-                 * materialized view).
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(indexedViewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String viewName   = resultSet.getString("viewname");
-                        String viewOwner  = resultSet.getString("viewowner");
-                        String definition = resultSet.getString("definition");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
-
-                        tableDetails.setMaterializedViewDetails(viewOwner,
-                                                                true,
-                                                                true,
-                                                                definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * At this point we have details of each schema, table, view and column.
-                 */
-                List<String> schemaNames = databaseDetails.getSchemaNames();
-
-                if (schemaNames != null)
-                {
-                    /*
-                     * Extract the total size of each table and roll it up into the owning schema.
-                     */
-                    for (String schemaName : schemaNames)
-                    {
-                        SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
-
-                        if (currentSchema != null)
-                        {
-                            List<String> tableNames = currentSchema.getTableNames();
-
-                            if (tableNames != null)
-                            {
-                                long schemaSize = 0L;
-
-                                for (String tableName : tableNames)
-                                {
-                                    TableDetails currentTable = currentSchema.getTableDetails(tableName);
-
-                                    if (currentTable != null)
-                                    {
-                                        this.getTableSize(databaseSQLConnection, currentTable);
-                                        schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
-                                    }
-                                }
-
-                                currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
-                            }
-                        }
-                    }
-
-                    /*
-                     * Count up instances of schema, tables and columns in database
-                     */
-                    databaseDetails.setUpCounts();
+                    columnDetails.setColumnMeasurement(averageColumnWidth,
+                                                       numberOfDistinctValues,
+                                                       mostCommonValue,
+                                                       mostCommonFrequency,
+                                                       columnTypeName,
+                                                       !columnNullable);
                 }
             }
         }
         catch (SQLException sqlException)
         {
-            /*
-             * This rollback helps to clean up any issues in the connection.
-             */
-            try
+            logQueryFailure("column statistics", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract core information about the tables
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                databaseSQLConnection.rollback();
+                while (resultSet.next())
+                {
+                    String  tableName      = resultSet.getString("tablename");
+                    String  tableOwner     = resultSet.getString("tableowner");
+                    boolean hasIndexes     = resultSet.getBoolean("hasindexes");
+                    boolean hasTriggers    = resultSet.getBoolean("hastriggers");
+                    boolean hasRowSecurity = resultSet.getBoolean("hasrowsecurity");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
+
+                    /*
+                     * Microsoft SQL Server has no equivalent of PostgreSQL's CREATE RULE feature, so hasRules is
+                     * always reported as false.
+                     */
+                    tableDetails.setTableMeasurements(tableOwner,
+                                                      hasIndexes,
+                                                      false,
+                                                      hasTriggers,
+                                                      hasRowSecurity);
+                }
             }
-            catch (Exception error)
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("table details", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract the activity counters and size of each table
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableActivitySQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                // ignore
+                while (resultSet.next())
+                {
+                    String tableName            = resultSet.getString("tablename");
+                    long   numberOfRowsInserted = resultSet.getLong("n_tup_ins");
+                    long   numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
+                    long   numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
+                    long   tableSize            = resultSet.getLong("tablesize");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
+
+                    tableDetails.setTableActivity(numberOfRowsInserted,
+                                                  numberOfRowsUpdated,
+                                                  numberOfRowsDeleted);
+                    tableDetails.setTableSize(tableSize);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("table activity statistics and sizes", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the views
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String viewName   = resultSet.getString("viewname");
+                    String viewOwner  = resultSet.getString("viewowner");
+                    String definition = resultSet.getString("definition");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
+
+                    tableDetails.setViewDetails(viewOwner, definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the indexed views (Microsoft SQL Server's closest equivalent of a
+         * materialized view).
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(indexedViewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String viewName   = resultSet.getString("viewname");
+                    String viewOwner  = resultSet.getString("viewowner");
+                    String definition = resultSet.getString("definition");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
+
+                    tableDetails.setMaterializedViewDetails(viewOwner,
+                                                            true,
+                                                            true,
+                                                            definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("indexed view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * The total size of the schema is the sum of its tables' sizes.
+         */
+        SchemaDetails currentSchema = databaseDetails.schemas.get(schemaName);
+
+        if (currentSchema != null)
+        {
+            long schemaSize = 0L;
+
+            for (TableDetails currentTable : currentSchema.tables.values())
+            {
+                schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
             }
 
-            throw sqlException;
+            currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
         }
     }
 
 
     /**
-     * Convert the information retrieve from the database server into annotations recognized by the
-     * survey action framework.
+     * Record that a query failed.  The survey carries on without its results.
      *
-     * @return list of annotations
+     * @param informationSought description of the information the query was retrieving
+     * @param elementName       description of the element the query was about
+     * @param sqlException      the failure
+     */
+    private void logQueryFailure(String       informationSought,
+                                 String       elementName,
+                                 SQLException sqlException)
+    {
+        final String methodName = "logQueryFailure";
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                MSSQLAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                                        informationSought,
+                                                                                        elementName,
+                                                                                        sqlException.getClass().getName(),
+                                                                                        sqlException.getMessage()));
+        }
+    }
+
+
+    /**
+     * Return the results gathered so far for a database.
+     *
+     * @param databaseName name of the database
+     * @return results, or null if the database is not being surveyed (or its annotations have been produced)
+     */
+    DatabaseDetails getDatabaseDetails(String databaseName)
+    {
+        return databaseResults.get(databaseName);
+    }
+
+
+    /**
+     * Return the database-level annotations for every database whose results have not yet been released, and
+     * release them.  This is used when the survey stops after the database statistics have been gathered,
+     * before the schemas are surveyed - so the annotations have no schema, table or column counts.
+     *
+     * @return list of annotations, or null if there are no results
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getAnnotations() throws PropertyServerException
+    List<AnnotationProperties> getDatabaseAnnotations() throws PropertyServerException
     {
-        /*
-         * All information has been assembled so create the annotations.
-         */
         List<AnnotationProperties> annotations = new ArrayList<>();
 
-        for (String databaseName : databaseResults.keySet())
+        for (String databaseName : new ArrayList<>(databaseResults.keySet()))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
 
             if (databaseDetails != null)
             {
-                List<String> schemaNames = databaseDetails.getSchemaNames();
+                annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+            }
+        }
 
-                ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
+        if (! annotations.isEmpty())
+        {
+            return annotations;
+        }
 
-                databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
-                databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
+        return null;
+    }
 
-                databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
 
-                databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+    /**
+     * Build the annotation that holds the measurements for a database.
+     *
+     * @param databaseName name of the database
+     * @param databaseDetails results for the database
+     * @return annotation
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    private AnnotationProperties getDatabaseAnnotation(String          databaseName,
+                                                       DatabaseDetails databaseDetails) throws PropertyServerException
+    {
+        ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
 
-                annotations.add(databaseAnnotation);
+        databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
+        databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+        databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+        databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+        databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
 
-                for (String schemaName : schemaNames)
+        databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
+
+        databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+
+        return databaseAnnotation;
+    }
+
+
+    /**
+     * Convert the information retrieved from the database server about a database into annotations
+     * recognized by the survey action framework.  The results for the database are released once the
+     * annotations are created, so that a server survey does not hold the details of every database in memory
+     * at once.
+     *
+     * @param databaseName name of the database
+     * @return list of annotations, or null if there are no results for the database
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    List<AnnotationProperties> getAnnotations(String databaseName) throws PropertyServerException
+    {
+        List<AnnotationProperties> annotations = new ArrayList<>();
+
+        DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = databaseDetails.getSchemaNames();
+
+            annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+
+            for (String schemaName : schemaNames)
+            {
+                SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
+
+                if (currentSchema != null)
                 {
-                    SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
+                    ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
 
-                    if (currentSchema != null)
+                    schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
+                    schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
+                    schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
+                    schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
+                    schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
+
+                    schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
+
+                    schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
+
+                    annotations.add(schemaAnnotation);
+
+
+                    List<String> tableNames = currentSchema.getTableNames();
+
+                    if (tableNames != null)
                     {
-                        ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
-
-                        schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
-                        schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
-                        schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
-                        schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
-                        schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
-
-                        schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
-
-                        schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
-
-                        annotations.add(schemaAnnotation);
-
-
-                        List<String> tableNames = currentSchema.getTableNames();
-
-                        if (tableNames != null)
+                        for (String tableName : tableNames)
                         {
-                            for (String tableName : tableNames)
+                            TableDetails currentTable = currentSchema.getTableDetails(tableName);
+
+                            if (currentTable != null)
                             {
-                                TableDetails currentTable = currentSchema.getTableDetails(tableName);
+                                ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                if (currentTable != null)
+                                tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
+                                tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
+                                tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
+                                tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
+                                tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
+
+                                tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
+
+                                tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
+
+                                annotations.add(tableAnnotation);
+
+                                List<String> columnNames = currentTable.getColumnNames();
+
+                                if (columnNames != null)
                                 {
-                                    ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
-
-                                    tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
-                                    tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
-                                    tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
-                                    tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
-                                    tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
-
-                                    tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
-
-                                    tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
-
-                                    annotations.add(tableAnnotation);
-
-                                    List<String> columnNames = currentTable.getColumnNames();
-
-                                    if (columnNames != null)
+                                    for (String columnName : columnNames)
                                     {
-                                        for (String columnName : columnNames)
-                                        {
-                                            ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
+                                        ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                            ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
+                                        ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                            columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
-                                            columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
-                                            columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
-                                            columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
-                                            columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
+                                        columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
+                                        columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
+                                        columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
+                                        columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
+                                        columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
 
-                                            columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
+                                        columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
 
-                                            columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
+                                        columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
 
-                                            annotations.add(columnAnnotation);
-                                        }
+                                        annotations.add(columnAnnotation);
                                     }
                                 }
                             }
@@ -633,60 +762,10 @@ public class MSSQLDatabaseStatsExtractor
             return annotations;
         }
 
-
         /*
          * Empty or uncontactable database
          */
         return null;
-    }
-
-
-    /**
-     * Retrieve information about a table size using sys.dm_db_partition_stats - the Microsoft SQL Server
-     * equivalent of PostgreSQL's pg_table_size() function.  index_id IN (0,1) covers heap tables (0) and tables
-     * with a clustered index (1), which together represent the table's own data pages.
-     *
-     * @param databaseSQLConnection connection to the appropriate database
-     * @param tableDetails collected information about a table
-     * @throws SQLException errors accessing the database
-     */
-    void getTableSize(java.sql.Connection databaseSQLConnection,
-                      TableDetails        tableDetails) throws SQLException
-    {
-        final String tableSizeSQLCommand =
-                "SELECT SUM(ps.used_page_count) * 8 * 1024 AS tablesize " +
-                        "FROM sys.dm_db_partition_stats ps " +
-                        "WHERE ps.object_id = OBJECT_ID(N'" + tableDetails.getQualifiedTableName() + "') AND ps.index_id IN (0,1);";
-
-        if (! tableDetails.columns.isEmpty())
-        {
-            try
-            {
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableSizeSQLCommand);
-                ResultSet         resultSet         = preparedStatement.executeQuery();
-
-                if (resultSet.next())
-                {
-                    tableDetails.setTableSize(resultSet.getLong("tablesize"));
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-            }
-            catch (SQLException sqlException)
-            {
-                try
-                {
-                    databaseSQLConnection.rollback();
-                }
-                catch (Exception error)
-                {
-                    // ignore
-                }
-
-                throw sqlException;
-            }
-        }
     }
 
 
@@ -699,6 +778,11 @@ public class MSSQLDatabaseStatsExtractor
         private final Map<String, SchemaDetails> schemas = new HashMap<>();
 
 
+        /**
+         * Create a database details object.
+         *
+         * @param databaseMeasurements measurements for the database, with its name set
+         */
         public DatabaseDetails(RelationalDataManagerMeasurement databaseMeasurements)
         {
             this.databaseMeasurements = databaseMeasurements;
@@ -1057,24 +1141,33 @@ public class MSSQLDatabaseStatsExtractor
          * @param hasRules does the table have rules attached (always false - Microsoft SQL Server has no rules)
          * @param hasTriggers does the table have triggers attached
          * @param hasRowSecurity is row-level security set on
-         * @param numberOfRowsInserted how many rows have been inserted
-         * @param numberOfRowsUpdated how many rows have been updated
-         * @param numberOfRowsDeleted how many rows have been deleted
          */
         void setTableMeasurements(String  tableOwner,
                                   boolean hasIndexes,
                                   boolean hasRules,
                                   boolean hasTriggers,
-                                  boolean hasRowSecurity,
-                                  long    numberOfRowsInserted,
-                                  long    numberOfRowsUpdated,
-                                  long    numberOfRowsDeleted)
+                                  boolean hasRowSecurity)
         {
             this.tableMeasurement.setTableOwner(tableOwner);
             this.tableMeasurement.setHasIndexes(hasIndexes);
             this.tableMeasurement.setHasRules(hasRules);
             this.tableMeasurement.setHasTriggers(hasTriggers);
             this.tableMeasurement.setHasRowSecurity(hasRowSecurity);
+        }
+
+
+        /**
+         * Set up the activity counters for a table.  These come from a different source to the rest of the
+         * table measurements, so they are set separately.
+         *
+         * @param numberOfRowsInserted how many rows have been inserted
+         * @param numberOfRowsUpdated how many rows have been updated
+         * @param numberOfRowsDeleted how many rows have been deleted
+         */
+        void setTableActivity(long numberOfRowsInserted,
+                              long numberOfRowsUpdated,
+                              long numberOfRowsDeleted)
+        {
             this.tableMeasurement.setNumberOfRowsInserted(numberOfRowsInserted);
             this.tableMeasurement.setNumberOfRowsUpdated(numberOfRowsUpdated);
             this.tableMeasurement.setNumberOfRowsDeleted(numberOfRowsDeleted);
@@ -1119,6 +1212,15 @@ public class MSSQLDatabaseStatsExtractor
         }
 
 
+        /**
+         * Set up information about an indexed view (Microsoft SQL Server's closest equivalent of a materialized
+         * view).
+         *
+         * @param viewOwner owner
+         * @param hasIndexes does the view have indexes
+         * @param isPopulated is the view populated
+         * @param definition query that retrieves the data for this view
+         */
         void setMaterializedViewDetails(String  viewOwner,
                                         boolean hasIndexes,
                                         boolean isPopulated,

@@ -49,5 +49,8 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE});
         super.producedAnnotationTypes = SurveyFileAnnotationType.getFileSurveyAnnotationTypeTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.DATA_FILE});
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE});
     }
 }

@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.db2luw.survey;
 
+import org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -21,15 +23,21 @@ import java.util.UUID;
  * DB2LUWDatabaseStatsExtractor gathers the same measurements as the PostgreSQL equivalent
  * (org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseStatsExtractor) but sources
  * them from Db2 for Linux, UNIX and Windows' system catalog views (SYSCAT.SCHEMATA, SYSCAT.TABLES,
- * SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSIBMADM.ADMINTABINFO,
- * SYSIBMADM.MON_TAB_STATS) instead of pg_catalog.  All of these sources are metadata/statistics only - no
- * user data is read.
+ * SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSSTAT.COLUMNS), the
+ * SYSIBMADM.ADMINTABINFO administrative view and the SYSPROC.ADMIN_GET_TAB_INFO and MON_GET_TABLE table
+ * functions instead of pg_catalog.  All of these sources are metadata/statistics only - no user data is read.
  * <br><br>
  * Unlike Oracle (whose CDB root can see every pluggable database's size through a single cross-container
  * connection before looping per-PDB for schema detail), Db2 for Linux, UNIX and Windows has no catalog view
  * that spans multiple databases - every one of the views above is already scoped to whichever single
  * database the connection is attached to.  Consequently getDatabaseStatistics() here is called once per
  * database, on a connection to that specific database, rather than once up front on a shared connection.
+ * <br><br>
+ * The connections passed to it are expected to be in auto-commit mode, so that every query is its own short
+ * transaction.  Each schema is surveyed with its own set of queries, and a query that fails is logged and
+ * skipped, so one inaccessible schema, a missing privilege for the administrative views and monitoring
+ * functions (a common situation, since they need more than the CONNECT privilege), or a dropped table leaves
+ * a gap in the results rather than ending the survey.
  */
 public class DB2LUWDatabaseStatsExtractor
 {
@@ -37,6 +45,8 @@ public class DB2LUWDatabaseStatsExtractor
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
+    private final AuditLog                     auditLog;
+    private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
@@ -73,7 +83,7 @@ public class DB2LUWDatabaseStatsExtractor
     public DB2LUWDatabaseStatsExtractor(List<String>                validDatabases,
                                         SurveyActionServiceConnector surveyActionServiceConnector)
     {
-        this(validDatabases, null, null, surveyActionServiceConnector);
+        this(validDatabases, null, null, surveyActionServiceConnector, null, null);
     }
 
 
@@ -86,16 +96,22 @@ public class DB2LUWDatabaseStatsExtractor
      * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
      *                                     takes precedence over excludedSchemas
      * @param surveyActionServiceConnector calling connector
+     * @param auditLog                     logging destination for queries that fail (may be null)
+     * @param surveyActionServiceName      name of the calling survey action service, for the audit log
      */
     public DB2LUWDatabaseStatsExtractor(List<String>                validDatabases,
                                         List<String>                excludedSchemas,
                                         List<String>                includedSchemas,
-                                        SurveyActionServiceConnector surveyActionServiceConnector)
+                                        SurveyActionServiceConnector surveyActionServiceConnector,
+                                        AuditLog                    auditLog,
+                                        String                      surveyActionServiceName)
     {
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+        this.auditLog                     = auditLog;
+        this.surveyActionServiceName      = surveyActionServiceName;
     }
 
 
@@ -134,37 +150,38 @@ public class DB2LUWDatabaseStatsExtractor
      * for Linux, UNIX and Windows has no cross-database catalog view, so unlike Oracle's CDB root approach,
      * this cannot be gathered once for every requested database in a single call.
      * <br><br>
+     * The database gets an entry in the results before any query is issued, so that if its statistics
+     * cannot be read, its schemas are still surveyed.
+     * <br><br>
      * There is no direct catalog view giving total database size without the SYSPROC.GET_DBSIZE_INFO stored
      * procedure (which requires a CALL statement with OUT parameters rather than a plain query), so the
      * database size reported here is the sum of SYSIBMADM.ADMINTABINFO's per-table sizes - a metadata-only
-     * approximation, consistent with how table size is calculated in getTableSize() below.
+     * approximation, consistent with how table size is calculated in getSchemaStatistics() below.
      *
      * @param databaseName name of the database this connection is attached to
      * @param databaseConnection connection to the named database
-     * @throws SQLException            problem accessing the database
-     * @throws PropertyServerException problem create JSON properties
      */
-    void getDatabaseStatistics(String               databaseName,
-                               java.sql.Connection   databaseConnection) throws SQLException, PropertyServerException
+    void getDatabaseStatistics(String              databaseName,
+                               java.sql.Connection databaseConnection)
     {
         final String databaseSizeSQLCommand =
                 "SELECT SUM(DATA_OBJECT_P_SIZE + INDEX_OBJECT_P_SIZE + LONG_OBJECT_P_SIZE + LOB_OBJECT_P_SIZE) AS databasesize " +
                         "FROM SYSIBMADM.ADMINTABINFO";
 
-        try
+        RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
+
+        databaseMeasurement.setResourceName(databaseName);
+
+        DatabaseDetails databaseDetails = new DatabaseDetails(databaseMeasurement);
+
+        databaseResults.put(databaseName, databaseDetails);
+
+        /*
+         * SYSIBMADM.ADMINTABINFO needs more than the CONNECT privilege, so this query commonly fails.
+         */
+        try (PreparedStatement preparedStatement = databaseConnection.prepareStatement(databaseSizeSQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
-
-            databaseMeasurement.setResourceName(databaseName);
-
-            DatabaseDetails databaseDetails = new DatabaseDetails(databaseMeasurement);
-
-            databaseResults.put(databaseName, databaseDetails);
-
-            PreparedStatement preparedStatement = databaseConnection.prepareStatement(databaseSizeSQLCommand);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next())
             {
                 /*
@@ -172,35 +189,83 @@ public class DB2LUWDatabaseStatsExtractor
                  */
                 databaseDetails.setSize(resultSet.getLong("databasesize") * 1024L);
             }
-
-            resultSet.close();
-            preparedStatement.close();
         }
         catch (SQLException sqlException)
         {
-            try
-            {
-                databaseConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
-
-            throw sqlException;
+            logQueryFailure("database size", "database " + databaseName, sqlException);
         }
     }
 
 
     /**
      * Extract detailed information about the schemas, tables and columns in a database.
+     * <br><br>
+     * Each schema is surveyed with its own queries, so a failure is confined to the schema (or the
+     * part of the schema) where it occurred.
      *
      * @param databaseName          name of the database that is connected to
      * @param databaseSQLConnection connection to the named database
-     * @throws SQLException            problem accessing the database
+     * @throws SQLException the schemas in the database could not be listed
      */
-    void getSchemaStatistics(String databaseName,
+    void getSchemaStatistics(String              databaseName,
                              java.sql.Connection databaseSQLConnection) throws SQLException
+    {
+        final String schemataSQLCommand =
+                "SELECT SCHEMANAME FROM SYSCAT.SCHEMATA " +
+                        "WHERE SCHEMANAME NOT LIKE 'SYS%' AND SCHEMANAME NOT IN ('NULLID', 'SQLJ', 'DB2GSE') " +
+                        "ORDER BY SCHEMANAME";
+
+        DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = new ArrayList<>();
+
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(schemataSQLCommand);
+                 ResultSet         resultSet         = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String schemaName = resultSet.getString("SCHEMANAME");
+
+                    if (schemaShouldBeSurveyed(schemaName))
+                    {
+                        schemaNames.add(schemaName);
+                    }
+                }
+            }
+
+            for (String schemaName : schemaNames)
+            {
+                if ((surveyActionServiceConnector != null) && (! surveyActionServiceConnector.isActive()))
+                {
+                    return;
+                }
+
+                this.getSchemaStatistics(databaseName, databaseDetails, schemaName, databaseSQLConnection);
+            }
+
+            /*
+             * Count up instances of schema, tables and columns in database
+             */
+            databaseDetails.setUpCounts();
+        }
+    }
+
+
+    /**
+     * Extract detailed information about the tables and columns in a single schema.  Each query is
+     * independent: if one fails, it is logged and the others still contribute their results.
+     *
+     * @param databaseName          name of the database that is connected to
+     * @param databaseDetails       results for the database that is connected to
+     * @param schemaName            name of the schema to survey
+     * @param databaseSQLConnection connection to the database
+     */
+    private void getSchemaStatistics(String              databaseName,
+                                     DatabaseDetails     databaseDetails,
+                                     String              schemaName,
+                                     java.sql.Connection databaseSQLConnection)
     {
         /*
          * One row per column, giving its declared width/type/nullability plus a best-effort distinct-value
@@ -211,8 +276,7 @@ public class DB2LUWDatabaseStatsExtractor
          * for TYPE='F' (frequent-value) rows, so no window-function derivation is needed here.
          */
         final String columnStatsSQLCommand =
-                "SELECT c.TABSCHEMA AS schemaname, " +
-                        "       c.TABNAME AS tablename, " +
+                "SELECT c.TABNAME AS tablename, " +
                         "       c.COLNAME AS columnname, " +
                         "       c.LENGTH AS avgwidth, " +
                         "       c.TYPENAME AS typename, " +
@@ -221,39 +285,61 @@ public class DB2LUWDatabaseStatsExtractor
                         "       d.COLVALUE AS mostcommonvalue, " +
                         "       d.VALCOUNT AS mostcommonfreq " +
                         "FROM SYSCAT.COLUMNS c " +
-                        "JOIN SYSCAT.SCHEMATA u ON u.SCHEMANAME = c.TABSCHEMA AND u.SCHEMANAME NOT LIKE 'SYS%' AND u.SCHEMANAME NOT IN ('NULLID', 'SQLJ', 'DB2GSE') " +
                         "LEFT OUTER JOIN SYSSTAT.COLUMNS s ON s.TABSCHEMA = c.TABSCHEMA AND s.TABNAME = c.TABNAME AND s.COLNAME = c.COLNAME " +
-                        "LEFT OUTER JOIN SYSCAT.COLDIST d ON d.TABSCHEMA = c.TABSCHEMA AND d.TABNAME = c.TABNAME AND d.COLNAME = c.COLNAME AND d.TYPE = 'F' AND d.SEQNO = 1";
+                        "LEFT OUTER JOIN SYSCAT.COLDIST d ON d.TABSCHEMA = c.TABSCHEMA AND d.TABNAME = c.TABNAME AND d.COLNAME = c.COLNAME AND d.TYPE = 'F' AND d.SEQNO = 1 " +
+                        "WHERE c.TABSCHEMA = ?";
 
         /*
-         * One row per table, with insert/update/delete counts sourced from SYSIBMADM.MON_TAB_STATS - the
-         * direct Db2 analog of Oracle's all_tab_modifications / PostgreSQL's pg_stat_user_tables.n_tup_ins
-         * etc.  hasRowSecurity is read directly from SYSCAT.TABLES.ROWSECURITY, which reflects whether Db2's
-         * Row and Column Access Control (RCAC) is enabled on the table.
+         * One row per table.  hasRowSecurity is read directly from SYSCAT.TABLES.ROWSECURITY, which reflects
+         * whether Db2's Row and Column Access Control (RCAC) is enabled on the table.  This query only uses the
+         * catalog views, which every user that can connect is able to read, so the tables are recorded even if
+         * the monitoring and size queries below fail for lack of privileges.
          */
         final String tablesSQLCommand =
-                "SELECT t.TABSCHEMA AS schemaname, " +
-                        "       t.TABNAME AS tablename, " +
+                "SELECT t.TABNAME AS tablename, " +
                         "       t.OWNER AS tableowner, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM SYSCAT.INDEXES i WHERE i.TABSCHEMA = t.TABSCHEMA AND i.TABNAME = t.TABNAME) THEN 1 ELSE 0 END AS hasindexes, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM SYSCAT.TRIGGERS g WHERE g.TABSCHEMA = t.TABSCHEMA AND g.TABNAME = t.TABNAME) THEN 1 ELSE 0 END AS hastriggers, " +
-                        "       CASE WHEN t.ROWSECURITY = 'Y' THEN 1 ELSE 0 END AS hasrowsecurity, " +
-                        "       COALESCE(m.ROWS_INSERTED, 0) AS n_tup_ins, " +
-                        "       COALESCE(m.ROWS_UPDATED, 0) AS n_tup_upd, " +
-                        "       COALESCE(m.ROWS_DELETED, 0) AS n_tup_del " +
+                        "       CASE WHEN t.ROWSECURITY = 'Y' THEN 1 ELSE 0 END AS hasrowsecurity " +
                         "FROM SYSCAT.TABLES t " +
-                        "JOIN SYSCAT.SCHEMATA u ON u.SCHEMANAME = t.TABSCHEMA AND u.SCHEMANAME NOT LIKE 'SYS%' AND u.SCHEMANAME NOT IN ('NULLID', 'SQLJ', 'DB2GSE') " +
-                        "LEFT OUTER JOIN SYSIBMADM.MON_TAB_STATS m ON m.TABSCHEMA = t.TABSCHEMA AND m.TABNAME = t.TABNAME " +
-                        "WHERE t.TYPE = 'T'";
+                        "WHERE t.TYPE = 'T' AND t.TABSCHEMA = ?";
+
+        /*
+         * Insert/update/delete counts for each table, from the MON_GET_TABLE monitoring table function - the
+         * direct Db2 analog of Oracle's all_tab_modifications / PostgreSQL's pg_stat_user_tables.n_tup_ins
+         * etc.  MON_GET_TABLE returns a row per member (and per data partition), so the counts are summed for
+         * each table.  The -2 asks for the counts from all members.
+         */
+        final String tableActivitySQLCommand =
+                "SELECT m.TABNAME AS tablename, " +
+                        "       SUM(m.ROWS_INSERTED) AS n_tup_ins, " +
+                        "       SUM(m.ROWS_UPDATED) AS n_tup_upd, " +
+                        "       SUM(m.ROWS_DELETED) AS n_tup_del " +
+                        "FROM TABLE(MON_GET_TABLE(CAST(? AS VARCHAR(128)), CAST(NULL AS VARCHAR(128)), -2)) AS m " +
+                        "GROUP BY m.TABNAME";
+
+        /*
+         * The size of each table in the schema, from the SYSPROC.ADMIN_GET_TAB_INFO table function that
+         * underlies SYSIBMADM.ADMINTABINFO - the Db2 for Linux, UNIX and Windows equivalent of Microsoft SQL
+         * Server's sys.dm_db_partition_stats / PostgreSQL's pg_table_size() function.  Data, index and LOB
+         * object sizes are summed to give the table's total footprint.  Passing the schema name to the table
+         * function, rather than filtering the administrative view, means that only this schema's tables are
+         * examined.  A partitioned table returns a row per partition, so the sizes are summed for each table.
+         */
+        final String tableSizeSQLCommand =
+                "SELECT a.TABNAME AS tablename, " +
+                        "       SUM(a.DATA_OBJECT_P_SIZE + a.INDEX_OBJECT_P_SIZE + a.LONG_OBJECT_P_SIZE + a.LOB_OBJECT_P_SIZE) AS tablesize " +
+                        "FROM TABLE(SYSPROC.ADMIN_GET_TAB_INFO(CAST(? AS VARCHAR(128)), CAST(NULL AS VARCHAR(128)))) AS a " +
+                        "GROUP BY a.TABNAME";
 
         /*
          * Plain views.
          */
         final String viewsSQLCommand =
-                "SELECT v.VIEWSCHEMA AS schemaname, v.VIEWNAME AS viewname, v.DEFINER AS viewowner, v.TEXT AS definition " +
+                "SELECT v.VIEWNAME AS viewname, v.DEFINER AS viewowner, v.TEXT AS definition " +
                         "FROM SYSCAT.VIEWS v " +
-                        "JOIN SYSCAT.SCHEMATA u ON u.SCHEMANAME = v.VIEWSCHEMA AND u.SCHEMANAME NOT LIKE 'SYS%' AND u.SCHEMANAME NOT IN ('NULLID', 'SQLJ', 'DB2GSE') " +
-                        "JOIN SYSCAT.TABLES t ON t.TABSCHEMA = v.VIEWSCHEMA AND t.TABNAME = v.VIEWNAME AND t.TYPE = 'V'";
+                        "JOIN SYSCAT.TABLES t ON t.TABSCHEMA = v.VIEWSCHEMA AND t.TABNAME = v.VIEWNAME AND t.TYPE = 'V' " +
+                        "WHERE v.VIEWSCHEMA = ?";
 
         /*
          * Materialized Query Tables (MQTs) - Db2's direct equivalent of PostgreSQL materialized views.  An
@@ -261,333 +347,407 @@ public class DB2LUWDatabaseStatsExtractor
          * in SYSCAT.VIEWS carrying its defining query text.
          */
         final String materializedViewsSQLCommand =
-                "SELECT t.TABSCHEMA AS schemaname, " +
-                        "       t.TABNAME AS viewname, " +
+                "SELECT t.TABNAME AS viewname, " +
                         "       t.OWNER AS viewowner, " +
                         "       v.TEXT AS definition, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM SYSCAT.INDEXES i WHERE i.TABSCHEMA = t.TABSCHEMA AND i.TABNAME = t.TABNAME) THEN 1 ELSE 0 END AS hasindexes, " +
                         "       CASE WHEN t.CARD >= 0 THEN 1 ELSE 0 END AS ispopulated " +
                         "FROM SYSCAT.TABLES t " +
-                        "JOIN SYSCAT.SCHEMATA u ON u.SCHEMANAME = t.TABSCHEMA AND u.SCHEMANAME NOT LIKE 'SYS%' AND u.SCHEMANAME NOT IN ('NULLID', 'SQLJ', 'DB2GSE') " +
                         "LEFT OUTER JOIN SYSCAT.VIEWS v ON v.VIEWSCHEMA = t.TABSCHEMA AND v.VIEWNAME = t.TABNAME " +
-                        "WHERE t.TYPE = 'S'";
+                        "WHERE t.TYPE = 'S' AND t.TABSCHEMA = ?";
 
-        try
+        final String qualifiedSchemaName = databaseName + "." + schemaName;
+
+        /*
+         * Extract key stats about each column.  This builds up the basic structure of tables and columns and
+         * enables the calculation of the total number of tables and columns to be determined.  The declared
+         * width (LENGTH) is also used directly as the column's size measurement - like Microsoft SQL Server and
+         * Oracle, Db2 has no way to estimate the actual stored size of a column without scanning data beyond
+         * this auto-collected statistic, so LENGTH is used as a metadata-only approximation.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            preparedStatement.setString(1, schemaName);
 
-            if (databaseDetails != null)
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                /*
-                 * Extract key stats about each column in each database.  This builds up the basic structure of
-                 * schemas, tables and columns and enables the calculation of the total number of schemas, tables
-                 * and columns to be determined.  The declared width (LENGTH) is also used directly as the
-                 * column's size measurement - like Microsoft SQL Server and Oracle, Db2 has no way to estimate
-                 * the actual stored size of a column without scanning data beyond this auto-collected statistic,
-                 * so LENGTH is used as a metadata-only approximation.
-                 */
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand);
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
                 while (resultSet.next())
                 {
-                    String schemaName = resultSet.getString("schemaname");
+                    String  tableName              = resultSet.getString("tablename");
+                    String  columnName             = resultSet.getString("columnname");
+                    int     averageColumnWidth     = resultSet.getInt("avgwidth");
+                    long    numberOfDistinctValues = calculateNumberOfDistinctValues(resultSet.getLong("ndistinct"));
+                    String  mostCommonValue        = resultSet.getString("mostcommonvalue");
+                    String  mostCommonFrequency    = resultSet.getString("mostcommonfreq");
+                    String  columnTypeName         = resultSet.getString("typename");
+                    boolean columnNullable         = "Y".equals(resultSet.getString("isnullable"));
 
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName              = resultSet.getString("tablename");
-                        String  columnName             = resultSet.getString("columnname");
-                        int     averageColumnWidth     = resultSet.getInt("avgwidth");
-                        long    numberOfDistinctValues = calculateNumberOfDistinctValues(resultSet.getLong("ndistinct"));
-                        String  mostCommonValue        = resultSet.getString("mostcommonvalue");
-                        String  mostCommonFrequency     = resultSet.getString("mostcommonfreq");
-                        String  columnTypeName         = resultSet.getString("typename");
-                        boolean columnNullable         = "Y".equals(resultSet.getString("isnullable"));
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
+                    ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
 
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
-                        ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
-
-                        columnDetails.setColumnMeasurement(averageColumnWidth,
-                                                           numberOfDistinctValues,
-                                                           mostCommonValue,
-                                                           mostCommonFrequency,
-                                                           columnTypeName,
-                                                           !columnNullable);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract core information about the tables
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName            = resultSet.getString("tablename");
-                        String  tableOwner           = resultSet.getString("tableowner");
-                        boolean hasIndexes           = resultSet.getBoolean("hasindexes");
-                        boolean hasTriggers          = resultSet.getBoolean("hastriggers");
-                        boolean hasRowSecurity       = resultSet.getBoolean("hasrowsecurity");
-                        long    numberOfRowsInserted = resultSet.getLong("n_tup_ins");
-                        long    numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
-                        long    numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
-
-                        /*
-                         * Db2 for Linux, UNIX and Windows has no equivalent of PostgreSQL's CREATE RULE feature,
-                         * so hasRules is always reported as false.
-                         */
-                        tableDetails.setTableMeasurements(tableOwner,
-                                                          hasIndexes,
-                                                          false,
-                                                          hasTriggers,
-                                                          hasRowSecurity,
-                                                          numberOfRowsInserted,
-                                                          numberOfRowsUpdated,
-                                                          numberOfRowsDeleted);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-
-                /*
-                 * Extract stats about the views
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String viewName   = resultSet.getString("viewname");
-                        String viewOwner  = resultSet.getString("viewowner");
-                        String definition = resultSet.getString("definition");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
-
-                        tableDetails.setViewDetails(viewOwner, definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract stats about the materialized query tables.
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(materializedViewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  viewName    = resultSet.getString("viewname");
-                        String  viewOwner   = resultSet.getString("viewowner");
-                        String  definition  = resultSet.getString("definition");
-                        boolean hasIndexes  = resultSet.getBoolean("hasindexes");
-                        boolean isPopulated = resultSet.getBoolean("ispopulated");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
-
-                        tableDetails.setMaterializedViewDetails(viewOwner,
-                                                                hasIndexes,
-                                                                isPopulated,
-                                                                definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * At this point we have details of each schema, table, view and column.
-                 */
-                List<String> schemaNames = databaseDetails.getSchemaNames();
-
-                if (schemaNames != null)
-                {
-                    /*
-                     * Extract the total size of each table and roll it up into the owning schema.
-                     */
-                    for (String schemaName : schemaNames)
-                    {
-                        SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
-
-                        if (currentSchema != null)
-                        {
-                            List<String> tableNames = currentSchema.getTableNames();
-
-                            if (tableNames != null)
-                            {
-                                long schemaSize = 0L;
-
-                                for (String tableName : tableNames)
-                                {
-                                    TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
-
-                                    if (currentTable != null)
-                                    {
-                                        this.getTableSize(databaseSQLConnection, schemaName, currentTable);
-                                        schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
-                                    }
-                                }
-
-                                currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
-                            }
-                        }
-                    }
-
-                    /*
-                     * Count up instances of schema, tables and columns in database
-                     */
-                    databaseDetails.setUpCounts();
+                    columnDetails.setColumnMeasurement(averageColumnWidth,
+                                                       numberOfDistinctValues,
+                                                       mostCommonValue,
+                                                       mostCommonFrequency,
+                                                       columnTypeName,
+                                                       !columnNullable);
                 }
             }
         }
         catch (SQLException sqlException)
         {
-            /*
-             * This rollback helps to clean up any issues in the connection.
-             */
-            try
+            logQueryFailure("column statistics", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract core information about the tables
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                databaseSQLConnection.rollback();
+                while (resultSet.next())
+                {
+                    String  tableName      = resultSet.getString("tablename");
+                    String  tableOwner     = resultSet.getString("tableowner");
+                    boolean hasIndexes     = resultSet.getBoolean("hasindexes");
+                    boolean hasTriggers    = resultSet.getBoolean("hastriggers");
+                    boolean hasRowSecurity = resultSet.getBoolean("hasrowsecurity");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
+
+                    /*
+                     * Db2 for Linux, UNIX and Windows has no equivalent of PostgreSQL's CREATE RULE feature,
+                     * so hasRules is always reported as false.  The row counts are added from the monitoring
+                     * query below.
+                     */
+                    tableDetails.setTableMeasurements(tableOwner,
+                                                      hasIndexes,
+                                                      false,
+                                                      hasTriggers,
+                                                      hasRowSecurity,
+                                                      0L,
+                                                      0L,
+                                                      0L);
+                }
             }
-            catch (Exception error)
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("table details", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the views
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                // ignore
+                while (resultSet.next())
+                {
+                    String viewName   = resultSet.getString("viewname");
+                    String viewOwner  = resultSet.getString("viewowner");
+                    String definition = resultSet.getString("definition");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
+
+                    tableDetails.setViewDetails(viewOwner, definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the materialized query tables.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(materializedViewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String  viewName    = resultSet.getString("viewname");
+                    String  viewOwner   = resultSet.getString("viewowner");
+                    String  definition  = resultSet.getString("definition");
+                    boolean hasIndexes  = resultSet.getBoolean("hasindexes");
+                    boolean isPopulated = resultSet.getBoolean("ispopulated");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
+
+                    tableDetails.setMaterializedViewDetails(viewOwner,
+                                                            hasIndexes,
+                                                            isPopulated,
+                                                            definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("materialized query table definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        SchemaDetails currentSchema = databaseDetails.schemas.get(schemaName);
+
+        if (currentSchema != null)
+        {
+            /*
+             * Add the insert/update/delete counts to the tables already found.  MON_GET_TABLE needs a
+             * monitoring privilege, so this query commonly fails; the tables are still reported, without the
+             * counts.  Rows for tables that the queries above did not find are ignored.
+             */
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableActivitySQLCommand))
+            {
+                preparedStatement.setString(1, schemaName);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery())
+                {
+                    while (resultSet.next())
+                    {
+                        TableDetails currentTable = currentSchema.tables.get(resultSet.getString("tablename"));
+
+                        if (currentTable != null)
+                        {
+                            currentTable.setRowCounts(resultSet.getLong("n_tup_ins"),
+                                                      resultSet.getLong("n_tup_upd"),
+                                                      resultSet.getLong("n_tup_del"));
+                        }
+                    }
+                }
+            }
+            catch (SQLException sqlException)
+            {
+                logQueryFailure("table activity statistics", "schema " + qualifiedSchemaName, sqlException);
             }
 
-            throw sqlException;
+            /*
+             * Add the sizes to the tables already found.  ADMIN_GET_TAB_INFO needs more than the CONNECT
+             * privilege, so this query commonly fails; the tables are still reported, without their sizes.
+             */
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableSizeSQLCommand))
+            {
+                preparedStatement.setString(1, schemaName);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery())
+                {
+                    while (resultSet.next())
+                    {
+                        TableDetails currentTable = currentSchema.tables.get(resultSet.getString("tablename"));
+
+                        if (currentTable != null)
+                        {
+                            /*
+                             * ADMIN_GET_TAB_INFO reports sizes in kilobytes.
+                             */
+                            currentTable.setTableSize(resultSet.getLong("tablesize") * 1024L);
+                        }
+                    }
+                }
+            }
+            catch (SQLException sqlException)
+            {
+                logQueryFailure("table sizes", "schema " + qualifiedSchemaName, sqlException);
+            }
+
+            /*
+             * The total size of the schema is the sum of its tables' sizes.
+             */
+            long schemaSize = 0L;
+
+            for (TableDetails currentTable : currentSchema.tables.values())
+            {
+                schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
+            }
+
+            currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
         }
     }
 
 
     /**
-     * Convert the information retrieve from the database server into annotations recognized by the
-     * survey action framework.
+     * Record that a query failed.  The survey carries on without its results.
      *
-     * @return list of annotations
+     * @param informationSought description of the information the query was retrieving
+     * @param elementName       description of the element the query was about
+     * @param sqlException      the failure
+     */
+    private void logQueryFailure(String       informationSought,
+                                 String       elementName,
+                                 SQLException sqlException)
+    {
+        final String methodName = "logQueryFailure";
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                DB2LUWAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                                         informationSought,
+                                                                                         elementName,
+                                                                                         sqlException.getClass().getName(),
+                                                                                         sqlException.getMessage()));
+        }
+    }
+
+
+    /**
+     * Return the database-level annotations for every database whose results have not yet been released, and
+     * release them.  This is used when the survey stops after the database statistics have been gathered,
+     * before the schemas are surveyed - so the annotations have no schema, table or column counts.
+     *
+     * @return list of annotations, or null if there are no results
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getAnnotations() throws PropertyServerException
+    List<AnnotationProperties> getDatabaseAnnotations() throws PropertyServerException
     {
-        /*
-         * All information has been assembled so create the annotations.
-         */
         List<AnnotationProperties> annotations = new ArrayList<>();
 
-        for (String databaseName : databaseResults.keySet())
+        for (String databaseName : new ArrayList<>(databaseResults.keySet()))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
 
             if (databaseDetails != null)
             {
-                List<String> schemaNames = databaseDetails.getSchemaNames();
+                annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+            }
+        }
 
-                ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
+        if (! annotations.isEmpty())
+        {
+            return annotations;
+        }
 
-                databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
-                databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
+        return null;
+    }
 
-                databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
 
-                databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+    /**
+     * Build the annotation that holds the measurements for a database.
+     *
+     * @param databaseName name of the database
+     * @param databaseDetails results for the database
+     * @return annotation
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    private AnnotationProperties getDatabaseAnnotation(String          databaseName,
+                                                       DatabaseDetails databaseDetails) throws PropertyServerException
+    {
+        ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
 
-                annotations.add(databaseAnnotation);
+        databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
+        databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+        databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+        databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+        databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
 
-                for (String schemaName : schemaNames)
+        databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
+
+        databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+
+        return databaseAnnotation;
+    }
+
+
+    /**
+     * Convert the information retrieved from the database server about a database into annotations
+     * recognized by the survey action framework.  The results for the database are released once the
+     * annotations are created, so that a server survey does not hold the details of every database in memory
+     * at once.
+     *
+     * @param databaseName name of the database
+     * @return list of annotations, or null if there are no results for the database
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    List<AnnotationProperties> getAnnotations(String databaseName) throws PropertyServerException
+    {
+        List<AnnotationProperties> annotations = new ArrayList<>();
+
+        DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = databaseDetails.getSchemaNames();
+
+            annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+
+            for (String schemaName : schemaNames)
+            {
+                SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
+
+                if (currentSchema != null)
                 {
-                    SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
 
-                    if (currentSchema != null)
+                    schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
+                    schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
+                    schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
+                    schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
+                    schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
+
+                    schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
+
+                    schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
+
+                    annotations.add(schemaAnnotation);
+
+
+                    List<String> tableNames = currentSchema.getTableNames();
+
+                    if (tableNames != null)
                     {
-                        ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
-
-                        schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
-                        schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
-                        schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
-                        schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
-                        schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
-
-                        schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
-
-                        schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
-
-                        annotations.add(schemaAnnotation);
-
-
-                        List<String> tableNames = currentSchema.getTableNames();
-
-                        if (tableNames != null)
+                        for (String tableName : tableNames)
                         {
-                            for (String tableName : tableNames)
+                            TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
+
+                            if (currentTable != null)
                             {
-                                TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
+                                ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                if (currentTable != null)
+                                tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
+                                tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
+                                tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
+                                tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
+                                tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
+
+                                tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
+
+                                tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
+
+                                annotations.add(tableAnnotation);
+
+                                List<String> columnNames = currentTable.getColumnNames();
+
+                                if (columnNames != null)
                                 {
-                                    ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
-
-                                    tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
-                                    tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
-                                    tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
-                                    tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
-                                    tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
-
-                                    tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
-
-                                    tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
-
-                                    annotations.add(tableAnnotation);
-
-                                    List<String> columnNames = currentTable.getColumnNames();
-
-                                    if (columnNames != null)
+                                    for (String columnName : columnNames)
                                     {
-                                        for (String columnName : columnNames)
-                                        {
-                                            ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
+                                        ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                            ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
+                                        ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                            columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
-                                            columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
-                                            columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
-                                            columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
-                                            columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
+                                        columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
+                                        columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
+                                        columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
+                                        columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
+                                        columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
 
-                                            columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
+                                        columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
 
-                                            columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
+                                        columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
 
-                                            annotations.add(columnAnnotation);
-                                        }
+                                        annotations.add(columnAnnotation);
                                     }
                                 }
                             }
@@ -595,76 +755,14 @@ public class DB2LUWDatabaseStatsExtractor
                     }
                 }
             }
-        }
 
-        if (!annotations.isEmpty())
-        {
             return annotations;
         }
-
 
         /*
          * Empty or uncontactable database
          */
         return null;
-    }
-
-
-    /**
-     * Retrieve information about a table size using SYSIBMADM.ADMINTABINFO - the Db2 for Linux, UNIX and
-     * Windows equivalent of Microsoft SQL Server's sys.dm_db_partition_stats / PostgreSQL's pg_table_size()
-     * function.  Data, index and LOB object sizes are summed to give the table's total footprint.
-     *
-     * @param databaseSQLConnection connection to the appropriate database
-     * @param schemaOwner the raw (non-database-qualified) Db2 schema name
-     * @param tableDetails collected information about a table
-     * @throws SQLException errors accessing the database
-     */
-    void getTableSize(java.sql.Connection databaseSQLConnection,
-                      String              schemaOwner,
-                      TableDetails        tableDetails) throws SQLException
-    {
-        final String tableSizeSQLCommand =
-                "SELECT (DATA_OBJECT_P_SIZE + INDEX_OBJECT_P_SIZE + LONG_OBJECT_P_SIZE + LOB_OBJECT_P_SIZE) AS tablesize " +
-                        "FROM SYSIBMADM.ADMINTABINFO " +
-                        "WHERE TABSCHEMA = ? AND TABNAME = ?";
-
-        if (! tableDetails.columns.isEmpty())
-        {
-            try
-            {
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableSizeSQLCommand);
-
-                preparedStatement.setString(1, schemaOwner);
-                preparedStatement.setString(2, tableDetails.getTableName());
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                if (resultSet.next())
-                {
-                    /*
-                     * ADMINTABINFO reports sizes in kilobytes.
-                     */
-                    tableDetails.setTableSize(resultSet.getLong("tablesize") * 1024L);
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-            }
-            catch (SQLException sqlException)
-            {
-                try
-                {
-                    databaseSQLConnection.rollback();
-                }
-                catch (Exception error)
-                {
-                    // ignore
-                }
-
-                throw sqlException;
-            }
-        }
     }
 
 
@@ -1043,6 +1141,25 @@ public class DB2LUWDatabaseStatsExtractor
             this.tableMeasurement.setHasRules(hasRules);
             this.tableMeasurement.setHasTriggers(hasTriggers);
             this.tableMeasurement.setHasRowSecurity(hasRowSecurity);
+            this.tableMeasurement.setNumberOfRowsInserted(numberOfRowsInserted);
+            this.tableMeasurement.setNumberOfRowsUpdated(numberOfRowsUpdated);
+            this.tableMeasurement.setNumberOfRowsDeleted(numberOfRowsDeleted);
+        }
+
+
+        /**
+         * Set up the counts of the rows changed in the table.  These come from a monitoring query that is
+         * separate from the catalog query that supplies the other table measurements, so that the table is still
+         * reported if the userId is not permitted to read the monitoring data.
+         *
+         * @param numberOfRowsInserted how many rows have been inserted
+         * @param numberOfRowsUpdated how many rows have been updated
+         * @param numberOfRowsDeleted how many rows have been deleted
+         */
+        void setRowCounts(long numberOfRowsInserted,
+                          long numberOfRowsUpdated,
+                          long numberOfRowsDeleted)
+        {
             this.tableMeasurement.setNumberOfRowsInserted(numberOfRowsInserted);
             this.tableMeasurement.setNumberOfRowsUpdated(numberOfRowsUpdated);
             this.tableMeasurement.setNumberOfRowsDeleted(numberOfRowsDeleted);

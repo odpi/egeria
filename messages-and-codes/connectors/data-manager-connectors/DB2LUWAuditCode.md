@@ -9,7 +9,7 @@ The DB2LUWAuditCode is used to define the message content for the OMRS Audit Log
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 6 |
+| **Number of messages** | 8 |
 | **Message identifiers begin** | `DB2LUW-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/db2luw-server-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/db2luw-server-connectors) |
@@ -27,6 +27,8 @@ The DB2LUWAuditCode is used to define the message content for the OMRS Audit Log
 | [DB2LUW-CONNECTOR-0004](#db2luw-connector-0004) | INFO | The {0} integration connector is skipping Db2 for Linux, UNIX and Windows Database {1} ({2}) because it is already catalogued |
 | [DB2LUW-CONNECTOR-0007](#db2luw-connector-0007) | INFO | The {0} Db2 for Linux, UNIX and Windows Connector has been supplied with a friendship connector with GUID {1} |
 | [DB2LUW-CONNECTOR-0009](#db2luw-connector-0009) | INFO | The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Db2 for Linux, UNIX and Windows Database Asset {3} for Database {4} |
+| [DB2LUW-CONNECTOR-0010](#db2luw-connector-0010) | ERROR | The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3} |
+| [DB2LUW-CONNECTOR-0011](#db2luw-connector-0011) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -152,6 +154,48 @@ The connector has requested that its friendship connector starts to catalog a ne
 **User action**
 
 Verify that the cataloguing starts the next time that the friendship connector refreshes.
+
+
+----
+
+### DB2LUW-CONNECTOR-0010
+
+> The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `DB2LUWAuditCode.DATABASE_NOT_SURVEYED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The survey report has no results for this database.  The survey continues with the remaining databases.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId, a database name in the includeDatabaseList configuration property that is not catalogued on the server, or a database that is not accepting connections.  Once it is resolved, rerun the survey.
+
+
+----
+
+### DB2LUW-CONNECTOR-0011
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `DB2LUWAuditCode.SURVEY_QUERY_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId (the SYSIBMADM administrative views and the ADMIN\_GET\_TAB\_INFO and MON\_GET\_TABLE table functions need more than the CONNECT privilege), or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

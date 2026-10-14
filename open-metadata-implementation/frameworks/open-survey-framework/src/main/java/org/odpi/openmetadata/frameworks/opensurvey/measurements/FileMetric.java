@@ -27,7 +27,6 @@ public enum FileMetric implements SurveyMetric
     IS_HIDDEN ("hidden", "boolean", "Hidden file?", "Is this file hidden from standard users?"),
     CREATION_TIME ("creationTime", "date", "Creation time", "The time that the file was created."),
     LAST_MODIFIED_TIME ("lastModifiedTime", "date", "Last modified time", "The time that the file was last modified."),
-    LAST_ACCESSED_TIME ("lastAccessedTime", "date", "Last accessed time", "The time that the file was last accessed."),
     FILE_SIZE ("fileSize", "long", "File Size", "How many bytes are in the file."),
     RECORD_COUNT ("recordCount", "long", "Record Count", "How many record does this data file contain?"),
 

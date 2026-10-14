@@ -22,7 +22,7 @@ public enum AnalysisStep
     PROFILE_DATA(  "Profile Data", "The survey action service is profiling the data associated with the resource."),
     PROFILING_ASSOCIATED_RESOURCES(  "Profiling Associated Resources", "The survey action service is profiling other resources associated with the surveyed resource."),
     PRODUCE_INVENTORY("Produce Inventory", "The survey action service is writing an inventory of the contents of the surveyed resource."),
-    PRODUCE_ACTIONS("Produce Exceptions", "The survey action service is writing out information about issues that is discovered during its analysis."),
+    PRODUCE_ACTIONS("Produce Actions", "The survey action service is writing out information about issues that is discovered during its analysis."),
     SCHEMA_VALIDATION("Schema Validation", "The survey action service is validating that the schema attached to the asset matches the structure of the data stored in the asset."),
     DATA_VALIDATION("Data Validation", "The survey action service is validating that the data stored in the resource matches the specification."),
     ;

@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.oracle.survey;
 
+import org.odpi.openmetadata.adapters.connectors.oracle.ffdc.OracleAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -20,12 +22,20 @@ import java.util.UUID;
 /**
  * OracleDatabaseStatsExtractor gathers the same measurements as the PostgreSQL equivalent
  * (org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseStatsExtractor) but sources
- * them from Oracle Database's data dictionary views (v$pdbs, cdb_data_files, all_tables, all_views,
+ * them from Oracle Database's data dictionary views (v$pdbs, cdb_data_files, all_users, all_tables, all_views,
  * all_mviews, all_tab_columns, all_tab_col_statistics, all_tab_histograms, all_tab_modifications,
  * dba_segments) instead of pg_catalog.  All of these sources are metadata/statistics only - no user data
  * is read.  The database-level connection is to the CDB root (for the cross-PDB size lookup); the
  * schema-level connection is to a specific pluggable database (PDB), which is the point at which the
  * ALL_* data dictionary views become scoped to that one container.
+ * <br><br>
+ * The connections passed to it are expected to be in auto-commit mode, so that every query is its own short
+ * transaction.  Oracle has no aborted-transaction state like PostgreSQL, but a long-running transaction still
+ * pins undo for its read-consistent snapshot, risking ORA-01555 (snapshot too old) on a busy server.  Each
+ * schema is surveyed with its own set of queries, and a query that fails is logged and skipped, so one
+ * inaccessible schema or dropped table leaves a gap in the results rather than ending the survey.
+ * <br><br>
+ * Oracle JDBC rejects a trailing ';' on a plain SQL statement, so none of the statements here have one.
  */
 public class OracleDatabaseStatsExtractor
 {
@@ -33,6 +43,8 @@ public class OracleDatabaseStatsExtractor
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
+    private final AuditLog                     auditLog;
+    private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
@@ -46,7 +58,7 @@ public class OracleDatabaseStatsExtractor
     public OracleDatabaseStatsExtractor(List<String>                validDatabases,
                                         SurveyActionServiceConnector surveyActionServiceConnector)
     {
-        this(validDatabases, null, null, surveyActionServiceConnector);
+        this(validDatabases, null, null, surveyActionServiceConnector, null, null);
     }
 
 
@@ -59,25 +71,31 @@ public class OracleDatabaseStatsExtractor
      * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
      *                                     takes precedence over excludedSchemas
      * @param surveyActionServiceConnector calling connector
+     * @param auditLog                     logging destination for queries that fail (may be null)
+     * @param surveyActionServiceName      name of the calling survey action service, for the audit log
      */
     public OracleDatabaseStatsExtractor(List<String>                validDatabases,
                                         List<String>                excludedSchemas,
                                         List<String>                includedSchemas,
-                                        SurveyActionServiceConnector surveyActionServiceConnector)
+                                        SurveyActionServiceConnector surveyActionServiceConnector,
+                                        AuditLog                    auditLog,
+                                        String                      surveyActionServiceName)
     {
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+        this.auditLog                     = auditLog;
+        this.surveyActionServiceName      = surveyActionServiceName;
     }
 
 
     /**
      * Determine whether a schema should be surveyed.  A schema with no name never is.  Oracle-maintained
-     * schemas (SYS, SYSTEM and the like) are not tested here because the catalog queries already leave them out
-     * by joining to all_users on oracle_maintained = 'N'.  Otherwise the include list, if there is one, decides;
-     * failing that, the exclude list does.  This follows SurveyContext.elementShouldBeSurveyed, which applies
-     * the same rule to database names.
+     * schemas (SYS, SYSTEM and the like) are not tested here because the schema-list query already leaves
+     * them out by selecting from all_users on oracle_maintained = 'N'.  Otherwise the include list, if there
+     * is one, decides; failing that, the exclude list does.  This follows SurveyContext.elementShouldBeSurveyed,
+     * which applies the same rule to database names.
      *
      * @param schemaName name of the schema
      * @return flag indicating whether to gather statistics for the schema
@@ -105,16 +123,14 @@ public class OracleDatabaseStatsExtractor
     /**
      * Retrieve statistics about each requested pluggable database (PDB).
      * This is expected to be called on a connection to the CDB root, since v$pdbs and cdb_data_files are
-     * cross-container catalog views only visible from there.
+     * cross-container catalog views that only show every PDB from there (from inside a PDB they show just
+     * that PDB, which is what the single-database survey needs).  Every requested database gets an entry in
+     * the results, even if its statistics cannot be read, so that its schemas can still be surveyed.
      *
      * @param cdbRootConnection connection to the CDB root of the Oracle Database Server
-     * @throws SQLException            problem accessing the database
-     * @throws PropertyServerException problem create JSON properties
      */
-    void getDatabaseStatistics(java.sql.Connection cdbRootConnection) throws SQLException, PropertyServerException
+    void getDatabaseStatistics(java.sql.Connection cdbRootConnection)
     {
-        final String databasesSQLCommand = "SELECT name FROM v$pdbs WHERE name != 'PDB$SEED';";
-
         /*
          * cdb_data_files is a cross-container catalog view listing the datafiles of every PDB in the CDB,
          * joined here via con_id back to the PDB name - the direct equivalent of Microsoft SQL Server's
@@ -124,46 +140,28 @@ public class OracleDatabaseStatsExtractor
                 "SELECT p.name AS pdbname, SUM(f.bytes) AS databasesize " +
                         "FROM v$pdbs p " +
                         "JOIN cdb_data_files f ON f.con_id = p.con_id " +
-                        "GROUP BY p.name;";
+                        "GROUP BY p.name";
 
-        try
+        for (String databaseName : validDatabases)
         {
-            /*
-             * Identify the requested PDBs that actually exist on this server.
-             */
-            PreparedStatement preparedStatement = cdbRootConnection.prepareStatement(databasesSQLCommand);
+            RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            databaseMeasurement.setResourceName(databaseName);
+            databaseResults.put(databaseName, new DatabaseDetails(databaseMeasurement));
+        }
 
-            while (resultSet.next())
-            {
-                String databaseName = resultSet.getString("name");
-
-                if (validDatabases.contains(databaseName))
-                {
-                    RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
-
-                    databaseMeasurement.setResourceName(databaseName);
-
-                    databaseResults.put(databaseName, new DatabaseDetails(databaseMeasurement));
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Oracle has no cross-PDB equivalent of Microsoft SQL Server's sys.dm_db_index_usage_stats /
-             * PostgreSQL's pg_stat_database read/write counters that can be queried from the CDB root without
-             * the Diagnostics Pack (AWR), so rowsFetched/rowsUpdated are left at their default of zero at the
-             * database level - in the same way that the Microsoft SQL Server connector leaves
-             * rowsInserted/rowsDeleted at zero at this level.
-             */
-
-            preparedStatement = cdbRootConnection.prepareStatement(databaseSizeSQLCommand);
-
-            resultSet = preparedStatement.executeQuery();
-
+        /*
+         * Oracle has no cross-PDB equivalent of Microsoft SQL Server's sys.dm_db_index_usage_stats /
+         * PostgreSQL's pg_stat_database read/write counters that can be queried from the CDB root without
+         * the Diagnostics Pack (AWR), so rowsFetched/rowsUpdated are left at their default of zero at the
+         * database level - in the same way that the Microsoft SQL Server connector leaves
+         * rowsInserted/rowsDeleted at zero at this level.
+         *
+         * Extract the total size of each database.
+         */
+        try (PreparedStatement preparedStatement = cdbRootConnection.prepareStatement(databaseSizeSQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
+        {
             while (resultSet.next())
             {
                 DatabaseDetails currentDatabase = databaseResults.get(resultSet.getString("pdbname"));
@@ -173,22 +171,10 @@ public class OracleDatabaseStatsExtractor
                     currentDatabase.setSize(resultSet.getLong("databasesize"));
                 }
             }
-
-            resultSet.close();
-            preparedStatement.close();
         }
         catch (SQLException sqlException)
         {
-            try
-            {
-                cdbRootConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
-
-            throw sqlException;
+            logQueryFailure("pluggable database sizes", "the database server", sqlException);
         }
     }
 
@@ -198,13 +184,73 @@ public class OracleDatabaseStatsExtractor
      * This only returns information from the connected PDB - so the connection needs to be pointing directly
      * at the named PDB's service (rather than the CDB root), which is what makes the ALL_* data dictionary
      * views resolve to just that one container.
+     * <br><br>
+     * Each schema is surveyed with its own queries, so a failure is confined to the schema (or the
+     * part of the schema) where it occurred.
      *
      * @param databaseName          name of the pluggable database that is connected to
      * @param databaseSQLConnection connection to the named pluggable database
-     * @throws SQLException            problem accessing the database
+     * @throws SQLException the schemas in the database could not be listed
      */
-    void getSchemaStatistics(String databaseName,
+    void getSchemaStatistics(String              databaseName,
                              java.sql.Connection databaseSQLConnection) throws SQLException
+    {
+        /*
+         * Oracle-maintained schemas (SYS, SYSTEM, XDB and the like) are left out.
+         */
+        final String schemasSQLCommand = "SELECT username FROM all_users WHERE oracle_maintained = 'N' ORDER BY username";
+
+        DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = new ArrayList<>();
+
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(schemasSQLCommand);
+                 ResultSet         resultSet         = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String schemaName = resultSet.getString("username");
+
+                    if (schemaShouldBeSurveyed(schemaName))
+                    {
+                        schemaNames.add(schemaName);
+                    }
+                }
+            }
+
+            for (String schemaName : schemaNames)
+            {
+                if ((surveyActionServiceConnector != null) && (! surveyActionServiceConnector.isActive()))
+                {
+                    return;
+                }
+
+                this.getSchemaStatistics(databaseDetails, databaseName, schemaName, databaseSQLConnection);
+            }
+
+            /*
+             * Count up instances of schema, tables and columns in database
+             */
+            databaseDetails.setUpCounts();
+        }
+    }
+
+
+    /**
+     * Extract detailed information about the tables and columns in a single schema.  Each query is
+     * independent: if one fails, it is logged and the others still contribute their results.
+     *
+     * @param databaseDetails       results for the pluggable database that is connected to
+     * @param databaseName          name of the pluggable database that is connected to
+     * @param schemaName            name of the schema (owner) to survey
+     * @param databaseSQLConnection connection to the pluggable database
+     */
+    private void getSchemaStatistics(DatabaseDetails     databaseDetails,
+                                     String              databaseName,
+                                     String              schemaName,
+                                     java.sql.Connection databaseSQLConnection)
     {
         /*
          * One row per column, giving its declared width/type/nullability plus a best-effort distinct-value estimate
@@ -216,19 +262,18 @@ public class OracleDatabaseStatsExtractor
          * difference between its endpoint_number and the previous bucket's endpoint_number.
          */
         final String columnStatsSQLCommand =
-                "SELECT schemaname, tablename, columnname, avgwidth, typename, isnullable, ndistinct, mostcommonvalue, mostcommonfreq " +
+                "SELECT tablename, columnname, avgwidth, typename, isnullable, ndistinct, mostcommonvalue, mostcommonfreq " +
                         "FROM ( " +
-                        "    SELECT schemaname, tablename, columnname, avgwidth, typename, isnullable, ndistinct, mostcommonvalue, mostcommonfreq, " +
+                        "    SELECT tablename, columnname, avgwidth, typename, isnullable, ndistinct, mostcommonvalue, mostcommonfreq, " +
                         /*
                          * Oracle does not allow a window function expression to be referenced directly inside the
                          * ORDER BY of another window function (ORA-30483), so the LAG()-derived mostcommonfreq is
                          * computed as a named column in the inner subquery first, and only that plain column name
                          * is referenced by ROW_NUMBER()'s ORDER BY here.
                          */
-                        "           ROW_NUMBER() OVER (PARTITION BY schemaname, tablename, columnname ORDER BY mostcommonfreq DESC NULLS LAST) AS rn " +
+                        "           ROW_NUMBER() OVER (PARTITION BY tablename, columnname ORDER BY mostcommonfreq DESC NULLS LAST) AS rn " +
                         "    FROM ( " +
-                        "        SELECT c.owner AS schemaname, " +
-                        "               c.table_name AS tablename, " +
+                        "        SELECT c.table_name AS tablename, " +
                         "               c.column_name AS columnname, " +
                         "               c.avg_col_len AS avgwidth, " +
                         "               c.data_type AS typename, " +
@@ -237,9 +282,9 @@ public class OracleDatabaseStatsExtractor
                         "               h.endpoint_actual_value AS mostcommonvalue, " +
                         "               h.endpoint_number - LAG(h.endpoint_number, 1, 0) OVER (PARTITION BY h.owner, h.table_name, h.column_name ORDER BY h.endpoint_number) AS mostcommonfreq " +
                         "        FROM all_tab_columns c " +
-                        "        JOIN all_users u ON u.username = c.owner AND u.oracle_maintained = 'N' " +
                         "        LEFT OUTER JOIN all_tab_col_statistics s ON s.owner = c.owner AND s.table_name = c.table_name AND s.column_name = c.column_name " +
                         "        LEFT OUTER JOIN all_tab_histograms h ON h.owner = c.owner AND h.table_name = c.table_name AND h.column_name = c.column_name AND h.endpoint_actual_value IS NOT NULL " +
+                        "        WHERE c.owner = ? " +
                         "    ) base " +
                         ") ranked " +
                         "WHERE rn = 1";
@@ -249,10 +294,11 @@ public class OracleDatabaseStatsExtractor
          * Oracle analog of Microsoft SQL Server's sys.dm_db_index_operational_stats / PostgreSQL's
          * pg_stat_user_tables.n_tup_ins/n_tup_upd/n_tup_del.  hasRowSecurity is derived from all_policies,
          * which lists Oracle's Virtual Private Database (VPD) row-level security policies.
+         * all_tab_modifications has a row per partition as well as one for the whole table (partition_name
+         * null), so only the whole-table row is joined to avoid repeating the table.
          */
         final String tablesSQLCommand =
-                "SELECT t.owner AS schemaname, " +
-                        "       t.table_name AS tablename, " +
+                "SELECT t.table_name AS tablename, " +
                         "       t.owner AS tableowner, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM all_indexes i WHERE i.table_owner = t.owner AND i.table_name = t.table_name) THEN 1 ELSE 0 END AS hasindexes, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM all_triggers tr WHERE tr.table_owner = t.owner AND tr.table_name = t.table_name) THEN 1 ELSE 0 END AS hastriggers, " +
@@ -261,346 +307,417 @@ public class OracleDatabaseStatsExtractor
                         "       NVL(m.updates, 0) AS n_tup_upd, " +
                         "       NVL(m.deletes, 0) AS n_tup_del " +
                         "FROM all_tables t " +
-                        "JOIN all_users u ON u.username = t.owner AND u.oracle_maintained = 'N' " +
-                        "LEFT OUTER JOIN all_tab_modifications m ON m.table_owner = t.owner AND m.table_name = t.table_name";
+                        "LEFT OUTER JOIN all_tab_modifications m ON m.table_owner = t.owner AND m.table_name = t.table_name AND m.partition_name IS NULL " +
+                        "WHERE t.owner = ?";
 
         /*
          * Plain views.
          */
         final String viewsSQLCommand =
-                "SELECT v.owner AS schemaname, v.view_name AS viewname, v.owner AS viewowner, v.text AS definition " +
+                "SELECT v.view_name AS viewname, v.owner AS viewowner, v.text AS definition " +
                         "FROM all_views v " +
-                        "JOIN all_users u ON u.username = v.owner AND u.oracle_maintained = 'N'";
+                        "WHERE v.owner = ?";
 
         /*
          * Materialized views - Oracle's direct equivalent of PostgreSQL materialized views.
          */
         final String materializedViewsSQLCommand =
-                "SELECT m.owner AS schemaname, " +
-                        "       m.mview_name AS viewname, " +
+                "SELECT m.mview_name AS viewname, " +
                         "       m.owner AS viewowner, " +
                         "       m.query AS definition, " +
                         "       CASE WHEN EXISTS (SELECT 1 FROM all_indexes i WHERE i.table_owner = m.owner AND i.table_name = m.mview_name) THEN 1 ELSE 0 END AS hasindexes, " +
                         "       CASE WHEN m.last_refresh_date IS NOT NULL THEN 1 ELSE 0 END AS ispopulated " +
                         "FROM all_mviews m " +
-                        "JOIN all_users u ON u.username = m.owner AND u.oracle_maintained = 'N'";
+                        "WHERE m.owner = ?";
 
-        try
+        /*
+         * The size of every table in the schema, using dba_segments - the Oracle equivalent of Microsoft
+         * SQL Server's sys.dm_db_partition_stats / PostgreSQL's pg_table_size() function.  Table, partition
+         * and subpartition segments are summed to cover both partitioned and non-partitioned tables.
+         * <br><br>
+         * Unlike ALL_TABLES/ALL_TAB_COLUMNS etc., there is no ALL_SEGMENTS view in Oracle - only USER_SEGMENTS
+         * (the connected user's own segments) and DBA_SEGMENTS (every segment, requiring SELECT_CATALOG_ROLE or
+         * DBA privilege).  Since this connector already needs schema-spanning visibility for other catalog
+         * views such as ALL_TAB_MODIFICATIONS and ALL_POLICIES, DBA_SEGMENTS is used here rather than narrowing
+         * to just the connecting user's own segments.  It is a separate query, rather than a join on the tables
+         * query, so that a userId without access to DBA_SEGMENTS still gets the rest of the table details.
+         */
+        final String tableSizesSQLCommand =
+                "SELECT segment_name AS tablename, SUM(bytes) AS tablesize " +
+                        "FROM dba_segments " +
+                        "WHERE owner = ? AND segment_type IN ('TABLE','TABLE PARTITION','TABLE SUBPARTITION') " +
+                        "GROUP BY segment_name";
+
+        final String qualifiedSchemaName = databaseName + "." + schemaName;
+
+        /*
+         * Extract key stats about each column.  This builds up the basic structure of tables and columns and
+         * enables the calculation of the total number of tables and columns to be determined.  The declared
+         * average column width (avg_col_len) is also used directly as the column's size measurement - like
+         * Microsoft SQL Server, Oracle has no way to estimate the actual stored size of a column without
+         * scanning data beyond this auto-collected statistic, so avg_col_len is used as a metadata-only
+         * approximation.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            preparedStatement.setString(1, schemaName);
 
-            if (databaseDetails != null)
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                /*
-                 * Extract key stats about each column in each database.  This builds up the basic structure of
-                 * schemas, tables and columns and enables the calculation of the total number of schemas, tables
-                 * and columns to be determined.  The declared average column width (avg_col_len) is also used
-                 * directly as the column's size measurement - like Microsoft SQL Server, Oracle has no way to
-                 * estimate the actual stored size of a column without scanning data beyond this auto-collected
-                 * statistic, so avg_col_len is used as a metadata-only approximation.
-                 */
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(columnStatsSQLCommand);
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
                 while (resultSet.next())
                 {
-                    String schemaName = resultSet.getString("schemaname");
+                    String  tableName              = resultSet.getString("tablename");
+                    String  columnName             = resultSet.getString("columnname");
+                    int     averageColumnWidth     = resultSet.getInt("avgwidth");
+                    long    numberOfDistinctValues = resultSet.getLong("ndistinct");
+                    String  mostCommonValue        = resultSet.getString("mostcommonvalue");
+                    String  mostCommonFrequency    = resultSet.getString("mostcommonfreq");
+                    String  columnTypeName         = resultSet.getString("typename");
+                    boolean columnNullable         = "Y".equals(resultSet.getString("isnullable"));
 
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName              = resultSet.getString("tablename");
-                        String  columnName             = resultSet.getString("columnname");
-                        int     averageColumnWidth     = resultSet.getInt("avgwidth");
-                        long    numberOfDistinctValues = resultSet.getLong("ndistinct");
-                        String  mostCommonValue        = resultSet.getString("mostcommonvalue");
-                        String  mostCommonFrequency     = resultSet.getString("mostcommonfreq");
-                        String  columnTypeName         = resultSet.getString("typename");
-                        boolean columnNullable         = "Y".equals(resultSet.getString("isnullable"));
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
+                    ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
 
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
-                        ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
-
-                        columnDetails.setColumnMeasurement(averageColumnWidth,
-                                                           numberOfDistinctValues,
-                                                           mostCommonValue,
-                                                           mostCommonFrequency,
-                                                           columnTypeName,
-                                                           !columnNullable);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract core information about the tables
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  tableName            = resultSet.getString("tablename");
-                        String  tableOwner           = resultSet.getString("tableowner");
-                        boolean hasIndexes           = resultSet.getBoolean("hasindexes");
-                        boolean hasTriggers          = resultSet.getBoolean("hastriggers");
-                        boolean hasRowSecurity       = resultSet.getBoolean("hasrowsecurity");
-                        long    numberOfRowsInserted = resultSet.getLong("n_tup_ins");
-                        long    numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
-                        long    numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
-
-                        /*
-                         * Oracle has no equivalent of PostgreSQL's CREATE RULE feature, so hasRules is
-                         * always reported as false.
-                         */
-                        tableDetails.setTableMeasurements(tableOwner,
-                                                          hasIndexes,
-                                                          false,
-                                                          hasTriggers,
-                                                          hasRowSecurity,
-                                                          numberOfRowsInserted,
-                                                          numberOfRowsUpdated,
-                                                          numberOfRowsDeleted);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-
-                /*
-                 * Extract stats about the views
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String viewName   = resultSet.getString("viewname");
-                        String viewOwner  = resultSet.getString("viewowner");
-                        String definition = resultSet.getString("definition");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
-
-                        tableDetails.setViewDetails(viewOwner, definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * Extract stats about the materialized views.
-                 */
-                preparedStatement = databaseSQLConnection.prepareStatement(materializedViewsSQLCommand);
-                resultSet         = preparedStatement.executeQuery();
-
-                while (resultSet.next())
-                {
-                    String schemaName = resultSet.getString("schemaname");
-
-                    if (schemaShouldBeSurveyed(schemaName))
-                    {
-                        String  viewName    = resultSet.getString("viewname");
-                        String  viewOwner   = resultSet.getString("viewowner");
-                        String  definition  = resultSet.getString("definition");
-                        boolean hasIndexes  = resultSet.getBoolean("hasindexes");
-                        boolean isPopulated = resultSet.getBoolean("ispopulated");
-
-                        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
-                        TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
-
-                        tableDetails.setMaterializedViewDetails(viewOwner,
-                                                                hasIndexes,
-                                                                isPopulated,
-                                                                definition);
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                /*
-                 * At this point we have details of each schema, table, view and column.
-                 */
-                List<String> schemaNames = databaseDetails.getSchemaNames();
-
-                if (schemaNames != null)
-                {
-                    /*
-                     * Extract the total size of each table and roll it up into the owning schema.
-                     */
-                    for (String schemaName : schemaNames)
-                    {
-                        SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
-
-                        if (currentSchema != null)
-                        {
-                            List<String> tableNames = currentSchema.getTableNames();
-
-                            if (tableNames != null)
-                            {
-                                long schemaSize = 0L;
-
-                                for (String tableName : tableNames)
-                                {
-                                    TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
-
-                                    if (currentTable != null)
-                                    {
-                                        this.getTableSize(databaseSQLConnection, schemaName, currentTable);
-                                        schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
-                                    }
-                                }
-
-                                currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
-                            }
-                        }
-                    }
-
-                    /*
-                     * Count up instances of schema, tables and columns in database
-                     */
-                    databaseDetails.setUpCounts();
+                    columnDetails.setColumnMeasurement(averageColumnWidth,
+                                                       numberOfDistinctValues,
+                                                       mostCommonValue,
+                                                       mostCommonFrequency,
+                                                       columnTypeName,
+                                                       !columnNullable);
                 }
             }
         }
         catch (SQLException sqlException)
         {
-            /*
-             * This rollback helps to clean up any issues in the connection.
-             */
-            try
+            logQueryFailure("column statistics", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract core information about the tables
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tablesSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                databaseSQLConnection.rollback();
+                while (resultSet.next())
+                {
+                    String  tableName            = resultSet.getString("tablename");
+                    String  tableOwner           = resultSet.getString("tableowner");
+                    boolean hasIndexes           = resultSet.getBoolean("hasindexes");
+                    boolean hasTriggers          = resultSet.getBoolean("hastriggers");
+                    boolean hasRowSecurity       = resultSet.getBoolean("hasrowsecurity");
+                    long    numberOfRowsInserted = resultSet.getLong("n_tup_ins");
+                    long    numberOfRowsUpdated  = resultSet.getLong("n_tup_upd");
+                    long    numberOfRowsDeleted  = resultSet.getLong("n_tup_del");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, tableName);
+
+                    /*
+                     * Oracle has no equivalent of PostgreSQL's CREATE RULE feature, so hasRules is
+                     * always reported as false.
+                     */
+                    tableDetails.setTableMeasurements(tableOwner,
+                                                      hasIndexes,
+                                                      false,
+                                                      hasTriggers,
+                                                      hasRowSecurity,
+                                                      numberOfRowsInserted,
+                                                      numberOfRowsUpdated,
+                                                      numberOfRowsDeleted);
+                }
             }
-            catch (Exception error)
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("table details", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the views
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(viewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                // ignore
+                while (resultSet.next())
+                {
+                    String viewName   = resultSet.getString("viewname");
+                    String viewOwner  = resultSet.getString("viewowner");
+                    String definition = resultSet.getString("definition");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
+
+                    tableDetails.setViewDetails(viewOwner, definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract details of the materialized views.  Oracle also lists a materialized view's container
+         * table in all_tables under the same name, so this reclassifies that entry rather than adding a new one.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(materializedViewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String  viewName    = resultSet.getString("viewname");
+                    String  viewOwner   = resultSet.getString("viewowner");
+                    String  definition  = resultSet.getString("definition");
+                    boolean hasIndexes  = resultSet.getBoolean("hasindexes");
+                    boolean isPopulated = resultSet.getBoolean("ispopulated");
+
+                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    TableDetails  tableDetails  = schemaDetails.getTableDetails(schemaName, viewName);
+
+                    tableDetails.setMaterializedViewDetails(viewOwner,
+                                                            hasIndexes,
+                                                            isPopulated,
+                                                            definition);
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("materialized view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * The schema's details only exist if one of the queries above found something in it.  An empty
+         * schema has nothing to size.
+         */
+        SchemaDetails currentSchema = databaseDetails.schemas.get(schemaName);
+
+        if (currentSchema != null)
+        {
+            /*
+             * Extract the size of every table in the schema with one query.  The segment names are the
+             * dictionary's own table names, so they match the names already collected without any quoting.
+             * Segments that do not belong to a table already found (for example, a table created since the
+             * queries above ran) are ignored rather than added as new tables.
+             */
+            try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableSizesSQLCommand))
+            {
+                preparedStatement.setString(1, schemaName);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery())
+                {
+                    while (resultSet.next())
+                    {
+                        TableDetails currentTable = currentSchema.tables.get(resultSet.getString("tablename"));
+
+                        if (currentTable != null)
+                        {
+                            currentTable.setTableSize(resultSet.getLong("tablesize"));
+                        }
+                    }
+                }
+            }
+            catch (SQLException sqlException)
+            {
+                logQueryFailure("table sizes", "schema " + qualifiedSchemaName, sqlException);
             }
 
-            throw sqlException;
+            /*
+             * The total size of the schema is the sum of its tables' sizes.
+             */
+            long schemaSize = 0L;
+
+            for (TableDetails currentTable : currentSchema.tables.values())
+            {
+                schemaSize = schemaSize + currentTable.getTableMeasurements().getTableSize();
+            }
+
+            currentSchema.schemaMeasurement.setTotalTableSize(schemaSize);
         }
     }
 
 
     /**
-     * Convert the information retrieve from the database server into annotations recognized by the
-     * survey action framework.
+     * Record that a query failed.  The survey carries on without its results.
      *
-     * @return list of annotations
+     * @param informationSought description of the information the query was retrieving
+     * @param elementName       description of the element the query was about
+     * @param sqlException      the failure
+     */
+    private void logQueryFailure(String       informationSought,
+                                 String       elementName,
+                                 SQLException sqlException)
+    {
+        final String methodName = "logQueryFailure";
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OracleAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                                         informationSought,
+                                                                                         elementName,
+                                                                                         sqlException.getClass().getName(),
+                                                                                         sqlException.getMessage()));
+        }
+    }
+
+
+    /**
+     * Return the database-level annotations for every pluggable database whose results have not yet been released, and
+     * release them.  This is used when the survey stops after the database statistics have been gathered,
+     * before the schemas are surveyed - so the annotations have no schema, table or column counts.
+     *
+     * @return list of annotations, or null if there are no results
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getAnnotations() throws PropertyServerException
+    List<AnnotationProperties> getDatabaseAnnotations() throws PropertyServerException
     {
-        /*
-         * All information has been assembled so create the annotations.
-         */
         List<AnnotationProperties> annotations = new ArrayList<>();
 
-        for (String databaseName : databaseResults.keySet())
+        for (String databaseName : new ArrayList<>(databaseResults.keySet()))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
 
             if (databaseDetails != null)
             {
-                List<String> schemaNames = databaseDetails.getSchemaNames();
+                annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+            }
+        }
 
-                ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
+        if (! annotations.isEmpty())
+        {
+            return annotations;
+        }
 
-                databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
-                databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
+        return null;
+    }
 
-                databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
 
-                databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+    /**
+     * Build the annotation that holds the measurements for a pluggable database.
+     *
+     * @param databaseName name of the pluggable database
+     * @param databaseDetails results for the pluggable database
+     * @return annotation
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    private AnnotationProperties getDatabaseAnnotation(String          databaseName,
+                                                       DatabaseDetails databaseDetails) throws PropertyServerException
+    {
+        ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
 
-                annotations.add(databaseAnnotation);
+        databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
+        databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+        databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+        databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+        databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
 
-                for (String schemaName : schemaNames)
+        databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
+
+        databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+
+        return databaseAnnotation;
+    }
+
+
+    /**
+     * Convert the information retrieved from the database server about a pluggable database into annotations
+     * recognized by the survey action framework.  The results for the database are released once the
+     * annotations are created, so that a server survey does not hold the details of every database in memory
+     * at once.
+     *
+     * @param databaseName name of the pluggable database
+     * @return list of annotations, or null if there are no results for the database
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    List<AnnotationProperties> getAnnotations(String databaseName) throws PropertyServerException
+    {
+        List<AnnotationProperties> annotations = new ArrayList<>();
+
+        DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = databaseDetails.getSchemaNames();
+
+            annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+
+            for (String schemaName : schemaNames)
+            {
+                SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
+
+                if (currentSchema != null)
                 {
-                    SchemaDetails currentSchema = databaseDetails.getSchemaDetails(databaseName, schemaName);
+                    ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
 
-                    if (currentSchema != null)
+                    schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
+                    schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
+                    schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
+                    schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
+                    schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
+
+                    schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
+
+                    schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
+
+                    annotations.add(schemaAnnotation);
+
+
+                    List<String> tableNames = currentSchema.getTableNames();
+
+                    if (tableNames != null)
                     {
-                        ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
-
-                        schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
-                        schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
-                        schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
-                        schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
-                        schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
-
-                        schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
-
-                        schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
-
-                        annotations.add(schemaAnnotation);
-
-
-                        List<String> tableNames = currentSchema.getTableNames();
-
-                        if (tableNames != null)
+                        for (String tableName : tableNames)
                         {
-                            for (String tableName : tableNames)
+                            TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
+
+                            if (currentTable != null)
                             {
-                                TableDetails currentTable = currentSchema.getTableDetails(schemaName, tableName);
+                                ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                if (currentTable != null)
+                                tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
+                                tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
+                                tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
+                                tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
+                                tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
+
+                                tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
+
+                                tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
+
+                                annotations.add(tableAnnotation);
+
+                                List<String> columnNames = currentTable.getColumnNames();
+
+                                if (columnNames != null)
                                 {
-                                    ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
-
-                                    tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
-                                    tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
-                                    tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
-                                    tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
-                                    tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
-
-                                    tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
-
-                                    tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
-
-                                    annotations.add(tableAnnotation);
-
-                                    List<String> columnNames = currentTable.getColumnNames();
-
-                                    if (columnNames != null)
+                                    for (String columnName : columnNames)
                                     {
-                                        for (String columnName : columnNames)
-                                        {
-                                            ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
+                                        ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                            ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
+                                        ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                            columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
-                                            columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
-                                            columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
-                                            columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
-                                            columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
+                                        columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
+                                        columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
+                                        columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
+                                        columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
+                                        columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
 
-                                            columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
+                                        columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
 
-                                            columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
+                                        columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
 
-                                            annotations.add(columnAnnotation);
-                                        }
+                                        annotations.add(columnAnnotation);
                                     }
                                 }
                             }
@@ -615,72 +732,10 @@ public class OracleDatabaseStatsExtractor
             return annotations;
         }
 
-
         /*
          * Empty or uncontactable database
          */
         return null;
-    }
-
-
-    /**
-     * Retrieve information about a table size using dba_segments - the Oracle equivalent of Microsoft
-     * SQL Server's sys.dm_db_partition_stats / PostgreSQL's pg_table_size() function.  Table and table
-     * partition segments are summed to cover both partitioned and non-partitioned tables.
-     * <br><br>
-     * Unlike ALL_TABLES/ALL_TAB_COLUMNS etc., there is no ALL_SEGMENTS view in Oracle - only USER_SEGMENTS
-     * (the connected user's own segments) and DBA_SEGMENTS (every segment, requiring SELECT_CATALOG_ROLE or
-     * DBA privilege).  Since this connector already needs schema-spanning visibility for other catalog
-     * views such as ALL_TAB_MODIFICATIONS and ALL_POLICIES, DBA_SEGMENTS is used here rather than narrowing
-     * to just the connecting user's own segments.
-     *
-     * @param databaseSQLConnection connection to the appropriate database
-     * @param schemaOwner the raw (non-database-qualified) Oracle schema/owner name
-     * @param tableDetails collected information about a table
-     * @throws SQLException errors accessing the database
-     */
-    void getTableSize(java.sql.Connection databaseSQLConnection,
-                      String              schemaOwner,
-                      TableDetails        tableDetails) throws SQLException
-    {
-        final String tableSizeSQLCommand =
-                "SELECT SUM(bytes) AS tablesize " +
-                        "FROM dba_segments " +
-                        "WHERE owner = ? AND segment_name = ? AND segment_type IN ('TABLE','TABLE PARTITION')";
-
-        if (! tableDetails.columns.isEmpty())
-        {
-            try
-            {
-                PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(tableSizeSQLCommand);
-
-                preparedStatement.setString(1, schemaOwner);
-                preparedStatement.setString(2, tableDetails.getTableName());
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                if (resultSet.next())
-                {
-                    tableDetails.setTableSize(resultSet.getLong("tablesize"));
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-            }
-            catch (SQLException sqlException)
-            {
-                try
-                {
-                    databaseSQLConnection.rollback();
-                }
-                catch (Exception error)
-                {
-                    // ignore
-                }
-
-                throw sqlException;
-            }
-        }
     }
 
 
@@ -1123,18 +1178,6 @@ public class OracleDatabaseStatsExtractor
         public String getQualifiedTableName()
         {
             return tableMeasurement.getQualifiedTableName();
-        }
-
-
-        /**
-         * Retrieve the raw (non-database-qualified) table name, as needed for Oracle data dictionary lookups
-         * such as dba_segments that key on owner/segment_name rather than a qualified name.
-         *
-         * @return string
-         */
-        public String getTableName()
-        {
-            return tableMeasurement.getTableName();
         }
 
 

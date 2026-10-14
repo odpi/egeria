@@ -36,6 +36,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -294,21 +295,22 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             templates = configuredTemplates;
         }
 
-        try
+        /*
+         * The list of pluggable databases is read first, and the connection released, so that no database
+         * transaction is held open while the databases are catalogued.
+         *
+         * v$pdbs lists the pluggable databases (PDBs) hosted in the CDB, excluding the seed PDB used as
+         * a template for creating new PDBs.  Oracle JDBC rejects a trailing ';' on a plain SQL statement.
+         */
+        List<String> databaseNames = new ArrayList<>();
+
+        final String sqlCommand1 = "SELECT name, open_mode FROM v$pdbs WHERE name != 'PDB$SEED'";
+
+        DataSource jdbcDataSource = assetConnector.getDataSource();
+        try (Connection        jdbcConnection    = jdbcDataSource.getConnection();
+             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            /*
-             * v$pdbs lists the pluggable databases (PDBs) hosted in the CDB, excluding the seed PDB used as
-             * a template for creating new PDBs.
-             */
-            final String sqlCommand1 = "SELECT name, open_mode FROM v$pdbs WHERE name != 'PDB$SEED';";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 /*
@@ -320,22 +322,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
 
                     if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
                     {
-                        catalogDatabase(databaseName,
-                                        databaseServerGUID,
-                                        databaseManager,
-                                        templates,
-                                        configurationProperties);
+                        databaseNames.add(databaseName);
                     }
                 }
             }
 
-            resultSet.close();
-            preparedStatement.close();
             jdbcConnection.commit();
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
         }
         catch (Exception exception)
         {
@@ -345,6 +337,34 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                           methodName,
                                                                                           exception.getMessage()),
                                   exception);
+        }
+
+        /*
+         * A failure to catalog one pluggable database does not stop the others from being catalogued.
+         */
+        for (String databaseName : databaseNames)
+        {
+            try
+            {
+                catalogDatabase(databaseName,
+                                databaseServerGUID,
+                                databaseManager,
+                                templates,
+                                configurationProperties);
+            }
+            catch (ConnectorCheckedException exception)
+            {
+                throw exception;
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(methodName,
+                                      OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                              exception.getClass().getName(),
+                                                                                              methodName,
+                                                                                              exception.getMessage()),
+                                      exception);
+            }
         }
     }
 
@@ -381,7 +401,7 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                     CapabilityAssetUseType.getOpenTypeName(),
                                                                                     CapabilityAssetUseType.OWNS.name());
 
-        String databaseTemplateGUID = templates.get(OracleTemplateType.ORACLE_DATABASE_TEMPLATE.getTemplateGUID());
+        String databaseTemplateGUID = templates.get(OracleTemplateType.ORACLE_DATABASE_TEMPLATE.getTemplateName());
 
         if (databaseTemplateGUID == null)
         {

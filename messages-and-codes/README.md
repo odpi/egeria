@@ -28,7 +28,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
 | Exception messages | 68 | 637 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 106 | 1014 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Audit log messages | 106 | 1027 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -81,7 +81,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
-| [Frameworks](frameworks) | 11 | 128 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
+| [Frameworks](frameworks) | 11 | 129 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
 | [Common Services](common-services) | 11 | 185 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 41 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
@@ -92,7 +92,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
-| [Data Manager Connectors](connectors/data-manager-connectors) | 12 | 73 | These connectors catalog and survey the contents of database servers and other data managers. |
+| [Data Manager Connectors](connectors/data-manager-connectors) | 12 | 85 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](connectors/data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
 | [Integration Connectors](connectors/integration-connectors) | 14 | 87 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 77 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
@@ -150,10 +150,10 @@ Every message identifier begins with a prefix that names the component that rais
 | `CSV-LINEAGE-IMPORTER-400-` | Exception messages | 1 | [CSVLineageImporterErrorCode](connectors/integration-connectors/CSVLineageImporterErrorCode.md) |
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-` | Audit log messages | 15 | [DarwinAuditCode](connectors/nanny-connectors/DarwinAuditCode.md) |
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | Exception messages | 1 | [DarwinErrorCode](connectors/nanny-connectors/DarwinErrorCode.md) |
-| `DB2LUW-CONNECTOR-` | Audit log messages | 6 | [DB2LUWAuditCode](connectors/data-manager-connectors/DB2LUWAuditCode.md) |
+| `DB2LUW-CONNECTOR-` | Audit log messages | 8 | [DB2LUWAuditCode](connectors/data-manager-connectors/DB2LUWAuditCode.md) |
 | `DB2LUW-CONNECTOR-` | Exception messages | 2 | [DB2LUWErrorCode](connectors/data-manager-connectors/DB2LUWErrorCode.md) |
 | `DISTRIBUTE-KAFKA-AUDIT-LOG-` | Audit log messages | 1 | [DistributeKafkaAuditCode](connectors/integration-connectors/DistributeKafkaAuditCode.md) |
-| `DUCKDB-CONNECTOR-` | Audit log messages | 14 | [DuckDBAuditCode](connectors/data-manager-connectors/DuckDBAuditCode.md) |
+| `DUCKDB-CONNECTOR-` | Audit log messages | 15 | [DuckDBAuditCode](connectors/data-manager-connectors/DuckDBAuditCode.md) |
 | `DUCKDB-CONNECTOR-500-` | Exception messages | 1 | [DuckDBErrorCode](connectors/data-manager-connectors/DuckDBErrorCode.md) |
 | `ENGINE-HOST-SERVICES-` | Audit log messages | 28 | [EngineHostServicesAuditCode](governance-server-services/EngineHostServicesAuditCode.md) |
 | `ENGINE-HOST-SERVICES-400-` | Exception messages | 15 | [EngineHostServicesErrorCode](governance-server-services/EngineHostServicesErrorCode.md) |
@@ -183,7 +183,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `MENDEL-DUPLICATE-MANAGER-` | Audit log messages | 18 | [MendelAuditCode](connectors/nanny-connectors/MendelAuditCode.md) |
 | `MENDEL-DUPLICATE-MANAGER-500-` | Exception messages | 1 | [MendelErrorCode](connectors/nanny-connectors/MendelErrorCode.md) |
 | `METADATA-OBSERVABILITY-` | Audit log messages | 10 | [OpenMetadataObservabilityAuditCode](common-services/OpenMetadataObservabilityAuditCode.md) |
-| `MSSQL-CONNECTOR-` | Audit log messages | 6 | [MSSQLAuditCode](connectors/data-manager-connectors/MSSQLAuditCode.md) |
+| `MSSQL-CONNECTOR-` | Audit log messages | 9 | [MSSQLAuditCode](connectors/data-manager-connectors/MSSQLAuditCode.md) |
 | `MSSQL-CONNECTOR-` | Exception messages | 2 | [MSSQLErrorCode](connectors/data-manager-connectors/MSSQLErrorCode.md) |
 | `OCF-` | Exception messages | 27 | [OCFErrorCode](frameworks/OCFErrorCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 1 | [DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
@@ -270,13 +270,13 @@ Every message identifier begins with a prefix that names the component that rais
 | `OPEN-METADATA-ACCESS-SECURITY-` | Audit log messages | 1 | [MetadataSecurityAuditCode](connectors/metadata-security-connectors/MetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Audit log messages | 27 | [OpenMetadataSecurityAuditCode](common-services/OpenMetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Exception messages | 21 | [OpenMetadataSecurityErrorCode](common-services/OpenMetadataSecurityErrorCode.md) |
-| `OPEN-SURVEY-` | Audit log messages | 8 | [OSFAuditCode](frameworks/OSFAuditCode.md) |
+| `OPEN-SURVEY-` | Audit log messages | 9 | [OSFAuditCode](frameworks/OSFAuditCode.md) |
 | `OPEN-SURVEY-` | Exception messages | 8 | [OSFErrorCode](frameworks/OSFErrorCode.md) |
 | `OPEN-WATCHDOG-` | Exception messages | 2 | [OWFErrorCode](frameworks/OWFErrorCode.md) |
 | `OPEN-WATCHDOG-ACTION-` | Audit log messages | 3 | [OWFAuditCode](frameworks/OWFAuditCode.md) |
-| `ORACLE-CONNECTOR-` | Audit log messages | 6 | [OracleAuditCode](connectors/data-manager-connectors/OracleAuditCode.md) |
+| `ORACLE-CONNECTOR-` | Audit log messages | 8 | [OracleAuditCode](connectors/data-manager-connectors/OracleAuditCode.md) |
 | `ORACLE-CONNECTOR-` | Exception messages | 2 | [OracleErrorCode](connectors/data-manager-connectors/OracleErrorCode.md) |
-| `POSTGRES-CONNECTOR-` | Audit log messages | 6 | [PostgresAuditCode](connectors/data-manager-connectors/PostgresAuditCode.md) |
+| `POSTGRES-CONNECTOR-` | Audit log messages | 9 | [PostgresAuditCode](connectors/data-manager-connectors/PostgresAuditCode.md) |
 | `POSTGRES-CONNECTOR-` | Exception messages | 3 | [PostgresErrorCode](connectors/data-manager-connectors/PostgresErrorCode.md) |
 | `POSTGRES-REPOSITORY-CONNECTOR-` | Audit log messages | 7 | [PostgresAuditCode](connectors/repository-services-connectors/PostgresAuditCode.md) |
 | `POSTGRES-REPOSITORY-CONNECTOR-` | Exception messages | 11 | [PostgresErrorCode](connectors/repository-services-connectors/PostgresErrorCode.md) |
@@ -289,7 +289,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `SURVEY-ACTION-SERVICE-` | Audit log messages | 5 | [SurveyServiceAuditCode](connectors/file-survey-connectors/SurveyServiceAuditCode.md) |
 | `TABULAR-METADATA-CONNECTORS-` | Audit log messages | 6 | [TabularDataAuditCode](connectors/nanny-connectors/TabularDataAuditCode.md) |
 | `TOKEN-CONTROLLER-401-` | Exception messages | 1 | [TokenControllerErrorCode](user-security/TokenControllerErrorCode.md) |
-| `UNITY-CATALOG-CONNECTOR-` | Audit log messages | 18 | [UCAuditCode](connectors/data-manager-connectors/UCAuditCode.md) |
+| `UNITY-CATALOG-CONNECTOR-` | Audit log messages | 19 | [UCAuditCode](connectors/data-manager-connectors/UCAuditCode.md) |
 | `UNITY-CATALOG-CONNECTOR-` | Exception messages | 7 | [UCErrorCode](connectors/data-manager-connectors/UCErrorCode.md) |
 | `YAML-SECRETS-STORE-CONNECTOR-` | Audit log messages | 4 | [YAMLAuditCode](connectors/secrets-store-connectors/YAMLAuditCode.md) |
 | `YAML-SECRETS-STORE-CONNECTOR-500-` | Exception messages | 1 | [YAMLErrorCode](connectors/secrets-store-connectors/YAMLErrorCode.md) |

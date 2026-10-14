@@ -297,44 +297,15 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             templates = configuredTemplates;
         }
 
-        try
+        /*
+         * Confirm that the database server can be reached before cataloguing anything.  The connection is not
+         * otherwise needed, so it is released straight away rather than being held (with an open transaction)
+         * while the databases are catalogued.
+         */
+        DataSource jdbcDataSource = assetConnector.getDataSource();
+        try (Connection jdbcConnection = jdbcDataSource.getConnection())
         {
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            /*
-             * There is no catalog view that spans multiple Db2 databases, so the candidate list comes from
-             * configuration - includeDatabaseList if supplied, otherwise just the single database this
-             * connection already names.
-             */
-            List<String> candidateDatabases = new ArrayList<>();
-
-            if ((includedDatabases != null) && (! includedDatabases.isEmpty()) && (! includedDatabases.contains("*")))
-            {
-                candidateDatabases.addAll(includedDatabases);
-            }
-            else if (assetConnector.getDatabaseName() != null)
-            {
-                candidateDatabases.add(assetConnector.getDatabaseName());
-            }
-
-            for (String databaseName : candidateDatabases)
-            {
-                if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, null))
-                {
-                    catalogDatabase(databaseName,
-                                    databaseServerGUID,
-                                    databaseManager,
-                                    templates,
-                                    configurationProperties);
-                }
-            }
-
-            jdbcConnection.commit();
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
+            jdbcConnection.setAutoCommit(true);
         }
         catch (Exception exception)
         {
@@ -344,6 +315,54 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                           methodName,
                                                                                           exception.getMessage()),
                                   exception);
+            return;
+        }
+
+        /*
+         * There is no catalog view that spans multiple Db2 databases, so the candidate list comes from
+         * configuration - includeDatabaseList if supplied, otherwise just the single database this
+         * connection already names.
+         */
+        List<String> candidateDatabases = new ArrayList<>();
+
+        if ((includedDatabases != null) && (! includedDatabases.isEmpty()) && (! includedDatabases.contains("*")))
+        {
+            candidateDatabases.addAll(includedDatabases);
+        }
+        else if (assetConnector.getDatabaseName() != null)
+        {
+            candidateDatabases.add(assetConnector.getDatabaseName());
+        }
+
+        /*
+         * A failure to catalog one database does not stop the others from being catalogued.
+         */
+        for (String databaseName : candidateDatabases)
+        {
+            if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, null))
+            {
+                try
+                {
+                    catalogDatabase(databaseName,
+                                    databaseServerGUID,
+                                    databaseManager,
+                                    templates,
+                                    configurationProperties);
+                }
+                catch (ConnectorCheckedException exception)
+                {
+                    throw exception;
+                }
+                catch (Exception exception)
+                {
+                    auditLog.logException(methodName,
+                                          DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  exception.getClass().getName(),
+                                                                                                  methodName,
+                                                                                                  exception.getMessage()),
+                                          exception);
+                }
+            }
         }
     }
 
@@ -380,7 +399,7 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                     CapabilityAssetUseType.getOpenTypeName(),
                                                                                     CapabilityAssetUseType.OWNS.name());
 
-        String databaseTemplateGUID = templates.get(DB2LUWTemplateType.DB2LUW_DATABASE_TEMPLATE.getTemplateGUID());
+        String databaseTemplateGUID = templates.get(DB2LUWTemplateType.DB2LUW_DATABASE_TEMPLATE.getTemplateName());
 
         if (databaseTemplateGUID == null)
         {

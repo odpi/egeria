@@ -83,6 +83,26 @@ public enum DB2LUWAuditCode implements AuditLogMessageSet
                        "Verify that the cataloguing starts the next time that the friendship connector refreshes.",
                        "https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/"),
 
+    /**
+     * DB2LUW-CONNECTOR-0010 - The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}
+     */
+    DATABASE_NOT_SURVEYED("DB2LUW-CONNECTOR-0010",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}",
+                          "The survey report has no results for this database.  The survey continues with the remaining databases.",
+                          "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId, a database name in the includeDatabaseList configuration property that is not catalogued on the server, or a database that is not accepting connections.  Once it is resolved, rerun the survey.",
+                          "https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/"),
+
+    /**
+     * DB2LUW-CONNECTOR-0011 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+     */
+    SURVEY_QUERY_FAILED("DB2LUW-CONNECTOR-0011",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}",
+                        "The survey continues, but its results for this element are incomplete.",
+                        "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId (the SYSIBMADM administrative views and the ADMIN_GET_TAB_INFO and MON_GET_TABLE table functions need more than the CONNECT privilege), or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/"),
+
     ;
 
     private final String                     logMessageId;

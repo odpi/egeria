@@ -32,17 +32,24 @@ public class DB2LUWDatabaseSurveyActionProvider extends SurveyActionServiceProvi
               DB2LUWConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
         super.supportedConfigurationProperties = DB2LUWConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
-        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes(null);
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(
                 new DeployedImplementationTypeDefinition[]{DB2LUWDeployedImplementationType.DB2LUW_DATABASE});
         super.supportedActionTargetTypes = DB2LUWTarget.getDB2LUWDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
 
         /*
          * Despite the method name, this list of annotation types is generic to any relational database survey,
          * not PostgreSQL-specific - there is no separate Db2 variant defined in the shared open-survey-framework.
          */
         super.producedAnnotationTypes = SurveyDatabaseAnnotationType.getPostgresDatabaseAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
     }
 }

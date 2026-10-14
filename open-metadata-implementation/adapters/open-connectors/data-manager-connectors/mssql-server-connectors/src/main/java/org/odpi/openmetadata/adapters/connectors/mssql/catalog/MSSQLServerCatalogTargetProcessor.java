@@ -36,6 +36,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -294,21 +295,23 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
             templates = configuredTemplates;
         }
 
-        try
+        /*
+         * The list of databases is read first, and the connection released, so that no database transaction
+         * is held open while the databases are catalogued.
+         */
+        List<String> databaseNames = new ArrayList<>();
+
+        /*
+         * database_id > 4 excludes the four fixed Microsoft SQL Server system databases
+         * (master=1, tempdb=2, model=3, msdb=4).
+         */
+        final String sqlCommand1 = "SELECT name, state_desc from sys.databases WHERE database_id > 4;";
+
+        DataSource jdbcDataSource = assetConnector.getDataSource();
+        try (Connection        jdbcConnection    = jdbcDataSource.getConnection();
+             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            DataSource jdbcDataSource = assetConnector.getDataSource();
-            Connection jdbcConnection = jdbcDataSource.getConnection();
-
-            /*
-             * database_id > 4 excludes the four fixed Microsoft SQL Server system databases
-             * (master=1, tempdb=2, model=3, msdb=4).
-             */
-            final String sqlCommand1 = "SELECT name, state_desc from sys.databases WHERE database_id > 4;";
-
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 /*
@@ -320,22 +323,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
 
                     if (integrationContext.elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
                     {
-                        catalogDatabase(databaseName,
-                                        databaseServerGUID,
-                                        databaseManager,
-                                        templates,
-                                        configurationProperties);
+                        databaseNames.add(databaseName);
                     }
                 }
             }
 
-            resultSet.close();
-            preparedStatement.close();
             jdbcConnection.commit();
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
         }
         catch (Exception exception)
         {
@@ -345,6 +338,34 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                                                                           methodName,
                                                                                           exception.getMessage()),
                                   exception);
+        }
+
+        /*
+         * A failure to catalog one database does not stop the others from being catalogued.
+         */
+        for (String databaseName : databaseNames)
+        {
+            try
+            {
+                catalogDatabase(databaseName,
+                                databaseServerGUID,
+                                databaseManager,
+                                templates,
+                                configurationProperties);
+            }
+            catch (ConnectorCheckedException exception)
+            {
+                throw exception;
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(methodName,
+                                      MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                              exception.getClass().getName(),
+                                                                                              methodName,
+                                                                                              exception.getMessage()),
+                                      exception);
+            }
         }
     }
 
@@ -381,7 +402,7 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                                                                     CapabilityAssetUseType.getOpenTypeName(),
                                                                                     CapabilityAssetUseType.OWNS.name());
 
-        String databaseTemplateGUID = templates.get(MSSQLTemplateType.MSSQL_DATABASE_TEMPLATE.getTemplateGUID());
+        String databaseTemplateGUID = templates.get(MSSQLTemplateType.MSSQL_DATABASE_TEMPLATE.getTemplateName());
 
         if (databaseTemplateGUID == null)
         {

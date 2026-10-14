@@ -6,24 +6,24 @@
 
 These connectors catalog and survey the contents of database servers and other data managers.
 
-This directory documents 73 messages in 12 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 85 messages in 12 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
 
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
-| [DB2LUWAuditCode](DB2LUWAuditCode.md) | Audit log messages | `DB2LUW-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/> |
+| [DB2LUWAuditCode](DB2LUWAuditCode.md) | Audit log messages | `DB2LUW-CONNECTOR-` | 8 | <https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/> |
 | [DB2LUWErrorCode](DB2LUWErrorCode.md) | Exception messages | `DB2LUW-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-db2luw/overview/> |
-| [DuckDBAuditCode](DuckDBAuditCode.md) | Audit log messages | `DUCKDB-CONNECTOR-` | 14 | <https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/> |
+| [DuckDBAuditCode](DuckDBAuditCode.md) | Audit log messages | `DUCKDB-CONNECTOR-` | 15 | <https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/> |
 | [DuckDBErrorCode](DuckDBErrorCode.md) | Exception messages | `DUCKDB-CONNECTOR-500-` | 1 | <https://egeria-project.org/egeria-solutions/leveraging-duckdb/overview/> |
-| [MSSQLAuditCode](MSSQLAuditCode.md) | Audit log messages | `MSSQL-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/> |
+| [MSSQLAuditCode](MSSQLAuditCode.md) | Audit log messages | `MSSQL-CONNECTOR-` | 9 | <https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/> |
 | [MSSQLErrorCode](MSSQLErrorCode.md) | Exception messages | `MSSQL-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-mssql/overview/> |
-| [OracleAuditCode](OracleAuditCode.md) | Audit log messages | `ORACLE-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/> |
+| [OracleAuditCode](OracleAuditCode.md) | Audit log messages | `ORACLE-CONNECTOR-` | 8 | <https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/> |
 | [OracleErrorCode](OracleErrorCode.md) | Exception messages | `ORACLE-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/> |
-| [PostgresAuditCode](PostgresAuditCode.md) | Audit log messages | `POSTGRES-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
+| [PostgresAuditCode](PostgresAuditCode.md) | Audit log messages | `POSTGRES-CONNECTOR-` | 9 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
 | [PostgresErrorCode](PostgresErrorCode.md) | Exception messages | `POSTGRES-CONNECTOR-` | 3 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
-| [UCAuditCode](UCAuditCode.md) | Audit log messages | `UNITY-CATALOG-CONNECTOR-` | 18 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
+| [UCAuditCode](UCAuditCode.md) | Audit log messages | `UNITY-CATALOG-CONNECTOR-` | 19 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
 | [UCErrorCode](UCErrorCode.md) | Exception messages | `UNITY-CATALOG-CONNECTOR-` | 7 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
 
 

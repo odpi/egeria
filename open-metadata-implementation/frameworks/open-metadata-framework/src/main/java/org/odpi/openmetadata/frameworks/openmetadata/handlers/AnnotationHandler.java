@@ -198,13 +198,63 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
             elementGUID = anchorGUID;
         }
 
+        return this.addAnnotationToReport(userId,
+                                          anchorGUID,
+                                          surveyReportGUID,
+                                          elementGUID,
+                                          annotationProperties,
+                                          metadataSourceOptions,
+                                          this.getAnnotationsForElement(userId, elementGUID, queryOptions),
+                                          null);
+    }
+
+
+    /**
+     * Add an annotation to a survey report, reusing a matching annotation from the supplied candidates.  This
+     * is the same as {@link #addAnnotationToReport(String, String, String, String, AnnotationProperties, MetadataSourceOptions, QueryOptions)}
+     * except that the caller supplies the annotations that already describe the element, rather than them being
+     * retrieved on every call.  A caller adding many annotations to the same element - a survey describing
+     * every database, table and column of a server against the server's asset - retrieves the candidates once
+     * and passes the same list each time.  Retrieving them on every call makes the cost of a survey grow with
+     * the square of its number of annotations.
+     * <br>
+     * When getOptions is supplied, the list is kept up to date for the next call: a new annotation is added to
+     * it, a reused one is replaced by its updated version, and any duplicates that are deleted are removed from
+     * it.  So an annotation created earlier in the same survey is reused, just as it would be if the
+     * candidates were retrieved each time.
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier of the element the survey report describes - the annotation's anchor
+     * @param surveyReportGUID unique identifier of the survey report
+     * @param describedElementGUID unique identifier of the element the annotation describes (not null)
+     * @param annotationProperties properties of the annotation
+     * @param metadataSourceOptions external source, effective time and lineage options for the requests
+     * @param existingAnnotations annotations already linked to the described element through AssociatedAnnotation
+     * @param getOptions options for retrieving the annotation once it is added, to keep existingAnnotations up to
+     *                   date; null leaves the list unchanged
+     * @return unique identifier of the annotation - new or reused - and whether it was created
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    public AnnotationResult addAnnotationToReport(String                        userId,
+                                                  String                        anchorGUID,
+                                                  String                        surveyReportGUID,
+                                                  String                        describedElementGUID,
+                                                  AnnotationProperties          annotationProperties,
+                                                  MetadataSourceOptions         metadataSourceOptions,
+                                                  List<OpenMetadataRootElement> existingAnnotations,
+                                                  GetOptions                    getOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String elementGUID = describedElementGUID;
+
         /*
          * Find the existing annotations that match the new one, and the oldest of them.
          */
         List<OpenMetadataRootElement> matchingAnnotations = new ArrayList<>();
         OpenMetadataRootElement       oldestAnnotation    = null;
-
-        List<OpenMetadataRootElement> existingAnnotations = this.getAnnotationsForElement(userId, elementGUID, queryOptions);
 
         if (existingAnnotations != null)
         {
@@ -239,6 +289,8 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
             {
                 this.linkAnnotationToDescribedElement(userId, elementGUID, annotationGUID, new MakeAnchorOptions(metadataSourceOptions), null);
                 this.linkResourceProfileLogs(userId, annotationGUID, annotationProperties, metadataSourceOptions);
+
+                this.refreshCandidate(userId, existingAnnotations, annotationGUID, getOptions);
             }
 
             return new AnnotationResult(annotationGUID, true);
@@ -284,7 +336,47 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
 
         this.linkResourceProfileLogs(userId, oldestAnnotationGUID, annotationProperties, metadataSourceOptions);
 
+        /*
+         * The matches have all changed: the oldest has a new report (and perhaps a new anchor), and the others
+         * have gone.
+         */
+        if ((getOptions != null) && (existingAnnotations != null))
+        {
+            existingAnnotations.removeAll(matchingAnnotations);
+            this.refreshCandidate(userId, existingAnnotations, oldestAnnotationGUID, getOptions);
+        }
+
         return new AnnotationResult(oldestAnnotationGUID, false);
+    }
+
+
+    /**
+     * Add the current version of an annotation to a caller's list of reuse candidates.
+     *
+     * @param userId calling user
+     * @param existingAnnotations the caller's candidates (may be null)
+     * @param annotationGUID unique identifier of the annotation
+     * @param getOptions options for retrieving the annotation; null means the caller is not keeping a list
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    private void refreshCandidate(String                        userId,
+                                  List<OpenMetadataRootElement> existingAnnotations,
+                                  String                        annotationGUID,
+                                  GetOptions                    getOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        if ((getOptions != null) && (existingAnnotations != null) && (annotationGUID != null))
+        {
+            OpenMetadataRootElement annotation = this.getAnnotationByGUID(userId, annotationGUID, getOptions);
+
+            if (annotation != null)
+            {
+                existingAnnotations.add(annotation);
+            }
+        }
     }
 
 

@@ -9,7 +9,7 @@ The MSSQLAuditCode is used to define the message content for the OMRS Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 6 |
+| **Number of messages** | 9 |
 | **Message identifiers begin** | `MSSQL-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.mssql.ffdc.MSSQLAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/mssql-server-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/mssql-server-connectors) |
@@ -27,6 +27,9 @@ The MSSQLAuditCode is used to define the message content for the OMRS Audit Log.
 | [MSSQL-CONNECTOR-0004](#mssql-connector-0004) | INFO | The {0} integration connector is skipping Microsoft SQL Server Database {1} ({2}) because it is already catalogued |
 | [MSSQL-CONNECTOR-0007](#mssql-connector-0007) | INFO | The {0} Microsoft SQL Server Connector has been supplied with a friendship connector with GUID {1} |
 | [MSSQL-CONNECTOR-0009](#mssql-connector-0009) | INFO | The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Microsoft SQL Server Database Asset {3} for Database {4} |
+| [MSSQL-CONNECTOR-0010](#mssql-connector-0010) | INFO | The {0} connector is skipping database {1} on Microsoft SQL Server {2} because its userId {3} does not have access to it |
+| [MSSQL-CONNECTOR-0011](#mssql-connector-0011) | ERROR | The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3} |
+| [MSSQL-CONNECTOR-0012](#mssql-connector-0012) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -152,6 +155,69 @@ The connector has requested that its friendship connector starts to catalog a ne
 **User action**
 
 Verify that the cataloguing starts the next time that the friendship connector refreshes.
+
+
+----
+
+### MSSQL-CONNECTOR-0010
+
+> The {0} connector is skipping database {1} on Microsoft SQL Server {2} because its userId {3} does not have access to it
+
+|  |  |
+|---|---|
+| **Java constant** | `MSSQLAuditCode.NO_DATABASE_ACCESS` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector continues with the remaining databases.
+
+**User action**
+
+This is expected if the database is deliberately out of reach of this userId.  Otherwise, create a user in the database for the userId's login, or add the database to the excludeDatabaseList configuration property to stop this message.
+
+
+----
+
+### MSSQL-CONNECTOR-0011
+
+> The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `MSSQLAuditCode.DATABASE_NOT_SURVEYED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The survey report has no results for this database.  The survey continues with the remaining databases.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId or a database that is not accepting connections.  Once it is resolved, rerun the survey.
+
+
+----
+
+### MSSQL-CONNECTOR-0012
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `MSSQLAuditCode.SURVEY_QUERY_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing permission for the survey's userId (such as VIEW SERVER STATE or VIEW DATABASE STATE), a query timeout, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

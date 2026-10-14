@@ -30,6 +30,15 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     testCompileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors')
+    testCompileOnly project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
     compileOnly 'org.springframework:spring-core'
