@@ -4,8 +4,11 @@ package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
 import org.testng.annotations.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -16,7 +19,8 @@ import static org.testng.Assert.assertTrue;
 
 /**
  * Verify that DuckDBDatabaseStatsExtractor surveys only the schemas that the includeSchemaNames and
- * excludeSchemaNames properties allow, and never DuckDB's own catalog schemas.
+ * excludeSchemaNames properties allow, and never DuckDB's own catalog schemas; that its counts add up; and
+ * that a failed query leaves a gap in the results rather than ending the survey.
  */
 public class DuckDBDatabaseStatsExtractorTest
 {
@@ -44,6 +48,8 @@ public class DuckDBDatabaseStatsExtractorTest
         DuckDBDatabaseStatsExtractor extractor = new DuckDBDatabaseStatsExtractor(List.of("db"),
                                                                                   List.of("sales"),
                                                                                   null,
+                                                                                  null,
+                                                                                  null,
                                                                                   null);
 
         assertFalse(extractor.schemaShouldBeSurveyed("sales"));
@@ -60,6 +66,8 @@ public class DuckDBDatabaseStatsExtractorTest
         DuckDBDatabaseStatsExtractor extractor = new DuckDBDatabaseStatsExtractor(List.of("db"),
                                                                                   List.of("sales"),
                                                                                   List.of("sales", "information_schema"),
+                                                                                  null,
+                                                                                  null,
                                                                                   null);
 
         assertTrue(extractor.schemaShouldBeSurveyed("sales"));
@@ -117,6 +125,108 @@ public class DuckDBDatabaseStatsExtractorTest
             assertFalse(databaseDetails.hasTable("main", "stray"));
             assertFalse(databaseDetails.getSchemaNames().contains("only_attached"));
             assertEquals(databaseDetails.getSchemaDetails("sales").getColumnCount(), 1L);
+        }
+    }
+
+
+    /**
+     * The database and schema counts are the totals over every schema, table, view and column recorded.
+     */
+    @Test public void testDatabaseCounts()
+    {
+        DuckDBDatabaseStatsExtractor.DatabaseDetails databaseDetails = new DuckDBDatabaseStatsExtractor.DatabaseDetails("db");
+
+        DuckDBDatabaseStatsExtractor.SchemaDetails schema1 = databaseDetails.getSchemaDetails("s1");
+        schema1.getTableDetails("t1").setTableMeasurements("Table", false, 2, "create table t1");
+        schema1.getTableDetails("t1").getColumnDetails("c1");
+        schema1.getTableDetails("t1").getColumnDetails("c2");
+        schema1.getTableDetails("t2").setTableMeasurements("Table", false, 1, "create table t2");
+        schema1.getTableDetails("t2").getColumnDetails("c1");
+        schema1.getTableDetails("v1").setTableMeasurements("View", false, 1, "create view v1");
+        schema1.getTableDetails("v1").getColumnDetails("c1");
+
+        DuckDBDatabaseStatsExtractor.SchemaDetails schema2 = databaseDetails.getSchemaDetails("s2");
+        schema2.getTableDetails("t3").setTableMeasurements("Table", true, 1, "create table t3");
+        schema2.getTableDetails("t3").getColumnDetails("c1");
+        schema2.getTableDetails("v2").setTableMeasurements("View", false, 1, "create view v2");
+        schema2.getTableDetails("v2").getColumnDetails("c1");
+
+        databaseDetails.setUpCounts();
+
+        assertEquals(databaseDetails.getDatabaseMeasurements().getSchemaCount(), 2L);
+        assertEquals(databaseDetails.getDatabaseMeasurements().getTableCount(), 3L);
+        assertEquals(databaseDetails.getDatabaseMeasurements().getViewCount(), 2L);
+        assertEquals(databaseDetails.getDatabaseMeasurements().getColumnCount(), 6L);
+        assertEquals(schema1.getSchemaMeasurement().getColumnCount(), 4L);
+        assertEquals(schema1.getSchemaMeasurement().getViewCount(), 1L);
+    }
+
+
+    /**
+     * A table whose columns could not be read keeps the column count that DuckDB's catalog reported for it,
+     * rather than being counted as having none.
+     */
+    @Test public void testColumnCountWithoutColumnDetails()
+    {
+        DuckDBDatabaseStatsExtractor.TableDetails tableDetails = new DuckDBDatabaseStatsExtractor.TableDetails("db.main", "t1");
+
+        tableDetails.setTableMeasurements("Table", false, 3, "create table t1");
+
+        assertEquals(tableDetails.getColumnCount(), 3L);
+
+        tableDetails.getColumnDetails("c1");
+
+        assertEquals(tableDetails.getColumnCount(), 1L);
+    }
+
+
+    /**
+     * A query that fails is skipped: the other queries for the schema still contribute their results.  The
+     * views query is made to fail here; the tables and their columns must still be surveyed.
+     */
+    @Test public void testFailedQueryIsIsolated() throws Exception
+    {
+        try (Connection connection = DriverManager.getConnection("jdbc:duckdb:");
+             Statement  statement  = connection.createStatement())
+        {
+            statement.execute("CREATE SCHEMA sales");
+            statement.execute("CREATE TABLE sales.orders (id INTEGER, amount DECIMAL(10,2))");
+            statement.execute("CREATE VIEW sales.big_orders AS SELECT * FROM sales.orders WHERE amount > 100");
+            statement.execute("CREATE TABLE main.\"MixedCase\" (\"Id\" INTEGER)");
+
+            Connection failingConnection = (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(),
+                                                                               new Class<?>[]{Connection.class},
+                                                                               (proxy, method, args) ->
+            {
+                if (("prepareStatement".equals(method.getName())) && (args[0].toString().contains("duckdb_views()")))
+                {
+                    throw new SQLException("Simulated failure of the views query");
+                }
+
+                try
+                {
+                    return method.invoke(connection, args);
+                }
+                catch (InvocationTargetException error)
+                {
+                    throw error.getCause();
+                }
+            });
+
+            DuckDBDatabaseStatsExtractor extractor = new DuckDBDatabaseStatsExtractor(List.of("db"), null);
+
+            extractor.getDatabaseStatistics(failingConnection);
+            extractor.getSchemaStatistics("db", failingConnection);
+
+            DuckDBDatabaseStatsExtractor.DatabaseDetails databaseDetails = extractor.getDatabaseDetails("db");
+
+            assertTrue(databaseDetails.hasTable("sales", "orders"));
+            assertFalse(databaseDetails.hasTable("sales", "big_orders"));
+            assertTrue(databaseDetails.hasTable("main", "MixedCase"));
+            assertEquals(databaseDetails.getSchemaDetails("sales").getColumnCount(), 2L);
+            assertEquals(databaseDetails.getDatabaseMeasurements().getSchemaCount(), 2L);
+            assertEquals(databaseDetails.getDatabaseMeasurements().getTableCount(), 2L);
+            assertEquals(databaseDetails.getDatabaseMeasurements().getViewCount(), 0L);
         }
     }
 }

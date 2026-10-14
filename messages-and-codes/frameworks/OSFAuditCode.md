@@ -9,7 +9,7 @@ The OSFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 8 |
+| **Number of messages** | 9 |
 | **Message identifiers begin** | `OPEN-SURVEY-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-survey-framework](../../open-metadata-implementation/frameworks/open-survey-framework) |
@@ -29,6 +29,7 @@ The OSFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-SURVEY-0007](#open-survey-0007) | ERROR | Asset {0} has a root schema of type {1} but survey action service {2} only supports the following root schema type(s): {3} |
 | [OPEN-SURVEY-0008](#open-survey-0008) | ERROR | The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached |
 | [OPEN-SURVEY-0009](#open-survey-0009) | ERROR | The {0} Survey Acton Service has been supplied with asset {1} which has no connection, so there is no way to reach the resource it describes |
+| [OPEN-SURVEY-0010](#open-survey-0010) | INFO | The {0} Survey Action Service has completed analysis step {1}, which is the final analysis step requested for this survey of asset {2} |
 
 ----
 
@@ -196,6 +197,27 @@ The survey cannot continue since it has no means of opening the resource to surv
 **User action**
 
 Check that the asset has a Connection attached to it, and that the connection is visible to the userId the survey is running under.  An asset catalogued without a connection - or one whose connection was not copied when the asset was created from a template - describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.
+
+
+----
+
+### OPEN-SURVEY-0010
+
+> The {0} Survey Action Service has completed analysis step {1}, which is the final analysis step requested for this survey of asset {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OSFAuditCode.FINAL_ANALYSIS_STEP_REACHED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The survey stops here.  The survey report contains the results of the analysis steps that have run.
+
+**User action**
+
+No action is required.  To run more of the survey, request a later analysis step in the finalAnalysisStep request parameter, or leave it out to run the whole survey.
 
 
 ----

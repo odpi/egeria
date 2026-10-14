@@ -8,7 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionTarget;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -398,6 +401,175 @@ public class PostgresServerSurveyFVT
                 PostgresFvtTestSupport.purgeElement(openMetadataStore, newAssetGUID);
             }
         }
+    }
+
+
+    /**
+     * Ask the survey to stop after its database-level step, and check that it did: the report holds the
+     * measurements of the database and nothing from the schemas, and records Profiling Associated Resources as
+     * the last analysis step it ran.
+     * <br>
+     * finalAnalysisStep is a standard control for every survey, and the server survey advertises the values it
+     * accepts in its specification.  A survey that ignored it would run to completion and write table and column
+     * annotations, which is what this test looks for.
+     *
+     * @throws Exception the process failed, or the survey ran past the requested step
+     */
+    @Test
+    @DisplayName("A server survey stops after the final analysis step requested")
+    public void testSurveyStopsAfterFinalAnalysisStep() throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext(DeleteMethod.PURGE).getOpenMetadataStore();
+        String[]          guids             = new String[2];
+
+        try
+        {
+            String surveyReportGUID = this.runSurveyToFinalAnalysisStep("stopdb",
+                                                                        AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                                                                        guids);
+
+            List<String> annotationTypes = getAnnotationTypes(openMetadataStore, surveyReportGUID);
+
+            assertFalse(annotationTypes.isEmpty(),
+                        "The survey stopped after " + AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName()
+                                + " but recorded nothing.  It should record the measurements of each database it reached.");
+
+            for (String annotationType : annotationTypes)
+            {
+                assertEquals(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName(),
+                             annotationType,
+                             "The survey was asked to stop after " + AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName()
+                                     + " but recorded a '" + annotationType + "' annotation, so it went on to survey the schemas.");
+            }
+
+            assertEquals(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+                         PostgresFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(surveyReportGUID),
+                                                                  OpenMetadataProperty.ANALYSIS_STEP.name),
+                         "The survey report does not record the step the survey stopped after.");
+        }
+        finally
+        {
+            this.purgeSurvey(openMetadataStore, guids);
+        }
+    }
+
+
+    /**
+     * Ask the survey to stop after checking its asset.  It still produces a report, but with no annotations,
+     * because no step that measures anything has run.
+     *
+     * @throws Exception the process failed, or the survey ran past the requested step
+     */
+    @Test
+    @DisplayName("A server survey asked to stop after checking its asset records nothing")
+    public void testSurveyStopsAfterCheckAsset() throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext(DeleteMethod.PURGE).getOpenMetadataStore();
+        String[]          guids             = new String[2];
+
+        try
+        {
+            String surveyReportGUID = this.runSurveyToFinalAnalysisStep("stopcheck", AnalysisStep.CHECK_ASSET, guids);
+
+            List<String> annotationTypes = getAnnotationTypes(openMetadataStore, surveyReportGUID);
+
+            assertTrue(annotationTypes.isEmpty(),
+                       "The survey was asked to stop after " + AnalysisStep.CHECK_ASSET.getName() + " but recorded "
+                               + annotationTypes.size() + " annotation(s): " + new TreeMap<>(this.countTypes(annotationTypes)));
+
+            assertEquals(AnalysisStep.CHECK_ASSET.getName(),
+                         PostgresFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(surveyReportGUID),
+                                                                  OpenMetadataProperty.ANALYSIS_STEP.name),
+                         "The survey report does not record the step the survey stopped after.");
+        }
+        finally
+        {
+            this.purgeSurvey(openMetadataStore, guids);
+        }
+    }
+
+
+    /**
+     * Run the create-and-survey process against this suite's database with a final analysis step, and return
+     * the survey report.
+     *
+     * @param serverNameSuffix distinguishes the server asset this test creates
+     * @param finalAnalysisStep step the survey is to stop after
+     * @param guids receives the asset's GUID [0] and the survey report's GUID [1] for clean-up
+     * @return unique identifier of the survey report
+     * @throws Exception the process failed
+     */
+    private String runSurveyToFinalAnalysisStep(String       serverNameSuffix,
+                                                AnalysisStep finalAnalysisStep,
+                                                String[]     guids) throws Exception
+    {
+        String serverName = PostgresFvtTestSupport.serverUnderTestName(serverNameSuffix);
+
+        Map<String, String> requestParameters = new HashMap<>(PostgresFvtTestSupport.serverTemplatePlaceholders(serverName));
+
+        requestParameters.put(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                              PostgresFvtTestSupport.getDatabaseName());
+        requestParameters.put(PostgresConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                              PostgresFvtTestSupport.getSchemaName());
+        requestParameters.put(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName(), finalAnalysisStep.getName());
+        requestParameters.put("reportDirectory", REPORT_DIRECTORY);
+
+        String processInstanceGUID = new AutomatedCurationClient().initiateGovernanceActionProcess(CREATE_AND_SURVEY_PROCESS,
+                                                                                                     requestParameters,
+                                                                                                     null);
+
+        assertNotNull(processInstanceGUID, "The Automated Curation service returned no process instance to follow.");
+
+        List<EngineActionElement> steps = new EngineActionWaiter().waitForProcess(processInstanceGUID, CREATE_AND_SURVEY_PROCESS);
+
+        guids[0] = EngineActionWaiter.getActionTargetGUID(steps, ActionTarget.NEW_ASSET.getName());
+        guids[1] = EngineActionWaiter.getActionTargetGUID(steps, SurveyActionTarget.SURVEY_REPORT.getName());
+
+        assertNotNull(guids[1],
+                      "A survey asked to stop after " + finalAnalysisStep.getName() + " produced no survey report.  Stopping"
+                              + " early should end the survey normally, with a report of what it did.");
+
+        return guids[1];
+    }
+
+
+    /**
+     * Remove the survey report and the asset a test created.  The report first, since it is anchored to the asset.
+     *
+     * @param openMetadataStore store to purge from
+     * @param guids the asset's GUID [0] and the survey report's GUID [1] (either may be null)
+     */
+    private void purgeSurvey(OpenMetadataStore openMetadataStore,
+                             String[]          guids)
+    {
+        if (guids[1] != null)
+        {
+            PostgresFvtTestSupport.purgeElement(openMetadataStore, guids[1]);
+        }
+
+        if (guids[0] != null)
+        {
+            PostgresFvtTestSupport.purgeElement(openMetadataStore, guids[0]);
+        }
+    }
+
+
+    /**
+     * Count annotations by type, for a readable failure message.
+     *
+     * @param annotationTypes one entry per annotation
+     * @return map from type to count
+     */
+    private Map<String, Integer> countTypes(List<String> annotationTypes)
+    {
+        Map<String, Integer> counts = new HashMap<>();
+
+        for (String annotationType : annotationTypes)
+        {
+            counts.put(annotationType, counts.getOrDefault(annotationType, 0) + 1);
+        }
+
+        return counts;
     }
 
 

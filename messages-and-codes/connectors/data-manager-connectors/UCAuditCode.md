@@ -9,7 +9,7 @@ The UCAuditCode is used to define the message content for the OMRS Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 18 |
+| **Number of messages** | 19 |
 | **Message identifiers begin** | `UNITY-CATALOG-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/unity-catalog-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/unity-catalog-connectors) |
@@ -39,6 +39,7 @@ The UCAuditCode is used to define the message content for the OMRS Audit Log.
 | [UNITY-CATALOG-CONNECTOR-0022](#unity-catalog-connector-0022) | ERROR | The {0} governance action service has not been passed all the placeholder variables needed to create an element for technology type {1}; the missing placeholder variables are: {2} |
 | [UNITY-CATALOG-CONNECTOR-0023](#unity-catalog-connector-0023) | ERROR | The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3} |
 | [UNITY-CATALOG-CONNECTOR-0024](#unity-catalog-connector-0024) | ERROR | The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6} |
+| [UNITY-CATALOG-CONNECTOR-0025](#unity-catalog-connector-0025) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -416,6 +417,27 @@ The connector throws an exception to indicate that it should not continue since 
 **User action**
 
 Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem.
+
+
+----
+
+### UNITY-CATALOG-CONNECTOR-0025
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `UCAuditCode.SURVEY_RETRIEVAL_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId in Unity Catalog, or an element that was deleted while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

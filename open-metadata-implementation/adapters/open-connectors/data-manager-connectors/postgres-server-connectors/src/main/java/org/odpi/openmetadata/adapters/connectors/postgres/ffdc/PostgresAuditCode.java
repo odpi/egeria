@@ -83,6 +83,36 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                        "Verify that the cataloguing starts the next time that the friendship connector refreshes.",
                        "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
 
+    /**
+     * POSTGRES-CONNECTOR-0010 - The {0} connector is skipping database {1} on PostgreSQL Database Server {2} because its userId {3} does not have the CONNECT privilege for it
+     */
+    NO_CONNECT_PRIVILEGE("POSTGRES-CONNECTOR-0010",
+                         AuditLogRecordSeverityLevel.INFO,
+                         "The {0} connector is skipping database {1} on PostgreSQL Database Server {2} because its userId {3} does not have the CONNECT privilege for it",
+                         "The connector continues with the remaining databases.",
+                         "This is expected if the database is deliberately out of reach of this userId.  Otherwise, grant the userId CONNECT on the database, or add the database to the excludeDatabaseList configuration property to stop this message.",
+                         "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
+
+    /**
+     * POSTGRES-CONNECTOR-0011 - The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}
+     */
+    DATABASE_NOT_SURVEYED("POSTGRES-CONNECTOR-0011",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} survey action service is unable to survey database {1} because of a {2} exception with message: {3}",
+                          "The survey report has no results for this database.  The survey continues with the remaining databases.",
+                          "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId or a database that is not accepting connections.  Once it is resolved, rerun the survey.",
+                          "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
+
+    /**
+     * POSTGRES-CONNECTOR-0012 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+     */
+    SURVEY_QUERY_FAILED("POSTGRES-CONNECTOR-0012",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}",
+                        "The survey continues, but its results for this element are incomplete.",
+                        "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId, a statement timeout set on the database server, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/"),
+
     ;
 
     private final String                     logMessageId;

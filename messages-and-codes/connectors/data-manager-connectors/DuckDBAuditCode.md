@@ -9,7 +9,7 @@ The DuckDBAuditCode is used to define the message content for the OMRS Audit Log
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 14 |
+| **Number of messages** | 15 |
 | **Message identifiers begin** | `DUCKDB-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/duckdb-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/duckdb-connectors) |
@@ -35,6 +35,7 @@ The DuckDBAuditCode is used to define the message content for the OMRS Audit Log
 | [DUCKDB-CONNECTOR-0012](#duckdb-connector-0012) | INFO | The {0} connector could not find a DuckDB-side RelationalTable for view {1} (tried qualified names {2} and {3}); classification and lineage linking for this view will be attempted again on a subsequent refresh |
 | [DUCKDB-CONNECTOR-0013](#duckdb-connector-0013) | INFO | The {0} connector has catalogued attached table {1} from data source {2} as a TabularDataSet ({3} columns) |
 | [DUCKDB-CONNECTOR-0014](#duckdb-connector-0014) | ERROR | The {0} connector found {1} elements with qualified name {2} when only one was expected; the element is skipped for this refresh |
+| [DUCKDB-CONNECTOR-0015](#duckdb-connector-0015) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -328,6 +329,27 @@ The connector cannot safely determine which of the matching elements to use, so 
 **User action**
 
 This should not normally happen - qualified names are expected to be unique.  Investigate how the duplicate elements were created and consider removing the redundant one(s).
+
+
+----
+
+### DUCKDB-CONNECTOR-0015
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `DuckDBAuditCode.SURVEY_QUERY_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a DuckDB version that does not support the catalog function, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

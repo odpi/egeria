@@ -627,10 +627,10 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "NetworkGatewayLinkProperties",
-    "label": "add label",
-    "description": "add description",
-    "externalEndpointAddress": "add external address here",
-    "internalEndpointAddress": "add internal address here",
+    "displayName": "add display name here",
+    "description": "add description here",
+    "externalEndpointAddresses": [ "add external address here" ],
+    "internalEndpointAddresses": [ "add internal address here" ],
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
@@ -653,10 +653,10 @@ Content-Type: application/json
   "mergeUpdate": true,
   "properties": {
     "class": "NetworkGatewayLinkProperties",
-    "label": "add label",
-    "description": "add description",
-    "externalEndpointAddress": "add external address here",
-    "internalEndpointAddress": "add internal address here"
+    "displayName": "add display name here",
+    "description": "add description here",
+    "externalEndpointAddresses": [ "add external address here" ],
+    "internalEndpointAddresses": [ "add internal address here" ]
   },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",

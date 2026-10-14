@@ -35,12 +35,18 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
               PostgresConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
         super.supportedConfigurationProperties = PostgresConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
-        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes(null);
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
         super.producedAnnotationTypes    = SurveyDatabaseAnnotationType.getPostgresDatabaseAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
     }
 }

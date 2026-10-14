@@ -116,7 +116,8 @@ public enum UnityCatalogSurveyRequestParameter
 
 
     /**
-     * Retrieve the defined request parameters used by the Server Survey Service
+     * Retrieve the defined request parameters used by the Server Survey Service.  The finalAnalysisStep
+     * request parameter is added by the provider, which knows the analysis steps it supports.
      *
      * @return list of request parameter types
      */
@@ -124,7 +125,6 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(SurveyRequestParameter.INCLUDE_SCHEMA_NAMES.getRequestParameterType());
         requestParameterTypes.add(SurveyRequestParameter.EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
 
@@ -133,7 +133,8 @@ public enum UnityCatalogSurveyRequestParameter
 
 
     /**
-     * Retrieve the defined request parameters used by the Inside Catalog Survey Service
+     * Retrieve the defined request parameters used by the Inside Catalog Survey Service.  The finalAnalysisStep
+     * request parameter is added by the provider, which knows the analysis steps it supports.
      *
      * @return list of request parameter types
      */
@@ -141,7 +142,6 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
         requestParameterTypes.add(SurveyRequestParameter.INCLUDE_SCHEMA_NAMES.getRequestParameterType());
         requestParameterTypes.add(SurveyRequestParameter.EXCLUDE_SCHEMA_NAMES.getRequestParameterType());
@@ -151,7 +151,8 @@ public enum UnityCatalogSurveyRequestParameter
 
 
     /**
-     * Retrieve the defined request parameters used by the Inside Schema Survey Service
+     * Retrieve the defined request parameters used by the Inside Schema Survey Service.  The finalAnalysisStep
+     * request parameter is added by the provider, which knows the analysis steps it supports.
      *
      * @return list of request parameter types
      */
@@ -159,7 +160,6 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
         requestParameterTypes.add(SCHEMA_NAME.getRequestParameterType());
 

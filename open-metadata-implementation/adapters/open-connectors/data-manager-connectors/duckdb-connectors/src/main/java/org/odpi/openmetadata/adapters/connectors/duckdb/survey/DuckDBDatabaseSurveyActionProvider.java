@@ -39,11 +39,12 @@ public class DuckDBDatabaseSurveyActionProvider extends SurveyActionServiceProvi
               DuckDBConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
         super.supportedConfigurationProperties = DuckDBConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
-        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes(null);
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DuckDBDeployedImplementationType.DUCKDB_DATABASE});
         super.supportedActionTargetTypes = DuckDBTarget.getDuckDBDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
 
         /*
@@ -55,5 +56,10 @@ public class DuckDBDatabaseSurveyActionProvider extends SurveyActionServiceProvi
         producedAnnotationTypes.addAll(SurveyDuckDBAnnotationType.getDuckDBFederationAnnotationTypeTypes());
 
         super.producedAnnotationTypes = producedAnnotationTypes;
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
     }
 }

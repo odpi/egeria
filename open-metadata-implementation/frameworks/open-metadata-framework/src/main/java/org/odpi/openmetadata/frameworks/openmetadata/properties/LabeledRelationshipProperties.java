@@ -100,7 +100,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MoreInformationProperties.class, name = "MoreInformationProperties"),
                 @JsonSubTypes.Type(value = NestedDesignPatternProperties.class, name = "NestedDesignPatternProperties"),
                 @JsonSubTypes.Type(value = NestedLocationProperties.class, name = "NestedLocationProperties"),
-                @JsonSubTypes.Type(value = NetworkGatewayLinkProperties.class, name = "NetworkGatewayLinkProperties"),
                 @JsonSubTypes.Type(value = NotificationSubscriberProperties.class, name = "NotificationSubscriberProperties"),
                 @JsonSubTypes.Type(value = PeerDefinitionProperties.class, name = "PeerDefinitionProperties"),
                 @JsonSubTypes.Type(value = PeerProperties.class, name = "PeerProperties"),

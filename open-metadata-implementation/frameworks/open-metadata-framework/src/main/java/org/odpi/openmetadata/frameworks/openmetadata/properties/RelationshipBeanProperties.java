@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.NetworkGatewayLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.SoftwareSourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.ReusableTechniqueUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.DependentSoftwareComponentProperties;
@@ -147,6 +148,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MediaReferenceProperties.class, name = "MediaReferenceProperties"),
                 @JsonSubTypes.Type(value = MetadataCohortPeerProperties.class, name = "MetadataCohortPeerProperties"),
                 @JsonSubTypes.Type(value = NestedFileProperties.class, name = "NestedFileProperties"),
+                @JsonSubTypes.Type(value = NetworkGatewayLinkProperties.class, name = "NetworkGatewayLinkProperties"),
                 @JsonSubTypes.Type(value = NextGovernanceActionProcessStepProperties.class, name = "NextGovernanceActionProcessStepProperties"),
                 @JsonSubTypes.Type(value = OperatingPlatformManifestProperties.class, name = "OperatingPlatformManifestProperties"),
                 @JsonSubTypes.Type(value = OperatingPlatformUseProperties.class, name = "OperatingPlatformUseProperties"),

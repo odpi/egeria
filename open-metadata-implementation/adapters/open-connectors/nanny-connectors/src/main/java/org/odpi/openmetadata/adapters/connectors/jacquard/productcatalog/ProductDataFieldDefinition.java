@@ -2104,15 +2104,6 @@ public enum ProductDataFieldDefinition
                        false,
                        true),
 
-    LAST_ACCESSED_TIME("Last Accessed Time",
-                       "Last Accessed Time",
-                       FileMetric.LAST_ACCESSED_TIME.getDescription(),
-                       DataType.DATE,
-                       null,
-                       null,
-                       false,
-                       true),
-
     FILE_SIZE("File Size",
               "File Size",
               FileMetric.FILE_SIZE.getDescription(),
@@ -2292,15 +2283,6 @@ public enum ProductDataFieldDefinition
                                 null,
                                 false,
                                 true),
-
-    LAST_FILE_ACCESSED_TIME("Last File Accessed Time",
-                            "Last File Accessed Time",
-                            FileDirectoryMetric.LAST_FILE_ACCESSED_TIME.getDescription(),
-                            DataType.DATE,
-                            null,
-                            null,
-                            false,
-                            true),
 
     SCHEMA_COUNT("Schema Count",
                  "Schema Count",

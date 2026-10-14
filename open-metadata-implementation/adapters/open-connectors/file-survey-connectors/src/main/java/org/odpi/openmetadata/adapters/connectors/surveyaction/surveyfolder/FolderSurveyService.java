@@ -85,6 +85,11 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             performCheckAssetAnalysisStep(OpenMetadataType.FILE_FOLDER.typeName);
 
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
             boolean deepFolderAnalysis = false;
             boolean deepFileAnalysis   = false;
             String  analysisLevel = "TOP_LEVEL_ONLY";
@@ -166,71 +171,32 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             FolderProfile folderProfile = profileFolder(rootFolder, logFileProgress, deepFolderAnalysis, deepFileAnalysis);
 
-            List<Annotation> annotations = folderProfile.getAnnotations(annotationStore.getSurveyReportGUID());
+            this.storeAnnotations(folderProfile.getProfileAnnotations(), annotationStore);
 
-            if (annotations != null)
+            /*
+             * Stopping here records the folder's measurements and profiles without writing out the files that
+             * could not be classified or accessed, or the inventory of file names.
+             */
+            if (super.isFinalAnalysisStep())
             {
-                for (Annotation annotation : annotations)
-                {
-                    if (AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName().equals(annotation.annotationProperties.getAnalysisStep()))
-                    {
-                        String annotationGUID = annotationStore.addAnnotation(annotation.annotationProperties, null);
-
-                        if (annotation.actionTargetGUID != null)
-                        {
-                            RequestForActionTargetProperties requestForActionTargetProperties = new RequestForActionTargetProperties();
-
-                            requestForActionTargetProperties.setActionTargetName(annotation.actionTargetName);
-
-                            annotationStore.linkRequestForActionTarget(annotationGUID,
-                                                                       annotation.actionTargetGUID,
-                                                                       requestForActionTargetProperties);
-                        }
-                    }
-                }
-
-                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_ACTIONS.getName());
-
-                for (Annotation annotation : annotations)
-                {
-                    if (AnalysisStep.PRODUCE_ACTIONS.getName().equals(annotation.annotationProperties.getAnalysisStep()))
-                    {
-                        String annotationGUID = annotationStore.addAnnotation(annotation.annotationProperties, null);
-
-                        if (annotation.actionTargetGUID != null)
-                        {
-                            RequestForActionTargetProperties requestForActionTargetProperties = new RequestForActionTargetProperties();
-
-                            requestForActionTargetProperties.setActionTargetName(annotation.actionTargetName);
-
-                            annotationStore.linkRequestForActionTarget(annotationGUID,
-                                                                       annotation.actionTargetGUID,
-                                                                       requestForActionTargetProperties);
-                        }
-                    }
-                }
-
-                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
-
-                for (Annotation annotation : annotations)
-                {
-                    if (AnalysisStep.PRODUCE_INVENTORY.getName().equals(annotation.annotationProperties.getAnalysisStep()))
-                    {
-                        String annotationGUID = annotationStore.addAnnotation(annotation.annotationProperties, null);
-
-                        if (annotation.actionTargetGUID != null)
-                        {
-                            RequestForActionTargetProperties requestForActionTargetProperties = new RequestForActionTargetProperties();
-
-                            requestForActionTargetProperties.setActionTargetName(annotation.actionTargetName);
-
-                            annotationStore.linkRequestForActionTarget(annotationGUID,
-                                                                       annotation.actionTargetGUID,
-                                                                       requestForActionTargetProperties);
-                        }
-                    }
-                }
+                return;
             }
+
+            annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_ACTIONS.getName());
+
+            this.storeAnnotations(folderProfile.getActionAnnotations(annotationStore.getSurveyReportGUID()), annotationStore);
+
+            /*
+             * Stopping here records the requests for action without writing the inventory of file names.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
+            annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+            this.storeAnnotations(folderProfile.getInventoryAnnotations(annotationStore.getSurveyReportGUID()), annotationStore);
         }
         catch (ConnectorCheckedException error)
         {
@@ -239,6 +205,39 @@ public class FolderSurveyService extends SurveyActionServiceConnector
         catch (Exception error)
         {
             super.handleUnexpectedException(methodName, error);
+        }
+    }
+
+
+    /**
+     * Store the annotations produced by an analysis step, along with the link to any action target that an
+     * annotation names.
+     *
+     * @param annotations annotations to store
+     * @param annotationStore destination of the annotations
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws UserNotAuthorizedException insufficient access
+     */
+    private void storeAnnotations(List<Annotation> annotations,
+                                  AnnotationStore  annotationStore) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        for (Annotation annotation : annotations)
+        {
+            String annotationGUID = annotationStore.addAnnotation(annotation.annotationProperties, null);
+
+            if (annotation.actionTargetGUID != null)
+            {
+                RequestForActionTargetProperties requestForActionTargetProperties = new RequestForActionTargetProperties();
+
+                requestForActionTargetProperties.setActionTargetName(annotation.actionTargetName);
+
+                annotationStore.linkRequestForActionTarget(annotationGUID,
+                                                           annotation.actionTargetGUID,
+                                                           requestForActionTargetProperties);
+            }
         }
     }
 
@@ -331,12 +330,6 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                             folderProfile.lastFileModificationTime = fileClassification.getLastModifiedTime();
                         }
 
-                        if ((folderProfile.lastFileAccessTime == null) || ((fileClassification.getLastAccessedTime() != null) &&
-                                (folderProfile.lastFileAccessTime.before(fileClassification.getLastAccessedTime()))))
-                        {
-                            folderProfile.lastFileAccessTime = fileClassification.getLastAccessedTime();
-                        }
-
                         updateValueCount(folderProfile.fileExtensionCounts, fileClassification.getFileExtension());
                         updateValueCount(folderProfile.fileNameCounts, fileClassification.getFileName());
                         updateValueCount(folderProfile.fileTypeCounts, fileClassification.getFileType());
@@ -412,7 +405,11 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
         private Date lastFileCreationTime     = null;
         private Date lastFileModificationTime = null;
-        private Date lastFileAccessTime       = null;
+
+        /*
+         * The latest file access time is deliberately not tracked: reading a file changes it, so it would make
+         * every survey of an unchanged folder look different.
+         */
 
         private final Map<String, Integer>     fileExtensionCounts              = new HashMap<>();
         private final Map<String, Integer>     fileTypeCounts                   = new HashMap<>();
@@ -517,10 +514,6 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             {
                 fileCountProperties.put(FileDirectoryMetric.LAST_FILE_MODIFIED_TIME.getDisplayName(), lastFileModificationTime.toString());
             }
-            if (lastFileAccessTime != null)
-            {
-                fileCountProperties.put(FileDirectoryMetric.LAST_FILE_ACCESSED_TIME.getDisplayName(), lastFileAccessTime.toString());
-            }
 
             resourceMeasureAnnotationProperties.setResourceProperties(fileCountProperties);
 
@@ -544,11 +537,27 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             fileDirectoryMeasurement.setInaccessibleFileCount(inaccessibleFiles.size());
             fileDirectoryMeasurement.setLastFileCreationTime(lastFileCreationTime);
             fileDirectoryMeasurement.setLastFileModificationTime(lastFileModificationTime);
-            fileDirectoryMeasurement.setLastFileAccessedTime(lastFileAccessTime);
 
             resourceMeasureAnnotationProperties.setJsonProperties(surveyActionServiceConnector.getJSONProperties(fileDirectoryMeasurement));
 
             return new Annotation(resourceMeasureAnnotationProperties);
+        }
+
+
+        /**
+         * Add the counts from a nested folder to the counts of this folder.  A value found in both folders
+         * is counted in both.
+         *
+         * @param counts counts for this folder
+         * @param nestedCounts counts from the nested folder
+         */
+        private void mergeCounts(Map<String, Integer> counts,
+                                 Map<String, Integer> nestedCounts)
+        {
+            for (String value : nestedCounts.keySet())
+            {
+                counts.merge(value, nestedCounts.get(value), Integer::sum);
+            }
         }
 
 
@@ -580,17 +589,11 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                 lastFileModificationTime = nestedFolderProfile.lastFileModificationTime;
             }
 
-            if ((lastFileAccessTime == null) || ((nestedFolderProfile.lastFileAccessTime != null) &&
-                    (lastFileAccessTime.before(nestedFolderProfile.lastFileAccessTime))))
-            {
-                lastFileAccessTime = nestedFolderProfile.lastFileAccessTime;
-            }
-
-            fileExtensionCounts.putAll(nestedFolderProfile.fileExtensionCounts);
-            fileTypeCounts.putAll(nestedFolderProfile.fileTypeCounts);
-            fileNameCounts.putAll(nestedFolderProfile.fileNameCounts);
-            assetTypeCounts.putAll(nestedFolderProfile.assetTypeCounts);
-            deployedImplementationTypeCounts.putAll(nestedFolderProfile.deployedImplementationTypeCounts);
+            mergeCounts(fileExtensionCounts, nestedFolderProfile.fileExtensionCounts);
+            mergeCounts(fileTypeCounts, nestedFolderProfile.fileTypeCounts);
+            mergeCounts(fileNameCounts, nestedFolderProfile.fileNameCounts);
+            mergeCounts(assetTypeCounts, nestedFolderProfile.assetTypeCounts);
+            mergeCounts(deployedImplementationTypeCounts, nestedFolderProfile.deployedImplementationTypeCounts);
             missingReferenceData.addAll(nestedFolderProfile.missingReferenceData);
             inaccessibleFiles.addAll(nestedFolderProfile.inaccessibleFiles);
             savedAnnotations.addAll(nestedFolderProfile.savedAnnotations);
@@ -598,16 +601,16 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
 
         /**
-         * Return the annotations from this survey
+         * Return the annotations for the Profiling Associated Resources analysis step: the profiles of the
+         * files found, the measurements of this folder and the annotations saved from the deeper analysis of
+         * nested folders and files (if requested).
          *
-         * @param surveyReportGUID unique identifier of the survey report
          * @return list of annotations
+         * @throws PropertyServerException    problem connecting to the open metadata repositories
+         * @throws UserNotAuthorizedException insufficient access
          */
-        public List<Annotation> getAnnotations(String surveyReportGUID) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         IOException,
-                                                                                         ConnectorCheckedException
+        public List<Annotation> getProfileAnnotations() throws PropertyServerException,
+                                                               UserNotAuthorizedException
         {
             List<Annotation> newAnnotations = new ArrayList<>();
             ResourceProfileAnnotationProperties dataProfile = new ResourceProfileAnnotationProperties();
@@ -616,11 +619,55 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             dataProfile.setValueCount(fileExtensionCounts);
             newAnnotations.add(new Annotation(dataProfile));
 
-            ResourceProfileLogAnnotationProperties dataProfileLog = writeNameCountInventory(SurveyFolderAnnotationType.PROFILE_FILE_NAMES,
-                                                                                            "fileNameCounts",
-                                                                                            fileNameCounts,
-                                                                                            surveyReportGUID);
-            newAnnotations.add(new Annotation(dataProfileLog));
+            dataProfile = new ResourceProfileAnnotationProperties();
+
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_TYPES);
+            dataProfile.setValueCount(fileTypeCounts);
+            newAnnotations.add(new Annotation(dataProfile));
+
+            dataProfile = new ResourceProfileAnnotationProperties();
+
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_ASSET_TYPES);
+            dataProfile.setValueCount(assetTypeCounts);
+            newAnnotations.add(new Annotation(dataProfile));
+
+            dataProfile = new ResourceProfileAnnotationProperties();
+
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_DEP_IMPL_TYPES);
+            dataProfile.setValueCount(deployedImplementationTypeCounts);
+            newAnnotations.add(new Annotation(dataProfile));
+
+            newAnnotations.add(getFolderAnnotation());
+
+            /*
+             * The measurements of nested folders and files, gathered when the analysis level asks for them.
+             */
+            newAnnotations.addAll(savedAnnotations);
+
+            return newAnnotations;
+        }
+
+
+        /**
+         * Return the annotations for the Produce Actions analysis step: requests for action that list the
+         * files that could not be classified from the reference data, or could not be accessed.  The lists are
+         * written to CSV files that are catalogued as the action targets of the requests.
+         *
+         * @param surveyReportGUID unique identifier of the survey report
+         * @return list of annotations
+         * @throws InvalidParameterException problem creating CSV file asset
+         * @throws PropertyServerException repository problem creating CSV file asset
+         * @throws UserNotAuthorizedException authorization problem creating CSV file asset
+         * @throws IOException problem writing file
+         * @throws ConnectorCheckedException exception thrown if connector is no longer active
+         */
+        public List<Annotation> getActionAnnotations(String surveyReportGUID) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     IOException,
+                                                                                     ConnectorCheckedException
+        {
+            List<Annotation> newAnnotations = new ArrayList<>();
 
             if (! missingReferenceData.isEmpty())
             {
@@ -643,30 +690,38 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                 newAnnotations.add(annotation);
             }
 
-            dataProfile = new ResourceProfileAnnotationProperties();
-
-            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_TYPES);
-            dataProfile.setValueCount(fileTypeCounts);
-            newAnnotations.add(new Annotation(dataProfile));
-
-            dataProfile = new ResourceProfileAnnotationProperties();
-
-            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_ASSET_TYPES);
-            dataProfile.setValueCount(assetTypeCounts);
-            newAnnotations.add(new Annotation(dataProfile));
-
-            dataProfile = new ResourceProfileAnnotationProperties();
-
-            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_DEP_IMPL_TYPES);
-            dataProfile.setValueCount(deployedImplementationTypeCounts);
-            newAnnotations.add(new Annotation(dataProfile));
-
-
-            newAnnotations.add(getFolderAnnotation());
-
             return newAnnotations;
         }
 
+
+        /**
+         * Return the annotations for the Produce Inventory analysis step: the counts of each file name, written
+         * to an external log file.
+         *
+         * @param surveyReportGUID unique identifier of the survey report
+         * @return list of annotations
+         * @throws InvalidParameterException problem creating the log file asset
+         * @throws PropertyServerException repository problem creating the log file asset
+         * @throws UserNotAuthorizedException authorization problem creating the log file asset
+         * @throws IOException problem writing the log file
+         * @throws ConnectorCheckedException exception thrown if connector is no longer active
+         */
+        public List<Annotation> getInventoryAnnotations(String surveyReportGUID) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        IOException,
+                                                                                        ConnectorCheckedException
+        {
+            List<Annotation> newAnnotations = new ArrayList<>();
+
+            ResourceProfileLogAnnotationProperties dataProfileLog = writeNameCountInventory(SurveyFolderAnnotationType.PROFILE_FILE_NAMES,
+                                                                                            "fileNameCounts",
+                                                                                            fileNameCounts,
+                                                                                            surveyReportGUID);
+            newAnnotations.add(new Annotation(dataProfileLog));
+
+            return newAnnotations;
+        }
 
 
         /**

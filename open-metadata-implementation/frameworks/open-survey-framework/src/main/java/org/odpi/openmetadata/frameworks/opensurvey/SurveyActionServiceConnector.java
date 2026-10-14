@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFAuditCode;
 import org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
@@ -53,6 +54,13 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     protected SurveyContext   surveyContext            = null;
     protected List<Connector> embeddedConnectors       = null;
     protected String          csvFileConnectorTypeGUID = null;
+
+    /*
+     * The name of the last analysis step to run, from the finalAnalysisStep request parameter or configuration
+     * property.  Null means the whole survey runs.
+     */
+    private   String          finalAnalysisStep          = null;
+    private   boolean         finalAnalysisStepReached   = false;
 
 
     /**
@@ -1095,6 +1103,86 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
                                                 this.getClass().getName(),
                                                 methodName);
         }
+
+        finalAnalysisStep = this.getStringRequestOrConfigurationProperty(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
+    }
+
+
+    /**
+     * Return the value of a string property that may be supplied either as a request parameter or as a configuration
+     * property.  The request parameter takes precedence.
+     *
+     * @param propertyName name of the request parameter / configuration property
+     * @return value, or null if the property is not set
+     * @throws UserNotAuthorizedException the service is no longer active
+     */
+    private String getStringRequestOrConfigurationProperty(String propertyName) throws UserNotAuthorizedException
+    {
+        Map<String, String> requestParameters = surveyContext.getRequestParameters();
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            return requestParameters.get(propertyName);
+        }
+
+        if ((connectionBean != null) &&
+                (connectionBean.getConfigurationProperties() != null) &&
+                (connectionBean.getConfigurationProperties().get(propertyName) != null))
+        {
+            return connectionBean.getConfigurationProperties().get(propertyName).toString();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Test whether the survey should stop because the analysis step that has just completed is the final one
+     * requested by the finalAnalysisStep request parameter (or configuration property).  A survey action service
+     * calls this at the end of each analysis step, once it has stored the results of the step, and stops if it
+     * returns true.  A survey that never reaches the requested step runs to completion.
+     * <br><br>
+     * The current analysis step is the one most recently set in the annotation store.
+     *
+     * @return true if the survey should stop
+     * @throws UserNotAuthorizedException the service is no longer active
+     */
+    protected boolean isFinalAnalysisStep() throws UserNotAuthorizedException
+    {
+        final String methodName = "isFinalAnalysisStep";
+
+        if (finalAnalysisStepReached)
+        {
+            return true;
+        }
+
+        if (finalAnalysisStep != null)
+        {
+            String currentAnalysisStep = surveyContext.getAnnotationStore().getAnalysisStep();
+
+            if (finalAnalysisStep.equals(currentAnalysisStep))
+            {
+                finalAnalysisStepReached = true;
+
+                logRecord(methodName, OSFAuditCode.FINAL_ANALYSIS_STEP_REACHED.getMessageDefinition(surveyActionServiceName,
+                                                                                                     currentAnalysisStep,
+                                                                                                     surveyContext.getAssetGUID()));
+            }
+        }
+
+        return finalAnalysisStepReached;
+    }
+
+
+    /**
+     * Return whether this survey stopped because it completed the final analysis step requested.  A survey
+     * pipeline uses this to stop running the survey action services that follow.
+     *
+     * @return flag
+     */
+    protected boolean hasReachedFinalAnalysisStep()
+    {
+        return finalAnalysisStepReached;
     }
 
 

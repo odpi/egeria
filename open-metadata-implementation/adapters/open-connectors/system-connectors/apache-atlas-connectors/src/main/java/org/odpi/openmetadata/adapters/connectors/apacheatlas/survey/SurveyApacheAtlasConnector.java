@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtla
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.*;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasMetric;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -45,13 +44,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      */
     private final Map<String, String> typeNameToDataFieldGUIDMap = new HashMap<>();
 
-    /**
-     * This is the point after which the processing stops.  The default is PROFILE - which
-     * is the last analysis step.  It can be changed through configuration properties or
-     * analysis properties passed when this discovery service is called.
-     */
-    private String finalAnalysisStep = AnalysisStep.PROFILE_DATA.getName();
-
 
     /**
      * Indicates that the survey service is completely configured and can begin processing.
@@ -69,37 +61,6 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
         final String methodName = "start";
 
-        if (connectionBean.getConfigurationProperties() != null)
-        {
-            Object finalAnalysisStepPropertyObject = connectionBean.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
-
-            if (finalAnalysisStepPropertyObject != null)
-            {
-                String finalAnalysisProperty = finalAnalysisStepPropertyObject.toString();
-
-                if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
-                    (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
-                {
-                    finalAnalysisStep = finalAnalysisProperty;
-                }
-            }
-        }
-
-        /*
-         * The finalAnalysisStep property in analysisProperties takes precedent over the value in the
-         * configuration properties.
-         */
-        if (surveyContext.getRequestParameters() != null)
-        {
-            String finalAnalysisProperty = surveyContext.getRequestParameters().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
-
-            if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
-                (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
-            {
-                finalAnalysisStep = finalAnalysisProperty;
-            }
-        }
-
         try
         {
             String           assetGUID  = surveyContext.getAssetGUID();
@@ -107,6 +68,11 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             connector = super.performCheckAssetAnalysisStep(ApacheAtlasRESTConnector.class,
                                                             OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             ApacheAtlasRESTConnector atlasConnector = (ApacheAtlasRESTConnector)connector;
             OpenMetadataRootElement  assetUniverse  = assetStore.getAssetProperties();
@@ -170,322 +136,334 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 annotationStore.addAnnotation(measurementAnnotation, null);
             }
 
-            if (! AnalysisStep.MEASURE_RESOURCE.getName().equals(finalAnalysisStep))
+            /*
+             * Stopping here records the measurements of the Apache Atlas server without
+             * extracting its type definitions.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
+            /*
+             * The SCHEMA analysis step is starting now.  It uses the Apache Atlas types to perform a schema analysis that shows how the
+             * Apache Atlas types are linked.
+             */
+            annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
+
+            SchemaAnalysisAnnotationProperties schemaAnalysisAnnotationProperties = new SchemaAnalysisAnnotationProperties();
+
+            super.setUpAnnotation(schemaAnalysisAnnotationProperties, AtlasAnnotationType.TYPE_ANALYSIS);
+            schemaAnalysisAnnotationProperties.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
+            schemaAnalysisAnnotationProperties.setSchemaType(atlasVersion.getName());
+
+            annotationStore.addAnnotation(schemaAnalysisAnnotationProperties, null);
+
+            /*
+             * The schemaType is the root of the graph schema that describes the apache Atlas types.
+             * This schema type is of type GraphSchemaType, and it is connected to the asset via the
+             * AssetSchemaType Relationship. This call either confirms the root schema type is in place or
+             * creates a new one.
+             */
+            this.upsertRootSchemaType(assetGUID, assetUniverse, openMetadataStore);
+
+            /*
+             * Refresh the asse universe to be sure the schema type is present.
+             */
+            assetUniverse = assetStore.getAssetProperties();
+
+            /*
+             * Load the existing schema attributes representing the Atlas types.
+             */
+            OpenMetadataRootElement rootSchemaType = super.getRootSchemaType(assetUniverse, OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
+
+            if ((rootSchemaType != null) && (rootSchemaType.getSchemaAttributes() != null))
+            {
+                for (RelatedMetadataElementSummary schemaAttribute : rootSchemaType.getSchemaAttributes())
+                {
+                    if ((schemaAttribute != null) && (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties))
+                    {
+                        String schemaAttributeDisplayName = schemaAttributeProperties.getDisplayName();
+
+                        if (schemaAttributeDisplayName != null)
+                        {
+                            typeNameToDataFieldGUIDMap.put(schemaAttributeDisplayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Retrieve all the type definitions from Apache Atlas.  They are organized by category.
+             */
+            AtlasTypesDef atlasTypesDef = atlasConnector.getAllTypes();
+
+            /*
+             * Step through the entity types
+             */
+            for (AtlasEntityDef atlasEntityDef : atlasTypesDef.getEntityDefs())
+            {
+                if (atlasEntityDef != null)
+                {
+                    this.getSchemaAttributeForAtlasEntityDef(atlasEntityDef,
+                                                             assetUniverse,
+                                                             openMetadataStore);
+                }
+            }
+
+            /*
+             * Step through the classifications
+             */
+            for (AtlasClassificationDef atlasClassificationDef : atlasTypesDef.getClassificationDefs())
+            {
+                if (atlasClassificationDef != null)
+                {
+                    this.getSchemaAttributeForAtlasClassificationDef(atlasClassificationDef,
+                                                                     assetUniverse,
+                                                                     openMetadataStore);
+                }
+            }
+
+            /*
+             * Step through the relationships
+             */
+            for (AtlasRelationshipDef atlasRelationshipDef : atlasTypesDef.getRelationshipDefs())
+            {
+                if (atlasRelationshipDef != null)
+                {
+                    this.getSchemaAttributeForAtlasRelationshipDef(atlasRelationshipDef,
+                                                                   assetUniverse,
+                                                                   openMetadataStore);
+                }
+            }
+
+            /*
+             * Step through the business metadata
+             */
+            if (atlasTypesDef.getBusinessMetadataDefs() != null)
+            {
+                for (AtlasBusinessMetadataDef atlasBusinessMetadataDef : atlasTypesDef.getBusinessMetadataDefs())
+                {
+                    if (atlasBusinessMetadataDef != null)
+                    {
+                        this.getSchemaAttributeForAtlasBusinessMetadataDef(atlasBusinessMetadataDef,
+                                                                           assetUniverse,
+                                                                           openMetadataStore);
+                    }
+                }
+            }
+
+            /*
+             * Stopping here records the schema of the Apache Atlas types without profiling
+             * the instances stored in Apache Atlas.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
+
+            /*
+             * The final step in the analysis is to retrieve each entity instance from the Apache Atlas repository and
+             * create data profile annotations based on the number of instances of each type discovered.
+             */
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
+
+            Map<String, EntityTypeMetrics>       entityTypeMetricsMap         = new HashMap<>();
+            Map<String, TagTypeMetrics>          classificationTypeMetricsMap = new HashMap<>();
+            Map<String, TagTypeMetrics>          businessMetadataMetricsMap   = new HashMap<>();
+            Map<String, RelationshipTypeMetrics> relationshipTypeMetricsMap   = new HashMap<>();
+
+
+            final int maxPageSize = 100;
+
+            /*
+             * Gather data in the maps
+             */
+            for (AtlasEntityDef entityType : atlasTypesDef.getEntityDefs())
             {
                 /*
-                 * The SCHEMA analysis step is starting now.  It uses the Apache Atlas types to perform a schema analysis that shows how the
-                 * Apache Atlas types are linked.
+                 * Only process entity types that are top level (ie no subtypes) - this stops us counting an entity that has
+                 * multiple subtypes.
                  */
-                annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
-
-                SchemaAnalysisAnnotationProperties schemaAnalysisAnnotationProperties = new SchemaAnalysisAnnotationProperties();
-
-                super.setUpAnnotation(schemaAnalysisAnnotationProperties, AtlasAnnotationType.TYPE_ANALYSIS);
-                schemaAnalysisAnnotationProperties.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
-                schemaAnalysisAnnotationProperties.setSchemaType(atlasVersion.getName());
-
-                annotationStore.addAnnotation(schemaAnalysisAnnotationProperties, null);
-
-                /*
-                 * The schemaType is the root of the graph schema that describes the apache Atlas types.
-                 * This schema type is of type GraphSchemaType, and it is connected to the asset via the
-                 * AssetSchemaType Relationship. This call either confirms the root schema type is in place or
-                 * creates a new one.
-                 */
-                this.upsertRootSchemaType(assetGUID, assetUniverse, openMetadataStore);
-
-                /*
-                 * Refresh the asse universe to be sure the schema type is present.
-                 */
-                assetUniverse = assetStore.getAssetProperties();
-
-                /*
-                 * Load the existing schema attributes representing the Atlas types.
-                 */
-                OpenMetadataRootElement rootSchemaType = super.getRootSchemaType(assetUniverse, OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
-
-                if ((rootSchemaType != null) && (rootSchemaType.getSchemaAttributes() != null))
+                if ((entityType.getSuperTypes() == null) || (entityType.getSuperTypes().isEmpty()))
                 {
-                    for (RelatedMetadataElementSummary schemaAttribute : rootSchemaType.getSchemaAttributes())
+                    int                     startFrom = 0;
+                    List<AtlasEntityHeader> entities  = atlasConnector.getEntitiesForType(entityType.getName(), startFrom, maxPageSize);
+
+                    while ((entities != null) && (! entities.isEmpty()))
                     {
-                        if ((schemaAttribute != null) && (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties))
+                        for (AtlasEntityHeader entityHeader : entities)
                         {
-                            String schemaAttributeDisplayName = schemaAttributeProperties.getDisplayName();
+                            AtlasEntityWithExtInfo atlasEntityWithExtInfo = atlasConnector.getEntityByGUID(entityHeader.getGuid());
 
-                            if (schemaAttributeDisplayName != null)
-                            {
-                                typeNameToDataFieldGUIDMap.put(schemaAttributeDisplayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
-                            }
+                            this.addEntityProfile(atlasEntityWithExtInfo.getEntity(),
+                                                  this.getAtlasRelationships(atlasEntityWithExtInfo.getEntity(), atlasConnector),
+                                                  entityTypeMetricsMap,
+                                                  classificationTypeMetricsMap,
+                                                  businessMetadataMetricsMap,
+                                                  relationshipTypeMetricsMap);
                         }
+
+                        startFrom = startFrom + maxPageSize;
+                        entities  = atlasConnector.getEntitiesForType(entityType.getName(), startFrom, maxPageSize);
                     }
                 }
+            }
+
+            /*
+             * Once the counting is complete, build the data profile annotations to attach to the data fields.
+             * Not all types will have instances, so this logic is driven by the metrics map that only includes types with instances.
+             */
+            for (String entityTypeName : entityTypeMetricsMap.keySet())
+            {
+                EntityTypeMetrics entityTypeMetrics = entityTypeMetricsMap.get(entityTypeName);
+
+                String dataFieldGUID = typeNameToDataFieldGUIDMap.get(entityTypeName);
+
+                Map<String, String> additionalProperties = new HashMap<>();
+                additionalProperties.put("entityInstanceCount", Integer.toString(entityTypeMetrics.instanceCount));
 
                 /*
-                 * Retrieve all the type definitions from Apache Atlas.  They are organized by category.
+                 * Attached classifications
                  */
-                AtlasTypesDef atlasTypesDef = atlasConnector.getAllTypes();
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
+
+                resourceProfileAnnotation.setValueCount(entityTypeMetrics.classificationCount);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                 /*
-                 * Step through the entity types
+                 * Attached to Relationship At End 1
                  */
-                for (AtlasEntityDef atlasEntityDef : atlasTypesDef.getEntityDefs())
-                {
-                    if (atlasEntityDef != null)
-                    {
-                        this.getSchemaAttributeForAtlasEntityDef(atlasEntityDef,
-                                                                 assetUniverse,
-                                                                 openMetadataStore);
-                    }
-                }
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
+                resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                 /*
-                 * Step through the classifications
+                 * Attached to Relationship At End 2
                  */
-                for (AtlasClassificationDef atlasClassificationDef : atlasTypesDef.getClassificationDefs())
-                {
-                    if (atlasClassificationDef != null)
-                    {
-                        this.getSchemaAttributeForAtlasClassificationDef(atlasClassificationDef,
-                                                                         assetUniverse,
-                                                                         openMetadataStore);
-                    }
-                }
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
+                resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                 /*
-                 * Step through the relationships
+                 * Attached Labels
                  */
-                for (AtlasRelationshipDef atlasRelationshipDef : atlasTypesDef.getRelationshipDefs())
-                {
-                    if (atlasRelationshipDef != null)
-                    {
-                        this.getSchemaAttributeForAtlasRelationshipDef(atlasRelationshipDef,
-                                                                       assetUniverse,
-                                                                       openMetadataStore);
-                    }
-                }
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
+                resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                 /*
-                 * Step through the business metadata
+                 * Attached Business Metadata
                  */
-                if (atlasTypesDef.getBusinessMetadataDefs() != null)
-                {
-                    for (AtlasBusinessMetadataDef atlasBusinessMetadataDef : atlasTypesDef.getBusinessMetadataDefs())
-                    {
-                        if (atlasBusinessMetadataDef != null)
-                        {
-                            this.getSchemaAttributeForAtlasBusinessMetadataDef(atlasBusinessMetadataDef,
-                                                                               assetUniverse,
-                                                                               openMetadataStore);
-                        }
-                    }
-                }
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                if (AnalysisStep.SCHEMA_EXTRACTION.getName().equals(finalAnalysisStep))
-                {
-                    /*
-                     * The final step in the analysis is to retrieve each entity instance from the Apache Atlas repository and
-                     * create data profile annotations based on the number of instances of each type discovered.
-                     */
-                    annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
+                resourceProfileAnnotation.setValueCount(entityTypeMetrics.businessMetadataCount);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                    Map<String, EntityTypeMetrics>       entityTypeMetricsMap         = new HashMap<>();
-                    Map<String, TagTypeMetrics>          classificationTypeMetricsMap = new HashMap<>();
-                    Map<String, TagTypeMetrics>          businessMetadataMetricsMap   = new HashMap<>();
-                    Map<String, RelationshipTypeMetrics> relationshipTypeMetricsMap   = new HashMap<>();
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
+            }
 
+            /*
+             * Each classification data field for classifications in use has a single "Attached Entity Types" data profile annotation.
+             */
+            for (String classificationName : classificationTypeMetricsMap.keySet())
+            {
+                TagTypeMetrics classificationTypeMetrics = classificationTypeMetricsMap.get(classificationName);
 
-                    final int maxPageSize = 100;
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                    /*
-                     * Gather data in the maps
-                     */
-                    for (AtlasEntityDef entityType : atlasTypesDef.getEntityDefs())
-                    {
-                        /*
-                         * Only process entity types that are top level (ie no subtypes) - this stops us counting an entity that has
-                         * multiple subtypes.
-                         */
-                        if ((entityType.getSuperTypes() == null) || (entityType.getSuperTypes().isEmpty()))
-                        {
-                            int                     startFrom = 0;
-                            List<AtlasEntityHeader> entities  = atlasConnector.getEntitiesForType(entityType.getName(), startFrom, maxPageSize);
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
+                resourceProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
 
-                            while ((entities != null) && (! entities.isEmpty()))
-                            {
-                                for (AtlasEntityHeader entityHeader : entities)
-                                {
-                                    AtlasEntityWithExtInfo atlasEntityWithExtInfo = atlasConnector.getEntityByGUID(entityHeader.getGuid());
+                Map<String, String> additionalProperties = new HashMap<>();
+                additionalProperties.put("classificationInstanceCount", Integer.toString(classificationTypeMetrics.instanceCount));
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                                    this.addEntityProfile(atlasEntityWithExtInfo.getEntity(),
-                                                          this.getAtlasRelationships(atlasEntityWithExtInfo.getEntity(), atlasConnector),
-                                                          entityTypeMetricsMap,
-                                                          classificationTypeMetricsMap,
-                                                          businessMetadataMetricsMap,
-                                                          relationshipTypeMetricsMap);
-                                }
+                annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(classificationName));
+            }
 
-                                startFrom = startFrom + maxPageSize;
-                                entities  = atlasConnector.getEntitiesForType(entityType.getName(), startFrom, maxPageSize);
-                            }
-                        }
-                    }
+            /*
+             * Similarly, the data field for each business metadata properties in use has a single "Attached Entity Types"
+             * data profile annotation.
+             */
+            for (String businessMetadataName : businessMetadataMetricsMap.keySet())
+            {
+                TagTypeMetrics businessMetadataMetrics = businessMetadataMetricsMap.get(businessMetadataName);
 
-                    /*
-                     * Once the counting is complete, build the data profile annotations to attach to the data fields.
-                     * Not all types will have instances, so this logic is driven by the metrics map that only includes types with instances.
-                     */
-                    for (String entityTypeName : entityTypeMetricsMap.keySet())
-                    {
-                        EntityTypeMetrics entityTypeMetrics = entityTypeMetricsMap.get(entityTypeName);
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                        String dataFieldGUID = typeNameToDataFieldGUIDMap.get(entityTypeName);
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.BIZ_METADATA_ATTACHED_ENTITIES);
+                resourceProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
 
-                        Map<String, String> additionalProperties = new HashMap<>();
-                        additionalProperties.put("entityInstanceCount", Integer.toString(entityTypeMetrics.instanceCount));
+                Map<String, String> additionalProperties = new HashMap<>();
+                additionalProperties.put("businessMetadataInstanceCount", Integer.toString(businessMetadataMetrics.instanceCount));
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                        /*
-                         * Attached classifications
-                         */
-                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+                annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(businessMetadataName));
+            }
 
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
+            /*
+             * Each relationship data field has two attached data profile annotation: one for end1 and the other for end2.
+             * Each annotation provides details of the number of each type of entity attached to that end of the relationship.
+             */
+            for (String relationshipTypeName : relationshipTypeMetricsMap.keySet())
+            {
+                RelationshipTypeMetrics relationshipTypeMetrics = relationshipTypeMetricsMap.get(relationshipTypeName);
 
-                        resourceProfileAnnotation.setValueCount(entityTypeMetrics.classificationCount);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+                String dataFieldGUID = typeNameToDataFieldGUIDMap.get(relationshipTypeName);
 
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
+                Map<String, String> additionalProperties = new HashMap<>();
+                additionalProperties.put("relationshipInstanceCount", Integer.toString(relationshipTypeMetrics.instanceCount));
 
-                        /*
-                         * Attached to Relationship At End 1
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+                /*
+                 * End 1
+                 */
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
-                        resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
+                resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
-                        /*
-                         * Attached to Relationship At End 2
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+                /*
+                 * End 2
+                 */
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
-                        resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
+                resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
-                        /*
-                         * Attached Labels
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
+                /*
+                 * Pair
+                 */
+                resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
-                        resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
+                super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
+                resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
+                resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
-
-                        /*
-                         * Attached Business Metadata
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
-                        resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
-                    }
-
-                    /*
-                     * Each classification data field for classifications in use has a single "Attached Entity Types" data profile annotation.
-                     */
-                    for (String classificationName : classificationTypeMetricsMap.keySet())
-                    {
-                        TagTypeMetrics classificationTypeMetrics = classificationTypeMetricsMap.get(classificationName);
-
-                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
-                        resourceProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
-
-                        Map<String, String> additionalProperties = new HashMap<>();
-                        additionalProperties.put("classificationInstanceCount", Integer.toString(classificationTypeMetrics.instanceCount));
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(classificationName));
-                    }
-
-                    /*
-                     * Similarly, the data field for each business metadata properties in use has a single "Attached Entity Types"
-                     * data profile annotation.
-                     */
-                    for (String businessMetadataName : businessMetadataMetricsMap.keySet())
-                    {
-                        TagTypeMetrics businessMetadataMetrics = businessMetadataMetricsMap.get(businessMetadataName);
-
-                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
-                        resourceProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
-
-                        Map<String, String> additionalProperties = new HashMap<>();
-                        additionalProperties.put("businessMetadataInstanceCount", Integer.toString(businessMetadataMetrics.instanceCount));
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(businessMetadataName));
-                    }
-
-                    /*
-                     * Each relationship data field has two attached data profile annotation: one for end1 and the other for end2.
-                     * Each annotation provides details of the number of each type of entity attached to that end of the relationship.
-                     */
-                    for (String relationshipTypeName : relationshipTypeMetricsMap.keySet())
-                    {
-                        RelationshipTypeMetrics relationshipTypeMetrics = relationshipTypeMetricsMap.get(relationshipTypeName);
-
-                        String dataFieldGUID = typeNameToDataFieldGUIDMap.get(relationshipTypeName);
-
-                        Map<String, String> additionalProperties = new HashMap<>();
-                        additionalProperties.put("relationshipInstanceCount", Integer.toString(relationshipTypeMetrics.instanceCount));
-
-                        /*
-                         * End 1
-                         */
-                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
-                        resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
-
-                        /*
-                         * End 2
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
-                        resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
-
-                        /*
-                         * Pair
-                         */
-                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
-
-                        super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
-                        resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
-                        resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
-
-                        annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
-                    }
-                }
+                annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
             }
         }
         catch (ConnectorCheckedException error)
@@ -515,7 +493,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
     private List<AtlasRelationship> getAtlasRelationships(AtlasEntity              atlasEntity,
                                                           ApacheAtlasRESTConnector atlasConnector) throws PropertyServerException
     {
-        if ((atlasEntity.getRelationshipAttributes() != null) || (! atlasEntity.getRelationshipAttributes().isEmpty()))
+        if ((atlasEntity.getRelationshipAttributes() != null) && (! atlasEntity.getRelationshipAttributes().isEmpty()))
         {
             List<AtlasRelationship> relationships = new ArrayList<>();
 
@@ -1237,7 +1215,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                classificationCount.put(classificationName, 0);
+                classificationCount.put(classificationName, 1);
             }
             else
             {
@@ -1257,7 +1235,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                businessMetadataCount.put(businessMetadataName, 0);
+                businessMetadataCount.put(businessMetadataName, 1);
             }
             else
             {
@@ -1277,7 +1255,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                labelCount.put(label, 0);
+                labelCount.put(label, 1);
             }
             else
             {
@@ -1297,7 +1275,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                relationshipEnd1Count.put(relationshipTypeName, 0);
+                relationshipEnd1Count.put(relationshipTypeName, 1);
             }
             else
             {
@@ -1317,7 +1295,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                relationshipEnd2Count.put(relationshipTypeName, 0);
+                relationshipEnd2Count.put(relationshipTypeName, 1);
             }
             else
             {
@@ -1356,7 +1334,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                entityCount.put(entityTypeName, 0);
+                entityCount.put(entityTypeName, 1);
             }
             else
             {
@@ -1397,7 +1375,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                entityAtEnd1Count.put(entityTypeName, 0);
+                entityAtEnd1Count.put(entityTypeName, 1);
             }
             else
             {
@@ -1417,7 +1395,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                entityAtEnd2Count.put(entityTypeName, 0);
+                entityAtEnd2Count.put(entityTypeName, 1);
             }
             else
             {
@@ -1441,7 +1419,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (currentCount == null)
             {
-                entityPairCount.put(pairName, 0);
+                entityPairCount.put(pairName, 1);
             }
             else
             {

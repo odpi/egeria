@@ -38,7 +38,6 @@ public class SurveyApacheKafkaServerProvider extends SurveyActionServiceProvider
               connectorClassName,
               null);
 
-        supportedRequestParameters = null;
         supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET,
                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
@@ -57,5 +56,10 @@ public class SurveyApacheKafkaServerProvider extends SurveyActionServiceProvider
         producedAnnotationTypes = KafkaAnnotationType.getAnnotationTypeTypes();
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{KafkaDeployedImplementationType.APACHE_KAFKA_SERVER, KafkaDeployedImplementationType.APACHE_KAFKA_EVENT_BROKER, DeployedImplementationType.APACHE_KAFKA_TOPIC});
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
     }
 }

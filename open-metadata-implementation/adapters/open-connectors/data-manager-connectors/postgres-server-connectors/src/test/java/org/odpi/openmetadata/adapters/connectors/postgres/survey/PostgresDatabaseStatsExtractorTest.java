@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -88,6 +89,8 @@ public class PostgresDatabaseStatsExtractorTest
         PostgresDatabaseStatsExtractor extractor = new PostgresDatabaseStatsExtractor(List.of("db"),
                                                                                       List.of("repository_qs_metadata_store"),
                                                                                       null,
+                                                                                      null,
+                                                                                      null,
                                                                                       null);
 
         assertFalse(extractor.schemaShouldBeSurveyed("repository_qs_metadata_store"));
@@ -104,10 +107,61 @@ public class PostgresDatabaseStatsExtractorTest
         PostgresDatabaseStatsExtractor extractor = new PostgresDatabaseStatsExtractor(List.of("db"),
                                                                                       List.of("postgres_fvt_schema"),
                                                                                       List.of("postgres_fvt_schema", "pg_catalog"),
+                                                                                      null,
+                                                                                      null,
                                                                                       null);
 
         assertTrue(extractor.schemaShouldBeSurveyed("postgres_fvt_schema"));
         assertFalse(extractor.schemaShouldBeSurveyed("public"));
         assertFalse(extractor.schemaShouldBeSurveyed("pg_catalog"));
+    }
+
+
+    /**
+     * A column's size is estimated from its average width and the table's row count, since PostgreSQL has no
+     * catalog value for it.  Missing statistics give zero rather than a negative number.
+     */
+    @Test public void testColumnSizeEstimate()
+    {
+        assertEquals(PostgresDatabaseStatsExtractor.estimateColumnSize(8, 1000L), 8000L);
+        assertEquals(PostgresDatabaseStatsExtractor.estimateColumnSize(0, 1000L), 0L);
+        assertEquals(PostgresDatabaseStatsExtractor.estimateColumnSize(8, 0L), 0L);
+        assertEquals(PostgresDatabaseStatsExtractor.estimateColumnSize(8, -1L), 0L);
+
+        // Wide columns in large tables must not overflow an int.
+        assertEquals(PostgresDatabaseStatsExtractor.estimateColumnSize(1000, 10_000_000L), 10_000_000_000L);
+    }
+
+
+    /**
+     * The database counts are the sums over all schemas, with tables, views and materialized views each
+     * counted separately.
+     */
+    @Test public void testDatabaseCounts()
+    {
+        RelationalDataManagerMeasurement measurement = new RelationalDataManagerMeasurement();
+        measurement.setResourceName("db");
+
+        PostgresDatabaseStatsExtractor.DatabaseDetails databaseDetails = new PostgresDatabaseStatsExtractor.DatabaseDetails(measurement);
+
+        PostgresDatabaseStatsExtractor.SchemaDetails schema1 = databaseDetails.getSchemaDetails("s1");
+        schema1.getTableDetails("t1").getColumnDetails("c1");
+        schema1.getTableDetails("t1").getColumnDetails("c2");
+        schema1.getTableDetails("t2").getColumnDetails("c1");
+        schema1.getTableDetails("v1").setViewDetails("owner", "select 1");
+
+        PostgresDatabaseStatsExtractor.SchemaDetails schema2 = databaseDetails.getSchemaDetails("s2");
+        schema2.getTableDetails("t3").getColumnDetails("c1");
+        schema2.getTableDetails("m1").setMaterializedViewDetails("owner", false, true, "select 1");
+        schema2.getTableDetails("m1").getColumnDetails("c1");
+
+        databaseDetails.setUpCounts();
+
+        assertEquals(measurement.getSchemaCount(), 2L);
+        assertEquals(measurement.getTableCount(), 3L);
+        assertEquals(measurement.getViewCount(), 1L);
+        assertEquals(measurement.getMaterializedViewCount(), 1L);
+        assertEquals(measurement.getColumnCount(), 5L);
+        assertEquals(schema1.getSchemaMeasurement().getColumnCount(), 3L);
     }
 }

@@ -64,7 +64,12 @@ public class FileStatsExtractor
         surveyActionServiceConnector.setUpAnnotation(measurementAnnotation, SurveyFileAnnotationType.MEASUREMENTS);
         measurementAnnotation.setResourceCreateTime(fileClassification.getCreationTime());
         measurementAnnotation.setResourceUpdateTime(fileClassification.getLastModifiedTime());
-        measurementAnnotation.setResourceLastAccessedTime(fileClassification.getLastAccessedTime());
+
+        /*
+         * The time the file was last accessed is deliberately left out.  Reading a file - by this survey, a
+         * backup, an indexer such as Spotlight - changes it, so it would make every survey of an unchanged file
+         * look different, which defeats the reuse of annotations and the adaptive survey schedule.
+         */
         measurementAnnotation.setSize(fileClassification.getFileSize());
 
         Map<String, String> dataSourceProperties = new HashMap<>();
@@ -90,10 +95,6 @@ public class FileStatsExtractor
         {
             dataSourceProperties.put(FileMetric.LAST_MODIFIED_TIME.displayName, fileClassification.getLastModifiedTime().toString());
         }
-        if (fileClassification.getLastAccessedTime() != null)
-        {
-            dataSourceProperties.put(FileMetric.LAST_ACCESSED_TIME.displayName, fileClassification.getLastAccessedTime().toString());
-        }
 
         measurementAnnotation.setResourceProperties(dataSourceProperties);
 
@@ -114,7 +115,6 @@ public class FileStatsExtractor
         fileMeasurement.setHidden(fileClassification.isHidden());
         fileMeasurement.setCreationTime(fileClassification.getCreationTime());
         fileMeasurement.setLastModifiedTime(fileClassification.getLastModifiedTime());
-        fileMeasurement.setLastAccessedTime(fileClassification.getLastAccessedTime());
         fileMeasurement.setFileSize(fileClassification.getFileSize());
 
         measurementAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(fileMeasurement));

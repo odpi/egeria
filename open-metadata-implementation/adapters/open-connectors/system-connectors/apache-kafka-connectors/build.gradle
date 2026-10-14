@@ -18,6 +18,13 @@ dependencies {
     implementation 'org.apache.kafka:kafka-clients'
     testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors')
     testImplementation project(':open-metadata-test:open-metadata-ut')
 
 }

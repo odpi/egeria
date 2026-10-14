@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
@@ -2508,6 +2509,37 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
 
     /**
+     * Return the finalAnalysisStep request parameter supported by the survey service that runs a request type,
+     * so that a governance action process running the survey can advertise it too.
+     *
+     * @param surveyRequestType request type that runs the survey
+     * @return list containing the request parameter, or null if the survey service does not support it
+     */
+    private List<RequestParameterType> getFinalAnalysisStepRequestParameter(RequestTypeDefinition surveyRequestType)
+    {
+        List<RequestParameterType> surveyRequestParameters = surveyRequestType.getGovernanceService().getGovernanceActionDescription().supportedRequestParameters;
+
+        if (surveyRequestParameters != null)
+        {
+            for (RequestParameterType surveyRequestParameter : surveyRequestParameters)
+            {
+                if ((surveyRequestParameter != null) &&
+                        (SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName().equals(surveyRequestParameter.getName())))
+                {
+                    List<RequestParameterType> finalAnalysisStepParameters = new ArrayList<>();
+
+                    finalAnalysisStepParameters.add(new RequestParameterType(surveyRequestParameter));
+
+                    return finalAnalysisStepParameters;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Create a three-step governance action process that creates a metadata element for a particular type of asset
      * and then runs a survey against the asset's resource and creates a report.
      *
@@ -2553,13 +2585,33 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
             supportedRequestParameters = this.getRequestTypeDefinition(createTemplate.getPlaceholders());
         }
 
+        /*
+         * The process's request parameters are passed to every step, so a caller can control how far the
+         * survey in step 2 runs.  The survey service's own definition is used, since it lists the analysis
+         * steps that this survey can stop after.
+         */
+        List<RequestParameterType> surveyRequestParameters  = this.getFinalAnalysisStepRequestParameter(surveyRequestType);
+        List<RequestParameterType> processRequestParameters = supportedRequestParameters;
+
+        if (surveyRequestParameters != null)
+        {
+            processRequestParameters = new ArrayList<>();
+
+            if (supportedRequestParameters != null)
+            {
+                processRequestParameters.addAll(supportedRequestParameters);
+            }
+
+            processRequestParameters.addAll(surveyRequestParameters);
+        }
+
         archiveHelper.addSupportedRequestParameters(processGUID,
                                                     OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                     processGUID,
                                                     OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
                                                     OpenMetadataType.ASSET.typeName,
                                                     null,
-                                                    supportedRequestParameters);
+                                                    processRequestParameters);
 
         archiveHelper.addSupportedAnalysisSteps(processGUID,
                                                 OpenMetadataType.SURVEYING_ACTION_PROCESS.typeName,
@@ -2636,7 +2688,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                         "Run the survey.",
                                                                         "Create a survey report detailing the contents of the "+ technologyType.getDeployedImplementationType() + ".",
                                                                         0,
-                                                                        null,
+                                                                        surveyRequestParameters,
                                                                         null,
                                                                         null,
                                                                         null,

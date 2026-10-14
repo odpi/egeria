@@ -42,10 +42,13 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
 
         try
         {
-            surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
-
             connector = super.performCheckAssetAnalysisStep(ApacheKafkaAdminConnector.class,
                                                             KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
+
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             ApacheKafkaAdminConnector kafkaConnector = (ApacheKafkaAdminConnector) connector;
 
@@ -61,6 +64,14 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
             resourceProfileAnnotation.setValueList(new ArrayList<>(topicNames));
 
             annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+            /*
+             * Stopping here records the list of topics without writing the topic inventory.
+             */
+            if (super.isFinalAnalysisStep())
+            {
+                return;
+            }
 
             annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
 

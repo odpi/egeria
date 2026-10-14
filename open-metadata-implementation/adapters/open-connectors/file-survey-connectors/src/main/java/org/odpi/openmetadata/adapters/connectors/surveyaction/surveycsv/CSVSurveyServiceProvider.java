@@ -50,5 +50,8 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.SCHEMA_EXTRACTION, AnalysisStep.PROFILE_DATA});
         super.producedAnnotationTypes    = SurveyFileAnnotationType.getCSVSurveyAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.SCHEMA_EXTRACTION, AnalysisStep.PROFILE_DATA});
     }
 }

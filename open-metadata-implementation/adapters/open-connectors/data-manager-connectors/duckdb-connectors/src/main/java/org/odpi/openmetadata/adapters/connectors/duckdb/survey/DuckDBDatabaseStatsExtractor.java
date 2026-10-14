@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
+import org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -27,6 +29,10 @@ import java.util.UUID;
  * DuckDB, being embedded, does not expose the same workload statistics as a client/server database (there is no
  * equivalent of Postgres's pg_stat_database/pg_table_size/pg_column_size).  Where DuckDB does not provide an
  * equivalent measurement, the corresponding field is simply left at its default value.
+ * <br><br>
+ * The connections passed to it are expected to be in auto-commit mode, so that every query is its own short
+ * transaction.  Each schema is surveyed with its own set of queries, and a query that fails is logged and
+ * skipped, so one problem schema leaves a gap in the results rather than ending the survey.
  */
 public class DuckDBDatabaseStatsExtractor
 {
@@ -34,6 +40,8 @@ public class DuckDBDatabaseStatsExtractor
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
+    private final AuditLog                     auditLog;
+    private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
 
@@ -47,7 +55,7 @@ public class DuckDBDatabaseStatsExtractor
     public DuckDBDatabaseStatsExtractor(List<String>                 validDatabases,
                                         SurveyActionServiceConnector surveyActionServiceConnector)
     {
-        this(validDatabases, null, null, surveyActionServiceConnector);
+        this(validDatabases, null, null, surveyActionServiceConnector, null, null);
     }
 
 
@@ -60,24 +68,30 @@ public class DuckDBDatabaseStatsExtractor
      * @param includedSchemas              the only schemas to survey (null means all that are not excluded);
      *                                     takes precedence over excludedSchemas
      * @param surveyActionServiceConnector calling connector
+     * @param auditLog                     logging destination for queries that fail (may be null)
+     * @param surveyActionServiceName      name of the calling survey action service, for the audit log
      */
     public DuckDBDatabaseStatsExtractor(List<String>                 validDatabases,
                                         List<String>                 excludedSchemas,
                                         List<String>                 includedSchemas,
-                                        SurveyActionServiceConnector surveyActionServiceConnector)
+                                        SurveyActionServiceConnector surveyActionServiceConnector,
+                                        AuditLog                     auditLog,
+                                        String                       surveyActionServiceName)
     {
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+        this.auditLog                     = auditLog;
+        this.surveyActionServiceName      = surveyActionServiceName;
     }
 
 
     /**
      * Determine whether a schema should be surveyed.  Only the caller's lists decide: the include list, if
      * there is one, and failing that the exclude list.  No schema is left out by name otherwise - DuckDB's
-     * internal schemas are already filtered out by the queries that list schemas and views.  This follows SurveyContext.elementShouldBeSurveyed, which applies the same rule to database
-     * names.
+     * own catalog schemas belong to its "system" database, which the queries never look at.  This follows
+     * SurveyContext.elementShouldBeSurveyed, which applies the same rule to database names.
      *
      * @param schemaName name of the schema
      * @return flag indicating whether to gather statistics for the schema
@@ -104,11 +118,12 @@ public class DuckDBDatabaseStatsExtractor
 
     /**
      * Retrieve statistics about each requested database using DuckDB's pragma_database_size() table function.
+     * Every requested database gets an entry in the results, even if its size cannot be read, so that its
+     * schemas can still be surveyed.
      *
      * @param databaseJDBCConnection connection to the DuckDB database
-     * @throws SQLException            problem accessing the database
      */
-    void getDatabaseStatistics(java.sql.Connection databaseJDBCConnection) throws SQLException
+    void getDatabaseStatistics(java.sql.Connection databaseJDBCConnection)
     {
         for (String databaseName : validDatabases)
         {
@@ -122,11 +137,9 @@ public class DuckDBDatabaseStatsExtractor
          */
         final String databaseSizeSQLCommand = "SELECT * FROM pragma_database_size() WHERE database_name = current_database();";
 
-        try
+        try (PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(databaseSizeSQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
         {
-            PreparedStatement preparedStatement = databaseJDBCConnection.prepareStatement(databaseSizeSQLCommand);
-            ResultSet         resultSet         = preparedStatement.executeQuery();
-
             while (resultSet.next())
             {
                 String databaseName = resultSet.getString("database_name");
@@ -146,24 +159,14 @@ public class DuckDBDatabaseStatsExtractor
                     currentDatabase.setSize(totalBlocks * blockSize);
                 }
             }
-
-            resultSet.close();
-            preparedStatement.close();
         }
         catch (SQLException sqlException)
         {
             /*
-             * pragma_database_size() may not be available on every DuckDB version, or for every attached
-             * database.  This is not fatal to the survey - the size measurement is simply left unset.
+             * pragma_database_size() may not be available on every DuckDB version.  This is not fatal to the
+             * survey - the size measurement is simply left unset.
              */
-            try
-            {
-                databaseJDBCConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
+            logQueryFailure("database size", "database " + validDatabases, sqlException);
         }
     }
 
@@ -175,149 +178,207 @@ public class DuckDBDatabaseStatsExtractor
      * Those functions list every database the connection can see, including those ATTACH-ed to it, so each
      * query is limited to current_database().  Otherwise a table in an attached database would be counted in
      * the surveyed database's schema of the same name - and every attached database has a "main" schema.
+     * <br><br>
+     * Each schema is surveyed with its own queries, so a failure is confined to the schema (or the part of the
+     * schema) where it occurred.
      *
      * @param databaseName          name of database that is connected to
      * @param databaseSQLConnection connection to the named database
-     * @throws SQLException            problem accessing the database
+     * @throws SQLException the schemas in the database could not be listed
      */
     void getSchemaStatistics(String              databaseName,
                              java.sql.Connection databaseSQLConnection) throws SQLException
     {
-        final String duckdbSchemasSQLCommand = "SELECT * FROM duckdb_schemas() WHERE database_name = current_database() AND NOT internal;";
-        final String duckdbTablesSQLCommand  = "SELECT * FROM duckdb_tables() WHERE database_name = current_database();";
-        final String duckdbViewsSQLCommand   = "SELECT * FROM duckdb_views() WHERE database_name = current_database() AND NOT internal;";
-        final String duckdbColumnsSQLCommand = "SELECT * FROM duckdb_columns() WHERE database_name = current_database();";
+        /*
+         * DuckDB flags each database's default "main" schema as internal, so the internal flag cannot be used to
+         * filter the list - doing so would drop "main" and every table in it.  DuckDB's own catalog schemas
+         * (information_schema and pg_catalog) belong to its "system" database, which the current_database()
+         * condition already leaves out.
+         */
+        final String duckdbSchemasSQLCommand = "SELECT schema_name FROM duckdb_schemas() WHERE database_name = current_database() ORDER BY schema_name;";
 
-        try
+        DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+
+        if (databaseDetails == null)
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            databaseDetails = new DatabaseDetails(databaseName);
+            databaseResults.put(databaseName, databaseDetails);
+        }
 
-            if (databaseDetails == null)
-            {
-                databaseDetails = new DatabaseDetails(databaseName);
-                databaseResults.put(databaseName, databaseDetails);
-            }
+        /*
+         * Ensure every schema that is to be surveyed is represented, even if it has no tables or views.
+         */
+        List<String> schemaNames = new ArrayList<>();
 
-            /*
-             * Ensure every non-internal schema that is to be surveyed is represented, even if it has no tables or views.
-             */
-            PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbSchemasSQLCommand);
-            ResultSet         resultSet         = preparedStatement.executeQuery();
-
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbSchemasSQLCommand);
+             ResultSet         resultSet         = preparedStatement.executeQuery())
+        {
             while (resultSet.next())
             {
                 String schemaName = resultSet.getString("schema_name");
 
                 if (schemaShouldBeSurveyed(schemaName))
                 {
-                    databaseDetails.getSchemaDetails(schemaName);
+                    schemaNames.add(schemaName);
                 }
             }
+        }
 
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Extract core information about the tables.
-             */
-            preparedStatement = databaseSQLConnection.prepareStatement(duckdbTablesSQLCommand);
-            resultSet         = preparedStatement.executeQuery();
-
-            while (resultSet.next())
+        for (String schemaName : schemaNames)
+        {
+            if ((surveyActionServiceConnector != null) && (! surveyActionServiceConnector.isActive()))
             {
-                String schemaName = resultSet.getString("schema_name");
-                String tableName  = resultSet.getString("table_name");
-
-                if ((schemaShouldBeSurveyed(schemaName)) && (tableName != null))
-                {
-                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                    TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
-
-                    boolean hasIndexes  = resultSet.getLong("index_count") > 0;
-                    long    columnCount = resultSet.getLong("column_count");
-                    String  sql         = resultSet.getString("sql");
-
-                    tableDetails.setTableMeasurements("Table", hasIndexes, columnCount, sql);
-                }
+                return;
             }
 
-            resultSet.close();
-            preparedStatement.close();
+            databaseDetails.getSchemaDetails(schemaName);
 
-            /*
-             * Extract core information about the views.
-             */
-            preparedStatement = databaseSQLConnection.prepareStatement(duckdbViewsSQLCommand);
-            resultSet         = preparedStatement.executeQuery();
+            this.getSchemaStatistics(databaseDetails, schemaName, databaseSQLConnection);
+        }
 
-            while (resultSet.next())
+        /*
+         * Count up instances of schema, tables and columns in database.
+         */
+        databaseDetails.setUpCounts();
+    }
+
+
+    /**
+     * Extract detailed information about the tables, views and columns in a single schema.  Each query is
+     * independent: if one fails, it is logged and the others still contribute their results.
+     *
+     * @param databaseDetails       results for the database that is connected to
+     * @param schemaName            name of the schema to survey
+     * @param databaseSQLConnection connection to the database
+     */
+    private void getSchemaStatistics(DatabaseDetails     databaseDetails,
+                                     String              schemaName,
+                                     java.sql.Connection databaseSQLConnection)
+    {
+        final String duckdbTablesSQLCommand  = "SELECT table_name, index_count, column_count, sql FROM duckdb_tables() WHERE database_name = current_database() AND schema_name = ?;";
+        final String duckdbViewsSQLCommand   = "SELECT view_name, column_count, sql FROM duckdb_views() WHERE database_name = current_database() AND schema_name = ? AND NOT internal;";
+        final String duckdbColumnsSQLCommand = "SELECT table_name, column_name, data_type, is_nullable FROM duckdb_columns() WHERE database_name = current_database() AND schema_name = ?;";
+
+        final String qualifiedSchemaName = databaseDetails.getDatabaseMeasurements().getResourceName() + "." + schemaName;
+
+        SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
+
+        /*
+         * Extract core information about the tables.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbTablesSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                String schemaName = resultSet.getString("schema_name");
-                String viewName   = resultSet.getString("view_name");
-
-                if ((schemaShouldBeSurveyed(schemaName)) && (viewName != null))
+                while (resultSet.next())
                 {
-                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                    TableDetails  tableDetails  = schemaDetails.getTableDetails(viewName);
+                    String tableName = resultSet.getString("table_name");
 
-                    long   columnCount = resultSet.getLong("column_count");
-                    String sql         = resultSet.getString("sql");
+                    if (tableName != null)
+                    {
+                        TableDetails tableDetails = schemaDetails.getTableDetails(tableName);
 
-                    tableDetails.setTableMeasurements("View", false, columnCount, sql);
+                        boolean hasIndexes  = resultSet.getLong("index_count") > 0;
+                        long    columnCount = resultSet.getLong("column_count");
+                        String  sql         = resultSet.getString("sql");
+
+                        tableDetails.setTableMeasurements("Table", hasIndexes, columnCount, sql);
+                    }
                 }
             }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Extract key stats about each column in each table.
-             */
-            preparedStatement = databaseSQLConnection.prepareStatement(duckdbColumnsSQLCommand);
-            resultSet         = preparedStatement.executeQuery();
-
-            while (resultSet.next())
-            {
-                String schemaName = resultSet.getString("schema_name");
-                String tableName  = resultSet.getString("table_name");
-
-                if ((schemaShouldBeSurveyed(schemaName)) && (tableName != null) && (databaseDetails.hasTable(schemaName, tableName)))
-                {
-                    String  columnName    = resultSet.getString("column_name");
-                    String  columnType    = resultSet.getString("data_type");
-                    boolean columnIsNull  = "YES".equalsIgnoreCase(resultSet.getString("is_nullable"));
-
-                    SchemaDetails schemaDetails = databaseDetails.getSchemaDetails(schemaName);
-                    TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
-                    ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
-
-                    columnDetails.setColumnMeasurement(columnType, !columnIsNull);
-                }
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-
-            /*
-             * Count up instances of schema, tables and columns in database.
-             */
-            databaseDetails.setUpCounts();
         }
         catch (SQLException sqlException)
         {
-            /*
-             * This rollback helps to clean up any issues in the connection.
-             */
-            try
-            {
-                databaseSQLConnection.rollback();
-            }
-            catch (Exception error)
-            {
-                // ignore
-            }
+            logQueryFailure("table details", "schema " + qualifiedSchemaName, sqlException);
+        }
 
-            throw sqlException;
+        /*
+         * Extract core information about the views.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbViewsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String viewName = resultSet.getString("view_name");
+
+                    if (viewName != null)
+                    {
+                        TableDetails tableDetails = schemaDetails.getTableDetails(viewName);
+
+                        long   columnCount = resultSet.getLong("column_count");
+                        String sql         = resultSet.getString("sql");
+
+                        tableDetails.setTableMeasurements("View", false, columnCount, sql);
+                    }
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("view definitions", "schema " + qualifiedSchemaName, sqlException);
+        }
+
+        /*
+         * Extract key stats about each column in each table and view found above.
+         */
+        try (PreparedStatement preparedStatement = databaseSQLConnection.prepareStatement(duckdbColumnsSQLCommand))
+        {
+            preparedStatement.setString(1, schemaName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery())
+            {
+                while (resultSet.next())
+                {
+                    String tableName = resultSet.getString("table_name");
+
+                    if ((tableName != null) && (schemaDetails.hasTable(tableName)))
+                    {
+                        String  columnName   = resultSet.getString("column_name");
+                        String  columnType   = resultSet.getString("data_type");
+                        boolean columnIsNull = "YES".equalsIgnoreCase(resultSet.getString("is_nullable"));
+
+                        TableDetails  tableDetails  = schemaDetails.getTableDetails(tableName);
+                        ColumnDetails columnDetails = tableDetails.getColumnDetails(columnName);
+
+                        columnDetails.setColumnMeasurement(columnType, !columnIsNull);
+                    }
+                }
+            }
+        }
+        catch (SQLException sqlException)
+        {
+            logQueryFailure("column details", "schema " + qualifiedSchemaName, sqlException);
+        }
+    }
+
+
+    /**
+     * Record that a query failed.  The survey carries on without its results.
+     *
+     * @param informationSought description of the information the query was retrieving
+     * @param elementName       description of the element the query was about
+     * @param sqlException      the failure
+     */
+    private void logQueryFailure(String       informationSought,
+                                 String       elementName,
+                                 SQLException sqlException)
+    {
+        final String methodName = "logQueryFailure";
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                DuckDBAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                                         informationSought,
+                                                                                         elementName,
+                                                                                         sqlException.getClass().getName(),
+                                                                                         sqlException.getMessage()));
         }
     }
 
@@ -335,106 +396,148 @@ public class DuckDBDatabaseStatsExtractor
 
 
     /**
-     * Convert the information retrieve from the database into annotations recognized by the survey action framework.
+     * Return the database-level annotations for every database whose results have not yet been released, and
+     * release them.  This is used when the survey stops after the database statistics have been gathered,
+     * before the schemas are surveyed - so the annotations have no schema, table or column counts.
      *
-     * @return list of annotations
+     * @return list of annotations, or null if there are no results
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getAnnotations() throws PropertyServerException
+    List<AnnotationProperties> getDatabaseAnnotations() throws PropertyServerException
     {
-        /*
-         * All information has been assembled so create the annotations.
-         */
         List<AnnotationProperties> annotations = new ArrayList<>();
 
-        for (String databaseName : databaseResults.keySet())
+        for (String databaseName : new ArrayList<>(databaseResults.keySet()))
         {
-            DatabaseDetails databaseDetails = databaseResults.get(databaseName);
+            DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
 
             if (databaseDetails != null)
             {
-                List<String> schemaNames = databaseDetails.getSchemaNames();
+                annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+            }
+        }
 
-                ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
+        if (! annotations.isEmpty())
+        {
+            return annotations;
+        }
 
-                databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
-                databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
-                databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
-                databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
-                databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
+        return null;
+    }
 
-                databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
 
-                databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+    /**
+     * Build the annotation that holds the measurements for a database.
+     *
+     * @param databaseName name of the database
+     * @param databaseDetails results for the database
+     * @return annotation
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    private AnnotationProperties getDatabaseAnnotation(String          databaseName,
+                                                       DatabaseDetails databaseDetails) throws PropertyServerException
+    {
+        ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
 
-                annotations.add(databaseAnnotation);
+        databaseAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName() + "::" + databaseName + "::" + UUID.randomUUID());
+        databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+        databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+        databaseAnnotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+        databaseAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
 
-                for (String schemaName : schemaNames)
+        databaseAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(databaseDetails.getDatabaseMeasurements()));
+
+        databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
+
+        return databaseAnnotation;
+    }
+
+
+    /**
+     * Convert the information retrieved from the database into annotations recognized by the survey action
+     * framework.  The results for the database are released once the annotations are created.
+     *
+     * @param databaseName name of the database
+     * @return list of annotations, or null if there are no results for the database
+     * @throws PropertyServerException problem formatting JSON string
+     */
+    List<AnnotationProperties> getAnnotations(String databaseName) throws PropertyServerException
+    {
+        List<AnnotationProperties> annotations = new ArrayList<>();
+
+        DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
+
+        if (databaseDetails != null)
+        {
+            List<String> schemaNames = databaseDetails.getSchemaNames();
+
+            annotations.add(this.getDatabaseAnnotation(databaseName, databaseDetails));
+
+            for (String schemaName : schemaNames)
+            {
+                SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
+
+                if (currentSchema != null)
                 {
-                    SchemaDetails currentSchema = databaseDetails.getSchemaDetails(schemaName);
+                    ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
 
-                    if (currentSchema != null)
+                    schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
+                    schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
+                    schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
+                    schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
+                    schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
+
+                    schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
+
+                    schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
+
+                    annotations.add(schemaAnnotation);
+
+                    List<String> tableNames = currentSchema.getTableNames();
+
+                    if (tableNames != null)
                     {
-                        ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
-
-                        schemaAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName() + "::" + currentSchema.getQualifiedSchemaName() + "::" + UUID.randomUUID());
-                        schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
-                        schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
-                        schemaAnnotation.setExplanation(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getExplanation());
-                        schemaAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getAnalysisStep());
-
-                        schemaAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentSchema.getSchemaMeasurement()));
-
-                        schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
-
-                        annotations.add(schemaAnnotation);
-
-                        List<String> tableNames = currentSchema.getTableNames();
-
-                        if (tableNames != null)
+                        for (String tableName : tableNames)
                         {
-                            for (String tableName : tableNames)
+                            TableDetails currentTable = currentSchema.getTableDetails(tableName);
+
+                            if (currentTable != null)
                             {
-                                TableDetails currentTable = currentSchema.getTableDetails(tableName);
+                                ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                if (currentTable != null)
+                                tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
+                                tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
+                                tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
+                                tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
+                                tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
+
+                                tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
+
+                                tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
+
+                                annotations.add(tableAnnotation);
+
+                                List<String> columnNames = currentTable.getColumnNames();
+
+                                if (columnNames != null)
                                 {
-                                    ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
-
-                                    tableAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName() + "::" + currentTable.getQualifiedTableName() + "::" + UUID.randomUUID());
-                                    tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
-                                    tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
-                                    tableAnnotation.setExplanation(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getExplanation());
-                                    tableAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getAnalysisStep());
-
-                                    tableAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentTable.getTableMeasurements()));
-
-                                    tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
-
-                                    annotations.add(tableAnnotation);
-
-                                    List<String> columnNames = currentTable.getColumnNames();
-
-                                    if (columnNames != null)
+                                    for (String columnName : columnNames)
                                     {
-                                        for (String columnName : columnNames)
-                                        {
-                                            ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
+                                        ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                            ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
+                                        ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
 
-                                            columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
-                                            columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
-                                            columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
-                                            columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
-                                            columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
+                                        columnAnnotation.setQualifiedName("Annotation::" + SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName() + "::" + currentColumn.getQualifiedColumnName() + "::" + UUID.randomUUID());
+                                        columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
+                                        columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());
+                                        columnAnnotation.setExplanation(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getExplanation());
+                                        columnAnnotation.setAnalysisStep(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getAnalysisStep());
 
-                                            columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
+                                        columnAnnotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentColumn.getColumnMeasurements()));
 
-                                            columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
+                                        columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
 
-                                            annotations.add(columnAnnotation);
-                                        }
+                                        annotations.add(columnAnnotation);
                                     }
                                 }
                             }
@@ -526,6 +629,7 @@ public class DuckDBDatabaseStatsExtractor
             resourceProperties.put(RelationalDatabaseMetric.DATA_SIZE.getDisplayName(), Long.toString(databaseMeasurements.getSize()));
             resourceProperties.put(RelationalDatabaseMetric.SCHEMA_COUNT.getDisplayName(), Long.toString(databaseMeasurements.getSchemaCount()));
             resourceProperties.put(RelationalDatabaseMetric.TABLE_COUNT.getDisplayName(), Long.toString(databaseMeasurements.getTableCount()));
+            resourceProperties.put(RelationalDatabaseMetric.VIEW_COUNT.getDisplayName(), Long.toString(databaseMeasurements.getViewCount()));
             resourceProperties.put(RelationalDatabaseMetric.COLUMN_COUNT.getDisplayName(), Long.toString(databaseMeasurements.getColumnCount()));
 
             return resourceProperties;
@@ -807,13 +911,18 @@ public class DuckDBDatabaseStatsExtractor
 
 
         /**
-         * Return the number of columns in this table.
+         * Return the number of columns in this table.  This is the number of columns recorded for it, unless
+         * none were (for example because the column query failed), in which case the count that DuckDB's
+         * catalog reported for the table is kept.
          *
          * @return long
          */
         long getColumnCount()
         {
-            tableMeasurement.setColumnCount(columns.size());
+            if (! columns.isEmpty())
+            {
+                tableMeasurement.setColumnCount(columns.size());
+            }
 
             return tableMeasurement.getColumnCount();
         }

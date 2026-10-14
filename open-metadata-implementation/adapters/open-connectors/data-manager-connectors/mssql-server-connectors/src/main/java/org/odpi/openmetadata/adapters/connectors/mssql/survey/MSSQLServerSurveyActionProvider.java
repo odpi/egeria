@@ -31,17 +31,24 @@ public class MSSQLServerSurveyActionProvider extends SurveyActionServiceProvider
               MSSQLConfigurationProperty.getSchemaSurveyConfigPropertyNames());
 
         super.supportedConfigurationProperties = MSSQLConfigurationProperty.getSchemaSurveyConfigurationPropertyTypes();
-        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes();
+        super.supportedRequestParameters = SurveyRequestParameter.getSchemaSurveyRequestParameterTypes(null);
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(
                 new DeployedImplementationTypeDefinition[]{MSSQLDeployedImplementationType.MSSQL_SERVER});
         super.supportedActionTargetTypes = MSSQLTarget.getMSSQLServerActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.PRODUCE_INVENTORY, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
 
         /*
          * Despite the method name, this list of annotation types is generic to any relational database survey,
          * not PostgreSQL-specific - there is no separate MSSQL variant defined in the shared open-survey-framework.
          */
         super.producedAnnotationTypes = SurveyDatabaseAnnotationType.getPostgresServerAnnotationTypeTypes();
+
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
     }
 }

@@ -34,7 +34,6 @@ public class FileMeasurement
     private boolean hidden                     = false;
     private Date    creationTime               = null;
     private Date    lastModifiedTime           = null;
-    private Date    lastAccessedTime           = null;
     private long    fileSize                   = 0L;
     private long    recordCount                = 0L;
 
@@ -186,16 +185,6 @@ public class FileMeasurement
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Date getLastAccessedTime()
-    {
-        return lastAccessedTime;
-    }
-
-    public void setLastAccessedTime(Date lastAccessedTime)
-    {
-        this.lastAccessedTime = lastAccessedTime;
-    }
-
     public long getFileSize()
     {
         return fileSize;
@@ -235,7 +224,6 @@ public class FileMeasurement
                 ", hidden=" + hidden +
                 ", creationTime=" + creationTime +
                 ", lastModifiedTime=" + lastModifiedTime +
-                ", lastAccessedTime=" + lastAccessedTime +
                 ", fileSize=" + fileSize +
                 ", recordCount=" + recordCount +
                 '}';

@@ -9,7 +9,7 @@ The OracleAuditCode is used to define the message content for the OMRS Audit Log
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 6 |
+| **Number of messages** | 8 |
 | **Message identifiers begin** | `ORACLE-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.oracle.ffdc.OracleAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/data-manager-connectors/oracle-server-connectors](../../../open-metadata-implementation/adapters/open-connectors/data-manager-connectors/oracle-server-connectors) |
@@ -27,6 +27,8 @@ The OracleAuditCode is used to define the message content for the OMRS Audit Log
 | [ORACLE-CONNECTOR-0004](#oracle-connector-0004) | INFO | The {0} integration connector is skipping Oracle Pluggable Database {1} ({2}) because it is already catalogued |
 | [ORACLE-CONNECTOR-0007](#oracle-connector-0007) | INFO | The {0} Oracle Database Connector has been supplied with a friendship connector with GUID {1} |
 | [ORACLE-CONNECTOR-0009](#oracle-connector-0009) | INFO | The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Oracle Pluggable Database Asset {3} for Database {4} |
+| [ORACLE-CONNECTOR-0010](#oracle-connector-0010) | ERROR | The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3} |
+| [ORACLE-CONNECTOR-0011](#oracle-connector-0011) | ERROR | The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4} |
 
 ----
 
@@ -152,6 +154,48 @@ The connector has requested that its friendship connector starts to catalog a ne
 **User action**
 
 Verify that the cataloguing starts the next time that the friendship connector refreshes.
+
+
+----
+
+### ORACLE-CONNECTOR-0010
+
+> The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OracleAuditCode.DATABASE_NOT_SURVEYED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The survey report has no results for this pluggable database.  The survey continues with the remaining pluggable databases.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing CREATE SESSION privilege for the survey's userId in the pluggable database, or a pluggable database whose service is not registered with the listener.  Once it is resolved, rerun the survey.
+
+
+----
+
+### ORACLE-CONNECTOR-0011
+
+> The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OracleAuditCode.SURVEY_QUERY_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The survey continues, but its results for this element are incomplete.
+
+**User action**
+
+Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId (such as SELECT on DBA\_SEGMENTS or CDB\_DATA\_FILES), a snapshot too old (ORA-01555) error, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.
 
 
 ----

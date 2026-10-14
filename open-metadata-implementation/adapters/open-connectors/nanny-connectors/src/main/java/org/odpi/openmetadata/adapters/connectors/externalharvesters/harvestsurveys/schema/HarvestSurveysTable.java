@@ -213,7 +213,6 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                               HarvestSurveysColumn.IS_HIDDEN,
                               HarvestSurveysColumn.FILE_CREATION_TIME,
                               HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME,
-                              HarvestSurveysColumn.LAST_ACCESSED_TIME,
                               HarvestSurveysColumn.FILE_SIZE,
                               HarvestSurveysColumn.RECORD_COUNT}),
 
@@ -244,8 +243,7 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                                    HarvestSurveysColumn.UNCLASSIFIED_FILE_COUNT,
                                    HarvestSurveysColumn.INACCESSIBLE_FILE_COUNT,
                                    HarvestSurveysColumn.LAST_FILE_CREATION_TIME,
-                                   HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME,
-                                   HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME}),
+                                   HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME}),
 
     RESOURCE_MEASURES("sr_resource_measurement",
                       "Details of individual resources surveyed.",
@@ -262,7 +260,6 @@ public enum HarvestSurveysTable implements PostgreSQLTable
                               HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME,
                               HarvestSurveysColumn.RESOURCE_CREATION_TIME,
                               HarvestSurveysColumn.LAST_MODIFIED_TIME,
-                              HarvestSurveysColumn.LAST_ACCESSED_TIME,
                               HarvestSurveysColumn.RESOURCE_SIZE,
                               HarvestSurveysColumn.ENCODING}),
 

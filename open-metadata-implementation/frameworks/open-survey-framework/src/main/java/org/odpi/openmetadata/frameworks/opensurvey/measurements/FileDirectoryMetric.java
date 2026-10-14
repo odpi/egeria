@@ -95,11 +95,6 @@ public enum FileDirectoryMetric implements SurveyMetric
      * The last time that a file was created in the surveyed directory (or any subdirectory).
      */
     LAST_FILE_MODIFIED_TIME ("lastFileModificationTime", "date", "Last file modification time", "The last time that a file was updated in the surveyed directory (or any subdirectory)."),
-
-    /**
-     * The last time that a file was accessed in the surveyed directory (or any subdirectory).
-     */
-    LAST_FILE_ACCESSED_TIME ("lastFileAccessedTime", "date", "Last file access time", "The last time that a file was accessed in the surveyed directory (or any subdirectory)."),
     ;
 
 

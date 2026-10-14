@@ -14,9 +14,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The AnnotationStore provides the interface used by a survey action service to
@@ -41,6 +44,13 @@ public class AnnotationStore
     private String analysisStep = null;
 
     private final AnnotationHandler annotationHandler;
+
+    /*
+     * The annotations that already describe each element, retrieved the first time an annotation is added for
+     * the element and kept up to date by the annotation handler for the rest of the survey.  Map from the
+     * described element's unique identifier to its annotations.
+     */
+    private final Map<String, List<OpenMetadataRootElement>> reuseCandidates = new HashMap<>();
 
     private static final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -626,18 +636,82 @@ public class AnnotationStore
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException    there was a problem adding the annotation to the annotation store.
      */
-    private AnnotationHandler.AnnotationResult addOrReuseAnnotation(AnnotationProperties annotationProperties,
-                                                                    String               associatedElementGUID) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       PropertyServerException
+    private synchronized AnnotationHandler.AnnotationResult addOrReuseAnnotation(AnnotationProperties annotationProperties,
+                                                                                 String               associatedElementGUID) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
     {
+        String describedElementGUID = associatedElementGUID;
+
+        if (describedElementGUID == null)
+        {
+            describedElementGUID = assetGUID;
+        }
+
         return annotationHandler.addAnnotationToReport(userId,
                                                        assetGUID,
                                                        surveyReportGUID,
-                                                       associatedElementGUID,
+                                                       describedElementGUID,
                                                        annotationProperties,
                                                        this.getMakeAnchorOptions(),
-                                                       this.getQueryOptions());
+                                                       this.getReuseCandidates(describedElementGUID),
+                                                       this.getGetOptions());
+    }
+
+
+    /**
+     * Return the annotations that already describe an element, as candidates for reuse.  They are retrieved
+     * - every page of them - the first time an annotation is added for the element, and the annotation handler
+     * keeps the list up to date as this survey adds annotations.  Retrieving them for every annotation instead
+     * makes the cost of a survey grow with the square of its number of annotations, because a survey typically
+     * describes everything it finds against its asset.
+     * <br>
+     * Annotations that another survey adds to the same element while this one is running are not seen, so the
+     * two may record the same annotation.  The next survey to report it merges them, as it does for annotations
+     * from before reuse was introduced.
+     *
+     * @param describedElementGUID unique identifier of the described element
+     * @return modifiable list of annotations
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem with the metadata store
+     */
+    private List<OpenMetadataRootElement> getReuseCandidates(String describedElementGUID) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        List<OpenMetadataRootElement> candidates = reuseCandidates.get(describedElementGUID);
+
+        if (candidates == null)
+        {
+            candidates = new ArrayList<>();
+
+            int pageSize  = openMetadataStore.getMaxPagingSize();
+            int startFrom = 0;
+
+            List<OpenMetadataRootElement> page = annotationHandler.getAnnotationsForElement(userId,
+                                                                                            describedElementGUID,
+                                                                                            this.getQueryOptions(startFrom, pageSize));
+
+            while (page != null)
+            {
+                candidates.addAll(page);
+
+                if ((pageSize <= 0) || (page.size() < pageSize))
+                {
+                    break;
+                }
+
+                startFrom = startFrom + pageSize;
+                page      = annotationHandler.getAnnotationsForElement(userId,
+                                                                       describedElementGUID,
+                                                                       this.getQueryOptions(startFrom, pageSize));
+            }
+
+            reuseCandidates.put(describedElementGUID, candidates);
+        }
+
+        return candidates;
     }
 
 
@@ -693,6 +767,8 @@ public class AnnotationStore
     {
         UpdateOptions updateOptions = new UpdateOptions(this.getMakeAnchorOptions());
         updateOptions.setMergeUpdate(true);
+
+        this.forgetReuseCandidates(annotationGUID);
 
         return annotationHandler.updateAnnotation(userId,
                                                   annotationGUID,
@@ -753,7 +829,44 @@ public class AnnotationStore
     {
         DeleteOptions deleteOptions = new DeleteOptions(this.getMakeAnchorOptions());
 
+        this.forgetReuseCandidates(annotationGUID);
+
         annotationHandler.deleteAnnotation(userId, annotationGUID, deleteOptions);
+    }
+
+
+    /**
+     * Discard the cached reuse candidates for any element that an annotation describes, because the annotation
+     * is being changed or removed.  They are retrieved again the next time an annotation is added for the
+     * element.
+     *
+     * @param annotationGUID unique identifier of the annotation
+     */
+    private synchronized void forgetReuseCandidates(String annotationGUID)
+    {
+        if (annotationGUID != null)
+        {
+            List<String> staleElementGUIDs = new ArrayList<>();
+
+            for (Map.Entry<String, List<OpenMetadataRootElement>> entry : reuseCandidates.entrySet())
+            {
+                for (OpenMetadataRootElement candidate : entry.getValue())
+                {
+                    if ((candidate != null) &&
+                            (candidate.getElementHeader() != null) &&
+                            (annotationGUID.equals(candidate.getElementHeader().getGUID())))
+                    {
+                        staleElementGUIDs.add(entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            for (String staleElementGUID : staleElementGUIDs)
+            {
+                reuseCandidates.remove(staleElementGUID);
+            }
+        }
     }
 
 

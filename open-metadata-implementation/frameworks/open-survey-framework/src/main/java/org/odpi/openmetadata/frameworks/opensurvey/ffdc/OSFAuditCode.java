@@ -110,6 +110,16 @@ public enum OSFAuditCode implements AuditLogMessageSet
                                "describes a resource that nothing can open.  Attach a connection to the asset and re-run this survey.",
                        "https://egeria-project.org/frameworks/osf/overview/"),
 
+    /**
+     * OPEN-SURVEY-0010 - The {0} Survey Action Service has completed analysis step {1}, which is the final analysis step requested for this survey of asset {2}
+     */
+    FINAL_ANALYSIS_STEP_REACHED("OPEN-SURVEY-0010",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The {0} Survey Action Service has completed analysis step {1}, which is the final analysis step requested for this survey of asset {2}",
+                                "The survey stops here.  The survey report contains the results of the analysis steps that have run.",
+                                "No action is required.  To run more of the survey, request a later analysis step in the finalAnalysisStep request parameter, or leave it out to run the whole survey.",
+                                "https://egeria-project.org/frameworks/osf/overview/"),
+
     ;
 
 

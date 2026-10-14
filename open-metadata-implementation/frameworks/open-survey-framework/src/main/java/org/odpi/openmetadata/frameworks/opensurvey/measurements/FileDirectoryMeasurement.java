@@ -39,7 +39,6 @@ public class FileDirectoryMeasurement
     private long   inaccessibleFileCount           = 0L;
     private Date   lastFileCreationTime            = null;
     private Date   lastFileModificationTime        = null;
-    private Date   lastFileAccessedTime            = null;
 
 
     /**
@@ -230,16 +229,6 @@ public class FileDirectoryMeasurement
         this.lastFileModificationTime = lastFileModificationTime;
     }
 
-    public Date getLastFileAccessedTime()
-    {
-        return lastFileAccessedTime;
-    }
-
-    public void setLastFileAccessedTime(Date lastFileAccessedTime)
-    {
-        this.lastFileAccessedTime = lastFileAccessedTime;
-    }
-
     @Override
     public String toString()
     {
@@ -262,7 +251,6 @@ public class FileDirectoryMeasurement
                 ", inaccessibleFileCount=" + inaccessibleFileCount +
                 ", lastFileCreationTime=" + lastFileCreationTime +
                 ", lastFileModificationTime=" + lastFileModificationTime +
-                ", lastFileAccessedTime=" + lastFileAccessedTime +
                 '}';
     }
 }

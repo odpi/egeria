@@ -83,6 +83,26 @@ public enum OracleAuditCode implements AuditLogMessageSet
                        "Verify that the cataloguing starts the next time that the friendship connector refreshes.",
                        "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
 
+    /**
+     * ORACLE-CONNECTOR-0010 - The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3}
+     */
+    DATABASE_NOT_SURVEYED("ORACLE-CONNECTOR-0010",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3}",
+                          "The survey report has no results for this pluggable database.  The survey continues with the remaining pluggable databases.",
+                          "Use the exception message to determine the cause of the error; it is often a missing CREATE SESSION privilege for the survey's userId in the pluggable database, or a pluggable database whose service is not registered with the listener.  Once it is resolved, rerun the survey.",
+                          "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
+
+    /**
+     * ORACLE-CONNECTOR-0011 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}
+     */
+    SURVEY_QUERY_FAILED("ORACLE-CONNECTOR-0011",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}",
+                        "The survey continues, but its results for this element are incomplete.",
+                        "Use the exception message to determine the cause of the error; it is often a missing privilege for the survey's userId (such as SELECT on DBA_SEGMENTS or CDB_DATA_FILES), a snapshot too old (ORA-01555) error, or a table that was dropped while the survey was running.  Once it is resolved, rerun the survey.",
+                        "https://egeria-project.org/egeria-solutions/leveraging-oracle/overview/"),
+
     ;
 
     private final String                     logMessageId;

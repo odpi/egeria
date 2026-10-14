@@ -52,11 +52,19 @@ public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServi
         super.producedAnnotationTypes = SurveyFolderAnnotationType.getAnnotationTypeTypes();
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();
 
+        /*
+         * The volume is surveyed by the folder survey service, so these steps must match the ones it sets.
+         */
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET,
-                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
                 AnalysisStep.PRODUCE_ACTIONS,
                 AnalysisStep.PRODUCE_INVENTORY});
 
+        super.setFinalAnalysisSteps(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_ACTIONS,
+                AnalysisStep.PRODUCE_INVENTORY});
     }
 }

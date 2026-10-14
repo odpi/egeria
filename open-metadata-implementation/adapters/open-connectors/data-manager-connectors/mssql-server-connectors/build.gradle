@@ -28,6 +28,13 @@ dependencies {
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     testCompileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testCompileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
 }

@@ -137,7 +137,15 @@ public class DuckDBUtils
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
+                    /*
+                     * Every connection to the same database file within this JVM shares one DuckDB instance, and
+                     * an ATTACH applies to the instance rather than the connection.  So while any other
+                     * connection (such as an idle one in a connection pool) keeps the instance open, the
+                     * attachment made on an earlier refresh is still in place and DuckDB rejects the repeat with
+                     * "... is already attached by database ...".  The statement's purpose is already achieved, so
+                     * this is not reported as a failure.
+                     */
+                    if ((auditLog != null) && ((error.getMessage() == null) || (! error.getMessage().contains("is already attached"))))
                     {
                         auditLog.logMessage("runAttachStatements",
                                             DuckDBAuditCode.ATTACH_STATEMENT_FAILED.getMessageDefinition(connectorName,
