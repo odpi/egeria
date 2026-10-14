@@ -43,7 +43,22 @@ public enum ExceptionTypeDefinition
                          null),
 
     /**
-     * Missing User Identity Exception
+     * Missing Zone Access Control Exception
+     */
+    MISSING_ZONE_ACCESS_CONTROL("ab0ad0fd-fb9c-43c9-8f92-f5840432c596",
+                                "MISSING-ZONE-ACCESS-CONTROL",
+                                "Missing Zone Access Control Exception",
+                                "A GovernanceZone element stored in open metadata does not have a corresponding security access control defined in the platform's user directory.",
+                                "This exception is raised by OMAGServerPlatformCataloguer when a GovernanceZone element is found without a corresponding security access control in the platform's security connector.",
+                                "This exception provides information about governance zones that are not secured by the platform's security connector.  A governance zone without a security access control locks every user out of the elements that are only members of this zone.  Add a security access control of type GovernanceZone with the zone's name to the platform's user directory, or remove the zone from the elements that use it.",
+                                GovernanceDomain.SECURITY.getOrdinal(),
+                                ScopeDefinition.WITHIN_ORGANIZATION,
+                                false,
+                                null,
+                                null),
+
+    /**
+     * Clear Text Password Exception
      */
     CLEAR_TEXT_PASSWORD("769e2f89-a940-4f32-abbc-a427c78c14ca",
                         "CLEAR-TEXT-PASSWORD",

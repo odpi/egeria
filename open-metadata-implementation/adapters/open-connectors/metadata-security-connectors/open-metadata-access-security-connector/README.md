@@ -39,6 +39,12 @@ The zone itself represents a collection of metadata.
 The security access control defines which users can perform which operation.
 There is a DEFAULT operation that means, all operations not explicitly defined.
 
+An element with no zones is accessible to every user with an active account.
+An element in one or more zones is accessible if any one of its zones permits the operation.
+A zone with no security access control in the user directory, or whose control has neither a list for the
+operation nor a DEFAULT list, permits no-one - so every governance zone in use must be defined in the user directory.
+The exception is a zone named after a user, which is that user's own.
+
 
 ## Connection security
 

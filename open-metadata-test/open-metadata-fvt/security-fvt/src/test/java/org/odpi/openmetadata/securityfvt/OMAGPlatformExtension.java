@@ -117,7 +117,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     public static final String OWNED_ZONE      = "secfvt-owned";
     /** READ open to all; UPDATE_PROPERTIES only for someone who has not maintained the element before. */
     public static final String FOUR_EYES_ZONE  = "secfvt-four-eyes";
-    /** A zone with no access control at all. */
+    /** A zone with no access control at all, and so no-one may use it. */
     public static final String UNLISTED_ZONE   = "secfvt-unlisted";
 
     /*

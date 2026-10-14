@@ -902,7 +902,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
     /**
      * Returns the list of security lists associated with the zone and operation.
-     * If none are found, there is no restriction on the use of the zone.
+     * If none are found, no-one may perform the operation on the zone's elements (through this zone).
      *
      * @param zoneName name of the zone
      * @param operation operation to check
@@ -1075,6 +1075,9 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
     /**
      * Determine whether the user is permitted to perform the desired operation based on the element's zones.
+     * An element in no zones is open to every active user.  Otherwise, the user needs one of the element's zones
+     * to permit the operation.  A zone named after the user is the user's own, and a zone with no security
+     * access control permits no-one.
      *
      * @param userId identifier of user
      * @param classifications list of classifications from entity
@@ -1083,6 +1086,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @param repositoryHelper manipulates repository service objects
      * @param serviceName calling service
      * @param methodName calling method
+     * @return true if the user is permitted
      * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
@@ -1125,16 +1129,17 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                     }
                     else if (zoneName != null)
                     {
+                        /*
+                         * Every named zone is secured.  A zone with no security access control, or whose control
+                         * has neither a list for this operation nor a DEFAULT list, grants access to no-one.  The
+                         * element may still be accessible through one of its other zones.
+                         */
+                        securedZoneCount++;
+
                         List<String> associatedSecurityList = getAssociatedSecurityListForZone(zoneName, operation);
 
-                        /*
-                         * If the zone has no associated security list, then it is not a secured zone and is ignored.
-                         * This is different from giving everyone access.
-                         */
                         if (associatedSecurityList != null)
                         {
-                            securedZoneCount++;
-
                             /*
                              * Does the security list permit any user to access this service?
                              */
