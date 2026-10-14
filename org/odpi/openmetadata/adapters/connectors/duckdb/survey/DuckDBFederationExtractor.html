@@ -101,7 +101,8 @@ loadScripts(document, 'script');</script>
  </ul>
  Both queries are wrapped defensively - not every DuckDB database makes use of federation features, and older
  DuckDB versions may not support every table function used here, so failures are logged and processing continues
- rather than failing the whole survey/catalog pass.</div>
+ rather than failing the whole survey/catalog pass.  The connections passed to it are expected to be in
+ auto-commit mode, so a failed query has no transaction to roll back.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

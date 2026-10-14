@@ -165,7 +165,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert the connection string for the database server into a connection string for the database.
  Microsoft SQL Server JDBC URLs identify the target database through a "databaseName" connection
  property (eg "jdbc:sqlserver://host:port;databaseName=myDatabase") rather than a URL path segment,
- so any existing databaseName property on the server URL is replaced rather than split off.</div>
+ so any existing databaseName property on the server URL is replaced.  The other connection properties
+ (such as encrypt or trustServerCertificate) are kept, wherever they appear in the URL.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>databaseServerURL</code> - connection string used to connect to the Microsoft SQL Server</dd>

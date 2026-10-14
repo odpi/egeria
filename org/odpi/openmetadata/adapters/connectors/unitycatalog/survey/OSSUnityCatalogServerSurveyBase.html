@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li><a href="#field-detail">Field</a></li>
+<li>Field</li>
 <li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -65,7 +65,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -106,6 +106,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OSSUnityCatalogServerSurveyBase</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></span></div>
+<div class="block">Common functions for the OSS Unity Catalog survey action services.
+ <br><br>
+ The surveys retrieve their information through the Unity Catalog REST API, one list call per type of resource
+ in each schema.  Each call is made independently: if one fails (for example, because the survey's userId may
+ not read a schema, or the element was deleted while the survey was running), the failure is logged and the
+ survey continues, so that one inaccessible element leaves a gap in the results rather than ending the survey.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -123,6 +129,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Information about a UC resource collected for the inventory.</div>
 </div>
+<div class="col-first odd-row-color"><code>protected static class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="OSSUnityCatalogServerSurveyBase.SchemaContents.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.SchemaContents</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The resources found in the schemas surveyed, accumulated across the schemas.</div>
+</div>
 </div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Nested classes/interfaces inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h2>
@@ -133,17 +144,6 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#finalAnalysisStep" class="member-name-link">finalAnalysisStep</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">This is the point after which the processing stops.</div>
-</div>
-</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.opensurvey.<a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></h3>
 <code><a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#connector">connector</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#csvFileConnectorTypeGUID">csvFileConnectorTypeGUID</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#objectMapper">objectMapper</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#propertyHelper">propertyHelper</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#surveyActionServiceName">surveyActionServiceName</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#surveyContext">surveyContext</a></code></div>
@@ -187,15 +187,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Fill out a name list annotation.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaName()" class="member-name-link">getSchemaName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="OSSUnityCatalogServerSurveyBase.ResourceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.ResourceProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase)" class="member-name-link">getResourceProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;element)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Build the inventory properties for a Unity Catalog element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaName()" class="member-name-link">getSchemaName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the schema to survey; or throw an exception if there is no schema name.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logRetrievalFailure(java.lang.String,java.lang.String,java.lang.Exception)" class="member-name-link">logRetrievalFailure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSought,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;error)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Record that a call to Unity Catalog failed.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFinalAnalysisStep()" class="member-name-link">setFinalAnalysisStep</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surveySchemaContents(org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyBase.SchemaContents)" class="member-name-link">surveySchemaContents</a><wbr>(<a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a>&nbsp;ucConnector,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="OSSUnityCatalogServerSurveyBase.SchemaContents.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.SchemaContents</a>&nbsp;schemaContents)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve any configured final analysis step</div>
+<div class="block">Gather the volumes, tables (with their columns), registered models and functions in a schema.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeInventory(java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map,java.util.Map)" class="member-name-link">writeInventory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
@@ -212,7 +227,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opensurvey.<a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></h3>
-<code><a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getArrayRequestOrConfigurationProperty(java.lang.String,java.util.List)">getArrayRequestOrConfigurationProperty</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getEmbeddedSurveyActionServices()">getEmbeddedSurveyActionServices</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getJSONProperties(java.lang.Object)">getJSONProperties</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getRootSchemaType(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String)">getRootSchemaType</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getSurveyContext()">getSurveyContext</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#handleUnexpectedException(java.lang.String,java.lang.Exception)">handleUnexpectedException</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#performCheckAssetAnalysisStep(java.lang.Class,java.lang.String)">performCheckAssetAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#performCheckAssetAnalysisStep(java.lang.String)">performCheckAssetAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setCSVFileConnectorTypeGUID(java.lang.String)">setCSVFileConnectorTypeGUID</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setSurveyActionServiceName(java.lang.String)">setSurveyActionServiceName</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setSurveyContext(org.odpi.openmetadata.frameworks.opensurvey.SurveyContext)">setSurveyContext</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String,java.lang.String)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#start()">start</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#throwMissingSchemaType(java.lang.String)">throwMissingSchemaType</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#throwNoAssetConnector(org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore,java.lang.String)">throwNoAssetConnector</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">writeNameCountInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">writeNameDescriptionInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)">writeNameListInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)">writePropertyListInventory</a></code></div>
+<code><a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getArrayRequestOrConfigurationProperty(java.lang.String,java.util.List)">getArrayRequestOrConfigurationProperty</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getEmbeddedSurveyActionServices()">getEmbeddedSurveyActionServices</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getJSONProperties(java.lang.Object)">getJSONProperties</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getRootSchemaType(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,java.lang.String)">getRootSchemaType</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#getSurveyContext()">getSurveyContext</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#handleUnexpectedException(java.lang.String,java.lang.Exception)">handleUnexpectedException</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#hasReachedFinalAnalysisStep()">hasReachedFinalAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#isFinalAnalysisStep()">isFinalAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#performCheckAssetAnalysisStep(java.lang.Class,java.lang.String)">performCheckAssetAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#performCheckAssetAnalysisStep(java.lang.String)">performCheckAssetAnalysisStep</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setCSVFileConnectorTypeGUID(java.lang.String)">setCSVFileConnectorTypeGUID</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setSurveyActionServiceName(java.lang.String)">setSurveyActionServiceName</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setSurveyContext(org.odpi.openmetadata.frameworks.opensurvey.SurveyContext)">setSurveyContext</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String,java.lang.String)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)">setUpAnnotation</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#start()">start</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#throwMissingSchemaType(java.lang.String)">throwMissingSchemaType</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#throwNoAssetConnector(org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore,java.lang.String)">throwNoAssetConnector</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">writeNameCountInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">writeNameDescriptionInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)">writeNameListInventory</a>, <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)">writePropertyListInventory</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCamelToCanonicalCase(java.lang.String)">fromCamelToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToCamelCase(java.lang.String)">fromCanonicalToCamelCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToKebabCase(java.lang.String)">fromCanonicalToKebabCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToSnakeCase(java.lang.String)">fromCanonicalToSnakeCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromKebabToCanonicalCase(java.lang.String)">fromKebabToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromSnakeToCanonicalCase(java.lang.String)">fromSnakeToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayValue(java.lang.Object)">getArrayValue</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSecretsCollectionName(java.lang.String)">getSecretsCollectionName</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSecretsLocation(java.lang.String)">getSecretsLocation</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSecretsProvider(java.lang.String)">getSecretsProvider</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Exception)">logExceptionRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Exception)">logExceptionRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingElement(java.lang.String,java.lang.String,java.lang.String)">throwMissingElement</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingEndpointAddress(java.lang.String,java.lang.String)">throwMissingEndpointAddress</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
@@ -228,23 +243,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="finalAnalysisStep">
-<h3>finalAnalysisStep</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">finalAnalysisStep</span></div>
-<div class="block">This is the point after which the processing stops.  The default is PRODUCE_INVENTORY - which
- is the last analysis step.  It can be changed through configuration properties or
- request parameters passed when this survey action service is called.</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -264,20 +262,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="setFinalAnalysisStep()">
-<h3>setFinalAnalysisStep</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFinalAnalysisStep</span>()
-                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Retrieve any configured final analysis step</div>
-<dl class="notes">
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with context</dd>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - connector is disconnected</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getNameListAnnotation(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.util.Map)">
 <h3>getNameListAnnotation</h3>
@@ -325,6 +309,53 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - the catalog name is not specified</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - connector is disconnected</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getResourceProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase)">
+<h3>getResourceProperties</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="OSSUnityCatalogServerSurveyBase.ResourceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.ResourceProperties</a></span>&nbsp;<span class="element-name">getResourceProperties</span><wbr><span class="parameters">(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;element)</span></div>
+<div class="block">Build the inventory properties for a Unity Catalog element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>element</code> - element retrieved from Unity Catalog</dd>
+<dt>Returns:</dt>
+<dd>inventory properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="surveySchemaContents(org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyBase.SchemaContents)">
+<h3>surveySchemaContents</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">surveySchemaContents</span><wbr><span class="parameters">(<a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a>&nbsp;ucConnector,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="OSSUnityCatalogServerSurveyBase.SchemaContents.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase.SchemaContents</a>&nbsp;schemaContents)</span></div>
+<div class="block">Gather the volumes, tables (with their columns), registered models and functions in a schema.  Each type
+ of resource is retrieved with its own call to Unity Catalog; a call that fails is logged and the others
+ still contribute their results.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>ucConnector</code> - connector to Unity Catalog</dd>
+<dd><code>catalogName</code> - name of the catalog that owns the schema</dd>
+<dd><code>schemaName</code> - name of the schema</dd>
+<dd><code>schemaContents</code> - accumulating results</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="logRetrievalFailure(java.lang.String,java.lang.String,java.lang.Exception)">
+<h3>logRetrievalFailure</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logRetrievalFailure</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;informationSought,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;error)</span></div>
+<div class="block">Record that a call to Unity Catalog failed.  The survey carries on without its results.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>informationSought</code> - description of the information the call was retrieving</dd>
+<dd><code>elementName</code> - description of the element the call was about</dd>
+<dd><code>error</code> - the failure</dd>
 </dl>
 </section>
 </li>

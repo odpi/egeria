@@ -225,6 +225,17 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide a common exception for unexpected errors.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasReachedFinalAnalysisStep()" class="member-name-link">hasReachedFinalAnalysisStep</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this survey stopped because it completed the final analysis step requested.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFinalAnalysisStep()" class="member-name-link">isFinalAnalysisStep</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Test whether the survey should stop because the analysis step that has just completed is the final one
+ requested by the finalAnalysisStep request parameter (or configuration property).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected &lt;T&gt;&nbsp;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#performCheckAssetAnalysisStep(java.lang.Class,java.lang.String)" class="member-name-link">performCheckAssetAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;expectedConnectorClass,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedAssetType)</code></div>
@@ -870,6 +881,37 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dt>Throws:</dt>
 <dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem within the survey action service.</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isFinalAnalysisStep()">
+<h3>isFinalAnalysisStep</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFinalAnalysisStep</span>()
+                               throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Test whether the survey should stop because the analysis step that has just completed is the final one
+ requested by the finalAnalysisStep request parameter (or configuration property).  A survey action service
+ calls this at the end of each analysis step, once it has stored the results of the step, and stops if it
+ returns true.  A survey that never reaches the requested step runs to completion.
+ <br><br>
+ The current analysis step is the one most recently set in the annotation store.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the survey should stop</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is no longer active</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hasReachedFinalAnalysisStep()">
+<h3>hasReachedFinalAnalysisStep</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasReachedFinalAnalysisStep</span>()</div>
+<div class="block">Return whether this survey stopped because it completed the final analysis step requested.  A survey
+ pipeline uses this to stop running the survey action services that follow.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
 </dl>
 </section>
 </li>

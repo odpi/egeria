@@ -181,8 +181,12 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">DUCKDB-CONNECTOR-0003 - The {0} integration connector is skipping DuckDB Database {1} ({2}) because it is already catalogued</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SURVEY_QUERY_FAILED" class="member-name-link">SURVEY_QUERY_FAILED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DUCKDB-CONNECTOR-0015 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DUCKDB-CONNECTOR-0001 - The DuckDB connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -341,6 +345,13 @@ the order they are declared.</div>
 <h3>AMBIGUOUS_ELEMENT_FOUND</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.ffdc">DuckDBAuditCode</a></span>&nbsp;<span class="element-name">AMBIGUOUS_ELEMENT_FOUND</span></div>
 <div class="block">DUCKDB-CONNECTOR-0014 - The {0} connector found {1} elements with qualified name {2} when only one was expected; the element is skipped for this refresh</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEY_QUERY_FAILED">
+<h3>SURVEY_QUERY_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DuckDBAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.duckdb.ffdc">DuckDBAuditCode</a></span>&nbsp;<span class="element-name">SURVEY_QUERY_FAILED</span></div>
+<div class="block">DUCKDB-CONNECTOR-0015 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}</div>
 </section>
 </li>
 </ul>

@@ -85,8 +85,9 @@ loadScripts(document, 'script');</script>
 <div class="block">DB2LUWDatabaseStatsExtractor gathers the same measurements as the PostgreSQL equivalent
  (org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseStatsExtractor) but sources
  them from Db2 for Linux, UNIX and Windows' system catalog views (SYSCAT.SCHEMATA, SYSCAT.TABLES,
- SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSIBMADM.ADMINTABINFO,
- SYSIBMADM.MON_TAB_STATS) instead of pg_catalog.</div>
+ SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSSTAT.COLUMNS), the
+ SYSIBMADM.ADMINTABINFO administrative view and the SYSPROC.ADMIN_GET_TAB_INFO and MON_GET_TABLE table
+ functions instead of pg_catalog.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DB2LUWDatabaseSurveyActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.db2luw.survey">DB2LUWDatabaseSurveyActionProvider</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">

@@ -51,7 +51,6 @@ org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog
-org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.survey
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers
 org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata

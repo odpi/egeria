@@ -127,14 +127,10 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#FINAL_ANALYSIS_STEP" class="member-name-link">FINAL_ANALYSIS_STEP</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Property name to control how much profiling the survey action service does.</div>
+<div class="block">The name of the last analysis step that the survey action service is to run.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Provide a list of analysis steps to ignore.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">Provides a list of schema names that should be surveyed.</div>
 </div>
 </div>
@@ -190,6 +186,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an example of the request parameter to help users understand how to set it up.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFinalAnalysisStepConfigurationPropertyType(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep%5B%5D)" class="member-name-link">getFinalAnalysisStepConfigurationPropertyType</a><wbr>(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the description of the finalAnalysisStep configuration property for a particular survey action
+ service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFinalAnalysisStepType(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep%5B%5D)" class="member-name-link">getFinalAnalysisStepType</a><wbr>(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the description of the finalAnalysisStep request parameter for a particular survey action service.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -201,12 +208,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a summary of this enum to use in a service provider.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRequestParameterTypes()" class="member-name-link">getRequestParameterTypes</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getRequestParameterTypes(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep%5B%5D)" class="member-name-link">getRequestParameterTypes</a><wbr>(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve the request parameters that every survey action service supports.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyRequestParameterTypes()" class="member-name-link">getSchemaSurveyRequestParameterTypes</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaSurveyRequestParameterTypes(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep%5B%5D)" class="member-name-link">getSchemaSurveyRequestParameterTypes</a><wbr>(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve the request parameters supported by a survey action service that can be limited to some of the
  schemas it finds.</div>
@@ -251,14 +258,10 @@ the order they are declared.</div>
 <section class="detail" id="FINAL_ANALYSIS_STEP">
 <h3>FINAL_ANALYSIS_STEP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">FINAL_ANALYSIS_STEP</span></div>
-<div class="block">Property name to control how much profiling the survey action service does.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="IGNORE_ANALYSIS_STEPS">
-<h3>IGNORE_ANALYSIS_STEPS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">IGNORE_ANALYSIS_STEPS</span></div>
-<div class="block">Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.</div>
+<div class="block">The name of the last analysis step that the survey action service is to run.  The survey stops once this
+ step is complete.  If the survey never reaches the named step, it runs to completion.  The values that a
+ survey action service supports are listed, in the order it runs them, in the validValues property of its
+ finalAnalysisStep supported request parameter.</div>
 </section>
 </li>
 <li>
@@ -391,25 +394,63 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getRequestParameterTypes()">
+<section class="detail" id="getRequestParameterTypes(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep[])">
 <h3>getRequestParameterTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getRequestParameterTypes</span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getRequestParameterTypes</span><wbr><span class="parameters">(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</span></div>
 <div class="block">Retrieve the request parameters that every survey action service supports.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>finalAnalysisSteps</code> - the analysis steps that the survey action service can stop after, in the order
+                           it runs them; null if they are not known</dd>
 <dt>Returns:</dt>
 <dd>list of request parameter types</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getSchemaSurveyRequestParameterTypes()">
+<section class="detail" id="getSchemaSurveyRequestParameterTypes(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep[])">
 <h3>getSchemaSurveyRequestParameterTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyRequestParameterTypes</span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaSurveyRequestParameterTypes</span><wbr><span class="parameters">(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</span></div>
 <div class="block">Retrieve the request parameters supported by a survey action service that can be limited to some of the
  schemas it finds.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>finalAnalysisSteps</code> - the analysis steps that the survey action service can stop after, in the order
+                           it runs them; null if they are not known</dd>
 <dt>Returns:</dt>
 <dd>list of request parameter types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFinalAnalysisStepType(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep[])">
+<h3>getFinalAnalysisStepType</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../openmetadata/specificationproperties/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a></span>&nbsp;<span class="element-name">getFinalAnalysisStepType</span><wbr><span class="parameters">(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</span></div>
+<div class="block">Return the description of the finalAnalysisStep request parameter for a particular survey action service.
+ The analysis steps it can stop after are listed in the validValues property, separated by commas, so that
+ a caller can discover them from the service's specification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>finalAnalysisSteps</code> - the analysis steps that the survey action service can stop after, in the order
+                           it runs them; null if they are not known</dd>
+<dt>Returns:</dt>
+<dd>request parameter type</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFinalAnalysisStepConfigurationPropertyType(org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep[])">
+<h3>getFinalAnalysisStepConfigurationPropertyType</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../openmetadata/specificationproperties/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a></span>&nbsp;<span class="element-name">getFinalAnalysisStepConfigurationPropertyType</span><wbr><span class="parameters">(<a href="AnalysisStep.html" title="enum class in org.odpi.openmetadata.frameworks.opensurvey.controls">AnalysisStep</a>[]&nbsp;finalAnalysisSteps)</span></div>
+<div class="block">Return the description of the finalAnalysisStep configuration property for a particular survey action
+ service.  It sets the final analysis step for every survey the service runs, unless a request overrides it
+ with the request parameter of the same name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>finalAnalysisSteps</code> - the analysis steps that the survey action service can stop after, in the order
+                           it runs them; null if they are not known</dd>
+<dt>Returns:</dt>
+<dd>configuration property type</dd>
 </dl>
 </section>
 </li>

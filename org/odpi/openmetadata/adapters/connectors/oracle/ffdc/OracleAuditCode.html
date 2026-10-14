@@ -133,21 +133,29 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">ORACLE-CONNECTOR-0003 - The {0} integration connector has catalogued Oracle Pluggable Database {1} ({2})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_NOT_SURVEYED" class="member-name-link">DATABASE_NOT_SURVEYED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">ORACLE-CONNECTOR-0010 - The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ORACLE-CONNECTOR-0007 - The {0} Oracle Database Connector has been supplied with a friendship connector with GUID {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_CATALOG_TARGET" class="member-name-link">NEW_CATALOG_TARGET</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_CATALOG_TARGET" class="member-name-link">NEW_CATALOG_TARGET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ORACLE-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Oracle Pluggable Database Asset {3} for Database {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ORACLE-CONNECTOR-0002 - The {0} survey action service cannot retrieve details of any pluggable databases for Oracle Database Server {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ORACLE-CONNECTOR-0004 - The {0} integration connector is skipping Oracle Pluggable Database {1} ({2}) because it is already catalogued</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SURVEY_QUERY_FAILED" class="member-name-link">SURVEY_QUERY_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">ORACLE-CONNECTOR-0011 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -253,6 +261,20 @@ the order they are declared.</div>
 <h3>NEW_CATALOG_TARGET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.ffdc">OracleAuditCode</a></span>&nbsp;<span class="element-name">NEW_CATALOG_TARGET</span></div>
 <div class="block">ORACLE-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Oracle Pluggable Database Asset {3} for Database {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_NOT_SURVEYED">
+<h3>DATABASE_NOT_SURVEYED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.ffdc">OracleAuditCode</a></span>&nbsp;<span class="element-name">DATABASE_NOT_SURVEYED</span></div>
+<div class="block">ORACLE-CONNECTOR-0010 - The {0} survey action service is unable to survey pluggable database {1} because of a {2} exception with message: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SURVEY_QUERY_FAILED">
+<h3>SURVEY_QUERY_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OracleAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.oracle.ffdc">OracleAuditCode</a></span>&nbsp;<span class="element-name">SURVEY_QUERY_FAILED</span></div>
+<div class="block">ORACLE-CONNECTOR-0011 - The {0} survey action service is unable to retrieve the {1} for {2} because of a {3} exception with message: {4}</div>
 </section>
 </li>
 </ul>

@@ -95,15 +95,21 @@ loadScripts(document, 'script');</script>
 <div class="block">DB2LUWDatabaseStatsExtractor gathers the same measurements as the PostgreSQL equivalent
  (org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseStatsExtractor) but sources
  them from Db2 for Linux, UNIX and Windows' system catalog views (SYSCAT.SCHEMATA, SYSCAT.TABLES,
- SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSIBMADM.ADMINTABINFO,
- SYSIBMADM.MON_TAB_STATS) instead of pg_catalog.  All of these sources are metadata/statistics only - no
- user data is read.
+ SYSCAT.VIEWS, SYSCAT.COLUMNS, SYSCAT.COLDIST, SYSCAT.INDEXES, SYSCAT.TRIGGERS, SYSSTAT.COLUMNS), the
+ SYSIBMADM.ADMINTABINFO administrative view and the SYSPROC.ADMIN_GET_TAB_INFO and MON_GET_TABLE table
+ functions instead of pg_catalog.  All of these sources are metadata/statistics only - no user data is read.
  <br><br>
  Unlike Oracle (whose CDB root can see every pluggable database's size through a single cross-container
  connection before looping per-PDB for schema detail), Db2 for Linux, UNIX and Windows has no catalog view
  that spans multiple databases - every one of the views above is already scoped to whichever single
  database the connection is attached to.  Consequently getDatabaseStatistics() here is called once per
- database, on a connection to that specific database, rather than once up front on a shared connection.</div>
+ database, on a connection to that specific database, rather than once up front on a shared connection.
+ <br><br>
+ The connections passed to it are expected to be in auto-commit mode, so that every query is its own short
+ transaction.  Each schema is surveyed with its own set of queries, and a query that fails is logged and
+ skipped, so one inaccessible schema, a missing privilege for the administrative views and monitoring
+ functions (a common situation, since they need more than the CONNECT privilege), or a dropped table leaves
+ a gap in the results rather than ending the survey.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -115,10 +121,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)" class="member-name-link">DB2LUWDatabaseStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)" class="member-name-link">DB2LUWDatabaseStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedSchemas,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedSchemas,
- <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</code></div>
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector,
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor sets up the list of databases to process, the schemas within them to survey, and the
  connection to the database.</div>
@@ -164,12 +172,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)">
+<section class="detail" id="&lt;init&gt;(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String)">
 <h3>DB2LUWDatabaseStatsExtractor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DB2LUWDatabaseStatsExtractor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validDatabases,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedSchemas,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedSchemas,
- <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</span></div>
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector,
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</span></div>
 <div class="block">Constructor sets up the list of databases to process, the schemas within them to survey, and the
  connection to the database.</div>
 <dl class="notes">
@@ -179,6 +189,8 @@ loadScripts(document, 'script');</script>
 <dd><code>includedSchemas</code> - the only schemas to survey (null means all that are not excluded);
                                      takes precedence over excludedSchemas</dd>
 <dd><code>surveyActionServiceConnector</code> - calling connector</dd>
+<dd><code>auditLog</code> - logging destination for queries that fail (may be null)</dd>
+<dd><code>surveyActionServiceName</code> - name of the calling survey action service, for the audit log</dd>
 </dl>
 </section>
 </li>
