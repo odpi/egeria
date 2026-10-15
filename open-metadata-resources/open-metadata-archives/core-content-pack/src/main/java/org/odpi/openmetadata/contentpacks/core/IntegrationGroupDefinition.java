@@ -100,6 +100,15 @@ public enum IntegrationGroupDefinition
 
 
     /**
+     * Dynamic integration group supporting integration connectors extracting interesting information needed to observe the activity in the Open Metadata Ecosystem.
+     */
+    OPEN_METADATA_OBSERVABILITY("2d4e8f81-2b07-42da-902a-9f275e93ae79",
+                                "Egeria:IntegrationGroup:OpenMetadataObservability",
+                                "OpenMetadataObservabilityIntegrationGroup",
+                                "Dynamic integration group supporting integration connectors extracting interesting information needed to observe the activity in the Open Metadata Ecosystem.",
+                                ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Dynamic integration group supporting integration connectors that manage duplicate metadata elements.
      */
     MENDEL("4ec71f11-7246-4faf-bf69-49fbe33e38b3",

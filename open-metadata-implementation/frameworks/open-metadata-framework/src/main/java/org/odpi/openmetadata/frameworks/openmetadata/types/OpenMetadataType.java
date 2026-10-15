@@ -6949,6 +6949,26 @@ public enum OpenMetadataType
                               "Accompanies a partial, incomplete Referenceable.",
                               IncompleteProperties.class),
 
+    /**
+     * Describes the usage activity around an anchor element and its anchored elements.
+     */
+    USAGE_ACTIVITY_CLASSIFICATION("cfae23a1-8020-431f-a603-1f1bb0e01cb3",
+                                  "UsageActivity",
+                                  OpenMetadataWikiPages.MODEL_0795_USAGE_ACTIVITY,
+                                  "8762e743-d139-4f05-bd8f-2bfadb59f919",
+                                  "Describes the usage activity around an anchor element and its anchored elements: how often it is explicitly retrieved, found through searches, has its properties updated, and has its attachments and feedback updated or deleted.",
+                                  UsageActivityProperties.class),
+
+    /**
+     * Summarizes the usage activity around the members of an element.
+     */
+    MEMBER_POPULARITY_PROFILE_CLASSIFICATION("e1abafb4-5b4b-4038-8c36-a3a62cd22750",
+                                             "MemberPopularityProfile",
+                                             OpenMetadataWikiPages.MODEL_0795_USAGE_ACTIVITY,
+                                             "50e18edf-4c9a-4c9d-9046-ecd14024269e",
+                                             "Summarizes the usage activity around the members of an element, both in total and member by member, for each kind of activity.",
+                                             MemberPopularityProfileProperties.class),
+
     ;
 
 

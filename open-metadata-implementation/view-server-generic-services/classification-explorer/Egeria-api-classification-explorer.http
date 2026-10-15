@@ -961,6 +961,204 @@ Content-Type: application/json
 
 ###
 #==================================================
+# UsageActivity
+#==================================================
+
+###
+# @name addUsageActivity
+# Add the usage activity classification to an element.
+#
+# Usage Activity: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/usage-activity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "UsageActivityProperties",
+       "explicitGetCount" : 0,
+       "findCount" : 0,
+       "updatePropertyCount" : 0,
+       "updateAttachmentCount" : 0,
+       "updateFeedbackCount" : 0,
+       "deleteAttachmentCount" : 0,
+       "deleteFeedbackCount" : 0
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateUsageActivity
+# Update the usage activity classification to an element.
+#
+# Usage Activity: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/usage-activity/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateClassificationRequestBody",
+   "mergeUpdate" : true,
+   "properties" : {
+       "class" : "UsageActivityProperties",
+       "explicitGetCount" : 1,
+       "findCount" : 2,
+       "updatePropertyCount" : 3,
+       "updateAttachmentCount" : 4,
+       "updateFeedbackCount" : 5,
+       "deleteAttachmentCount" : 6,
+       "deleteFeedbackCount" : 7
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearUsageActivity
+# Remove the usage activity classification from an element.
+#
+# Usage Activity: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/usage-activity/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+#==================================================
+# MemberPopularityProfile
+#==================================================
+
+###
+# @name addMemberPopularityProfile
+# Add the member popularity profile classification to an element.
+#
+# Member Popularity Profile: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/member-popularity-profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewClassificationRequestBody",
+   "properties" : {
+       "class" : "MemberPopularityProfileProperties",
+       "explicitGetCountTotal" : 0,
+       "explicitGetCountProfile" : {},
+       "findCountTotal" : 0,
+       "findCountProfile" : {},
+       "updatePropertyCountTotal" : 0,
+       "updatePropertyCountProfile" : {},
+       "updateAttachmentCountTotal" : 0,
+       "updateAttachmentCountProfile" : {},
+       "updateFeedbackCountTotal" : 0,
+       "updateFeedbackCountProfile" : {},
+       "deleteAttachmentCountTotal" : 0,
+       "deleteAttachmentCountProfile" : {},
+       "deleteFeedbackCountTotal" : 0,
+       "deleteFeedbackCountProfile" : {}
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateMemberPopularityProfile
+# Update the member popularity profile classification to an element.
+#
+# Member Popularity Profile: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/member-popularity-profile/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateClassificationRequestBody",
+   "mergeUpdate" : true,
+   "properties" : {
+       "class" : "MemberPopularityProfileProperties",
+       "explicitGetCountTotal" : 1,
+       "explicitGetCountProfile" : {
+           "add member GUID" : 2
+       },
+       "findCountTotal" : 3,
+       "findCountProfile" : {
+           "add member GUID" : 4
+       },
+       "updatePropertyCountTotal" : 5,
+       "updatePropertyCountProfile" : {
+           "add member GUID" : 6
+       },
+       "updateAttachmentCountTotal" : 7,
+       "updateAttachmentCountProfile" : {
+           "add member GUID" : 8
+       },
+       "updateFeedbackCountTotal" : 9,
+       "updateFeedbackCountProfile" : {
+           "add member GUID" : 10
+       },
+       "deleteAttachmentCountTotal" : 11,
+       "deleteAttachmentCountProfile" : {
+           "add member GUID" : 12
+       },
+       "deleteFeedbackCountTotal" : 13,
+       "deleteFeedbackCountProfile" : {
+           "add member GUID" : 14
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name clearMemberPopularityProfile
+# Remove the member popularity profile classification from an element.
+#
+# Member Popularity Profile: https://egeria-project.org/types/7/0795-Usage-Activity/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/member-popularity-profile/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "DeleteClassificationRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+#==================================================
 # Peer deduplication
 #==================================================
 

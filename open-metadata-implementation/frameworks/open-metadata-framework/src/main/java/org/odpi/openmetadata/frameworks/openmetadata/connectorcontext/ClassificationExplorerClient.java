@@ -30,6 +30,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.List;
 import java.util.Map;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.IncompleteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.MemberPopularityProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.UsageActivityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.PromiseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.ObjectIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
@@ -1468,6 +1470,122 @@ public class ClassificationExplorerClient extends ConnectorContextClientBase
                                                                                                   PropertyServerException
     {
         stewardshipManagementHandler.clearRunMetricsClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an anchor element (typically an asset or digital product) to record the usage activity around it and its anchored elements.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the usage activity counts
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addUsageActivityClassification(String                  elementGUID,
+                                                UsageActivityProperties properties,
+                                                MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        stewardshipManagementHandler.addUsageActivityClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Update the usage activity counts of an anchor element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the usage activity counts
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateUsageActivityClassification(String                  elementGUID,
+                                                  UsageActivityProperties properties,
+                                                  UpdateOptions           updateOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        stewardshipManagementHandler.updateUsageActivityClassification(connectorUserId, elementGUID, properties, updateOptions);
+    }
+
+
+    /**
+     * Remove the usage activity counts from an anchor element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearUsageActivityClassification(String                  elementGUID,
+                                                 MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        stewardshipManagementHandler.clearUsageActivityClassification(connectorUserId, elementGUID, metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to summarize the usage activity around its members.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the member popularity profile
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addMemberPopularityProfileClassification(String                            elementGUID,
+                                                          MemberPopularityProfileProperties properties,
+                                                          MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException
+    {
+        stewardshipManagementHandler.addMemberPopularityProfileClassification(connectorUserId, elementGUID, properties, metadataSourceOptions);
+    }
+
+
+    /**
+     * Update the member popularity profile of an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the member popularity profile
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateMemberPopularityProfileClassification(String                            elementGUID,
+                                                            MemberPopularityProfileProperties properties,
+                                                            UpdateOptions                     updateOptions) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        stewardshipManagementHandler.updateMemberPopularityProfileClassification(connectorUserId, elementGUID, properties, updateOptions);
+    }
+
+
+    /**
+     * Remove the member popularity profile from an element.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearMemberPopularityProfileClassification(String                            elementGUID,
+                                                           MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
+    {
+        stewardshipManagementHandler.clearMemberPopularityProfileClassification(connectorUserId, elementGUID, metadataSourceOptions);
     }
 
 

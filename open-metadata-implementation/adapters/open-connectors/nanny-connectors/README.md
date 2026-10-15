@@ -63,6 +63,30 @@ Withdrawing a validation is reported too.  If either element of a withdrawn link
 
 Once the first refresh has worked through the duplicate links that were waiting for it, the connector also listens for open metadata events, so a new or updated duplicate link is reviewed as it occurs rather than waiting for the next refresh.  The withdrawal, retirement and consolidation passes stay on the refresh cycle because they depend on all of the duplicate links attached to an element, not just the one that changed.
 
+## Pepys Activity Observer
+
+In tribute to [Samuel Pepys](https://en.wikipedia.org/wiki/Samuel_Pepys) and the diary in which he so faithfully recorded the activity around him.
+
+The Pepys Activity Observer is an integration connector that maintains the [UsageActivity](https://egeria-project.org/types/7/0795-Usage-Activity/) classification of the anchor elements in the open metadata ecosystem - its assets, digital products and glossary terms.  It runs in the `Egeria:IntegrationGroup:OpenMetadataObservability` integration group.
+
+Its catalog targets are the topics that the OMAG Servers write their audit logs to.  It does not find these itself: the *OMAG Server Platform Cataloguer* catalogues each server's audit log topic and adds it to Pepys's catalog targets, using the GUID in its `friendshipGUID` configuration property.  Pepys registers a listener with each topic and counts the anchor element activity messages it receives, each kind of activity in its own count:
+
+| Message | Activity | Count |
+|---|---|---|
+| `METADATA-OBSERVABILITY-0002`, `-0003` | The anchor element, or an element anchored to it, was retrieved by identifier or name | `explicitGetCount` |
+| `METADATA-OBSERVABILITY-0008`, `-0009` | The anchor element, or an element anchored to it, was returned by a search | `findCount` |
+| `METADATA-OBSERVABILITY-0006` | The properties of the anchor element were updated | `updatePropertyCount` |
+| `METADATA-OBSERVABILITY-0004` | An element anchored to the anchor element was created, linked, unlinked or updated | `updateAttachmentCount` |
+| `METADATA-OBSERVABILITY-0005` | Feedback (comments, likes, ratings and informal tags) was added or updated | `updateFeedbackCount` |
+| `METADATA-OBSERVABILITY-0007` | An element anchored to the anchor element was deleted | `deleteAttachmentCount` |
+| `METADATA-OBSERVABILITY-0011` | Feedback was deleted | `deleteFeedbackCount` |
+
+The creation of an anchor element (`METADATA-OBSERVABILITY-0001`) is not counted.
+
+The counts are gathered in memory as the audit log records arrive and are added to each anchor element's UsageActivity classification on every refresh (every 10 minutes by default), so a busy element costs one read and one update per refresh rather than one per record.  Counts that cannot be written because the metadata access server is unavailable are kept and tried again on the next refresh; counts for an element that can no longer be found are discarded.  Any counts still waiting when the connector shuts down are written as it disconnects.
+
+The connector's own reads and updates of the anchor elements are reported in the audit log too, and they are ignored - otherwise each update of a UsageActivity classification would be counted as more activity, without end.
+
 ## Darwin Product Dependency Manager
 
 In tribute to [Charles Darwin](https://en.wikipedia.org/wiki/Charles_Darwin), who traced the origin of species - Darwin traces the origin of each digital product's data.

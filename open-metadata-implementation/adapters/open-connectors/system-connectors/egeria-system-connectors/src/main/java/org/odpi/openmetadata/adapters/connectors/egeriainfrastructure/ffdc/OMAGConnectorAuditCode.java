@@ -121,6 +121,16 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                                    "This is usually temporary - most often the metadata access store was restarting, or had not finished loading its content packs, when the connector started.  If the message keeps appearing, use the exception to work out why the connector cannot write to the metadata access store.",
                                    "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
+    /**
+     * The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3}
+     */
+    AUDIT_LOG_TOPIC_REGISTERED("OMAG-CONNECTORS-0016",
+                               AuditLogRecordSeverityLevel.INFO,
+                               "The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3}",
+                               "The topic that the OMAG Servers write their audit logs to is now one of the catalog targets of the integration connector that observes the activity recorded there.  This is normally the Pepys Activity Observer, which maintains the usage activity counts of the assets reported in the audit log records.",
+                               "No specific action is required.  This message records an audit log topic being handed to the activity observer, which happens the first time the topic is catalogued.",
+                               "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
     ;
 
     private final String                      logMessageId;

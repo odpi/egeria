@@ -936,6 +936,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
+    PEPYS_ACTIVITY_OBSERVER(587,
+                            "3f38114f-a69d-4bfd-80bb-21adf1376853",
+                            "Egeria::IntegrationConnector::Pepys::ActivityObserver",
+                            "Pepys Activity Observer Integration Connector",
+                            "Connector listens to the topics that the OMAG Servers write their audit logs to and maintains the UsageActivity classification of each asset whose retrieval, discovery through search, or update is reported there.",
+                            "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                            "org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider",
+                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                            DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                            DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     ZONE_MEMBERSHIP_PROFILER_LOVELACE_SERVICE(392,
                                            "d77f6c4c-abb7-4f1c-b839-fb41819ec9e1",
                                            "Egeria::GovernanceService::Verification::Lovelace::ZoneMembershipProfilerService",

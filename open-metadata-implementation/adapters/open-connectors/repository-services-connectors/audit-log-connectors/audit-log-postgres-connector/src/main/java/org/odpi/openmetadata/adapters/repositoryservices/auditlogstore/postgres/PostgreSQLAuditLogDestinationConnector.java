@@ -34,15 +34,16 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     private static final Logger log = LoggerFactory.getLogger(PostgreSQLAuditLogDestinationConnector.class);
 
 
-    private static final String ASSET_ACTIVITY_CREATE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_READ              = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_READ_ATTACHMENT   = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ_ATTACHMENT.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_UPDATE_ATTACHMENT = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_UPDATE_FEEDBACK   = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_UPDATE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_DELETE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_DELETE.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_SEARCH            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH.getMessageDefinition().getMessageId();
-    private static final String ASSET_ACTIVITY_SEARCH_ATTACHMENT = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_CREATE            = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_CREATE.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_READ              = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_READ_ATTACHMENT   = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE_ATTACHMENT = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE_FEEDBACK   = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE            = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_DELETE_ATTACHMENT = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_DELETE_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_DELETE_FEEDBACK   = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_DELETE_FEEDBACK.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_SEARCH            = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_SEARCH.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_SEARCH_ATTACHMENT = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition().getMessageId();
     private static final String USER_REQUEST_ACTIVITY            = OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition().getMessageId();
 
 
@@ -286,14 +287,28 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                           logRecord.getMessageParameters()[4],
                                           logRecord.getMessageParameters()[0]);
                     }
-                    else if (ASSET_ACTIVITY_DELETE.equals(logRecord.getMessageId()))
+                    else if (ASSET_ACTIVITY_DELETE_ATTACHMENT.equals(logRecord.getMessageId()))
                     {
                         syncAssetActivity(databaseConnection,
                                           logRecord.getThreadId(),
                                           logRecord.getRequestId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
-                                          "Asset Delete",
+                                          "Asset Delete Attachment",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_DELETE_FEEDBACK.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
+                                          logRecord.getRequestId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Delete Feedback",
                                           logRecord.getMessageParameters()[2],
                                           logRecord.getMessageParameters()[1],
                                           logRecord.getMessageParameters()[3],

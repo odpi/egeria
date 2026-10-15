@@ -2236,7 +2236,9 @@ public class OpenMetadataStoreRESTServices
                                                                               null,
                                                                               requestBody.getForLineage(),
                                                                               requestBody.getForDuplicateProcessing(),
+                                                                              null,
                                                                               requestBody.getEffectiveTime(),
+                                                                              false,
                                                                               methodName);
 
                 if (startingEntity != null)
@@ -2256,6 +2258,7 @@ public class OpenMetadataStoreRESTServices
                                                                                          requestBody.getEffectiveTime(),
                                                                                          requestBody.getStartFrom(),
                                                                                          requestBody.getPageSize(),
+                                                                                         requestBody.getViewElementGUID(),
                                                                                          methodName));
                 }
             }
@@ -2269,7 +2272,9 @@ public class OpenMetadataStoreRESTServices
                                                                               null,
                                                                               false,
                                                                               false,
+                                                                              null,
                                                                               new Date(),
+                                                                              false,
                                                                               methodName);
                 relatedElementList.setStartingElement(handler.getMetadataElementFromEntity(startingEntity, methodName));
                 relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
@@ -2286,6 +2291,7 @@ public class OpenMetadataStoreRESTServices
                                                                                      new Date(),
                                                                                      0,
                                                                                      0,
+                                                                                     null,
                                                                                      methodName));
             }
 
@@ -4933,7 +4939,9 @@ public class OpenMetadataStoreRESTServices
                                                                        null,
                                                                        false,
                                                                        false,
+                                                                       null,
                                                                        new Date(),
+                                                                       false,
                                                                        methodName);
 
         /*
@@ -4954,6 +4962,7 @@ public class OpenMetadataStoreRESTServices
                                                    new Date(),
                                                    startFrom,
                                                    pageSize,
+                                                   elementGUID,
                                                    methodName);
     }
 

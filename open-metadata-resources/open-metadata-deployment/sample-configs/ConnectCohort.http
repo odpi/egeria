@@ -43,7 +43,7 @@ Content-Type: application/json
 
 ###
 # Add the event topic audit log destination to the server's configuration document now kafka is configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/event-topic?topicName=egeria.omag.server.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

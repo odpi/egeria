@@ -820,4 +820,9 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/7/0790-Incomplete/">...</a>
      */
     public static final String MODEL_0790_INCOMPLETE                   = "https://egeria-project.org/types/7/0790-Incomplete/";
+
+    /**
+     * <a href="https://egeria-project.org/types/7/0795-Usage-Activity/">...</a>
+     */
+    public static final String MODEL_0795_USAGE_ACTIVITY               = "https://egeria-project.org/types/7/0795-Usage-Activity/";
 }

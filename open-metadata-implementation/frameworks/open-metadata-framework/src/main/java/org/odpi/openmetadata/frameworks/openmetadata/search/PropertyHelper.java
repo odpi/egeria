@@ -602,6 +602,14 @@ public class PropertyHelper
                     {
                         elementHeader.setRunMetrics(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setUsageActivity(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setMemberPopularityProfile(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName))
                     {
                         elementHeader.setDataAssetEncoding(this.getElementClassification(attachedClassification));

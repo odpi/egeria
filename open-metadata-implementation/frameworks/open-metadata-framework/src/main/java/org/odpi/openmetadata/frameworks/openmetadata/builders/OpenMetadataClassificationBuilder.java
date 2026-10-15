@@ -388,6 +388,75 @@ public class OpenMetadataClassificationBuilder
                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                         runMetricsProperties.getAdditionalProperties());
             }
+            else if (properties instanceof UsageActivityProperties usageActivityProperties)
+            {
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.EXPLICIT_GET_COUNT.name,
+                                                                   usageActivityProperties.getExplicitGetCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.FIND_COUNT.name,
+                                                                   usageActivityProperties.getFindCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_PROPERTY_COUNT.name,
+                                                                   usageActivityProperties.getUpdatePropertyCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.name,
+                                                                   usageActivityProperties.getUpdateAttachmentCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.name,
+                                                                   usageActivityProperties.getUpdateFeedbackCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.name,
+                                                                   usageActivityProperties.getDeleteAttachmentCount());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.DELETE_FEEDBACK_COUNT.name,
+                                                                   usageActivityProperties.getDeleteFeedbackCount());
+            }
+            else if (properties instanceof MemberPopularityProfileProperties memberPopularityProfileProperties)
+            {
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getExplicitGetCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.EXPLICIT_GET_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getExplicitGetCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.FIND_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getFindCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.FIND_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getFindCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getUpdatePropertyCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.UPDATE_PROPERTY_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getUpdatePropertyCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getUpdateAttachmentCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getUpdateAttachmentCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getUpdateFeedbackCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getUpdateFeedbackCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getDeleteAttachmentCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getDeleteAttachmentCountProfile());
+                elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                   OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL.name,
+                                                                   memberPopularityProfileProperties.getDeleteFeedbackCountTotal());
+                elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.DELETE_FEEDBACK_COUNT_PROFILE.name,
+                                                                      memberPopularityProfileProperties.getDeleteFeedbackCountProfile());
+            }
             else if (properties instanceof DataScopeProperties dataScopeProperties)
             {
                 elementProperties = propertyHelper.addFloatProperty(elementProperties,
