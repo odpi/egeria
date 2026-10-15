@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2019. -->
 
-![TechPreview](../../../../images/egeria-content-status-released.png#pagewidth)
+![Stable](../../../../images/egeria-content-status-released.png#pagewidth)
 
 # File Survey Connectors
 

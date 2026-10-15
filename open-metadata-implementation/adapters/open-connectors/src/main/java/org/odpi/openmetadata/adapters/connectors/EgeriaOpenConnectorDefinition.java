@@ -921,7 +921,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                        "Connector manages the duplicate links and classifications for the elements that have been detected as duplicates.  It confirms the close matches, asks a steward to decide on the rest, retires the classifications of the duplicates that a steward has separated, and consolidates the clusters of confirmed duplicates.",
                                        "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                                        "org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider",
-                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                       ComponentDevelopmentStatus.STABLE,
                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -932,7 +932,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                       "Connector maintains the coarse-grained lineage implied by the finer-grained lineage beneath it: data flows between data assets from the data mappings between their schema elements, data flows between software servers from the lineage between the data assets their capabilities own, and DigitalProductDependency relationships between digital products from the data lineage between the products' assets.  At each level it creates the relationships that are missing, removes the ones it created that the finer-grained lineage no longer supports, and fills in the information supply chain on relationships asserted by external users.  It records an exception against each product whose externally asserted dependencies are not proven by lineage.",
                                       "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                                       "org.odpi.openmetadata.adapters.connectors.darwin.DarwinProductDependencyManagerProvider",
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -943,7 +943,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                             "Connector listens to the topics that the OMAG Servers write their audit logs to and maintains the UsageActivity classification of each anchor element whose retrieval, discovery through search, or update is reported there.",
                             "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                             "org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider",
-                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                            ComponentDevelopmentStatus.STABLE,
                             DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                             DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -965,7 +965,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                          "A Governance Action Service that totals the usage activity of the members of each root collection, glossary, data sharing hub, collection folder and digital product catalog and records it in the collection's MemberPopularityProfile classification.  Nested collections are profiled first so that the activity ripples up to the top-level collections.",
                                          "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/lovelace-insights",
                                          "org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.LovelacePopularityProfilerServiceProvider",
-                                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                         ComponentDevelopmentStatus.STABLE,
                                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -976,7 +976,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                               "A Governance Action Service that analyses the runs of each job in an OpenLineage log store and records the run profile (frequency, regularity, duration, failure rate, data volume) in the RunMetrics classification of the job's process.",
                                               "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/lovelace-insights",
                                               "org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageRunProfilerServiceProvider",
-                                              ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                              ComponentDevelopmentStatus.STABLE,
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -987,7 +987,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                               "A Governance Action Service that analyses the writes and reads of each dataset in an OpenLineage log store and refines the DataScope classification of the dataset's asset with the write pattern and data collection window.",
                                               "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/lovelace-insights",
                                               "org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataScopeServiceProvider",
-                                              ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                              ComponentDevelopmentStatus.STABLE,
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -998,7 +998,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                               "A Governance Action Service that summarises the data quality assertions and tests in an OpenLineage log store into a survey report per dataset (and per job) with the pass rate of each quality dimension.",
                                               "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/lovelace-insights",
                                               "org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataQualitySummaryServiceProvider",
-                                              ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                              ComponentDevelopmentStatus.STABLE,
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
@@ -1323,7 +1323,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                        "publishes new and changed documents to the Bitol listeners registered in the same instance of the integration daemon.",
                                                "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                                                "org.odpi.openmetadata.adapters.connectors.integration.bitol.BitolFilesReceiverIntegrationProvider",
-                                               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                               ComponentDevelopmentStatus.STABLE,
                                                DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -1335,7 +1335,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                        "publishes them to the Bitol listeners registered in the same instance of the integration daemon.",
                                                "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                                                "org.odpi.openmetadata.adapters.connectors.integration.bitol.BitolEventReceiverIntegrationProvider",
-                                               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                               ComponentDevelopmentStatus.STABLE,
                                                DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -1346,7 +1346,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                            "Connector that stores the Bitol Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents published in the integration daemon to the file system.",
                            "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                            "org.odpi.openmetadata.adapters.connectors.integration.bitol.FileBasedBitolStoreProvider",
-                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                           ComponentDevelopmentStatus.STABLE,
                            DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                            DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -1358,7 +1358,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                           "with their ports, team, support channels and references.",
                                                   "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                                                   "org.odpi.openmetadata.adapters.connectors.integration.bitol.DataProductCataloguerIntegrationProvider",
-                                                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                                  ComponentDevelopmentStatus.STABLE,
                                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -1370,7 +1370,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                            "with their schema, data quality rules, service level objective, servers, roles, team, support channels and references.",
                                                    "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                                                    "org.odpi.openmetadata.adapters.connectors.integration.bitol.DataContractCataloguerIntegrationProvider",
-                                                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                                   ComponentDevelopmentStatus.STABLE,
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
@@ -1383,7 +1383,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                                            "whenever the metadata changes, and for every product in the digital product catalogs attached as catalog targets.",
                                                    "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/bitol-integration-connectors",
                                                    "org.odpi.openmetadata.adapters.connectors.integration.bitol.BitolDocumentPublisherIntegrationProvider",
-                                                   ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                                   ComponentDevelopmentStatus.STABLE,
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
