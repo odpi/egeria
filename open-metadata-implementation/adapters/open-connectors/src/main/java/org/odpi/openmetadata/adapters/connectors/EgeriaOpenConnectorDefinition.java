@@ -940,7 +940,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                             "3f38114f-a69d-4bfd-80bb-21adf1376853",
                             "Egeria::IntegrationConnector::Pepys::ActivityObserver",
                             "Pepys Activity Observer Integration Connector",
-                            "Connector listens to the topics that the OMAG Servers write their audit logs to and maintains the UsageActivity classification of each asset whose retrieval, discovery through search, or update is reported there.",
+                            "Connector listens to the topics that the OMAG Servers write their audit logs to and maintains the UsageActivity classification of each anchor element whose retrieval, discovery through search, or update is reported there.",
                             "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                             "org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider",
                             ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
