@@ -226,9 +226,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type definition for the named type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)" class="member-name-link">setSecurityVerifier</a><wbr>(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isObservedAnchorType(java.lang.String)" class="member-name-link">isObservedAnchorType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Is this the type of anchor element whose activity is reported in the audit log with the
+ METADATA-OBSERVABILITY messages?  These are the elements whose popularity is of interest to the
+ people using the open metadata ecosystem: assets, digital products and glossary terms.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)" class="member-name-link">setSecurityVerifier</a><wbr>(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a new security verifier (the handler runs with a default verifier until this method is called).</div>
 </div>
 </div>
@@ -466,6 +473,21 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isObservedAnchorType(java.lang.String)">
+<h3>isObservedAnchorType</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isObservedAnchorType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+<div class="block">Is this the type of anchor element whose activity is reported in the audit log with the
+ METADATA-OBSERVABILITY messages?  These are the elements whose popularity is of interest to the
+ people using the open metadata ecosystem: assets, digital products and glossary terms.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>typeName</code> - name of the element's type</dd>
+<dt>Returns:</dt>
+<dd>boolean</dd>
 </dl>
 </section>
 </li>

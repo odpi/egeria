@@ -127,6 +127,8 @@ org.odpi.openmetadata.adapters.connectors.oracle.survey
 org.odpi.openmetadata.adapters.connectors.oracle.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.oracle.utilities
 org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
+org.odpi.openmetadata.adapters.connectors.pepys
+org.odpi.openmetadata.adapters.connectors.pepys.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
