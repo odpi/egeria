@@ -448,7 +448,7 @@ public enum IntegrationConnectorDefinition
      */
     PEPYS_ACTIVITY_OBSERVER("43830f39-9805-4264-b6e1-aea9c7f4879d",
                             "PepysActivityObserverIntegrationConnector",
-                            "Maintains the UsageActivity classification of each asset from the asset activity reported in the OMAG Servers' audit logs.",
+                            "Maintains the UsageActivity classification of each anchor element from the activity reported in the OMAG Servers' audit logs.",
                             PepysActivityObserverProvider.class.getName(),
                             "PepysActivityObserver",
                             "pepysnpa",
