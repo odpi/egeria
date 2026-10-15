@@ -455,6 +455,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param viewElementGUID unique identifier of the element whose view is being assembled by this request, or null.
+     *                        When set, the returned elements are not reported as found.
      * @param methodName calling method
      *
      * @return list of related elements
@@ -477,6 +479,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                    Date                effectiveTime,
                                                                    int                 startFrom,
                                                                    int                 pageSize,
+                                                                   String              viewElementGUID,
                                                                    String              methodName) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException
@@ -564,6 +567,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                 forLineage,
                                                                                 forDuplicateProcessing,
                                                                                 effectiveTime,
+                                                                                viewElementGUID,
                                                                                 methodName);
 
         List<RelatedMetadataElement> results = new ArrayList<>();
@@ -2122,7 +2126,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     null,
                                                                      effectiveTime,
+                                                                     false,
                                                                      methodName);
 
             if (parentEntity == null)
@@ -2419,7 +2425,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                        null,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
+                                                                       null,
                                                                        effectiveTime,
+                                                                       false,
                                                                        methodName);
 
             if (templateEntity != null)
@@ -2528,7 +2536,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     null,
                                                                      effectiveTime,
+                                                                     false,
                                                                      methodName);
 
             List<Relationship> existingRelationships = null;
@@ -3836,6 +3846,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                 forDuplicateProcessing,
                                                                 null,
                                                                 effectiveTime,
+                                                                false,
                                                                 methodName);
 
             EntityDetail child = super.getEntityFromRepository(userId,
@@ -3848,6 +3859,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                 forDuplicateProcessing,
                                                                 null,
                                                                 effectiveTime,
+                                                                false,
                                                                 methodName);
 
             if ((parent != null) && (child != null))

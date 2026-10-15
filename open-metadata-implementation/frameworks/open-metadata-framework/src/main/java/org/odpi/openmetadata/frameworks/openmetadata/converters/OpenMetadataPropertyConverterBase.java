@@ -5996,6 +5996,468 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeExplicitGetCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeExplicitGetCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.EXPLICIT_GET_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeFindCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFindCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.FIND_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times the properties of the element have been updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdatePropertyCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdatePropertyCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_PROPERTY_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times an element anchored to the element has been created, linked, unlinked or updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdateAttachmentCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdateAttachmentCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdateFeedbackCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdateFeedbackCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times an element anchored to the element has been deleted.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDeleteAttachmentCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDeleteAttachmentCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDeleteFeedbackCount(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDeleteFeedbackCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DELETE_FEEDBACK_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has been explicitly retrieved from the repository by an identifier or name.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeExplicitGetCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeExplicitGetCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has been explicitly retrieved from the repository by an identifier or name.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeExplicitGetCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeExplicitGetCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.EXPLICIT_GET_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has been retrieved from the repository as part of a search request.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeFindCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeFindCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.FIND_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has been retrieved from the repository as part of a search request.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeFindCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeFindCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.FIND_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has had its properties updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdatePropertyCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdatePropertyCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has had its properties updated.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeUpdatePropertyCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeUpdatePropertyCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.UPDATE_PROPERTY_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has had an element anchored to it created, linked, unlinked or updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdateAttachmentCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdateAttachmentCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has had an element anchored to it created, linked, unlinked or updated.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeUpdateAttachmentCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeUpdateAttachmentCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeUpdateFeedbackCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUpdateFeedbackCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) added or updated.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeUpdateFeedbackCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeUpdateFeedbackCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has had an element anchored to it deleted.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDeleteAttachmentCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDeleteAttachmentCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has had an element anchored to it deleted.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeDeleteAttachmentCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDeleteAttachmentCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeDeleteFeedbackCountTotal(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDeleteFeedbackCountTotal";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete a map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) deleted.
+     *
+     * @param elementProperties properties from element
+     * @return map
+     */
+    protected Map<String, Long> removeDeleteFeedbackCountProfile(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDeleteFeedbackCountProfile";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.DELETE_FEEDBACK_COUNT_PROFILE.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -14070,6 +14532,37 @@ public class OpenMetadataPropertyConverterBase
                 ((RunMetricsProperties)beanProperties).setTotalBytesRead(this.removeTotalBytesRead(elementProperties));
                 ((RunMetricsProperties)beanProperties).setTotalBytesWritten(this.removeTotalBytesWritten(elementProperties));
                 ((RunMetricsProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName))
+            {
+                beanProperties = new UsageActivityProperties();
+
+                ((UsageActivityProperties)beanProperties).setExplicitGetCount(this.removeExplicitGetCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setFindCount(this.removeFindCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setUpdatePropertyCount(this.removeUpdatePropertyCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setUpdateAttachmentCount(this.removeUpdateAttachmentCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setUpdateFeedbackCount(this.removeUpdateFeedbackCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setDeleteAttachmentCount(this.removeDeleteAttachmentCount(elementProperties));
+                ((UsageActivityProperties)beanProperties).setDeleteFeedbackCount(this.removeDeleteFeedbackCount(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION.typeName))
+            {
+                beanProperties = new MemberPopularityProfileProperties();
+
+                ((MemberPopularityProfileProperties)beanProperties).setExplicitGetCountTotal(this.removeExplicitGetCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setExplicitGetCountProfile(this.removeExplicitGetCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setFindCountTotal(this.removeFindCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setFindCountProfile(this.removeFindCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdatePropertyCountTotal(this.removeUpdatePropertyCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdatePropertyCountProfile(this.removeUpdatePropertyCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdateAttachmentCountTotal(this.removeUpdateAttachmentCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdateAttachmentCountProfile(this.removeUpdateAttachmentCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdateFeedbackCountTotal(this.removeUpdateFeedbackCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setUpdateFeedbackCountProfile(this.removeUpdateFeedbackCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setDeleteAttachmentCountTotal(this.removeDeleteAttachmentCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setDeleteAttachmentCountProfile(this.removeDeleteAttachmentCountProfile(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setDeleteFeedbackCountTotal(this.removeDeleteFeedbackCountTotal(elementProperties));
+                ((MemberPopularityProfileProperties)beanProperties).setDeleteFeedbackCountProfile(this.removeDeleteFeedbackCountProfile(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.DATA_VALUE_MEANING_CLASSIFICATION.typeName))
             {

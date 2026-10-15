@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -192,6 +193,23 @@ public class OpenMetadataAPIRootHandler<B>
     public String getServiceName()
     {
         return serviceName;
+    }
+
+
+    /**
+     * Is this the type of anchor element whose activity is reported in the audit log with the
+     * METADATA-OBSERVABILITY messages?  These are the elements whose popularity is of interest to the
+     * people using the open metadata ecosystem: assets, digital products and glossary terms.
+     *
+     * @param typeName name of the element's type
+     * @return boolean
+     */
+    protected boolean isObservedAnchorType(String typeName)
+    {
+        return (typeName != null) &&
+                ((repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.ASSET.typeName)) ||
+                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DIGITAL_PRODUCT.typeName)) ||
+                 (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.GLOSSARY_TERM.typeName)));
     }
 
     /**

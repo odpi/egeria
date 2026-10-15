@@ -157,8 +157,90 @@ public class OpenMetadataTypesArchive
         /*
          * New types for this release
          */
-
+        update0795UsageActivity();
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0795UsageActivity()
+    {
+        this.archiveBuilder.addClassificationDef(getUsageActivityClassification());
+        this.archiveBuilder.addClassificationDef(getMemberPopularityProfileClassification());
+    }
+
+
+    /**
+     * Add the UsageActivity classification to count the activity around an anchor element and its anchored
+     * elements.  It is typically attached to an Asset, DigitalProduct or GlossaryTerm, and so it is valid on any Referenceable.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getUsageActivityClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLICIT_GET_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIND_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_PROPERTY_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_FEEDBACK_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_ATTACHMENT_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_FEEDBACK_COUNT));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    /**
+     * Add the MemberPopularityProfile classification to summarize the usage activity around the members of an
+     * element.  It is valid on any Referenceable.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getMemberPopularityProfileClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLICIT_GET_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIND_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIND_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_PROPERTY_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_PROFILE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELETE_FEEDBACK_COUNT_PROFILE));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

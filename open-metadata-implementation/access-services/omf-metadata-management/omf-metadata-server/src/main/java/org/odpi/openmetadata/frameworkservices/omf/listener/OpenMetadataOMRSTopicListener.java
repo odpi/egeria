@@ -990,11 +990,16 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
             {
                 fullEntity = entity;
 
+                /*
+                 * This is the server deciding whether to publish an event, not a user reading the element, so
+                 * the access is not reported as user activity.
+                 */
                 metadataElementHandler.validateEntityAndAnchorForRead(userId,
                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                       fullEntity,
                                                                       guidParameterName,
                                                                       true,
+                                                                      false,
                                                                       false,
                                                                       true,
                                                                       false,
@@ -1013,6 +1018,7 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
                                                                             false,
                                                                             null,
                                                                             effectiveTime,
+                                                                            false,
                                                                             methodName);
             }
 

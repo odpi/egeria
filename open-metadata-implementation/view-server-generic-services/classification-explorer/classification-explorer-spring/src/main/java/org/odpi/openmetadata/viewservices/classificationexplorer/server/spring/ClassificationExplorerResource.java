@@ -665,6 +665,192 @@ public class ClassificationExplorerResource
 
 
     /**
+     * Add the usage activity classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/usage-activity")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addUsageActivity",
+            description="Add the usage activity classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Usage Activity",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse addUsageActivity(@PathVariable String                    serverName,
+                                     @PathVariable String                    urlMarker,
+                                     @PathVariable String                    elementGUID,
+                                     @RequestBody  (required = false)
+                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addUsageActivity(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Update the usage activity classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/usage-activity/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateUsageActivity",
+            description="Update the usage activity classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Usage Activity",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse updateUsageActivity(@PathVariable String                    serverName,
+                                        @PathVariable String                    urlMarker,
+                                        @PathVariable String                    elementGUID,
+                                        @RequestBody  (required = false)
+                                        UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateUsageActivity(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the usage activity classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/usage-activity/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearUsageActivity",
+            description="Clear the usage activity classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Usage Activity",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse clearUsageActivity(@PathVariable String          serverName,
+                                       @PathVariable String                    urlMarker,
+                                       @PathVariable String          elementGUID,
+                                       @RequestBody(required = false)
+                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearUsageActivity(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Add the member popularity profile classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/member-popularity-profile")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="addMemberPopularityProfile",
+            description="Add the member popularity profile classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Member Popularity Profile",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse addMemberPopularityProfile(@PathVariable String                    serverName,
+                                     @PathVariable String                    urlMarker,
+                                     @PathVariable String                    elementGUID,
+                                     @RequestBody  (required = false)
+                                     NewClassificationRequestBody requestBody)
+    {
+        return restAPI.addMemberPopularityProfile(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Update the member popularity profile classification for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/member-popularity-profile/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateMemberPopularityProfile",
+            description="Update the member popularity profile classification for an element.",
+            externalDocs=@ExternalDocumentation(description="Member Popularity Profile",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse updateMemberPopularityProfile(@PathVariable String                    serverName,
+                                        @PathVariable String                    urlMarker,
+                                        @PathVariable String                    elementGUID,
+                                        @RequestBody  (required = false)
+                                        UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateMemberPopularityProfile(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the member popularity profile classification from an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param elementGUID   unique identifier of element
+     * @param requestBody null request body
+     *
+     * @return void or
+     *      InvalidParameterException guid or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/member-popularity-profile/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearMemberPopularityProfile",
+            description="Clear the member popularity profile classification from an element.",
+            externalDocs=@ExternalDocumentation(description="Member Popularity Profile",
+                    url="https://egeria-project.org/types/7/0795-Usage-Activity/"))
+
+    public VoidResponse clearMemberPopularityProfile(@PathVariable String          serverName,
+                                       @PathVariable String                    urlMarker,
+                                       @PathVariable String          elementGUID,
+                                       @RequestBody(required = false)
+                                       DeleteClassificationRequestBody requestBody)
+    {
+        return restAPI.clearMemberPopularityProfile(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
      * Add the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to

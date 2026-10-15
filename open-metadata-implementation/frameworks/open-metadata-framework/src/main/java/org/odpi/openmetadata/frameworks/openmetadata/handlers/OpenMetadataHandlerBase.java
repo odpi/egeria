@@ -731,6 +731,16 @@ public class OpenMetadataHandlerBase
         {
             try
             {
+                /*
+                 * The related elements retrieved below are assembling this element's view.  None of them has been
+                 * searched for, so the server is told not to report them as found.  An element whose view is being
+                 * assembled as part of a larger view keeps the outer view's element.
+                 */
+                if ((queryOptions.getViewElementGUID() == null) && (openMetadataElement != null))
+                {
+                    queryOptions.setViewElementGUID(openMetadataElement.getElementGUID());
+                }
+
                 OpenMetadataRootConverter<OpenMetadataRootElement> converter = new OpenMetadataRootConverter<>(propertyHelper, localServiceName, localServerName);
 
                 OpenMetadataRootElement rootElement = converter.getNewComplexBean(OpenMetadataRootElement.class,

@@ -170,10 +170,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                      relationshipProperties,
                                                      methodName);
 
-                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
+                if (this.isObservedAnchorType(entityTypeName))
                 {
                     auditLog.logMessage(assetActionDescription,
-                                        OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                        OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_CREATE.getMessageDefinition(userId,
                                                                                                                       entityTypeName,
                                                                                                                       templateProgress.newBeanGUID,
                                                                                                                       methodName,

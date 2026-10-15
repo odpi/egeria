@@ -167,6 +167,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param connectToGUIDParameterName parameter used to pass the entity to retrieve.
      * @param connectToType type of retrieved entity
      * @param isExplicitGetRequest is this entity requested explicitly
+     * @param reportActivity should a retrieval of an anchor element be reported as user activity?  It is not when the
+     *                       retrieval is made on behalf of another operation, such as a delete, or by the server itself
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException a problem adding the asset properties to the repositories.
@@ -177,6 +179,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                   String       connectToGUIDParameterName,
                                                   String       connectToType,
                                                   boolean      isExplicitGetRequest,
+                                                  boolean      reportActivity,
                                                   String       methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
@@ -193,14 +196,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                     methodName);
 
         /*
-         * Log asset retrieval to identify where popular asset are.
+         * Log anchor element retrieval to identify where popular anchor elements are.  Reads made on behalf of
+         * another operation (such as a delete) are not the user's interest in the element, so they are not reported.
+         * The element's own type is used since callers often ask for a supertype such as OpenMetadataRoot.
          */
-        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.ASSET.typeName))
+        if ((reportActivity) && (this.isObservedAnchorType(connectToEntity.getType().getTypeDefName())))
         {
             if (isExplicitGetRequest)
             {
                 auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ.getMessageDefinition(userId,
+                                    OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ.getMessageDefinition(userId,
                                                                                                                 connectToEntity.getType().getTypeDefName(),
                                                                                                                 connectToEntity.getGUID(),
                                                                                                                 methodName,
@@ -209,7 +214,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             else
             {
                 auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH.getMessageDefinition(userId,
+                                    OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_SEARCH.getMessageDefinition(userId,
                                                                                                                   connectToEntity.getType().getTypeDefName(),
                                                                                                                   connectToEntity.getGUID(),
                                                                                                                   methodName,
@@ -322,6 +327,60 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
+        return this.validateEntityAndAnchorForRead(userId,
+                                                   connectToType,
+                                                   connectToEntity,
+                                                   connectToGUIDParameterName,
+                                                   isExplicitGetRequest,
+                                                   isUpdate,
+                                                   true,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and
+     * whether it is a read or an update.  See the version without reportActivity for the details.
+     * <br><br>
+     * When reportActivity is false, the retrievals made by the validation are not reported as user activity.  This is
+     * used when the validation is made on behalf of another operation that reports its own activity (a create,
+     * link or delete), or by the server itself (for example, when deciding whether to publish an event).
+     *
+     * @param userId           userId of the user making the request.
+     * @param connectToType    name of type of connectToEntity
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param reportActivity   should the retrievals be reported as user activity?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return anchor entity or null if this entity is an anchor or does not have an anchor.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateEntityAndAnchorForRead(String        userId,
+                                                       String        connectToType,
+                                                       EntityDetail  connectToEntity,
+                                                       String        connectToGUIDParameterName,
+                                                       boolean       isExplicitGetRequest,
+                                                       boolean       isUpdate,
+                                                       boolean       reportActivity,
+                                                       boolean       forLineage,
+                                                       boolean       forDuplicateProcessing,
+                                                       Date          effectiveTime,
+                                                       String        methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
         invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
 
         /*
@@ -332,6 +391,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                          connectToGUIDParameterName,
                                          connectToType,
                                          isExplicitGetRequest,
+                                         reportActivity,
                                          methodName);
 
         /*
@@ -357,6 +417,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                   anchorIdentifiers,
                                   isExplicitGetRequest,
                                   isUpdate,
+                                  reportActivity,
                                   forLineage,
                                   forDuplicateProcessing,
                                   effectiveTime,
@@ -418,6 +479,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                          connectToGUIDParameterName,
                                                          connectToEntity.getType().getTypeDefName(),
                                                          false,
+                                                         true,
                                                          methodName);
 
                         visibleEntities.put(connectToEntity.getGUID(), connectToEntity);
@@ -542,6 +604,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                          anchorEntity,
                                                          false,
                                                          false,
+                                                         true,
                                                          methodName);
 
                                     validatedAnchors.add(anchorEntity.getGUID());
@@ -594,6 +657,50 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.validateAnchorGUID(userId,
+                                       connectToEntity,
+                                       anchorIdentifiers,
+                                       isExplicitGetRequest,
+                                       isUpdate,
+                                       true,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
+    }
+
+
+    /**
+     * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
+     *
+     * @param userId userId of the user making the request.
+     * @param connectToEntity entity retrieved from the repository
+     * @param anchorIdentifiers retrieved anchors information
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param reportActivity   should the retrievals be reported as user activity?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor entity (this may be the connectToEntity if it is its own anchor or null if the element is unanchored)
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorGUID(String            userId,
+                                           EntityDetail      connectToEntity,
+                                           AnchorIdentifiers anchorIdentifiers,
+                                           boolean           isExplicitGetRequest,
+                                           boolean           isUpdate,
+                                           boolean           reportActivity,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           Date              effectiveTime,
+                                           String            methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         if (anchorIdentifiers == null)
         {
             /*
@@ -628,6 +735,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                      anchorEntity,
                                      isExplicitGetRequest,
                                      isUpdate,
+                                     reportActivity,
                                      methodName);
 
                 return anchorEntity;
@@ -645,6 +753,21 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Is this the type of a feedback element - an informal tag, comment, rating or like?
+     *
+     * @param typeName name of the element's type
+     * @return boolean
+     */
+    private boolean isFeedbackType(String typeName)
+    {
+        return (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.INFORMAL_TAG.typeName)) ||
+               (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.COMMENT.typeName)) ||
+               (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.RATING.typeName)) ||
+               (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.LIKE.typeName));
+    }
+
+
+    /**
      * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
      *
      * @param userId userId of the user making the request.
@@ -652,6 +775,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param anchorEntity retrieved anchors entity
      * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isUpdate         is this an update request?
+     * @param reportActivity   should the access be reported as user activity?  It is not when the validation is made
+     *                         on behalf of another operation that reports its own activity, or by the server itself.
      * @param methodName       calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException a problem accessing the properties in the repositories.
@@ -662,6 +787,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                      EntityDetail anchorEntity,
                                      boolean      isExplicitGetRequest,
                                      boolean      isUpdate,
+                                     boolean      reportActivity,
                                      String       methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -677,12 +803,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
             if (anchorEntityType != null)
             {
-                String connectToType = connectToEntity.getType().getTypeDefName();
-                boolean isFeedbackEntity =
-                        (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
-                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
-                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
-                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
+                boolean isFeedbackEntity = this.isFeedbackType(connectToEntity.getType().getTypeDefName());
 
 
                 if (isFeedbackEntity)
@@ -713,14 +834,21 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                      methodName);
                 }
 
-                if (repositoryHelper.isTypeOf(serviceName, anchorEntityType.getTypeDefName(), OpenMetadataType.ASSET.typeName))
+                /*
+                 * The attachment messages describe activity on an element anchored to the anchor element.  An
+                 * element that is its own anchor reports its own activity (0002, 0006, 0008) elsewhere, so nothing
+                 * is reported here for it - otherwise each search result would also count as an attachment found.
+                 */
+                if ((reportActivity) &&
+                        (! anchorEntity.getGUID().equals(connectToEntity.getGUID())) &&
+                        (this.isObservedAnchorType(anchorEntityType.getTypeDefName())))
                 {
                     if (isUpdate)
                     {
                         if (isFeedbackEntity)
                         {
                             auditLog.logMessage(assetActionDescription,
-                                                OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition(userId,
+                                                OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition(userId,
                                                                                                                                        anchorEntityType.getTypeDefName(),
                                                                                                                                        anchorEntity.getGUID(),
                                                                                                                                        methodName,
@@ -729,7 +857,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                         else
                         {
                             auditLog.logMessage(assetActionDescription,
-                                                OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition(userId,
+                                                OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition(userId,
                                                                                                                                          anchorEntityType.getTypeDefName(),
                                                                                                                                          anchorEntity.getGUID(),
                                                                                                                                          methodName,
@@ -739,7 +867,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                     else if (isExplicitGetRequest)
                     {
                         auditLog.logMessage(assetActionDescription,
-                                            OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
+                                            OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
                                                                                                                                    anchorEntityType.getTypeDefName(),
                                                                                                                                    anchorEntity.getGUID(),
                                                                                                                                    methodName,
@@ -748,7 +876,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                     else
                     {
                         auditLog.logMessage(assetActionDescription,
-                                            OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition(userId,
+                                            OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition(userId,
                                                                                                                                      anchorEntityType.getTypeDefName(),
                                                                                                                                      anchorEntity.getGUID(),
                                                                                                                                      methodName,
@@ -1740,6 +1868,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          */
         List<String> governanceZones = securityVerifier.getDefaultZones(propertyBuilder.getInitialGovernanceZones(), userId, entityTypeName, methodName);
 
+        /*
+         * The anchor element that the new entity is attached to, if any.  Its creation is reported as a change to
+         * the anchor element's attachments.
+         */
+        EntityDetail newEntityAnchor = null;
+
         if (isOwnAnchor)
         {
             /*
@@ -1792,8 +1926,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                          null,
                                                                          false,
                                                                          false,
+                                                                         null,
                                                                          effectiveTime,
+                                                                         false,
                                                                          methodName);
+
+                newEntityAnchor = anchorEntity;
 
                 if (anchorEntity != null)
                 {
@@ -1882,14 +2020,18 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                            methodName);
 
 
-        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
+        if (this.isObservedAnchorType(entityTypeName))
         {
             auditLog.logMessage(assetActionDescription,
-                                OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_CREATE.getMessageDefinition(userId,
                                                                                                               entityTypeName,
                                                                                                               entityGUID,
                                                                                                               methodName,
                                                                                                               serviceName));
+        }
+        else
+        {
+            this.logAttachmentActivity(userId, entityTypeName, entityGUID, newEntityAnchor, false, methodName);
         }
 
         return entityGUID;
@@ -2186,10 +2328,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                      newProperties,
                                                      methodName);
 
-            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
+            if (this.isObservedAnchorType(originalEntity.getType().getTypeDefName()))
             {
                 auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE.getMessageDefinition(userId,
+                                    OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE.getMessageDefinition(userId,
                                                                                                                   originalEntity.getType().getTypeDefName(),
                                                                                                                   originalEntity.getGUID(),
                                                                                                                   methodName,
@@ -2912,10 +3054,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 throw notAuth;
             }
 
-            if (repositoryHelper.isTypeOf(serviceName, originalEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
+            if (this.isObservedAnchorType(originalEntity.getType().getTypeDefName()))
             {
                 auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE.getMessageDefinition(userId,
+                                    OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE.getMessageDefinition(userId,
                                                                                                                   originalEntity.getType().getTypeDefName(),
                                                                                                                   originalEntity.getGUID(),
                                                                                                                   methodName,
@@ -4632,6 +4774,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                         entityGUIDParameterName,
                                                                         true,
                                                                         false,
+                                                                        false,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -5070,6 +5213,57 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Report a change to the attachments of an anchor element that is of interest to the people using the open
+     * metadata ecosystem (see isObservedAnchorType): an element anchored to it has been created, linked, unlinked
+     * or deleted.  Feedback (comments, likes, ratings and informal tags) is reported separately from the other
+     * attachments.  Nothing is reported if the changed element is the anchor element itself.
+     *
+     * @param userId calling user
+     * @param attachedTypeName type of the element that has been added, linked or deleted
+     * @param attachedGUID unique identifier of the element that has been added, linked or deleted
+     * @param anchorEntity the anchor element that the change affects
+     * @param isDelete has the attachment been deleted (rather than created, linked or unlinked)?
+     * @param methodName calling method
+     */
+    private void logAttachmentActivity(String       userId,
+                                       String       attachedTypeName,
+                                       String       attachedGUID,
+                                       EntityDetail anchorEntity,
+                                       boolean      isDelete,
+                                       String       methodName)
+    {
+        if ((anchorEntity != null) &&
+                (anchorEntity.getType() != null) &&
+                (! anchorEntity.getGUID().equals(attachedGUID)) &&
+                (this.isObservedAnchorType(anchorEntity.getType().getTypeDefName())))
+        {
+            String  anchorTypeName = anchorEntity.getType().getTypeDefName();
+            boolean isFeedback     = this.isFeedbackType(attachedTypeName);
+
+            OpenMetadataObservabilityAuditCode auditCode;
+
+            if (isDelete)
+            {
+                auditCode = isFeedback ? OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_DELETE_FEEDBACK
+                                       : OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_DELETE_ATTACHMENT;
+            }
+            else
+            {
+                auditCode = isFeedback ? OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_FEEDBACK
+                                       : OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE_ATTACHMENT;
+            }
+
+            auditLog.logMessage(assetActionDescription,
+                                auditCode.getMessageDefinition(userId,
+                                                               anchorTypeName,
+                                                               anchorEntity.getGUID(),
+                                                               methodName,
+                                                               serviceName));
+        }
+    }
+
+
+    /**
      * Delete an entity from the repository and all elements anchored to it, and any element anchored to the anchored elements
      * that are deleted.
      *
@@ -5124,7 +5318,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                         effectiveTime,
                                                                         methodName);
 
-        EntityDetail anchorEntity = validateEntityAndAnchorForRead(userId, entityTypeName, startingEntity, entityGUIDParameterName, true, true, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        EntityDetail anchorEntity = validateEntityAndAnchorForRead(userId, entityTypeName, startingEntity, entityGUIDParameterName, true, true, false, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         if ((anchorEntity != null) && (anchorEntity.getGUID().equals(startingEntity.getGUID())))
         {
@@ -5142,6 +5336,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                repositoryHelper,
                                                                serviceName,
                                                                methodName);
+
+            /*
+             * Nothing is reported if the anchor element is itself being deleted in the same request, since its
+             * attachments are then deleted along with it rather than being curated.
+             */
+            if (! deletedEntityGUIDs.contains(anchorEntity.getGUID()))
+            {
+                this.logAttachmentActivity(userId,
+                                           startingEntity.getType().getTypeDefName(),
+                                           startingEntity.getGUID(),
+                                           anchorEntity,
+                                           true,
+                                           methodName);
+            }
         }
 
 
@@ -8717,6 +8925,66 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                           Date               effectiveTime,
                                                           String             methodName) throws InvalidParameterException
     {
+        return this.getValidatedEntities(userId,
+                                         startingGUID,
+                                         startingTypeName,
+                                         retrievedRelationships,
+                                         attachmentEntityTypeName,
+                                         requiredClassificationName,
+                                         omittedClassificationName,
+                                         selectionEnd,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         null,
+                                         methodName);
+    }
+
+
+    /**
+     * Validates a list of entities retrieved from the repository as a result of a query.
+     * It validates supported zones read security and the anchor GUID.  It does not handle Mementos, effective dates
+     * and element status, since they are the responsibility of the repository handler.
+     * <br><br>
+     * When the query is part of assembling the view of an element (viewElementGUID is set), none of the elements it
+     * returns are reported as found: building a view is not a search, so only genuine searches count towards an
+     * element's findCount.
+     *
+     * @param userId           userId of the user making the request.
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingTypeName name of the type of object being attached to
+     * @param retrievedRelationships  relationships retrieved from the repository
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param viewElementGUID unique identifier of the element whose view is being assembled, or null
+     * @param methodName       calling method
+     *
+     * @return map of validated entities
+     */
+    public Map<String, EntityDetail> getValidatedEntities(String             userId,
+                                                          String             startingGUID,
+                                                          String             startingTypeName,
+                                                          List<Relationship> retrievedRelationships,
+                                                          String             attachmentEntityTypeName,
+                                                          String             requiredClassificationName,
+                                                          String             omittedClassificationName,
+                                                          int                selectionEnd,
+                                                          boolean            forLineage,
+                                                          boolean            forDuplicateProcessing,
+                                                          Date               effectiveTime,
+                                                          String             viewElementGUID,
+                                                          String             methodName) throws InvalidParameterException
+    {
+        /*
+         * Elements returned while assembling an element's view have not been searched for.
+         */
+        final boolean reportFinds = (viewElementGUID == null);
+
         if (retrievedRelationships != null)
         {
             final String guidParameterName = "relationship.end.guid";
@@ -8885,6 +9153,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                              guidParameterName,
                                                              attachmentEntityTypeName,
                                                              false,
+                                                             reportFinds,
                                                              methodName);
 
                             /*
@@ -8925,6 +9194,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                        anchorIdentifiers,
                                                        false,
                                                        false,
+                                                       reportFinds,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        effectiveTime,
@@ -8941,6 +9211,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                  connectToGUIDParameterName,
                                                                  retrievedEntity.getType().getTypeDefName(),
                                                                  false,
+                                                                 reportFinds,
                                                                  methodName);
                             }
 
@@ -9031,6 +9302,60 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.getEntityFromRepository(userId,
+                                            requestedEntityGUID,
+                                            requestedEntityGUIDParameterName,
+                                            requestedEntityTypeName,
+                                            requiredClassificationName,
+                                            omittedClassificationName,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            asOfTime,
+                                            effectiveTime,
+                                            true,
+                                            methodName);
+    }
+
+
+    /**
+     * Return the entity for the supplied unique identifier (guid).  An exception is thrown if the entity does not exist.
+     * Use reportActivity=false when the entity is retrieved on behalf of another operation (such as a create or a
+     * link) that reports its own activity, or by the server itself, so the retrieval is not counted as a user's
+     * interest in the element.
+     *
+     * @param userId userId of the user making the request
+     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
+     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
+     * @param requestedEntityTypeName name of type of entity to retrieve
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param reportActivity should the retrieval be reported as user activity?
+     * @param methodName calling method
+     *
+     * @return retrieved entity
+     * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
+     * @throws PropertyServerException a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityFromRepository(String       userId,
+                                                String       requestedEntityGUID,
+                                                String       requestedEntityGUIDParameterName,
+                                                String       requestedEntityTypeName,
+                                                String       requiredClassificationName,
+                                                String       omittedClassificationName,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                Date         asOfTime,
+                                                Date         effectiveTime,
+                                                boolean      reportActivity,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(requestedEntityGUID, requestedEntityGUIDParameterName, methodName);
 
@@ -9053,6 +9378,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                             requestedEntityGUIDParameterName,
                                             true,
                                             false,
+                                            reportActivity,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime,
@@ -11286,6 +11612,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                          startingGUIDParameterName,
                                                                          true,
                                                                          false,
+                                                                         false,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          effectiveTime,
@@ -11305,6 +11632,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                          bean2Entity,
                                                                          attachingGUIDParameterName,
                                                                          true,
+                                                                         false,
                                                                          false,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -11519,6 +11847,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (newRelationship != null)
         {
+            /*
+             * Linking an element to an anchor element (or to one of its attachments) changes the anchor element's
+             * attachments.  Each affected anchor element is reported once.
+             */
+            this.logAttachmentActivity(userId, bean2Entity.getType().getTypeDefName(), bean2Entity.getGUID(), anchor1Entity, false, methodName);
+
+            if ((anchor2Entity != null) && ((anchor1Entity == null) || (! anchor1Entity.getGUID().equals(anchor2Entity.getGUID()))))
+            {
+                this.logAttachmentActivity(userId, bean1Entity.getType().getTypeDefName(), bean1Entity.getGUID(), anchor2Entity, false, methodName);
+            }
+
             return newRelationship.getGUID();
         }
 

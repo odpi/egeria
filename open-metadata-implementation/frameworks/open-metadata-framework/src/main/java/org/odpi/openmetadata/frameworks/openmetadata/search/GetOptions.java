@@ -28,6 +28,7 @@ public class GetOptions extends BasicOptions
     private int          relationshipsPageSize         = 0;
     private int          graphQueryDepth               = 5;
     private int          maxMermaidNodeCount           = 5;
+    private String       viewElementGUID               = null;
 
     /**
      * Default constructor
@@ -56,6 +57,7 @@ public class GetOptions extends BasicOptions
             relationshipsPageSize         = template.getRelationshipsPageSize();
             graphQueryDepth               = template.getGraphQueryDepth();
             maxMermaidNodeCount           = template.getMaxMermaidNodeCount();
+            viewElementGUID               = template.getViewElementGUID();
         }
     }
 
@@ -235,6 +237,34 @@ public class GetOptions extends BasicOptions
 
 
     /**
+     * Return the unique identifier of the element whose view is being assembled by this request.  The elements
+     * returned while a view is being built have not been searched for, so they are not reported as found (the
+     * user's interest in the element itself is reported when it is retrieved).  Null means the request is not part
+     * of assembling an element's view.
+     *
+     * @return string guid
+     */
+    public String getViewElementGUID()
+    {
+        return viewElementGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the element whose view is being assembled by this request.  The elements
+     * returned while a view is being built have not been searched for, so they are not reported as found (the
+     * user's interest in the element itself is reported when it is retrieved).  Null means the request is not part
+     * of assembling an element's view.
+     *
+     * @param viewElementGUID string guid
+     */
+    public void setViewElementGUID(String viewElementGUID)
+    {
+        this.viewElementGUID = viewElementGUID;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -250,6 +280,7 @@ public class GetOptions extends BasicOptions
                 ", relationshipsPageSize=" + relationshipsPageSize +
                 ", graphQueryDepth=" + graphQueryDepth +
                 ", maxMermaidNodeCount=" + maxMermaidNodeCount +
+                ", viewElementGUID=" + viewElementGUID +
                 "} " + super.toString();
     }
 
@@ -274,7 +305,8 @@ public class GetOptions extends BasicOptions
                 Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
                 Objects.equals(skipRelationships, that.skipRelationships) &&
                 Objects.equals(includeOnlyRelationships, that.includeOnlyRelationships) &&
-                Objects.equals(relationshipsPageSize, that.relationshipsPageSize);
+                Objects.equals(relationshipsPageSize, that.relationshipsPageSize) &&
+                Objects.equals(viewElementGUID, that.viewElementGUID);
     }
 
     /**
@@ -287,6 +319,6 @@ public class GetOptions extends BasicOptions
     {
         return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName,
                             skipRelationships, includeOnlyRelationships, relationshipsPageSize,
-                            graphQueryDepth, maxMermaidNodeCount);
+                            graphQueryDepth, maxMermaidNodeCount, viewElementGUID);
     }
 }

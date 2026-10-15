@@ -159,7 +159,7 @@ Content-Type: application/json
 ###
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/active-metadata-store/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -413,7 +413,7 @@ Content-Type: application/json
 ###
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/view-server/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/view-server/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -527,7 +527,7 @@ Content-Type: application/json
 ###
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/engine-host/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -900,7 +900,7 @@ Content-Type: application/json
 ###
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/integration-daemon/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1134,7 +1134,7 @@ Content-Type: application/json
 ###
 # Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/audit-log-destinations/event-topic?topicName=egeria.omag.server.default.ffdc.audit-logs
+POST {{baseURL}}/open-metadata/admin-services/servers/nanny-daemon/audit-log-destinations/event-topic?topicName=default.ffdc.audit-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

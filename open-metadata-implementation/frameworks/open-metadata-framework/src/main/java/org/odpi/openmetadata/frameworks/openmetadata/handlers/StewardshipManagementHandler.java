@@ -1772,6 +1772,156 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Classify an anchor element (typically an asset or digital product) to record the usage activity around it and its anchored elements.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the usage activity counts
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addUsageActivityClassification(String                  userId,
+                                                String                  elementGUID,
+                                                UsageActivityProperties properties,
+                                                MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the usage activity counts of an anchor element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the usage activity counts
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateUsageActivityClassification(String                  userId,
+                                                  String                  elementGUID,
+                                                  UsageActivityProperties properties,
+                                                  UpdateOptions           updateOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the usage activity counts from an anchor element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearUsageActivityClassification(String                  userId,
+                                                 String                  elementGUID,
+                                                 MetadataSourceOptions   metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to summarize the usage activity around its members.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the member popularity profile
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void  addMemberPopularityProfileClassification(String                            userId,
+                                                          String                            elementGUID,
+                                                          MemberPopularityProfileProperties properties,
+                                                          MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException
+    {
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the member popularity profile of an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param properties details of the member popularity profile
+     * @param updateOptions provides a structure for the additional options when updating a classification.
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void updateMemberPopularityProfileClassification(String                            userId,
+                                                            String                            elementGUID,
+                                                            MemberPopularityProfileProperties properties,
+                                                            UpdateOptions                     updateOptions) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the member popularity profile from an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException a problem reported in the open metadata server(s)
+     */
+    public void clearMemberPopularityProfileClassification(String                            userId,
+                                                           String                            elementGUID,
+                                                           MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
+    {
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.MEMBER_POPULARITY_PROFILE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
      * Add the security tags for an element.
      *
      * @param userId calling user

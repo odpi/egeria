@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.EgeriaDeployedImplemen
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
@@ -51,6 +52,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdent
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
@@ -80,6 +82,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
     final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
+
+    /*
+     * The audit log topics that are known to be catalog targets of the activity observer.
+     */
+    private final Set<String> topicsRegisteredWithActivityObserver = new HashSet<>();
 
     /**
      * Principle constructor
@@ -1726,9 +1733,16 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                             (formula.equals(dataFlowProperties.getFormula())))
                     {
                         /*
-                         * The relationship is in place.
+                         * The relationship is in place.  The topic at the other end still needs to be
+                         * registered with the activity observer, since it may have been catalogued before the
+                         * observer existed, or by a cataloguer that was not configured with one.
                          * ToDo In a future iteration we may want to validate that the relationship is still correct.
                          */
+                        if (! lineageLink.getRelatedElementAtEnd1())
+                        {
+                            this.addTopicToActivityObserver(lineageLink.getRelatedElement().getElementHeader().getGUID());
+                        }
+
                         return;
                     }
                 }
@@ -1888,8 +1902,89 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                       dataFlowProperties);
                         }
                     }
+
+                    this.addTopicToActivityObserver(topicGUID);
                 }
             }
+        }
+    }
+
+
+    /**
+     * Add an audit log topic to the catalog targets of the integration connector that observes the activity
+     * recorded in the audit logs (normally Pepys).  That connector is identified by the friendshipGUID
+     * configuration property - if it is not set, the topic is only catalogued.
+     * <br>
+     * Whether the topic is already a catalog target is decided by reading the topic immediately before the
+     * catalog target is added.  Once the topic is known to be registered, it is remembered so that the many
+     * servers that share one audit log topic do not each cost a read on every refresh.
+     *
+     * @param topicGUID unique identifier of the topic's element
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void addTopicToActivityObserver(String topicGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "addTopicToActivityObserver";
+
+        String friendshipGUID = super.getStringConfigurationProperty(OMAGServerPlatformCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(),
+                                                                     this.getConfigurationProperties());
+
+        if ((friendshipGUID == null) || (topicGUID == null) || (topicsRegisteredWithActivityObserver.contains(topicGUID)))
+        {
+            return;
+        }
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
+
+        OpenMetadataRootElement topic = assetClient.getAssetByGUID(topicGUID, assetClient.getGetOptions());
+
+        if (topic == null)
+        {
+            return;
+        }
+
+        if (topic.getRefreshedByConnectors() != null)
+        {
+            for (RelatedMetadataElementSummary refreshedByConnector : topic.getRefreshedByConnectors())
+            {
+                if ((refreshedByConnector != null) &&
+                        (friendshipGUID.equals(refreshedByConnector.getRelatedElement().getElementHeader().getGUID())))
+                {
+                    topicsRegisteredWithActivityObserver.add(topicGUID);
+                    return;
+                }
+            }
+        }
+
+        String topicName = topicGUID;
+
+        if ((topic.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getDisplayName() != null))
+        {
+            topicName = assetProperties.getDisplayName();
+        }
+
+        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+
+        catalogTargetProperties.setCatalogTargetName(topicName);
+
+        assetClient.addCatalogTarget(friendshipGUID,
+                                     topicGUID,
+                                     assetClient.getMakeAnchorOptions(false),
+                                     catalogTargetProperties);
+
+        topicsRegisteredWithActivityObserver.add(topicGUID);
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_REGISTERED.getMessageDefinition(connectorName,
+                                                                                                       topicName,
+                                                                                                       topicGUID,
+                                                                                                       friendshipGUID));
         }
     }
 

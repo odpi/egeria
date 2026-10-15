@@ -16,6 +16,8 @@ import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerPro
 import org.odpi.openmetadata.adapters.connectors.darwin.DarwinProductDependencyManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.darwin.controls.DarwinConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
+import org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.controls.MendelConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.catalog.DB2LUWServerIntegrationProvider;
@@ -439,6 +441,34 @@ public enum IntegrationConnectorDefinition
                          IntegrationGroupDefinition.UNITY_CATALOG,
                          ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
+    /**
+     * Pepys listens to the topics that the OMAG Servers write their audit logs to and maintains the usage activity
+     * counts of the assets reported there.  The OMAG Server Platform Cataloguer adds each audit log topic it
+     * catalogues as one of Pepys's catalog targets.
+     */
+    PEPYS_ACTIVITY_OBSERVER("43830f39-9805-4264-b6e1-aea9c7f4879d",
+                            "PepysActivityObserverIntegrationConnector",
+                            "Maintains the UsageActivity classification of each asset from the asset activity reported in the OMAG Servers' audit logs.",
+                            PepysActivityObserverProvider.class.getName(),
+                            "PepysActivityObserver",
+                            "pepysnpa",
+                            null,
+                            null,
+                            null,
+                            null,
+                            10,
+                            null,
+                            "d275b839-e124-414d-852c-a5d6be3b4c70",
+                            "Activity Observer",
+                            "Listens to the topics that the OMAG Servers write their audit logs to.  It counts the retrievals, searches and updates reported against each asset and adds them to the counts in the asset's UsageActivity classification.",
+                            true,
+                            null,
+                            null,
+                            null,
+                            null,
+                            IntegrationGroupDefinition.OPEN_METADATA_OBSERVABILITY,
+                            ContentPackDefinition.CORE_CONTENT_PACK),
+
     OMAG_SERVER_PLATFORM_CATALOGUER("dee84e6e-7a96-4975-86c1-152fb3ab759b",
                                     "OMAGServerPlatformIntegrationConnector",
                                     "Catalogs the OMAG Servers known to the OMAG Server Platforms catalogued in the open metadata ecosystem.",
@@ -448,7 +478,7 @@ public enum IntegrationConnectorDefinition
                                     null,
                                     null,
                                     null,
-                                    null,
+                                    getOMAGServerPlatformCataloguerConfigProperties(),
                                     60,
                                     new DeployedImplementationTypeDefinition[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM},
                                     "2eed7ad8-9189-4971-ba67-2de94efc7db3",
@@ -977,6 +1007,27 @@ public enum IntegrationConnectorDefinition
     }
 
 
+    /**
+     * Return the configuration properties for the OMAG Server Platform Cataloguer.  It needs to know which
+     * connector listens to the audit log topics, so that it can register each audit log topic it catalogues
+     * with that connector as a catalog target.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getOMAGServerPlatformCataloguerConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put(OMAGServerPlatformCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), PEPYS_ACTIVITY_OBSERVER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Get the configuration properties for the Unity Catalog Server Cataloguer.
+     *
+     * @return map
+     */
     private static Map<String, Object> getUCServerConfigProperties()
     {
         Map<String, Object> configurationProperties = new HashMap<>();

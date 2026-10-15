@@ -56,6 +56,8 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
     private ElementClassification       dataScope                = null;
     private ElementClassification       runMetrics               = null;
+    private ElementClassification       usageActivity            = null;
+    private ElementClassification       memberPopularityProfile  = null;
     private ElementClassification       dataAssetEncoding        = null;
     private ElementClassification       calculatedValue          = null;
     private ElementClassification       primaryKey               = null;
@@ -114,6 +116,8 @@ public class ElementHeader extends ElementControlHeader
             this.schemaType               = template.getSchemaType();
             this.dataScope                = template.getDataScope();
             this.runMetrics               = template.getRunMetrics();
+            this.usageActivity            = template.getUsageActivity();
+            this.memberPopularityProfile  = template.getMemberPopularityProfile();
             this.dataAssetEncoding        = template.getDataAssetEncoding();
             this.calculatedValue          = template.getCalculatedValue();
             this.primaryKey               = template.getPrimaryKey();
@@ -635,6 +639,54 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the UsageActivity classification - used to count how often an element and its anchored elements
+     * are retrieved, found, updated and have their attachments and feedback changed.
+     *
+     * @return classification
+     */
+    public ElementClassification getUsageActivity()
+    {
+        return usageActivity;
+    }
+
+
+    /**
+     * Set up the UsageActivity classification - used to count how often an element and its anchored elements
+     * are retrieved, found, updated and have their attachments and feedback changed.
+     *
+     * @param usageActivity classification
+     */
+    public void setUsageActivity(ElementClassification usageActivity)
+    {
+        this.usageActivity = usageActivity;
+    }
+
+
+    /**
+     * Return the MemberPopularityProfile classification - used to summarize the usage activity around the
+     * members of an element.
+     *
+     * @return classification
+     */
+    public ElementClassification getMemberPopularityProfile()
+    {
+        return memberPopularityProfile;
+    }
+
+
+    /**
+     * Set up the MemberPopularityProfile classification - used to summarize the usage activity around the
+     * members of an element.
+     *
+     * @param memberPopularityProfile classification
+     */
+    public void setMemberPopularityProfile(ElementClassification memberPopularityProfile)
+    {
+        this.memberPopularityProfile = memberPopularityProfile;
+    }
+
+
+    /**
      * Return the DataAssetEncoding classification that describes the encoding used in the associated digital resource.
      *
      * @return classification
@@ -994,6 +1046,8 @@ public class ElementHeader extends ElementControlHeader
                 ", schemaType=" + schemaType +
                 ", dataScope=" + dataScope +
                 ", runMetrics=" + runMetrics +
+                ", usageActivity=" + usageActivity +
+                ", memberPopularityProfile=" + memberPopularityProfile +
                 ", dataAssetEncoding=" + dataAssetEncoding +
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
@@ -1042,6 +1096,8 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(digitalResourceOrigin, that.digitalResourceOrigin) &&
                 Objects.equals(dataScope, that.dataScope) &&
                 Objects.equals(runMetrics, that.runMetrics) &&
+                Objects.equals(usageActivity, that.usageActivity) &&
+                Objects.equals(memberPopularityProfile, that.memberPopularityProfile) &&
                 Objects.equals(dataAssetEncoding, that.dataAssetEncoding) &&
                 Objects.equals(ownership, that.ownership) &&
                 Objects.equals(memento, that.memento) &&
@@ -1077,7 +1133,7 @@ public class ElementHeader extends ElementControlHeader
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, zoneMembershipProfile, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento, promise,
-                            dataScope, runMetrics, dataAssetEncoding,
+                            dataScope, runMetrics, usageActivity, memberPopularityProfile, dataAssetEncoding,
                             template, templateSubstitute, schemaType, calculatedValue, primaryKey,
                             knownDuplicate, consolidateDuplicate,
                             securityTags, accountingCodes, securityListMembership, userAccountProfile,

@@ -22,97 +22,94 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
 {
     /**
-     * METADATA-OBSERVABILITY-0001 - User {0} created {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0001 - User {0} created {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_CREATE("METADATA-OBSERVABILITY-0001",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} created {1} asset {2} during operation {3} of service {4}",
-                          "This message is used to capture user requests to create an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset creation.",
-                          "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_CREATE("METADATA-OBSERVABILITY-0001",
+                       AuditLogRecordSeverityLevel.ACTIVITY,
+                       "User {0} created {1} anchor element {2} during operation {3} of service {4}",
+                       "The creation of an anchor element (such as an asset, digital product or glossary term) is recorded.  It is not added to the anchor element's UsageActivity counts, since creation says nothing about how much the element is used.",
+                       "No action is required, but this message can be used to capture user activity information related to the creation of anchor elements.",
+                       "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0002 - User {0} retrieved {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0002 - User {0} retrieved {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_READ("METADATA-OBSERVABILITY-0002",
-                  AuditLogRecordSeverityLevel.ACTIVITY,
-                  "User {0} retrieved {1} asset {2} during operation {3} of service {4}",
-                  "This message is used to capture user requests to receive an asset.",
-                  "No action is required, but this message can be used to capture user activity information.",
-                  "https://egeria-project.org/services/common-services/"),
-
+    ANCHOR_ACTIVITY_READ("METADATA-OBSERVABILITY-0002",
+                     AuditLogRecordSeverityLevel.ACTIVITY,
+                     "User {0} retrieved {1} anchor element {2} during operation {3} of service {4}",
+                     "The retrieval counts towards the explicitGetCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how often people ask for the element by name or identifier, which indicates that it is of specific interest to them.",
+                     "No action is required, but this message can be used to capture user activity information.",
+                     "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0003 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0003 - User {0} retrieved an attachment to {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_READ_ATTACHMENT("METADATA-OBSERVABILITY-0003",
-                        AuditLogRecordSeverityLevel.ACTIVITY,
-                        "User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}",
-                        "This message is used to capture user requests to receive full details about an asset.",
-                        "No action is required, but this message can be used to capture user activity information about the use of assets.",
-                        "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_READ_ATTACHMENT("METADATA-OBSERVABILITY-0003",
+                                AuditLogRecordSeverityLevel.ACTIVITY,
+                                "User {0} retrieved an attachment to {1} anchor element {2} during operation {3} of service {4}",
+                                "The retrieval counts towards the explicitGetCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  Retrieving an element anchored to the anchor element, such as a schema attribute or connection, is counted as interest in the anchor element itself.",
+                                "No action is required, but this message can be used to capture user activity information about the use of anchor elements.",
+                                "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0004 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0004 - User {0} updated an attachment to {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_UPDATE_ATTACHMENT("METADATA-OBSERVABILITY-0004",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to build out the knowledge for an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to curation of an asset.",
-                                   "https://egeria-project.org/services/common-services/"),
-
+    ANCHOR_ACTIVITY_UPDATE_ATTACHMENT("METADATA-OBSERVABILITY-0004",
+                                  AuditLogRecordSeverityLevel.ACTIVITY,
+                                  "User {0} updated an attachment to {1} anchor element {2} during operation {3} of service {4}",
+                                  "The change counts towards the updateAttachmentCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how actively the content attached to the element - its schema, connections, notes and other anchored elements - is being curated.",
+                                  "No action is required, but this message can be used to capture user activity information related to the curation of an anchor element.",
+                                  "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0005 - User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0005 - User {0} updated feedback related to {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_UPDATE_FEEDBACK("METADATA-OBSERVABILITY-0005",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to maintain feedback on an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to the maintenance of feedback attached to an asset.",
-                                   "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_UPDATE_FEEDBACK("METADATA-OBSERVABILITY-0005",
+                                AuditLogRecordSeverityLevel.ACTIVITY,
+                                "User {0} updated feedback related to {1} anchor element {2} during operation {3} of service {4}",
+                                "The change counts towards the updateFeedbackCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how much the element's consumers are engaging with it through comments, likes, ratings and informal tags.",
+                                "No action is required, but this message can be used to capture user activity information related to the maintenance of feedback attached to an anchor element.",
+                                "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0006 - User {0} updated {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0006 - User {0} updated the properties of {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_UPDATE("METADATA-OBSERVABILITY-0006",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to update an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to asset updates.",
-                                   "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_UPDATE("METADATA-OBSERVABILITY-0006",
+                       AuditLogRecordSeverityLevel.ACTIVITY,
+                       "User {0} updated the properties of {1} anchor element {2} during operation {3} of service {4}",
+                       "The update counts towards the updatePropertyCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how often the element's own description is being maintained.",
+                       "No action is required, but this message can be used to capture user activity information related to the updates of anchor elements.",
+                       "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0007 - User {0} deleted {1} asset {2} during operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0007 - User {0} deleted an attachment to {1} anchor element {2} during operation {3} of service {4}
      */
-    ASSET_ACTIVITY_DELETE("METADATA-OBSERVABILITY-0007",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} deleted {1} asset {2} during operation {3} of service {4}",
-                          "This message is used to capture user requests to delete an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset deletion.",
-                          "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_DELETE_ATTACHMENT("METADATA-OBSERVABILITY-0007",
+                                  AuditLogRecordSeverityLevel.ACTIVITY,
+                                  "User {0} deleted an attachment to {1} anchor element {2} during operation {3} of service {4}",
+                                  "The deletion counts towards the deleteAttachmentCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how often content attached to the element is being removed, for example as it is reorganized or corrected.  It is not logged when the anchor element itself is deleted.",
+                                  "No action is required, but this message can be used to capture user activity information related to the removal of content from an anchor element.",
+                                  "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0008 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0008 - User {0} retrieved {1} anchor element {2} during search operation {3} of service {4}
      */
-    ASSET_ACTIVITY_SEARCH("METADATA-OBSERVABILITY-0008",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
-                          "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
-                          "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches.",
-                          "https://egeria-project.org/services/common-services/"),
+    ANCHOR_ACTIVITY_SEARCH("METADATA-OBSERVABILITY-0008",
+                       AuditLogRecordSeverityLevel.ACTIVITY,
+                       "User {0} retrieved {1} anchor element {2} during search operation {3} of service {4}",
+                       "The retrieval counts towards the findCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how often the element is returned by searches, which indicates how findable it is rather than whether it was chosen.",
+                       "No action is required, but this message can be used to capture user activity information relating to the anchor elements being retrieved through searches.",
+                       "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
-     * METADATA-OBSERVABILITY-0009 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}
+     * METADATA-OBSERVABILITY-0009 - User {0} retrieved an attachment to {1} anchor element {2} during search operation {3} of service {4}
      */
-    ASSET_ACTIVITY_SEARCH_ATTACHMENT("METADATA-OBSERVABILITY-0009",
-                                     AuditLogRecordSeverityLevel.ACTIVITY,
-                                     "User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}",
-                                     "This message is used to capture user requests to retrieve part of an asset as part of a search request.  This asset may not be the caller's choice.",
-                                     "No action is required, but this message can be used to capture user activity information relating to the attachments of an asset assets being retrieved through searches.",
-                                     "https://egeria-project.org/services/common-services/"),
-
+    ANCHOR_ACTIVITY_SEARCH_ATTACHMENT("METADATA-OBSERVABILITY-0009",
+                                  AuditLogRecordSeverityLevel.ACTIVITY,
+                                  "User {0} retrieved an attachment to {1} anchor element {2} during search operation {3} of service {4}",
+                                  "The retrieval counts towards the findCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  An element anchored to the anchor element that is returned by a search counts towards the findability of the anchor element itself.",
+                                  "No action is required, but this message can be used to capture user activity information relating to the attachments of anchor elements being retrieved through searches.",
+                                  "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
     /**
      * METADATA-OBSERVABILITY-0010 - User {0} issued REST API call to operation {1} of service {2} on server {3}
@@ -123,6 +120,17 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
                           "This message is used to capture user activity.",
                           "No action is required, but this message can be used to capture which services and operations a user is calling.",
                           "https://egeria-project.org/services/common-services/"),
+
+    /**
+     * METADATA-OBSERVABILITY-0011 - User {0} deleted feedback related to {1} anchor element {2} during operation {3} of service {4}
+     */
+    ANCHOR_ACTIVITY_DELETE_FEEDBACK("METADATA-OBSERVABILITY-0011",
+                                AuditLogRecordSeverityLevel.ACTIVITY,
+                                "User {0} deleted feedback related to {1} anchor element {2} during operation {3} of service {4}",
+                                "The deletion counts towards the deleteFeedbackCount in the anchor element's UsageActivity classification (maintained by the Pepys Activity Observer).  This count shows how often comments, likes, ratings and informal tags attached to the element are being withdrawn.",
+                                "No action is required, but this message can be used to capture user activity information related to the removal of feedback from an anchor element.",
+                                "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
     ;
 
     private final String                     logMessageId;
@@ -156,7 +164,7 @@ public enum OpenMetadataObservabilityAuditCode implements AuditLogMessageSet
      * The constructor for OpenMetadataObservabilityAuditCode expects to be passed one of the enumeration rows defined in
      * OpenMetadataObservabilityAuditCode above.   For example:
      * <br>
-     *     OpenMetadataObservabilityAuditCode   auditCode = OpenMetadataObservabilityAuditCode.SERVER_NOT_AVAILABLE;
+     *     OpenMetadataObservabilityAuditCode   auditCode = OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ;
      * <br>
      * This will expand out to the 5 parameters shown below.
      *

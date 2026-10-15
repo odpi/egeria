@@ -2492,6 +2492,111 @@ public enum OpenMetadataProperty
      */
     TOTAL_BYTES_WRITTEN("totalBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes written by the recorded runs of the process.", null, "86cf1bb3-48c6-4700-9983-8833b0345c58"),
 
+    /**
+     * The number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.
+     */
+    EXPLICIT_GET_COUNT("explicitGetCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.", null, "6acf7394-379a-4394-9199-70b5c7535495"),
+
+    /**
+     * The number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.
+     */
+    FIND_COUNT("findCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.", null, "87aa0371-5813-4895-a3c7-c2251a199895"),
+
+    /**
+     * The number of times the properties of the element have been updated.
+     */
+    UPDATE_PROPERTY_COUNT("updatePropertyCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the properties of the element have been updated.", null, "8013f2b6-143c-4d6e-a1cf-5d3ceca6c645"),
+
+    /**
+     * The number of times an element anchored to the element has been created, linked, unlinked or updated.
+     */
+    UPDATE_ATTACHMENT_COUNT("updateAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been created, linked, unlinked or updated.", null, "d663e94c-707d-458b-a28c-be1864a2645e"),
+
+    /**
+     * The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.
+     */
+    UPDATE_FEEDBACK_COUNT("updateFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.", null, "d47299fe-39b5-417b-aff3-c2f4c80be2e8"),
+
+    /**
+     * The number of times an element anchored to the element has been deleted.
+     */
+    DELETE_ATTACHMENT_COUNT("deleteAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been deleted.", null, "e1058147-017e-4370-a79a-baabf9ee5c15"),
+
+    /**
+     * The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.
+     */
+    DELETE_FEEDBACK_COUNT("deleteFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.", null, "0ddcdc6e-df87-4e1a-91bd-d27464504571"),
+
+    /**
+     * The number of times any of the members has been explicitly retrieved from the repository by an identifier or name.
+     */
+    EXPLICIT_GET_COUNT_TOTAL("explicitGetCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been explicitly retrieved from the repository by an identifier or name.", null, "3bb85d41-fc93-4e15-b509-a2255ddb277b"),
+
+    /**
+     * A map of member GUID to the number of times that member has been explicitly retrieved from the repository by an identifier or name.
+     */
+    EXPLICIT_GET_COUNT_PROFILE("explicitGetCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has been explicitly retrieved from the repository by an identifier or name.", null, "e9c8ee38-c65e-42f1-8671-179c4ce5bcf0"),
+
+    /**
+     * The number of times any of the members has been retrieved from the repository as part of a search request.
+     */
+    FIND_COUNT_TOTAL("findCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been retrieved from the repository as part of a search request.", null, "8c756d32-5448-447a-98f7-22e8032ca100"),
+
+    /**
+     * A map of member GUID to the number of times that member has been retrieved from the repository as part of a search request.
+     */
+    FIND_COUNT_PROFILE("findCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has been retrieved from the repository as part of a search request.", null, "e743f693-5fa6-4dfb-b639-3ac6cd80168f"),
+
+    /**
+     * The number of times any of the members has had its properties updated.
+     */
+    UPDATE_PROPERTY_COUNT_TOTAL("updatePropertyCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had its properties updated.", null, "f855e161-f017-402f-bc09-8b7954ccd846"),
+
+    /**
+     * A map of member GUID to the number of times that member has had its properties updated.
+     */
+    UPDATE_PROPERTY_COUNT_PROFILE("updatePropertyCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has had its properties updated.", null, "403784a2-5287-46cf-b2ff-274ca35863aa"),
+
+    /**
+     * The number of times any of the members has had an element anchored to it created, linked, unlinked or updated.
+     */
+    UPDATE_ATTACHMENT_COUNT_TOTAL("updateAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it created, linked, unlinked or updated.", null, "29b746b2-e79c-4d73-afae-f694acf09bdd"),
+
+    /**
+     * A map of member GUID to the number of times that member has had an element anchored to it created, linked, unlinked or updated.
+     */
+    UPDATE_ATTACHMENT_COUNT_PROFILE("updateAttachmentCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has had an element anchored to it created, linked, unlinked or updated.", null, "73224a2b-68b1-45c2-8a28-60adf7fae28d"),
+
+    /**
+     * The number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.
+     */
+    UPDATE_FEEDBACK_COUNT_TOTAL("updateFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.", null, "280cabb3-4e42-4134-b64b-5a7008ac1b55"),
+
+    /**
+     * A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) added or updated.
+     */
+    UPDATE_FEEDBACK_COUNT_PROFILE("updateFeedbackCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) added or updated.", null, "01cee54c-8434-4da3-9217-fc29e827de85"),
+
+    /**
+     * The number of times any of the members has had an element anchored to it deleted.
+     */
+    DELETE_ATTACHMENT_COUNT_TOTAL("deleteAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it deleted.", null, "b707cb45-5035-4bbb-99e3-cdaf942287cf"),
+
+    /**
+     * A map of member GUID to the number of times that member has had an element anchored to it deleted.
+     */
+    DELETE_ATTACHMENT_COUNT_PROFILE("deleteAttachmentCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has had an element anchored to it deleted.", null, "48ae7d5f-8a0a-4b57-bce4-da4cfe9b82de"),
+
+    /**
+     * The number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.
+     */
+    DELETE_FEEDBACK_COUNT_TOTAL("deleteFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.", null, "46bdf0d7-ace7-476b-b979-7078e1d36be4"),
+
+    /**
+     * A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) deleted.
+     */
+    DELETE_FEEDBACK_COUNT_PROFILE("deleteFeedbackCountProfile", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) deleted.", null, "b40aba6f-4cd5-42ba-accb-840027bd5893"),
+
 
 
     /**

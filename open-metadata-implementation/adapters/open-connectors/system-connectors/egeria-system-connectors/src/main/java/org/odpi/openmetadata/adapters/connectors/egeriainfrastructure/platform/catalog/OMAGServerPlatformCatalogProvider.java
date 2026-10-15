@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 /**
@@ -27,5 +27,7 @@ public class OMAGServerPlatformCatalogProvider extends IntegrationConnectorProvi
         super(EgeriaOpenConnectorDefinition.OMAG_SERVER_PLATFORM_CATALOG_INTEGRATION_CONNECTOR,
               connectorClassName,
               null);
+
+        super.supportedConfigurationProperties = OMAGServerPlatformCatalogConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

@@ -9,12 +9,11 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 10 |
+| **Number of messages** | 11 |
 | **Message identifiers begin** | `OMAG-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors](../../../open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors) |
 | **Source** | [OMAGConnectorAuditCode.java](../../../open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors/src/main/java/org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 
 ## Messages
@@ -31,6 +30,7 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 | [OMAG-CONNECTORS-0013](#omag-connectors-0013) | INFO | The {0} integration connector has renamed platform element {1} from {2} to {3} so that it can be recognised again |
 | [OMAG-CONNECTORS-0014](#omag-connectors-0014) | INFO | The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2} |
 | [OMAG-CONNECTORS-0015](#omag-connectors-0015) | EXCEPTION | The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3} |
+| [OMAG-CONNECTORS-0016](#omag-connectors-0016) | INFO | The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3} |
 
 ----
 
@@ -43,6 +43,7 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 | **Java constant** | `OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION` |
 | **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -64,6 +65,7 @@ Use the details from the error message to determine the cause of the error and r
 | **Java constant** | `OMAGConnectorAuditCode.EGERIA_CONNECTOR_START` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -85,6 +87,7 @@ No specific action is required.  This message is to confirm the start of the int
 | **Java constant** | `OMAGConnectorAuditCode.NEW_SERVER` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -106,6 +109,7 @@ No action is required unless there are errors that follow indicating that there 
 | **Java constant** | `OMAGConnectorAuditCode.NULL_METADATA_COLLECTION_ID` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -127,6 +131,7 @@ This is only ok if the server is a metadata access point.
 | **Java constant** | `OMAGConnectorAuditCode.EGERIA_TARGET_START` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -148,6 +153,7 @@ No specific action is required.  This message is to confirm the start of the tar
 | **Java constant** | `OMAGConnectorAuditCode.EGERIA_TARGET_REFRESH` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -169,6 +175,7 @@ No specific action is required.  This message is to confirm the refreshing of th
 | **Java constant** | `OMAGConnectorAuditCode.SERVER_CATALOG_FAILED` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -190,6 +197,7 @@ Use the message to work out why this one server could not be catalogued.  A dupl
 | **Java constant** | `OMAGConnectorAuditCode.PLATFORM_NAME_MIGRATED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -211,6 +219,7 @@ No action is required.  Earlier releases named a platform element after the plat
 | **Java constant** | `OMAGConnectorAuditCode.PLATFORM_CATALOG_TARGET_ADDED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -232,6 +241,7 @@ No specific action is required.  This message records a platform being taken und
 | **Java constant** | `OMAGConnectorAuditCode.PLATFORM_REGISTRATION_DEFERRED` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
 
 **System action**
 
@@ -240,6 +250,28 @@ The connector carries on with the catalog targets it already has, and tries this
 **User action**
 
 This is usually temporary - most often the metadata access store was restarting, or had not finished loading its content packs, when the connector started.  If the message keeps appearing, use the exception to work out why the connector cannot write to the metadata access store.
+
+
+----
+
+### OMAG-CONNECTORS-0016
+
+> The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_REGISTERED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+The topic that the OMAG Servers write their audit logs to is now one of the catalog targets of the integration connector that observes the activity recorded there.  This is normally the Pepys Activity Observer, which maintains the usage activity counts of the assets reported in the audit log records.
+
+**User action**
+
+No specific action is required.  This message records an audit log topic being handed to the activity observer, which happens the first time the topic is catalogued.
 
 
 ----
