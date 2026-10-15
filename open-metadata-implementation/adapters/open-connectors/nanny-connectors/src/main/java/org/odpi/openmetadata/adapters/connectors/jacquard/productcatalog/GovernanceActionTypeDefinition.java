@@ -24,6 +24,12 @@ public enum GovernanceActionTypeDefinition
                        "70ab5403-96b3-4075-8d86-998d0a39c146"),
 
     /**
+     * build-member-popularity-profile
+     */
+    BUILD_MEMBER_POPULARITY_PROFILE("build-member-popularity-profile",
+                                    "2ec55642-de86-4b23-a875-5ed87558c21d"),
+
+    /**
      * provision-tabular-data-set
      */
     PROFILE_OPEN_LINEAGE_RUNS("profile-open-lineage-runs",

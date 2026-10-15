@@ -805,8 +805,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 boolean isFeedbackEntity = this.isFeedbackType(connectToEntity.getType().getTypeDefName());
 
-
-                if (isFeedbackEntity)
+                /*
+                 * Adding or updating feedback is checked as feedback; reading it is checked like any other read of
+                 * an anchored element.  (Private feedback is protected by the visibility check made before this.)
+                 */
+                if ((isFeedbackEntity) && (isUpdate))
                 {
                     securityVerifier.validateUserForAnchorAddFeedback(userId,
                                                                       anchorEntity,

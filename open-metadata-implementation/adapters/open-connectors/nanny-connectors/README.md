@@ -34,6 +34,7 @@ The Lovelace services live in the [lovelace-insights](../lovelace-insights) modu
 
 * *Award Karma Points* - watches for contributions to the open metadata ecosystem and awards karma points to the users responsible.
 * *Build Zone Membership Profile* - populates the ZoneMembershipProfile classification of each governance zone.
+* *Build Member Popularity Profile* - totals the usage activity (from the [UsageActivity](https://egeria-project.org/types/7/0795-Usage-Activity/) classifications maintained by [Pepys](#pepys-activity-observer)) of the members of each root collection, glossary, data sharing hub, collection folder and digital product catalog, and records it in the collection's MemberPopularityProfile classification.  Nested collections are profiled first in the same run, so the activity of the leaf members ripples up through every level to the top-level collections.
 * *Profile OpenLineage Runs* - analyses the runs of each job in an OpenLineage log store and records the run profile (frequency, regularity, duration, failure rate and data volume) in the RunMetrics classification of the job's process.
 * *Refine OpenLineage Data Scope* - analyses the writes and reads of each dataset in an OpenLineage log store and refines the DataScope classification of the dataset's asset with the write pattern and data collection window.
 * *Summarise OpenLineage Data Quality* - summarises the data quality assertions and tests in an OpenLineage log store into a survey report per dataset (and per job) with the pass rate of each quality dimension.

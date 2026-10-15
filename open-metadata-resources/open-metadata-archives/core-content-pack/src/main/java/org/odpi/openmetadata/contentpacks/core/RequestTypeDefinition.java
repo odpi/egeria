@@ -209,6 +209,24 @@ public enum RequestTypeDefinition
                                   ContentCollectionDefinition.ANALYTICAL_ACTIONS,
                                   ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
+    /**
+     * build-member-popularity-profile
+     */
+    BUILD_MEMBER_POPULARITY_PROFILE(GovernanceActionTypeDefinition.BUILD_MEMBER_POPULARITY_PROFILE.getGovernanceRequestType(),
+                                    null,
+                                    null,
+                                    null,
+                                    GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                    GovernanceServiceDefinition.BUILD_MEMBER_POPULARITY_PROFILE,
+                                    GovernanceActionTypeDefinition.BUILD_MEMBER_POPULARITY_PROFILE.getGovernanceActionTypeGUID(),
+                                    GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                                    null,
+                                    "d7ba1825-feca-45bc-8470-f93e57afd14c",
+                                    "Build Member Popularity Profile",
+                                    "Totals the usage activity of the members of each root collection, glossary, data sharing hub, collection folder and digital product catalog, rippling it up through nested collections, and records it in each collection's MemberPopularityProfile.",
+                                    ContentCollectionDefinition.ANALYTICAL_ACTIONS,
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
+
 
     /**
      * provision-tabular-data-set

@@ -16,6 +16,10 @@ public enum LovelaceServiceDefinition
                  "Build Zone Membership Profile",
                  ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
+    MEMBER_POPULARITY_PROFILE(RequestTypeDefinition.BUILD_MEMBER_POPULARITY_PROFILE.getGovernanceActionTypeGUID(),
+                 "Build Member Popularity Profile",
+                 ContentPackDefinition.CORE_CONTENT_PACK),
+
     OPEN_LINEAGE_RUN_PROFILE(RequestTypeDefinition.PROFILE_OPEN_LINEAGE_RUNS.getGovernanceActionTypeGUID(),
                  "Profile OpenLineage Runs",
                  ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.Love
 import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataScopeServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageRunProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.LovelaceZoneMembershipProfilerServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.LovelacePopularityProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
@@ -487,6 +488,18 @@ public enum GovernanceServiceDefinition
                        ResourceUse.GENERATE_INSIGHT,
                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                        ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+
+    /**
+     * Lovelace Popularity Profiler Governance Action Service
+     */
+    BUILD_MEMBER_POPULARITY_PROFILE("dc22cf5b-1ac2-4ad1-9f27-b5d206e94724",
+                                    "member-popularity-profile-governance-service",
+                                    "Lovelace Popularity Profiler Governance Action Service",
+                                    new LovelacePopularityProfilerServiceProvider(),
+                                    ResourceUse.GENERATE_INSIGHT,
+                                    DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
 
 
     /**

@@ -9,7 +9,7 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 13 |
+| **Number of messages** | 15 |
 | **Message identifiers begin** | `LOVELACE-INSIGHTS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.LovelaceInsightAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/lovelace-insights](../../../open-metadata-implementation/adapters/open-connectors/lovelace-insights) |
@@ -33,6 +33,8 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 | [LOVELACE-INSIGHTS-0044](#lovelace-insights-0044) | INFO | The {0} governance action service has updated the data scope of dataset {1} (asset {2}); the write pattern is {3} and the data collection window is {4} to {5} |
 | [LOVELACE-INSIGHTS-0045](#lovelace-insights-0045) | INFO | The {0} governance action service has summarised the data quality of {1} {2} (element {3}) across {4} dimensions with an overall pass rate of {5}% |
 | [LOVELACE-INSIGHTS-0046](#lovelace-insights-0046) | ERROR | The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1}) |
+| [LOVELACE-INSIGHTS-0047](#lovelace-insights-0047) | INFO | The {0} governance action service has profiled the member popularity of {1} collections, creating or updating the MemberPopularityProfile of {2} of them; {3} could not be stored |
+| [LOVELACE-INSIGHTS-0048](#lovelace-insights-0048) | ERROR | The {0} governance action service is unable to store the MemberPopularityProfile of {1} {2} because of exception {3} with message {4} |
 
 ----
 
@@ -318,6 +320,50 @@ The service needs either an openLineageLogStore action target that is a folder a
 **User action**
 
 Add the log store folder as an action target of the governance action type, or set the logStoreDirectory request parameter, and rerun the service.
+
+
+----
+
+### LOVELACE-INSIGHTS-0047
+
+> The {0} governance action service has profiled the member popularity of {1} collections, creating or updating the MemberPopularityProfile of {2} of them; {3} could not be stored
+
+|  |  |
+|---|---|
+| **Java constant** | `LovelaceInsightAuditCode.MEMBER_POPULARITY_PROFILED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+Each root collection, glossary, data sharing hub, collection folder and digital product catalog has had the usage activity of its members totalled.  Nested collections are profiled first, so the activity of the leaf members ripples up through each level to the top.  Profiles whose counts have not changed are left alone.
+
+**User action**
+
+No action is required.  This message is for monitoring the progress of the popularity profiler.
+
+
+----
+
+### LOVELACE-INSIGHTS-0048
+
+> The {0} governance action service is unable to store the MemberPopularityProfile of {1} {2} because of exception {3} with message {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `LovelaceInsightAuditCode.MEMBER_POPULARITY_PROFILE_NOT_STORED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+The collection is skipped and the service moves on to the next one.  Its members' activity is still added to the profiles of the collections that contain it.
+
+**User action**
+
+If the exception is a UserNotAuthorizedException, grant the governance engine's user permission to classify elements in the collection's governance zones.  Otherwise, use the exception to determine why the metadata access server could not be updated.
 
 
 ----
