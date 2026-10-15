@@ -156,6 +156,26 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                               "Add the log store folder as an action target of the governance action type, or set the logStoreDirectory request parameter, and rerun the service.",
                               "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
+    /**
+     * LOVELACE-INSIGHTS-0047 - The {0} governance action service has profiled the member popularity of {1} collections, creating or updating the MemberPopularityProfile of {2} of them; {3} could not be stored
+     */
+    MEMBER_POPULARITY_PROFILED("LOVELACE-INSIGHTS-0047",
+                               AuditLogRecordSeverityLevel.INFO,
+                               "The {0} governance action service has profiled the member popularity of {1} collections, creating or updating the MemberPopularityProfile of {2} of them; {3} could not be stored",
+                               "Each root collection, glossary, data sharing hub, collection folder and digital product catalog has had the usage activity of its members totalled.  Nested collections are profiled first, so the activity of the leaf members ripples up through each level to the top.  Profiles whose counts have not changed are left alone.",
+                               "No action is required.  This message is for monitoring the progress of the popularity profiler.",
+                               "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
+    /**
+     * LOVELACE-INSIGHTS-0048 - The {0} governance action service is unable to store the MemberPopularityProfile of {1} {2} because of exception {3} with message {4}
+     */
+    MEMBER_POPULARITY_PROFILE_NOT_STORED("LOVELACE-INSIGHTS-0048",
+                                         AuditLogRecordSeverityLevel.ERROR,
+                                         "The {0} governance action service is unable to store the MemberPopularityProfile of {1} {2} because of exception {3} with message {4}",
+                                         "The collection is skipped and the service moves on to the next one.  Its members' activity is still added to the profiles of the collections that contain it.",
+                                         "If the exception is a UserNotAuthorizedException, grant the governance engine's user permission to classify elements in the collection's governance zones.  Otherwise, use the exception to determine why the metadata access server could not be updated.",
+                                         "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
     ;
 
     private final String                     logMessageId;

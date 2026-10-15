@@ -820,6 +820,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.CORE_CONTENT_PACK);
 
         /*
+         * Attach the core Lovelace services (the popularity profiler) to the Babbage Analytical Engine as catalog targets.
+         */
+        super.addLovelaceCatalogTargets(ContentPackDefinition.CORE_CONTENT_PACK);
+
+        /*
          * Create a helper process for Apache Kafka.
          */
         List<String> additionalSolutionComponents = new ArrayList<>();

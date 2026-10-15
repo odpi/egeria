@@ -958,6 +958,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                                               DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
+    POPULARITY_PROFILER_LOVELACE_SERVICE(588,
+                                         "759f0dcf-6d39-4969-8caf-e934a0fe932f",
+                                         "Egeria::GovernanceService::Insight::Lovelace::PopularityProfilerService",
+                                         "Popularity Profiler Lovelace Service",
+                                         "A Governance Action Service that totals the usage activity of the members of each root collection, glossary, data sharing hub, collection folder and digital product catalog and records it in the collection's MemberPopularityProfile classification.  Nested collections are profiled first so that the activity ripples up to the top-level collections.",
+                                         "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/lovelace-insights",
+                                         "org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.LovelacePopularityProfilerServiceProvider",
+                                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+
     OPEN_LINEAGE_RUN_PROFILER_LOVELACE_SERVICE(575,
                                               "08d794ae-25e1-41cf-925e-e3617c3b9603",
                                               "Egeria::GovernanceService::Insight::Lovelace::OpenLineageRunProfilerService",
