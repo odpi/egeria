@@ -10,7 +10,6 @@ import org.odpi.openmetadata.adapters.connectors.wso2mi.survey.ffdc.WSO2MISurvey
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -98,19 +97,4 @@ public class SurveyWSO2MIServerConnector extends SurveyActionServiceConnector
         }
     }
 
-
-    /**
-     * Transfer common properties into the annotation.
-     *
-     * @param annotation output annotation
-     * @param wso2MIAnnotationType annotation type definition
-     */
-    private void setUpAnnotation(AnnotationProperties  annotation,
-                                 WSO2MIAnnotationType wso2MIAnnotationType)
-    {
-        annotation.setAnnotationType(wso2MIAnnotationType.getName());
-        annotation.setAnalysisStep(wso2MIAnnotationType.getAnalysisStep());
-        annotation.setSummary(wso2MIAnnotationType.getSummary());
-        annotation.setExplanation(wso2MIAnnotationType.getExplanation());
-    }
 }

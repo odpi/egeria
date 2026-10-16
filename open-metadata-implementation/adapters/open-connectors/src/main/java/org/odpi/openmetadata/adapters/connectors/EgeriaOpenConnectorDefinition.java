@@ -1511,7 +1511,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                            DeployedImplementationType.REST_API.getAssociatedTypeName(),
                            DeployedImplementationType.REST_API.getDeployedImplementationType()),
 
-    WSO2MI_RESOURCE_CONNECTOR(575,
+    WSO2MI_RESOURCE_CONNECTOR(589,
                               "e285c3b8-6a00-4856-8ea3-86b3e91c8ca2",
                               "Egeria::ResourceConnector::DataManagerCatalog::WSO2MicroIntegrator",
                               "WSO2 Micro Integrator REST Connector",
@@ -1522,7 +1522,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                               DeployedImplementationType.REST_API.getAssociatedTypeName(),
                               DeployedImplementationType.REST_API.getDeployedImplementationType()),
 
-    WSO2MI_INTEGRATION_CONNECTOR(576,
+    WSO2MI_INTEGRATION_CONNECTOR(590,
                                  "ffc4fbaf-4d50-48ea-9362-e5bedc0da6a6",
                                  "Egeria::IntegrationConnector::DataManagerCatalog::WSO2MicroIntegrator",
                                  "Catalog APIs deployed on a WSO2 Micro Integrator",
@@ -1533,7 +1533,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                  DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                  DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
-    WSO2MI_API_SURVEY_SERVICE(577,
+    WSO2MI_API_SURVEY_SERVICE(591,
                               "20ef9634-0ca7-4d1a-8e88-1ad0043f9ae0",
                               "Egeria::SurveyActionService::SurveyWSO2MIServer",
                               "WSO2 Micro Integrator API Survey Action Service",
