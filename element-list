@@ -173,6 +173,15 @@ org.odpi.openmetadata.adapters.connectors.unitycatalog.survey
 org.odpi.openmetadata.adapters.connectors.unitycatalog.sync
 org.odpi.openmetadata.adapters.connectors.usageinsight.popularity
 org.odpi.openmetadata.adapters.connectors.wedgwood
+org.odpi.openmetadata.adapters.connectors.wso2mi.catalog
+org.odpi.openmetadata.adapters.connectors.wso2mi.controls
+org.odpi.openmetadata.adapters.connectors.wso2mi.ffdc
+org.odpi.openmetadata.adapters.connectors.wso2mi.properties
+org.odpi.openmetadata.adapters.connectors.wso2mi.resource
+org.odpi.openmetadata.adapters.connectors.wso2mi.resource.rest
+org.odpi.openmetadata.adapters.connectors.wso2mi.survey
+org.odpi.openmetadata.adapters.connectors.wso2mi.survey.controls
+org.odpi.openmetadata.adapters.connectors.wso2mi.survey.ffdc
 org.odpi.openmetadata.adapters.eventbus.topic.inmemory
 org.odpi.openmetadata.adapters.eventbus.topic.kafka
 org.odpi.openmetadata.adapters.repositoryservices
