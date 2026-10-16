@@ -41,7 +41,7 @@ Four servers on one in-process platform, and — in the default mode — a real 
 | `filesFvtMetadataStore` | Metadata access store | PostgreSQL local repository; `OpenMetadataTypes`, `CoreContentPack` and `FilesContentPack` loaded at start-up |
 | `filesFvtEngineHost` | Engine host | `FileSurvey`, `FileGovernance` and `Stewardship` governance engines |
 | `filesFvtIntegrationDaemon` | Integration daemon | `FilesIntegrationGroup`, where the folder cataloguers run |
-| `filesFvtViewServer` | View server | Automated Curation OMVS |
+| `filesFvtViewServer` | View server | Automated Curation and Governance Engine OMVSs |
 
 Only three archives are loaded. The Core content pack is needed because the Files actions call its generic
 governance services — create an asset from a template, delete it again, add it to an integration connector as
@@ -134,6 +134,15 @@ type would not exercise that choice at all.
   started and stayed started — which catches the failure this connector family has shown repeatedly, a
   service that throws on start-up and so never watches anything. It does *not* show that the watchdog reacts
   to a new file; see below.
+
+* **[ExternalGovernanceEngineFVT](src/test/java/org/odpi/openmetadata/filesfvt/ExternalGovernanceEngineFVT.java)**
+  — stands in for a governance engine that runs outside Egeria. It defines its own governance engine, which no
+  engine host runs, and a two-step governance action process on it. Through the **Governance Engine OMVS** it
+  finds step one among the engine's approved engine actions, claims it (a second claim, by another user or the
+  same one, is refused), and records its completion with the output guard that creates step two's engine
+  action. The same process is then used for the cancel requests of the Automated Curation API: cancelling the
+  process instance cancels the waiting step, leaves the completed one `COMPLETED` and gives the instance its
+  completion time; cancelling an engine action that has already completed leaves it `COMPLETED`.
 
 ## Still to add
 

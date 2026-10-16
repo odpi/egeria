@@ -1,0 +1,124 @@
+# Egeria-governance-engine-api
+# Used by a governance engine that runs engine actions outside of Egeria to claim the engine actions
+# that are approved to run on it, report on their progress and record their completion.
+
+@baseURL=https://localhost:7443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+# The governance engine uses its own userId.  Only the userId that claims an engine action can update it.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Find the work to do.
+
+@governanceEngineGUID=add guid here
+
+###
+# @name getApprovedEngineActions
+# Retrieve the engine actions that are approved to run on a governance engine and that no engine has claimed yet.
+# The caller then claims the ones it is going to run.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/governance-engines/{{governanceEngineGUID}}/engine-actions/approved?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+###
+# @name getActiveClaimedEngineActions
+# Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
+# This call is used when the caller restarts.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/governance-engines/{{governanceEngineGUID}}/engine-actions/active-claimed?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# Claim an engine action, report on its progress and record its completion.
+
+@engineActionGUID=add guid here
+
+###
+# @name claimEngineAction
+# Request that execution of an engine action is allocated to the caller.  This is only permitted if no other
+# caller has claimed it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/engine-actions/{{engineActionGUID}}/claim
+Authorization: Bearer {{token}}
+
+
+###
+# @name updateEngineActionStatus
+# Update the status of the engine action - providing the caller is permitted.
+# The status attribute may be "REQUESTED", "APPROVED", "WAITING", "ACTIVATING", "IN_PROGRESS", "PAUSED",
+# "FOR_INFO", "COMPLETED", "INVALID", "IGNORED", "FAILED", "CANCELLED", "ABANDONED" or "OTHER".
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/engine-actions/{{engineActionGUID}}/status/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EngineActionStatusRequestBody",
+  "status" : "IN_PROGRESS"
+}
+
+
+###
+
+@actionTargetGUID=add guid here
+
+###
+# @name updateActionTargetStatus
+# Update the status of a specific action target.  By default, these values are derived from the values for the
+# engine action.  However, if the governance service has to process many target elements, then setting the status
+# on each individual target will show the progress of the governance service.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/engine-actions/action-targets/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ActionTargetStatusRequestBody",
+  "actionTargetGUID" : "{{actionTargetGUID}}",
+  "status" : "COMPLETED",
+  "startDate" : "{{$isoTimestamp}}",
+  "completionDate" : "{{$isoTimestamp}}",
+  "completionMessage" : "add completion message here"
+}
+
+
+###
+# @name recordCompletionStatus
+# Declare that all the processing for the engine action is finished and the status of the work.
+# If the engine action is part of a governance action process, the output guards determine which steps of
+# the process run next.  The request parameters and new action targets are passed on to those steps.
+# The status attribute may be "ACTIONED", "INVALID", "FAILED" or "OTHER".
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-engine/engine-actions/{{engineActionGUID}}/completion-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "CompletionStatusRequestBody",
+  "status" : "ACTIONED",
+  "requestParameters" : {
+    "propertyName1" : "propertyValue1",
+    "propertyName2" : "propertyValue2"
+  },
+  "outputGuards" : [ "add guard here" ],
+  "newActionTargets" : [
+    {
+      "actionTargetName" : "add action target name here",
+      "actionTargetGUID" : "add guid here"
+    }
+  ],
+  "completionMessage" : "add completion message here"
+}

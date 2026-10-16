@@ -1,0 +1,191 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.viewservices.governanceengine.ffdc;
+
+
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
+
+/**
+ * The GovernanceEngineAuditCode is used to define the message content for the OMRS Audit Log.
+ * The 5 fields in the enum are:
+ * <ul>
+ *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Severity - is this an event, decision, action, error or exception</li>
+ *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
+ *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
+ *     <li>SystemAction - describes the result of the situation</li>
+ *     <li>UserAction - describes how a user should correct the situation</li>
+ * </ul>
+ */
+public enum GovernanceEngineAuditCode implements AuditLogMessageSet
+{
+    /**
+     * OMVS-GOVERNANCE-ENGINE-0001 The Governance Engine Open Metadata View Service (OMVS) is initializing
+     */
+    SERVICE_INITIALIZING("OMVS-GOVERNANCE-ENGINE-0001",
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The Governance Engine Open Metadata View Service (OMVS) is initializing",
+                         "The local server is initializing the Governance Engine Open Metadata View Service. If the initialization is successful then audit message OMVS-GOVERNANCE-ENGINE-0002 will be issued, if there were errors then they should be shown in the audit log. ",
+                         "No action is required. This is part of the normal operation of the Governance Engine Open Metadata View Service.",
+                         "https://egeria-project.org/services/omvs/governance-engine/overview/"),
+
+    /**
+     * OMVS-GOVERNANCE-ENGINE-0002 The Governance Engine Open Metadata View Service (OMVS) is initialized
+     */
+    SERVICE_INITIALIZED("OMVS-GOVERNANCE-ENGINE-0002",
+                        AuditLogRecordSeverityLevel.STARTUP,
+                         "The Governance Engine Open Metadata View Service (OMVS) is initialized",
+                         "The Governance Engine OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
+                         "No action is required.  This is part of the normal operation of the Governance Engine Open Metadata View Service. Once the OMRS is configured and the server is started, Governance Engine view service requests can be accepted.",
+                         "https://egeria-project.org/services/omvs/governance-engine/overview/"),
+
+    /**
+     * OMVS-GOVERNANCE-ENGINE-0003 The Governance Engine Open Metadata View Service (OMVS) is shutting down
+     */
+    SERVICE_SHUTDOWN("OMVS-GOVERNANCE-ENGINE-0003",
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
+                         "The Governance Engine Open Metadata View Service (OMVS) is shutting down",
+                         "The local server has requested shutdown of the Governance Engine OMVS.",
+                         "No action is required. The operator should verify that shutdown was intended. This is part of the normal operation of the Governance Engine OMVS.",
+                         "https://egeria-project.org/services/omvs/governance-engine/overview/"),
+
+    /**
+     * OMVS-GOVERNANCE-ENGINE-0004 The Governance Engine Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}
+     */
+    SERVICE_INSTANCE_FAILURE("OMVS-GOVERNANCE-ENGINE-0004",
+                             AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The Governance Engine Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0}",
+                         "The view service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+                         "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.",
+                         "https://egeria-project.org/services/omvs/governance-engine/overview/"),
+
+    /**
+     * OMVS-GOVERNANCE-ENGINE-0005 The Governance Engine Open Metadata View Service (OMVS) is shutting down server instance {0}
+     */
+    SERVICE_TERMINATING("OMVS-GOVERNANCE-ENGINE-0005",
+                        AuditLogRecordSeverityLevel.SHUTDOWN,
+                         "The Governance Engine Open Metadata View Service (OMVS) is shutting down server instance {0}",
+                         "The local handler has requested shut down of the Governance Engine OMVS.",
+                         "No action is required. This is part of the normal operation of the service.",
+                         "https://egeria-project.org/services/omvs/governance-engine/overview/"),
+
+    ;
+
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+    private final String                      url;
+
+
+   /**
+    * Constructor for the message definitions that have no page to link to.
+    *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+    */
+   GovernanceEngineAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction)
+   {
+       this(messageId, severity, message, systemAction, userAction, null);
+   }
+
+
+    /**
+     * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
+     * OMRSAuditCode above.   For example:
+     * <br><br>
+     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
+     * <br><br>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param messageId - unique identifier for the message
+     * @param severity - severity of the message
+     * @param message - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction - instructions for resolving the situation, if any
+    * @param url link to a page that describes the component or concept behind
+    *            this message - null if there is no suitable page
+     */
+   GovernanceEngineAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction,
+                               String                      url)
+    {
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
+        this.url        = url;
+    }
+
+
+    /**
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    @Override
+    public AuditLogMessageDefinition getMessageDefinition()
+    {
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction,
+                                             url);
+    }
+
+
+    /**
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
+     *
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
+     */
+    @Override
+    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction,
+                                                                                    url);
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "GovernanceEngineAuditCode{" +
+                "logMessageId='" + logMessageId + '\'' +
+                ", severity=" + severity +
+                ", logMessage='" + logMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                ", url='" + url + '\'' +
+                ", messageDefinition=" + getMessageDefinition() +
+                '}';
+    }
+}
+

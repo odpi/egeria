@@ -239,6 +239,37 @@ public class OpenGovernanceResource
 
 
     /**
+     * Request that a running governance action process instance is cancelled.  Each of its engine actions
+     * that has not yet finished is cancelled, and any governance service running one of them is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param processInstanceGUID identifier of the governance action process instance.
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/governance-action-process-instances/{processInstanceGUID}/cancel")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="cancelGovernanceActionProcess",
+            description="Request that a running governance action process instance is cancelled.  Each of its engine actions that has not yet finished is cancelled, and any governance service running one of them is stopped.  Engine actions that have already finished are left unchanged.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-process"))
+
+    public VoidResponse cancelGovernanceActionProcess(@PathVariable                  String        serverName,
+                                                      @PathVariable                  String        userId,
+                                                      @PathVariable                  String        processInstanceGUID,
+                                                      @RequestBody(required = false) GAFAPIRequest requestBody)
+    {
+        return restAPI.cancelGovernanceActionProcess(serverName, userId, processInstanceGUID, requestBody);
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in process.
      *
      * @param serverName     name of server instance to route request to

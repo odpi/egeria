@@ -6,7 +6,7 @@
 
 The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task.
 
-This directory documents 122 messages in 25 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 127 messages in 26 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -23,6 +23,7 @@ This directory documents 122 messages in 25 message sets.  Return to the [messag
 | [DevopsPipelineAuditCode](DevopsPipelineAuditCode.md) | Audit log messages | `OMVS-DEVOPS-PIPELINE-` | 5 | <https://egeria-project.org/services/omvs/devops-pipeline/overview/> |
 | [DigitalBusinessAuditCode](DigitalBusinessAuditCode.md) | Audit log messages | `OMVS-DIGITAL-BUSINESS-` | 5 | <https://egeria-project.org/services/omvs/digital-business/overview/> |
 | [GlossaryManagerAuditCode](GlossaryManagerAuditCode.md) | Audit log messages | `OMVS-GLOSSARY-MANAGER-` | 5 | <https://egeria-project.org/services/omvs/glossary-manager/overview/> |
+| [GovernanceEngineAuditCode](GovernanceEngineAuditCode.md) | Audit log messages | `OMVS-GOVERNANCE-ENGINE-` | 5 | <https://egeria-project.org/services/omvs/governance-engine/overview/> |
 | [LocationArenaAuditCode](LocationArenaAuditCode.md) | Audit log messages | `OMVS-LOCATION-ARENA-` | 5 | <https://egeria-project.org/services/omvs/location-arena/overview/> |
 | [MyProfileAuditCode](MyProfileAuditCode.md) | Audit log messages | `OMVS-MY-PROFILE-` | 5 | <https://egeria-project.org/services/omvs/my-profile/overview/> |
 | [MyProfileErrorCode](MyProfileErrorCode.md) | Exception messages | `OMVS-MY-PROFILE-400-` | 2 | <https://egeria-project.org/services/omvs/my-profile/overview/> |

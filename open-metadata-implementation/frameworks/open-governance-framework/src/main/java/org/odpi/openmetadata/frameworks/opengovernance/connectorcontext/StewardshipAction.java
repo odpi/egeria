@@ -201,6 +201,24 @@ public  class StewardshipAction extends ConnectorContextClientBase
     }
 
 
+    /**
+     * Request that a running governance action process instance is cancelled.  Each of its engine actions
+     * that has not yet finished is cancelled.  Engine actions that have already finished are left unchanged.
+     *
+     * @param processInstanceGUID identifier of the governance action process instance.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public void cancelGovernanceActionProcess(String processInstanceGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        actionControlInterface.cancelGovernanceActionProcess(connectorUserId, processInstanceGUID);
+    }
+
+
 
     /**
      * Retrieve the engine actions that are still in process.

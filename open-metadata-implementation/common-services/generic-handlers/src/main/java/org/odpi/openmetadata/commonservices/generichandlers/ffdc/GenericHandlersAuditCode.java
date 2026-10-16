@@ -155,6 +155,27 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                             "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-0026 - Engine action {0} has not been cancelled for user {1} because it had already finished with status {2}
+     */
+    ENGINE_ACTION_ALREADY_FINISHED("OMAG-GENERIC-HANDLERS-0026",
+                                   AuditLogRecordSeverityLevel.INFO,
+                                   "Engine action {0} has not been cancelled for user {1} because it had already finished with status {2}",
+                                   "The engine action is left unchanged so that the record of how it finished is preserved.",
+                                   "No action is required.  The engine action finished before the cancel request arrived.",
+                                   "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-0031 - Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled
+     */
+    GOVERNANCE_ACTION_PROCESS_CANCELLED("OMAG-GENERIC-HANDLERS-0031",
+                                        AuditLogRecordSeverityLevel.SHUTDOWN,
+                                        "Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled",
+                                        "Each engine action of the process instance that had not yet finished is cancelled, and the process instance is marked as complete.  " +
+                                                "Any governance services that are running in an engine host are informed and will attempt to stop as fast as possible.",
+                                        "Monitor the shutdown of the requests in the engine host(s).",
+                                        "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-0028 - Method {0} was unable to receive list of entities due to a {1} exception with message {2}
      */
     FAILED_TO_RETRIEVE_ENTITIES("OMAG-GENERIC-HANDLERS-0028",

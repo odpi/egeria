@@ -303,8 +303,8 @@ class EngineActionWaiter
      * @return GUID of the engine action for step one
      * @throws Exception the process instance never acquired an engine action
      */
-    private String getFirstEngineAction(String processInstanceGUID,
-                                        String description) throws Exception
+    String getFirstEngineAction(String processInstanceGUID,
+                                String description) throws Exception
     {
         long giveUpTime = System.currentTimeMillis() + timeoutMilliseconds;
 

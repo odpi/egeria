@@ -74,6 +74,26 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                   ActivityStatus.ACTIVATING,
                                                                                   ActivityStatus.IN_PROGRESS);
 
+    /**
+     * The activity statuses that mean an engine action has finished.  Its status is the record of how it
+     * finished, so it is never changed again - in particular, a cancel request leaves it alone.
+     */
+    private static final List<ActivityStatus> FINISHED_ACTIVITY_STATUSES = List.of(ActivityStatus.COMPLETED,
+                                                                                   ActivityStatus.INVALID,
+                                                                                   ActivityStatus.IGNORED,
+                                                                                   ActivityStatus.FAILED,
+                                                                                   ActivityStatus.CANCELLED,
+                                                                                   ActivityStatus.ABANDONED);
+
+    /**
+     * The activity statuses of an engine action that can be cancelled - that is, every status except the
+     * finished ones.  This is wider than {@link #ACTIVE_ACTIVITY_STATUSES}: a paused engine action has not
+     * finished, so it can be cancelled.
+     */
+    private static final List<ActivityStatus> CANCELLABLE_ACTIVITY_STATUSES = Arrays.stream(ActivityStatus.values())
+                                                                                    .filter(status -> ! FINISHED_ACTIVITY_STATUSES.contains(status))
+                                                                                    .toList();
+
 
     /**
      * Construct the handler for engine actions.
@@ -2416,8 +2436,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Request that execution of an engine action is allocated to the caller.
-     * This is only permitted if no other caller has claimed it.
+     * Request that an engine action is cancelled.  Any governance service running it is told to stop.
+     * An engine action that has already finished (completed, failed, invalid, ignored or cancelled) is left
+     * unchanged, so that the record of how it finished is not overwritten.
      *
      * @param userId identifier of calling user
      * @param engineActionGUID identifier of the engine action request
@@ -2451,6 +2472,34 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            effectiveTime,
                                                            methodName);
 
+        this.cancelEngineAction(userId, engineActionGUID, entity, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Cancel an engine action that has already been retrieved, providing it has not already finished.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request
+     * @param entity the engine action's entity
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return true if the engine action was cancelled; false if it had already finished
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private boolean cancelEngineAction(String       userId,
+                                       String       engineActionGUID,
+                                       EntityDetail entity,
+                                       Date         effectiveTime,
+                                       String       methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String guidParameterName = "engineActionGUID";
+
         if (entity != null)
         {
             InstanceProperties properties = entity.getProperties();
@@ -2459,6 +2508,22 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 ActivityStatus status = this.getActionStatus(OpenMetadataProperty.ACTIVITY_STATUS.name,
                                                              properties);
+
+                /*
+                 * A cancel request used to overwrite whatever status the engine action held.  An engine action
+                 * that had already completed (or failed) was then recorded as CANCELLED, losing the record of
+                 * what it actually did - and a governance action process that was being cancelled reported
+                 * its finished steps as never having run.  Only an engine action that has not finished can
+                 * be cancelled.
+                 */
+                if (FINISHED_ACTIVITY_STATUSES.contains(status))
+                {
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.ENGINE_ACTION_ALREADY_FINISHED.getMessageDefinition(engineActionGUID,
+                                                                                                                     userId,
+                                                                                                                     status.name()));
+                    return false;
+                }
 
                 EngineActionBuilder builder = new EngineActionBuilder(ActivityStatus.CANCELLED.getOrdinal(),
                                                                       userId,
@@ -2488,6 +2553,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     GenericHandlersAuditCode.ENGINE_ACTION_CANCELLED.getMessageDefinition(engineActionGUID,
                                                                                                           userId,
                                                                                                           status.name()));
+
+                return true;
             }
             else
             {
@@ -2508,6 +2575,159 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                               this.getClass().getName(),
                                               methodName);
         }
+    }
+
+
+    /**
+     * Cancel a running governance action process instance.  Every engine action of the process instance that
+     * has not yet finished is cancelled (and any governance service running it is told to stop), and the
+     * process instance is marked as complete.  Engine actions that have already finished are left unchanged.
+     *
+     * @param userId identifier of calling user
+     * @param processInstanceGUID identifier of the governance action process instance - this is returned
+     *                            when the process is initiated
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public void cancelGovernanceActionProcess(String userId,
+                                              String processInstanceGUID,
+                                              Date   effectiveTime,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String guidParameterName = "processInstanceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processInstanceGUID, guidParameterName, methodName);
+
+        EntityDetail processInstanceEntity = this.getEntityFromRepository(userId,
+                                                                          processInstanceGUID,
+                                                                          guidParameterName,
+                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                                          null,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        /*
+         * Every engine action created for a process instance carries the process instance's qualified name
+         * as its process name - see initiateGovernanceActionProcess.  The qualified name includes a UUID, so
+         * it identifies exactly this run of the process.
+         */
+        String processName = repositoryHelper.getStringProperty(serviceName,
+                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                processInstanceEntity.getProperties(),
+                                                                methodName);
+
+        invalidParameterHandler.validateName(processName, guidParameterName + ".qualifiedName", methodName);
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        conditions.add(this.getExactStringCondition(OpenMetadataProperty.PROCESS_NAME.name,
+                                                    processName,
+                                                    methodName));
+
+        PropertyCondition statusCondition = new PropertyCondition();
+
+        statusCondition.setNestedConditions(this.getActivityStatusSearchProperties(CANCELLABLE_ACTIVITY_STATUSES, methodName));
+
+        conditions.add(statusCondition);
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        /*
+         * Cancelling an engine action takes it out of the result set, so the query is always for the first
+         * page.  An engine action that has already been seen is not cancelled again: if it is returned a
+         * second time the repository has not caught up with the cancel, and looping would never end.
+         */
+        Set<String> processedEngineActionGUIDs = new HashSet<>();
+        int         cancelledCount             = 0;
+        boolean     moreToCancel               = true;
+
+        while (moreToCancel)
+        {
+            moreToCancel = false;
+
+            List<EntityDetail> activeEngineActions = repositoryHandler.findEntities(userId,
+                                                                                    OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                                    null,
+                                                                                    searchProperties,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    false,
+                                                                                    false,
+                                                                                    0,
+                                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+            if (activeEngineActions != null)
+            {
+                for (EntityDetail engineActionEntity : activeEngineActions)
+                {
+                    if ((engineActionEntity != null) && (processedEngineActionGUIDs.add(engineActionEntity.getGUID())))
+                    {
+                        moreToCancel = true;
+
+                        if (this.cancelEngineAction(userId,
+                                                    engineActionEntity.getGUID(),
+                                                    engineActionEntity,
+                                                    effectiveTime,
+                                                    methodName))
+                        {
+                            cancelledCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * A process instance is normally marked complete when its last engine action records its completion.
+         * Cancelled engine actions never do, so the process instance is marked complete here - unless it had
+         * already finished, in which case its own completion time is kept.
+         */
+        InstanceProperties processInstanceProperties = processInstanceEntity.getProperties();
+
+        if ((processInstanceProperties == null) ||
+                (processInstanceProperties.getPropertyValue(OpenMetadataProperty.COMPLETION_TIME.name) == null))
+        {
+            this.updateBeanInRepository(userId,
+                                        processInstanceEntity.getMetadataCollectionId(),
+                                        processInstanceEntity.getMetadataCollectionName(),
+                                        processInstanceGUID,
+                                        guidParameterName,
+                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                        false,
+                                        false,
+                                        repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                                   null,
+                                                                                   OpenMetadataProperty.COMPLETION_TIME.name,
+                                                                                   new Date(),
+                                                                                   methodName),
+                                        true,
+                                        effectiveTime,
+                                        methodName);
+        }
+
+        auditLog.logMessage(methodName,
+                            GenericHandlersAuditCode.GOVERNANCE_ACTION_PROCESS_CANCELLED.getMessageDefinition(processInstanceGUID,
+                                                                                                              userId,
+                                                                                                              Integer.toString(cancelledCount)));
     }
 
 

@@ -170,6 +170,25 @@ public interface ActionControlInterface
 
 
     /**
+     * Request that a running governance action process instance is cancelled.  Each of its engine actions
+     * that has not yet finished is cancelled, and any governance service running one of them is stopped.
+     * Engine actions that have already finished are left unchanged.
+     *
+     * @param userId identifier of calling user
+     * @param processInstanceGUID identifier of the governance action process instance - this is returned
+     *                            by initiateGovernanceActionProcess.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    void cancelGovernanceActionProcess(String userId,
+                                       String processInstanceGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
+
+
+    /**
      * Retrieve the engine actions that are still in process.
      *
      * @param userId userId of caller

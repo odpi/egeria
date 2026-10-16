@@ -352,6 +352,40 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient implements Go
 
 
     /**
+     * Request that a running governance action process instance is cancelled.  Each of its engine actions
+     * that has not yet finished is cancelled, and any governance service running one of them is stopped.
+     * Engine actions that have already finished are left unchanged.
+     *
+     * @param userId identifier of calling user
+     * @param processInstanceGUID identifier of the governance action process instance.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    @Override
+    public void cancelGovernanceActionProcess(String userId,
+                                              String processInstanceGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "cancelGovernanceActionProcess";
+        final String guidParameterName = "processInstanceGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-governance-service/users/{1}/governance-action-process-instances/{2}/cancel";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processInstanceGUID, guidParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new GAFAPIRequest(),
+                                        serverName,
+                                        userId,
+                                        processInstanceGUID);
+    }
+
+
+    /**
      * Retrieve the engine actions that are still in process.
      *
      * @param userId userId of caller

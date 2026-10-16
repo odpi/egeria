@@ -48,6 +48,10 @@ The view services are as follows:
 
   The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary terms.
 
+* **[Governance Engine](governance-engine)** - run engine actions in a governance engine outside of Egeria.
+
+  The Governance Engine OMVS is a REST API for governance engines that run engine actions outside of Egeria.  The governance engine claims the engine actions that are approved to run on it, reports their progress and records their completion.  Egeria coordinates the engine actions, for example by starting the next steps in a governance action process.
+
 * **[Location Arena](location-arena)** - locate, retrieve and update information relating to locations.
 
   The Location Arena OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about locations.
