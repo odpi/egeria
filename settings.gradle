@@ -88,6 +88,7 @@ include(':open-metadata-implementation:adapters:open-connectors:data-manager-con
 include(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:duckdb-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+include(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:wso2mi-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
 include(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 include(':open-metadata-implementation:common-services:ffdc-services')
