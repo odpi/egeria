@@ -130,58 +130,66 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request that execution of an engine action is stopped.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.GAFAPIRequest)" class="member-name-link">cancelGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processInstanceGUID,
+ <a href="../../rest/GAFAPIRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GAFAPIRequest</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Request that a running governance action process instance is cancelled.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the engine actions that are still in process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/EngineActionElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineAction(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/EngineActionElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineAction(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Request the status and properties of an executing engine action request.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceActionProcessGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessGraphResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/GovernanceActionProcessGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessGraphResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
  along with the flow definition describing its implementation.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OCFConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OCFConnectionResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getOutTopicConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OCFConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OCFConnectionResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getOutTopicConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection object for the Open Metadata Store's out topic.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateEngineActionRequestBody)" class="member-name-link">initiateEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateEngineAction(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateEngineActionRequestBody)" class="member-name-link">initiateEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineName,
  <a href="../../rest/InitiateEngineActionRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateEngineActionRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an engine action in the metadata store that will trigger the governance service
  associated with the supplied request type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody)" class="member-name-link">initiateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../rest/InitiateGovernanceActionProcessRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateGovernanceActionProcessRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the named governance action process as a template, initiate a chain of engine actions.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionType(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionTypeRequestBody)" class="member-name-link">initiateGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initiateGovernanceActionType(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionTypeRequestBody)" class="member-name-link">initiateGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../rest/InitiateGovernanceActionTypeRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InitiateGovernanceActionTypeRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Using the named governance action process as a template, initiate a chain of engine actions.</div>
 </div>
 </div>
@@ -385,6 +393,34 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
+<dd><code>requestBody</code> - null request body</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException one of the parameters is null or invalid.
+  UserNotAuthorizedException the user is not authorized to issue this request.
+  PropertyServerException there was a problem detected by the metadata store.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="cancelGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.GAFAPIRequest)">
+<h3>cancelGovernanceActionProcess</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/governance-action-process-instances/{processInstanceGUID}/cancel")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">cancelGovernanceActionProcess</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processInstanceGUID,
+ @RequestBody(required=false)
+ <a href="../../rest/GAFAPIRequest.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GAFAPIRequest</a>&nbsp;requestBody)</span></div>
+<div class="block">Request that a running governance action process instance is cancelled.  Each of its engine actions
+ that has not yet finished is cancelled, and any governance service running one of them is stopped.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>userId</code> - identifier of calling user</dd>
+<dd><code>processInstanceGUID</code> - identifier of the governance action process instance.</dd>
 <dd><code>requestBody</code> - null request body</dd>
 <dt>Returns:</dt>
 <dd>void or

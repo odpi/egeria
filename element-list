@@ -644,6 +644,10 @@ org.odpi.openmetadata.viewservices.glossarymanager.ffdc
 org.odpi.openmetadata.viewservices.glossarymanager.rest
 org.odpi.openmetadata.viewservices.glossarymanager.server
 org.odpi.openmetadata.viewservices.glossarymanager.server.spring
+org.odpi.openmetadata.viewservices.governanceengine.admin
+org.odpi.openmetadata.viewservices.governanceengine.ffdc
+org.odpi.openmetadata.viewservices.governanceengine.server
+org.odpi.openmetadata.viewservices.governanceengine.server.spring
 org.odpi.openmetadata.viewservices.governanceofficer.admin
 org.odpi.openmetadata.viewservices.governanceofficer.ffdc
 org.odpi.openmetadata.viewservices.governanceofficer.server

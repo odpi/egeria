@@ -138,17 +138,25 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="block">OMAG-GENERIC-HANDLERS-0029 - Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked
  with PeerDuplicateLink relationships with a status of DISCOVERED.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_CANCELLED" class="member-name-link">ENGINE_ACTION_CANCELLED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_ALREADY_FINISHED" class="member-name-link">ENGINE_ACTION_ALREADY_FINISHED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0026 - Engine action {0} has not been cancelled for user {1} because it had already finished with status {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_CANCELLED" class="member-name-link">ENGINE_ACTION_CANCELLED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0027 - Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_STATUS_CHANGE" class="member-name-link">ENGINE_ACTION_STATUS_CHANGE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_STATUS_CHANGE" class="member-name-link">ENGINE_ACTION_STATUS_CHANGE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FAILED_TO_RETRIEVE_ENTITIES" class="member-name-link">FAILED_TO_RETRIEVE_ENTITIES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FAILED_TO_RETRIEVE_ENTITIES" class="member-name-link">FAILED_TO_RETRIEVE_ENTITIES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0028 - Method {0} was unable to receive list of entities due to a {1} exception with message {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ACTION_PROCESS_CANCELLED" class="member-name-link">GOVERNANCE_ACTION_PROCESS_CANCELLED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0031 - Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE" class="member-name-link">IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE</a></code></div>
 <div class="col-last odd-row-color">
@@ -335,6 +343,20 @@ the order they are declared.</div>
 <h3>ENGINE_ACTION_CANCELLED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_CANCELLED</span></div>
 <div class="block">OMAG-GENERIC-HANDLERS-0027 - Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ENGINE_ACTION_ALREADY_FINISHED">
+<h3>ENGINE_ACTION_ALREADY_FINISHED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_ALREADY_FINISHED</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0026 - Engine action {0} has not been cancelled for user {1} because it had already finished with status {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_ACTION_PROCESS_CANCELLED">
+<h3>GOVERNANCE_ACTION_PROCESS_CANCELLED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_PROCESS_CANCELLED</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0031 - Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled</div>
 </section>
 </li>
 <li>
