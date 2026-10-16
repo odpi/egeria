@@ -389,6 +389,16 @@ public enum ViewServiceDescription
                    "data-engineer",
                    "Manages the creation and maintenance of data pipelines and tabular data sets.."),
 
+    /**
+     * Supports governance engines that run engine actions outside of Egeria, while Egeria coordinates the
+     * engine actions, for example through a governance action process.
+     */
+    GOVERNANCE_ENGINE(243,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Governance Engine",
+                      "governance-engine",
+                      "Supports governance engines that run engine actions outside of Egeria, while Egeria coordinates the engine actions, for example through a governance action process."),
+
     ;
 
 

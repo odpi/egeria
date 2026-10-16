@@ -12,9 +12,11 @@ Key features of this service include:
 
 * **Technology Type Management**: Browsing and searching for the technology types supported by the ecosystem's integration connectors and governance engines.
 * **Governance and Engine Action Management**: Initiating, canceling, and monitoring governance actions and engine actions.
-* **Engine Action Execution and Completion**: Claiming an engine action, updating its status, reporting progress on each of its action targets, and recording the completion status, output guards and follow-on action targets produced by a governance service.
+* **Governance Action Process Cancellation**: Cancelling every unfinished engine action of a running governance action process instance.
 * **Templated Cataloguing**: Support for creating metadata elements using templates, ensuring consistency in the cataloguing process.
 * **Client-Side Secret Management**: Saving and deleting secrets (such as credentials) used by client-side integration components.
+
+The operations used by a governance engine to claim an engine action, update its status, report progress on its action targets and record its completion are in the [Governance Engine OMVS](../../view-services/governance-engine).  They were previously part of this service; to call them, replace the `automated-curation` URL marker with `governance-engine`.
 
 ## Further information
 

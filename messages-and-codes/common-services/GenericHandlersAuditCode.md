@@ -9,7 +9,7 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 15 |
+| **Number of messages** | 17 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -32,6 +32,8 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 | [OMAG-GENERIC-HANDLERS-0024](#omag-generic-handlers-0024) | STARTUP | Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3} |
 | [OMAG-GENERIC-HANDLERS-0025](#omag-generic-handlers-0025) | INFO | Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId |
 | [OMAG-GENERIC-HANDLERS-0027](#omag-generic-handlers-0027) | SHUTDOWN | Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request |
+| [OMAG-GENERIC-HANDLERS-0026](#omag-generic-handlers-0026) | INFO | Engine action {0} has not been cancelled for user {1} because it had already finished with status {2} |
+| [OMAG-GENERIC-HANDLERS-0031](#omag-generic-handlers-0031) | SHUTDOWN | Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled |
 | [OMAG-GENERIC-HANDLERS-0028](#omag-generic-handlers-0028) | INFO | Method {0} was unable to receive list of entities due to a {1} exception with message {2} |
 | [OMAG-GENERIC-HANDLERS-0029](#omag-generic-handlers-0029) | INFO | Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked with PeerDuplicateLink relationships with a status of DISCOVERED.  The entities are {4} |
 | [OMAG-GENERIC-HANDLERS-0030](#omag-generic-handlers-0030) | ERROR | Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships due to a {2} exception with message {3} |
@@ -298,6 +300,50 @@ The engine action is updated to show that it was cancelled.  If a governance ser
 **User action**
 
 Monitor the shutdown of the request in the engine host.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-0026
+
+> Engine action {0} has not been cancelled for user {1} because it had already finished with status {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersAuditCode.ENGINE_ACTION_ALREADY_FINISHED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
+
+**System action**
+
+The engine action is left unchanged so that the record of how it finished is preserved.
+
+**User action**
+
+No action is required.  The engine action finished before the cancel request arrived.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-0031
+
+> Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersAuditCode.GOVERNANCE_ACTION_PROCESS_CANCELLED` |
+| **Severity** | SHUTDOWN - An existing component is shutting down. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
+
+**System action**
+
+Each engine action of the process instance that had not yet finished is cancelled, and the process instance is marked as complete.  Any governance services that are running in an engine host are informed and will attempt to stop as fast as possible.
+
+**User action**
+
+Monitor the shutdown of the requests in the engine host(s).
 
 
 ----

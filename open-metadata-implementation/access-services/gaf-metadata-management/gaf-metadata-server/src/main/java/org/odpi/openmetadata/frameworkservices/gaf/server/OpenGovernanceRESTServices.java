@@ -1086,6 +1086,53 @@ public class OpenGovernanceRESTServices
     }
 
 
+    /**
+     * Request that a running governance action process instance is cancelled.  Each of its engine actions
+     * that has not yet finished is cancelled, and any governance service running one of them is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId identifier of calling user
+     * @param processInstanceGUID identifier of the governance action process instance
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException the user is not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public VoidResponse cancelGovernanceActionProcess(String        serverName,
+                                                      String        userId,
+                                                      String        processInstanceGUID,
+                                                      GAFAPIRequest requestBody)
+    {
+        final String methodName = "cancelGovernanceActionProcess";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
+
+            handler.cancelGovernanceActionProcess(userId,
+                                                  processInstanceGUID,
+                                                  new Date(),
+                                                  methodName);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
 
     /**
      * Update the status of the engine action - providing the caller is permitted.

@@ -407,6 +407,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from("$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager")
                         { include 'Egeria*.http' }
+                from("$rootProject.projectDir/open-metadata-implementation/view-services/governance-engine")
+                        { include 'Egeria*.http' }
                 from("$rootProject.projectDir/open-metadata-implementation/view-services/location-arena")
                         { include 'Egeria*.http' }
                 from("$rootProject.projectDir/open-metadata-implementation/view-services/my-profile")

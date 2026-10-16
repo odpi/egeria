@@ -51,7 +51,8 @@ import java.util.Map;
  *     <li><b>{@value #INTEGRATION_DAEMON_NAME}</b> - an integration daemon running the content pack's
  *     {@code FilesIntegrationGroup}, which is where the folder cataloguers live.</li>
  *     <li><b>{@value #VIEW_SERVER_NAME}</b> - a view server running the Automated Curation OMVS, the API a
- *     curator uses to ask for any of the above to happen.</li>
+ *     curator uses to ask for any of the above to happen, and the Governance Engine OMVS, the API a governance
+ *     engine running outside Egeria uses to claim and complete its engine actions.</li>
  * </ul>
  * The Kafka broker is not optional and it is worth being explicit about why, because nothing in the suite
  * mentions Kafka directly.  Neither governance server is told what to run: each one asks the metadata access
@@ -101,7 +102,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     public static final String INTEGRATION_DAEMON_NAME = "filesFvtIntegrationDaemon";
 
     /**
-     * The view server running the Automated Curation OMVS.
+     * The view server running the Automated Curation and Governance Engine OMVSs.
      */
     public static final String VIEW_SERVER_NAME = "filesFvtViewServer";
 
@@ -625,7 +626,9 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
     /**
      * Configure the view server with the Automated Curation OMVS - the API this suite uses to ask for
-     * governance action processes to be run, and the one a curator would use for the same thing.
+     * governance action processes to be run, and the one a curator would use for the same thing - and the
+     * Governance Engine OMVS, which ExternalGovernanceEngineFVT uses to stand in for a governance engine that
+     * runs outside Egeria.
      *
      * @throws Exception any problem configuring the server is fatal to the whole run
      */
@@ -643,7 +646,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
         configurationClient.setServerUserId(USER_ID);
         configurationClient.setBasicServerProperties("Egeria files-fvt",
-                                                     "View server running the Automated Curation OMVS for the files-fvt suite.",
+                                                     "View server running the Automated Curation and Governance Engine OMVSs for the files-fvt suite.",
                                                      USER_ID,
                                                      "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider",
                                                      "build/files-fvt-data/secrets.omsecrets",
@@ -659,6 +662,9 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         viewServiceConfig.setOMAGServerPlatformRootURL(platformURLRoot);
 
         configurationClient.configureViewService(ViewServiceDescription.AUTOMATED_CURATION.getViewServiceURLMarker(),
+                                                 viewServiceConfig);
+
+        configurationClient.configureViewService(ViewServiceDescription.GOVERNANCE_ENGINE.getViewServiceURLMarker(),
                                                  viewServiceConfig);
     }
 

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OpenMetadataRootElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.InitiateGovernanceActionProcessRequestBody;
@@ -235,6 +236,39 @@ class AutomatedCurationClient
         checkResponse("initiateGovernanceActionProcess(" + processQualifiedName + ")", response);
 
         return response.getGUID();
+    }
+
+
+    /**
+     * Ask for one engine action to be cancelled.  An engine action that has already finished is left as it is.
+     *
+     * @param engineActionGUID engine action to cancel
+     * @throws Exception the service reported a problem
+     */
+    void cancelEngineAction(String engineActionGUID) throws Exception
+    {
+        VoidResponse response = restTemplate.postForObject(urlRoot + "/engine-actions/" + engineActionGUID + "/cancel",
+                                                           null,
+                                                           VoidResponse.class);
+
+        checkResponse("cancelEngineAction(" + engineActionGUID + ")", response);
+    }
+
+
+    /**
+     * Ask for a running governance action process to be cancelled: each of its engine actions that has not
+     * finished is cancelled, and the process instance is given a completion time.
+     *
+     * @param processInstanceGUID the GUID returned when the process was initiated
+     * @throws Exception the service reported a problem
+     */
+    void cancelGovernanceActionProcess(String processInstanceGUID) throws Exception
+    {
+        VoidResponse response = restTemplate.postForObject(urlRoot + "/governance-action-process-instances/" + processInstanceGUID + "/cancel",
+                                                           null,
+                                                           VoidResponse.class);
+
+        checkResponse("cancelGovernanceActionProcess(" + processInstanceGUID + ")", response);
     }
 
 
