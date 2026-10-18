@@ -1084,7 +1084,7 @@ public class OpenMetadataAPIGenericBuilder
          */
         if ((existingClassifications != null) && (! existingClassifications.isEmpty()))
         {
-            for (Classification classification : entityClassifications)
+            for (Classification classification : existingClassifications)
             {
                 if ((classification != null) && (newClassifications.get(classification.getName()) == null))
                 {

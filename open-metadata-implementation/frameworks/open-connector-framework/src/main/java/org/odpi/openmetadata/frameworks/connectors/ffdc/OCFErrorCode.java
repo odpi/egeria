@@ -213,6 +213,15 @@ public enum OCFErrorCode implements ExceptionMessageSet
                 "https://egeria-project.org/frameworks/ocf/overview/"),
 
     /**
+     * OCF-CONNECTOR-400-013 - The {0} property called {1} has a value of {2}, which is not a valid {3}
+     */
+    INVALID_NUMERIC_PROPERTY(400, "OCF-CONNECTOR-400-013",
+                "The {0} property called {1} has a value of {2}, which is not a valid {3}",
+                "The value cannot be used, so the request that needed it fails.",
+                "Correct the value so that it is a whole number in the range of the expected type.  Configuration properties are typically in the connector's connection, or overridden by the CatalogTarget relationship; request parameters are supplied with the request or by the governance action type or process step.",
+                "https://egeria-project.org/frameworks/ocf/overview/"),
+
+    /**
      * OCF-CONNECTION-500-001 - OCF method detected an unexpected exception
      */
     CAUGHT_EXCEPTION(500, "OCF-CONNECTION-500-001",

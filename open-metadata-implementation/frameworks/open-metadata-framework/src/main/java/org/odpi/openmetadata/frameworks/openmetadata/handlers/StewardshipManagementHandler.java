@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassificationBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -46,9 +44,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reference
 public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 {
     final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary> metadataRelationshipSummaryConverter;
-
-    protected final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
-    protected final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
 
     /**
      * Create a new handler.

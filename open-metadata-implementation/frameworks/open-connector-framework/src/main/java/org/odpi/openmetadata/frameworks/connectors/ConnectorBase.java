@@ -600,7 +600,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
                 if (integerOption != null)
                 {
-                    return Integer.parseInt(integerOption.toString());
+                    return NumericPropertyParser.getIntConfigurationProperty(propertyName, integerOption);
                 }
             }
         }
@@ -627,7 +627,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
                 if (integerOption != null)
                 {
-                    return Long.parseLong(integerOption.toString());
+                    return NumericPropertyParser.getLongConfigurationProperty(propertyName, integerOption);
                 }
             }
         }

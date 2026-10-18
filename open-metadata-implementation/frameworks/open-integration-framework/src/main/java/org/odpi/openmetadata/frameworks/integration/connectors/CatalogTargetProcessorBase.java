@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -885,7 +886,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
 
                 if (integerOption != null)
                 {
-                    return Integer.parseInt(integerOption.toString());
+                    return NumericPropertyParser.getIntConfigurationProperty(propertyName, integerOption);
                 }
             }
         }
@@ -912,7 +913,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
 
                 if (integerOption != null)
                 {
-                    return Long.parseLong(integerOption.toString());
+                    return NumericPropertyParser.getLongConfigurationProperty(propertyName, integerOption);
                 }
             }
         }

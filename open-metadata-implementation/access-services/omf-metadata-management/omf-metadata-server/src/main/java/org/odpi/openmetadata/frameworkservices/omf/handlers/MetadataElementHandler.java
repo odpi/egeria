@@ -1256,10 +1256,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
+     * @param typeName name of the property's type
      * @param arrayCount number of elements in the array
      * @param arrayValues values in the array
      * @return OMRS property value
-     * @throws InvalidParameterException invalid property specification
      */
     private ArrayPropertyValue getArrayPropertyValue(AttributeTypeDef   typeDef,
                                                      String             typeName,
@@ -1350,9 +1350,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
+     * @param typeName name of the property's type
      * @param mapValues values in the array
      * @return OMRS property value
-     * @throws InvalidParameterException invalid property specification
      */
     private MapPropertyValue getMapPropertyValue(AttributeTypeDef   typeDef,
                                                  String             typeName,
@@ -1453,9 +1453,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
+     * @param typeName name of the property's type
      * @param attributes values in the array
      * @return OMRS property value
-     * @throws InvalidParameterException invalid property specification
      */
     private StructPropertyValue getStructPropertyValue(AttributeTypeDef   typeDef,
                                                        String             typeName,

@@ -2112,7 +2112,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         catch (UserNotAuthorizedException notAuthorized)
         {
             log.debug("Engine action {} left out of the results of {} because user {} cannot read all of it: {}",
-                      primaryEntity.getGUID(), methodName, userId, notAuthorized.getMessage());
+                      primaryEntity.getGUID(), methodName, forLog(userId), forLog(notAuthorized.getMessage()));
 
             return null;
         }

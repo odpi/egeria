@@ -970,7 +970,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
 
                 List<RelatedMetadataElementSummary> egeriaDatabaseColumns = databaseTable.getSchemaAttributes();
 
-                while (egeriaDatabaseColumns != null)
+                if (egeriaDatabaseColumns != null)
                 {
                     for (RelatedMetadataElementSummary egeriaDatabaseColumn : egeriaDatabaseColumns)
                     {

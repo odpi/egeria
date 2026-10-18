@@ -221,4 +221,22 @@ public class OpenMetadataAPIRootHandler<B>
     {
         return serverName;
     }
+
+
+    /**
+     * Return a caller-supplied value ready to write to the log.  Line breaks are replaced so that a value
+     * cannot start what looks like a new log entry.
+     *
+     * @param value value supplied by the caller
+     * @return value without line breaks
+     */
+    protected static String forLog(String value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        return value.replace('\r', '_').replace('\n', '_');
+    }
 }

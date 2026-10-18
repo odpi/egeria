@@ -146,17 +146,13 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         {
             if (configurationProperties.get(JDBCConfigurationProperty.JDBC_CONNECTION_TIMEOUT.getName()) != null)
             {
-                Object connectionTimeoutOption = configurationProperties.get(JDBCConfigurationProperty.JDBC_CONNECTION_TIMEOUT.getName());
+                int connectionTimeout = super.getIntConfigurationProperty(JDBCConfigurationProperty.JDBC_CONNECTION_TIMEOUT.getName(),
+                                                                          configurationProperties);
 
-                if (connectionTimeoutOption != null)
-                {
-                    int connectionTimeout = Integer.parseInt(connectionTimeoutOption.toString());
-
-                    /*
-                     * Note that this is a class level property and will affect all connectors running in this class loader.
-                     */
-                    DriverManager.setLoginTimeout(connectionTimeout);
-                }
+                /*
+                 * Note that this is a class level property and will affect all connectors running in this class loader.
+                 */
+                DriverManager.setLoginTimeout(connectionTimeout);
             }
 
             Object driverManagerClassName = configurationProperties.get(JDBCConfigurationProperty.JDBC_DRIVER_MANAGER_CLASS_NAME.getName());

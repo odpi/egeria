@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 68 | 637 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 108 | 1044 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 70 | 642 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 109 | 1048 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -81,7 +81,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
-| [Frameworks](frameworks) | 11 | 129 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
+| [Frameworks](frameworks) | 11 | 130 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
 | [Common Services](common-services) | 11 | 188 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 41 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
@@ -92,7 +92,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Administration Services](admin-services) | 2 | 53 | The administration services configure and control the servers running on the OMAG Server Platform. |
 | [Server Operations](server-operations) | 2 | 31 | The server operations services report on the servers that are running on an OMAG Server Platform. |
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
-| [Data Manager Connectors](connectors/data-manager-connectors) | 12 | 85 | These connectors catalog and survey the contents of database servers and other data managers. |
+| [Data Manager Connectors](connectors/data-manager-connectors) | 15 | 93 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](connectors/data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
 | [Integration Connectors](connectors/integration-connectors) | 14 | 87 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 78 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
@@ -185,7 +185,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `METADATA-OBSERVABILITY-` | Audit log messages | 11 | [OpenMetadataObservabilityAuditCode](common-services/OpenMetadataObservabilityAuditCode.md) |
 | `MSSQL-CONNECTOR-` | Audit log messages | 9 | [MSSQLAuditCode](connectors/data-manager-connectors/MSSQLAuditCode.md) |
 | `MSSQL-CONNECTOR-` | Exception messages | 2 | [MSSQLErrorCode](connectors/data-manager-connectors/MSSQLErrorCode.md) |
-| `OCF-` | Exception messages | 27 | [OCFErrorCode](frameworks/OCFErrorCode.md) |
+| `OCF-` | Exception messages | 28 | [OCFErrorCode](frameworks/OCFErrorCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 1 | [DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | Exception messages | 2 | [DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode.md) |
 | `OCF-FILE-REGISTRY-STORE-CONNECTOR-` | Audit log messages | 10 | [FileBasedRegistryStoreConnectorAuditCode](connectors/repository-services-connectors/FileBasedRegistryStoreConnectorAuditCode.md) |
@@ -293,6 +293,9 @@ Every message identifier begins with a prefix that names the component that rais
 | `TOKEN-CONTROLLER-401-` | Exception messages | 1 | [TokenControllerErrorCode](user-security/TokenControllerErrorCode.md) |
 | `UNITY-CATALOG-CONNECTOR-` | Audit log messages | 19 | [UCAuditCode](connectors/data-manager-connectors/UCAuditCode.md) |
 | `UNITY-CATALOG-CONNECTOR-` | Exception messages | 7 | [UCErrorCode](connectors/data-manager-connectors/UCErrorCode.md) |
+| `WSO2MI-CONNECTOR-` | Audit log messages | 4 | [WSO2MIAuditCode](connectors/data-manager-connectors/WSO2MIAuditCode.md) |
+| `WSO2MI-CONNECTOR-` | Exception messages | 3 | [WSO2MIErrorCode](connectors/data-manager-connectors/WSO2MIErrorCode.md) |
+| `WSO2MI-SURVEY-ACTION-CONNECTOR-500-` | Exception messages | 1 | [WSO2MISurveyErrorCode](connectors/data-manager-connectors/WSO2MISurveyErrorCode.md) |
 | `YAML-SECRETS-STORE-CONNECTOR-` | Audit log messages | 4 | [YAMLAuditCode](connectors/secrets-store-connectors/YAMLAuditCode.md) |
 | `YAML-SECRETS-STORE-CONNECTOR-500-` | Exception messages | 1 | [YAMLErrorCode](connectors/secrets-store-connectors/YAMLErrorCode.md) |
 

@@ -47,7 +47,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.Re
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -89,8 +88,6 @@ import java.util.Map;
  */
 public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
-    final PropertyHelper propertyHelper = new PropertyHelper();
-
     String              defaultFriendshipGUID = null;
     Map<String, String> defaultTemplates      = new HashMap<>();
 

@@ -159,7 +159,13 @@ class CloudInformationModelParser
     {
         System.out.println("\nRetrieving model contents from: " + cimContentFile.getName());
 
-        Map<String, Object> modelJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(new FileInputStream(cimContentFile));
+        Map<String, Object> modelJsonLD;
+
+        try (FileInputStream cimContentStream = new FileInputStream(cimContentFile))
+        {
+            modelJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(cimContentStream);
+        }
+
         List<Map<String, Object>> graphJsonLD = (List<Map<String, Object>>) modelJsonLD.get(AT_GRAPH_TAG);
 
         List<Map<String, Object>> propertyGroupsJsonLD = new ArrayList<>(); // List of reusable properties grouped by topic

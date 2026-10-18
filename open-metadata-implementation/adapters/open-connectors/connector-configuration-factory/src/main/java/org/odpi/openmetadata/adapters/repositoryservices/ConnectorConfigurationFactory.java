@@ -488,7 +488,7 @@ public class ConnectorConfigurationFactory
 
         endpoint = new Endpoint();
 
-        if (storageProperties.containsKey(PostgresConfigurationProperty.DATABASE_URL.getName()))
+        if ((storageProperties != null) && (storageProperties.containsKey(PostgresConfigurationProperty.DATABASE_URL.getName())))
         {
             endpoint.setNetworkAddress(storageProperties.get(PostgresConfigurationProperty.DATABASE_URL.getName()).toString());
         }

@@ -142,6 +142,14 @@ public class OpenGovernanceOutTopicListener implements OpenMetadataEventListener
     {
         final String actionDescription = "processIntegrationConnectorEvent";
 
+        /*
+         * An event without the connector's header names no connector to refresh.
+         */
+        if (integrationConnectorHeader == null)
+        {
+            return;
+        }
+
         try
         {
             List<String> registrations = configurationClient.getIntegrationConnectorRegistrations(userId, integrationConnectorHeader.getGUID());
@@ -162,15 +170,8 @@ public class OpenGovernanceOutTopicListener implements OpenMetadataEventListener
         }
         catch (Exception error)
         {
-            String integrationConnectorId = null;
-
-            if (integrationConnectorHeader != null)
-            {
-                integrationConnectorId = integrationConnectorHeader.getGUID();
-            }
-
             auditLog.logException(actionDescription,
-                                  IntegrationDaemonServicesAuditCode.CONNECTOR_CHANGE_FAILED.getMessageDefinition(integrationConnectorId,
+                                  IntegrationDaemonServicesAuditCode.CONNECTOR_CHANGE_FAILED.getMessageDefinition(integrationConnectorHeader.getGUID(),
                                                                                                                   error.getClass().getName(),
                                                                                                                   error.getMessage()),
                                   event.toString(),

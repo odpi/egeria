@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.connectors;
 
-import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
@@ -18,10 +17,6 @@ import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode
  */
 public class OpenMetadataPlatformSecurityConnector extends OpenMetadataSecurityConnector implements OpenMetadataPlatformSecurity
 {
-    protected MessageFormatter messageFormatter = new MessageFormatter();
-
-
-
     /**
      * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
      *

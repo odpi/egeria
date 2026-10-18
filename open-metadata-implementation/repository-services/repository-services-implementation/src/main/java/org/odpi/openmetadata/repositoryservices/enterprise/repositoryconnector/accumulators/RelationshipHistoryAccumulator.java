@@ -130,7 +130,7 @@ public class RelationshipHistoryAccumulator extends RelationshipsAccumulator
     public synchronized List<Relationship> getResults(boolean                           oldestFirst,
                                                       EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
-        if ((accumulatedRelationships == null) || (accumulatedRelationships.isEmpty()))
+        if (accumulatedRelationships.isEmpty())
         {
             return null;
         }

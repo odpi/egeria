@@ -338,9 +338,9 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
 
         /*
          * The matches have all changed: the oldest has a new report (and perhaps a new anchor), and the others
-         * have gone.
+         * have gone.  The matches came from existingAnnotations, so it is not null here.
          */
-        if ((getOptions != null) && (existingAnnotations != null))
+        if (getOptions != null)
         {
             existingAnnotations.removeAll(matchingAnnotations);
             this.refreshCandidate(userId, existingAnnotations, oldestAnnotationGUID, getOptions);

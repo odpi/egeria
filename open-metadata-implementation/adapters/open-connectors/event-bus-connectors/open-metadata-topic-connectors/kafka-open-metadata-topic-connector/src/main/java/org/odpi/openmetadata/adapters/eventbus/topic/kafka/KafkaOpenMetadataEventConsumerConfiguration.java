@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 
 import java.util.Properties;
 
@@ -33,7 +34,7 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 	 */
 	int getIntProperty(KafkaOpenMetadataEventConsumerProperty property)
 	{
-		return Integer.parseInt(getProperty(property));		
+		return NumericPropertyParser.getIntConfigurationProperty(property.getPropertyName(), getProperty(property));
 	}
 	
 	
@@ -45,7 +46,7 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 	 */
 	long getLongProperty(KafkaOpenMetadataEventConsumerProperty property)
 	{
-		return Long.parseLong(getProperty(property));
+		return NumericPropertyParser.getLongConfigurationProperty(property.getPropertyName(), getProperty(property));
 		
 	}
 	

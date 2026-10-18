@@ -126,6 +126,27 @@ public class AnchoredElementCascadeTest
 
 
     /**
+     * An element with no Anchors classification is the anchor of its own graph.  Its delete used to reach the
+     * branch for anchored members and dereference the missing anchor.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testDeletingUnanchoredElement() throws Exception
+    {
+        FakeRepository repository = new FakeRepository();
+
+        repository.addEntity("U", ELEMENT_TYPE, null);
+        repository.addEntity("M", ELEMENT_TYPE, "U");
+        repository.addRelationship("U", "M", LINK_TYPE);
+
+        repository.handler.deleteBeanInRepository(USER, null, null, "U", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+
+        assertEquals(repository.deletedEntities, Set.of("M", "U"));
+    }
+
+
+    /**
      * Build the graph described in the class comment.
      *
      * @return populated repository
@@ -195,6 +216,9 @@ public class AnchoredElementCascadeTest
         }
 
 
+        /**
+         * Add an entity.  A null anchorGUID leaves the entity without an Anchors classification.
+         */
         void addEntity(String guid, String typeName, String anchorGUID)
         {
             EntityDetail       entity                = new EntityDetail();
@@ -209,7 +233,10 @@ public class AnchoredElementCascadeTest
 
             entity.setGUID(guid);
             entity.setType(getType(typeName));
-            entity.setClassifications(new ArrayList<>(List.of(anchorsClassification)));
+            if (anchorGUID != null)
+            {
+                entity.setClassifications(new ArrayList<>(List.of(anchorsClassification)));
+            }
 
             entities.put(guid, entity);
         }
@@ -354,7 +381,7 @@ public class AnchoredElementCascadeTest
             switch (invocation.getMethod().getName())
             {
                 case "getClassificationFromEntity":
-                    if (args[1] instanceof EntitySummary entity)
+                    if ((args[1] instanceof EntitySummary entity) && (entity.getClassifications() != null))
                     {
                         for (Classification classification : entity.getClassifications())
                         {

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 /**
@@ -15,8 +14,6 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
     protected String        accessServiceServerName   = null;
     protected String        accessServiceInTopicName  = null;
     protected String        accessServiceOutTopicName = null;
-
-    protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -35,8 +32,6 @@ public abstract class GovernanceServerServiceInstance extends AuditableServerSer
                                            int           maxPageSize)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
-
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
