@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -113,18 +114,47 @@ public class PepysActivityObserverTest
 
 
     /**
-     * The connector's own activity is not counted - otherwise each update of a UsageActivity classification would
-     * be counted as more activity.
+     * The activity of the users in the ignoredUserIds configuration property is not counted - this includes the
+     * connector's own user, otherwise each update of a UsageActivity classification would be counted as more activity.
      */
-    @Test public void testOwnActivityIgnored()
+    @Test public void testIgnoredUsersActivityIgnored()
     {
         PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
 
-        connector.setIgnoredUserId("pepysnpa");
+        connector.setIgnoredUserIds(List.of("pepysnpa", "assetonboardingengine"), "pepysnpa");
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "pepysnpa", assetGUID));
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "assetonboardingengine", assetGUID));
+
+        assertTrue(connector.getPendingActivity().isEmpty());
+
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "erinoverview", assetGUID));
+
+        assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 1L);
+    }
+
+
+    /**
+     * The connector's own activity is ignored even when it is not in the ignoredUserIds configuration property,
+     * or the property is not set.  Every other user's activity is counted.
+     */
+    @Test public void testOwnActivityAlwaysIgnored()
+    {
+        PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
+
+        connector.setIgnoredUserIds(null, "pepysnpa");
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
 
         assertTrue(connector.getPendingActivity().isEmpty());
+
+        connector.setIgnoredUserIds(List.of("assetonboardingengine"), "pepysnpa");
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
+
+        assertTrue(connector.getPendingActivity().isEmpty());
+
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "erinoverview", assetGUID));
+
+        assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 1L);
     }
 
 

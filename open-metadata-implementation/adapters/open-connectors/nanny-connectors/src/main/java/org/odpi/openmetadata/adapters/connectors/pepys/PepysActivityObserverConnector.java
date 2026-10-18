@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.pepys;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.pepys.ffdc.PepysAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -25,7 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * PepysActivityObserverConnector keeps a diary of the activity around the anchor elements (assets, digital products
@@ -38,8 +42,11 @@ import java.util.Map;
  * costs one read and one update per refresh rather than one per record.  Counts that could not be written are
  * kept and tried again on the next refresh.
  * <p>
- * The connector's own reads and updates of the anchor elements are reported in the audit log too, and they are ignored -
- * otherwise each update of a UsageActivity classification would be counted as more activity, without end.
+ * The activity of the users listed in the ignoredUserIds configuration property is not counted.  The core content
+ * pack sets it to the userIds of Egeria's integration connectors and governance engines, so only the activity of
+ * people and external tools is recorded.  The connector's own userId is always ignored, whether it is in the list
+ * or not - its reads and updates of the anchor elements are reported in the audit log too, and otherwise each update
+ * of a UsageActivity classification would be counted as more activity, without end.
  */
 public class PepysActivityObserverConnector extends DynamicIntegrationConnectorBase implements OpenMetadataTopicListener
 {
@@ -61,9 +68,9 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
     private final Map<String, PendingUsageActivity> pendingActivity = new HashMap<>();
 
     /**
-     * The user that this connector calls the metadata access server with.  Its activity is not counted.
+     * The users whose activity is not counted.
      */
-    private String ignoredUserId = null;
+    private final Set<String> ignoredUserIds = new HashSet<>();
 
 
     /**
@@ -79,13 +86,16 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
 
         final String methodName = "start";
 
-        ignoredUserId = integrationContext.getMyUserId();
+        List<String> configuredUserIds = super.getArrayConfigurationProperty(PepysConfigurationProperty.IGNORED_USER_IDS.getName(),
+                                                                             connectionBean.getConfigurationProperties());
+
+        this.setIgnoredUserIds(configuredUserIds, integrationContext.getMyUserId());
 
         logRecord(methodName,
                   PepysAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
                                                                          integrationContext.getMetadataAccessServer(),
                                                                          integrationContext.getMetadataAccessServerPlatformURLRoot(),
-                                                                         ignoredUserId));
+                                                                         ignoredUserIds.toString()));
     }
 
 
@@ -185,7 +195,7 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
         String userId    = parameters[userIdParameter];
         String anchorGUID = parameters[anchorGUIDParameter];
 
-        if ((anchorGUID == null) || ((ignoredUserId != null) && (ignoredUserId.equals(userId))))
+        if ((anchorGUID == null) || (ignoredUserIds.contains(userId)))
         {
             return;
         }
@@ -198,14 +208,27 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
 
 
     /**
-     * Set up the user whose activity is ignored.  This is normally the connector's own user, set in start().
-     * This is for testing.
+     * Set up the users whose activity is ignored.  This is called from start() with the ignoredUserIds
+     * configuration property.  The connector's own user is always added - otherwise each update of a
+     * UsageActivity classification would be counted as more activity, without end.
      *
-     * @param ignoredUserId userId
+     * @param userIds list of userIds - may be null
+     * @param connectorUserId the connector's own userId - may be null
      */
-    void setIgnoredUserId(String ignoredUserId)
+    void setIgnoredUserIds(List<String> userIds,
+                           String       connectorUserId)
     {
-        this.ignoredUserId = ignoredUserId;
+        ignoredUserIds.clear();
+
+        if (userIds != null)
+        {
+            ignoredUserIds.addAll(userIds);
+        }
+
+        if (connectorUserId != null)
+        {
+            ignoredUserIds.add(connectorUserId);
+        }
     }
 
 

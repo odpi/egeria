@@ -84,9 +84,9 @@ Its catalog targets are the topics that the OMAG Servers write their audit logs 
 
 The creation of an anchor element (`METADATA-OBSERVABILITY-0001`) is not counted.
 
-The counts are gathered in memory as the audit log records arrive and are added to each anchor element's UsageActivity classification on every refresh (every 10 minutes by default), so a busy element costs one read and one update per refresh rather than one per record.  Counts that cannot be written because the metadata access server is unavailable are kept and tried again on the next refresh; counts for an element that can no longer be found are discarded.  Any counts still waiting when the connector shuts down are written as it disconnects.
+The counts are gathered in memory as the audit log records arrive and are added to each anchor element's UsageActivity classification on every refresh (every 20 minutes as configured in the core content pack), so a busy element costs one read and one update per refresh rather than one per record.  Counts that cannot be written because the metadata access server is unavailable are kept and tried again on the next refresh; counts for an element that can no longer be found are discarded.  Any counts still waiting when the connector shuts down are written as it disconnects.
 
-The connector's own reads and updates of the anchor elements are reported in the audit log too, and they are ignored - otherwise each update of a UsageActivity classification would be counted as more activity, without end.
+The activity of the users listed in the `ignoredUserIds` configuration property is not counted.  The core content pack sets it to the userIds of Egeria's integration connectors and governance engines, so that only the activity of people and external tools is recorded.  Pepys's own userId is always ignored, whether it is in the list or not (and when the property is not set) - its reads and updates of the anchor elements are reported in the audit log too, and otherwise each update of a UsageActivity classification would be counted as more activity, without end.
 
 ## Darwin Product Dependency Manager
 

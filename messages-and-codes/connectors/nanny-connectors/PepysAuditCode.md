@@ -22,7 +22,7 @@ The PepysAuditCode is used to define the message content for the Audit Log.
 | Message Id | Severity | Message |
 |---|---|---|
 | [PEPYS-ACTIVITY-OBSERVER-0001](#pepys-activity-observer-0001) | EXCEPTION | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
-| [PEPYS-ACTIVITY-OBSERVER-0002](#pepys-activity-observer-0002) | INFO | The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on platform {2}; the activity of its own user {3} is ignored |
+| [PEPYS-ACTIVITY-OBSERVER-0002](#pepys-activity-observer-0002) | INFO | The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on platform {2}; the activity of users {3} is ignored |
 | [PEPYS-ACTIVITY-OBSERVER-0003](#pepys-activity-observer-0003) | INFO | The {0} integration connector is listening for audit log records on topic {1} (connection {2}) |
 | [PEPYS-ACTIVITY-OBSERVER-0004](#pepys-activity-observer-0004) | INFO | The {0} integration connector has added {1} observed activities to the usage activity counts of {2} elements |
 | [PEPYS-ACTIVITY-OBSERVER-0005](#pepys-activity-observer-0005) | ERROR | The {0} integration connector is unable to update the usage activity counts of element {1} because of exception {2} with message {3}; {4} observed activities will be retried on the next refresh |
@@ -53,7 +53,7 @@ Use the details from the error message to determine the cause of the error and c
 
 ### PEPYS-ACTIVITY-OBSERVER-0002
 
-> The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on platform {2}; the activity of its own user {3} is ignored
+> The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on platform {2}; the activity of users {3} is ignored
 
 |  |  |
 |---|---|
@@ -63,7 +63,7 @@ Use the details from the error message to determine the cause of the error and c
 
 **System action**
 
-The connector listens for the anchor element activity messages written to the audit log topics that are registered as its catalog targets.  On each refresh it adds the activity it has observed to the counts in the UsageActivity classification of each anchor element.  The connector's own reads and updates are ignored, since otherwise each update of a classification would be counted as more activity.
+The connector listens for the anchor element activity messages written to the audit log topics that are registered as its catalog targets.  On each refresh it adds the activity it has observed to the counts in the UsageActivity classification of each anchor element.  The activity of the users listed in the ignoredUserIds configuration property, and of the connector's own user, is not counted.
 
 **User action**
 

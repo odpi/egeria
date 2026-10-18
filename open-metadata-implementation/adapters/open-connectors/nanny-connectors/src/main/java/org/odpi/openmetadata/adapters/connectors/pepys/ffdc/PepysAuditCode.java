@@ -33,16 +33,16 @@ public enum PepysAuditCode implements AuditLogMessageSet
 
     /**
      * PEPYS-ACTIVITY-OBSERVER-0002 - The {0} integration connector is starting to record the usage activity of the anchor elements
-     * in server {1} on platform {2}; the activity of its own user {3} is ignored
+     * in server {1} on platform {2}; the activity of users {3} is ignored
      */
     STARTING_CONNECTOR("PEPYS-ACTIVITY-OBSERVER-0002",
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on " +
-                               "platform {2}; the activity of its own user {3} is ignored",
+                               "platform {2}; the activity of users {3} is ignored",
                        "The connector listens for the anchor element activity messages written to the audit log topics that are " +
                                "registered as its catalog targets.  On each refresh it adds the activity it has observed to the " +
-                               "counts in the UsageActivity classification of each anchor element.  The connector's own reads and updates " +
-                               "are ignored, since otherwise each update of a classification would be counted as more activity.",
+                               "counts in the UsageActivity classification of each anchor element.  The activity of the users " +
+                               "listed in the ignoredUserIds configuration property, and of the connector's own user, is not counted.",
                        "No action is required.  This message is for monitoring the start up of the activity observer.",
                        "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
