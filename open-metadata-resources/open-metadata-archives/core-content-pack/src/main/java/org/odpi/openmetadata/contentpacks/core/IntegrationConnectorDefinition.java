@@ -17,6 +17,7 @@ import org.odpi.openmetadata.adapters.connectors.darwin.DarwinProductDependencyM
 import org.odpi.openmetadata.adapters.connectors.darwin.controls.DarwinConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider;
+import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.controls.MendelConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
@@ -53,6 +54,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImpleme
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -444,7 +446,8 @@ public enum IntegrationConnectorDefinition
     /**
      * Pepys listens to the topics that the OMAG Servers write their audit logs to and maintains the usage activity
      * counts of the assets reported there.  The OMAG Server Platform Cataloguer adds each audit log topic it
-     * catalogues as one of Pepys's catalog targets.
+     * catalogues as one of Pepys's catalog targets.  Its configuration properties hold the patterns of the userIds
+     * whose activity is not counted.
      */
     PEPYS_ACTIVITY_OBSERVER("43830f39-9805-4264-b6e1-aea9c7f4879d",
                             "PepysActivityObserverIntegrationConnector",
@@ -455,8 +458,8 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
-                            null,
-                            10,
+                            getPepysConfigProperties(),
+                            20,
                             null,
                             "d275b839-e124-414d-852c-a5d6be3b4c70",
                             "Activity Observer",
@@ -970,6 +973,25 @@ public enum IntegrationConnectorDefinition
 
         configurationProperties.put(org.odpi.openmetadata.adapters.connectors.jacquard.controls.JacquardConfigurationProperty.SUBSCRIPTION_MANAGER_GUID.getName(),
                                     BAUDOT_SUBSCRIPTION_MANAGER.getGUID());
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Return the configuration properties for the Pepys Activity Observer.  The activity of the non-personal
+     * accounts (userIds ending in npa) and the governance engines (userIds ending in engine) is not counted, so
+     * that the usage activity reflects the activity of people and external tools.  Patterns are used because the
+     * OMAG servers' userIds are different in each environment.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getPepysConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PepysConfigurationProperty.IGNORED_USER_ID_PATTERNS.getName(),
+                                    PepysConfigurationProperty.DEFAULT_IGNORED_USER_ID_PATTERNS);
 
         return configurationProperties;
     }

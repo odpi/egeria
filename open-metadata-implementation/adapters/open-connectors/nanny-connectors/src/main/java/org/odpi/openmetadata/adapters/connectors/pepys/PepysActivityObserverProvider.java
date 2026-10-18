@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.pepys;
 
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
+import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 
@@ -26,5 +27,7 @@ public class PepysActivityObserverProvider extends IntegrationConnectorProvider
         super(EgeriaOpenConnectorDefinition.PEPYS_ACTIVITY_OBSERVER,
               connectorClassName,
               null);
+
+        super.supportedConfigurationProperties = PepysConfigurationProperty.getConfigurationPropertyTypes();
     }
 }
