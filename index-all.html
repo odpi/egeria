@@ -12442,8 +12442,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#classificationBuilder" class="member-name-link">classificationBuilder</a> - Variable in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">OpenMetadataHandlerBase</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/StewardshipManagementHandler.html#classificationBuilder" class="member-name-link">classificationBuilder</a> - Variable in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/StewardshipManagementHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">StewardshipManagementHandler</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/ClassificationCondition.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">ClassificationCondition</a> - Class in <a href="org/odpi/openmetadata/frameworks/openmetadata/search/package-summary.html">org.odpi.openmetadata.frameworks.openmetadata.search</a></dt>
 <dd>
 <div class="block">The ClassificationCondition class provides support for searching against a single classification, either based only
@@ -41666,7 +41664,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of entities that match the supplied criteria.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/clients/MetadataCollectionServicesClient.html#findEntities(java.lang.String,java.lang.String,java.util.List,boolean,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findEntities(String, String, List&lt;String&gt;, boolean, SearchProperties, int, List&lt;InstanceStatus&gt;, SearchClassifications, Date, String, SequencingOrder, int)</a> - Method in class org.odpi.openmetadata.repositoryservices.clients.<a href="org/odpi/openmetadata/repositoryservices/clients/MetadataCollectionServicesClient.html" title="class in org.odpi.openmetadata.repositoryservices.clients">MetadataCollectionServicesClient</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Return a list of entities that match the supplied criteria.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#findEntities(java.lang.String,java.lang.String,java.util.List,boolean,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties,int,java.util.List,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications,java.util.Date,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,int)" class="member-name-link">findEntities(String, String, List&lt;String&gt;, boolean, SearchProperties, int, List&lt;InstanceStatus&gt;, SearchClassifications, Date, String, SequencingOrder, int)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></dt>
 <dd>
 <div class="block">Return a list of entities that match the supplied criteria.</div>
@@ -43425,6 +43425,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ConnectorContextClientBase.html#forLineage" class="member-name-link">forLineage</a> - Variable in class org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.<a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/ConnectorContextClientBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextClientBase</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html#forLog(java.lang.String)" class="member-name-link">forLog(String)</a> - Static method in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIRootHandler</a></dt>
+<dd>
+<div class="block">Return a caller-supplied value ready to write to the log.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#FORM" class="member-name-link">FORM</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>
 <div class="block">A structure used to request new data.</div>
@@ -47291,7 +47295,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return a single attribute definition for a business metadata type.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html#getAtlasBooleanProperty(java.util.Map,java.lang.String)" class="member-name-link">getAtlasBooleanProperty(Map&lt;String, Object&gt;, String)</a> - Method in class org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasIntegrationModuleBase</a></dt>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html#getAtlasBooleanProperty(java.util.Map,java.lang.String)" class="member-name-link">getAtlasBooleanProperty(Map&lt;String, Object&gt;, String)</a> - Static method in class org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasIntegrationModuleBase</a></dt>
 <dd>
 <div class="block">Retrieve a boolean property from and Apache Atlas entity's attributes.</div>
 </dd>
@@ -64831,6 +64835,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Locates and extracts an integer array property (attribute type array&lt;int&gt;) and returns its values in
  their original order.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html#getIntConfigurationProperty(java.lang.String,java.lang.Object)" class="member-name-link">getIntConfigurationProperty(String, Object)</a> - Static method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a></dt>
+<dd>
+<div class="block">Return the value of a configuration property as an int.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getIntConfigurationProperty(String, Map&lt;String, Object&gt;)</a> - Method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
 <dd>
 <div class="block">Retrieve a configuration property that is an integer.</div>
@@ -65148,6 +65156,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openwatchdog/WatchdogContext.html#getIntRequestParameter(java.lang.String,int)" class="member-name-link">getIntRequestParameter(String, int)</a> - Method in class org.odpi.openmetadata.frameworks.openwatchdog.<a href="org/odpi/openmetadata/frameworks/openwatchdog/WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a></dt>
 <dd>
 <div class="block">Return an integer request parameter the default value is used if the request parameter is not provided.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html#getIntRequestParameter(java.lang.String,java.lang.String)" class="member-name-link">getIntRequestParameter(String, String)</a> - Static method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a></dt>
+<dd>
+<div class="block">Return the value of a request parameter as an int.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionServiceConnector.html#getIntRequestParameter(java.lang.String,java.util.Map)" class="member-name-link">getIntRequestParameter(String, Map&lt;String, String&gt;)</a> - Method in class org.odpi.openmetadata.frameworks.opengovernance.<a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GovernanceActionServiceConnector</a></dt>
 <dd>
@@ -66561,6 +66573,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the report for each audit log store.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html#getLongConfigurationProperty(java.lang.String,java.lang.Object)" class="member-name-link">getLongConfigurationProperty(String, Object)</a> - Static method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a></dt>
+<dd>
+<div class="block">Return the value of a configuration property as a long.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getLongConfigurationProperty(String, Map&lt;String, Object&gt;)</a> - Method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
 <dd>
 <div class="block">Retrieve a configuration property that is an integer.</div>
@@ -66598,6 +66614,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/mappers/BaseMapper.html#getLongPropertyFromColumn(java.lang.String,java.util.Map,boolean)" class="member-name-link">getLongPropertyFromColumn(String, Map&lt;String, JDBCDataValue&gt;, boolean)</a> - Method in class org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/mappers/BaseMapper.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers">BaseMapper</a></dt>
 <dd>
 <div class="block">Retrieve a long value from a specific column.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html#getLongRequestParameter(java.lang.String,java.lang.String)" class="member-name-link">getLongRequestParameter(String, String)</a> - Static method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a></dt>
+<dd>
+<div class="block">Return the value of a request parameter as a long.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionServiceConnector.html#getLongRequestParameter(java.lang.String,java.util.Map)" class="member-name-link">getLongRequestParameter(String, Map&lt;String, String&gt;)</a> - Method in class org.odpi.openmetadata.frameworks.opengovernance.<a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GovernanceActionServiceConnector</a></dt>
 <dd>
@@ -101159,6 +101179,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">OMRS-REPOSITORY-400-078 - An invalid string was provided for the value of the {0} operator</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#INVALID_NUMERIC_PROPERTY" class="member-name-link">INVALID_NUMERIC_PROPERTY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.connectors.ffdc.<a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></dt>
+<dd>
+<div class="block">OCF-CONNECTOR-400-013 - The {0} property called {1} has a value of {2}, which is not a valid {3}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html#INVALID_OMRS_CONNECTION" class="member-name-link">INVALID_OMRS_CONNECTION</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.ffdc.<a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSErrorCode</a></dt>
 <dd>
 <div class="block">OMRS-CONNECTOR-400-004 - The connection {0} passed to the EnterpriseOMRSRepositoryConnector is invalid</div>
@@ -101384,8 +101408,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Handler for validating parameters passed on requests.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a> - Variable in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIRootHandler</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/commonservices/multitenant/GovernanceServerServiceInstance.html#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a> - Variable in class org.odpi.openmetadata.commonservices.multitenant.<a href="org/odpi/openmetadata/commonservices/multitenant/GovernanceServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">GovernanceServerServiceInstance</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/multitenant/GovernanceServerServiceInstanceHandler.html#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a> - Variable in class org.odpi.openmetadata.commonservices.multitenant.<a href="org/odpi/openmetadata/commonservices/multitenant/GovernanceServerServiceInstanceHandler.html" title="class in org.odpi.openmetadata.commonservices.multitenant">GovernanceServerServiceInstanceHandler</a></dt>
 <dd>&nbsp;</dd>
@@ -109448,8 +109470,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#messageFormatter" class="member-name-link">messageFormatter</a> - Variable in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataPlatformSecurityConnector.html#messageFormatter" class="member-name-link">messageFormatter</a> - Variable in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataPlatformSecurityConnector</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/auditlog/MessageFormatter.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.auditlog">MessageFormatter</a> - Class in <a href="org/odpi/openmetadata/frameworks/auditlog/package-summary.html">org.odpi.openmetadata.frameworks.auditlog</a></dt>
 <dd>
 <div class="block">MessageFormatter is the superclass of audit log implementations.</div>
@@ -114789,6 +114809,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Count of the number of rows updated in this table since the last statistics reset.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a> - Class in <a href="org/odpi/openmetadata/frameworks/connectors/package-summary.html">org.odpi.openmetadata.frameworks.connectors</a></dt>
+<dd>
+<div class="block">Turns a configuration property or request parameter into a whole number.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html#%3Cinit%3E()" class="member-name-link">NumericPropertyParser()</a> - Constructor for class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/NumericPropertyParser.html" title="class in org.odpi.openmetadata.frameworks.connectors">NumericPropertyParser</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
@@ -135747,8 +135773,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Copy/clone constructor.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#relationshipBuilder" class="member-name-link">relationshipBuilder</a> - Variable in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">OpenMetadataHandlerBase</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/StewardshipManagementHandler.html#relationshipBuilder" class="member-name-link">relationshipBuilder</a> - Variable in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/StewardshipManagementHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">StewardshipManagementHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworkservices/omf/client/OpenMetadataClientBase.html#relationshipBuilder" class="member-name-link">relationshipBuilder</a> - Variable in class org.odpi.openmetadata.frameworkservices.omf.client.<a href="org/odpi/openmetadata/frameworkservices/omf/client/OpenMetadataClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">OpenMetadataClientBase</a></dt>
 <dd>&nbsp;</dd>
