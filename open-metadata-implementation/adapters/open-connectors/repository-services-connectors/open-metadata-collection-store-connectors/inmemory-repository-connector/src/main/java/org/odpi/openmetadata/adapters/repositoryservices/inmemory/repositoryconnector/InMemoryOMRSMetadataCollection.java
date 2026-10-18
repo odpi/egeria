@@ -962,14 +962,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (startFromElement + pageSize >= relationshipHistory.size()))
-            {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, relationshipHistory.size()));
-            }
-            else
-            {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, startFromElement + pageSize));
-            }
+            return new ArrayList<>(relationshipHistory.subList(startFromElement, this.getPageEnd(startFromElement, pageSize, relationshipHistory.size())));
         }
 
         return  null;
@@ -2763,14 +2756,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (startFromElement + pageSize >= entityHistory.size()))
-            {
-                return new ArrayList<>(entityHistory.subList(startFromElement, entityHistory.size()));
-            }
-            else
-            {
-                return new ArrayList<>(entityHistory.subList(startFromElement, startFromElement + pageSize));
-            }
+            return new ArrayList<>(entityHistory.subList(startFromElement, this.getPageEnd(startFromElement, pageSize, entityHistory.size())));
         }
 
         return null;
@@ -2839,14 +2825,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (startFromElement + pageSize >= classificationHistory.size()))
-            {
-                return new ArrayList<>(classificationHistory.subList(startFromElement, classificationHistory.size()));
-            }
-            else
-            {
-                return new ArrayList<>(classificationHistory.subList(startFromElement, startFromElement + pageSize));
-            }
+            return new ArrayList<>(classificationHistory.subList(startFromElement, this.getPageEnd(startFromElement, pageSize, classificationHistory.size())));
         }
 
         return null;
@@ -4460,4 +4439,25 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         return searchCriteria.toString();
     }
 
+
+    /**
+     * Return the end (exclusive) of a page of history.  The sum is worked out as a long so that a very large page
+     * size requested by a caller can not overflow it.
+     *
+     * @param startFromElement first element of the page
+     * @param pageSize maximum number of elements in the page - 0 means no limit
+     * @param size number of elements available
+     * @return index of the element after the page
+     */
+    private int getPageEnd(int startFromElement,
+                           int pageSize,
+                           int size)
+    {
+        if (pageSize <= 0)
+        {
+            return size;
+        }
+
+        return (int) Math.min((long) startFromElement + (long) pageSize, size);
+    }
 }
