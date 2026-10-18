@@ -5323,7 +5323,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         EntityDetail anchorEntity = validateEntityAndAnchorForRead(userId, entityTypeName, startingEntity, entityGUIDParameterName, true, true, false, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
-        if ((anchorEntity != null) && (anchorEntity.getGUID().equals(startingEntity.getGUID())))
+        /*
+         * An entity with no Anchors classification is the anchor of its own graph, just as one that names
+         * itself as its anchor.  It reaches here when it is deleted directly, or when removing a relationship
+         * has just left it without an anchor.
+         */
+        if ((anchorEntity == null) || (anchorEntity.getGUID().equals(startingEntity.getGUID())))
         {
             securityVerifier.validateUserForElementDelete(userId,
                                                           startingEntity,

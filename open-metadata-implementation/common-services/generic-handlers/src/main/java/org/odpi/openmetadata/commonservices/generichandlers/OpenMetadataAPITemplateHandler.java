@@ -110,7 +110,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
 
         if (log.isDebugEnabled())
         {
-            log.debug("Creating new element of type " + entityTypeName + " using template " + templateGUID);
+            log.debug("Creating new element of type {} using template {}", forLog(entityTypeName), forLog(templateGUID));
         }
 
         /*
@@ -147,7 +147,8 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                  */
                 if (log.isDebugEnabled())
                 {
-                    log.debug("Adding SourcedFrom relationship from new element " + templateProgress.newBeanGUID + " of type " + entityTypeName + " to template " + templateGUID);
+                    log.debug("Adding SourcedFrom relationship from new element {} of type {} to template {}",
+                              templateProgress.newBeanGUID, forLog(entityTypeName), forLog(templateGUID));
                 }
 
                 InstanceProperties relationshipProperties = null;

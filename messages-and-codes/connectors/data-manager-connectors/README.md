@@ -6,7 +6,7 @@
 
 These connectors catalog and survey the contents of database servers and other data managers.
 
-This directory documents 85 messages in 12 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 93 messages in 15 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -25,6 +25,9 @@ This directory documents 85 messages in 12 message sets.  Return to the [message
 | [PostgresErrorCode](PostgresErrorCode.md) | Exception messages | `POSTGRES-CONNECTOR-` | 3 | <https://egeria-project.org/egeria-solutions/leveraging-postgres/overview/> |
 | [UCAuditCode](UCAuditCode.md) | Audit log messages | `UNITY-CATALOG-CONNECTOR-` | 19 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
 | [UCErrorCode](UCErrorCode.md) | Exception messages | `UNITY-CATALOG-CONNECTOR-` | 7 | <https://egeria-project.org/egeria-solutions/leveraging-unity-catalog/overview/> |
+| [WSO2MIAuditCode](WSO2MIAuditCode.md) | Audit log messages | `WSO2MI-CONNECTOR-` | 4 | <https://egeria-project.org/connectors/> |
+| [WSO2MIErrorCode](WSO2MIErrorCode.md) | Exception messages | `WSO2MI-CONNECTOR-` | 3 | <https://egeria-project.org/connectors/> |
+| [WSO2MISurveyErrorCode](WSO2MISurveyErrorCode.md) | Exception messages | `WSO2MI-SURVEY-ACTION-CONNECTOR-500-` | 1 | <https://egeria-project.org/concepts/survey-action-service/> |
 
 
 ----

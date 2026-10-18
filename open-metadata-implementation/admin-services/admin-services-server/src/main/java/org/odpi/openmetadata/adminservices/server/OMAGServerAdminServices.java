@@ -820,7 +820,7 @@ public class OMAGServerAdminServices extends TokenController
              */
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, false, methodName);
 
-            if (configStore != null)
+            if (serverConfig != null)
             {
                 response.setConfig(serverConfig.getEventBusConfig());
             }
@@ -871,7 +871,7 @@ public class OMAGServerAdminServices extends TokenController
              */
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, delegatingUserId, serverName, true, methodName);
 
-            if (configStore != null)
+            if (serverConfig != null)
             {
                 List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 

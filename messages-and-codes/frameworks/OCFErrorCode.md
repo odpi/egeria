@@ -9,7 +9,7 @@ The OCF error code is used to define first failure data capture (FFDC) for error
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 27 |
+| **Number of messages** | 28 |
 | **Message identifiers begin** | `OCF-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-connector-framework](../../open-metadata-implementation/frameworks/open-connector-framework) |
@@ -41,6 +41,7 @@ The OCF error code is used to define first failure data capture (FFDC) for error
 | [OCF-CONNECTOR-400-010](#ocf-connector-400-010) | 400 | The {0} connector cannot proceed with is processing because the endpoint address is null |
 | [OCF-CONNECTOR-400-011](#ocf-connector-400-011) | 400 | {0} element {1} does not exist |
 | [OCF-CONNECTOR-400-012](#ocf-connector-400-012) | 400 | The {0} secrets store connector cannot save or delete secrets collections, so the {1} request for collection {2} has been rejected |
+| [OCF-CONNECTOR-400-013](#ocf-connector-400-013) | 400 | The {0} property called {1} has a value of {2}, which is not a valid {3} |
 | [OCF-CONNECTION-500-001](#ocf-connection-500-001) | 500 | OCF method detected an unexpected exception |
 | [OCF-CONNECTOR-500-002](#ocf-connector-500-002) | 500 | No information about the asset {0} has been returned from the asset store for connector {1} |
 | [OCF-CONNECTOR-500-006](#ocf-connector-500-006) | 500 | The class name for the connector is not set up |
@@ -467,6 +468,27 @@ The connector does not support changes to its secrets collections.  Nothing has 
 **User action**
 
 Use a secrets store whose connector supports saving secrets collections, such as the YAML secrets file connector.  Calling isSecretsCollectionUpdateSupported() before the request avoids this error.
+
+
+----
+
+### OCF-CONNECTOR-400-013
+
+> The {0} property called {1} has a value of {2}, which is not a valid {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OCFErrorCode.INVALID_NUMERIC_PROPERTY` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The value cannot be used, so the request that needed it fails.
+
+**User action**
+
+Correct the value so that it is a whole number in the range of the expected type.  Configuration properties are typically in the connector's connection, or overridden by the CatalogTarget relationship; request parameters are supplied with the request or by the governance action type or process step.
 
 
 ----

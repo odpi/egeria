@@ -150,7 +150,7 @@ public class ClassificationHistoryAccumulator extends QueryInstanceAccumulatorBa
     public synchronized List<Classification> getResults(boolean                 oldestFirst,
                                                         OMRSMetadataCollection  metadataCollection)
     {
-        if ((accumulatedClassifications == null) || (accumulatedClassifications.isEmpty()))
+        if (accumulatedClassifications.isEmpty())
         {
             return null;
         }

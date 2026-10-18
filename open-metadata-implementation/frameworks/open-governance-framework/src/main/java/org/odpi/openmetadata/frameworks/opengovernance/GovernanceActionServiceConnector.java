@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.opengovernance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.OGFErrorCode;
@@ -194,7 +195,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
 
                 if (integerOption != null)
                 {
-                    return Integer.parseInt(integerOption);
+                    return NumericPropertyParser.getIntRequestParameter(propertyName, integerOption);
                 }
             }
         }
@@ -221,7 +222,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
 
                 if (integerOption != null)
                 {
-                    return Long.parseLong(integerOption);
+                    return NumericPropertyParser.getLongRequestParameter(propertyName, integerOption);
                 }
             }
         }

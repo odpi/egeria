@@ -420,48 +420,59 @@ public class RepositoryMapper extends BaseMapper
                     return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, null);
                 }
 
-                switch (primitiveDefCategory)
+                /*
+                 * A value that does not parse as its category means the stored row is corrupt, which is reported
+                 * as the invalid repository value below rather than as a bare NumberFormatException.
+                 */
+                try
                 {
-                    case OM_PRIMITIVE_TYPE_UNKNOWN, OM_PRIMITIVE_TYPE_STRING ->
+                    switch (primitiveDefCategory)
                     {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, propertyValue);
+                        case OM_PRIMITIVE_TYPE_UNKNOWN, OM_PRIMITIVE_TYPE_STRING ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, propertyValue);
+                        }
+                        case OM_PRIMITIVE_TYPE_BOOLEAN ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Boolean.parseBoolean(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_BYTE ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Byte.parseByte(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_CHAR ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, propertyValue.charAt(0));
+                        }
+                        case OM_PRIMITIVE_TYPE_SHORT ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Short.parseShort(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_INT ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Integer.parseInt(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_LONG ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Long.parseLong(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_FLOAT ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Float.parseFloat(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_DOUBLE, OM_PRIMITIVE_TYPE_BIGINTEGER, OM_PRIMITIVE_TYPE_BIGDECIMAL ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Double.parseDouble(propertyValue));
+                        }
+                        case OM_PRIMITIVE_TYPE_DATE ->
+                        {
+                            return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, new Date(Long.parseLong(propertyValue)));
+                        }
                     }
-                    case OM_PRIMITIVE_TYPE_BOOLEAN ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Boolean.parseBoolean(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_BYTE ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Byte.parseByte(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_CHAR ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, propertyValue.charAt(0));
-                    }
-                    case OM_PRIMITIVE_TYPE_SHORT ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Short.parseShort(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_INT ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Integer.parseInt(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_LONG ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Long.parseLong(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_FLOAT ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Float.parseFloat(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_DOUBLE, OM_PRIMITIVE_TYPE_BIGINTEGER, OM_PRIMITIVE_TYPE_BIGDECIMAL ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, Double.parseDouble(propertyValue));
-                    }
-                    case OM_PRIMITIVE_TYPE_DATE ->
-                    {
-                        return this.getPrimitivePropertyValue(attributeTypeDef, primitiveDefCategory, new Date(Long.parseLong(propertyValue)));
-                    }
+                }
+                catch (NumberFormatException invalidValue)
+                {
+                    break;
                 }
             }
         }

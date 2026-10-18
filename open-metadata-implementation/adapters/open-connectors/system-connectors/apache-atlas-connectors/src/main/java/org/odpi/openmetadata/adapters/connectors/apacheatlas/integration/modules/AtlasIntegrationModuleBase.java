@@ -233,7 +233,7 @@ public abstract class AtlasIntegrationModuleBase
                         (openMetadataCorrelationEntity.getEntity() != null) &&
                         (openMetadataCorrelationEntity.getEntity().getAttributes() != null))
             {
-                return this.getAtlasBooleanProperty(openMetadataCorrelationEntity.getEntity().getAttributes(), egeriaOwnedPropertyName);
+                return getAtlasBooleanProperty(openMetadataCorrelationEntity.getEntity().getAttributes(), egeriaOwnedPropertyName);
             }
         }
 
@@ -824,20 +824,18 @@ public abstract class AtlasIntegrationModuleBase
      *
      * @param attributes attribute map
      * @param propertyName name of property to extract
-     * @return extracted boolean or null
+     * @return extracted boolean - false if the property is missing
      */
-    protected boolean getAtlasBooleanProperty(Map<String, Object> attributes,
-                                              String              propertyName)
+    protected static boolean getAtlasBooleanProperty(Map<String, Object> attributes,
+                                                     String              propertyName)
     {
-        if (attributes != null)
+        if ((attributes != null) && (attributes.get(propertyName) != null))
         {
-            if (attributes.get(propertyName) != null)
-            {
-                if (attributes.get(propertyName).toString() == "true")
-                {
-                    return true;
-                }
-            }
+            /*
+             * The value may be a Boolean or a String depending on how the entity was deserialized.  Comparing
+             * strings with == only worked for a Boolean, whose toString returns the interned literal.
+             */
+            return "true".equals(attributes.get(propertyName).toString());
         }
 
         return false;

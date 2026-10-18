@@ -48,8 +48,6 @@ import java.util.Map;
  */
 public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
-    final PropertyHelper propertyHelper = new PropertyHelper();
-
     List<String>        defaultExcludeDatabases = null;
     List<String>        defaultIncludeDatabases = null;
     String              defaultFriendshipGUID   = null;

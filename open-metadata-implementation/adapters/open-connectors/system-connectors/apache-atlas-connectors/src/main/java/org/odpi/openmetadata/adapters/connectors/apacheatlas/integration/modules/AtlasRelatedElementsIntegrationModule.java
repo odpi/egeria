@@ -162,7 +162,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                      */
                     if ((correlationEntity != null) && (correlationEntity.getStatus() == AtlasInstanceStatus.ACTIVE))
                     {
-                        boolean egeriaOwned = super.getAtlasBooleanProperty(correlationEntity.getAttributes(), egeriaOwnedPropertyName);
+                        boolean egeriaOwned = getAtlasBooleanProperty(correlationEntity.getAttributes(), egeriaOwnedPropertyName);
 
                         /*
                          * Only entities that originated in Apache Atlas are processed.

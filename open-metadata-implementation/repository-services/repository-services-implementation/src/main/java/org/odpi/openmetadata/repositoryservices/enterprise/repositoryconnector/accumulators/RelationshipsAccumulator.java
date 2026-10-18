@@ -120,7 +120,7 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
      */
     public synchronized List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
-        if ((accumulatedRelationships == null) || (accumulatedRelationships.isEmpty()))
+        if (accumulatedRelationships.isEmpty())
         {
             return null;
         }

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openwatchdog;
 
+import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
@@ -206,9 +207,9 @@ public class WatchdogContext extends ConnectorContextBase
     {
         int requestParameterValue = defaultValue;
 
-        if ((this.requestParameters != null) && (this.requestParameters.containsKey(requestParameterName)))
+        if ((this.requestParameters != null) && (this.requestParameters.get(requestParameterName) != null))
         {
-            requestParameterValue = Integer.parseInt(this.requestParameters.get(requestParameterName));
+            requestParameterValue = NumericPropertyParser.getIntRequestParameter(requestParameterName, this.requestParameters.get(requestParameterName));
         }
 
         return requestParameterValue;

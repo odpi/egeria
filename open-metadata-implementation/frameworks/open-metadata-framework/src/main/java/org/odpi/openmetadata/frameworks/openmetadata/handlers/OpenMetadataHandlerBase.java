@@ -736,7 +736,7 @@ public class OpenMetadataHandlerBase
                  * searched for, so the server is told not to report them as found.  An element whose view is being
                  * assembled as part of a larger view keeps the outer view's element.
                  */
-                if ((queryOptions.getViewElementGUID() == null) && (openMetadataElement != null))
+                if (queryOptions.getViewElementGUID() == null)
                 {
                     queryOptions.setViewElementGUID(openMetadataElement.getElementGUID());
                 }

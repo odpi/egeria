@@ -252,7 +252,7 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
                                                       EnterpriseOMRSRepositoryConnector repositoryConnector,
                                                       OMRSMetadataCollection            metadataCollection)
     {
-        if ((accumulatedEntities == null) || (accumulatedEntities.isEmpty()))
+        if (accumulatedEntities.isEmpty())
         {
             return null;
         }

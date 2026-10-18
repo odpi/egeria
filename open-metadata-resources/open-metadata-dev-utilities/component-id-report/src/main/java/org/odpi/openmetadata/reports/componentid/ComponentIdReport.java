@@ -161,22 +161,23 @@ public class ComponentIdReport
             reportFile.delete();
         }
 
-        FileOutputStream fileOutStream = new FileOutputStream(reportFile);
-
-        fileOutStream.write(licenseString.getBytes());
-        fileOutStream.write(copyrightString.getBytes());
-        fileOutStream.write(reportHeader.getBytes());
-
-        for (Integer componentId : report.keySet())
+        try (FileOutputStream fileOutStream = new FileOutputStream(reportFile))
         {
-            ComponentDescription componentDescription = report.get(componentId);
+            fileOutStream.write(licenseString.getBytes());
+            fileOutStream.write(copyrightString.getBytes());
+            fileOutStream.write(reportHeader.getBytes());
 
-            String reportLine = "| " + componentDescription.getComponentId() + " | " + componentDescription.getComponentName() + " | " + componentDescription.getComponentDescription() + " | " + componentDescription.getComponentDevelopmentStatus().getName() + " | " + componentDescription.getComponentWikiURL() + " |\n";
-            fileOutStream.write(reportLine.getBytes());
-            System.out.print(reportLine);
+            for (Integer componentId : report.keySet())
+            {
+                ComponentDescription componentDescription = report.get(componentId);
+
+                String reportLine = "| " + componentDescription.getComponentId() + " | " + componentDescription.getComponentName() + " | " + componentDescription.getComponentDescription() + " | " + componentDescription.getComponentDevelopmentStatus().getName() + " | " + componentDescription.getComponentWikiURL() + " |\n";
+                fileOutStream.write(reportLine.getBytes());
+                System.out.print(reportLine);
+            }
+
+            fileOutStream.write(snippetString.getBytes());
         }
-
-        fileOutStream.write(snippetString.getBytes());
     }
 
 

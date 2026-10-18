@@ -307,6 +307,12 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     {
         final String actionDescription = "processTypeDefEvent";
 
+        if (typeDefEvent == null)
+        {
+            log.debug("Null typeDef event; ignoring event");
+            return;
+        }
+
         try
         {
             log.debug("Processing typeDef event: " + typeDefEvent);
@@ -448,14 +454,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         }
         catch (Exception error)
         {
-            String eventString = NULL_EVENT;
-
-            if (typeDefEvent != null)
-            {
-                eventString = typeDefEvent.toString();
-            }
-
-            this.logUnexpectedException(eventString, error, actionDescription);
+            this.logUnexpectedException(typeDefEvent.toString(), error, actionDescription);
         }
     }
 
@@ -468,6 +467,12 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent)
     {
         final String actionDescription = "processInstanceEvent";
+
+        if (instanceEvent == null)
+        {
+            log.debug("Null instance event; ignoring event");
+            return;
+        }
 
         try
         {
@@ -852,14 +857,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         }
         catch (Exception error)
         {
-            String eventString = NULL_EVENT;
-
-            if (instanceEvent != null)
-            {
-                eventString = instanceEvent.toString();
-            }
-
-            this.logUnexpectedException(eventString, error, actionDescription);
+            this.logUnexpectedException(instanceEvent.toString(), error, actionDescription);
         }
     }
 
