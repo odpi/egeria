@@ -16,13 +16,13 @@ import java.util.List;
 public enum PepysConfigurationProperty
 {
     /**
-     * The users whose activity is not counted.
+     * The patterns that match the userIds whose activity is not counted.
      */
-    IGNORED_USER_IDS("ignoredUserIds",
-                     "An optional comma-separated list of the userIds whose activity is not counted.  This is typically the userIds of the integration connectors and governance engines so that only the activity of people and external tools is recorded.  Pepys's own userId is always ignored, whether it is in this list or not, since otherwise each update it makes to a UsageActivity classification would be counted as more activity.",
-                     DataType.ARRAY_STRING.getDisplayName(),
-                     "pepysnpa,omagspcatnpa,assetonboardingengine",
-                     false),
+    IGNORED_USER_ID_PATTERNS("ignoredUserIdPatterns",
+                             "An optional comma-separated list of regular expressions (Java syntax), each matched against the whole userId.  The activity of a user whose userId matches any of them is not counted.  They typically match the non-personal accounts (userIds ending in npa) of the OMAG servers and integration connectors, and the userIds of the governance engines (ending in engine), so that only the activity of people and external tools is recorded.  A plain userId is an exact match.  Pepys's own userId is always ignored, whether a pattern matches it or not, since otherwise each update it makes to a UsageActivity classification would be counted as more activity.",
+                             DataType.ARRAY_STRING.getDisplayName(),
+                             ".*npa,.*engine",
+                             false),
 
     ;
 
@@ -31,6 +31,13 @@ public enum PepysConfigurationProperty
     public final String  dataType;
     public final String  example;
     public final boolean isPlaceholder;
+
+
+    /**
+     * The patterns set up by the core content pack: the non-personal accounts of the OMAG servers and integration
+     * connectors (ending in npa) and the governance engines (ending in engine).
+     */
+    public static final List<String> DEFAULT_IGNORED_USER_ID_PATTERNS = List.of(".*npa", ".*engine");
 
 
     /**

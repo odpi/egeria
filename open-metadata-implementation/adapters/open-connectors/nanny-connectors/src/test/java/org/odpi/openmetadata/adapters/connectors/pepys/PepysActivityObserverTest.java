@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
+import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -114,45 +115,87 @@ public class PepysActivityObserverTest
 
 
     /**
-     * The activity of the users in the ignoredUserIds configuration property is not counted - this includes the
-     * connector's own user, otherwise each update of a UsageActivity classification would be counted as more activity.
+     * The activity of the users whose userIds match the ignoredUserIdPatterns configuration property is not
+     * counted.  The content pack's default patterns match the non-personal accounts and the governance engines.
      */
-    @Test public void testIgnoredUsersActivityIgnored()
+    @Test public void testIgnoredUserPatterns()
     {
         PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
 
-        connector.setIgnoredUserIds(List.of("pepysnpa", "assetonboardingengine"), "pepysnpa");
+        connector.setIgnoredUserIdPatterns(PepysConfigurationProperty.DEFAULT_IGNORED_USER_ID_PATTERNS, "pepysnpa");
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "pepysnpa", assetGUID));
-        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "daemonnpa", assetGUID));
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "assetonboardingengine", assetGUID));
 
         assertTrue(connector.getPendingActivity().isEmpty());
 
+        /*
+         * The patterns match the whole userId, so a userId that only contains npa or engine is counted.
+         */
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "erinoverview", assetGUID));
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "npauser", assetGUID));
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "engineer", assetGUID));
+
+        assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 3L);
+    }
+
+
+    /**
+     * A plain userId in the patterns is an exact match.
+     */
+    @Test public void testExactUserIdPattern()
+    {
+        PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
+
+        connector.setIgnoredUserIdPatterns(List.of("garygeeke"), "pepysnpa");
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "garygeeke", assetGUID));
+
+        assertTrue(connector.getPendingActivity().isEmpty());
+
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "garygeekes", assetGUID));
 
         assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 1L);
     }
 
 
     /**
-     * The connector's own activity is ignored even when it is not in the ignoredUserIds configuration property,
-     * or the property is not set.  Every other user's activity is counted.
+     * The connector's own activity is ignored even when no pattern matches its userId, or the property is not
+     * set.  Its userId is matched exactly, so regular expression characters in it have no effect.
      */
     @Test public void testOwnActivityAlwaysIgnored()
     {
         PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
 
-        connector.setIgnoredUserIds(null, "pepysnpa");
-        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
+        connector.setIgnoredUserIdPatterns(null, "pepys.observer");
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepys.observer", assetGUID));
 
         assertTrue(connector.getPendingActivity().isEmpty());
 
-        connector.setIgnoredUserIds(List.of("assetonboardingengine"), "pepysnpa");
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysXobserver", assetGUID));
+
+        assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 1L);
+
+        connector = new PepysActivityObserverConnector();
+        connector.setIgnoredUserIdPatterns(List.of(".*engine"), "pepysnpa");
         connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_UPDATE, "pepysnpa", assetGUID));
 
         assertTrue(connector.getPendingActivity().isEmpty());
+    }
 
-        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "erinoverview", assetGUID));
+
+    /**
+     * A pattern that is not a valid regular expression is skipped, and the others still apply.
+     */
+    @Test public void testInvalidPatternSkipped()
+    {
+        PepysActivityObserverConnector connector = new PepysActivityObserverConnector();
+
+        connector.setIgnoredUserIdPatterns(List.of("[npa", ".*engine"), "pepysnpa");
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "assetonboardingengine", assetGUID));
+
+        assertTrue(connector.getPendingActivity().isEmpty());
+
+        connector.observe(getRecord(OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ, "daemonnpa", assetGUID));
 
         assertEquals(connector.getPendingActivity().get(assetGUID).getTotal(), 1L);
     }

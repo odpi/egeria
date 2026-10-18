@@ -59,7 +59,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 /**
  * Describes the standard integration connector configuration shipped with Egeria.  They are all defined under the default integration group
@@ -447,9 +446,8 @@ public enum IntegrationConnectorDefinition
     /**
      * Pepys listens to the topics that the OMAG Servers write their audit logs to and maintains the usage activity
      * counts of the assets reported there.  The OMAG Server Platform Cataloguer adds each audit log topic it
-     * catalogues as one of Pepys's catalog targets.  Its configuration properties list the userIds of the
-     * integration connectors and governance engines, whose activity is not counted.  They are built when they are
-     * requested (see getConfigurationProperties()) because they need every value of this enum.
+     * catalogues as one of Pepys's catalog targets.  Its configuration properties hold the patterns of the userIds
+     * whose activity is not counted.
      */
     PEPYS_ACTIVITY_OBSERVER("43830f39-9805-4264-b6e1-aea9c7f4879d",
                             "PepysActivityObserverIntegrationConnector",
@@ -460,7 +458,7 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             null,
-                            null,
+                            getPepysConfigProperties(),
                             20,
                             null,
                             "d275b839-e124-414d-852c-a5d6be3b4c70",
@@ -981,35 +979,19 @@ public enum IntegrationConnectorDefinition
 
 
     /**
-     * Return the configuration properties for the Pepys Activity Observer.  The activity of the integration
-     * connectors and governance engines defined in this content pack (including Pepys itself) is not counted,
-     * so that the usage activity reflects the activity of people and external tools.
+     * Return the configuration properties for the Pepys Activity Observer.  The activity of the non-personal
+     * accounts (userIds ending in npa) and the governance engines (userIds ending in engine) is not counted, so
+     * that the usage activity reflects the activity of people and external tools.  Patterns are used because the
+     * OMAG servers' userIds are different in each environment.
      *
      * @return map
      */
     private static Map<String, Object> getPepysConfigProperties()
     {
-        TreeSet<String> ignoredUserIds = new TreeSet<>();
-
-        for (IntegrationConnectorDefinition integrationConnectorDefinition : IntegrationConnectorDefinition.values())
-        {
-            if (integrationConnectorDefinition.getConnectorUserId() != null)
-            {
-                ignoredUserIds.add(integrationConnectorDefinition.getConnectorUserId());
-            }
-        }
-
-        for (GovernanceEngineDefinition governanceEngineDefinition : GovernanceEngineDefinition.values())
-        {
-            if (governanceEngineDefinition.getUserId() != null)
-            {
-                ignoredUserIds.add(governanceEngineDefinition.getUserId());
-            }
-        }
-
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put(PepysConfigurationProperty.IGNORED_USER_IDS.getName(), new ArrayList<>(ignoredUserIds));
+        configurationProperties.put(PepysConfigurationProperty.IGNORED_USER_ID_PATTERNS.getName(),
+                                    PepysConfigurationProperty.DEFAULT_IGNORED_USER_ID_PATTERNS);
 
         return configurationProperties;
     }
@@ -1389,15 +1371,6 @@ public enum IntegrationConnectorDefinition
      */
     public Map<String, Object> getConfigurationProperties()
     {
-        /*
-         * Pepys's properties list the userIds of every integration connector.  They can not be built in its
-         * constructor because the values of this enum are not available until all of them are constructed.
-         */
-        if (this == PEPYS_ACTIVITY_OBSERVER)
-        {
-            return getPepysConfigProperties();
-        }
-
         return configurationProperties;
     }
 

@@ -26,10 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * PepysActivityObserverConnector keeps a diary of the activity around the anchor elements (assets, digital products
@@ -42,10 +43,11 @@ import java.util.Set;
  * costs one read and one update per refresh rather than one per record.  Counts that could not be written are
  * kept and tried again on the next refresh.
  * <p>
- * The activity of the users listed in the ignoredUserIds configuration property is not counted.  The core content
- * pack sets it to the userIds of Egeria's integration connectors and governance engines, so only the activity of
- * people and external tools is recorded.  The connector's own userId is always ignored, whether it is in the list
- * or not - its reads and updates of the anchor elements are reported in the audit log too, and otherwise each update
+ * The activity of the users whose userIds match one of the patterns in the ignoredUserIdPatterns configuration property
+ * is not counted.  The core content pack sets them to match the non-personal accounts (ending in npa) and the governance
+ * engines (ending in engine), so only the activity of people and external tools is recorded.  The patterns are used
+ * rather than a list of userIds because the servers' userIds differ in each environment.  The connector's own userId is
+ * always ignored, whether a pattern matches it or not - its reads and updates of the anchor elements are reported in the audit log too, and otherwise each update
  * of a UsageActivity classification would be counted as more activity, without end.
  */
 public class PepysActivityObserverConnector extends DynamicIntegrationConnectorBase implements OpenMetadataTopicListener
@@ -68,9 +70,10 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
     private final Map<String, PendingUsageActivity> pendingActivity = new HashMap<>();
 
     /**
-     * The users whose activity is not counted.
+     * The patterns matching the users whose activity is not counted.  The list is replaced rather than changed, so
+     * the topic connectors' threads always see a complete list.
      */
-    private final Set<String> ignoredUserIds = new HashSet<>();
+    private volatile List<Pattern> ignoredUserIdPatterns = new ArrayList<>();
 
 
     /**
@@ -86,16 +89,16 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
 
         final String methodName = "start";
 
-        List<String> configuredUserIds = super.getArrayConfigurationProperty(PepysConfigurationProperty.IGNORED_USER_IDS.getName(),
-                                                                             connectionBean.getConfigurationProperties());
+        List<String> configuredPatterns = super.getArrayConfigurationProperty(PepysConfigurationProperty.IGNORED_USER_ID_PATTERNS.getName(),
+                                                                              connectionBean.getConfigurationProperties());
 
-        this.setIgnoredUserIds(configuredUserIds, integrationContext.getMyUserId());
+        this.setIgnoredUserIdPatterns(configuredPatterns, integrationContext.getMyUserId());
 
         logRecord(methodName,
                   PepysAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
                                                                          integrationContext.getMetadataAccessServer(),
                                                                          integrationContext.getMetadataAccessServerPlatformURLRoot(),
-                                                                         ignoredUserIds.toString()));
+                                                                         ignoredUserIdPatterns.toString()));
     }
 
 
@@ -195,7 +198,7 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
         String userId    = parameters[userIdParameter];
         String anchorGUID = parameters[anchorGUIDParameter];
 
-        if ((anchorGUID == null) || (ignoredUserIds.contains(userId)))
+        if ((anchorGUID == null) || (this.isIgnoredUser(userId)))
         {
             return;
         }
@@ -208,27 +211,79 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
 
 
     /**
-     * Set up the users whose activity is ignored.  This is called from start() with the ignoredUserIds
-     * configuration property.  The connector's own user is always added - otherwise each update of a
-     * UsageActivity classification would be counted as more activity, without end.
+     * Set up the patterns matching the users whose activity is ignored.  This is called from start() with the
+     * ignoredUserIdPatterns configuration property.  If no pattern matches the connector's own userId, an exact
+     * match for it is added - otherwise each update of a UsageActivity classification would be counted as more
+     * activity, without end.  A pattern that is not a valid regular expression is reported and skipped.
      *
-     * @param userIds list of userIds - may be null
+     * @param patterns list of regular expressions - may be null
      * @param connectorUserId the connector's own userId - may be null
      */
-    void setIgnoredUserIds(List<String> userIds,
-                           String       connectorUserId)
+    void setIgnoredUserIdPatterns(List<String> patterns,
+                                  String       connectorUserId)
     {
-        ignoredUserIds.clear();
+        final String methodName = "setIgnoredUserIdPatterns";
 
-        if (userIds != null)
+        List<Pattern> compiledPatterns = new ArrayList<>();
+
+        if (patterns != null)
         {
-            ignoredUserIds.addAll(userIds);
+            for (String pattern : patterns)
+            {
+                try
+                {
+                    compiledPatterns.add(Pattern.compile(pattern));
+                }
+                catch (PatternSyntaxException error)
+                {
+                    logRecord(methodName,
+                              PepysAuditCode.INVALID_USER_ID_PATTERN.getMessageDefinition(connectorName,
+                                                                                          pattern,
+                                                                                          error.getMessage()));
+                }
+            }
         }
 
-        if (connectorUserId != null)
+        if ((connectorUserId != null) && (! isMatch(compiledPatterns, connectorUserId)))
         {
-            ignoredUserIds.add(connectorUserId);
+            compiledPatterns.add(Pattern.compile(Pattern.quote(connectorUserId)));
         }
+
+        ignoredUserIdPatterns = compiledPatterns;
+    }
+
+
+    /**
+     * Return whether the activity of a user is ignored.
+     *
+     * @param userId calling user
+     * @return true if one of the patterns matches the whole userId
+     */
+    private boolean isIgnoredUser(String userId)
+    {
+        return (userId != null) && isMatch(ignoredUserIdPatterns, userId);
+    }
+
+
+    /**
+     * Return whether any of the patterns matches the whole userId.
+     *
+     * @param patterns patterns to test
+     * @param userId userId to test
+     * @return boolean
+     */
+    private static boolean isMatch(List<Pattern> patterns,
+                                   String        userId)
+    {
+        for (Pattern pattern : patterns)
+        {
+            if (pattern.matcher(userId).matches())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

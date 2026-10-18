@@ -33,16 +33,17 @@ public enum PepysAuditCode implements AuditLogMessageSet
 
     /**
      * PEPYS-ACTIVITY-OBSERVER-0002 - The {0} integration connector is starting to record the usage activity of the anchor elements
-     * in server {1} on platform {2}; the activity of users {3} is ignored
+     * in server {1} on platform {2}; the activity of users matching {3} is ignored
      */
     STARTING_CONNECTOR("PEPYS-ACTIVITY-OBSERVER-0002",
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} integration connector is starting to record the usage activity of the anchor elements in server {1} on " +
-                               "platform {2}; the activity of users {3} is ignored",
+                               "platform {2}; the activity of users matching {3} is ignored",
                        "The connector listens for the anchor element activity messages written to the audit log topics that are " +
                                "registered as its catalog targets.  On each refresh it adds the activity it has observed to the " +
                                "counts in the UsageActivity classification of each anchor element.  The activity of the users " +
-                               "listed in the ignoredUserIds configuration property, and of the connector's own user, is not counted.",
+                               "whose userIds match the patterns in the ignoredUserIdPatterns configuration property, and of the " +
+                               "connector's own user, is not counted.",
                        "No action is required.  This message is for monitoring the start up of the activity observer.",
                        "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
@@ -98,6 +99,21 @@ public enum PepysAuditCode implements AuditLogMessageSet
                                      "UserNotAuthorizedException, grant the connector's user permission to classify elements in the " +
                                      "element's governance zones so that its usage activity can be recorded.",
                              "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
+    /**
+     * PEPYS-ACTIVITY-OBSERVER-0007 - The {0} integration connector has skipped ignored userId pattern {1} because it is not
+     * a valid regular expression: {2}
+     */
+    INVALID_USER_ID_PATTERN("PEPYS-ACTIVITY-OBSERVER-0007",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "The {0} integration connector has skipped ignored userId pattern {1} because it is not a valid " +
+                                    "regular expression: {2}",
+                            "The connector continues to run with the other patterns, so the activity of the users that this " +
+                                    "pattern was meant to match is counted.",
+                            "Correct the pattern in the ignoredUserIdPatterns configuration property and restart the connector.  " +
+                                    "The patterns use Java regular expression syntax and are matched against the whole userId - " +
+                                    "for example, .*npa matches every userId that ends in npa.",
+                            "https://egeria-project.org/types/7/0795-Usage-Activity/"),
     ;
 
     private final String                      logMessageId;
