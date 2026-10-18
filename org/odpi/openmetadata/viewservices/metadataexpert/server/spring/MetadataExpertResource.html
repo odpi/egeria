@@ -157,15 +157,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new classification to the metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)" class="member-name-link">countMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countMetadataElements(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)" class="member-name-link">countMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;pushDown,
  <a href="../../../../frameworkservices/omf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a count of the metadata elements that match the supplied criteria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)" class="member-name-link">countRelationshipsBetweenMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)" class="member-name-link">countRelationshipsBetweenMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ boolean&nbsp;pushDown,
  <a href="../../../../frameworkservices/omf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a count of the relationships that match the requested conditions.</div>
@@ -1804,13 +1806,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="countMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)">
+<section class="detail" id="countMetadataElements(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.FindRequestBody)">
 <h3>countMetadataElements</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-conditions/count")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></span>&nbsp;<span class="element-name">countMetadataElements</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;pushDown,
  @RequestBody(required=false)
  <a href="../../../../frameworkservices/omf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a count of the metadata elements that match the supplied criteria.  This has the same search
@@ -1820,6 +1824,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>pushDown</code> - when false (the default) the matching elements are retrieved and counted, so the answer
+                 agrees with the list the caller would be given.  When true the repository counts the
+                 matching rows itself, which is fast but includes elements the caller is not able to read -
+                 use it for statistics rather than for counting on behalf of a user.</dd>
 <dd><code>requestBody</code> - properties defining the search criteria</dd>
 <dt>Returns:</dt>
 <dd>the number of elements matching the supplied criteria; or
@@ -1854,13 +1862,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)">
+<section class="detail" id="countRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.FindRelationshipRequestBody)">
 <h3>countRelationshipsBetweenMetadataElements</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-search-conditions/count")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/CountResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">CountResponse</a></span>&nbsp;<span class="element-name">countRelationshipsBetweenMetadataElements</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;pushDown,
  @RequestBody
  <a href="../../../../frameworkservices/omf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a count of the relationships that match the requested conditions.  This has the same search
@@ -1870,6 +1880,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>pushDown</code> - when false (the default) the matching elements are retrieved and counted, so the answer
+                 agrees with the list the caller would be given.  When true the repository counts the
+                 matching rows itself, which is fast but includes elements the caller is not able to read -
+                 use it for statistics rather than for counting on behalf of a user.</dd>
 <dd><code>requestBody</code> - properties defining the search criteria</dd>
 <dt>Returns:</dt>
 <dd>the number of relationships matching the supplied criteria; or

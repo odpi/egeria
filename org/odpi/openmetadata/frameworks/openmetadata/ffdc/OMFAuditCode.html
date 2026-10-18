@@ -175,18 +175,22 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-0013 - The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">OPEN-METADATA-0013 -The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_FILE_MONITORING_EXCEPTION" class="member-name-link">UNEXPECTED_FILE_MONITORING_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0004 - An unexpected {0} exception was returned to the {1} connector by the Java file monitoring service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_MISSING" class="member-name-link">VALID_METADATA_MISSING</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_DELETE" class="member-name-link">VALID_METADATA_DELETE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-0009 - The valid metadata value {0} for property {1} has been removed from metadata element {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VALID_METADATA_MISSING" class="member-name-link">VALID_METADATA_MISSING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0015 - The valid metadata value {0} for property {1} is not found</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#VALID_METADATA_UPDATE" class="member-name-link">VALID_METADATA_UPDATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_UPDATE" class="member-name-link">VALID_METADATA_UPDATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-0008 - The valid metadata value {0} for property {1} has been created/updated in metadata element {2}</div>
 </div>
 </div>
@@ -299,10 +303,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="VALID_METADATA_DELETE">
+<h3>VALID_METADATA_DELETE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">VALID_METADATA_DELETE</span></div>
+<div class="block">OPEN-METADATA-0009 - The valid metadata value {0} for property {1} has been removed from metadata element {2}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">OPEN-METADATA-0013 - The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+<div class="block">OPEN-METADATA-0013 -The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </section>
 </li>
 <li>
