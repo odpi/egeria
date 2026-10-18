@@ -810,6 +810,10 @@ public class FeedbackManagerRESTServices extends TokenController
                 {
                     response.setGUID(handler.createInformalTag(userId, requestBody, requestBody.getInitialClassifications(), informalTagProperties));
                 }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(InformalTagProperties.class.getName(), methodName);
+                }
             }
             else
             {

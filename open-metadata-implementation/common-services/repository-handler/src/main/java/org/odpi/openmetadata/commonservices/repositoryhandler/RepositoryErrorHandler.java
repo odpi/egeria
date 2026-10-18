@@ -256,7 +256,7 @@ public class RepositoryErrorHandler
      *
      * @throws UserNotAuthorizedException the provenance does not allow the update
      */
-    void validateProvenance(String              userId,
+    public void validateProvenance(String              userId,
                             InstanceAuditHeader instanceHeader,
                             String              uniqueIdentifier,
                             String              externalSourceGUID,

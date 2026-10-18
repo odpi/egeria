@@ -2,6 +2,10 @@
 # Sample requests exercising the countMetadataElements and countRelationshipsBetweenMetadataElements operations
 # of the Metadata Expert API.  These return the number of matching elements/relationships rather than the
 # elements/relationships themselves.
+#
+# Set pushDown=false (the default) to count what the caller would be given in the list - each matching element is
+# retrieved and checked for visibility.  Set pushDown=true to have the repository count the matching rows itself:
+# this is fast and suits statistics, but includes elements the caller cannot read.
 
 @baseURL=https://localhost:7443
 @viewServer=view-server
@@ -28,7 +32,7 @@ Content-Type: application/json
 ###
 # @name countGlossaryTerms
 # Count the number of GlossaryTerm entities in the metadata repository.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count?pushDown=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -41,7 +45,7 @@ Content-Type: application/json
 ###
 # @name countExceptionRelationships
 # Count the number of Exception relationships in the metadata repository.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count?pushDown=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -56,7 +60,7 @@ Content-Type: application/json
 # Count the number of entities classified with ZoneMembership where the zoneMembership property includes
 # "digital-product".  Notice that although zoneMembership is an array, the leaf value being searched for is
 # expressed as a primitive.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count?pushDown=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -84,4 +88,18 @@ Content-Type: application/json
     ],
     "matchCriteria": "ANY"
   }
+}
+
+
+###
+# @name countExceptionRelationships (statistics)
+# Count every Exception relationship stored in the metadata repository, including those whose ends the caller
+# is not able to read.  This is the count to use when building statistics.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count?pushDown=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRelationshipRequestBody",
+  "relationshipTypeName": "Exception"
 }

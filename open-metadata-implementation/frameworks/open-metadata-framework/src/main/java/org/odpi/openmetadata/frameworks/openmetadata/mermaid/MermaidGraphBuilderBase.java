@@ -2118,10 +2118,10 @@ public class MermaidGraphBuilderBase
                 if (relatedMetadataElement != null)
                 {
                     /*
-                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * If we have more than maxNodeCount related elements, create a "more" node to represent the rest.
                      * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
                      */
-                    if (nodeCount > maxNodeCount)
+                    if (nodeCount >= maxNodeCount)
                     {
                         String moreNodeId = UUID.randomUUID().toString();
                         appendNewMermaidNode(moreNodeId,
@@ -2170,10 +2170,10 @@ public class MermaidGraphBuilderBase
                 if ((relatedMetadataElement != null) && ((relatedElementTypeName == null) || (propertyHelper.isTypeOf(relatedMetadataElement.getRelatedElement().getElementHeader(), relatedElementTypeName))))
                 {
                     /*
-                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * If we have more than maxNodeCount related elements, create a "more" node to represent the rest.
                      * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
                      */
-                    if (nodeCount > maxNodeCount)
+                    if (nodeCount >= maxNodeCount)
                     {
                         String moreNodeId = UUID.randomUUID().toString();
                         appendNewMermaidNode(moreNodeId,
@@ -2220,10 +2220,10 @@ public class MermaidGraphBuilderBase
                 if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement.getRelatedElement().getElementHeader(), relatedElementTypeName)))
                 {
                     /*
-                     * If we have more than 5 related elements, create a "more" node to represent the rest.
+                     * If we have more than maxNodeCount related elements, create a "more" node to represent the rest.
                      * This helps to prevent the mermaid graph from being overwhelmed with too much detail.
                      */
-                    if (nodeCount > maxNodeCount)
+                    if (nodeCount >= maxNodeCount)
                     {
                         String moreNodeId = UUID.randomUUID().toString();
                         appendNewMermaidNode(moreNodeId,

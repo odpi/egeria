@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 import org.mockito.ArgumentCaptor;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyCondition;
@@ -18,6 +20,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -26,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertThrows;
 
 /**
@@ -312,5 +316,43 @@ public class OpenMetadataHandlerBaseTest
         {
             throw new AssertionError("unable to verify the metadata store calls", error);
         }
+    }
+
+
+    /**
+     * Relationships that have already been retrieved survive a filter that excludes the relationship used to
+     * expand them.
+     * <br><br>
+     * A Person's performsRoles come from PersonRoleAppointment, and each role is then expanded through
+     * AssignmentScope.  Asking for only PersonRoleAppointment used to drop the roles altogether because the
+     * filter was applied to the expansion relationship as if it were the relationship that found them.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void aFilteredOutExpansionLeavesTheRetrievedElementsInPlace() throws Exception
+    {
+        ElementHeader relationshipHeader = new ElementHeader();
+        relationshipHeader.setGUID("appointment-guid");
+
+        RelatedMetadataElementSummary role = new RelatedMetadataElementSummary();
+        role.setRelationshipHeader(relationshipHeader);
+
+        List<RelatedMetadataElementSummary> performsRoles = List.of(role);
+
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setGraphQueryDepth(3);
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName));
+
+        List<RelatedMetadataElementSummary> results = handler.getElementHierarchies(USER_ID,
+                                                                                    performsRoles,
+                                                                                    1,
+                                                                                    OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                    null,
+                                                                                    queryOptions,
+                                                                                    1);
+
+        assertSame(results, performsRoles, "the role appointments were dropped by the relationship filter");
+        verify(openMetadataClient, never()).getRelatedMetadataElements(anyString(), anyString(), anyInt(), any(), any());
     }
 }

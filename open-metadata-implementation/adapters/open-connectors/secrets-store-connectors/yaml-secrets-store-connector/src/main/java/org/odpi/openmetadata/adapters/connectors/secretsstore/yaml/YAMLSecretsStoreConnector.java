@@ -997,9 +997,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
         {
             if (connectionBean.getEndpoint().getNetworkAddress() != null)
             {
-                secretsStoreFile         = new File(connectionBean.getEndpoint().getNetworkAddress());
-                userAccountMap           = new HashMap<>();
-                securityAccessControlMap = new HashMap<>();
+                secretsStoreFile = new File(connectionBean.getEndpoint().getNetworkAddress());
             }
             else
             {
@@ -1010,6 +1008,14 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
         try
         {
             secretsStore = yamlObjectMapper.readValue(secretsStoreFile, SecretsStore.class);
+
+            /*
+             * The caches are built from the previous copy of the file.  They are replaced (rather than cleared)
+             * so that a concurrent reader sees either the old or the new cache, and changes to existing users
+             * and controls (passwords, status, named-list membership) take effect at the next refresh.
+             */
+            userAccountMap           = new HashMap<>();
+            securityAccessControlMap = new HashMap<>();
         }
         catch (Exception error)
         {

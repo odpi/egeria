@@ -124,6 +124,17 @@ suites that use them.
   Its platform binds to an **ephemeral port** (`server.port=0`) rather than pinning one, so a run cannot
   collide with a dev platform, with a sibling suite, or with another checkout running this same suite.
 
+* **[view-services-fvt](view-services-fvt)** - tests the **Open Metadata View Services (OMVSs)**, the REST
+  APIs that user interfaces and pyegeria call. It runs every registered view service on one view server and
+  calls each of their requests through REST with the services' own request and response beans, checking what
+  each one returns. A coverage report, `build/view-services-fvt-coverage.md`, lists any view service request no
+  test called. It needs no broker and, by default, no database.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:view-services-fvt:test -PrunViewServicesFvtInMemory
+  ./gradlew :open-metadata-test:open-metadata-fvt:view-services-fvt:test -PrunViewServicesFvt
+  ```
+
 * **[duplicate-fvt](duplicate-fvt)** - tests **duplicate management**: the repository handler combining
   confirmed duplicates on retrieval, the generic handler recording the duplicates it finds behind an
   ambiguous unique name, and the **Mendel Automated Duplicate Manager** that validates, retires and

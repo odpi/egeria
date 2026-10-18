@@ -14,6 +14,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.RelatedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.SpecializedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -229,7 +231,7 @@ public class DesignPatternHandler extends OpenMetadataHandlerBase
                                               String                        generalizedDesignPatternGUID,
                                               String                        SpecializedDesignPatternGUID,
                                               MakeAnchorOptions             makeAnchorOptions,
-                                              NestedDesignPatternProperties relationshipProperties) throws InvalidParameterException,
+                                              SpecializedDesignPatternProperties relationshipProperties) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
@@ -300,7 +302,7 @@ public class DesignPatternHandler extends OpenMetadataHandlerBase
                                           String                        designPatternOneGUID,
                                           String                        designPatternTwoGUID,
                                           MakeAnchorOptions             makeAnchorOptions,
-                                          NestedDesignPatternProperties relationshipProperties) throws InvalidParameterException,
+                                          RelatedDesignPatternProperties relationshipProperties) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException
     {

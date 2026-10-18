@@ -962,13 +962,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (pageSize >= relationshipHistory.size()))
+            if ((pageSize == 0) || (startFromElement + pageSize >= relationshipHistory.size()))
             {
                 return new ArrayList<>(relationshipHistory.subList(startFromElement, relationshipHistory.size()));
             }
             else
             {
-                return new ArrayList<>(relationshipHistory.subList(startFromElement, pageSize));
+                return new ArrayList<>(relationshipHistory.subList(startFromElement, startFromElement + pageSize));
             }
         }
 
@@ -2763,13 +2763,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (pageSize >= entityHistory.size()))
+            if ((pageSize == 0) || (startFromElement + pageSize >= entityHistory.size()))
             {
                 return new ArrayList<>(entityHistory.subList(startFromElement, entityHistory.size()));
             }
             else
             {
-                return new ArrayList<>(entityHistory.subList(startFromElement, pageSize));
+                return new ArrayList<>(entityHistory.subList(startFromElement, startFromElement + pageSize));
             }
         }
 
@@ -2839,13 +2839,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 return null;
             }
 
-            if ((pageSize == 0) || (pageSize >= classificationHistory.size()))
+            if ((pageSize == 0) || (startFromElement + pageSize >= classificationHistory.size()))
             {
                 return new ArrayList<>(classificationHistory.subList(startFromElement, classificationHistory.size()));
             }
             else
             {
-                return new ArrayList<>(classificationHistory.subList(startFromElement, pageSize));
+                return new ArrayList<>(classificationHistory.subList(startFromElement, startFromElement + pageSize));
             }
         }
 

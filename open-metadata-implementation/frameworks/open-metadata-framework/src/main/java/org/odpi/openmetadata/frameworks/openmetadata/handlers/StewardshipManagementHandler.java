@@ -112,7 +112,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         return this.getGovernanceDataClassifiedElements(userId,
                                                         OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                        OpenMetadataProperty.LEVEL_IDENTIFIER.name,
+                                                        OpenMetadataProperty.CONFIDENCE_LEVEL.name,
                                                         returnSpecificLevel,
                                                         levelIdentifier,
                                                         queryOptions,
@@ -145,7 +145,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         return this.getGovernanceDataClassifiedElements(userId,
                                                         OpenMetadataType.IMPACT_CLASSIFICATION.typeName,
-                                                        OpenMetadataProperty.LEVEL_IDENTIFIER.name,
+                                                        OpenMetadataProperty.SEVERITY_LEVEL.name,
                                                         returnSpecificLevel,
                                                         levelIdentifier,
                                                         queryOptions,
@@ -179,7 +179,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         return this.getGovernanceDataClassifiedElements(userId,
                                                         OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
-                                                        OpenMetadataProperty.LEVEL_IDENTIFIER.name,
+                                                        OpenMetadataProperty.CRITICALITY_LEVEL.name,
                                                         returnSpecificLevel,
                                                         levelIdentifier,
                                                         queryOptions,
@@ -212,7 +212,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         return this.getGovernanceDataClassifiedElements(userId,
                                                         OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
-                                                        OpenMetadataProperty.LEVEL_IDENTIFIER.name,
+                                                        OpenMetadataProperty.CONFIDENTIALITY_LEVEL.name,
                                                         returnSpecificLevel,
                                                         levelIdentifier,
                                                         queryOptions,
@@ -297,7 +297,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         else
         {
             return super.getElementsByClassification(userId,
-                                                     OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                                     classificationName,
                                                      queryOptions);
         }
     }
@@ -413,10 +413,10 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 
         if (properties != null)
         {
-            propertyHelper.addStringProperty(null,
-                                             OpenMetadataProperty.ORGANIZATION.name,
-                                             properties.getOrganization(),
-                                             PropertyComparisonOperator.EQ);
+            propertyConditions = propertyHelper.addStringProperty(null,
+                                                                  OpenMetadataProperty.ORGANIZATION.name,
+                                                                  properties.getOrganization(),
+                                                                  PropertyComparisonOperator.EQ);
             propertyConditions = propertyHelper.addStringProperty(propertyConditions,
                                                                   OpenMetadataProperty.BUSINESS_CAPABILITY.name,
                                                                   properties.getBusinessCapability(),
@@ -601,7 +601,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                             if (relationshipPropertyValue.valueAsString().equals(propertyValue))
                             {
                                 matchedElements.add(relatedMetadataElement);
-                                break;
                             }
                         }
                     }
@@ -648,7 +647,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                             if (relationshipPropertyValue.valueAsString().equals(Integer.toString(propertyValue)))
                             {
                                 matchedElements.add(relatedMetadataElement);
-                                break;
                             }
                         }
                     }
@@ -693,7 +691,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                             if (enumTypePropertyValue.getSymbolicName().equals(status.name()))
                             {
                                 matchedElements.add(relatedMetadataElement);
-                                break;
                             }
                         }
                     }
@@ -822,7 +819,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         return this.getRelatedElements(userId,
                                        governanceDefinitionGUID,
                                        OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
-                                       1,
+                                       2,
                                        null,
                                        null,
                                        queryOptions,
@@ -859,7 +856,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         return this.getRelatedElements(userId,
                                        elementGUID,
                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
-                                       2,
+                                       1,
                                        null,
                                        null,
                                        queryOptions,
@@ -896,7 +893,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         return this.getRelatedElements(userId,
                                        elementGUID,
                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
-                                       1,
+                                       2,
                                        null,
                                        null,
                                        queryOptions,

@@ -87,7 +87,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
         secretsCollectionName = super.getStringConfigurationProperty(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(),
                                                                      connectionBean.getConfigurationProperties());
 
-        if (secretsCollectionName == null)
+        if ((secretsCollectionName == null) && (isSecretsCollectionNameRequired()))
         {
             throwMissingConfigurationProperty(this.getClass().getName(),
                                               "secrets",
@@ -96,6 +96,19 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
         }
 
         checkSecretsStillValid();
+    }
+
+
+    /**
+     * Does this connector need the secretsCollectionName configuration property to start?  A connector that
+     * works with a single collection does, which is the default.  One that manages whole collections - and so
+     * is told which collection to use on each request - overrides this to return false.
+     *
+     * @return boolean
+     */
+    protected boolean isSecretsCollectionNameRequired()
+    {
+        return true;
     }
 
 

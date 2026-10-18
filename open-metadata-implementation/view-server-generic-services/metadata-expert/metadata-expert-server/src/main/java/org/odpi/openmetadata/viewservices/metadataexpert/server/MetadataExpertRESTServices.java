@@ -2326,6 +2326,10 @@ public class MetadataExpertRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
+     * @param pushDown when false (the default) the matching elements are retrieved and counted, so the answer
+     *                 agrees with the list the caller would be given.  When true the repository counts the
+     *                 matching rows itself, which is fast but includes elements the caller is not able to read -
+     *                 use it for statistics rather than for counting on behalf of a user.
      * @param requestBody properties defining the search criteria
      *
      * @return the number of elements matching the supplied criteria; or
@@ -2335,6 +2339,7 @@ public class MetadataExpertRESTServices extends TokenController
      */
     public CountResponse countMetadataElements(String          serverName,
                                                String          urlMarker,
+                                               boolean         pushDown,
                                                FindRequestBody requestBody)
     {
         final String methodName = "countMetadataElements";
@@ -2359,7 +2364,8 @@ public class MetadataExpertRESTServices extends TokenController
                 response.setCount(handler.countMetadataElements(userId,
                                                                  requestBody.getSearchProperties(),
                                                                  requestBody.getMatchClassifications(),
-                                                                 requestBody));
+                                                                 requestBody,
+                                                                 pushDown));
             }
             else
             {
@@ -2444,6 +2450,10 @@ public class MetadataExpertRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
+     * @param pushDown when false (the default) the matching elements are retrieved and counted, so the answer
+     *                 agrees with the list the caller would be given.  When true the repository counts the
+     *                 matching rows itself, which is fast but includes elements the caller is not able to read -
+     *                 use it for statistics rather than for counting on behalf of a user.
      * @param requestBody properties defining the search criteria
      *
      * @return the number of relationships matching the supplied criteria; or
@@ -2453,6 +2463,7 @@ public class MetadataExpertRESTServices extends TokenController
      */
     public CountResponse countRelationshipsBetweenMetadataElements(String                      serverName,
                                                                    String                      urlMarker,
+                                                                   boolean                     pushDown,
                                                                    FindRelationshipRequestBody requestBody)
     {
         final String methodName = "countRelationshipsBetweenMetadataElements";
@@ -2483,7 +2494,8 @@ public class MetadataExpertRESTServices extends TokenController
                                                                                     requestBody.getEnd2EntityTypeName(),
                                                                                     requestBody.getEndMatchCriteria(),
                                                                                     requestBody.getSearchProperties(),
-                                                                                    requestBody));
+                                                                                    requestBody,
+                                                                                    pushDown));
             }
             else
             {

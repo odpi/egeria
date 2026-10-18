@@ -523,6 +523,110 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
                         mapName,
                         validMetadataValue);
     }
+    /**
+     * Retrieve the metadata element representing a valid value.  The type-independent
+     * value is tried first, followed by the type-specific value (the same order as getValidValueGUID).
+     *
+     * @param userId calling user
+     * @param typeName optional type name
+     * @param propertyName the property name is used to define the qualified name
+     * @param mapName optional map name
+     * @param preferredValue value to match
+     *
+     * @return matching element or null
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    private OpenMetadataElement getValidValueElement(String userId,
+                                                     String typeName,
+                                                     String propertyName,
+                                                     String mapName,
+                                                     String preferredValue) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        String qualifiedName = OpenMetadataValidValues.constructValidValueQualifiedName(null,
+                                                                                        propertyName,
+                                                                                        mapName,
+                                                                                        preferredValue);
+
+        OpenMetadataElement validValue = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                                           qualifiedName,
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                           null);
+
+        if ((validValue == null) && (typeName != null))
+        {
+            qualifiedName = OpenMetadataValidValues.constructValidValueQualifiedName(typeName,
+                                                                                     propertyName,
+                                                                                     mapName,
+                                                                                     preferredValue);
+
+            validValue = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                           qualifiedName,
+                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                           null);
+        }
+
+        return validValue;
+    }
+
+
+    /**
+     * Delete the metadata element for a valid value.  An exception is thrown if it does not exist.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional map name
+     * @param preferredValue specific valid value to remove
+     * @param deleteOptions options to control the delete operation
+     * @param methodName calling method
+     *
+     * @return the deleted element
+     * @throws InvalidParameterException  the valid value is not found
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    a problem accessing the metadata store
+     */
+    private OpenMetadataElement deleteValidValue(String        userId,
+                                                 String        typeName,
+                                                 String        propertyName,
+                                                 String        mapName,
+                                                 String        preferredValue,
+                                                 DeleteOptions deleteOptions,
+                                                 String        methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        OpenMetadataElement validValue = this.getValidValueElement(userId, typeName, propertyName, mapName, preferredValue);
+
+        if (validValue != null)
+        {
+            openMetadataClient.deleteMetadataElementInStore(userId, validValue.getElementGUID(), deleteOptions);
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OMFAuditCode.VALID_METADATA_DELETE.getMessageDefinition(preferredValue,
+                                                                                            propertyName,
+                                                                                            validValue.getElementGUID()));
+            }
+
+            return validValue;
+        }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
+        }
+
+        throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            OpenMetadataProperty.PREFERRED_VALUE.name);
+    }
 
 
     /**
@@ -553,28 +657,14 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(propertyName, propertyNameParameterName, methodName);
         propertyHelper.validateMandatoryName(preferredValue, propertyValueParameterName, methodName);
 
-        String validValueGUID = this.getValidValueGUID(userId, typeName, propertyName, null, preferredValue);
-
-        if (validValueGUID != null)
-        {
-            openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
-        }
-
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
-        }
-
-        throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            OpenMetadataProperty.PREFERRED_VALUE.name);
+        this.deleteValidValue(userId, typeName, propertyName, null, preferredValue, deleteOptions, methodName);
     }
 
 
     /**
      * Remove a valid map name value for a property.  The match is done on preferred name.
+     * The valid values defined for this map name (see setUpValidMetadataMapValue) are also removed
+     * since they can no longer be used.
      *
      * @param userId caller's userId
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
@@ -601,23 +691,64 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(propertyName, propertyNameParameterName, methodName);
         propertyHelper.validateMandatoryName(preferredValue, propertyValueParameterName, methodName);
 
-        String validValueGUID = this.getValidValueGUID(userId, typeName, propertyName, null, preferredValue);
+        OpenMetadataElement mapNameElement = this.deleteValidValue(userId, typeName, propertyName, null, preferredValue, deleteOptions, methodName);
 
-        if (validValueGUID != null)
+        /*
+         * The map values for this map name are stored as members of the property's parent set with
+         * namespacePath set to the map name.  Only those with the same usage (type name) as the map name are removed.
+         */
+        String mapNameUsage = propertyHelper.getStringProperty(localServiceName,
+                                                               OpenMetadataProperty.USAGE.name,
+                                                               mapNameElement.getElementProperties(),
+                                                               methodName);
+
+        String parentSetGUID = this.getParentSet(userId, propertyName);
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_METADATA_VALUE.typeName);
+
+        RelatedMetadataElementList members = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                           parentSetGUID,
+                                                                                           0,
+                                                                                           OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                                                           queryOptions);
+
+        if ((members != null) && (members.getElementList() != null))
         {
-            openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
-        }
+            for (RelatedMetadataElement member : members.getElementList())
+            {
+                if ((member != null) && (member.getElement() != null))
+                {
+                    ElementProperties memberProperties = member.getElement().getElementProperties();
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
-        }
+                    String namespacePath = propertyHelper.getStringProperty(localServiceName,
+                                                                            OpenMetadataProperty.NAMESPACE_PATH.name,
+                                                                            memberProperties,
+                                                                            methodName);
+                    String usage = propertyHelper.getStringProperty(localServiceName,
+                                                                    OpenMetadataProperty.USAGE.name,
+                                                                    memberProperties,
+                                                                    methodName);
 
-        throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            OpenMetadataProperty.PREFERRED_VALUE.name);
+                    if ((preferredValue.equals(namespacePath)) && (Objects.equals(mapNameUsage, usage)))
+                    {
+                        openMetadataClient.deleteMetadataElementInStore(userId, member.getElement().getElementGUID(), deleteOptions);
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OMFAuditCode.VALID_METADATA_DELETE.getMessageDefinition(propertyHelper.getStringProperty(localServiceName,
+                                                                                                                                         OpenMetadataProperty.PREFERRED_VALUE.name,
+                                                                                                                                         memberProperties,
+                                                                                                                                         methodName),
+                                                                                                        propertyName,
+                                                                                                        member.getElement().getElementGUID()));
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -653,23 +784,7 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(preferredValue, propertyValueParameterName, methodName);
         propertyHelper.validateMandatoryName(mapName, mapNameParameterName, methodName);
 
-        String validValueGUID = this.getValidValueGUID(userId, typeName, propertyName, null, preferredValue);
-
-        if (validValueGUID != null)
-        {
-            openMetadataClient.deleteMetadataElementInStore(userId, validValueGUID, deleteOptions);
-        }
-
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMFAuditCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName));
-        }
-
-        throw new InvalidParameterException(OMFErrorCode.VALID_METADATA_MISSING.getMessageDefinition(preferredValue, propertyName),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            OpenMetadataProperty.PREFERRED_VALUE.name);
+        this.deleteValidValue(userId, typeName, propertyName, mapName, preferredValue, deleteOptions, methodName);
     }
 
 

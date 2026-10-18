@@ -9,7 +9,7 @@ The OMF error code is used to define first failure data capture (FFDC) for error
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 31 |
+| **Number of messages** | 32 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
@@ -39,6 +39,7 @@ The OMF error code is used to define first failure data capture (FFDC) for error
 | [OPEN-METADATA-400-026](#open-metadata-400-026) | 400 | The {0} element is of type {1} rather than the expected type of {2} |
 | [OPEN-METADATA-400-027](#open-metadata-400-027) | 400 | The {0} file passed on method {1} by connector {2} is not a directory |
 | [OPEN-METADATA-404-002](#open-metadata-404-002) | 404 | Multiple {0} elements where found with the unique name of {1}: the identifiers of the returned elements are {2}; the calling method is {3}, the name parameter is {4} and the server is {5} |
+| [OPEN-METADATA-404-008](#open-metadata-404-008) | 404 | The element {0} passed in parameter {1} to the {2} operation is not known |
 | [OPEN-METADATA-404-007](#open-metadata-404-007) | 404 | The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4} |
 | [OPEN-METADATA-500-001](#open-metadata-500-001) | 500 | Unexpected {0} exception in service {1} detected by method {2}.  The error message was {3} |
 | [OPEN-METADATA-500-002](#open-metadata-500-002) | 500 | The Java class {0} for PrimitiveTypeCategory {1} is not known |
@@ -429,6 +430,27 @@ The system cannot process a request because multiple elements have been discover
 **User action**
 
 Investigate why multiple elements exist.  Then retry the request once the issue is resolved.
+
+
+----
+
+### OPEN-METADATA-404-008
+
+> The element {0} passed in parameter {1} to the {2} operation is not known
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFErrorCode.UNKNOWN_ELEMENT` |
+| **HTTP error code** | 404 - Not Found - the requested element does not exist |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot complete the request because the element it needs is not in the metadata repository or is not visible to the caller.
+
+**User action**
+
+Check the unique identifier of the element and that the caller is permitted to see it, then retry the request.
 
 
 ----

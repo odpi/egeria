@@ -118,6 +118,20 @@ public class DataEngineerRESTServices extends TokenController
 
                 connector.disconnect();
             }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(ReadableTabularDataSource.class.getName(),
+
+                                                               methodName,
+
+                                                               tabularDataSetGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
+            }
         }
         catch (Throwable error)
         {

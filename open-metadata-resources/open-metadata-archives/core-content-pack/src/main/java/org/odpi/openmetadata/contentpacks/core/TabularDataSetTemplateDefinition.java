@@ -442,8 +442,8 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
         Map<String, Object> configProperties = new HashMap<>();
 
         configProperties.put(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
-        configProperties.put(CSVFileConfigurationProperty.TABLE_NAME.name, PlaceholderProperty.TABLE_NAME.getName());
-        configProperties.put(CSVFileConfigurationProperty.TABLE_DESCRIPTION.name, PlaceholderProperty.TABLE_DESCRIPTION.getName());
+        configProperties.put(CSVFileConfigurationProperty.TABLE_NAME.name, PlaceholderProperty.TABLE_NAME.getPlaceholder());
+        configProperties.put(CSVFileConfigurationProperty.TABLE_DESCRIPTION.name, PlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
 
         return configProperties;
     }

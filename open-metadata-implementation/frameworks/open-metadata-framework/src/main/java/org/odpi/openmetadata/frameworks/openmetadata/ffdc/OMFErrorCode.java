@@ -189,6 +189,15 @@ public enum OMFErrorCode implements ExceptionMessageSet
                             "https://egeria-project.org/frameworks/omf/overview/"),
 
     /**
+     * OPEN-METADATA-404-008 - The element {0} passed in parameter {1} to the {2} operation is not known
+     */
+    UNKNOWN_ELEMENT(404, "OPEN-METADATA-404-008",
+                    "The element {0} passed in parameter {1} to the {2} operation is not known",
+                    "The system cannot complete the request because the element it needs is not in the metadata repository or is not visible to the caller.",
+                    "Check the unique identifier of the element and that the caller is permitted to see it, then retry the request.",
+                    "https://egeria-project.org/frameworks/omf/overview/"),
+
+    /**
      * OPEN-METADATA-404-007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}
      */
     MISSING_CORRELATION(404, "OPEN-METADATA-404-007",

@@ -306,12 +306,23 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         }
 
         /*
+         * The top-level template may be any type related to the requested one (see getCopyType), so it is
+         * retrieved whatever its type.  The elements copied with it must be the type their template is.
+         */
+        String templateTypeName = entityTypeName;
+
+        if (firstIteration)
+        {
+            templateTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+        }
+
+        /*
          * This call ensures the template exists and is the correct type. An exception will be thrown if there are any problems.
          */
         EntityDetail templateEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         templateGUID,
                                                                         templateGUIDParameterName,
-                                                                        entityTypeName,
+                                                                        templateTypeName,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -336,10 +347,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                 templateEntity = getAttachedEntity(userId,
                                                    templateSubstituteGUID,
                                                    templateGUIDParameterName,
-                                                   entityTypeName,
+                                                   templateTypeName,
                                                    OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
                                                    OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
-                                                   entityTypeName,
+                                                   templateTypeName,
                                                    2,
                                                    forLineage,
                                                    forDuplicateProcessing,
@@ -371,6 +382,32 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                 log.debug("Using template entity " + templateEntity.getGUID());
             }
 
+            String copyTypeGUID = templateEntity.getType().getTypeDefGUID();
+            String copyTypeName = templateEntity.getType().getTypeDefName();
+
+            if ((firstIteration) && (entityTypeName != null) && (! repositoryHelper.isTypeOf(serviceName, copyTypeName, entityTypeName)))
+            {
+                /*
+                 * The requested type is not the template's type or one of its supertypes.  If it is a subtype, the
+                 * new element is created as the requested subtype, with the template's properties as its defaults.
+                 */
+                if ((entityTypeGUID != null) && (repositoryHelper.isTypeOf(serviceName, entityTypeName, copyTypeName)))
+                {
+                    copyTypeGUID = entityTypeGUID;
+                    copyTypeName = entityTypeName;
+                }
+                else
+                {
+                    throw new InvalidParameterException(GenericHandlersErrorCode.TEMPLATE_TYPE_MISMATCH.getMessageDefinition(templateEntity.getGUID(),
+                                                                                                                              templateEntity.getType().getTypeDefName(),
+                                                                                                                              entityTypeName,
+                                                                                                                              methodName),
+                                                         this.getClass().getName(),
+                                                         methodName,
+                                                         templateGUIDParameterName);
+                }
+            }
+
             /*
              * Save the version number of the template entity.
              */
@@ -380,7 +417,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
              * Check that the template is visible to the calling user.  If the template is an anchor, its own entity is returned.
              */
             EntityDetail templateAnchorEntity = this.validateEntityAndAnchorForRead(userId,
-                                                                                    entityTypeName,
+                                                                                    templateEntity.getType().getTypeDefName(),
                                                                                     templateEntity,
                                                                                     templateGUIDParameterName,
                                                                                     true,
@@ -533,8 +570,8 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
              * Ready to create the new bean
              */
             String newEntityGUID = repositoryHandler.createEntity(userId,
-                                                                  templateEntity.getType().getTypeDefGUID(),
-                                                                  templateEntity.getType().getTypeDefName(),
+                                                                  copyTypeGUID,
+                                                                  copyTypeName,
                                                                   externalSourceGUID,
                                                                   externalSourceName,
                                                                   propertyBuilder.getInstanceProperties(methodName),
@@ -574,7 +611,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                    templateProgress,
                                                                    newEntityGUID,
                                                                    templateGUID,
-                                                                   entityTypeName,
+                                                                   templateEntity.getType().getTypeDefName(),
                                                                    uniqueParameterValue,
                                                                    forLineage,
                                                                    forDuplicateProcessing,

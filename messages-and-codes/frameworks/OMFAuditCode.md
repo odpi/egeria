@@ -9,7 +9,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 15 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
@@ -27,6 +27,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-METADATA-0006](#open-metadata-0006) | INFO | The {0} connector has been disconnected - either due to its own actions or a cancel request |
 | [OPEN-METADATA-0007](#open-metadata-0007) | ERROR | The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4} |
 | [OPEN-METADATA-0008](#open-metadata-0008) | INFO | The valid metadata value {0} for property {1} has been created/updated in metadata element {2} |
+| [OPEN-METADATA-0009](#open-metadata-0009) | INFO | The valid metadata value {0} for property {1} has been removed from metadata element {2} |
 | [OPEN-METADATA-0013](#open-metadata-0013) | EXCEPTION | The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [OPEN-METADATA-0015](#open-metadata-0015) | ERROR | The valid metadata value {0} for property {1} is not found |
 | [OPEN-METADATA-0016](#open-metadata-0016) | INFO | Thread interrupt for connector {0} with message {1} |
@@ -188,6 +189,28 @@ The new or updated element is stored in the metadata repository.
 **User action**
 
 This is an informational message to provide an audit log of changes to the open metadata valid values. If this is of interest then these messages can be captured and retained.
+
+
+----
+
+### OPEN-METADATA-0009
+
+> The valid metadata value {0} for property {1} has been removed from metadata element {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.VALID_METADATA_DELETE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/frameworks/omf/overview/> |
+
+**System action**
+
+The element is deleted from the metadata repository.
+
+**User action**
+
+No action is required.  This message records the removal of a valid metadata value so that it can be traced if the value is needed again.
 
 
 ----

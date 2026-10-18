@@ -103,6 +103,20 @@ public class SecurityOfficerRESTServices extends TokenController
                     omagServerPlatformConnector.setUserAccount(requestBody.getUserAccount());
                     omagServerPlatformConnector.disconnect();
                 }
+
+                else
+
+                {
+
+                    restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                                   methodName,
+
+                                                                   platformGUID,
+
+                                                                   (connector == null) ? null : connector.getClass().getName());
+
+                }
             }
             else
             {
@@ -168,6 +182,20 @@ public class SecurityOfficerRESTServices extends TokenController
                 response.setUserAccount(omagServerPlatformConnector.getUserAccount(accountUserId));
                 omagServerPlatformConnector.disconnect();
             }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
+            }
         }
         catch (Throwable error)
         {
@@ -227,6 +255,20 @@ public class SecurityOfficerRESTServices extends TokenController
                 omagServerPlatformConnector.start();
                 omagServerPlatformConnector.deleteUserAccount(accountUserId);
                 omagServerPlatformConnector.disconnect();
+            }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
             }
         }
         catch (Throwable error)
@@ -303,6 +345,20 @@ public class SecurityOfficerRESTServices extends TokenController
                 response.setNames(omagServerPlatformConnector.getUserList(userAccountStatus, userAccountType));
                 omagServerPlatformConnector.disconnect();
             }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
+            }
         }
         catch (Throwable error)
         {
@@ -366,6 +422,20 @@ public class SecurityOfficerRESTServices extends TokenController
                     omagServerPlatformConnector.start();
                     omagServerPlatformConnector.setSecurityAccessControl(requestBody.getSecurityAccessControl());
                     omagServerPlatformConnector.disconnect();
+                }
+
+                else
+
+                {
+
+                    restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                                   methodName,
+
+                                                                   platformGUID,
+
+                                                                   (connector == null) ? null : connector.getClass().getName());
+
                 }
             }
             else
@@ -432,6 +502,20 @@ public class SecurityOfficerRESTServices extends TokenController
                 response.setSecurityAccessControl(omagServerPlatformConnector.getSecurityAccessControl(controlName));
                 omagServerPlatformConnector.disconnect();
             }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
+            }
         }
         catch (Throwable error)
         {
@@ -491,6 +575,20 @@ public class SecurityOfficerRESTServices extends TokenController
                 omagServerPlatformConnector.start();
                 omagServerPlatformConnector.deleteSecurityAccessControl(controlName);
                 omagServerPlatformConnector.disconnect();
+            }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
             }
         }
         catch (Throwable error)

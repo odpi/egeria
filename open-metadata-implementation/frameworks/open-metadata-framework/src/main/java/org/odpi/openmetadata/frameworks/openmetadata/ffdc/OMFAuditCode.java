@@ -98,7 +98,17 @@ public enum OMFAuditCode implements AuditLogMessageSet
                         "https://egeria-project.org/frameworks/omf/overview/"),
 
     /**
-     * OPEN-METADATA-0013 - The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * OPEN-METADATA-0009 - The valid metadata value {0} for property {1} has been removed from metadata element {2}
+     */
+    VALID_METADATA_DELETE("OPEN-METADATA-0009",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The valid metadata value {0} for property {1} has been removed from metadata element {2}",
+                          "The element is deleted from the metadata repository.",
+                          "No action is required.  This message records the removal of a valid metadata value so that it can be traced if the value is needed again.",
+                          "https://egeria-project.org/frameworks/omf/overview/"),
+
+    /**
+     * OPEN-METADATA-0013 -The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("OPEN-METADATA-0013",
                          AuditLogRecordSeverityLevel.EXCEPTION,

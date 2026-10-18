@@ -837,8 +837,6 @@ public class MyProfileRESTServices extends TokenController
                         initialClassifications.put(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName, zoneMembershipProperties);
 
                         userIdentityHandler.createUserIdentity(userId, newElementOptions, initialClassifications, userIdentityProperties, null);
-
-                        response.setGUID(profileGUID);
                     }
                     else
                     {
@@ -852,6 +850,8 @@ public class MyProfileRESTServices extends TokenController
                                                                   makeAnchorOptions,
                                                                   null);
                     }
+
+                    response.setGUID(profileGUID);
                 }
                 else
                 {

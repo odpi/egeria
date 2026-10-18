@@ -2148,6 +2148,7 @@ public class ClassificationExplorerResource
     public OpenMetadataRootElementsResponse getMeanings(@PathVariable String                        serverName,
                                                         @PathVariable String                        urlMarker,
                                                         @PathVariable String                        elementGUID,
+                                                        @RequestBody (required = false)
                                                         SemanticAssignmentQueryProperties requestBody)
     {
         return restAPI.getMeanings(serverName, urlMarker, elementGUID, requestBody);

@@ -1636,7 +1636,7 @@ public class GlossaryManagerRESTServices extends TokenController
             }
             else
             {
-                handler.setTermAsDataValue(userId, glossaryTermGUID, null, null);
+                handler.setTermAsQuestion(userId, glossaryTermGUID, null, null);
             }
         }
         catch (Throwable error)

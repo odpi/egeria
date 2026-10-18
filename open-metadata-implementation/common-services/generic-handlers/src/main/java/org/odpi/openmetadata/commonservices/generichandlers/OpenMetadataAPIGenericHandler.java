@@ -1439,7 +1439,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (beanEntity != null)
         {
-            InstanceProperties newProperties = this.setUpEffectiveDates(null, effectiveFrom, effectiveTo);
+            InstanceProperties newProperties = this.setUpEffectiveDates(beanEntity.getProperties(), effectiveFrom, effectiveTo);
 
             /*
              * Check that the user is able to classify the element.
@@ -1965,10 +1965,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
                     }
 
+                    /*
+                     * With no scope of its own, the new element takes its anchor's scope.
+                     */
+                    List<String> newAnchorScopeGUIDs = anchorScopeGUIDs;
+
+                    if (newAnchorScopeGUIDs == null)
+                    {
+                        newAnchorScopeGUIDs = this.getAnchorScopeGUIDFromAnchorsClassification(anchorEntity, methodName);
+                    }
+
                     propertyBuilder.setAnchors(userId, anchorEntity.getGUID(),
                                                anchorEntity.getType().getTypeDefName(),
                                                this.getDomainName(anchorEntity.getType().getTypeDefName()),
-                                               anchorScopeGUIDs,
+                                               newAnchorScopeGUIDs,
                                                anchorZones,
                                                methodName);
 
@@ -3631,16 +3641,32 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
 
         /*
-         * Only need to progress if the linked entity still exists.
+         * Only need to progress if the linked entity still exists.  A linked entity that has already been deleted
+         * (a repository may still return relationships to a soft-deleted entity) has nothing left to delete.  Other
+         * refusals - such as a memento that is only visible forLineage - are passed back to the caller.
          */
-        EntityDetail entity = repositoryHandler.getEntityByGUID(localServerUserId,
-                                                                potentialAnchoredEntity.getGUID(),
-                                                                guidParameterName,
-                                                                potentialAnchoredEntity.getType().getTypeDefName(),
-                                                                forLineage,
-                                                                forDuplicateProcessing,
-                                                                effectiveTime,
-                                                                methodName);
+        EntityDetail entity;
+
+        try
+        {
+            entity = repositoryHandler.getEntityByGUID(localServerUserId,
+                                                       potentialAnchoredEntity.getGUID(),
+                                                       guidParameterName,
+                                                       potentialAnchoredEntity.getType().getTypeDefName(),
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       methodName);
+        }
+        catch (InvalidParameterException notFound)
+        {
+            if (notFound.getReportedHTTPCode() == 404)
+            {
+                return;
+            }
+
+            throw notFound;
+        }
 
         if (entity != null)
         {
@@ -4977,18 +5003,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
-        if (cascadedDelete)
-        {
-            this.purgeAnchoredBeansInRepository(userId,
-                                                externalSourceGUID,
-                                                externalSourceName,
-                                                entityGUID,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                effectiveTime,
-                                                methodName);
-        }
-
         /*
          * A purge removes an entity that has already been soft-deleted, so the entity it is about to
          * remove has to be readable whatever its status.  This used to ask for the entity as of "now",
@@ -5001,6 +5015,47 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         if (entity != null)
         {
             securityVerifier.validateUserForElementDelete(userId, entity, repositoryHelper, serviceName, methodName);
+
+            /*
+             * An element owned by an external source can only be purged by that source, as for any other change.
+             */
+            errorHandler.validateProvenance(userId, entity, entityGUID, externalSourceGUID, externalSourceName, methodName);
+
+            if (cascadedDelete)
+            {
+                this.purgeAnchoredBeansInRepository(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    entityGUID,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
+            }
+
+            /*
+             * The repositories only purge an entity that has been soft-deleted, so a live entity is deleted first.
+             */
+            if (entity.getStatus() != InstanceStatus.DELETED)
+            {
+                repositoryHandler.removeEntity(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               entityGUID,
+                                               entityGUIDParameterName,
+                                               entityTypeGUID,
+                                               entityTypeName,
+                                               null,
+                                               null,
+                                               null,
+                                               null,
+                                               null,
+                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
+            }
         }
 
         repositoryHandler.purgeEntity(userId, entityGUID, entityTypeGUID, entityTypeName, methodName);
@@ -5375,6 +5430,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         validateCascadedDelete(userId, externalSourceGUID, externalSourceName, startingEntity, cascadedDelete, deletedEntityGUIDs, forLineage, forDuplicateProcessing, effectiveTime);
 
         /*
+         * Each relationship is removed before the element at its far end is examined, so a far end that refuses
+         * the request - a memento the caller can only see forLineage, for example - would leave the delete half
+         * done.  Checking them all first means a refused delete changes nothing at this level.
+         */
+        validateLinkedEntitiesVisible(userId, startingEntity, entityTypeName, deletedEntityGUIDs, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
+        /*
          * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
          * (This is why we explicitly delete the relationship to the parent element before calling this method).
          */
@@ -5461,6 +5523,84 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                        forDuplicateProcessing,
                                        effectiveTime,
                                        methodName);
+    }
+
+
+    /**
+     * Check that every element linked to the element about to be deleted can be read with the caller's options.
+     * One that has already been deleted is skipped; any other refusal is passed back before anything is removed.
+     *
+     * @param userId calling user
+     * @param startingEntity element about to be deleted
+     * @param entityTypeName type of the element about to be deleted
+     * @param deletedEntityGUIDs elements already part of this delete
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @throws InvalidParameterException a linked element refuses the request
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException the calling user may not read a linked element
+     */
+    private void validateLinkedEntitiesVisible(String       userId,
+                                               EntityDetail startingEntity,
+                                               String       entityTypeName,
+                                               Set<String>  deletedEntityGUIDs,
+                                               boolean      forLineage,
+                                               boolean      forDuplicateProcessing,
+                                               Date         effectiveTime,
+                                               String       methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String guidParameterName = "linkedEntity.getGUID()";
+
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       startingEntity,
+                                                                                       entityTypeName,
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       cascadeTraversalPageSize,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+            EntityProxy  linkedEntity = repositoryHandler.getOtherEnd(startingEntity.getGUID(), entityTypeName, relationship, 0, methodName);
+
+            if ((linkedEntity != null) && (! deletedEntityGUIDs.contains(linkedEntity.getGUID())))
+            {
+                try
+                {
+                    repositoryHandler.getEntityByGUID(localServerUserId,
+                                                      linkedEntity.getGUID(),
+                                                      guidParameterName,
+                                                      linkedEntity.getType().getTypeDefName(),
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
+                }
+                catch (InvalidParameterException notFound)
+                {
+                    if (notFound.getReportedHTTPCode() != 404)
+                    {
+                        throw notFound;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -6876,7 +7016,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param relationshipGUID unique identifier of the entity in the repositories
      * @param relationshipGUIDParameterName parameter name that passed the relationshipGUID
-     * @param relationshipGUIDTypeName type of relationship
+     * @param relationshipGUIDTypeName type of relationship - optional (null means any type)
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
@@ -6903,11 +7043,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        final String relationshipTypeParameterName = "relationshipGUIDTypeName";
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(relationshipGUIDTypeName, relationshipTypeParameterName, methodName);
 
         Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
                                                                             relationshipGUID,

@@ -1967,21 +1967,28 @@ public class DatabaseStore implements AutoCloseable
                                       Date    toTime,
                                       boolean oldestFirst)
     {
+        /*
+         * The literals keep their milliseconds (see getAsOfTimeClause) - versions created within the same second
+         * are otherwise indistinguishable.
+         */
+        String fromTimeLiteral = (fromTime == null) ? null : new java.sql.Timestamp(fromTime.getTime()).toString();
+        String toTimeLiteral   = (toTime == null) ? null : new java.sql.Timestamp(toTime.getTime()).toString();
+
         if ((fromTime == null) && (toTime == null))
         {
             return getOrderByDateClause(oldestFirst);
         }
         else if (fromTime == null)
         {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "')" + getOrderByDateClause(oldestFirst);
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTimeLiteral + "')" + getOrderByDateClause(oldestFirst);
         }
         else if (toTime == null)
         {
-            return " and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "')" + getOrderByDateClause(oldestFirst);
+            return " and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTimeLiteral + "')" + getOrderByDateClause(oldestFirst);
         }
         else
         {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "'))" + getOrderByDateClause(oldestFirst);
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTimeLiteral + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTimeLiteral + "'))" + getOrderByDateClause(oldestFirst);
         }
     }
 

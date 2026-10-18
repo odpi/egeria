@@ -3971,7 +3971,7 @@ public class OpenMetadataTypesArchive1_2
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        for (KeyPattern enumValue : KeyPattern.values())
+        for (CrowdSourcingRole enumValue : CrowdSourcingRole.values())
         {
             elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
                                                          enumValue.name(),

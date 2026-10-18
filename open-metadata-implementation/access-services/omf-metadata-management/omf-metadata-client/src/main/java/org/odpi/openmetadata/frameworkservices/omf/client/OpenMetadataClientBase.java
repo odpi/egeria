@@ -2345,7 +2345,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveFrom(effectiveFrom);
         requestBody.setEffectiveTo(effectiveTo);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
@@ -2415,7 +2415,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
 
-        DeleteRequestBody requestBody = new DeleteRequestBody(deleteOptions);
+        DeleteElementRequestBody requestBody = new DeleteElementRequestBody(deleteOptions);
 
         requestBody.setDeleteMethod(DeleteMethod.ARCHIVE); // Just in case the caller is being funny
 

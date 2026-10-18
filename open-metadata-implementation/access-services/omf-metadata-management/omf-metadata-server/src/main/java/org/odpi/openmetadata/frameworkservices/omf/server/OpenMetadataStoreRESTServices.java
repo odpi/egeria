@@ -2170,7 +2170,28 @@ public class OpenMetadataStoreRESTServices
 
         classificationPropertyCondition.setProperty(anchorPropertyName);
         classificationPropertyCondition.setOperator(PropertyComparisonOperator.EQ);
-        classificationPropertyCondition.setValue(classificationPropertyValue);
+
+        if (OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name.equals(anchorPropertyName))
+        {
+            /*
+             * anchorScopeGUIDs is an array<string>.  A repository matches an array property against an array
+             * value, and an array holding one entry matches the elements whose array contains it.
+             */
+            InstanceProperties arrayValues = new InstanceProperties();
+            ArrayPropertyValue arrayValue  = new ArrayPropertyValue();
+
+            arrayValues.setProperty("0", classificationPropertyValue);
+            arrayValue.setInstancePropertyCategory(InstancePropertyCategory.ARRAY);
+            arrayValue.setTypeName("array<string>");
+            arrayValue.setArrayCount(1);
+            arrayValue.setArrayValues(arrayValues);
+
+            classificationPropertyCondition.setValue(arrayValue);
+        }
+        else
+        {
+            classificationPropertyCondition.setValue(classificationPropertyValue);
+        }
         classificationPropertyConditions.add(classificationPropertyCondition);
         classificationSearchProperties.setMatchCriteria(MatchCriteria.ALL);
         classificationSearchProperties.setConditions(classificationPropertyConditions);
