@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 70 | 642 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 109 | 1048 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 70 | 644 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 109 | 1049 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -81,8 +81,8 @@ The message sets are grouped to match the part of Egeria that defines them.
 
 | Area | Message sets | Messages | Description |
 |---|---|---|---|
-| [Frameworks](frameworks) | 11 | 130 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
-| [Common Services](common-services) | 11 | 188 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
+| [Frameworks](frameworks) | 11 | 132 | The frameworks define the interfaces and base classes that connectors, governance services and clients are built on.  Their message sets are inherited by every component that builds on them, so these messages appear widely. |
+| [Common Services](common-services) | 11 | 189 | The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time. |
 | [Access Services](access-services) | 6 | 41 | The access services provide the domain-specific APIs and events that run in a metadata access server. |
 | [Generic View Services](view-server-generic-services) | 15 | 75 | The generic view services provide the REST APIs used by user interfaces to work with any type of open metadata element. |
 | [View Services](view-services) | 26 | 127 | The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task. |
@@ -200,7 +200,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OMAG-CONNECTORS-` | Audit log messages | 11 | [OMAGConnectorAuditCode](connectors/system-connectors/OMAGConnectorAuditCode.md) |
 | `OMAG-CONNECTORS-` | Exception messages | 3 | [OMAGConnectorErrorCode](connectors/system-connectors/OMAGConnectorErrorCode.md) |
 | `OMAG-GENERIC-HANDLERS-` | Audit log messages | 17 | [GenericHandlersAuditCode](common-services/GenericHandlersAuditCode.md) |
-| `OMAG-GENERIC-HANDLERS-` | Exception messages | 27 | [GenericHandlersErrorCode](common-services/GenericHandlersErrorCode.md) |
+| `OMAG-GENERIC-HANDLERS-` | Exception messages | 28 | [GenericHandlersErrorCode](common-services/GenericHandlersErrorCode.md) |
 | `OMAG-MULTI-TENANT-` | Audit log messages | 2 | [OMAGServerInstanceAuditCode](common-services/OMAGServerInstanceAuditCode.md) |
 | `OMAG-MULTI-TENANT-` | Exception messages | 12 | [OMAGServerInstanceErrorCode](common-services/OMAGServerInstanceErrorCode.md) |
 | `OMAG-REPOSITORY-HANDLER-` | Audit log messages | 10 | [RepositoryHandlerAuditCode](common-services/RepositoryHandlerAuditCode.md) |
@@ -266,8 +266,8 @@ Every message identifier begins with a prefix that names the component that rais
 | `OPEN-GOVERNANCE-ACTION-` | Exception messages | 2 | [OGFErrorCode](frameworks/OGFErrorCode.md) |
 | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | Audit log messages | 8 | [OpenLineageIntegrationConnectorAuditCode](connectors/integration-connectors/OpenLineageIntegrationConnectorAuditCode.md) |
 | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-` | Exception messages | 2 | [OpenLineageIntegrationConnectorErrorCode](connectors/integration-connectors/OpenLineageIntegrationConnectorErrorCode.md) |
-| `OPEN-METADATA-` | Audit log messages | 15 | [OMFAuditCode](frameworks/OMFAuditCode.md) |
-| `OPEN-METADATA-` | Exception messages | 31 | [OMFErrorCode](frameworks/OMFErrorCode.md) |
+| `OPEN-METADATA-` | Audit log messages | 16 | [OMFAuditCode](frameworks/OMFAuditCode.md) |
+| `OPEN-METADATA-` | Exception messages | 32 | [OMFErrorCode](frameworks/OMFErrorCode.md) |
 | `OPEN-METADATA-ACCESS-SECURITY-` | Audit log messages | 1 | [MetadataSecurityAuditCode](connectors/metadata-security-connectors/MetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Audit log messages | 27 | [OpenMetadataSecurityAuditCode](common-services/OpenMetadataSecurityAuditCode.md) |
 | `OPEN-METADATA-SECURITY-` | Exception messages | 21 | [OpenMetadataSecurityErrorCode](common-services/OpenMetadataSecurityErrorCode.md) |

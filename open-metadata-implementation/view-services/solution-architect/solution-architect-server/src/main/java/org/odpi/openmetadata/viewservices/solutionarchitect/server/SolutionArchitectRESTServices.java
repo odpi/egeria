@@ -12,9 +12,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.DesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.NestedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.RelatedDesignPatternProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.SpecializedDesignPatternProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworkservices.omf.rest.RelatedMetadataElementsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -1550,11 +1551,11 @@ public class SolutionArchitectRESTServices extends TokenController
             }
             else
             {
-                handler.linkSolutionLinkingWire(userId,
-                                                solutionComponentOneGUID,
-                                                solutionComponentTwoGUID,
-                                                null,
-                                                null);
+                response.setGUID(handler.linkSolutionLinkingWire(userId,
+                                                                 solutionComponentOneGUID,
+                                                                 solutionComponentTwoGUID,
+                                                                 null,
+                                                                 null));
             }
         }
         catch (Throwable error)
@@ -1607,7 +1608,7 @@ public class SolutionArchitectRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LineageRelationshipProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionLinkingWireProperties.class.getName(), methodName);
                 }
             }
             else
@@ -2006,7 +2007,7 @@ public class SolutionArchitectRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DesignPatternProperties.class.getName(), methodName);
                 }
             }
             else
@@ -2292,9 +2293,9 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                NestedDesignPatternProperties properties = null;
+                SpecializedDesignPatternProperties properties = null;
 
-                if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+                if (requestBody.getProperties() instanceof SpecializedDesignPatternProperties relationshipProperties)
                 {
                     properties = relationshipProperties;
                 }
@@ -2408,9 +2409,9 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                NestedDesignPatternProperties properties = null;
+                RelatedDesignPatternProperties properties = null;
 
-                if (requestBody.getProperties() instanceof NestedDesignPatternProperties relationshipProperties)
+                if (requestBody.getProperties() instanceof RelatedDesignPatternProperties relationshipProperties)
                 {
                     properties = relationshipProperties;
                 }

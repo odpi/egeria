@@ -329,7 +329,7 @@ public class DigitalBusinessRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(BusinessCapabilityProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(BusinessSignificantProperties.class.getName(), methodName);
                 }
             }
             else

@@ -209,8 +209,8 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
-                                                        connectorTypeGUID,
                                                         connectionGUID,
+                                                        connectorTypeGUID,
                                                         deleteOptions);
     }
 

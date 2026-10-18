@@ -1879,7 +1879,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                          this.getOptionalEntityTypeGUID(end1EntityTypeName),
                                          end2EntityGUIDs,
                                          this.getOptionalEntityTypeGUID(end2EntityTypeName),
-                                         this.getEndMatchCriteria(endMatchCriteria),
+                                         this.getEndMatchCriteria(this.getDefaultedEndMatchCriteria(endMatchCriteria,
+                                                                                                     end1EntityGUIDs,
+                                                                                                     end1EntityTypeName,
+                                                                                                     end2EntityGUIDs,
+                                                                                                     end2EntityTypeName)),
                                          this.getSearchProperties(searchProperties),
                                          this.getInstanceStatuses(limitResultsByStatus),
                                          asOfTime,
@@ -2415,25 +2419,29 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         String metadataElementTypeName = suppliedMetadataElementTypeName;
 
-        if (metadataElementTypeName == null)
-        {
-            EntityDetail templateEntity = this.getEntityFromRepository(userId,
-                                                                       templateGUID,
-                                                                       templateGUIDParameterName,
-                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                       null,
-                                                                       null,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       null,
-                                                                       effectiveTime,
-                                                                       false,
-                                                                       methodName);
+        /*
+         * The new element is the template's type unless the caller asks for one of its subtypes.  A supertype - such
+         * as the Asset that the asset handlers pass - only checks the template, so the properties and classifications
+         * are validated against the type the new element will actually be.
+         */
+        EntityDetail templateEntity = this.getEntityFromRepository(userId,
+                                                                   templateGUID,
+                                                                   templateGUIDParameterName,
+                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   effectiveTime,
+                                                                   false,
+                                                                   methodName);
 
-            if (templateEntity != null)
-            {
-                metadataElementTypeName = templateEntity.getType().getTypeDefName();
-            }
+        if ((templateEntity != null) &&
+                ((metadataElementTypeName == null) ||
+                 (repositoryHelper.isTypeOf(serviceName, templateEntity.getType().getTypeDefName(), metadataElementTypeName))))
+        {
+            metadataElementTypeName = templateEntity.getType().getTypeDefName();
         }
 
 
@@ -3362,6 +3370,16 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                             OpenMetadataType.LINEAGE_RELATIONSHIP.typeGUID,
                                                                                             OpenMetadataType.LINEAGE_RELATIONSHIP.typeName,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            0,
+                                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                                            effectiveTime,
                                                                                             methodName);
 
         return (lineageRelationships != null) && (! lineageRelationships.isEmpty());

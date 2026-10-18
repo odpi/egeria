@@ -292,7 +292,7 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
-                                                        schemaTypeGUID,
+                                                        elementGUID,
                                                         schemaTypeGUID,
                                                         deleteOptions);
     }

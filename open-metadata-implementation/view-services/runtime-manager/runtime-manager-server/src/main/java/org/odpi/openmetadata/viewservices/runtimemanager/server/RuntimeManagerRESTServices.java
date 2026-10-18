@@ -289,6 +289,20 @@ public class RuntimeManagerRESTServices extends TokenController
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
                 omagServerPlatformConnector.disconnect();
             }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
+            }
         }
         catch (Throwable error)
         {
@@ -350,6 +364,20 @@ public class RuntimeManagerRESTServices extends TokenController
                 omagServerPlatformConnector.start();
                 response.setConnectorType(omagServerPlatformConnector.getConnectorType(connectorProviderClassName));
                 omagServerPlatformConnector.disconnect();
+            }
+
+            else
+
+            {
+
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerPlatformConnector.class.getName(),
+
+                                                               methodName,
+
+                                                               platformGUID,
+
+                                                               (connector == null) ? null : connector.getClass().getName());
+
             }
         }
         catch (Throwable error)
@@ -580,7 +608,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -642,7 +670,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -698,7 +726,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -754,7 +782,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1315,7 +1343,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(MetadataAccessServerConnector.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1374,7 +1402,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(MetadataAccessServerConnector.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1443,7 +1471,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1504,7 +1532,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1570,7 +1598,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1640,7 +1668,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1711,7 +1739,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1774,7 +1802,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1844,7 +1872,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1914,7 +1942,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -1980,7 +2008,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -2038,7 +2066,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -2097,7 +2125,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -2166,7 +2194,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -2228,7 +2256,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)
@@ -2289,7 +2317,7 @@ public class RuntimeManagerRESTServices extends TokenController
                 restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
-                                                               connector.getClass().getName());
+                                                               (connector == null) ? null : connector.getClass().getName());
             }
         }
         catch (Throwable error)

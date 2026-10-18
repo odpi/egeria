@@ -256,8 +256,8 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
-                                                        assetGUID,
                                                         softwareCapabilityGUID,
+                                                        assetGUID,
                                                         deleteOptions);
     }
 

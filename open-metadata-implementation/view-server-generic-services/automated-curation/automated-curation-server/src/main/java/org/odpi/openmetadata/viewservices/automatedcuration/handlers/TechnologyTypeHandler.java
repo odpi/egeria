@@ -120,7 +120,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
         invalidParameterHandler.validateName(typeName, parameterName, methodName);
 
-        String searchString = "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*";
+        String searchString = "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-";
 
         SearchProperties searchProperties = new SearchProperties();
 
@@ -134,7 +134,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         PropertyCondition propertyCondition = new PropertyCondition();
         propertyCondition.setValue(propertyValue);
         propertyCondition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
-        propertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+        propertyCondition.setOperator(PropertyComparisonOperator.STARTS_WITH);
         propertyConditions.add(propertyCondition);
 
         searchProperties.setConditions(propertyConditions);

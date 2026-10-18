@@ -240,7 +240,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                        personProfileGUID,
+                                                        personRoleGUID,
                                                         personProfileGUID,
                                                         deleteOptions);
     }
@@ -311,7 +311,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                        teamProfileGUID,
+                                                        teamRoleGUID,
                                                         teamProfileGUID,
                                                         metadataSourceOptions);
     }
@@ -382,7 +382,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
-                                                        itProfileGUID,
+                                                        itProfileRoleGUID,
                                                         itProfileGUID,
                                                         deleteOptions);
     }

@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.E
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -264,26 +266,13 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
 
             if (metadataCollection != null)
             {
-                for (Long version : accumulatedEntities.keySet())
+                for (Long version : this.getVersionsInOrder(accumulatedEntities.keySet(), oldestFirst))
                 {
                     EntityDetail resultEntity = new EntityDetail(accumulatedEntities.get(version));
 
                     resultEntity.setClassifications(accumulatedClassifications.get(resultEntity.getGUID()));
 
-                    if (oldestFirst)
-                    {
-                        /*
-                         * Add to the front
-                         */
-                        results.add(0, resultEntity);
-                    }
-                    else
-                    {
-                        /*
-                         * Add to the back
-                         */
-                        results.add(resultEntity);
-                    }
+                    results.add(resultEntity);
                 }
             }
 
@@ -340,5 +329,31 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
                 }
             }
         }
+    }
+
+
+    /**
+     * Return the versions in the order the results are to be returned.  The versions are the keys of a hash map,
+     * which has no order of its own.
+     *
+     * @param versions accumulated versions
+     * @param oldestFirst ordering of results
+     * @return sorted versions
+     */
+    private List<Long> getVersionsInOrder(Set<Long> versions,
+                                          boolean   oldestFirst)
+    {
+        List<Long> sortedVersions = new ArrayList<>(versions);
+
+        if (oldestFirst)
+        {
+            sortedVersions.sort(Comparator.naturalOrder());
+        }
+        else
+        {
+            sortedVersions.sort(Comparator.reverseOrder());
+        }
+
+        return sortedVersions;
     }
 }

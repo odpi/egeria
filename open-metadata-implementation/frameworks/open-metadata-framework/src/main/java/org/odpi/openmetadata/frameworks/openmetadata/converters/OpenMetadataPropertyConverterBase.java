@@ -15477,6 +15477,8 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DataValueAssignmentProperties();
 
+                ((DataValueAssignmentProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DataValueAssignmentProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((DataValueAssignmentProperties)relationshipBeanProperties).setMethod(this.removeMethod(elementProperties));
                 ((DataValueAssignmentProperties)relationshipBeanProperties).setSource(this.removeSource(elementProperties));
                 ((DataValueAssignmentProperties)relationshipBeanProperties).setThreshold(this.removeThreshold(elementProperties));

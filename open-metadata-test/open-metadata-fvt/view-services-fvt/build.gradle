@@ -1,0 +1,107 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+// This module is a Functional Verification Test (FVT) suite for the Open Metadata View Services (OMVSs) - the
+// REST APIs that user interfaces and pyegeria call.  It starts a platform in-process with a metadata access
+// store and a view server running every registered view service, and drives each service's requests through
+// its REST API, checking that each one works.  A coverage report lists any view service request that no test
+// called.
+//
+// It is NOT part of the default build - it only runs when explicitly requested:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:view-services-fvt:test -PrunViewServicesFvtInMemory
+//   ./gradlew :open-metadata-test:open-metadata-fvt:view-services-fvt:test -PrunViewServicesFvt
+//
+// The first uses the in-memory repository and needs nothing else running; the second uses the PostgreSQL
+// server named in src/test/resources/application.properties.
+
+dependencies {
+    // The OMAG Server Platform itself, run in-process.  user-authn is excluded: this hermetic platform runs a
+    // permit-all filter chain (ViewServicesFvtSecurityConfig) rather than real logon.
+    testImplementation(project(':open-metadata-implementation:platform-chassis:platform-chassis-spring')) {
+        exclude group: 'org.odpi.egeria', module: 'user-authn'
+    }
+
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+
+    // Clients used to configure and start the servers
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    testImplementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:platform-services:platform-services-client')
+
+    // The request and response beans the view services use
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-server')
+    testImplementation project(':open-metadata-implementation:view-services:product-manager:product-manager-server')
+    testImplementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    testImplementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
+    testImplementation project(':open-metadata-implementation:view-server-generic-services:metadata-expert:metadata-expert-server')
+    testImplementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:view-server-generic-services:automated-curation:automated-curation-server')
+    testImplementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+
+    // In-process Spring Boot startup/shutdown, the REST client and the endpoint coverage recorder
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework:spring-context'
+    testImplementation 'org.springframework:spring-web'
+    testImplementation 'org.springframework:spring-webmvc'
+    testImplementation 'jakarta.servlet:jakarta.servlet-api'
+    testImplementation 'org.springframework.security:spring-security-config'
+    testImplementation 'org.springframework.security:spring-security-web'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'View Services Functional Verification Tests (view-services-fvt)'
+
+def runAgainstPostgreSQL = project.hasProperty('runViewServicesFvt')
+def runAgainstInMemory   = project.hasProperty('runViewServicesFvtInMemory')
+def runThisSuite         = runAgainstPostgreSQL || runAgainstInMemory
+
+if (runAgainstPostgreSQL && runAgainstInMemory)
+{
+    throw new GradleException('Specify either -PrunViewServicesFvt or -PrunViewServicesFvtInMemory, not both - ' +
+                                      'each run exercises one repository.')
+}
+
+test {
+    useJUnitPlatform()
+    onlyIf { runThisSuite }
+
+    systemProperty 'view.services.fvt.repository', runAgainstPostgreSQL ? 'postgres' : 'inmemory'
+
+    // Set -PviewServicesFvtStrictCoverage to fail the run when a view service request has no test.
+    if (project.hasProperty('viewServicesFvtStrictCoverage'))
+    {
+        systemProperty 'view.services.fvt.strict.coverage', 'true'
+    }
+
+    // The tests share one running platform and are not designed to run concurrently against it.
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+}
+
+jvmDependencyConflicts {
+    logging {
+        enforceLogback()
+    }
+}

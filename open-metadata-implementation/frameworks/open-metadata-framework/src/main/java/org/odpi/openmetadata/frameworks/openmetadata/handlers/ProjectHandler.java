@@ -553,13 +553,14 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the list of related projects not currently in the list.
+     * Retrieve the projects linked to a project by any of the project relationships, each with the projects
+     * linked to it in turn.  A project is only included once, however many routes lead to it.
      *
      * @param userId calling user
      * @param startingProject place to start
      * @param queryOptions type of query
-     * @param processedProjects list of guids of governance definitions already processed.
-     * @return list of connected governance definitions not yet processed
+     * @param processedProjects guids of the projects already included
+     * @return list of connected projects not yet processed
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    a problem reported in the open metadata server(s)
@@ -573,98 +574,25 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     {
         List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
 
-        if (! processedProjects.contains(startingProject.getElementHeader().getGUID()))
-        {
-            processedProjects.add(startingProject.getElementHeader().getGUID());
-            if (startingProject.getManagedProjects() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagedProjects())
-                {
-                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getProjectByGUID(userId,
-                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                      queryOptions));
+        processedProjects.add(startingProject.getElementHeader().getGUID());
 
-                        relatedElements.add(relatedElement);
-                        processedProjects.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
-                    }
-                }
-            }
-
-            if (startingProject.getManagingProjects() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagingProjects())
-                {
-                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getProjectByGUID(userId,
-                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                      queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedProjects.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
-                    }
-                }
-            }
-
-            if (startingProject.getDependentProjects() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getDependentProjects())
-                {
-                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getProjectByGUID(userId,
-                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                      queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedProjects.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
-                    }
-                }
-            }
-
-            if (startingProject.getDependsOnProjects() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getDependsOnProjects())
-                {
-                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getProjectByGUID(userId,
-                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                      queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedProjects.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
-                    }
-                }
-            }
-        }
+        this.addLinkedProjects(userId, startingProject.getManagedProjects(), true, queryOptions, processedProjects, relatedElements);
+        this.addLinkedProjects(userId, startingProject.getManagingProjects(), true, queryOptions, processedProjects, relatedElements);
+        this.addLinkedProjects(userId, startingProject.getDependentProjects(), true, queryOptions, processedProjects, relatedElements);
+        this.addLinkedProjects(userId, startingProject.getDependsOnProjects(), true, queryOptions, processedProjects, relatedElements);
 
         return relatedElements;
     }
 
 
     /**
-     * Retrieve the list of subprojects not currently in the list.
+     * Retrieve the projects managed by a project, each with the projects that it manages in turn.
      *
      * @param userId calling user
      * @param startingProject place to start
      * @param queryOptions type of query
-     * @param processedProjects list of guids of governance definitions already processed.
-     * @return list of connected governance definitions not yet processed
+     * @param processedProjects guids of the projects already included
+     * @return list of managed projects not yet processed
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    a problem reported in the open metadata server(s)
@@ -678,32 +606,75 @@ public class ProjectHandler extends OpenMetadataHandlerBase
     {
         List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
 
-        if (! processedProjects.contains(startingProject.getElementHeader().getGUID()))
-        {
-            if (startingProject.getManagedProjects() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingProject.getManagedProjects())
-                {
-                    if ((relatedDefinition != null) && (! processedProjects.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getProjectByGUID(userId,
-                                                      relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                      queryOptions));
+        processedProjects.add(startingProject.getElementHeader().getGUID());
 
-                        relatedElements.add(relatedElement);
-                        processedProjects.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
-                    }
-                }
-            }
-        }
+        this.addLinkedProjects(userId, startingProject.getManagedProjects(), false, queryOptions, processedProjects, relatedElements);
 
         return relatedElements;
     }
 
 
+    /**
+     * Add the linked projects that have not been processed yet to the results, each with its own linked
+     * projects attached.
+     *
+     * @param userId calling user
+     * @param linkedProjects relationships to the linked projects
+     * @param allRelationships follow every project relationship (true) or just ProjectHierarchy (false)
+     * @param queryOptions type of query
+     * @param processedProjects guids of the projects already included
+     * @param results list to add the linked projects to
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    private void addLinkedProjects(String                              userId,
+                                   List<RelatedMetadataElementSummary> linkedProjects,
+                                   boolean                             allRelationships,
+                                   QueryOptions                        queryOptions,
+                                   Set<String>                         processedProjects,
+                                   List<OpenMetadataRootHierarchy>     results) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        if (linkedProjects != null)
+        {
+            for (RelatedMetadataElementSummary linkedProject : linkedProjects)
+            {
+                if ((linkedProject != null) && (! processedProjects.contains(linkedProject.getRelatedElement().getElementHeader().getGUID())))
+                {
+                    OpenMetadataRootElement project = this.getProjectByGUID(userId,
+                                                                            linkedProject.getRelatedElement().getElementHeader().getGUID(),
+                                                                            queryOptions);
+
+                    if (project != null)
+                    {
+                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(project);
+
+                        processedProjects.add(relatedElement.getElementHeader().getGUID());
+
+                        List<OpenMetadataRootHierarchy> nestedProjects;
+
+                        if (allRelationships)
+                        {
+                            nestedProjects = this.getRelatedProjects(userId, relatedElement, queryOptions, processedProjects);
+                        }
+                        else
+                        {
+                            nestedProjects = this.getSubProjects(userId, relatedElement, queryOptions, processedProjects);
+                        }
+
+                        if (! nestedProjects.isEmpty())
+                        {
+                            relatedElement.setOpenMetadataRootHierarchies(nestedProjects);
+                        }
+
+                        results.add(relatedElement);
+                    }
+                }
+            }
+        }
+    }
 
 
     /**
@@ -733,7 +704,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         {
             OpenMetadataRootHierarchy openMetadataRootHierarchy = new OpenMetadataRootHierarchy(rootElement);
 
-            Set<String>  processedProjects = new HashSet<>(Collections.singletonList(projectGUID));
+            Set<String>  processedProjects = new HashSet<>();
 
             openMetadataRootHierarchy.setOpenMetadataRootHierarchies(this.getSubProjects(userId,
                                                                                          new OpenMetadataRootHierarchy(rootElement),

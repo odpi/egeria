@@ -311,14 +311,186 @@ public class OpenMetadataHandlerBase
                                                 "replacementAttributes/placeholderProperties");
         }
 
+        /*
+         * The handler's type only checks the template - the new element is the template's type unless the
+         * caller asks for one of its subtypes.
+         */
+        String newElementTypeName = metadataElementTypeName;
+
+        if ((templateOptions != null) && (templateOptions.getMetadataElementSubtypeName() != null))
+        {
+            newElementTypeName = templateOptions.getMetadataElementSubtypeName();
+        }
+
         return openMetadataClient.createMetadataElementFromTemplate(userId,
-                                                                    metadataElementTypeName,
+                                                                    newElementTypeName,
                                                                     templateOptions,
                                                                     templateGUID,
                                                                     elementBuilder.getElementProperties(replacementProperties),
                                                                     classificationBuilder.getInitialClassifications(replacementClassifications),
                                                                     placeholderProperties,
                                                                     relationshipBuilder.getNewElementProperties(parentRelationshipProperties));
+    }
+
+
+    /**
+     * Classifications that record how an element is managed rather than what it is.  An update from a template
+     * neither copies them from the template nor removes them from the element.
+     */
+    private static final Set<String> templateManagedClassifications = Set.of(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                             OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
+                                                                             OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName,
+                                                                             OpenMetadataType.MEMENTO_CLASSIFICATION.typeName);
+
+
+    /**
+     * Update an element using the properties and classifications of a template.  The element keeps its own
+     * qualified name.  With mergeUpdate set (the default) the template's property values are added to the element's,
+     * replacing any it already has; otherwise the element's properties are replaced by the template's.  With
+     * mergeClassifications set (the default) the template's classifications are added to the element's;
+     * otherwise the element's classifications that the template does not have are removed.  Classifications that
+     * manage the element - Anchors, Template, TemplateSubstitute and Memento - are never copied or removed.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element to update
+     * @param elementGUIDParameterName parameter name for elementGUID
+     * @param templateGUID unique identifier of the template
+     * @param templateGUIDParameterName parameter name for templateGUID
+     * @param updateWithTemplateOptions options for the update
+     * @param methodName calling method
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    protected void updateElementFromTemplate(String                    userId,
+                                             String                    elementGUID,
+                                             String                    elementGUIDParameterName,
+                                             String                    templateGUID,
+                                             String                    templateGUIDParameterName,
+                                             UpdateWithTemplateOptions updateWithTemplateOptions,
+                                             String                    methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        propertyHelper.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+
+        UpdateWithTemplateOptions options = (updateWithTemplateOptions == null) ? new UpdateWithTemplateOptions() : updateWithTemplateOptions;
+        GetOptions                getOptions = new GetOptions(options);
+
+        OpenMetadataElement template = openMetadataClient.getMetadataElementByGUID(userId, templateGUID, getOptions);
+        OpenMetadataElement element  = openMetadataClient.getMetadataElementByGUID(userId, elementGUID, getOptions);
+
+        if (template == null)
+        {
+            throw new InvalidParameterException(OMFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(templateGUID, templateGUIDParameterName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                templateGUIDParameterName);
+        }
+
+        if (element == null)
+        {
+            throw new InvalidParameterException(OMFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(elementGUID, elementGUIDParameterName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                elementGUIDParameterName);
+        }
+
+        /*
+         * The properties - the element keeps its own qualified name.
+         */
+        Map<String, PropertyValue> newPropertyValues = new HashMap<>();
+
+        if ((template.getElementProperties() != null) && (template.getElementProperties().getPropertyValueMap() != null))
+        {
+            newPropertyValues.putAll(template.getElementProperties().getPropertyValueMap());
+        }
+
+        newPropertyValues.remove(OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        if ((! options.getMergeUpdate()) && (element.getElementProperties() != null) && (element.getElementProperties().getPropertyValueMap() != null))
+        {
+            PropertyValue qualifiedName = element.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.QUALIFIED_NAME.name);
+
+            if (qualifiedName != null)
+            {
+                newPropertyValues.put(OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
+            }
+        }
+
+        ElementProperties newProperties = new ElementProperties();
+
+        newProperties.setPropertyValueMap(newPropertyValues);
+
+        openMetadataClient.updateMetadataElementInStore(userId, elementGUID, options, newProperties);
+
+        /*
+         * The classifications.
+         */
+        Set<String> elementClassificationNames = new HashSet<>();
+
+        if (element.getClassifications() != null)
+        {
+            for (AttachedClassification classification : element.getClassifications())
+            {
+                if (classification != null)
+                {
+                    elementClassificationNames.add(classification.getClassificationName());
+                }
+            }
+        }
+
+        Set<String> templateClassificationNames = new HashSet<>();
+
+        if (template.getClassifications() != null)
+        {
+            for (AttachedClassification classification : template.getClassifications())
+            {
+                if ((classification != null) && (! templateManagedClassifications.contains(classification.getClassificationName())))
+                {
+                    templateClassificationNames.add(classification.getClassificationName());
+
+                    if (elementClassificationNames.contains(classification.getClassificationName()))
+                    {
+                        UpdateOptions reclassifyOptions = new UpdateOptions(options);
+
+                        reclassifyOptions.setMergeUpdate(false);
+
+                        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                                            elementGUID,
+                                                                            classification.getClassificationName(),
+                                                                            reclassifyOptions,
+                                                                            classification.getClassificationProperties());
+                    }
+                    else
+                    {
+                        NewElementProperties classificationProperties = new NewElementProperties(classification.getClassificationProperties());
+
+                        classificationProperties.setEffectiveFrom(classification.getEffectiveFromTime());
+                        classificationProperties.setEffectiveTo(classification.getEffectiveToTime());
+
+                        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                                          elementGUID,
+                                                                          classification.getClassificationName(),
+                                                                          options,
+                                                                          classificationProperties);
+                    }
+                }
+            }
+        }
+
+        if (! options.getMergeClassifications())
+        {
+            for (String classificationName : elementClassificationNames)
+            {
+                if ((! templateClassificationNames.contains(classificationName)) && (! templateManagedClassifications.contains(classificationName)))
+                {
+                    openMetadataClient.declassifyMetadataElementInStore(userId, elementGUID, classificationName, options);
+                }
+            }
+        }
     }
 
 
@@ -1093,6 +1265,11 @@ public class OpenMetadataHandlerBase
                                                                                   classification.getClassificationProperties(),
                                                                                   methodName);
 
+                if (elementZones == null)
+                {
+                    return false;
+                }
+
                 for (String requiredZone : requiredZones)
                 {
                     if (requiredZone != null)
@@ -1103,6 +1280,8 @@ public class OpenMetadataHandlerBase
                         }
                     }
                 }
+
+                return true;
             }
 
             return false;
@@ -1763,37 +1942,42 @@ public class OpenMetadataHandlerBase
     {
         if (retrievedElements != null)
         {
-            if ((relationshipName == null) || (pruneRelationshipName(relationshipName, queryOptions) != null))
+            /*
+             * The retrieved elements have already passed the caller's relationship filter.  The filter only
+             * decides which relationships are followed below them - if neither the hierarchy relationship nor
+             * any side relationship is wanted, they are returned without being expanded.
+             */
+            String       prunedRelationshipName      = pruneRelationshipName(relationshipName, queryOptions);
+            List<String> prunedSideRelationshipNames = pruneRelationshipNames(sideRelationshipNames, queryOptions);
+
+            if ((prunedRelationshipName == null) && (prunedSideRelationshipNames == null))
             {
-                /*
-                 * If all relationships
-                 */
-                List<RelatedMetadataElementSummary> results = new ArrayList<>();
+                return retrievedElements;
+            }
 
-                List<String> prunedSideRelationshipNames = pruneRelationshipNames(sideRelationshipNames, queryOptions);
-                List<String> coveredRelationshipsGUIDs = new ArrayList<>();
+            List<RelatedMetadataElementSummary> results = new ArrayList<>();
+            List<String> coveredRelationshipsGUIDs = new ArrayList<>();
 
-                for (RelatedMetadataElementSummary retrievedElement : retrievedElements)
+            for (RelatedMetadataElementSummary retrievedElement : retrievedElements)
+            {
+                if (retrievedElement != null)
                 {
-                    if (retrievedElement != null)
-                    {
-                        coveredRelationshipsGUIDs.add(retrievedElement.getRelationshipHeader().getGUID());
+                    coveredRelationshipsGUIDs.add(retrievedElement.getRelationshipHeader().getGUID());
 
-                        results.add(getElementHierarchy(userId,
-                                                        retrievedElement,
-                                                        parentEnd,
-                                                        relationshipName == null ? null : List.of(relationshipName),
-                                                        prunedSideRelationshipNames,
-                                                        queryOptions,
-                                                        currentDepth,
-                                                        coveredRelationshipsGUIDs));
-                    }
+                    results.add(getElementHierarchy(userId,
+                                                    retrievedElement,
+                                                    parentEnd,
+                                                    prunedRelationshipName == null ? null : List.of(prunedRelationshipName),
+                                                    prunedSideRelationshipNames,
+                                                    queryOptions,
+                                                    currentDepth,
+                                                    coveredRelationshipsGUIDs));
                 }
+            }
 
-                if (! results.isEmpty())
-                {
-                    return results;
-                }
+            if (! results.isEmpty())
+            {
+                return results;
             }
         }
 

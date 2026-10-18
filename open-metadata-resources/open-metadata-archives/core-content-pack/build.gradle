@@ -64,6 +64,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:duckdb-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:wso2mi-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')

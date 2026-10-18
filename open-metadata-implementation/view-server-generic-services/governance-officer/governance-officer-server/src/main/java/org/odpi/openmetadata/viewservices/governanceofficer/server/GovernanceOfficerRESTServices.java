@@ -937,7 +937,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(LicenseTypeProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(LicenseProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1115,7 +1115,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(CertificationTypeProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(CertificationProperties.class.getName(), methodName);
                 }
             }
             else

@@ -62,6 +62,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:duckdb-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:wso2mi-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
 
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
@@ -248,6 +249,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:duckdb-connectors').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:wso2mi-connectors').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-dev-utilities:report-utilities').jar }
                 filePermissions {
                     unix('0755')

@@ -77,7 +77,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "TemplateRequestBody",
+  "class" : "OpenMetadataTemplateRequestBody",
   "externalSourceGUID" :  "",
   "externalSourceName" : "",
   "typeName" : "",
@@ -952,7 +952,10 @@ Content-Type: application/json
 # @name countMetadataElements (nested condition)
 # Return a count of the metadata elements that match the supplied criteria.  This has the same search semantics
 # as findMetadataElements() but returns just the number of matching elements.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count
+# Set pushDown=false (the default) to count what the caller would be given in the list - each matching element is
+# retrieved and checked for visibility.  Set pushDown=true to have the repository count the matching rows itself:
+# this is fast and suits statistics, but includes elements the caller cannot read.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions/count?pushDown=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1041,7 +1044,10 @@ Content-Type: application/json
 # @name countRelationshipsBetweenMetadataElements
 # Return a count of the relationships that match the requested conditions.  This has the same search semantics
 # as findRelationshipsBetweenMetadataElements() but returns just the number of matching relationships.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count
+# Set pushDown=false (the default) to count what the caller would be given in the list - each matching element is
+# retrieved and checked for visibility.  Set pushDown=true to have the repository count the matching rows itself:
+# this is fast and suits statistics, but includes elements the caller cannot read.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions/count?pushDown=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

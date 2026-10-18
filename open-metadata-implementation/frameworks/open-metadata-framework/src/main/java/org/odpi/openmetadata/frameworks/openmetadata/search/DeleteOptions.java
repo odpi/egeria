@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.search;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -88,6 +89,7 @@ public class DeleteOptions extends MetadataSourceOptions
      *
      * @param cascadedDelete boolean
      */
+    @JsonAlias("cascadeDelete")
     public void setCascadedDelete(boolean cascadedDelete)
     {
         this.cascadedDelete = cascadedDelete;

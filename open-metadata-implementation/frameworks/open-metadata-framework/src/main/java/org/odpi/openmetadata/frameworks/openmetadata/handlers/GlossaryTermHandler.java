@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ClassWordProperties;
@@ -20,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -172,12 +175,16 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
                                                                                                            PropertyServerException
     {
         final String methodName                    = "updateGlossaryTermFromTemplate";
-        final String glossaryGUIDParameterName     = "templateGUID";
+        final String templateGUIDParameterName     = "templateGUID";
         final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
-        propertyHelper.validateGUID(templateGUID, glossaryTermGUIDParameterName, methodName);
+        super.updateElementFromTemplate(userId,
+                                        glossaryTermGUID,
+                                        glossaryTermGUIDParameterName,
+                                        templateGUID,
+                                        templateGUIDParameterName,
+                                        updateWithTemplateOptions,
+                                        methodName);
     }
 
 
@@ -207,6 +214,62 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(glossaryGUID, end2GUIDParameterName, methodName);
+
+        /*
+         * Find the glossaries the term is in now - it is at end 2 of their CollectionMembership relationships.
+         */
+        QueryOptions queryOptions = new QueryOptions(deleteOptions);
+
+        queryOptions.setStartFrom(0);
+        queryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
+
+        List<String> currentGlossaryGUIDs = new ArrayList<>();
+
+        RelatedMetadataElementList memberships = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                               glossaryTermGUID,
+                                                                                               2,
+                                                                                               OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                               queryOptions);
+
+        if ((memberships != null) && (memberships.getElementList() != null))
+        {
+            for (RelatedMetadataElement membership : memberships.getElementList())
+            {
+                if ((membership != null) && (propertyHelper.isTypeOf(membership.getElement(), OpenMetadataType.GLOSSARY.typeName)))
+                {
+                    currentGlossaryGUIDs.add(membership.getElement().getElementGUID());
+                }
+            }
+        }
+
+        /*
+         * Join the new glossary first, so the term is never without one.  The new glossary becomes its anchor.
+         */
+        if (! currentGlossaryGUIDs.contains(glossaryGUID))
+        {
+            MakeAnchorOptions makeAnchorOptions = new MakeAnchorOptions(deleteOptions);
+
+            makeAnchorOptions.setMakeAnchor(true);
+
+            openMetadataClient.createRelatedElementsInStore(userId,
+                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                            glossaryGUID,
+                                                            glossaryTermGUID,
+                                                            makeAnchorOptions,
+                                                            null);
+        }
+
+        for (String currentGlossaryGUID : currentGlossaryGUIDs)
+        {
+            if (! currentGlossaryGUID.equals(glossaryGUID))
+            {
+                openMetadataClient.detachRelatedElementsInStore(userId,
+                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                currentGlossaryGUID,
+                                                                glossaryTermGUID,
+                                                                deleteOptions);
+            }
+        }
     }
 
 
@@ -367,11 +430,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsAbstractConcept";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -430,11 +491,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsPrimeWord";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -493,11 +552,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsModifier";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -556,11 +613,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsClassWord";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -619,11 +674,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsDataValue";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -682,11 +735,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsQuestion";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -745,11 +796,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsActivity";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,
@@ -808,11 +857,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "setTermAsContext";
         final String guidParameterName = "glossaryTermGUID";
-        final String propertiesParameterName = "properties";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(glossaryTermGUID, guidParameterName, methodName);
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
 
         openMetadataClient.classifyMetadataElementInStore(userId,
                                                           glossaryTermGUID,

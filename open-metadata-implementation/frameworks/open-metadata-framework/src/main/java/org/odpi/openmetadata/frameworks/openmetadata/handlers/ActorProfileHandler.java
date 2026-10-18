@@ -397,7 +397,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
-                                                        itProfileGUID,
+                                                        assetGUID,
                                                         itProfileGUID,
                                                         deleteOptions);
     }

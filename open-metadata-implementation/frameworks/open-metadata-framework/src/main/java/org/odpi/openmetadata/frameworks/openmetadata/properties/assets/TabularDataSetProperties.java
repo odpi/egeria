@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ReferenceCodeMappingTableProperties.class, name = "ReferenceCodeMappingProperties"),
+                @JsonSubTypes.Type(value = ReferenceCodeMappingTableProperties.class, name = "ReferenceCodeMappingTableProperties", names = {"ReferenceCodeMappingProperties"}),
                 @JsonSubTypes.Type(value = ReferenceCodeTableProperties.class, name = "ReferenceCodeTableProperties"),
         })
 public class TabularDataSetProperties extends DataSetProperties

@@ -561,7 +561,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             if (requestBody instanceof RequestIdService requestIdService)
             {
-                requestIdService.setRequestId(requestIdService.getRequestId());
+                requestIdService.setRequestId(requestId.getRequestId());
             }
 
             T  responseObject;

@@ -33,6 +33,18 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
 
 
     /**
+     * The YAML secrets file manages whole secrets collections, so it is not configured with one.
+     *
+     * @return false
+     */
+    @Override
+    protected boolean isSecretsCollectionNameRequired()
+    {
+        return false;
+    }
+
+
+    /**
      * Retrieve the refresh time from the secrets store.
      *
      * @return how long the secrets can be cached - 0 means indefinitely

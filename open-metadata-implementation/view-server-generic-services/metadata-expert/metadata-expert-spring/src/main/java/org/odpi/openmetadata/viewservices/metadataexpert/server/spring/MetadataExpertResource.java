@@ -1302,6 +1302,10 @@ public class MetadataExpertResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
+     * @param pushDown when false (the default) the matching elements are retrieved and counted, so the answer
+     *                 agrees with the list the caller would be given.  When true the repository counts the
+     *                 matching rows itself, which is fast but includes elements the caller is not able to read -
+     *                 use it for statistics rather than for counting on behalf of a user.
      * @param requestBody properties defining the search criteria
      *
      * @return the number of elements matching the supplied criteria; or
@@ -1319,10 +1323,12 @@ public class MetadataExpertResource
 
     public CountResponse countMetadataElements(@PathVariable String          serverName,
                                                @PathVariable String          urlMarker,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                             boolean         pushDown,
                                                @RequestBody (required = false)
                                                FindRequestBody requestBody)
     {
-        return restAPI.countMetadataElements(serverName, urlMarker, requestBody);
+        return restAPI.countMetadataElements(serverName, urlMarker, pushDown, requestBody);
     }
 
 
@@ -1361,6 +1367,10 @@ public class MetadataExpertResource
      *
      * @param serverName     name of server instance to route request to
      * @param urlMarker  view service URL marker
+     * @param pushDown when false (the default) the matching elements are retrieved and counted, so the answer
+     *                 agrees with the list the caller would be given.  When true the repository counts the
+     *                 matching rows itself, which is fast but includes elements the caller is not able to read -
+     *                 use it for statistics rather than for counting on behalf of a user.
      * @param requestBody properties defining the search criteria
      *
      * @return the number of relationships matching the supplied criteria; or
@@ -1378,9 +1388,11 @@ public class MetadataExpertResource
 
     public CountResponse countRelationshipsBetweenMetadataElements(@PathVariable String                      serverName,
                                                                    @PathVariable String                      urlMarker,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                                 boolean                     pushDown,
                                                                    @RequestBody  FindRelationshipRequestBody requestBody)
     {
-        return restAPI.countRelationshipsBetweenMetadataElements(serverName, urlMarker, requestBody);
+        return restAPI.countRelationshipsBetweenMetadataElements(serverName, urlMarker, pushDown, requestBody);
     }
 
 

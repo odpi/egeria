@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceClassificationBase defines the common properties for the governance action classifications.
+ * GovernedDataClassificationBase defines the common properties for the governance action classifications.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConfidentialityProperties.class, name = "ConfidentialityProperties"),
                 @JsonSubTypes.Type(value = ConfidenceProperties.class, name = "ConfidenceProperties"),
                 @JsonSubTypes.Type(value = ImpactProperties.class, name = "ImpactProperties"),
-                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionProperties"),
+                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionProperties", names = {"RetentionClassificationProperties"}),
         })
 public class GovernedDataClassificationBase extends ClassificationBeanProperties
 {

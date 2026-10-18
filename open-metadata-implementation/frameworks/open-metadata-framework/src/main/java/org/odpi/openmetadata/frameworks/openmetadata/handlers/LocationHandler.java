@@ -364,7 +364,7 @@ public class LocationHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
-                                                        locationGUID,
+                                                        elementGUID,
                                                         locationGUID,
                                                         deleteOptions);
     }

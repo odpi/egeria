@@ -873,16 +873,16 @@ public class DataDiscoveryRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof RequestForActionTargetProperties requestForActionTargetProperties)
                 {
                     handler.linkRequestForActionTarget(userId,
-                                                       elementGUID,
                                                        annotationGUID,
+                                                       elementGUID,
                                                        requestBody,
                                                        requestForActionTargetProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     handler.linkRequestForActionTarget(userId,
-                                                       elementGUID,
                                                        annotationGUID,
+                                                       elementGUID,
                                                        requestBody,
                                                        null);
                 }
@@ -894,8 +894,8 @@ public class DataDiscoveryRESTServices extends TokenController
             else
             {
                 handler.linkRequestForActionTarget(userId,
-                                                   elementGUID,
                                                    annotationGUID,
+                                                   elementGUID,
                                                    null,
                                                    null);
             }
@@ -945,7 +945,7 @@ public class DataDiscoveryRESTServices extends TokenController
 
             AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
-            handler.detachRequestForActionTarget(userId, elementGUID, annotationGUID, requestBody);
+            handler.detachRequestForActionTarget(userId, annotationGUID, elementGUID, requestBody);
         }
         catch (Throwable error)
         {

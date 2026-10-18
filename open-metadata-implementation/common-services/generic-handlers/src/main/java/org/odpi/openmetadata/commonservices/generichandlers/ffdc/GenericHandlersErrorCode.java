@@ -114,6 +114,17 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                                    "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-016 - Template {0} is a {1}, so it cannot be used to create a {2} with the {3} request
+     */
+    TEMPLATE_TYPE_MISMATCH(400, "OMAG-GENERIC-HANDLERS-400-016",
+                           "Template {0} is a {1}, so it cannot be used to create a {2} with the {3} request",
+                           "The system cannot create the element because the requested type is neither a supertype nor a " +
+                                   "subtype of the template's type, so the template's properties do not fit it.",
+                           "Choose a template whose type is the requested type, one of its subtypes or one of its supertypes, " +
+                                   "or request the template's own type.",
+                           "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-400-015 - The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore
      */
     NOTHING_TO_RESTORE(400, "OMAG-GENERIC-HANDLERS-400-015",

@@ -158,7 +158,42 @@ public class OpenMetadataTypesArchive
          * New types for this release
          */
         update0795UsageActivity();
+        update0540DataValueAssignment();
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0540DataValueAssignment()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataValueAssignmentRelationship());
+    }
+
+
+    /**
+     * DataValueAssignment is labelled like the other relationships whose properties extend
+     * LabeledRelationshipProperties - its bean offers a label and a description that the type did not define.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataValueAssignmentRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_VALUE_ASSIGNMENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

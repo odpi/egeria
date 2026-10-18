@@ -1360,7 +1360,7 @@ Content-Type: application/json
 {
   "class" : "NewClassificationRequestBody",
   "properties": {
-    "class": "SecurityGroupMembershipProperties",
+    "class": "SecurityListMembershipProperties",
     "groups": [""],
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
@@ -1394,7 +1394,7 @@ Content-Type: application/json
   "class" : "UpdateClassificationRequestBody",
   "mergeUpdate" : true,
   "properties": {
-    "class": "SecurityGroupMembershipProperties",
+    "class": "SecurityListMembershipProperties",
     "groups": [""],
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"

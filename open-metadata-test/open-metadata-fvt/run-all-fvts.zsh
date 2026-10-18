@@ -42,6 +42,7 @@ SUITES=(auth-fvt:runAuthFvt
         security-fvt:runSecurityFvt
         query-fvt:runQueryFvt
         anchor-fvt:runAnchorFvt
+        view-services-fvt:runViewServicesFvt
         type-fvt:runTypeFvt
         client-fvt:runClientFvt
         templates-fvt:runTemplatesFvt
