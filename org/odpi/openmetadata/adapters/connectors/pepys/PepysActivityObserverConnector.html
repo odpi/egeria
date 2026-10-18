@@ -115,8 +115,12 @@ implements <a href="../../../repositoryservices/connectors/openmetadatatopic/Ope
  costs one read and one update per refresh rather than one per record.  Counts that could not be written are
  kept and tried again on the next refresh.
  <p>
- The connector's own reads and updates of the anchor elements are reported in the audit log too, and they are ignored -
- otherwise each update of a UsageActivity classification would be counted as more activity, without end.</div>
+ The activity of the users whose userIds match one of the patterns in the ignoredUserIdPatterns configuration property
+ is not counted.  The core content pack sets them to match the non-personal accounts (ending in npa) and the governance
+ engines (ending in engine), so only the activity of people and external tools is recorded.  The patterns are used
+ rather than a list of userIds because the servers' userIds differ in each environment.  The connector's own userId is
+ always ignored, whether a pattern matches it or not - its reads and updates of the anchor elements are reported in the audit log too, and otherwise each update
+ of a UsageActivity classification would be counted as more activity, without end.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
