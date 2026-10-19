@@ -98,7 +98,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab4" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab4', 2)" class="table-tab">Record Classes</button></div>
 <div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
@@ -108,42 +108,53 @@ loadScripts(document, 'script');</script>
 <div class="block">The AnnotationStore provides the interface used by a survey action service to
  store annotations in the open metadata repositories.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SequentialSurveyPipeline.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SequentialSurveyPipeline</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="DatabaseElementAnnotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">DatabaseElementAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="block">An annotation produced by a database survey, together with the names of the database resource that it
+ describes.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SequentialSurveyPipeline.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SequentialSurveyPipeline</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SequentialSurveyPipeline is a survey action pipeline that provides an inline sequential invocation of the
  supplied survey action services.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SequentialSurveyPipelineProvider.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SequentialSurveyPipelineProvider</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SequentialSurveyPipelineProvider.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SequentialSurveyPipelineProvider</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SequentialDiscoveryPipelineProvider is the provider for the SequentialDiscoveryPipeline - an ODF discovery pipeline connector.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionPipelineConnector</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionPipelineConnector</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DiscoveryPipeline is a discovery service that is responsible for choreographing the discovery services
  passed on initializeEmbeddedConnectors.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="SurveyActionService.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionService</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="SurveyActionService.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionService</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">A marker interface to identify the service that this connector works with.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SurveyActionServiceConnector describes a specific type of connector that is responsible for analyzing the content
  of a specific asset.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyActionServiceProvider.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceProvider</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyActionServiceProvider.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceProvider</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SurveyActionServiceProvider implements the base class for the connector provider for a survey action service.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyAssetStore.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyAssetStore</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyAssetStore.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyAssetStore</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SurveyAssetStore defines the interface to a connector broker backed by an open metadata repository that returns
  information about the Asset that a survey action service is to analyze.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SurveyContext provides a survey action service with access to information about
  the survey request along with access to the open metadata repository interfaces.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurveyDatabaseElementResolver.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyDatabaseElementResolver</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SurveyDatabaseElementResolver finds the catalogued element that a database survey annotation describes, so
+ that the annotation's AssociatedAnnotation relationship links to the schema, table or column it measures
+ rather than to the surveyed asset.</div>
 </div>
 </div>
 </div>
