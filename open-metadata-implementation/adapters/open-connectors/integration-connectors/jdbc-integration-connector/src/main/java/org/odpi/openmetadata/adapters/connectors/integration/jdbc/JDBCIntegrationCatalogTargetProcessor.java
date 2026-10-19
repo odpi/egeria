@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
@@ -114,6 +115,36 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
 
     /**
+     * Return the catalog target's element with its properties and classifications but none of its relationships.
+     * A full read of a database or schema asset expands its schema type into every table and column catalogued
+     * under it, and the refresh needs none of that: the cataloguer reads the parts it needs as it goes.  If the read
+     * fails, the full read is tried instead, which logs the failure.
+     *
+     * @return the catalog target's element
+     */
+    private OpenMetadataRootElement getCatalogTargetElementWithoutRelationships()
+    {
+        try
+        {
+            GetOptions getOptions = RelationalDatabaseCataloguer.withoutRelationships(integrationContext.getAssetClient().getGetOptions());
+
+            OpenMetadataRootElement catalogTargetElement = super.getCatalogTargetElement(getOptions);
+
+            if (catalogTargetElement != null)
+            {
+                return catalogTargetElement;
+            }
+        }
+        catch (Exception error)
+        {
+            // The full read below reports the problem.
+        }
+
+        return super.getCatalogTargetElement();
+    }
+
+
+    /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
@@ -124,7 +155,9 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
     {
         final String methodName = "refresh";
 
-        CatalogTargetKind kind = catalogTargetKind(propertyHelper, super.getCatalogTargetElement().getElementHeader());
+        OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElementWithoutRelationships();
+
+        CatalogTargetKind kind = catalogTargetKind(propertyHelper, catalogTargetElement.getElementHeader());
 
         if (kind == null)
         {
@@ -136,7 +169,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
         String targetName = null;
 
-        if (super.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+        if (catalogTargetElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
         {
             targetName = referenceableProperties.getQualifiedName();
         }
@@ -161,14 +194,14 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
             {
                 refreshDatabase(assetConnector,
                                 targetName,
-                                super.getCatalogTargetElement(),
+                                catalogTargetElement,
                                 configurationProperties);
             }
             else
             {
                 refreshDatabaseSchema(assetConnector,
                                       targetName,
-                                      super.getCatalogTargetElement(),
+                                      catalogTargetElement,
                                       configurationProperties);
             }
         }
@@ -465,7 +498,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
         {
             OpenMetadataRootElement existingDatabase = databaseClient.getAssetByUniqueName(databaseProperties.getQualifiedName(),
                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                            databaseClient.getGetOptions());
+                                                                                            RelationalDatabaseCataloguer.withoutRelationships(databaseClient.getGetOptions()));
 
             if (existingDatabase != null)
             {
@@ -481,7 +514,7 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
             auditLog.logMessage(methodName,
                                 JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
 
-            return databaseClient.getAssetByGUID(databaseGUID, databaseClient.getGetOptions());
+            return databaseClient.getAssetByGUID(databaseGUID, RelationalDatabaseCataloguer.withoutRelationships(databaseClient.getGetOptions()));
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {

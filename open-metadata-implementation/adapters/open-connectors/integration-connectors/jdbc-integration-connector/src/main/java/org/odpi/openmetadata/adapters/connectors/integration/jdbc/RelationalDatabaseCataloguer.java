@@ -33,6 +33,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -127,6 +128,9 @@ class RelationalDatabaseCataloguer
     /**
      * Catalog everything below the database asset: tables/views/columns that sit directly under the database,
      * every schema, and the tables/views/columns nested under each schema, plus all foreign key relationships.
+     * Only a table that JDBC reports with no schema sits directly under the database.  Asking JDBC for the tables
+     * of a null schema returns the tables of every schema, so without that filter each table would be catalogued
+     * twice - once under the database and once under its schema.
      *
      * @param databaseElement the database asset
      */
@@ -240,7 +244,7 @@ class RelationalDatabaseCataloguer
         {
             OpenMetadataRootElement existingSchema = databaseSchemaClient.getAssetByUniqueName(qualifiedName,
                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                databaseSchemaClient.getGetOptions());
+                                                                                                withoutRelationships(databaseSchemaClient.getGetOptions()));
 
             if (existingSchema != null)
             {
@@ -299,7 +303,7 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            List<OpenMetadataRootElement> existingSchemas = databaseSchemaClient.getSupportedDataSets(databaseGUID, databaseSchemaClient.getQueryOptions());
+            List<OpenMetadataRootElement> existingSchemas = databaseSchemaClient.getSupportedDataSets(databaseGUID, withoutRelationships(databaseSchemaClient.getQueryOptions()));
 
             if (existingSchemas != null)
             {
@@ -361,7 +365,8 @@ class RelationalDatabaseCataloguer
      * @param anchorAsset the database asset (tables and views always anchor to the database, even when nested under a schema)
      * @param parentQualifiedName qualified name of the parent (database or schema)
      * @param parentGUID guid of the parent (database or schema)
-     * @param jdbcSchemaName schema name to pass to JDBC, or null when cataloguing tables/views directly under the database
+     * @param jdbcSchemaName schema name to pass to JDBC, or null when cataloguing tables/views directly under the
+     *                       database - which are only those that JDBC reports with no schema
      */
     private void catalogTablesAndViews(OpenMetadataRootElement anchorAsset,
                                        String                   parentQualifiedName,
@@ -377,7 +382,7 @@ class RelationalDatabaseCataloguer
 
         Set<String> processedQualifiedNames = new HashSet<>();
 
-        for (JdbcTable jdbcTable : jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, TABLE_TYPES))
+        for (JdbcTable jdbcTable : tablesInSchema(jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, TABLE_TYPES), jdbcSchemaName))
         {
             if (! transferCustomizations.shouldTransferTable(jdbcTable.getTableName()))
             {
@@ -395,7 +400,7 @@ class RelationalDatabaseCataloguer
             }
         }
 
-        for (JdbcTable jdbcView : jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, VIEW_TYPES))
+        for (JdbcTable jdbcView : tablesInSchema(jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, VIEW_TYPES), jdbcSchemaName))
         {
             if (! transferCustomizations.shouldTransferTable(jdbcView.getTableName()))
             {
@@ -427,7 +432,9 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            OpenMetadataRootElement parentAsset = dataAssetClient.getAssetByGUID(parentGUID, dataAssetClient.getGetOptions());
+            OpenMetadataRootElement parentAsset = dataAssetClient.getAssetByGUID(parentGUID,
+                                                                                withOnlyRelationship(dataAssetClient.getGetOptions(),
+                                                                                                     OpenMetadataType.SCHEMA_RELATIONSHIP.typeName));
 
             if (parentAsset.getSchemaType() != null)
             {
@@ -647,7 +654,7 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            List<OpenMetadataRootElement> existingElements = databaseTableClient.getAttributesForSchemaType(schemaTypeGUID, databaseTableClient.getQueryOptions());
+            List<OpenMetadataRootElement> existingElements = databaseTableClient.getAttributesForSchemaType(schemaTypeGUID, withoutRelationships(databaseTableClient.getQueryOptions()));
 
             if (existingElements != null)
             {
@@ -712,7 +719,7 @@ class RelationalDatabaseCataloguer
 
         Set<String> processedQualifiedNames = new HashSet<>();
 
-        for (JdbcColumn jdbcColumn : jdbcMetadata.getColumns(catalogName, jdbcSchemaName, tableName, null))
+        for (JdbcColumn jdbcColumn : columnsOfTable(jdbcMetadata.getColumns(catalogName, jdbcSchemaName, tableName, null), jdbcSchemaName, tableName))
         {
             if (! transferCustomizations.shouldTransferColumn(jdbcColumn.getColumnName()))
             {
@@ -926,7 +933,7 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            List<OpenMetadataRootElement> existingColumns = databaseColumnClient.getNestedSchemaAttributes(tableGUID, databaseColumnClient.getQueryOptions());
+            List<OpenMetadataRootElement> existingColumns = databaseColumnClient.getNestedSchemaAttributes(tableGUID, withoutRelationships(databaseColumnClient.getQueryOptions()));
 
             if (existingColumns != null)
             {
@@ -987,7 +994,7 @@ class RelationalDatabaseCataloguer
 
         Set<JdbcForeignKey> foreignKeys = new HashSet<>();
 
-        for (JdbcTable jdbcTable : jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, TABLE_TYPES))
+        for (JdbcTable jdbcTable : tablesInSchema(jdbcMetadata.getTables(catalogName, jdbcSchemaName, null, TABLE_TYPES), jdbcSchemaName))
         {
             if (! transferCustomizations.shouldTransferTable(jdbcTable.getTableName()))
             {
@@ -1143,7 +1150,9 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            List<OpenMetadataRootElement> columns = databaseColumnClient.findSchemaAttributes(columnPathSuffix, databaseColumnClient.getSearchOptions());
+            List<OpenMetadataRootElement> columns = databaseColumnClient.findSchemaAttributes(columnPathSuffix,
+                                                                                            withOnlyRelationship(databaseColumnClient.getSearchOptions(),
+                                                                                                                 OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName));
 
             if ((columns != null) && (columns.size() == 1))
             {
@@ -1178,7 +1187,7 @@ class RelationalDatabaseCataloguer
 
         try
         {
-            List<OpenMetadataRootElement> candidates = client.getSchemaAttributesByName(qualifiedName, client.getQueryOptions());
+            List<OpenMetadataRootElement> candidates = client.getSchemaAttributesByName(qualifiedName, withoutRelationships(client.getQueryOptions()));
 
             OpenMetadataRootElement match      = null;
             int                     matchCount = 0;
@@ -1213,6 +1222,136 @@ class RelationalDatabaseCataloguer
                                   e);
             return new ElementLookup(null, true);
         }
+    }
+
+
+    /* ==================================================================================================
+     * Matching JDBC results exactly
+     * ================================================================================================== */
+
+    /**
+     * Return the tables that JDBC reports in exactly the requested schema.
+     * <br><br>
+     * DatabaseMetaData.getTables treats its schema argument as a pattern, not a name: null matches every schema,
+     * and "_" and "%" in a schema name are wildcards.  Drivers also differ over whether "" means "no schema" or
+     * "any schema".  So the results are filtered on the schema each table reports.  A null or empty schema in a
+     * result counts as "no schema".
+     *
+     * @param tables tables returned by JDBC
+     * @param jdbcSchemaName the schema wanted, or null for tables that have no schema
+     * @return the tables in that schema
+     */
+    static List<JdbcTable> tablesInSchema(List<JdbcTable> tables,
+                                          String          jdbcSchemaName)
+    {
+        List<JdbcTable> results = new ArrayList<>();
+
+        if (tables != null)
+        {
+            for (JdbcTable table : tables)
+            {
+                if (sameSchema(table.getTableSchem(), jdbcSchemaName))
+                {
+                    results.add(table);
+                }
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return the columns that JDBC reports for exactly the requested table.  DatabaseMetaData.getColumns treats
+     * its schema and table arguments as patterns, in the same way as {@link #tablesInSchema}, so a table named
+     * "order_line" would otherwise also collect the columns of "orderXline", and a table with no schema would
+     * collect the columns of every table of the same name in every schema.
+     *
+     * @param columns columns returned by JDBC
+     * @param jdbcSchemaName the table's schema, or null if it has none
+     * @param tableName the table's name
+     * @return the columns of that table
+     */
+    static List<JdbcColumn> columnsOfTable(List<JdbcColumn> columns,
+                                           String           jdbcSchemaName,
+                                           String           tableName)
+    {
+        List<JdbcColumn> results = new ArrayList<>();
+
+        if (columns != null)
+        {
+            for (JdbcColumn column : columns)
+            {
+                if (sameSchema(column.getTableSchem(), jdbcSchemaName) && tableName.equals(column.getTableName()))
+                {
+                    results.add(column);
+                }
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Compare the schema JDBC reports for an object with the schema wanted, treating null and empty as "no schema".
+     *
+     * @param reportedSchemaName schema reported by JDBC
+     * @param wantedSchemaName schema wanted
+     * @return true if they are the same
+     */
+    private static boolean sameSchema(String reportedSchemaName,
+                                      String wantedSchemaName)
+    {
+        boolean reportedNone = (reportedSchemaName == null) || reportedSchemaName.isEmpty();
+        boolean wantedNone   = (wantedSchemaName == null) || wantedSchemaName.isEmpty();
+
+        if (reportedNone || wantedNone)
+        {
+            return reportedNone && wantedNone;
+        }
+
+        return reportedSchemaName.equals(wantedSchemaName);
+    }
+
+
+    /**
+     * Stop a read returning the relationships of each element it finds.
+     * <br><br>
+     * By default, every element read is returned with all of its relationships, and its schema type is expanded
+     * into the whole hierarchy below it - so reading a schema or database asset also reads every table and column
+     * catalogued under it.  That cost is paid on every refresh once the elements exist, and it made a refresh with
+     * nothing to change much slower than the first one.  The reads that use this need only the element's own
+     * properties and classifications.
+     *
+     * @param options options from the client
+     * @param <T> type of options
+     * @return the same options, set not to return relationships
+     */
+    static <T extends GetOptions> T withoutRelationships(T options)
+    {
+        options.setGraphQueryDepth(0);
+
+        return options;
+    }
+
+
+    /**
+     * Have a read return only one type of relationship attached directly to each element it finds, and nothing
+     * beyond it.  See {@link #withoutRelationships}.
+     *
+     * @param options options from the client
+     * @param relationshipTypeName the relationship type to return
+     * @param <T> type of options
+     * @return the same options, set to return only that relationship
+     */
+    static <T extends GetOptions> T withOnlyRelationship(T      options,
+                                                         String relationshipTypeName)
+    {
+        options.setGraphQueryDepth(1);
+        options.setIncludeOnlyRelationships(List.of(relationshipTypeName));
+
+        return options;
     }
 
 

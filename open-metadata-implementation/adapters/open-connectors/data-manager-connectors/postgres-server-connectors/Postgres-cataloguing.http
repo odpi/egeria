@@ -63,7 +63,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "processQualifiedName": "PostgreSQLServer:CreateAndCatalogGovernanceActionProcess",
+  "processQualifiedName": "PostgreSQLServer::CreateAsCatalogTargetGovernanceActionProcess",
   "requestParameters" : {
     "hostIdentifier" : "localhost",
     "portNumber" : "5442",
