@@ -9,9 +9,10 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyDatabaseElementResolver;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
@@ -31,6 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class PostgresServerSurveyActionService extends SurveyActionServiceConnector
 {
     private final List<JDBCResourceConnector> jdbcResourceConnectors = new CopyOnWriteArrayList<>();
+    private       SurveyDatabaseElementResolver elementResolver      = null;
 
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
@@ -258,22 +260,30 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
 
     /**
-     * Store annotations against the surveyed asset.
+     * Store annotations, linking each to the catalogued database, schema, table or column that it describes -
+     * or to the surveyed server if that element has not been catalogued.
      *
      * @param annotations annotations to store (may be null)
      * @param annotationStore destination for the annotations
      * @throws Exception problem storing an annotation
      */
-    private void addAnnotations(List<AnnotationProperties> annotations,
-                                AnnotationStore            annotationStore) throws Exception
+    private void addAnnotations(List<DatabaseElementAnnotation> annotations,
+                                AnnotationStore                 annotationStore) throws Exception
     {
         if (annotations != null)
         {
-            for (AnnotationProperties annotation : annotations)
+            if (elementResolver == null)
+            {
+                elementResolver = SurveyDatabaseElementResolver.forServer(surveyContext.getOpenMetadataStore(),
+                                                                          surveyContext.getAssetGUID());
+            }
+
+            for (DatabaseElementAnnotation annotation : annotations)
             {
                 if (super.isActive())
                 {
-                    annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                    annotationStore.addAnnotation(annotation.annotationProperties(),
+                                                  elementResolver.getDescribedElementGUID(annotation));
                 }
             }
         }

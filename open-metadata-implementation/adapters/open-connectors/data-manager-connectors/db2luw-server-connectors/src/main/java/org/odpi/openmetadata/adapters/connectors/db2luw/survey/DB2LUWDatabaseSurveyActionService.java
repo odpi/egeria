@@ -8,9 +8,10 @@ import org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyDatabaseElementResolver;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
@@ -113,7 +114,7 @@ public class DB2LUWDatabaseSurveyActionService extends SurveyActionServiceConnec
                 /*
                  * The connection is released before the annotations are stored.
                  */
-                List<AnnotationProperties> annotations;
+                List<DatabaseElementAnnotation> annotations;
 
                 if (surveyStopped)
                 {
@@ -126,11 +127,15 @@ public class DB2LUWDatabaseSurveyActionService extends SurveyActionServiceConnec
 
                 if (annotations != null)
                 {
-                    for (AnnotationProperties annotation : annotations)
+                    SurveyDatabaseElementResolver elementResolver = SurveyDatabaseElementResolver.forDatabase(surveyContext.getOpenMetadataStore(),
+                                                                                                              surveyContext.getAssetGUID());
+
+                    for (DatabaseElementAnnotation annotation : annotations)
                     {
                         if (super.isActive())
                         {
-                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+                            annotationStore.addAnnotation(annotation.annotationProperties(),
+                                                          elementResolver.getDescribedElementGUID(annotation));
                         }
                     }
                 }

@@ -7,10 +7,10 @@ import org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
+import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -610,9 +610,9 @@ public class DB2LUWDatabaseStatsExtractor
      * @return list of annotations, or null if there are no results
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getDatabaseAnnotations() throws PropertyServerException
+    List<DatabaseElementAnnotation> getDatabaseAnnotations() throws PropertyServerException
     {
-        List<AnnotationProperties> annotations = new ArrayList<>();
+        List<DatabaseElementAnnotation> annotations = new ArrayList<>();
 
         for (String databaseName : new ArrayList<>(databaseResults.keySet()))
         {
@@ -641,7 +641,7 @@ public class DB2LUWDatabaseStatsExtractor
      * @return annotation
      * @throws PropertyServerException problem formatting JSON string
      */
-    private AnnotationProperties getDatabaseAnnotation(String          databaseName,
+    private DatabaseElementAnnotation getDatabaseAnnotation(String          databaseName,
                                                        DatabaseDetails databaseDetails) throws PropertyServerException
     {
         ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
@@ -656,7 +656,7 @@ public class DB2LUWDatabaseStatsExtractor
 
         databaseAnnotation.setResourceProperties(databaseDetails.getDatabaseResourceProperties());
 
-        return databaseAnnotation;
+        return new DatabaseElementAnnotation(databaseAnnotation, databaseName, null, null, null);
     }
 
 
@@ -670,9 +670,9 @@ public class DB2LUWDatabaseStatsExtractor
      * @return list of annotations, or null if there are no results for the database
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<AnnotationProperties> getAnnotations(String databaseName) throws PropertyServerException
+    List<DatabaseElementAnnotation> getAnnotations(String databaseName) throws PropertyServerException
     {
-        List<AnnotationProperties> annotations = new ArrayList<>();
+        List<DatabaseElementAnnotation> annotations = new ArrayList<>();
 
         DatabaseDetails databaseDetails = databaseResults.remove(databaseName);
 
@@ -700,7 +700,7 @@ public class DB2LUWDatabaseStatsExtractor
 
                     schemaAnnotation.setResourceProperties(currentSchema.getSchemaResourceProperties());
 
-                    annotations.add(schemaAnnotation);
+                    annotations.add(new DatabaseElementAnnotation(schemaAnnotation, databaseName, schemaName, null, null));
 
 
                     List<String> tableNames = currentSchema.getTableNames();
@@ -725,7 +725,7 @@ public class DB2LUWDatabaseStatsExtractor
 
                                 tableAnnotation.setResourceProperties(currentTable.getTableResourceProperties());
 
-                                annotations.add(tableAnnotation);
+                                annotations.add(new DatabaseElementAnnotation(tableAnnotation, databaseName, schemaName, tableName, null));
 
                                 List<String> columnNames = currentTable.getColumnNames();
 
@@ -747,7 +747,7 @@ public class DB2LUWDatabaseStatsExtractor
 
                                         columnAnnotation.setResourceProperties(currentColumn.getColumnResourceProperties());
 
-                                        annotations.add(columnAnnotation);
+                                        annotations.add(new DatabaseElementAnnotation(columnAnnotation, databaseName, schemaName, tableName, columnName));
                                     }
                                 }
                             }

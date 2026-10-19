@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.mssql.survey;
 
+import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
 import org.testng.annotations.Test;
 
@@ -197,14 +197,16 @@ public class MSSQLDatabaseStatsExtractorTest
 
         extractor.getDatabaseStatistics(fakeConnection(Map.of()));
 
-        List<AnnotationProperties> annotations = extractor.getDatabaseAnnotations();
+        List<DatabaseElementAnnotation> annotations = extractor.getDatabaseAnnotations();
 
         assertNotNull(annotations);
         assertEquals(annotations.size(), 2);
 
-        for (AnnotationProperties annotation : annotations)
+        for (DatabaseElementAnnotation annotation : annotations)
         {
-            assertEquals(annotation.getAnnotationType(), SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+            assertEquals(annotation.annotationProperties().getAnnotationType(), SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+            assertNotNull(annotation.databaseName());
+            assertNull(annotation.schemaName());
         }
 
         assertNull(extractor.getDatabaseAnnotations());

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.db2luw.survey;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalTableMetric;
@@ -232,15 +232,22 @@ public class DB2LUWDatabaseStatsExtractorTest
         extractor.getSchemaStatistics("DB", connection);
 
         Map<String, Map<String, String>> resourceProperties = new HashMap<>();
-        List<AnnotationProperties>       annotations        = extractor.getAnnotations("DB");
+        List<DatabaseElementAnnotation> annotations        = extractor.getAnnotations("DB");
 
         assertNotNull(annotations);
 
-        for (AnnotationProperties annotation : annotations)
+        for (DatabaseElementAnnotation annotation : annotations)
         {
-            if (SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName().equals(annotation.getAnnotationType()))
+            if (SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName().equals(annotation.annotationProperties().getAnnotationType()))
             {
-                Map<String, String> properties = ((ResourceMeasureAnnotationProperties)annotation).getResourceProperties();
+                Map<String, String> properties = ((ResourceMeasureAnnotationProperties)annotation.annotationProperties()).getResourceProperties();
+
+                /*
+                 * The names identify the catalogued table that the annotation is linked to.
+                 */
+                assertEquals(properties.get(RelationalTableMetric.TABLE_QNAME.getDisplayName()),
+                             annotation.databaseName() + "." + annotation.schemaName() + "." + annotation.tableName());
+                assertNull(annotation.columnName());
 
                 resourceProperties.put(properties.get(RelationalTableMetric.TABLE_QNAME.getDisplayName()), properties);
             }
@@ -294,14 +301,16 @@ public class DB2LUWDatabaseStatsExtractorTest
             throw new SQLException("SQL0551N  The statement failed because the authorization ID does not have the required privilege.");
         }));
 
-        List<AnnotationProperties> annotations = extractor.getDatabaseAnnotations();
+        List<DatabaseElementAnnotation> annotations = extractor.getDatabaseAnnotations();
 
         assertNotNull(annotations);
         assertEquals(annotations.size(), 1);
 
-        for (AnnotationProperties annotation : annotations)
+        for (DatabaseElementAnnotation annotation : annotations)
         {
-            assertEquals(annotation.getAnnotationType(), SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+            assertEquals(annotation.annotationProperties().getAnnotationType(), SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+            assertNotNull(annotation.databaseName());
+            assertNull(annotation.schemaName());
         }
 
         assertNull(extractor.getDatabaseAnnotations());
