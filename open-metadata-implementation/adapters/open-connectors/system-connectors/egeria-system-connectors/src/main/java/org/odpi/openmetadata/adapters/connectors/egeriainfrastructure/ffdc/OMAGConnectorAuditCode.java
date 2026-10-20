@@ -131,6 +131,16 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                                "No specific action is required.  This message records an audit log topic being handed to the activity observer, which happens the first time the topic is catalogued.",
                                "https://egeria-project.org/types/7/0795-Usage-Activity/"),
 
+    /**
+     * The {0} integration connector has not catalogued the OMAG Server Platform at {1} because it is the same platform as the one at {2}
+     */
+    PLATFORM_ALIAS_IGNORED("OMAG-CONNECTORS-0017",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} integration connector has not catalogued the OMAG Server Platform at {1} because it is the same platform as the one at {2}",
+                           "The platforms at both addresses reported the same start time and origin, so they are one running platform reached by two different addresses.  The connector catalogues and monitors it only under the address it reached first, and does not register the other address as a catalog target.",
+                           "No action is required.  This is expected where a server's localServerURL is an external address of the platform (for example https://host.docker.internal:9443) and the metadata access server is reached through an internal one (for example https://localhost:9443).  Elements catalogued under the other address by an earlier release of this connector are no longer maintained and can be deleted.",
+                           "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
+
     ;
 
     private final String                      logMessageId;

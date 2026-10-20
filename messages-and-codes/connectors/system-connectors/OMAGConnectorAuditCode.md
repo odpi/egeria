@@ -9,7 +9,7 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 11 |
+| **Number of messages** | 12 |
 | **Message identifiers begin** | `OMAG-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors](../../../open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors) |
@@ -31,6 +31,7 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 | [OMAG-CONNECTORS-0014](#omag-connectors-0014) | INFO | The {0} integration connector is now monitoring the OMAG Server Platform at {1}, catalogued as {2} |
 | [OMAG-CONNECTORS-0015](#omag-connectors-0015) | EXCEPTION | The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3} |
 | [OMAG-CONNECTORS-0016](#omag-connectors-0016) | INFO | The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3} |
+| [OMAG-CONNECTORS-0017](#omag-connectors-0017) | INFO | The {0} integration connector has not catalogued the OMAG Server Platform at {1} because it is the same platform as the one at {2} |
 
 ----
 
@@ -272,6 +273,28 @@ The topic that the OMAG Servers write their audit logs to is now one of the cata
 **User action**
 
 No specific action is required.  This message records an audit log topic being handed to the activity observer, which happens the first time the topic is catalogued.
+
+
+----
+
+### OMAG-CONNECTORS-0017
+
+> The {0} integration connector has not catalogued the OMAG Server Platform at {1} because it is the same platform as the one at {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGConnectorAuditCode.PLATFORM_ALIAS_IGNORED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/> |
+
+**System action**
+
+The platforms at both addresses reported the same start time and origin, so they are one running platform reached by two different addresses.  The connector catalogues and monitors it only under the address it reached first, and does not register the other address as a catalog target.
+
+**User action**
+
+No action is required.  This is expected where a server's localServerURL is an external address of the platform (for example https://host.docker.internal:9443) and the metadata access server is reached through an internal one (for example https://localhost:9443).  Elements catalogued under the other address by an earlier release of this connector are no longer maintained and can be deleted.
 
 
 ----
