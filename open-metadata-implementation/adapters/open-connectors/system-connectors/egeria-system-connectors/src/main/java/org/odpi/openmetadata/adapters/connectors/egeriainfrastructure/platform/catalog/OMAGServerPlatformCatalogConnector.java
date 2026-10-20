@@ -33,12 +33,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabili
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnectorBase
 {
@@ -53,6 +56,13 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
      * from open metadata on every refresh.
      */
     private final Map<String, String> monitoredPlatforms = new LinkedHashMap<>();
+
+    /**
+     * Local platform addresses that turned out to be another address of a platform that is already in the
+     * list - see {@link PlatformAliasCheck#findEarlierAddressOfSamePlatform}.  They are remembered so that
+     * the platforms are only asked who they are once.
+     */
+    private final Set<String> platformAliases = new HashSet<>();
 
     final static String EGERIA_DEPLOYMENT_CATEGORY = "Egeria Deployment";
 
@@ -116,13 +126,39 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
      */
     private void registerLocalPlatforms(String methodName)
     {
-        for (String platformURLRoot : this.getLocalPlatformURLRoots())
+        List<String> platformURLRoots = this.getLocalPlatformURLRoots();
+
+        for (int index = 0; index < platformURLRoots.size(); index++)
         {
-            if (! monitoredPlatforms.containsKey(platformURLRoot))
+            String platformURLRoot = platformURLRoots.get(index);
+
+            if ((! monitoredPlatforms.containsKey(platformURLRoot)) && (! platformAliases.contains(platformURLRoot)))
             {
                 try
                 {
-                    monitoredPlatforms.put(platformURLRoot, this.registerPlatformAsCatalogTarget(platformURLRoot));
+                    /*
+                     * The addresses in the list are different strings, but that does not make them different
+                     * platforms: a server's localServerURL is often an external address of the very platform
+                     * that the metadata access server is reached on internally.  Cataloguing both would give the
+                     * one platform, and every server on it, two elements apiece.
+                     */
+                    String earlierAddress = PlatformAliasCheck.findEarlierAddressOfSamePlatform(platformURLRoot,
+                                                                                                platformURLRoots.subList(0, index),
+                                                                                                this::getPlatformIdentity);
+
+                    if (earlierAddress != null)
+                    {
+                        platformAliases.add(platformURLRoot);
+
+                        logRecord(methodName,
+                                  OMAGConnectorAuditCode.PLATFORM_ALIAS_IGNORED.getMessageDefinition(connectorName,
+                                                                                                     platformURLRoot,
+                                                                                                     earlierAddress));
+                    }
+                    else
+                    {
+                        monitoredPlatforms.put(platformURLRoot, this.registerPlatformAsCatalogTarget(platformURLRoot));
+                    }
                 }
                 catch (Exception error)
                 {
@@ -153,6 +189,9 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
      * says nothing about, and that platform deserves cataloguing too.  The local server's own address is
      * added in that case.  It is null on a server configured without a localServerURL, which is why it is
      * only ever added when it is both set and different.
+     * <br>
+     * A different address is not necessarily a different platform, so {@link #registerLocalPlatforms} checks
+     * with the platforms themselves before registering anything after the first address.
      *
      * @return list of platform addresses, in the order they should be registered
      */
@@ -175,6 +214,27 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
         }
 
         return platformURLRoots;
+    }
+
+
+    /**
+     * Ask the platform at an address who it is.  The connector's own secrets are used, as they are for the
+     * platform element it catalogues.
+     *
+     * @param platformURLRoot address of the platform
+     * @return identity
+     * @throws Exception the platform could not be asked
+     */
+    private PlatformAliasCheck.PlatformIdentity getPlatformIdentity(String platformURLRoot) throws Exception
+    {
+        PlatformServicesClient platformServicesClient = new PlatformServicesClient(connectorName,
+                                                                                   platformURLRoot,
+                                                                                   secretsStoreConnectorMap,
+                                                                                   integrationContext.getMyUserId(),
+                                                                                   auditLog);
+
+        return new PlatformAliasCheck.PlatformIdentity(platformServicesClient.getPlatformOrigin(),
+                                                       platformServicesClient.getPlatformStartTime());
     }
 
 

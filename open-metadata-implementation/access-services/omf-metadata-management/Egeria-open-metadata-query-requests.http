@@ -81,9 +81,7 @@ Content-Type: application/json
 ###
 # @name findMetadataElements
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/by-search-conditions?
-    startFrom=0&
-    pageSize=0
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/metadata-elements/by-search-conditions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -168,9 +166,7 @@ Authorization: Bearer {{token}}
 ###
 # @name findRelationshipsBetweenMetadataElements
 # Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
-POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/relationships/by-search-conditions?
-    startFrom=0&
-    pageSize=0
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/access-services/open-metadata-store/users/{{userId}}/relationships/by-search-conditions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
