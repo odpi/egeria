@@ -42,6 +42,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
     private long inmemoryPutMessageCount = 0;
     private long kafkaSendFailCount = 0;
     private long messageFailedSendCount = 0;
+    private static final long retryBackoffBaseMs = 500L;
+    private static final long retryBackoffMaxMs  = 5000L;
 
 
     /**
@@ -156,6 +158,25 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     }
 
                     eventRetryCount++;
+
+                    /*
+                     * Back off before retrying so that a broker returning fast failures does not
+                     * drive this thread into a tight send loop.
+                     */
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(Math.min(retryBackoffBaseMs * eventRetryCount, retryBackoffMaxMs));
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        producer.close();
+                        producer = null;
+                        messageFailedSendCount++;
+                        log.warn(messageFailedCountString, messageFailedSendCount);
+
+                        throw new ConnectorCheckedException(
+                                KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
+                                        interrupted.getClass().getName(), topicName, interrupted.getMessage()),
+                                this.getClass().getName(), methodName, interrupted);
+                    }
                 }
             } catch (WakeupException error) {
                 log.warn("Wake up for shut down");
@@ -346,19 +367,30 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         running = false;
     }
 
-    private boolean isExceptionRetryable(Exception error) {
+    /**
+     * Walk the cause chain looking for a Kafka RetriableException.
+     *
+     * @param error exception to test
+     * @return true if any exception in the chain is retryable
+     */
+    static boolean isExceptionRetryable(Throwable error) {
 
         /*
-        This code would probably be more elegant if it used Throwables
-        however I don't want to add Throwabales to the search and I didn't want to cast
+         * Step down the cause chain - stopping at the end or at a self-referencing cause.  The previous
+         * implementation re-wrapped the same cause on each iteration, so a non-retryable cause spun
+         * forever allocating exceptions (high CPU and heap pressure).
          */
-        Throwable nested = null;
-        while ((nested = error.getCause()) != null) {
-            if (nested instanceof RetriableException) {
+        Throwable current = error;
+        while (current != null) {
+            if (current instanceof RetriableException) {
                 return true;
             }
 
-            error = new Exception(error.getCause());
+            Throwable cause = current.getCause();
+            if (cause == current) {
+                break;
+            }
+            current = cause;
         }
         return false;
     }

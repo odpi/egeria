@@ -66,6 +66,14 @@ public class JDKRESTClientConnector extends RESTClientConnector
     private static final Logger    log       = LoggerFactory.getLogger(JDKRESTClientConnector.class);
     private static final RequestId requestId = new RequestId();
 
+    /*
+     * java.net.http.HttpClient is thread-safe and designed to be shared.  Each instance owns a selector
+     * thread plus a connection pool, so building one per connector instance leaked hundreds of
+     * "HttpClient-N-SelectorManager" threads in a busy platform.  One client is shared per SSL mode.
+     */
+    private static volatile HttpClient strictSSLHttpClient   = null;
+    private static volatile HttpClient trustAllSSLHttpClient = null;
+
 
     /**
      * Default constructor
@@ -76,11 +84,60 @@ public class JDKRESTClientConnector extends RESTClientConnector
 
         objectMapper.findAndRegisterModules();
 
+        httpClient = getSharedHttpClient();
+    }
+
+
+    /**
+     * Return the HttpClient shared by all instances of this connector for the current strict SSL setting,
+     * creating it on first use.
+     *
+     * @return shared HttpClient
+     */
+    private static HttpClient getSharedHttpClient()
+    {
+        boolean    strictSSL = HttpHelper.isStrictSSL();
+        HttpClient client    = strictSSL ? strictSSLHttpClient : trustAllSSLHttpClient;
+
+        if (client == null)
+        {
+            synchronized (JDKRESTClientConnector.class)
+            {
+                client = strictSSL ? strictSSLHttpClient : trustAllSSLHttpClient;
+
+                if (client == null)
+                {
+                    client = buildHttpClient(strictSSL);
+
+                    if (strictSSL)
+                    {
+                        strictSSLHttpClient = client;
+                    }
+                    else
+                    {
+                        trustAllSSLHttpClient = client;
+                    }
+                }
+            }
+        }
+
+        return client;
+    }
+
+
+    /**
+     * Build a new HttpClient.
+     *
+     * @param strictSSL should certificates and hostnames be validated
+     * @return new HttpClient
+     */
+    private static HttpClient buildHttpClient(boolean strictSSL)
+    {
         HttpClient.Builder httpClientBuilder = HttpClient.newBuilder()
                                                            .connectTimeout(Duration.ofSeconds(30))
                                                            .followRedirects(HttpClient.Redirect.NORMAL);
 
-        if (! HttpHelper.isStrictSSL())
+        if (! strictSSL)
         {
             /*
              * java.net.http.HttpClient does not consult HttpsURLConnection's static defaultSSLSocketFactory or
@@ -95,7 +152,7 @@ public class JDKRESTClientConnector extends RESTClientConnector
             httpClientBuilder.sslParameters(sslParameters);
         }
 
-        httpClient = httpClientBuilder.build();
+        return httpClientBuilder.build();
     }
 
 
