@@ -18,6 +18,10 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3'
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    testRuntimeOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testRuntimeOnly 'org.slf4j:slf4j-api'
 
 }
 

@@ -803,10 +803,12 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                                                                                 tokenAPI.getRequestBody()))
                         .build();
 
-                try
+                /*
+                 * Close the client after the call so its selector thread and connection pool are released.
+                 */
+                try (HttpClient httpClient = HttpClient.newHttpClient())
                 {
-                    HttpResponse<String> response = HttpClient.newHttpClient()
-                            .send(request, HttpResponse.BodyHandlers.ofString());
+                    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
                     if (response.statusCode() == 200)
                     {
@@ -967,7 +969,12 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                 /*
                  * Any problem retrieving a map (ie it is null) should result in an exception which will be logged.
                  */
-                responseBodyValues.get(tokenVariableName);
+                Object token = responseBodyValues.get(tokenVariableName);
+
+                if (token != null)
+                {
+                    return token.toString();
+                }
             }
             catch (Exception error)
             {
