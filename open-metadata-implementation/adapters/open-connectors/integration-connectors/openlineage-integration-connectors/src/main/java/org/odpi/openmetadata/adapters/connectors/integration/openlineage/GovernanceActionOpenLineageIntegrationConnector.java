@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStore
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -151,8 +152,16 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
                         (ActivityStatus.FAILED.name().equals(currentActionStatus)) ||
                         (ActivityStatus.INVALID.name().equals(currentActionStatus)))
                     {
+                        /*
+                         * Only the engine action's header, properties and action targets are used.
+                         */
+                        GetOptions getOptions = integrationContext.getAssetClient().getGetOptions();
+
+                        getOptions.setGraphQueryDepth(1);
+                        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName));
+
                         OpenMetadataRootElement engineAction = integrationContext.getAssetClient().getAssetByGUID(elementHeader.getGUID(),
-                                                                                                                  integrationContext.getAssetClient().getGetOptions());
+                                                                                                                  getOptions);
 
                         publishOpenLineageEvent(currentActionStatus, event.getEventTime(), engineAction);
                     }

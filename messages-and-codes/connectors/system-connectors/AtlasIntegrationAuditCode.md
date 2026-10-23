@@ -9,7 +9,7 @@ The AtlasIntegrationAuditCode is used to define the message content for the OMRS
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 36 |
+| **Number of messages** | 35 |
 | **Message identifiers begin** | `APACHE-ATLAS-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/system-connectors/apache-atlas-connectors](../../../open-metadata-implementation/adapters/open-connectors/system-connectors/apache-atlas-connectors) |
@@ -56,7 +56,6 @@ The AtlasIntegrationAuditCode is used to define the message content for the OMRS
 | [APACHE-ATLAS-INTEGRATION-CONNECTOR-0051](#apache-atlas-integration-connector-0051) | INFO | The integration connector {0} is adding a ReferenceValueAssignment relationship from {1} open metadata entity {2} to reference value {3} to represent the Apache Atlas {4} classification on entity {5} |
 | [APACHE-ATLAS-INTEGRATION-CONNECTOR-0052](#apache-atlas-integration-connector-0052) | EXCEPTION | The {0} integration connector encountered an {1} exception when retrieving the related elements linked to entity {2}.  The exception message included was {3} |
 | [APACHE-ATLAS-INTEGRATION-CONNECTOR-0054](#apache-atlas-integration-connector-0054) | EXCEPTION | The {0} integration connector encountered an {1} exception when processing the related elements linked to entity {2}.  The exception message included was {3} |
-| [APACHE-ATLAS-INTEGRATION-CONNECTOR-0055](#apache-atlas-integration-connector-0055) | INFO | The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3} |
 
 ----
 
@@ -791,27 +790,6 @@ The connector will retry the calls to process related elements on the next refre
 **User action**
 
 Use the information in the exception to determine why it is not possible to process the related elements.
-
-
-----
-
-### APACHE-ATLAS-INTEGRATION-CONNECTOR-0055
-
-> The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}
-
-|  |  |
-|---|---|
-| **Java constant** | `AtlasIntegrationAuditCode.MISSING_ATLAS_GUID` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
-
-**System action**
-
-There is no Apache Atlas correlation information for this element.
-
-**User action**
-
-Review the follow on messages.  If there are none, it is just a timing issue.  If there are subsequent error messages then follow their instructions.
 
 
 ----

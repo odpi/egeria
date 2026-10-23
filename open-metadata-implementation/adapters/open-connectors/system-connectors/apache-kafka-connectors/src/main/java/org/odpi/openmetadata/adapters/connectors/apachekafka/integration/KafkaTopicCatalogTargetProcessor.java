@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMet
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -89,13 +90,15 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
             super.throwMissingConnectionInfo(OpenMetadataProperty.NETWORK_ADDRESS.name, methodName);
         }
 
-        if (propertyHelper.isTypeOf(this.getCatalogTargetElement().getElementHeader(), OpenMetadataType.SOFTWARE_SERVER.typeName))
+        OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElementWithCapabilities();
+
+        if (propertyHelper.isTypeOf(catalogTargetElement.getElementHeader(), OpenMetadataType.SOFTWARE_SERVER.typeName))
         {
-            eventBrokerGUID = this.getEventBrokerGUID(this.getCatalogTargetElement());
+            eventBrokerGUID = this.getEventBrokerGUID(catalogTargetElement);
         }
-        else if (propertyHelper.isTypeOf(this.getCatalogTargetElement().getElementHeader(), OpenMetadataType.EVENT_BROKER.typeName))
+        else if (propertyHelper.isTypeOf(catalogTargetElement.getElementHeader(), OpenMetadataType.EVENT_BROKER.typeName))
         {
-            eventBrokerGUID = this.getCatalogTargetElement().getElementHeader().getGUID();
+            eventBrokerGUID = catalogTargetElement.getElementHeader().getGUID();
         }
         else
         {
@@ -104,9 +107,34 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                                                 methodName);
         }
 
-        if (this.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+        if (catalogTargetElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
         {
             serverName = referenceableProperties.getDisplayName();
+        }
+    }
+
+
+    /**
+     * Return the catalog target's element with its supported software capabilities attached, and nothing else -
+     * start() only uses its header, properties and capabilities.  If this read fails, the full read is used,
+     * which logs the failure and returns the element as retrieved by the targets manager.
+     *
+     * @return catalog target element
+     */
+    private OpenMetadataRootElement getCatalogTargetElementWithCapabilities()
+    {
+        try
+        {
+            GetOptions getOptions = integrationContext.getClassificationExplorerClient().getGetOptions();
+
+            getOptions.setGraphQueryDepth(1);
+            getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName));
+
+            return super.getCatalogTargetElement(getOptions);
+        }
+        catch (Exception error)
+        {
+            return this.getCatalogTargetElement();
         }
     }
 
@@ -221,7 +249,15 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                 AssetClient              assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
                 SoftwareCapabilityClient softwareCapabilityClient = integrationContext.getSoftwareCapabilityClient(OpenMetadataType.EVENT_BROKER.typeName);
 
-                OpenMetadataRootElement eventBroker = softwareCapabilityClient.getSoftwareCapabilityByGUID(eventBrokerGUID, softwareCapabilityClient.getGetOptions());
+                /*
+                 * Only the topics linked to the event broker through CapabilityAssetUse are used.
+                 */
+                GetOptions getOptions = softwareCapabilityClient.getGetOptions();
+
+                getOptions.setGraphQueryDepth(1);
+                getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName));
+
+                OpenMetadataRootElement eventBroker = softwareCapabilityClient.getSoftwareCapabilityByGUID(eventBrokerGUID, getOptions);
 
                 if (eventBroker != null)
                 {

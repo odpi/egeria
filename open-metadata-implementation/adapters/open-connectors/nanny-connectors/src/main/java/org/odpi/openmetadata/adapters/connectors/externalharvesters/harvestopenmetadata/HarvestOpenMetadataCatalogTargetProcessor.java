@@ -168,6 +168,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             SearchOptions workingSearchOptions = dataAssetClient.getSearchOptions(0, openMetadataStore.getMaxPagingSize());
             workingSearchOptions.setForLineage(true);
 
+            int defaultGraphQueryDepth = workingSearchOptions.getGraphQueryDepth();
+
+            /*
+             * The external identifiers and supplementary properties are all that is used from each asset's graph.
+             */
+            workingSearchOptions.setGraphQueryDepth(1);
+            workingSearchOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
+                                                                     OpenMetadataType.SUPPLEMENTARY_PROPERTIES_RELATIONSHIP.typeName));
+
             List<OpenMetadataRootElement> dataAssetElements = dataAssetClient.findAssets(null, workingSearchOptions);
 
             while (dataAssetElements != null)
@@ -183,6 +192,13 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
 
             workingSearchOptions.setStartFrom(0);
+
+            /*
+             * The members and external identifiers are all that is used from each glossary's graph.
+             */
+            workingSearchOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                     OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName));
+
             List<OpenMetadataRootElement> glossaryElements = glossaryClient.findCollections(null, workingSearchOptions);
 
             while (glossaryElements != null)
@@ -197,6 +213,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 glossaryElements = glossaryClient.findCollections(null, workingSearchOptions);
             }
 
+            /*
+             * The remaining queries use these options too.
+             */
+            workingSearchOptions.setGraphQueryDepth(defaultGraphQueryDepth);
+            workingSearchOptions.setIncludeOnlyRelationships(null);
 
             workingSearchOptions.setStartFrom(0);
             workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.TEAM.typeName);
@@ -1674,9 +1695,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              * Now process schema attributes.
              */
             SchemaAttributeClient schemaAttributeClient = integrationContext.getSchemaAttributeClient();
-            QueryOptions workingQueryOptions = schemaAttributeClient.getQueryOptions(0, schemaAttributeClient.getMaxPagingSize());
-            List<OpenMetadataRootElement> schemaAttributes = integrationContext.getSchemaAttributeClient().getAttributesForSchemaType(schemaType.getElement().getElementGUID(),
-                                                                                                         workingQueryOptions);
+            QueryOptions workingQueryOptions = this.getSchemaAttributeQueryOptions(schemaAttributeClient, 0);
+            List<OpenMetadataRootElement> schemaAttributes = schemaAttributeClient.getAttributesForSchemaType(schemaType.getElement().getElementGUID(),
+                                                                                                             workingQueryOptions);
 
             while (schemaAttributes != null)
             {
@@ -1721,7 +1742,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             int startFrom = 0;
             List<OpenMetadataRootElement> schemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaType.getElement().getElementGUID(),
-                                                                                                             openMetadataStore.getQueryOptions());
+                                                                                                             this.getSchemaAttributeQueryOptions(schemaAttributeClient, startFrom));
 
             while (schemaAttributes != null)
             {
@@ -1729,7 +1750,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 startFrom = startFrom + openMetadataStore.getMaxPagingSize();
                 schemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaType.getElement().getElementGUID(),
-                                                                                   openMetadataStore.getQueryOptions());
+                                                                                   this.getSchemaAttributeQueryOptions(schemaAttributeClient, startFrom));
             }
         }
         catch (Exception error)
@@ -1767,7 +1788,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 int nestedStartFrom = 0;
                 List<OpenMetadataRootElement> nestedSchemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaAttribute.getElementHeader().getGUID(),
-                                                                                                                      schemaAttributeClient.getQueryOptions(nestedStartFrom, openMetadataStore.getMaxPagingSize()));
+                                                                                                                      this.getSchemaAttributeQueryOptions(schemaAttributeClient, nestedStartFrom));
                 if (nestedSchemaAttributes == null)
                 {
                     /*
@@ -1794,14 +1815,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     while (nestedSchemaAttributes != null)
                     {
+                        processSchemaAttributes(databaseConnection, assetGUID, assetQualifiedName, nestedSchemaAttributes);
+
                         nestedStartFrom = nestedStartFrom + openMetadataStore.getMaxPagingSize();
                         nestedSchemaAttributes = schemaAttributeClient.getNestedSchemaAttributes(schemaAttribute.getElementHeader().getGUID(),
-                                                                                                 schemaAttributeClient.getQueryOptions(nestedStartFrom, openMetadataStore.getMaxPagingSize()));
-
-                        if (nestedSchemaAttributes != null)
-                        {
-                            processSchemaAttributes(databaseConnection, assetGUID, assetQualifiedName, nestedSchemaAttributes);
-                        }
+                                                                                                 this.getSchemaAttributeQueryOptions(schemaAttributeClient, nestedStartFrom));
                     }
                 }
             }
@@ -1815,6 +1833,26 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                       error.getMessage()),
                                   error);
         }
+    }
+
+
+    /**
+     * Query options for retrieving a page of schema attributes.  Each schema attribute's header, properties and
+     * external identifiers are all that is used from its graph.
+     *
+     * @param schemaAttributeClient client the options are for
+     * @param startFrom starting element of the page
+     * @return query options
+     */
+    private QueryOptions getSchemaAttributeQueryOptions(SchemaAttributeClient schemaAttributeClient,
+                                                        int                   startFrom)
+    {
+        QueryOptions queryOptions = schemaAttributeClient.getQueryOptions(startFrom, openMetadataStore.getMaxPagingSize());
+
+        queryOptions.setGraphQueryDepth(1);
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName));
+
+        return queryOptions;
     }
 
 
@@ -1867,6 +1905,20 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
 
+            /*
+             * The related terms and the collections that a term belongs to are all that is used from its graph.
+             */
+            GetOptions glossaryTermOptions = new GetOptions();
+
+            glossaryTermOptions.setGraphQueryDepth(1);
+            glossaryTermOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.SYNONYM_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.ANTONYM_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.PREFERRED_TERM_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.ISA_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
+
             OpenMetadataElement associatedLicense = getAssociatedLicense(databaseConnection, glossaryElement.getElementHeader().getGUID());
 
             int numberOfTerms = 0;
@@ -1881,22 +1933,25 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         if (propertyHelper.isTypeOf(glossaryMember.getRelatedElement().getElementHeader(), OpenMetadataType.GLOSSARY_TERM.typeName))
                         {
-                            numberOfTerms = numberOfLinkedTerms++;
+                            numberOfTerms++;
 
-                            OpenMetadataRootElement glossaryTerm = glossaryTermClient.getGlossaryTermByGUID(glossaryMember.getRelatedElement().getElementHeader().getGUID(), new GetOptions());
+                            OpenMetadataRootElement glossaryTerm = glossaryTermClient.getGlossaryTermByGUID(glossaryMember.getRelatedElement().getElementHeader().getGUID(), glossaryTermOptions);
 
-                            if (glossaryTerm.getRelatedTerms() != null)
+                            if (glossaryTerm != null)
                             {
-                                numberOfLinkedTerms = numberOfLinkedTerms + glossaryTerm.getRelatedTerms().size();
-                            }
+                                if (glossaryTerm.getRelatedTerms() != null)
+                                {
+                                    numberOfLinkedTerms = numberOfLinkedTerms + glossaryTerm.getRelatedTerms().size();
+                                }
 
-                            if (glossaryTerm.getMemberOfCollections() != null)
-                            {
-                                // todo - does this make sense?
-                                numberOfCategories = numberOfCategories + glossaryTerm.getMemberOfCollections().size();
-                            }
+                                if (glossaryTerm.getMemberOfCollections() != null)
+                                {
+                                    // todo - does this make sense?
+                                    numberOfCategories = numberOfCategories + glossaryTerm.getMemberOfCollections().size();
+                                }
 
-                            processGlossaryTerm(databaseConnection, glossaryElement.getElementHeader().getGUID(), glossaryTerm);
+                                processGlossaryTerm(databaseConnection, glossaryElement.getElementHeader().getGUID(), glossaryTerm);
+                            }
                         }
                     }
                 }

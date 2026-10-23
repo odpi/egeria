@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValue
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 
@@ -238,7 +239,7 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
 
                                         if (classificationReferenceGUID != null)
                                         {
-                                            classificationNameToReferenceElement.put(atlasClassification.getName(), validValueDefinitionClient.getValidValueDefinitionByGUID(classificationReferenceGUID, null));
+                                            classificationNameToReferenceElement.put(atlasClassification.getName(), validValueDefinitionClient.getValidValueDefinitionByGUID(classificationReferenceGUID, withoutRelationships(new GetOptions())));
                                         }
                                     }
                                 }
@@ -319,7 +320,7 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
          * Retrieve the valid value sets with matching names.
          */
         List<OpenMetadataRootElement> matchingValidValues = validValueDefinitionClient.getValidValueDefinitionsByName(classificationReferenceSetName,
-                                                                                                                          validValueDefinitionClient.getQueryOptions(0, 0));
+                                                                                                                          withoutRelationships(validValueDefinitionClient.getQueryOptions(0, 0)));
 
         /*
          * If a valid value set is found with the right name then use it

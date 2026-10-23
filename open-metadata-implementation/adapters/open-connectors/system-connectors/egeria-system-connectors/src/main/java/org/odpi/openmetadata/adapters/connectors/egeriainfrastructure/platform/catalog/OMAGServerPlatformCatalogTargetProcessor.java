@@ -58,6 +58,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastru
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ExceptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -162,10 +163,16 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         try
         {
             /*
-             * Get the latest metadata for the platform.
+             * Get the latest metadata for the platform.  Only the relationships attached directly to the platform
+             * are used (hosted servers, capabilities, endpoints, connections and exceptions) - nothing beyond them.
+             * The catalog target's header supplies the GUID without a full read of the catalog target element.
              */
-            OpenMetadataRootElement platformElement = assetClient.getAssetByGUID(this.getCatalogTargetElement().getElementHeader().getGUID(),
-                                                                                 assetClient.getGetOptions());
+            GetOptions platformGetOptions = assetClient.getGetOptions();
+
+            platformGetOptions.setGraphQueryDepth(1);
+
+            OpenMetadataRootElement platformElement = assetClient.getAssetByGUID(this.getCatalogTargetElementHeader().getGUID(),
+                                                                                 platformGetOptions);
 
             if ((platformElement != null) && (platformElement.getProperties() instanceof SoftwareServerPlatformProperties softwareServerPlatformProperties))
             {
@@ -278,9 +285,13 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                         {
                                             AssetClient serverClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
 
+                                            /*
+                                             * Only the server's endpoints are used.
+                                             */
                                             OpenMetadataRootElement serverElement = serverClient.getAssetByGUID(deploymentElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                serverClient.getGetOptions());
-                                            updateServer(omagServerProperties, platformProperties, deploymentElement.getRelatedElement().getElementHeader().getGUID(), serverElement.getEndpoint());
+                                                                                                                withOnlyRelationship(serverClient.getGetOptions(),
+                                                                                                                                     OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName));
+                                            updateServer(omagServerProperties, platformProperties, deploymentElement.getRelatedElement().getElementHeader().getGUID(), serverElement.getServerEndpoints());
 
                                             thisPlatformsServerGUIDs.add(deploymentElement.getRelatedElement().getElementHeader().getGUID());
                                         }
@@ -315,7 +326,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                          */
                                         OpenMetadataRootElement matchingServer = null;
 
-                                        List<OpenMetadataRootElement> softwareServerElements = integrationContext.getAssetClient().getAssetsByName(qualifiedName, null);
+                                        /*
+                                         * Only the matching server's header and endpoints are used.
+                                         */
+                                        List<OpenMetadataRootElement> softwareServerElements = integrationContext.getAssetClient().getAssetsByName(qualifiedName,
+                                                                                                                                                  withOnlyRelationship(new QueryOptions(),
+                                                                                                                                                                       OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName));
 
                                         if (softwareServerElements != null)
                                         {
@@ -357,7 +373,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                              * The server has been catalogued before - but with a different platform.
                                              */
                                             matchingServerGUID = matchingServer.getElementHeader().getGUID();
-                                            updateServer(omagServerProperties, platformProperties, matchingServerGUID, matchingServer.getEndpoint());
+                                            updateServer(omagServerProperties, platformProperties, matchingServerGUID, matchingServer.getServerEndpoints());
                                         }
 
                                         /*
@@ -458,7 +474,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
         for (String serverGUID : serverGUIDs)
         {
-            OpenMetadataRootElement softwareServer = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+            /*
+             * Only the server's properties and its DataFlow lineage relationships are used.
+             */
+            OpenMetadataRootElement softwareServer = assetClient.getAssetByGUID(serverGUID,
+                                                                                withOnlyRelationship(assetClient.getGetOptions(),
+                                                                                                     OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName));
 
             if ((softwareServer != null) &&
                     (softwareServer.getProperties() instanceof SoftwareServerProperties softwareServerProperties) &&
@@ -606,7 +627,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
         OpenMetadataStore  openMetadataStore  = integrationContext.getOpenMetadataStore();
         UserIdentityClient userIdentityClient = integrationContext.getUserIdentityClient();
-        SearchOptions searchOptions = userIdentityClient.getSearchOptions(0, integrationContext.getMaxPageSize());
+        SearchOptions searchOptions = withOnlyRelationship(userIdentityClient.getSearchOptions(0, integrationContext.getMaxPageSize()),
+                                                           OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName); // Only the exceptions are used
         List<OpenMetadataRootElement> userElements = userIdentityClient.findUserIdentities(null, searchOptions);
 
         /*
@@ -787,7 +809,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
     {
         OpenMetadataStore          openMetadataStore          = integrationContext.getOpenMetadataStore();
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ZONE.typeName);
-        SearchOptions              searchOptions              = governanceDefinitionClient.getSearchOptions(0, integrationContext.getMaxPageSize());
+        SearchOptions              searchOptions              = withOnlyRelationship(governanceDefinitionClient.getSearchOptions(0, integrationContext.getMaxPageSize()),
+                                                                                         OpenMetadataType.EXCEPTION_RELATIONSHIP.typeName); // Only the exceptions are used
         List<OpenMetadataRootElement> zoneElements = governanceDefinitionClient.findGovernanceDefinitions(null, searchOptions);
 
         while (zoneElements != null)
@@ -1043,8 +1066,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                     {
                         AssetClient fileClient = integrationContext.getAssetClient(OpenMetadataType.KEY_STORE_FILE.typeName);
 
+                        /*
+                         * Only the data sets (secrets collections) stored in each file are used.
+                         */
                         List<OpenMetadataRootElement> secretsFiles = fileClient.findAssets(secretsStoreFileName,
-                                                                                           fileClient.getSearchOptions());
+                                                                                           withOnlyRelationship(fileClient.getSearchOptions(),
+                                                                                                                OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName));
 
                         if (secretsFiles != null)
                         {
@@ -1647,17 +1674,17 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      * @param omagServerProperties operational details of the server
      * @param platformProperties   operational details of the platform
      * @param serverGUID           metadata details of the server
-     * @param endpoint             endpoint details of the server
+     * @param serverEndpoints      endpoints of the server
      * @throws InvalidParameterException  invalid parameter
      * @throws PropertyServerException    no repo
      * @throws UserNotAuthorizedException security problem
      */
-    private void updateServer(OMAGServerProperties          omagServerProperties,
-                              OMAGServerPlatformProperties  platformProperties,
-                              String                        serverGUID,
-                              RelatedMetadataElementSummary endpoint) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private void updateServer(OMAGServerProperties                omagServerProperties,
+                              OMAGServerPlatformProperties        platformProperties,
+                              String                              serverGUID,
+                              List<RelatedMetadataElementSummary> serverEndpoints) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         SoftwareServerProperties softwareServerProperties = new SoftwareServerProperties();
 
@@ -1697,7 +1724,16 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                 assetClient.getUpdateOptions(true),
                                 softwareServerProperties);
 
-        checkAndUpdateEndpoint(platformProperties.getPlatformURLRoot(), endpoint);
+        if (serverEndpoints != null)
+        {
+            for (RelatedMetadataElementSummary endpoint : serverEndpoints)
+            {
+                if (endpoint != null)
+                {
+                    checkAndUpdateEndpoint(platformProperties.getPlatformURLRoot(), endpoint);
+                }
+            }
+        }
 
         checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
     }
@@ -1798,7 +1834,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                     String topicGUID = null;
                     AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
                     List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(topicQualifiedName,
-                                                                                         assetClient.getQueryOptions());
+                                                                                         withoutRelationships(assetClient.getQueryOptions())); // Only the header and properties are used
 
 
                     if (elements != null)
@@ -1940,7 +1976,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
 
-        OpenMetadataRootElement topic = assetClient.getAssetByGUID(topicGUID, assetClient.getGetOptions());
+        /*
+         * Only the topic's properties and its CatalogTarget relationships are used.
+         */
+        OpenMetadataRootElement topic = assetClient.getAssetByGUID(topicGUID,
+                                                                   withOnlyRelationship(assetClient.getGetOptions(),
+                                                                                        OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName));
 
         if (topic == null)
         {
@@ -2077,7 +2118,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             {
                 AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
 
-                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+                /*
+                 * Only the server's software capabilities are used.
+                 */
+                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID,
+                                                                                   withOnlyRelationship(assetClient.getGetOptions(),
+                                                                                                        OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName));
 
                 List<String> processedEngines = new ArrayList<>();
 
@@ -2154,7 +2200,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             {
                 AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER.typeName);
 
-                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID, assetClient.getGetOptions());
+                /*
+                 * Only the server's software capabilities are used.
+                 */
+                OpenMetadataRootElement serverElement = assetClient.getAssetByGUID(serverGUID,
+                                                                                   withOnlyRelationship(assetClient.getGetOptions(),
+                                                                                                        OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName));
 
                 List<String> processedGroups = new ArrayList<>();
 
@@ -2250,7 +2301,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
                 EndpointProperties properties = new EndpointProperties();
 
-                endpointProperties.setNetworkAddress(platformURLRoot);
+                properties.setNetworkAddress(platformURLRoot);
 
                 endpointClient.updateEndpoint(endpoint.getRelatedElement().getElementHeader().getGUID(),
                                               endpointClient.getUpdateOptions(true),
@@ -2287,8 +2338,21 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             {
                 OpenMetadataRootElement cohortElement = null;
                 String                  cohortGUID;
+                boolean                 alreadyMember = false;
 
-                List<OpenMetadataRootElement> cohortElements = cohortClient.getMetadataRepositoryCohortsByName(cohort.getCohortName(), cohortClient.getQueryOptions());
+                /*
+                 * The server's membership of the cohort is represented by a CohortMember software capability linked to
+                 * the cohort.  There is one software capability for each cohort, so the qualified name includes
+                 * both the server name and the cohort.
+                 */
+                String cohortMemberQualifiedName = OpenMetadataType.COHORT_MEMBER.typeName + "::" + serverQualifiedName + "_cohortMember_" + cohort.getCohortName();
+
+                /*
+                 * Only the cohort's header and its cohort membership relationships are used.
+                 */
+                List<OpenMetadataRootElement> cohortElements = cohortClient.getMetadataRepositoryCohortsByName(cohort.getCohortName(),
+                                                                                                               withOnlyRelationship(cohortClient.getQueryOptions(),
+                                                                                                                                    OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName));
 
                 if (cohortElements != null)
                 {
@@ -2310,15 +2374,15 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                     {
                         for (RelatedMetadataElementSummary cohortMember : cohortElement.getCohortMembership())
                         {
-                            if (cohortMember != null)
+                            if ((cohortMember != null) &&
+                                    (cohortMember.getRelatedElement().getProperties() instanceof ReferenceableProperties memberProperties) &&
+                                    (cohortMemberQualifiedName.equals(memberProperties.getQualifiedName())))
                             {
-                                if (cohortMember.getRelatedElement().getElementHeader().getGUID().equals(serverGUID))
-                                {
-                                    /*
-                                     * This cohort is registered.
-                                     */
-                                    break;
-                                }
+                                /*
+                                 * This server is already registered with the cohort.
+                                 */
+                                alreadyMember = true;
+                                break;
                             }
                         }
                     }
@@ -2342,14 +2406,14 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                              null);
                 }
 
-                /*
-                 * The server's membership of the cohort is represented by a CohortMember software capability linked to
-                 * the cohort.  There is one software capability for each cohort, so the qualified name includes
-                 * both the server name and the cohort.
-                 */
+                if (alreadyMember)
+                {
+                    continue;
+                }
+
                 CohortMemberProperties cohortMemberProperties = new CohortMemberProperties();
 
-                cohortMemberProperties.setQualifiedName(OpenMetadataType.COHORT_MEMBER.typeName + "::" + serverQualifiedName + "_cohortMember_" + cohort.getCohortName());
+                cohortMemberProperties.setQualifiedName(cohortMemberQualifiedName);
                 cohortMemberProperties.setDisplayName("Cohort member of " + cohort.getCohortName() + " for server " + omagServerProperties.getServerName() + ".");
                 cohortMemberProperties.setCategory(EGERIA_DEPLOYMENT_CATEGORY);
                 cohortMemberProperties.setDeploymentStatus(DeploymentStatus.ACTIVE);
@@ -2471,7 +2535,7 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      * Locate the platforms security secrets store collection.
      *
      * @param platformElement platform description
-     * @return path name or null
+     * @return collection name or null
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException no repo
      * @throws UserNotAuthorizedException security problem
@@ -2500,8 +2564,43 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         }
 
         /*
-         * The platform does not have its secrets store explicitly defined, so use the one provided to this connector.
+         * The platform does not have its secrets store collection explicitly defined, so use the one provided to this connector.
          */
-        return super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_STORE.getName(), this.getConfigurationProperties());
+        return super.getStringConfigurationProperty(OMAGServerPlatformConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), this.getConfigurationProperties());
+    }
+
+
+    /**
+     * Stop a read returning the relationships of each element it finds.  The reads that use this need only
+     * the element's header (including its classifications) and properties.
+     *
+     * @param options options from the client
+     * @param <T> type of options
+     * @return the same options, set not to return relationships
+     */
+    private static <T extends GetOptions> T withoutRelationships(T options)
+    {
+        options.setGraphQueryDepth(0);
+
+        return options;
+    }
+
+
+    /**
+     * Have a read return only one type of relationship attached directly to each element it finds, and nothing
+     * beyond it.
+     *
+     * @param options options from the client
+     * @param relationshipTypeName the relationship type to return (subtypes are included)
+     * @param <T> type of options
+     * @return the same options, set to return only that relationship
+     */
+    private static <T extends GetOptions> T withOnlyRelationship(T      options,
+                                                                 String relationshipTypeName)
+    {
+        options.setGraphQueryDepth(1);
+        options.setIncludeOnlyRelationships(List.of(relationshipTypeName));
+
+        return options;
     }
 }

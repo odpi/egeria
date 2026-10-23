@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SavedQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ResultsSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -72,13 +74,13 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
     {
         final String methodName = "refresh";
 
-        if (! propertyHelper.isTypeOf(super.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RESULTS_SET.typeName))
+        if (! propertyHelper.isTypeOf(super.getCatalogTargetElementHeader(), OpenMetadataType.RESULTS_SET.typeName))
         {
             super.throwWrongTypeOfCatalogTarget(OpenMetadataType.RESULTS_SET.typeName, methodName);
             return;
         }
 
-        String           resultsSetGUID  = super.getCatalogTargetElement().getElementHeader().getGUID();
+        String           resultsSetGUID  = super.getCatalogTargetElementHeader().getGUID();
         CollectionClient collectionClient = integrationContext.getCollectionClient();
 
         auditLog.logMessage(methodName, SmartCollectionsAuditCode.REFRESHING_RESULTS_SET.getMessageDefinition(connectorName, resultsSetGUID));
@@ -91,7 +93,15 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
 
         try
         {
-            OpenMetadataRootElement resultsSetElement = collectionClient.getCollectionByGUID(resultsSetGUID, collectionClient.getGetOptions());
+            /*
+             * Only the results set's properties and its SmartQuery relationship to the saved query are used.
+             */
+            GetOptions resultsSetOptions = collectionClient.getGetOptions();
+
+            resultsSetOptions.setGraphQueryDepth(1);
+            resultsSetOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName));
+
+            OpenMetadataRootElement resultsSetElement = collectionClient.getCollectionByGUID(resultsSetGUID, resultsSetOptions);
 
             if (resultsSetElement.getProperties() instanceof ResultsSetProperties resultsSetProperties)
             {
@@ -115,7 +125,14 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
 
                 AssetClient savedQueryClient = integrationContext.getAssetClient(OpenMetadataType.SAVED_QUERY.typeName);
 
-                OpenMetadataRootElement savedQueryElement = savedQueryClient.getAssetByGUID(savedQueryGUID, savedQueryClient.getGetOptions());
+                /*
+                 * Only the saved query's properties are used.
+                 */
+                GetOptions savedQueryOptions = savedQueryClient.getGetOptions();
+
+                savedQueryOptions.setGraphQueryDepth(0);
+
+                OpenMetadataRootElement savedQueryElement = savedQueryClient.getAssetByGUID(savedQueryGUID, savedQueryOptions);
 
                 if ((savedQueryElement != null) && (savedQueryElement.getProperties() instanceof SavedQueryProperties savedQueryProperties) &&
                         (savedQueryProperties.getQueryURL() != null))
@@ -241,7 +258,14 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
 
         Set<String> currentMemberGUIDs = new HashSet<>();
 
-        List<OpenMetadataRootElement> currentMembers = collectionClient.getCollectionMembers(resultsSetGUID, collectionClient.getQueryOptions());
+        /*
+         * Only the members' headers are used.
+         */
+        QueryOptions memberOptions = collectionClient.getQueryOptions();
+
+        memberOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> currentMembers = collectionClient.getCollectionMembers(resultsSetGUID, memberOptions);
 
         if (currentMembers != null)
         {

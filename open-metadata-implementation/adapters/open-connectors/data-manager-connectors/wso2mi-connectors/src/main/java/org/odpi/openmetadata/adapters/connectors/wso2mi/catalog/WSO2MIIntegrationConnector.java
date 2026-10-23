@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Collections;
@@ -206,7 +207,14 @@ public class WSO2MIIntegrationConnector extends IntegrationConnectorBase
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(qualifiedName, assetClient.getQueryOptions());
+        QueryOptions queryOptions = assetClient.getQueryOptions();
+
+        /*
+         * Only the matching elements' headers and properties are used.
+         */
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(qualifiedName, queryOptions);
 
         if (elements != null)
         {

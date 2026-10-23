@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ExternalIdClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.PropertyFacetClient;
@@ -41,6 +42,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.R
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -437,6 +439,22 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
 
     /**
+     * Return the options for a search where only the matching elements' headers and properties are used.
+     *
+     * @param client client making the request
+     * @return query options
+     */
+    private QueryOptions getElementOnlyQueryOptions(ConnectorContextClientBase client)
+    {
+        QueryOptions queryOptions = client.getQueryOptions();
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
+    }
+
+
+    /**
      * Find an existing schema type with the requested qualified name.  Used to make schema cataloguing (for
      * example table columns, or API parameters) idempotent across repeated refreshes.
      *
@@ -452,7 +470,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, schemaTypeClient.getQueryOptions());
+        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, this.getElementOnlyQueryOptions(schemaTypeClient));
 
         if (elements != null)
         {
@@ -488,7 +506,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, schemaAttributeClient.getQueryOptions());
+        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, this.getElementOnlyQueryOptions(schemaAttributeClient));
 
         if (elements != null)
         {

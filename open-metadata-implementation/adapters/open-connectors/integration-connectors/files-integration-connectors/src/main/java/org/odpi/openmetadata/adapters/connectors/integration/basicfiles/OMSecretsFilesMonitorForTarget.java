@@ -41,8 +41,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileExtension;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -898,7 +900,15 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                  * in the logic above.  The test for null is a precaution against a timing window where another
                  * process is also editing these elements.
                  */
-                OpenMetadataRootElement securityListElement = collectionClient.getCollectionByGUID(listGUID, collectionClient.getGetOptions());
+                GetOptions getOptions = collectionClient.getGetOptions();
+
+                /*
+                 * Only the list's direct collection members are used.
+                 */
+                getOptions.setGraphQueryDepth(1);
+                getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
+
+                OpenMetadataRootElement securityListElement = collectionClient.getCollectionByGUID(listGUID, getOptions);
 
                 if (securityListElement != null)
                 {
@@ -1036,7 +1046,14 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
     {
         UserIdentityClient userIdentityClient = integrationConnector.integrationContext.getUserIdentityClient();
 
-        List<OpenMetadataRootElement> userIdentities = userIdentityClient.findUserIdentities(null, userIdentityClient.getSearchOptions());
+        SearchOptions      searchOptions      = userIdentityClient.getSearchOptions();
+
+        /*
+         * Only each user identity's header (for its zone membership) and properties are used.
+         */
+        searchOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> userIdentities = userIdentityClient.findUserIdentities(null, searchOptions);
 
         if (userIdentities != null)
         {
@@ -1106,7 +1123,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         {
             AssetClient fileClient = integrationConnector.integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
 
-            QueryOptions queryOptions = fileClient.getQueryOptions(0, fileClient.getMaxPagingSize());
+            QueryOptions queryOptions = this.getSecretsFileQueryOptions(fileClient, 0);
 
             List<OpenMetadataRootElement> matchingFiles = fileClient.getAssetsByDeployedImplementationType(DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getDeployedImplementationType(), queryOptions);
 
@@ -1114,13 +1131,13 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
             {
                 for (OpenMetadataRootElement file : matchingFiles)
                 {
-                    if ((file != null) && (file.getElementHeader().getTemplate() == null)) // don't process templates
+                    if ((file != null) && (file.getElementHeader().getTemplate() == null)) // don't process templates (also excluded by the query)
                     {
                         catalogSecretsCollections(file.getElementHeader().getGUID());
                     }
                 }
 
-                queryOptions = fileClient.getQueryOptions(queryOptions.getStartFrom() + fileClient.getMaxPagingSize(), fileClient.getMaxPagingSize());
+                queryOptions = this.getSecretsFileQueryOptions(fileClient, queryOptions.getStartFrom() + fileClient.getMaxPagingSize());
                 matchingFiles = fileClient.getAssetsByDeployedImplementationType(DeployedImplementationType.YAML_SECRETS_COLLECTION_FILE.getDeployedImplementationType(), queryOptions);
             }
         }
@@ -1132,5 +1149,25 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                                                                                                    methodName,
                                                                                                                    error.getMessage()));
         }
+    }
+
+
+    /**
+     * Return the query options for a page of secrets collection files.  Only each file's header is used, and
+     * templates are not processed so they are excluded by the repository.
+     *
+     * @param fileClient client for retrieving the files
+     * @param startFrom starting element
+     * @return query options
+     */
+    private QueryOptions getSecretsFileQueryOptions(AssetClient fileClient,
+                                                    int         startFrom)
+    {
+        QueryOptions queryOptions = fileClient.getQueryOptions(startFrom, fileClient.getMaxPagingSize());
+
+        queryOptions.setGraphQueryDepth(0);
+        queryOptions.setSkipClassifiedElements(List.of(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName));
+
+        return queryOptions;
     }
 }

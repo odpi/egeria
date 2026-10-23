@@ -1295,6 +1295,7 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
         QueryOptions roleQueryOptions = actorRoleClient.getQueryOptions();
 
         roleQueryOptions.setForDuplicateProcessing(true);
+        roleQueryOptions.setGraphQueryDepth(0); // Only the GUID of a matching role is used.
 
         List<OpenMetadataRootElement> existingRoles = actorRoleClient.getActorRolesByName(stewardRoleQualifiedName, roleQueryOptions);
 

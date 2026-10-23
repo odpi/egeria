@@ -276,8 +276,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
             GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
             QueryOptions               queryOptions               = governanceDefinitionClient.getQueryOptions();
 
-            queryOptions.setGraphQueryDepth(1);
-            queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName));
+            queryOptions.setGraphQueryDepth(0);
 
             OpenMetadataRootElement notificationType = governanceDefinitionClient.getGovernanceDefinitionByGUID(notificationTypeGUID, queryOptions);
 

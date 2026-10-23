@@ -1426,9 +1426,11 @@ public class DarwinProductDependencyManagerConnector extends IntegrationConnecto
         }
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.EXCEPTION_TYPE.typeName);
+        QueryOptions               queryOptions               = governanceDefinitionClient.getQueryOptions();
 
-        List<OpenMetadataRootElement> existingTypes = governanceDefinitionClient.getGovernanceDefinitionsByName(exceptionTypeQualifiedName,
-                                                                                                                governanceDefinitionClient.getQueryOptions());
+        queryOptions.setGraphQueryDepth(0); // Only the GUID of a matching exception type is used.
+
+        List<OpenMetadataRootElement> existingTypes = governanceDefinitionClient.getGovernanceDefinitionsByName(exceptionTypeQualifiedName, queryOptions);
 
         if (existingTypes != null)
         {

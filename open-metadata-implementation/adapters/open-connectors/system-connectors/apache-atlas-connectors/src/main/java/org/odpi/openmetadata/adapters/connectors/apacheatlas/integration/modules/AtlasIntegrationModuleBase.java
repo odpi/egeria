@@ -35,8 +35,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -303,10 +303,12 @@ public abstract class AtlasIntegrationModuleBase
 
 
     /**
-     * Return the unique identifier for the equivalent element in Apache Atlas.
+     * Return the unique identifier for the equivalent element in Apache Atlas.  Null means the element has no
+     * Apache Atlas correlation information yet - for example, it originated in the open metadata ecosystem and
+     * has not been copied to Apache Atlas.
      *
      * @param metadataElement retrieved metadata element
-     * @return string guid
+     * @return string guid or null
      * @throws InvalidParameterException retrieved element is null
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -315,8 +317,6 @@ public abstract class AtlasIntegrationModuleBase
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "getAtlasGUID";
-
         RelatedMetadataElementSummary relatedExternalIdentifier = externalIdClient.getRelatedExternalId(metadataElement,
                                                                                                         myContext.getMetadataSourceGUID(),
                                                                                                         null);
@@ -327,26 +327,18 @@ public abstract class AtlasIntegrationModuleBase
             return externalIdProperties.getKey();
         }
 
-        auditLog.logMessage(methodName, AtlasIntegrationAuditCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
-                                                                                                          metadataElement.getElementHeader().getType().getTypeName(),
-                                                                                                          metadataElement.getElementHeader().getGUID(),
-                                                                                                          myContext.getMetadataSourceGUID()));
-        throw new InvalidParameterException(AtlasIntegrationErrorCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
-                                                                                                              metadataElement.getElementHeader().getType().getTypeName(),
-                                                                                                              metadataElement.getElementHeader().getGUID(),
-                                                                                                              myContext.getMetadataSourceGUID()),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            OpenMetadataProperty.KEY.name);
+        return null;
     }
 
 
 
     /**
-     * Return the unique identifier for the equivalent element in Apache Atlas.
+     * Return the unique identifier for the equivalent element in Apache Atlas.  Null means the element has no
+     * Apache Atlas correlation information yet - for example, it originated in the open metadata ecosystem and
+     * has not been copied to Apache Atlas.
      *
      * @param metadataElement retrieved metadata element
-     * @return string guid
+     * @return string guid or null
      * @throws InvalidParameterException retrieved element is null
      * @throws PropertyServerException    a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -355,8 +347,6 @@ public abstract class AtlasIntegrationModuleBase
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        final String methodName = "getAtlasGUID";
-
         if (metadataElement instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
         {
             if (relatedMetadataHierarchySummary.getSideLinks() != null)
@@ -375,17 +365,7 @@ public abstract class AtlasIntegrationModuleBase
             }
         }
 
-        auditLog.logMessage(methodName, AtlasIntegrationAuditCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
-                                                                                                          metadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                          metadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                          myContext.getMetadataSourceGUID()));
-        throw new InvalidParameterException(AtlasIntegrationErrorCode.MISSING_ATLAS_GUID.getMessageDefinition(connectorName,
-                                                                                                              metadataElement.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                              metadataElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                              myContext.getMetadataSourceGUID()),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            OpenMetadataProperty.KEY.name);
+        return null;
     }
 
 
@@ -1096,7 +1076,7 @@ public abstract class AtlasIntegrationModuleBase
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    dataAssetClient.getAssetByGUID(egeriaDataSetGUID, null);
+                    dataAssetClient.getAssetByGUID(egeriaDataSetGUID, withoutRelationships(new GetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.
@@ -1225,7 +1205,7 @@ public abstract class AtlasIntegrationModuleBase
         if (atlasDataSetEntity != null)
         {
             AtlasEntity atlasEntity = atlasDataSetEntity.getEntity();
-            OpenMetadataRootElement dataAssetElement = dataAssetClient.getAssetByGUID(egeriaDataSetGUID, dataAssetClient.getGetOptions());
+            OpenMetadataRootElement dataAssetElement = dataAssetClient.getAssetByGUID(egeriaDataSetGUID, withExternalIds(dataAssetClient.getGetOptions()));
 
             if (atlasEntity != null)
             {
@@ -1458,5 +1438,56 @@ public abstract class AtlasIntegrationModuleBase
                                                           classificationExplorerClient.getMetadataSourceOptions());
             }
         }
+    }
+
+
+    /**
+     * Stop a read returning the relationships of each element it finds.  The reads that use this need only
+     * the element's header (including its classifications) and properties - or are just checking that the
+     * element exists.
+     *
+     * @param options options to update
+     * @param <T> type of options
+     * @return the same options, set not to return relationships
+     */
+    protected static <T extends GetOptions> T withoutRelationships(T options)
+    {
+        options.setGraphQueryDepth(0);
+
+        return options;
+    }
+
+
+    /**
+     * Have a read return only the listed types of relationship attached directly to each element it finds,
+     * and nothing beyond them.
+     *
+     * @param options options to update
+     * @param relationshipTypeNames the relationship types to return (subtypes are included)
+     * @param <T> type of options
+     * @return the same options, set to return only those relationships
+     */
+    protected static <T extends GetOptions> T withOnlyRelationships(T         options,
+                                                                    String... relationshipTypeNames)
+    {
+        options.setGraphQueryDepth(1);
+        options.setIncludeOnlyRelationships(List.of(relationshipTypeNames));
+
+        return options;
+    }
+
+
+    /**
+     * Have a read return only the external identifiers (ExternalIdLink relationships) of each element it finds.
+     * These are what the synchronization logic uses to correlate an open metadata element with its Apache Atlas
+     * equivalent (see getAtlasGUID, egeriaUpdateRequired, atlasUpdateRequired and ensureAtlasExternalIdentifier).
+     *
+     * @param options options to update
+     * @param <T> type of options
+     * @return the same options, set to return only the external identifiers
+     */
+    protected static <T extends GetOptions> T withExternalIds(T options)
+    {
+        return withOnlyRelationships(options, OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
     }
 }

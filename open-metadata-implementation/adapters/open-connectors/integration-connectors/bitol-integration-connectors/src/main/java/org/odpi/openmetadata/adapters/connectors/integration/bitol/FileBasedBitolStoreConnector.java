@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
@@ -133,7 +135,7 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
             int                           startFrom      = 0;
             int                           maxPageSize    = integrationContext.getMaxPageSize();
             List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                         assetClient.getQueryOptions(startFrom, maxPageSize));
+                                                                                         this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
 
             while (catalogTargets != null)
             {
@@ -148,7 +150,7 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
                 startFrom = startFrom + maxPageSize;
 
                 catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                               assetClient.getQueryOptions(startFrom, maxPageSize));
+                                                               this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
             }
         }
         catch (ConnectorCheckedException error)
@@ -164,6 +166,29 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
                                                                                                                error.getMessage()),
                                   error);
         }
+    }
+
+
+    /**
+     * Return the query options for a page of catalog targets.  Only each target's header, properties, connections
+     * (for an asset) and endpoint (for a connection) are used to work out the directory name.
+     *
+     * @param assetClient client for retrieving the catalog targets
+     * @param startFrom starting element
+     * @param pageSize maximum elements to return
+     * @return query options
+     */
+    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
+                                                      int         startFrom,
+                                                      int         pageSize)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(1);
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                         OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
+        return queryOptions;
     }
 
 
@@ -204,8 +229,16 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
             {
                 if (connection != null)
                 {
+                    /*
+                     * Only the connection's endpoint is used.
+                     */
+                    GetOptions getOptions = assetClient.getGetOptions();
+
+                    getOptions.setGraphQueryDepth(1);
+                    getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
                     OpenMetadataRootElement connectionElement = integrationContext.getConnectionClient().getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                             assetClient.getGetOptions());
+                                                                                                                             getOptions);
 
                     String directoryName = getEndpointAddress(connectionElement);
 

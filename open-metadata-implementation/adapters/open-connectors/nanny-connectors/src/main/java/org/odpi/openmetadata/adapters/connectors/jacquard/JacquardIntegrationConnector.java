@@ -1241,8 +1241,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         int                           duplicatesRemoved = 0;
         int                           startFrom         = 0;
-        List<OpenMetadataRootElement> catalogTargets    = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                        assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        QueryOptions                  queryOptions      = this.headerAndPropertiesQuery(assetClient);
+
+        queryOptions.setPageSize(assetClient.getMaxPagingSize());
+
+        List<OpenMetadataRootElement> catalogTargets    = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(), queryOptions);
 
         while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
         {
@@ -1270,8 +1273,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             }
 
             startFrom      = startFrom + assetClient.getMaxPagingSize();
-            catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+            queryOptions.setStartFrom(startFrom);
+            catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(), queryOptions);
         }
 
         if (duplicatesRemoved > 0)
@@ -2270,7 +2273,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * This is not strictly necessary - but is present to demonstrate how to search for and
              * create Connector Types
              */
-            List<OpenMetadataRootElement> existingConnectorTypes = connectorTypeClient.getConnectorTypesByConnectorProvider(connectorProvider.getClass().getName(), null);
+            List<OpenMetadataRootElement> existingConnectorTypes = connectorTypeClient.getConnectorTypesByConnectorProvider(connectorProvider.getClass().getName(), this.headerAndPropertiesQuery(connectorTypeClient));
 
             if (existingConnectorTypes != null)
             {
@@ -2420,7 +2423,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the product folder is already present then return its GUID
          */
-        List<OpenMetadataRootElement> collections = collectionClient.getCollectionsByName(productFolderDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> collections = collectionClient.getCollectionsByName(productFolderDefinition.getQualifiedName(), this.headerAndPropertiesQuery(collectionClient));
 
         if (collections != null)
         {
@@ -2555,7 +2558,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the glossary term is already present then return its GUID
          */
-        List<OpenMetadataRootElement> terms = glossaryTermClient.getGlossaryTermsByName(glossaryTermDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> terms = glossaryTermClient.getGlossaryTermsByName(glossaryTermDefinition.getQualifiedName(), this.headerAndPropertiesQuery(glossaryTermClient));
 
         if (terms != null)
         {
@@ -2673,7 +2676,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the perspective is already present then return its GUID
          */
-        List<OpenMetadataRootElement> perspectives = perspectiveClient.getPerspectivesByName(perspectiveDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> perspectives = perspectiveClient.getPerspectivesByName(perspectiveDefinition.getQualifiedName(), this.headerAndPropertiesQuery(perspectiveClient));
 
         if (perspectives != null)
         {
@@ -2820,7 +2823,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the glossary term is already present then return its GUID
          */
-        List<OpenMetadataRootElement> questions = glossaryTermClient.getGlossaryTermsByName(productQuestionDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> questions = glossaryTermClient.getGlossaryTermsByName(productQuestionDefinition.getQualifiedName(), this.headerAndPropertiesQuery(glossaryTermClient));
 
         if (questions != null)
         {
@@ -2984,7 +2987,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the community exists, then return its GUID
          */
-        List<OpenMetadataRootElement> existingCommunities = communityClient.getCommunitiesByName(productCommunityDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> existingCommunities = communityClient.getCommunitiesByName(productCommunityDefinition.getQualifiedName(), this.headerAndPropertiesQuery(communityClient));
 
         if (existingCommunities != null)
         {
@@ -3097,7 +3100,9 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the community is already present then return its GUID
          */
-        OpenMetadataRootElement community = communityClient.getCommunityByGUID(communityGUID, null);
+        OpenMetadataRootElement community = communityClient.getCommunityByGUID(communityGUID,
+                                                                       this.withRelationships(communityClient,
+                                                                                              OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName));
 
         if ((community != null) && (community.getNoteLogs() != null))
         {
@@ -3202,7 +3207,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the data field is already present then return its GUID
          */
-        List<OpenMetadataRootElement> existingDataFields = dataFieldClient.getDataFieldsByName(dataFieldDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> existingDataFields = dataFieldClient.getDataFieldsByName(dataFieldDefinition.getQualifiedName(), this.headerAndPropertiesQuery(dataFieldClient));
 
         if (existingDataFields != null)
         {
@@ -3366,7 +3371,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the GovernanceDefinition is already present then return its GUID
          */
-        List<OpenMetadataRootElement> existingGovernanceDefinitions = governanceDefinitionClient.getGovernanceDefinitionsByName(governanceDefinition.getQualifiedName(), null);
+        List<OpenMetadataRootElement> existingGovernanceDefinitions = governanceDefinitionClient.getGovernanceDefinitionsByName(governanceDefinition.getQualifiedName(), this.headerAndPropertiesQuery(governanceDefinitionClient));
 
         if (existingGovernanceDefinitions != null)
         {
@@ -3492,6 +3497,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
 
         componentQueryOptions.setForDuplicateProcessing(true);
 
+        /*
+         * Only the GUID of an existing component is used when the components are refreshed.
+         */
+        QueryOptions componentLookupOptions = new QueryOptions(componentQueryOptions);
+
+        componentLookupOptions.setGraphQueryDepth(0);
+
         UpdateOptions componentUpdateOptions = solutionComponentClient.getUpdateOptions(true);
 
         componentUpdateOptions.setForDuplicateProcessing(true);
@@ -3537,7 +3549,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 /*
                  * Has the component already been defined?
                  */
-                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, componentQueryOptions);
+                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.getSolutionComponentsByName(componentQualifiedName, componentLookupOptions);
 
                 if (solutionComponents != null)
                 {
@@ -3705,6 +3717,14 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         SolutionComponentClient      solutionComponentClient      = integrationContext.getSolutionComponentClient();
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
 
+        /*
+         * The peer duplicate links are all that is used from each matching component's graph.
+         */
+        QueryOptions peerQueryOptions = new QueryOptions(queryOptions);
+
+        peerQueryOptions.setGraphQueryDepth(1);
+        peerQueryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.PEER_DUPLICATE_LINK.typeName));
+
         for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
         {
             /*
@@ -3715,7 +3735,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             try
             {
                 List<OpenMetadataRootElement> matchingComponents = solutionComponentClient.getSolutionComponentsByName(solutionComponentDefinition.getDisplayName(),
-                                                                                                                       queryOptions);
+                                                                                                                       peerQueryOptions);
 
                 if (matchingComponents == null)
                 {
@@ -3953,7 +3973,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         /*
          * If the solution blueprint is already present then return its GUID,
          */
-        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(productSolutionBlueprint.getQualifiedName(), null);
+        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.getCollectionsByName(productSolutionBlueprint.getQualifiedName(), this.headerAndPropertiesQuery(solutionBlueprintClient));
 
         if (solutionBlueprints != null)
         {
@@ -4087,7 +4107,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         actorRoleProperties.setDescription(productRoleDefinition.getDescription());
         actorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
 
-        List<OpenMetadataRootElement> solutionRoles = actorRoleClient.getActorRolesByName(roleQualifiedName, null);
+        List<OpenMetadataRootElement> solutionRoles = actorRoleClient.getActorRolesByName(roleQualifiedName, this.headerAndPropertiesQuery(actorRoleClient));
 
         if (solutionRoles != null)
         {

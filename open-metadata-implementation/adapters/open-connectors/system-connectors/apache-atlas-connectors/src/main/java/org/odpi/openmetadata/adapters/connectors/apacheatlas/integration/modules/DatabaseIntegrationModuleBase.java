@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.AtlasDeployedImplement
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
@@ -273,7 +274,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    dataAssetClient.getAssetByGUID(egeriaDatabaseGUID, null);
+                    dataAssetClient.getAssetByGUID(egeriaDatabaseGUID, withoutRelationships(new GetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.
@@ -398,7 +399,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
         if (atlasDatabaseEntity != null)
         {
             AtlasEntity             atlasEntity      = atlasDatabaseEntity.getEntity();
-            OpenMetadataRootElement dataAssetElement = dataAssetClient.getAssetByGUID(egeriaDatabaseGUID, dataAssetClient.getGetOptions());
+            OpenMetadataRootElement dataAssetElement = dataAssetClient.getAssetByGUID(egeriaDatabaseGUID, withExternalIds(dataAssetClient.getGetOptions()));
 
             if (atlasEntity != null)
             {
@@ -477,7 +478,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    dataAssetClient.getAssetByGUID(egeriaDatabaseTableGUID, null);
+                    schemaAttributeClient.getSchemaAttributeByGUID(egeriaDatabaseTableGUID, withoutRelationships(new GetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.
@@ -622,8 +623,8 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
         {
             AtlasEntity atlasEntity = atlasDatabaseTableEntity.getEntity();
 
-            OpenMetadataRootElement dataAssetElement = dataAssetClient.getAssetByGUID(egeriaDatabaseTableGUID,
-                                                                                      dataAssetClient.getGetOptions());
+            OpenMetadataRootElement dataAssetElement = schemaAttributeClient.getSchemaAttributeByGUID(egeriaDatabaseTableGUID,
+                                                                                                      withExternalIds(schemaAttributeClient.getGetOptions()));
 
             if (atlasEntity != null)
             {
@@ -762,7 +763,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    OpenMetadataRootElement egeriaDatabaseColumn = schemaAttributeClient.getSchemaAttributeByGUID(egeriaDatabaseColumnGUID, schemaAttributeClient.getGetOptions());
+                    OpenMetadataRootElement egeriaDatabaseColumn = schemaAttributeClient.getSchemaAttributeByGUID(egeriaDatabaseColumnGUID, withExternalIds(schemaAttributeClient.getGetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.

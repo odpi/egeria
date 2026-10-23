@@ -32,12 +32,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.NamespaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +66,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
-     * @param ucServerElement description of the UC Server - including its relationships to known catalogs
+     * @param ucServerGUID unique identifier of the UC Server's asset
      * @param dataAccessManagerGUID the data access manager software capability for this element
      * @param metadataCollectionGUID the metadata collection to use for all open metadata elements relating to this server.
      * @param metadataCollectionName the metadata collection to use for all open metadata elements relating to this server.
@@ -85,7 +85,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
     public OSSUnityCatalogServerSyncCatalog(String                           connectorName,
                                             IntegrationContext               context,
                                             String                           catalogTargetName,
-                                            OpenMetadataRootElement          ucServerElement,
+                                            String                           ucServerGUID,
                                             String                           dataAccessManagerGUID,
                                             String                           metadataCollectionGUID,
                                             String                           metadataCollectionName,
@@ -103,7 +103,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         super(connectorName,
               context,
               catalogTargetName,
-              ucServerElement.getElementHeader().getGUID(),
+              ucServerGUID,
               null,
               metadataCollectionGUID,
               metadataCollectionName,
@@ -119,7 +119,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
               includeCatalogs,
               auditLog);
 
-        this.ucServerGUID = ucServerElement.getElementHeader().getGUID();
+        this.ucServerGUID = ucServerGUID;
         this.friendshipConnectorGUID = friendshipConnectorGUID;
         this.metadataCollectionName = metadataCollectionName;
         this.dataAccessManagerGUID = dataAccessManagerGUID;
@@ -206,9 +206,11 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                      */
                     int startingFrom = 0;
                     List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
-                                                                                                 assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
+                                                                                                 this.getCatalogTargetQueryOptions(assetClient, startingFrom));
                     while (catalogTargets != null)
                     {
+                        int removedCount = 0;
+
                         for (OpenMetadataRootElement catalogTarget : catalogTargets)
                         {
                             if ((catalogTarget != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
@@ -216,20 +218,44 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                 if (catalogName.equals(catalogTargetProperties.getCatalogTargetName()))
                                 {
                                     assetClient.removeCatalogTarget(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(), assetClient.getDeleteOptions(false));
+                                    removedCount++;
                                 }
                             }
                         }
 
-                        startingFrom = startingFrom + context.getMaxPageSize();
+                        /*
+                         * The removed catalog targets no longer occupy places in the results, so the next page
+                         * starts that many places earlier.
+                         */
+                        startingFrom = startingFrom + context.getMaxPageSize() - removedCount;
 
                         catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
-                                                                       assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
+                                                                       this.getCatalogTargetQueryOptions(assetClient, startingFrom));
                     }
                 }
             }
         }
 
         return iterator;
+    }
+
+
+    /**
+     * Return the query options for a page of the friendship connector's catalog targets.  Only the
+     * CatalogTarget relationship (relatedBy) is used, so the targets' own graphs are not retrieved.
+     *
+     * @param assetClient client making the request
+     * @param startingFrom starting element in the results
+     * @return query options
+     */
+    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
+                                                      int         startingFrom)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startingFrom, context.getMaxPageSize());
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
     }
 
 
