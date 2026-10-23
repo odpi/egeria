@@ -476,6 +476,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the correlation properties for an Egeria element after an atlas entity has been updated.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static &lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;<br>T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withExternalIds(T)" class="member-name-link">withExternalIds</a><wbr>(T&nbsp;options)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Have a read return only the external identifiers (ExternalIdLink relationships) of each element it finds.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static &lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;<br>T</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withOnlyRelationships(T,java.lang.String...)" class="member-name-link">withOnlyRelationships</a><wbr>(T&nbsp;options,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;relationshipTypeNames)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Have a read return only the listed types of relationship attached directly to each element it finds,
+ and nothing beyond them.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static &lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;<br>T</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutRelationships(T)" class="member-name-link">withoutRelationships</a><wbr>(T&nbsp;options)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Stop a read returning the relationships of each element it finds.</div>
+</div>
 </div>
 </div>
 </div>
@@ -1015,12 +1032,14 @@ loadScripts(document, 'script');</script>
                        throws <span class="exceptions"><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return the unique identifier for the equivalent element in Apache Atlas.</div>
+<div class="block">Return the unique identifier for the equivalent element in Apache Atlas.  Null means the element has no
+ Apache Atlas correlation information yet - for example, it originated in the open metadata ecosystem and
+ has not been copied to Apache Atlas.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>metadataElement</code> - retrieved metadata element</dd>
 <dt>Returns:</dt>
-<dd>string guid</dd>
+<dd>string guid or null</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - retrieved element is null</dd>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
@@ -1035,12 +1054,14 @@ loadScripts(document, 'script');</script>
                        throws <span class="exceptions"><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return the unique identifier for the equivalent element in Apache Atlas.</div>
+<div class="block">Return the unique identifier for the equivalent element in Apache Atlas.  Null means the element has no
+ Apache Atlas correlation information yet - for example, it originated in the open metadata ecosystem and
+ has not been copied to Apache Atlas.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>metadataElement</code> - retrieved metadata element</dd>
 <dt>Returns:</dt>
-<dd>string guid</dd>
+<dd>string guid or null</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - retrieved element is null</dd>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem retrieving information from the property server(s).</dd>
@@ -1531,6 +1552,58 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - invalid parameter - probably a logic error</dd>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - security problem</dd>
 <dd><code><a href="../../../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - problem communicating with Egeria.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="withoutRelationships(T)">
+<h3 id="withoutRelationships(org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">withoutRelationships</h3>
+<div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">withoutRelationships</span><wbr><span class="parameters">(T&nbsp;options)</span></div>
+<div class="block">Stop a read returning the relationships of each element it finds.  The reads that use this need only
+ the element's header (including its classifications) and properties - or are just checking that the
+ element exists.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - type of options</dd>
+<dt>Parameters:</dt>
+<dd><code>options</code> - options to update</dd>
+<dt>Returns:</dt>
+<dd>the same options, set not to return relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="withOnlyRelationships(T,java.lang.String...)">
+<h3 id="withOnlyRelationships(org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions,java.lang.String[])">withOnlyRelationships</h3>
+<div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">withOnlyRelationships</span><wbr><span class="parameters">(T&nbsp;options,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;relationshipTypeNames)</span></div>
+<div class="block">Have a read return only the listed types of relationship attached directly to each element it finds,
+ and nothing beyond them.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - type of options</dd>
+<dt>Parameters:</dt>
+<dd><code>options</code> - options to update</dd>
+<dd><code>relationshipTypeNames</code> - the relationship types to return (subtypes are included)</dd>
+<dt>Returns:</dt>
+<dd>the same options, set to return only those relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="withExternalIds(T)">
+<h3 id="withExternalIds(org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">withExternalIds</h3>
+<div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="../../../../../frameworks/openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">withExternalIds</span><wbr><span class="parameters">(T&nbsp;options)</span></div>
+<div class="block">Have a read return only the external identifiers (ExternalIdLink relationships) of each element it finds.
+ These are what the synchronization logic uses to correlate an open metadata element with its Apache Atlas
+ equivalent (see getAtlasGUID, egeriaUpdateRequired, atlasUpdateRequired and ensureAtlasExternalIdentifier).</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - type of options</dd>
+<dt>Parameters:</dt>
+<dd><code>options</code> - options to update</dd>
+<dt>Returns:</dt>
+<dd>the same options, set to return only the external identifiers</dd>
 </dl>
 </section>
 </li>
