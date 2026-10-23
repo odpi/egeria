@@ -109,7 +109,15 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/openmetadata/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a>&nbsp;fileClassifier,
  <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructor captures the file that is to be analysed.</div>
+<div class="block">Constructor captures the file that is to be analysed - where it is the asset being surveyed.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector,java.lang.String)" class="member-name-link">FileStatsExtractor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
+ <a href="../../../../frameworks/openmetadata/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a>&nbsp;fileClassifier,
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectName)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Constructor captures the file that is to be analysed - where it is one of several files measured in the
+ same survey, such as the files in a surveyed folder.</div>
 </div>
 </div>
 </section>
@@ -151,10 +159,27 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileStatsExtractor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
  <a href="../../../../frameworks/openmetadata/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a>&nbsp;fileClassifier,
  <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector)</span></div>
-<div class="block">Constructor captures the file that is to be analysed.</div>
+<div class="block">Constructor captures the file that is to be analysed - where it is the asset being surveyed.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>file</code> - file to analyse</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector,java.lang.String)">
+<h3>FileStatsExtractor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileStatsExtractor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file,
+ <a href="../../../../frameworks/openmetadata/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.fileclassifier">FileClassifier</a>&nbsp;fileClassifier,
+ <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a>&nbsp;surveyActionServiceConnector,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subjectName)</span></div>
+<div class="block">Constructor captures the file that is to be analysed - where it is one of several files measured in the
+ same survey, such as the files in a surveyed folder.  The measurements are all attached to the survey's
+ asset, so the subject name is what tells their qualified names apart.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>file</code> - file to analyse</dd>
+<dd><code>subjectName</code> - what the annotation is about - the file's path within the surveyed folder</dd>
 </dl>
 </section>
 </li>

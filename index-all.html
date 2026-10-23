@@ -8232,9 +8232,21 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/EgeriaSolutionComponent.html#AUDIT_LOG_TOPIC" class="member-name-link">AUDIT_LOG_TOPIC</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.<a href="org/odpi/openmetadata/adapters/connectors/EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaSolutionComponent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html#AUDIT_LOG_TOPIC_CONNECTION_UPDATED" class="member-name-link">AUDIT_LOG_TOPIC_CONNECTION_UPDATED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></dt>
+<dd>
+<div class="block">The {0} integration connector has updated the connection for audit log topic {1} ({2}): {3} was {4} and is now {5}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html#AUDIT_LOG_TOPIC_REGISTERED" class="member-name-link">AUDIT_LOG_TOPIC_REGISTERED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></dt>
 <dd>
 <div class="block">The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html#AUDIT_LOG_TOPIC_UNLINKED" class="member-name-link">AUDIT_LOG_TOPIC_UNLINKED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></dt>
+<dd>
+<div class="block">The {0} integration connector has removed the audit log lineage from server {1} to topic {2} ({3}) because the server's configuration now names audit log topic {4}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html#AUDIT_LOG_TOPIC_UNREGISTERED" class="member-name-link">AUDIT_LOG_TOPIC_UNREGISTERED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/egeriainfrastructure/ffdc/OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></dt>
+<dd>
+<div class="block">The {0} integration connector has removed audit log topic {1} ({2}) from the catalog targets of integration connector {3} because no server writes its audit log to it</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/commonservices/multitenant/AuditableServerServiceInstance.html" class="type-name-link" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a> - Class in <a href="org/odpi/openmetadata/commonservices/multitenant/package-summary.html">org.odpi.openmetadata.commonservices.multitenant</a></dt>
 <dd>
@@ -20664,6 +20676,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Create a lineage relationship between a source and target element.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#createLineageRelationshipIfAbsent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createLineageRelationshipIfAbsent(String, String, String, String, String, String, String, String, String, String, String, String)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Create a lineage relationship unless an identical one is already in place.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/viewservices/locationarena/server/LocationArenaRESTServices.html#createLocation(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)" class="member-name-link">createLocation(String, NewElementRequestBody)</a> - Method in class org.odpi.openmetadata.viewservices.locationarena.server.<a href="org/odpi/openmetadata/viewservices/locationarena/server/LocationArenaRESTServices.html" title="class in org.odpi.openmetadata.viewservices.locationarena.server">LocationArenaRESTServices</a></dt>
 <dd>
 <div class="block">Create a location.</div>
@@ -21112,6 +21128,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Create a specific governance action process from a generic governance action type.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#createProcessFromGovernanceActionTypeIfAbsent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String,java.util.List)" class="member-name-link">createProcessFromGovernanceActionTypeIfAbsent(String, String, String, String, int, String, Map&lt;String, String&gt;, String, List&lt;String&gt;)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Create a specific governance action process from a generic governance action type, unless a process with
+ this qualified name already exists.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionContext.html#createProcessFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createProcessFromTemplate(String, String, String, String)</a> - Method in class org.odpi.openmetadata.frameworks.opengovernance.<a href="org/odpi/openmetadata/frameworks/opengovernance/GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GovernanceActionContext</a></dt>
 <dd>
 <div class="block">Create a new process to represent the processing of this governance action process.</div>
@@ -21224,6 +21245,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/commonservices/repositoryhandler/RepositoryHandler.html#createRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String)" class="member-name-link">createRelationship(String, String, String, String, String, String, InstanceProperties, String)</a> - Method in class org.odpi.openmetadata.commonservices.repositoryhandler.<a href="org/odpi/openmetadata/commonservices/repositoryhandler/RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a></dt>
 <dd>
 <div class="block">Create a relationship between two entities.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#createRelationshipIfAbsent(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">createRelationshipIfAbsent(String, String, String, ElementProperties)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Create a relationship unless an identical one is already in place.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/base/ContentPackBaseArchiveWriter.html#createRequestTypes(org.odpi.openmetadata.contentpacks.core.ContentPackDefinition)" class="member-name-link">createRequestTypes(ContentPackDefinition)</a> - Method in class org.odpi.openmetadata.contentpacks.core.base.<a href="org/odpi/openmetadata/contentpacks/core/base/ContentPackBaseArchiveWriter.html" title="class in org.odpi.openmetadata.contentpacks.core.base">ContentPackBaseArchiveWriter</a></dt>
 <dd>
@@ -40858,7 +40883,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/extractors/FileStatsExtractor.html#%3Cinit%3E(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector)" class="member-name-link">FileStatsExtractor(File, FileClassifier, SurveyActionServiceConnector)</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/extractors/FileStatsExtractor.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.extractors">FileStatsExtractor</a></dt>
 <dd>
-<div class="block">Constructor captures the file that is to be analysed.</div>
+<div class="block">Constructor captures the file that is to be analysed - where it is the asset being surveyed.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/extractors/FileStatsExtractor.html#%3Cinit%3E(java.io.File,org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier,org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector,java.lang.String)" class="member-name-link">FileStatsExtractor(File, FileClassifier, SurveyActionServiceConnector, String)</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/extractors/FileStatsExtractor.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.extractors">FileStatsExtractor</a></dt>
+<dd>
+<div class="block">Constructor captures the file that is to be analysed - where it is one of several files measured in the
+ same survey, such as the files in a surveyed folder.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/controls/FilesTemplateType.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesTemplateType</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/controls/package-summary.html">org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls</a></dt>
 <dd>
@@ -58522,6 +58552,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the unique identifier of the element at end 2 of the relationship.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#getElementGUIDByQualifiedName(java.lang.String)" class="member-name-link">getElementGUIDByQualifiedName(String)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Return the unique identifier of the element with this qualified name, or null if there is none.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/properties/EngineActionElement.html#getElementHeader()" class="member-name-link">getElementHeader()</a> - Method in class org.odpi.openmetadata.frameworks.opengovernance.properties.<a href="org/odpi/openmetadata/frameworks/opengovernance/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">EngineActionElement</a></dt>
 <dd>
 <div class="block">Return the element header associated with the properties.</div>
@@ -61160,6 +61194,19 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html#getExecutorEngineName()" class="member-name-link">getExecutorEngineName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">EngineActionProperties</a></dt>
 <dd>
 <div class="block">Return the unique name of governance engine that is processing the engine action.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#getExistingElementGUID(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">getExistingElementGUID(ElementProperties)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Return the unique identifier of the element that would be created with these properties, if it already exists.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#getExistingRelationshipGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">getExistingRelationshipGUID(String, String, String, ElementProperties)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Return the unique identifier of the relationship of this type from end1 to end2 whose properties include all
+ the supplied string properties, or null if there is none.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#getExistingTemplatedElementGUID(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties,java.util.Map)" class="member-name-link">getExistingTemplatedElementGUID(String, ElementProperties, Map&lt;String, String&gt;)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Return the unique identifier of the element that a template would create, if it already exists.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/openlineage/OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html#getExpected()" class="member-name-link">getExpected()</a> - Method in class org.odpi.openmetadata.frameworks.integration.openlineage.<a href="org/odpi/openmetadata/frameworks/integration/openlineage/OpenLineageDataQualityAssertionsInputDataSetFacetAssertions.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataQualityAssertionsInputDataSetFacetAssertions</a></dt>
 <dd>
@@ -101834,6 +101881,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericBuilder.html#isClassificationSet(java.lang.String)" class="member-name-link">isClassificationSet(String)</a> - Method in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericBuilder</a></dt>
 <dd>
 <div class="block">Return whether a particular classification has been set up by the caller.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html#isClassified(java.lang.String,java.lang.String)" class="member-name-link">isClassified(String, String)</a> - Method in class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialBaseService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService</a></dt>
+<dd>
+<div class="block">Return whether the element already has the named classification.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/PropertyHelper.html#isClassified(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)" class="member-name-link">isClassified(ElementHeader, String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></dt>
 <dd>
@@ -165212,6 +165263,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)" class="member-name-link">setUpAnnotation(AnnotationProperties, AnnotationType)</a> - Method in class org.odpi.openmetadata.frameworks.opensurvey.<a href="org/odpi/openmetadata/frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></dt>
 <dd>
 <div class="block">Transfer common properties into an annotation.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/opensurvey/SurveyActionServiceConnector.html#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String)" class="member-name-link">setUpAnnotation(AnnotationProperties, AnnotationType, String)</a> - Method in class org.odpi.openmetadata.frameworks.opensurvey.<a href="org/odpi/openmetadata/frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></dt>
+<dd>
+<div class="block">Transfer common properties into one of several annotations of the same type in a single survey -
+ the measurements of each nested folder or file in a folder survey, say.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/mappers/BaseMapper.html#setUpBooleanValueInRow(java.util.Map,boolean,java.lang.String)" class="member-name-link">setUpBooleanValueInRow(Map&lt;String, JDBCDataValue&gt;, boolean, String)</a> - Method in class org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/mappers/BaseMapper.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers">BaseMapper</a></dt>
 <dd>
