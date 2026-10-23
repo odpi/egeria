@@ -288,7 +288,7 @@ the repository is answerable for.
 
 * A reachable **PostgreSQL** server — `egeria-shared-postgres` by default.
 * A reachable **Apache Kafka** broker — `egeria-shared-kafka` by default. It must be the broker's EXTERNAL
-  advertised listener (`oak.local:9194`), not the internal one: this harness runs on the host rather than
+  listener (`localhost:9194`), not the internal one: this harness runs on the host rather than
   inside the docker network, and a client connecting on the internal listener is handed back an address it
   cannot resolve.
 

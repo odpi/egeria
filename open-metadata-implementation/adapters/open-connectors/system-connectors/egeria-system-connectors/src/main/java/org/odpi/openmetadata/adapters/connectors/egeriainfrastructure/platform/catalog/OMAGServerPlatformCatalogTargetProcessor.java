@@ -81,6 +81,13 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 {
     final static String EGERIA_DEPLOYMENT_CATEGORY = "Egeria Deployment";
 
+    /*
+     * Values that identify the audit log topic and the lineage relationship from each server to it.
+     */
+    private static final String AUDIT_LOG_FORMULA           = "severity in [Error, Exception, Activity, Action, Decision, Security, Cohort]";
+    private static final String AUDIT_LOG_LABEL             = "audit log events";
+    private static final String AUDIT_LOG_KAFKA_SERVER_NAME = "Default Apache Kafka";
+
     final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
 
@@ -88,6 +95,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      * The audit log topics that are known to be catalog targets of the activity observer.
      */
     private final Set<String> topicsRegisteredWithActivityObserver = new HashSet<>();
+
+    /*
+     * The audit log topics whose connection has been checked against the server configuration during the
+     * current refresh.  Many servers share one topic, so it is checked once per refresh.
+     */
+    private final Set<String> auditLogTopicsCheckedThisRefresh = new HashSet<>();
 
     /**
      * Principle constructor
@@ -157,6 +170,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             auditLog.logMessage(methodName,
                                 OMAGConnectorAuditCode.EGERIA_TARGET_REFRESH.getMessageDefinition(connectorName, getCatalogTargetName()));
         }
+
+        auditLogTopicsCheckedThisRefresh.clear();
 
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
 
@@ -1660,7 +1675,6 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             }
         }
 
-        addCohorts(serverGUID, serverQualifiedName, omagServerProperties, omagServerProperties.getCohorts());
         checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
 
 
@@ -1688,9 +1702,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
     {
         SoftwareServerProperties softwareServerProperties = new SoftwareServerProperties();
 
-        softwareServerProperties.setQualifiedName(this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
-                                                                              omagServerProperties.getServerType(),
-                                                                              omagServerProperties.getServerName()));
+        String serverQualifiedName = this.getServerQualifiedName(platformProperties.getPlatformURLRoot(),
+                                                                 omagServerProperties.getServerType(),
+                                                                 omagServerProperties.getServerName());
+
+        softwareServerProperties.setQualifiedName(serverQualifiedName);
         softwareServerProperties.setDisplayName(this.getServerDisplayName(platformProperties.getPlatformURLRoot(),
                                                                           omagServerProperties.getServerName(),
                                                                           omagServerProperties.getOrganizationName()));
@@ -1735,6 +1751,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             }
         }
 
+        /*
+         * Cohort membership is checked on every refresh, not just when the server is first catalogued,
+         * since a server can join a cohort, and a cohort's topics can be reconfigured, at any time.
+         */
+        addCohorts(serverGUID, serverQualifiedName, omagServerProperties, omagServerProperties.getCohorts());
         checkAndLinkGovernanceServerCapabilities(omagServerProperties, serverGUID);
     }
 
@@ -1743,6 +1764,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      * Add the definition of the server's audit log destinations used to distribute audit log events.
      * At the moment this just deals with kafka audit log destination.  This is to support Jacquard's audit log products.
      * ToDo Later versions could add other destination types.
+     * <br>
+     * The server's configuration is the ground truth.  An audit log lineage relationship catalogued by an earlier
+     * refresh is kept only if it leads to the topic that the configuration names today.  Any other is removed,
+     * since the server is no longer writing to that topic - and if no server writes to it any more, it is also
+     * removed from the catalog targets of the activity observer, which would otherwise keep listening to it.
      *
      * @param serverConfig server's configuration
      * @param softwareServer server's metadata description
@@ -1755,52 +1781,26 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
-        final String formula = "severity in [Error, Exception, Activity, Action, Decision, Security, Cohort]";
+        final String methodName = "catalogAuditLogConnector";
 
         if ((softwareServer != null) &&
                 (softwareServer.getProperties() != null) &&
                 (softwareServer.getProperties() instanceof SoftwareServerProperties softwareServerProperties))
         {
-            if (softwareServer.getLineageLinkage() != null)
-            {
-                for (RelatedMetadataElementSummary lineageLink : softwareServer.getLineageLinkage())
-                {
-                    if ((lineageLink != null) && (lineageLink.getRelationshipProperties() instanceof DataFlowProperties dataFlowProperties) &&
-                            (formula.equals(dataFlowProperties.getFormula())))
-                    {
-                        /*
-                         * The relationship is in place.  The topic at the other end still needs to be
-                         * registered with the activity observer, since it may have been catalogued before the
-                         * observer existed, or by a cataloguer that was not configured with one.
-                         * ToDo In a future iteration we may want to validate that the relationship is still correct.
-                         */
-                        if (! lineageLink.getRelatedElementAtEnd1())
-                        {
-                            this.addTopicToActivityObserver(lineageLink.getRelatedElement().getElementHeader().getGUID());
-                        }
-
-                        return;
-                    }
-                }
-            }
-
             /*
-             * Create the relationship between the software server and the audit log topic.
-             * First, we need to discover if the topic exists - and for this we need its name.
+             * Find the topic that the configuration says the server writes its audit log to.
              * The topic name is the networkAddress attribute in the endpoint of the embedded audit log connection.
              */
+            String              topicName               = null;
+            Map<String, Object> configurationProperties = null;
+
             if ((serverConfig != null) &&
                     (serverConfig.getRepositoryServicesConfig() != null) &&
                     (serverConfig.getRepositoryServicesConfig().getAuditLogConnections() != null))
             {
-                String topicName = null;
-                String topicQualifiedName = null;
-                Map<String, Object> configurationProperties = null;
                 for (Connection auditLogConnection : serverConfig.getRepositoryServicesConfig().getAuditLogConnections())
                 {
-                    if ((auditLogConnection != null) &&
-                            (auditLogConnection.getQualifiedName() != null) &&
-                            (auditLogConnection instanceof VirtualConnection virtualConnection) &&
+                    if ((auditLogConnection instanceof VirtualConnection virtualConnection) &&
                             (virtualConnection.getEmbeddedConnections() != null))
                     {
                         for (EmbeddedConnection embeddedConnection : virtualConnection.getEmbeddedConnections())
@@ -1817,129 +1817,481 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                     (EgeriaOpenConnectorDefinition.KAFKA_TOPIC_CONNECTOR.getConnectorProviderClassName().equals(embeddedConnection.getEmbeddedConnection().getConnectorType().getConnectorProviderClassName())))
                             {
                                 /*
-                                 * This is a kafka topic connector.  We need to get the topic name and qualified name.
+                                 * This is a kafka topic connector.  We need to get the topic name and its connection's properties.
                                  */
                                 topicName = embeddedConnection.getEmbeddedConnection().getEndpoint().getNetworkAddress();
-                                topicQualifiedName = auditLogConnection.getQualifiedName();
                                 configurationProperties = embeddedConnection.getEmbeddedConnection().getConfigurationProperties();
 
                                 break;
                             }
                         }
                     }
+
+                    if (topicName != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            /*
+             * The topic is recognised by the qualified name that the Kafka topic template gives it, which is
+             * built from the topic name.  When the configuration names a different topic, the qualified name
+             * changes with it.
+             */
+            String topicQualifiedName = null;
+
+            if (topicName != null)
+            {
+                topicQualifiedName = this.getAuditLogTopicQualifiedName(topicName);
+            }
+
+            /*
+             * Sort the audit log lineage catalogued by earlier refreshes into the relationship that is still
+             * correct (if any) and those that the configuration no longer supports.
+             */
+            String                              topicGUID      = null;
+            List<RelatedMetadataElementSummary> staleLineage   = new ArrayList<>();
+
+            if (softwareServer.getLineageLinkage() != null)
+            {
+                for (RelatedMetadataElementSummary lineageLink : softwareServer.getLineageLinkage())
+                {
+                    if ((lineageLink != null) &&
+                            (! lineageLink.getRelatedElementAtEnd1()) &&
+                            (lineageLink.getRelationshipProperties() instanceof DataFlowProperties dataFlowProperties) &&
+                            (AUDIT_LOG_FORMULA.equals(dataFlowProperties.getFormula())))
+                    {
+                        if ((topicGUID == null) &&
+                                (topicQualifiedName != null) &&
+                                (lineageLink.getRelatedElement().getProperties() instanceof ReferenceableProperties topicProperties) &&
+                                (topicQualifiedName.equals(topicProperties.getQualifiedName())))
+                        {
+                            topicGUID = lineageLink.getRelatedElement().getElementHeader().getGUID();
+                        }
+                        else
+                        {
+                            staleLineage.add(lineageLink);
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Remove the lineage to topics that the server no longer writes to.
+             */
+            if (! staleLineage.isEmpty())
+            {
+                LineageClient lineageClient = integrationContext.getLineageClient();
+
+                for (RelatedMetadataElementSummary lineageLink : staleLineage)
+                {
+                    String staleTopicGUID = lineageLink.getRelatedElement().getElementHeader().getGUID();
+                    String staleTopicName = staleTopicGUID;
+
+                    if ((lineageLink.getRelatedElement().getProperties() instanceof AssetProperties assetProperties) &&
+                            (assetProperties.getDisplayName() != null))
+                    {
+                        staleTopicName = assetProperties.getDisplayName();
+                    }
+
+                    lineageClient.detachLineage(lineageLink.getRelationshipHeader().getGUID(),
+                                                lineageClient.getDeleteOptions(false));
+
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName,
+                                            OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNLINKED.getMessageDefinition(connectorName,
+                                                                                                                 softwareServerProperties.getDisplayName(),
+                                                                                                                 staleTopicName,
+                                                                                                                 staleTopicGUID,
+                                                                                                                 Objects.requireNonNullElse(topicName, "<none>")));
+                    }
+
+                    this.removeTopicFromActivityObserverIfUnused(staleTopicGUID);
+                }
+            }
+
+            if (topicName == null)
+            {
+                /*
+                 * The server does not write its audit log to Kafka.
+                 */
+                return;
+            }
+
+            boolean newTopic = false;
+
+            if (topicGUID == null)
+            {
+                /*
+                 * The lineage relationship is missing.  First, we need to discover if the topic exists.  It may
+                 * have been catalogued for another server that shares the same audit log topic.
+                 */
+                AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
+                List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(topicQualifiedName,
+                                                                                     withoutRelationships(assetClient.getQueryOptions())); // Only the header and properties are used
+
+                if (elements != null)
+                {
+                    for (OpenMetadataRootElement element : elements)
+                    {
+                        if ((element != null) &&
+                                (element.getProperties() instanceof TopicProperties topicProperties) &&
+                                (topicQualifiedName.equals(topicProperties.getQualifiedName())))
+                        {
+                            topicGUID = element.getElementHeader().getGUID();
+                            break;
+                        }
+                    }
                 }
 
-                if ((topicName != null) && (topicQualifiedName != null))
+                DataFlowProperties dataFlowProperties = new DataFlowProperties();
+
+                dataFlowProperties.setFormula(AUDIT_LOG_FORMULA);
+                dataFlowProperties.setLabel(AUDIT_LOG_LABEL);
+                dataFlowProperties.setDescription("Audit log events from server " + softwareServerProperties.getDisplayName());
+                dataFlowProperties.setISCQualifiedName(EgeriaInformationSupplyChainDefinition.OPEN_METADATA_OBSERVABILITY.getQualifiedName());
+
+                if (topicGUID == null)
                 {
-                    String topicGUID = null;
-                    AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
-                    List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(topicQualifiedName,
-                                                                                         withoutRelationships(assetClient.getQueryOptions())); // Only the header and properties are used
+                    /*
+                     * The topic needs to be created.  We will add the lineage link to the server at the same time.
+                     */
+                    TemplateOptions templateOptions = new TemplateOptions(assetClient.getMetadataSourceOptions());
+
+                    templateOptions.setAnchorGUID(null);
+                    templateOptions.setIsOwnAnchor(true);
+                    templateOptions.setAnchorScopeGUIDs(null);
+
+                    templateOptions.setParentGUID(softwareServer.getElementHeader().getGUID());
+                    templateOptions.setParentAtEnd1(true);
+                    templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
+                    Map<String, String> placementProperties = new HashMap<>();
+
+                    placementProperties.put(PlaceholderProperty.HOST_IDENTIFIER.getName(), getKafkaHostIdentifier(configurationProperties));
+                    placementProperties.put(PlaceholderProperty.PORT_NUMBER.getName(), getKafkaPortNumber(configurationProperties));
+                    placementProperties.put(PlaceholderProperty.SERVER_NAME.getName(), AUDIT_LOG_KAFKA_SERVER_NAME);
+                    placementProperties.put(PlaceholderProperty.DESCRIPTION.getName(), "Apache Kafka topic distributing audit log events from the OMAG Servers.");
+                    placementProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), softwareServerProperties.getVersionIdentifier());
+                    placementProperties.put(KafkaPlaceholderProperty.FULL_TOPIC_NAME.getName(), topicName);
+                    placementProperties.put(KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getName(), topicName);
+                    placementProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
+                    topicGUID = assetClient.createAssetFromTemplate(templateOptions,
+                                                                    KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
+                                                                    null,
+                                                                    null,
+                                                                    placementProperties,
+                                                                    dataFlowProperties);
+
+                    newTopic = true;
+
+                    GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+                    ImplementedByProperties implementedByProperties = new ImplementedByProperties();
+
+                    implementedByProperties.setRole("running instance");
+                    implementedByProperties.setDescription("Topic usage discovered by " + connectorName + ".");
+
+                    governanceDefinitionClient.linkDesignToImplementation(EgeriaSolutionComponent.AUDIT_LOG_TOPIC.getGUID(),
+                                                                          topicGUID,
+                                                                          new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
+                                                                          implementedByProperties);
+                }
+                else
+                {
+                    /*
+                     * The topic is defined, but this server is not linked to it.
+                     */
+                    LineageClient lineageClient = integrationContext.getLineageClient();
+
+                    lineageClient.linkLineage(softwareServer.getElementHeader().getGUID(),
+                                              topicGUID,
+                                              OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                              lineageClient.getMakeAnchorOptions(false),
+                                              dataFlowProperties);
+                }
+            }
+
+            /*
+             * A topic catalogued by an earlier refresh may have a connection that no longer matches the
+             * configuration - for example, if the Kafka broker has moved.  The activity observer connects to the
+             * topic through this connection, so it must be kept up to date.
+             */
+            if (! newTopic)
+            {
+                this.checkAuditLogTopicConnection(topicGUID, topicName, configurationProperties);
+            }
+
+            this.addTopicToActivityObserver(topicGUID);
+        }
+    }
 
 
-                    if (elements != null)
+    /**
+     * Return the qualified name that the Kafka topic template gives to the audit log topic created by this connector.
+     *
+     * @param topicName name of the topic
+     * @return qualified name
+     */
+    private String getAuditLogTopicQualifiedName(String topicName)
+    {
+        return DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName() + "::" + AUDIT_LOG_KAFKA_SERVER_NAME + "." + topicName + "::inOut";
+    }
+
+
+    /**
+     * Check that the connection catalogued for an audit log topic still matches the server's configuration.
+     * The network address of the endpoint must be the topic name, and the bootstrap servers in the connection's
+     * configuration properties must match those that the server is using.  Each topic is checked once per refresh,
+     * since many servers often share one audit log topic.
+     *
+     * @param topicGUID unique identifier of the topic's element
+     * @param topicName name of the topic from the server's configuration
+     * @param configurationProperties configuration properties from the server's topic connector
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void checkAuditLogTopicConnection(String              topicGUID,
+                                              String              topicName,
+                                              Map<String, Object> configurationProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "checkAuditLogTopicConnection";
+
+        if ((topicGUID == null) || (! auditLogTopicsCheckedThisRefresh.add(topicGUID)))
+        {
+            return;
+        }
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
+
+        /*
+         * Only the topic's connections are used.
+         */
+        OpenMetadataRootElement topic = assetClient.getAssetByGUID(topicGUID,
+                                                                   withOnlyRelationship(assetClient.getGetOptions(),
+                                                                                        OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName));
+
+        if ((topic == null) || (topic.getConnections() == null))
+        {
+            return;
+        }
+
+        String           bootstrapServer  = this.getBootstrapServer(configurationProperties);
+        ConnectionClient connectionClient = integrationContext.getConnectionClient();
+        EndpointClient   endpointClient   = integrationContext.getEndpointClient();
+
+        for (RelatedMetadataElementSummary connectionLink : topic.getConnections())
+        {
+            if (connectionLink == null)
+            {
+                continue;
+            }
+
+            /*
+             * Only the connection's endpoint is used.
+             */
+            OpenMetadataRootElement connection = connectionClient.getConnectionByGUID(connectionLink.getRelatedElement().getElementHeader().getGUID(),
+                                                                                      withOnlyRelationship(connectionClient.getGetOptions(),
+                                                                                                           OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
+            if ((connection == null) || (! (connection.getProperties() instanceof ConnectionProperties connectionProperties)))
+            {
+                continue;
+            }
+
+            String topicDisplayName = topicGUID;
+
+            if ((topic.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getDisplayName() != null))
+            {
+                topicDisplayName = assetProperties.getDisplayName();
+            }
+
+            /*
+             * The bootstrap servers.
+             */
+            Map<String, Object> cataloguedConfigurationProperties = connectionProperties.getConfigurationProperties();
+            String              cataloguedBootstrapServer         = this.getBootstrapServer(cataloguedConfigurationProperties);
+
+            if ((bootstrapServer != null) && (! bootstrapServer.equals(cataloguedBootstrapServer)))
+            {
+                Map<String, Object> newConfigurationProperties = new HashMap<>();
+
+                if (cataloguedConfigurationProperties != null)
+                {
+                    newConfigurationProperties.putAll(cataloguedConfigurationProperties);
+                }
+
+                newConfigurationProperties.put("producer", this.withBootstrapServer(newConfigurationProperties.get("producer"), bootstrapServer));
+                newConfigurationProperties.put("consumer", this.withBootstrapServer(newConfigurationProperties.get("consumer"), bootstrapServer));
+
+                ConnectionProperties newConnectionProperties = new ConnectionProperties();
+
+                newConnectionProperties.setConfigurationProperties(newConfigurationProperties);
+
+                connectionClient.updateConnection(connection.getElementHeader().getGUID(),
+                                                  connectionClient.getUpdateOptions(true),
+                                                  newConnectionProperties);
+
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                       topicDisplayName,
+                                                                                                                       topicGUID,
+                                                                                                                       "bootstrap.servers",
+                                                                                                                       cataloguedBootstrapServer,
+                                                                                                                       bootstrapServer));
+                }
+            }
+
+            /*
+             * The topic name in the endpoint.
+             */
+            if ((connection.getEndpoint() != null) &&
+                    (connection.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties) &&
+                    (! topicName.equals(endpointProperties.getNetworkAddress())))
+            {
+                EndpointProperties newEndpointProperties = new EndpointProperties();
+
+                newEndpointProperties.setNetworkAddress(topicName);
+
+                endpointClient.updateEndpoint(connection.getEndpoint().getRelatedElement().getElementHeader().getGUID(),
+                                              endpointClient.getUpdateOptions(true),
+                                              newEndpointProperties);
+
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                       topicDisplayName,
+                                                                                                                       topicGUID,
+                                                                                                                       "networkAddress",
+                                                                                                                       endpointProperties.getNetworkAddress(),
+                                                                                                                       topicName));
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Return a copy of the producer or consumer properties of a Kafka topic connection with the bootstrap servers
+     * replaced.  Any other properties are kept.
+     *
+     * @param properties current producer or consumer properties (may be null)
+     * @param bootstrapServer new bootstrap servers
+     * @return new properties
+     */
+    private Map<String, Object> withBootstrapServer(Object properties,
+                                                    String bootstrapServer)
+    {
+        Map<String, Object> newProperties = new HashMap<>();
+
+        if (properties instanceof Map<?, ?> map)
+        {
+            for (Map.Entry<?, ?> entry : map.entrySet())
+            {
+                newProperties.put(entry.getKey().toString(), entry.getValue());
+            }
+        }
+
+        newProperties.put("bootstrap.servers", bootstrapServer);
+
+        return newProperties;
+    }
+
+
+    /**
+     * Remove an audit log topic from the catalog targets of the activity observer once no server writes its
+     * audit log to it.  Without this, the activity observer keeps listening to a topic that nothing writes to.
+     * Topics that other servers still write to (on this platform or any other) are left alone.
+     *
+     * @param topicGUID unique identifier of the topic's element
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException no repo
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void removeTopicFromActivityObserverIfUnused(String topicGUID) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "removeTopicFromActivityObserverIfUnused";
+
+        String friendshipGUID = super.getStringConfigurationProperty(OMAGServerPlatformCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(),
+                                                                     this.getConfigurationProperties());
+
+        topicsRegisteredWithActivityObserver.remove(topicGUID);
+
+        if (friendshipGUID == null)
+        {
+            return;
+        }
+
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.TOPIC.typeName);
+
+        /*
+         * Only the topic's properties, its DataFlow lineage and its CatalogTarget relationships are used.
+         */
+        GetOptions getOptions = assetClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                       OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement topic = assetClient.getAssetByGUID(topicGUID, getOptions);
+
+        if (topic == null)
+        {
+            return;
+        }
+
+        if (topic.getLineageLinkage() != null)
+        {
+            for (RelatedMetadataElementSummary lineageLink : topic.getLineageLinkage())
+            {
+                if ((lineageLink != null) &&
+                        (lineageLink.getRelatedElementAtEnd1()) &&
+                        (lineageLink.getRelationshipProperties() instanceof DataFlowProperties dataFlowProperties) &&
+                        (AUDIT_LOG_FORMULA.equals(dataFlowProperties.getFormula())))
+                {
+                    /*
+                     * Another server still writes its audit log to this topic.
+                     */
+                    return;
+                }
+            }
+        }
+
+        if (topic.getRefreshedByConnectors() != null)
+        {
+            for (RelatedMetadataElementSummary refreshedByConnector : topic.getRefreshedByConnectors())
+            {
+                if ((refreshedByConnector != null) &&
+                        (friendshipGUID.equals(refreshedByConnector.getRelatedElement().getElementHeader().getGUID())))
+                {
+                    assetClient.removeCatalogTarget(refreshedByConnector.getRelationshipHeader().getGUID(),
+                                                    assetClient.getDeleteOptions(false));
+
+                    if (auditLog != null)
                     {
-                        for (OpenMetadataRootElement element : elements)
+                        String topicName = topicGUID;
+
+                        if ((topic.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getDisplayName() != null))
                         {
-                            if ((element != null) && (element.getProperties() instanceof TopicProperties))
-                            {
-                                topicGUID = element.getElementHeader().getGUID();
-                                break;
-                            }
-                        }
-                    }
-
-                    final String auditLogLabel = "audit log events";
-
-                    DataFlowProperties dataFlowProperties = new DataFlowProperties();
-
-                    dataFlowProperties.setFormula(formula);
-                    dataFlowProperties.setLabel(auditLogLabel);
-                    dataFlowProperties.setDescription("Audit log events from server " + softwareServerProperties.getDisplayName());
-                    dataFlowProperties.setISCQualifiedName(EgeriaInformationSupplyChainDefinition.OPEN_METADATA_OBSERVABILITY.getQualifiedName());
-
-                    if (topicGUID == null)
-                    {
-                        /*
-                         * The topic needs to be created.  We will add the lineage link to the server at the same time.
-                         */
-                        TemplateOptions templateOptions = new TemplateOptions(assetClient.getMetadataSourceOptions());
-
-                        templateOptions.setAnchorGUID(null);
-                        templateOptions.setIsOwnAnchor(true);
-                        templateOptions.setAnchorScopeGUIDs(null);
-
-                        templateOptions.setParentGUID(softwareServer.getElementHeader().getGUID());
-                        templateOptions.setParentAtEnd1(true);
-                        templateOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
-
-                        Map<String, String> placementProperties = new HashMap<>();
-
-                        placementProperties.put(PlaceholderProperty.HOST_IDENTIFIER.getName(), getKafkaHostIdentifier(configurationProperties));
-                        placementProperties.put(PlaceholderProperty.PORT_NUMBER.getName(), getKafkaPortNumber(configurationProperties));
-                        placementProperties.put(PlaceholderProperty.SERVER_NAME.getName(), "Default Apache Kafka");
-                        placementProperties.put(PlaceholderProperty.DESCRIPTION.getName(), "Apache Kafka topic distributing audit log events from the OMAG Servers.");
-                        placementProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), softwareServerProperties.getVersionIdentifier());
-                        placementProperties.put(KafkaPlaceholderProperty.FULL_TOPIC_NAME.getName(), topicName);
-                        placementProperties.put(KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getName(), topicName);
-                        placementProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
-                        topicGUID = assetClient.createAssetFromTemplate(templateOptions,
-                                                                        KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
-                                                                        null,
-                                                                        null,
-                                                                        placementProperties,
-                                                                        dataFlowProperties);
-
-                        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
-
-                        ImplementedByProperties implementedByProperties = new ImplementedByProperties();
-
-                        implementedByProperties.setRole("running instance");
-                        implementedByProperties.setDescription("Topic usage discovered by " + connectorName + ".");
-
-                        governanceDefinitionClient.linkDesignToImplementation(EgeriaSolutionComponent.AUDIT_LOG_TOPIC.getGUID(),
-                                                                              topicGUID,
-                                                                              new MakeAnchorOptions(governanceDefinitionClient.getMetadataSourceOptions()),
-                                                                              implementedByProperties);
-                    }
-                    else
-                    {
-                        /*
-                         * The topic is defined, we will add a new lineage relationship if it is missing.
-                         */
-                        String lineageRelationshipGUID = null;
-                        if (softwareServer.getLineageLinkage() != null)
-                        {
-                            for (RelatedMetadataElementSummary lineageLink : softwareServer.getLineageLinkage())
-                            {
-                                if ((lineageLink != null) &&
-                                        (! lineageLink.getRelatedElementAtEnd1()) &&
-                                        (lineageLink.getRelatedElement().getElementHeader().getGUID().equals(topicGUID)) &&
-                                        (lineageLink.getRelationshipProperties() instanceof DataFlowProperties relationshipProperties) &&
-                                        (auditLogLabel.equals(relationshipProperties.getLabel())))
-                                {
-                                    lineageRelationshipGUID = lineageLink.getRelationshipHeader().getGUID();
-                                    break;
-                                }
-                            }
+                            topicName = assetProperties.getDisplayName();
                         }
 
-                        /*
-                         * Add the missing lineage relationship.
-                         */
-                        if (lineageRelationshipGUID == null)
-                        {
-                            LineageClient lineageClient = integrationContext.getLineageClient();
-
-                            lineageClient.linkLineage(softwareServer.getElementHeader().getGUID(),
-                                                      topicGUID,
-                                                      OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                      lineageClient.getMakeAnchorOptions(false),
-                                                      dataFlowProperties);
-                        }
+                        auditLog.logMessage(methodName,
+                                            OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNREGISTERED.getMessageDefinition(connectorName,
+                                                                                                                     topicName,
+                                                                                                                     topicGUID,
+                                                                                                                     friendshipGUID));
                     }
-
-                    this.addTopicToActivityObserver(topicGUID);
                 }
             }
         }
@@ -2075,6 +2427,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
      */
     private String getBootstrapServer(Map<String, Object> configurationProperties)
     {
+        if (configurationProperties == null)
+        {
+            return null;
+        }
+
         Object properties = configurationProperties.get("producer");
         if (properties instanceof Map<?, ?> map)
         {
@@ -2369,6 +2726,25 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                 if (cohortElement != null)
                 {
                     cohortGUID = cohortElement.getElementHeader().getGUID();
+
+                    /*
+                     * The cohort's topics may have been reconfigured since the cohort was catalogued.  Only
+                     * a server that reports topics is used to correct them.
+                     */
+                    List<String> cohortTopics = this.getAllNetworkAddresses(cohort.getConnectors(), "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider");
+
+                    if ((cohortTopics != null) &&
+                            (cohortElement.getProperties() instanceof MetadataRepositoryCohortProperties existingCohortProperties) &&
+                            (! cohortTopics.equals(existingCohortProperties.getCohortTopics())))
+                    {
+                        MetadataRepositoryCohortProperties cohortProperties = new MetadataRepositoryCohortProperties();
+
+                        cohortProperties.setCohortTopics(cohortTopics);
+
+                        cohortClient.updateMetadataRepositoryCohort(cohortGUID,
+                                                                    cohortClient.getUpdateOptions(true),
+                                                                    cohortProperties);
+                    }
 
                     if (cohortElement.getCohortMembership() != null)
                     {

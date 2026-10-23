@@ -10,8 +10,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
@@ -389,19 +393,33 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                          OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name,
                                                                          OpenMetadataProperty.GUID.name);
 
-                    surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
-                                                                                      assetUniverse.getElementHeader().getGUID(),
-                                                                                      certificationTypeGUID,
-                                                                                      null,
-                                                                                      null,
-                                                                                      elementProperties);
+                    /*
+                     * A file in the data lake does not change once it is copied there, so a survey run a second
+                     * time on the same file leaves its certification and its place in the data set as they are.
+                     */
+                    if (! this.isRelated(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                         assetUniverse.getElementHeader().getGUID(),
+                                         certificationTypeGUID))
+                    {
+                        surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                                                          assetUniverse.getElementHeader().getGUID(),
+                                                                                          certificationTypeGUID,
+                                                                                          null,
+                                                                                          null,
+                                                                                          elementProperties);
+                    }
 
-                    surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
-                                                                                      validateDataFilesDataSetGUID,
-                                                                                      assetUniverse.getElementHeader().getGUID(),
-                                                                                      null,
-                                                                                      null,
-                                                                                      propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQualifiedName));
+                    if (! this.isRelated(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                         validateDataFilesDataSetGUID,
+                                         assetUniverse.getElementHeader().getGUID()))
+                    {
+                        surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                                                                          validateDataFilesDataSetGUID,
+                                                                                          assetUniverse.getElementHeader().getGUID(),
+                                                                                          null,
+                                                                                          null,
+                                                                                          propertyHelper.addStringProperty(null, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQualifiedName));
+                    }
 
 
                     outputGuards.add(SurveyActionGuard.DATA_CERTIFIED.getName());
@@ -495,6 +513,46 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
         {
             super.handleUnexpectedException(methodName, error);
         }
+    }
+
+
+    /**
+     * Return whether a relationship of this type already links end1 to end2.
+     *
+     * @param relationshipTypeName type of relationship
+     * @param end1GUID unique identifier of the element at end 1
+     * @param end2GUID unique identifier of the element at end 2
+     * @return flag
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem accessing the metadata repository/server
+     * @throws UserNotAuthorizedException security problem
+     */
+    private boolean isRelated(String relationshipTypeName,
+                              String end1GUID,
+                              String end2GUID) throws InvalidParameterException,
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException
+    {
+        final int pageSize  = 100;
+        int       startFrom = 0;
+
+        RelatedMetadataElementList related = surveyContext.getOpenMetadataStore().getRelatedMetadataElements(end1GUID, 1, relationshipTypeName, startFrom, pageSize);
+
+        while ((related != null) && (related.getElementList() != null) && (! related.getElementList().isEmpty()))
+        {
+            for (RelatedMetadataElement relatedElement : related.getElementList())
+            {
+                if ((relatedElement != null) && (end2GUID.equals(relatedElement.getElement().getElementGUID())))
+                {
+                    return true;
+                }
+            }
+
+            startFrom = startFrom + pageSize;
+            related   = surveyContext.getOpenMetadataStore().getRelatedMetadataElements(end1GUID, 1, relationshipTypeName, startFrom, pageSize);
+        }
+
+        return false;
     }
 
 

@@ -470,7 +470,25 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     public void setUpAnnotation(AnnotationProperties annotation,
                                 AnnotationType       annotationType) throws UserNotAuthorizedException
     {
-        this.setUpAnnotation(annotation, annotationType.getName());
+        this.setUpAnnotation(annotation, annotationType, null);
+    }
+
+
+    /**
+     * Transfer common properties into one of several annotations of the same type in a single survey -
+     * the measurements of each nested folder or file in a folder survey, say.  See
+     * setUpAnnotation(annotation, annotationTypeName, subjectName) for why the subject is needed.
+     *
+     * @param annotation       output annotation
+     * @param annotationType   annotation type definition
+     * @param subjectName      what this annotation is about, or null where the type occurs once in a report
+     * @throws UserNotAuthorizedException the service is not authorized to access the survey report
+     */
+    public void setUpAnnotation(AnnotationProperties annotation,
+                                AnnotationType       annotationType,
+                                String               subjectName) throws UserNotAuthorizedException
+    {
+        this.setUpAnnotation(annotation, annotationType.getName(), subjectName);
 
         annotation.setAnalysisStep(annotationType.getAnalysisStep());
         annotation.setSummary(annotationType.getSummary());

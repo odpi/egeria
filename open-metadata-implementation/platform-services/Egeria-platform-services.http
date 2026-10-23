@@ -25,9 +25,9 @@ Content-Type: application/json
 GET {{baseURL}}/open-metadata/platform-services/server-platform/origin
 
 ###
-# @name Get OMAG Server Platform Organization
-# Query the organization that owns this platform.
-GET {{baseURL}}/open-metadata/platform-services/server-platform/organization-name
+# @name Get OMAG Server Platform Start Time
+# Query the start time of this platform.
+GET {{baseURL}}/open-metadata/platform-services/server-platform/start-time
 Authorization: Bearer {{token}}
 
 ###
@@ -81,7 +81,6 @@ Authorization: Bearer {{token}}
 # Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
 GET {{baseURL}}/open-metadata/platform-services/server-platform/security/user-list?userAccountType=CONTRACTOR
 Authorization: Bearer {{token}}
-
 
 ###
 # @name Get registered access services

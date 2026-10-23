@@ -141,6 +141,36 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                            "No action is required.  This is expected where a server's localServerURL is an external address of the platform (for example https://host.docker.internal:9443) and the metadata access server is reached through an internal one (for example https://localhost:9443).  Elements catalogued under the other address by an earlier release of this connector are no longer maintained and can be deleted.",
                            "https://egeria-project.org/egeria-solutions/leveraging-egeria/overview/"),
 
+    /**
+     * The {0} integration connector has removed the audit log lineage from server {1} to topic {2} ({3}) because the server's configuration now names audit log topic {4}
+     */
+    AUDIT_LOG_TOPIC_UNLINKED("OMAG-CONNECTORS-0018",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} integration connector has removed the audit log lineage from server {1} to topic {2} ({3}) because the server's configuration now names audit log topic {4}",
+                             "The server's audit log destinations have changed since the lineage was catalogued, so the server no longer writes its audit log to this topic.  The lineage relationship is removed, and lineage to the topic named in the configuration is added in its place.",
+                             "No action is required.  If the topic is no longer used by any server, it is also removed from the catalog targets of the activity observer.  The topic element itself is not deleted, since the topic may still exist in the event broker.",
+                             "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
+    /**
+     * The {0} integration connector has removed audit log topic {1} ({2}) from the catalog targets of integration connector {3} because no server writes its audit log to it
+     */
+    AUDIT_LOG_TOPIC_UNREGISTERED("OMAG-CONNECTORS-0019",
+                                 AuditLogRecordSeverityLevel.INFO,
+                                 "The {0} integration connector has removed audit log topic {1} ({2}) from the catalog targets of integration connector {3} because no server writes its audit log to it",
+                                 "The last server that wrote its audit log to this topic has been reconfigured to use a different destination.  The activity observer stops listening to the topic.",
+                                 "No action is required.  The topic element remains in open metadata and can be deleted if the topic has also been removed from the event broker.",
+                                 "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
+    /**
+     * The {0} integration connector has updated the connection for audit log topic {1} ({2}): {3} was {4} and is now {5}
+     */
+    AUDIT_LOG_TOPIC_CONNECTION_UPDATED("OMAG-CONNECTORS-0020",
+                                       AuditLogRecordSeverityLevel.INFO,
+                                       "The {0} integration connector has updated the connection for audit log topic {1} ({2}): {3} was {4} and is now {5}",
+                                       "The connection catalogued for the audit log topic no longer matched the configuration of the servers that write to it, so it has been updated.  Connectors that read the topic through this connection, such as the activity observer, use the new value when they next connect.",
+                                       "No action is required.  If the activity observer is already connected to the topic, it may need to be restarted, or its catalog target refreshed, to pick up the change.",
+                                       "https://egeria-project.org/types/7/0795-Usage-Activity/"),
+
     ;
 
     private final String                      logMessageId;

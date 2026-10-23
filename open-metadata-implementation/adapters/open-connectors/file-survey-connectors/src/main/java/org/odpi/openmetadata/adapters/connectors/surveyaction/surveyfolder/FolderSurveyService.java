@@ -43,6 +43,13 @@ import java.util.*;
  */
 public class FolderSurveyService extends SurveyActionServiceConnector
 {
+    /*
+     * The folder being surveyed.  The measurements of the folders and files nested in it are named by their
+     * path relative to it.
+     */
+    private File rootFolder = null;
+
+
     /**
      * Return the updated value count for this column.
      *
@@ -136,7 +143,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             BasicFolderConnector assetConnector = (BasicFolderConnector)connector;
 
-            File rootFolder = assetConnector.getFile();
+            rootFolder = assetConnector.getFile();
 
             if (! rootFolder.isDirectory())
             {
@@ -243,6 +250,29 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
 
     /**
+     * Return the subject name for the measurements of a folder or file found in the survey: its path relative
+     * to the surveyed folder, or null for the surveyed folder itself.
+     * <br><br>
+     * Every measurement in the survey is attached to the surveyed folder's asset, so without a subject their
+     * qualified names differ only by the time they were set up - to the millisecond.  A deep survey sets up
+     * the measurements of small or empty folders and files far faster than that, and the second annotation
+     * with the same name is refused with OMAG-COMMON-409-001, failing the survey.
+     *
+     * @param file folder or file found in the survey
+     * @return subject name or null
+     */
+    private String getSubjectName(File file)
+    {
+        if ((rootFolder == null) || (rootFolder.equals(file)))
+        {
+            return null;
+        }
+
+        return rootFolder.toPath().relativize(file.toPath()).toString().replace(File.separatorChar, '/');
+    }
+
+
+    /**
      * Profile a single folder.
      *
      * @param fileFolder folder to profile
@@ -262,6 +292,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
     {
         FolderProfile folderProfile = new FolderProfile(auditLog,
                                                         fileFolder.getPath(),
+                                                        getSubjectName(fileFolder),
                                                         this,
                                                         surveyActionServiceName,
                                                         surveyContext.getAssetStore());
@@ -301,7 +332,8 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                         {
                             FileStatsExtractor fileStatsExtractor = new FileStatsExtractor(nestedFile,
                                                                                            fileClassifier,
-                                                                                           this);
+                                                                                           this,
+                                                                                           getSubjectName(nestedFile));
 
                             folderProfile.saveAnnotation(new Annotation(fileStatsExtractor.getAnnotation()));
                         }
@@ -389,6 +421,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
     {
         private final AuditLog auditLog;
         private final String   pathName;
+        private final String   subjectName;
         private final SurveyActionServiceConnector surveyActionServiceConnector;
         private final String                       surveyActionServiceName;
         private final SurveyAssetStore             surveyAssetStore;
@@ -427,18 +460,21 @@ public class FolderSurveyService extends SurveyActionServiceConnector
          *
          * @param auditLog logging destination
          * @param pathName folder name
+         * @param subjectName folder's path relative to the surveyed folder, or null for the surveyed folder
          * @param surveyActionServiceConnector this connector
          * @param surveyActionServiceName connector's name
          * @param surveyAssetStore asset store
          */
         public FolderProfile(AuditLog                     auditLog,
                              String                       pathName,
+                             String                       subjectName,
                              SurveyActionServiceConnector surveyActionServiceConnector,
                              String                       surveyActionServiceName,
                              SurveyAssetStore             surveyAssetStore)
         {
             this.auditLog                     = auditLog;
             this.pathName                     = pathName;
+            this.subjectName                  = subjectName;
             this.surveyActionServiceConnector = surveyActionServiceConnector;
             this.surveyActionServiceName      = surveyActionServiceName;
             this.surveyAssetStore             = surveyAssetStore;
@@ -488,7 +524,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
         {
             ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties = new ResourceMeasureAnnotationProperties();
 
-            setUpAnnotation(resourceMeasureAnnotationProperties, SurveyFolderAnnotationType.MEASUREMENTS);
+            setUpAnnotation(resourceMeasureAnnotationProperties, SurveyFolderAnnotationType.MEASUREMENTS, subjectName);
 
             Map<String, String> fileCountProperties = new HashMap<>();
             fileCountProperties.put(FileDirectoryMetric.FILE_COUNT.getDisplayName(), Long.toString(fileCount));

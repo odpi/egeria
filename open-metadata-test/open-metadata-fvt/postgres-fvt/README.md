@@ -195,7 +195,7 @@ nothing to do with each other:
   the engines the host reports running, which is the comparison the engine host makes silently. If those match
   and it still was not claimed, the engine neither heard the event nor swept for it — in the default mode,
   check that the broker named by `kafkaEndpoint` is reachable from this JVM (it must be the **external**
-  advertised listener, not the internal one);
+  listener, localhost:9194, not the internal one);
 * still `IN_PROGRESS` — it was claimed and the governance service is running but did not finish;
 * `FAILED` — it ran and said why, and the failure carries the completion message the service recorded.
 
@@ -213,7 +213,7 @@ anywhere the audit log would point at.
   [The database under test](#the-database-under-test).
 * A reachable **Apache Kafka** broker — `egeria-shared-kafka` by default, and only for the default mode;
   `-PrunPostgresFvtNoKafka` needs none. It must be the broker's EXTERNAL
-  advertised listener (`oak.local:9194`), not the internal one: this suite runs on the host rather than inside
+  listener (`localhost:9194`), not the internal one: this suite runs on the host rather than inside
   the docker network, and a client connecting on the internal listener is handed back an address it cannot
   resolve.
 

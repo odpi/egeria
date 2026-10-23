@@ -83,4 +83,4 @@ the synchronizer could not classify as `OIF-CONNECTOR-0011`.
 
 * Two Unity Catalog servers, as above.
 * A PostgreSQL server for the repository - by default the `egeria-shared-postgres` container on port 5442.
-* For the default mode, an Apache Kafka broker - by default `oak.local:9194`.
+* For the default mode, an Apache Kafka broker - by default `localhost:9194`.
