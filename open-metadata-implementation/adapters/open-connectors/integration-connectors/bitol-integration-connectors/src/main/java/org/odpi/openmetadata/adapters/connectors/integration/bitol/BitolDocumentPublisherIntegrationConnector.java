@@ -24,9 +24,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementCla
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -170,8 +172,16 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
                 if ((member != null) && (member.getRelatedElement() != null) &&
                     (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
                 {
+                    /*
+                     * Only the component's solution ports are used.
+                     */
+                    GetOptions componentOptions = context.getSolutionComponentClient().getGetOptions();
+
+                    componentOptions.setGraphQueryDepth(1);
+                    componentOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName));
+
                     OpenMetadataRootElement component = context.getSolutionComponentClient().getSolutionComponentByGUID(member.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                        context.getSolutionComponentClient().getGetOptions());
+                                                                                                                        componentOptions);
 
                     if ((component != null) && (component.getSolutionPorts() != null))
                     {
@@ -179,8 +189,16 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
                         {
                             if ((portSummary != null) && (portSummary.getRelatedElement() != null))
                             {
+                                /*
+                                 * Only the agreements that the port is an item of are used.
+                                 */
+                                GetOptions portOptions = context.getSolutionPortClient().getGetOptions();
+
+                                portOptions.setGraphQueryDepth(1);
+                                portOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName));
+
                                 OpenMetadataRootElement port = context.getSolutionPortClient().getSolutionPortByGUID(portSummary.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                     context.getSolutionPortClient().getGetOptions());
+                                                                                                                     portOptions);
 
                                 if ((port != null) && (port.getAgreementContents() != null))
                                 {

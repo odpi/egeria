@@ -211,7 +211,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
     {
         final String methodName = "refresh";
 
-        if (propertyHelper.isTypeOf(super.getCatalogTargetElement().getElementHeader(), UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName()))
+        if (propertyHelper.isTypeOf(super.getCatalogTargetElementHeader(), UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName()))
         {
             try
             {
@@ -221,7 +221,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                 OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
                                                                                                     integrationContext,
                                                                                                     super.getCatalogTargetName(),
-                                                                                                    super.getCatalogTargetElement(),
+                                                                                                    super.getCatalogTargetElementHeader().getGUID(),
                                                                                                     dataAccessManagerGUID,
                                                                                                     metadataCollectionGUID,
                                                                                                     metadataCollectionName,
@@ -337,7 +337,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
                     OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
                                                                                                         integrationContext,
                                                                                                         super.getCatalogTargetName(),
-                                                                                                        super.getCatalogTargetElement(),
+                                                                                                        super.getCatalogTargetElementHeader().getGUID(),
                                                                                                         dataAccessManagerGUID,
                                                                                                         metadataCollectionGUID,
                                                                                                         metadataCollectionName,

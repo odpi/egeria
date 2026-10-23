@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashSet;
@@ -73,8 +75,11 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
             AssetClient assetClient = integrationContext.getAssetClient();
             int startFrom = 0;
 
-            List<OpenMetadataRootElement> catalogTargetList  = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                             assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
+            QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize());
+
+            queryOptions.setGraphQueryDepth(0); // Only the catalog targets' GUIDs are used.
+
+            List<OpenMetadataRootElement> catalogTargetList  = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(), queryOptions);
 
             while (catalogTargetList != null)
             {
@@ -87,8 +92,8 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
                 }
 
                 startFrom         = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                  assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
+                queryOptions.setStartFrom(startFrom);
+                catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(), queryOptions);
             }
 
             /*
@@ -97,8 +102,11 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
             CollectionClient collectionClient = integrationContext.getCollectionClient(OpenMetadataType.DATA_SHARING_HUB.typeName);
             startFrom = 0;
 
-            List<OpenMetadataRootElement> dataSharingHubs = collectionClient.findCollections(null,
-                                                                                             collectionClient.getSearchOptions(startFrom, integrationContext.getMaxPageSize()));
+            SearchOptions searchOptions = collectionClient.getSearchOptions(startFrom, integrationContext.getMaxPageSize());
+
+            searchOptions.setGraphQueryDepth(0); // Only the hubs' header and properties are used.
+
+            List<OpenMetadataRootElement> dataSharingHubs = collectionClient.findCollections(null, searchOptions);
 
             while (dataSharingHubs != null)
             {
@@ -123,8 +131,8 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
                 }
 
                 startFrom = startFrom + integrationContext.getMaxPageSize();
-                dataSharingHubs  = collectionClient.findCollections(null,
-                                                             collectionClient.getSearchOptions(startFrom, integrationContext.getMaxPageSize()));
+                searchOptions.setStartFrom(startFrom);
+                dataSharingHubs  = collectionClient.findCollections(null, searchOptions);
             }
         }
         catch (Exception error)

@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -28,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -190,7 +192,15 @@ public class BitolFileCataloguer
             return;
         }
 
-        OpenMetadataRootElement collection = integrationContext.getCollectionClient().getCollectionByGUID(element.getElementGUID(), integrationContext.getCollectionClient().getGetOptions());
+        /*
+         * Only the collection's resource list is used.
+         */
+        GetOptions getOptions = integrationContext.getCollectionClient().getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement collection = integrationContext.getCollectionClient().getCollectionByGUID(element.getElementGUID(), getOptions);
 
         if ((collection != null) && (collection.getResourceList() != null))
         {

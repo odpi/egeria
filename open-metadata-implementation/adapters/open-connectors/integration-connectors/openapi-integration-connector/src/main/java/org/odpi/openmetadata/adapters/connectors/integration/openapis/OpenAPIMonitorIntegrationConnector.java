@@ -49,7 +49,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIR
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIResponseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.APIParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -175,7 +178,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             try
             {
                 EndpointClient          endpointClient  = myContext.getEndpointClient();
-                OpenMetadataRootElement endpointElement = endpointClient.getEndpointByGUID(event.getElementHeader().getGUID(), endpointClient.getGetOptions());
+                GetOptions              getOptions      = endpointClient.getGetOptions();
+
+                /*
+                 * Only the endpoint's header and properties are used.
+                 */
+                getOptions.setGraphQueryDepth(0);
+
+                OpenMetadataRootElement endpointElement = endpointClient.getEndpointByGUID(event.getElementHeader().getGUID(), getOptions);
 
                 if (endpointElement != null)
                 {
@@ -203,7 +213,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         try
         {
-            List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(urlMarker, myContext.getEndpointClient().getSearchOptions());
+            SearchOptions searchOptions = myContext.getEndpointClient().getSearchOptions();
+
+            /*
+             * Only each endpoint's header and properties are used.
+             */
+            searchOptions.setGraphQueryDepth(0);
+
+            List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(urlMarker, searchOptions);
 
             if (endpointElements != null)
             {
@@ -440,7 +457,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(null, myContext.getEndpointClient().getSearchOptions());
+        SearchOptions searchOptions = myContext.getEndpointClient().getSearchOptions();
+
+        /*
+         * Only each endpoint's header and properties are used.
+         */
+        searchOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> endpointElements = myContext.getEndpointClient().findEndpoints(null, searchOptions);
         String                        endpointGUID = null;
         String                        endpointQualifiedName = "ServerEndpoint:" + url;
 
@@ -1509,7 +1533,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(qualifiedName, assetClient.getQueryOptions());
+        QueryOptions queryOptions = assetClient.getQueryOptions();
+
+        /*
+         * Only each element's header and properties are used.
+         */
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> elements = assetClient.getAssetsByName(qualifiedName, queryOptions);
 
         if (elements != null)
         {
@@ -1544,7 +1575,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, schemaTypeClient.getQueryOptions());
+        QueryOptions queryOptions = schemaTypeClient.getQueryOptions();
+
+        /*
+         * Only each element's header and properties are used.
+         */
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, queryOptions);
 
         if (elements != null)
         {
@@ -1579,7 +1617,14 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, schemaAttributeClient.getQueryOptions());
+        QueryOptions queryOptions = schemaAttributeClient.getQueryOptions();
+
+        /*
+         * Only each element's header and properties are used.
+         */
+        queryOptions.setGraphQueryDepth(0);
+
+        List<OpenMetadataRootElement> elements = schemaAttributeClient.getSchemaAttributesByName(qualifiedName, queryOptions);
 
         if (elements != null)
         {

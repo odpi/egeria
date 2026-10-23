@@ -21,6 +21,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -193,7 +195,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
             int                           startFrom = 0;
             List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                         assetClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
+                                                                                         this.getCatalogTargetQueryOptions(assetClient, startFrom));
 
             while (catalogTargets != null)
             {
@@ -234,12 +236,20 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
                                 {
                                     if (connection != null)
                                     {
-                                        OpenMetadataRootElement connectionElement = integrationContext.getConnectionClient().getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                                                 assetClient.getGetOptions());
+                                        /*
+                                         * Only the connection's endpoint is used.
+                                         */
+                                        GetOptions getOptions = assetClient.getGetOptions();
 
-                                        if (connectionElement.getEndpoint() != null)
+                                        getOptions.setGraphQueryDepth(1);
+                                        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
+                                        OpenMetadataRootElement connectionElement = integrationContext.getConnectionClient().getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                                                 getOptions);
+
+                                        if ((connectionElement != null) && (connectionElement.getEndpoint() != null))
                                         {
-                                            if (catalogTarget.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties)
+                                            if (connectionElement.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties)
                                             {
                                                 if ((endpointProperties.getNetworkAddress() != null) && (! destinationAddresses.contains(endpointProperties.getNetworkAddress())))
                                                 {
@@ -259,7 +269,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
                 startFrom = startFrom + myContext.getMaxPageSize();
 
                 catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                               assetClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
+                                                               this.getCatalogTargetQueryOptions(assetClient, startFrom));
             }
         }
         catch (Exception error)
@@ -271,6 +281,27 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
                                                                                                                   error.getMessage()),
                                error);
         }
+    }
+
+
+    /**
+     * Return the query options for a page of catalog targets.  Only each target's header, properties, connections
+     * (for an asset) and endpoint (for a connection) are used to work out the destination addresses.
+     *
+     * @param assetClient client for retrieving the catalog targets
+     * @param startFrom starting element
+     * @return query options
+     */
+    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
+                                                      int         startFrom)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, myContext.getMaxPageSize());
+
+        queryOptions.setGraphQueryDepth(1);
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
+                                                         OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
+        return queryOptions;
     }
 
 

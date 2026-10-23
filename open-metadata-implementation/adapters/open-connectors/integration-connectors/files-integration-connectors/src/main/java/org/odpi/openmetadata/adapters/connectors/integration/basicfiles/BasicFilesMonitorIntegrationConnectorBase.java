@@ -29,6 +29,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -249,7 +251,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             int maxPageSize = integrationContext.getMaxPageSize();
 
             List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                         assetClient.getQueryOptions(startFrom, maxPageSize));
+                                                                                         this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
 
             while (catalogTargets != null)
             {
@@ -264,7 +266,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
 
                 startFrom = startFrom + maxPageSize;
                 catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                               assetClient.getQueryOptions(startFrom, maxPageSize));
+                                                               this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
             }
 
             /*
@@ -324,6 +326,27 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                     methodName,
                     error);
         }
+    }
+
+
+    /**
+     * Return the query options for a page of catalog targets.  Only each target's header, properties and the
+     * catalog target relationship it was retrieved through are used.
+     *
+     * @param assetClient client for retrieving the catalog targets
+     * @param startFrom starting element
+     * @param pageSize maximum elements to return
+     * @return query options
+     */
+    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
+                                                      int         startFrom,
+                                                      int         pageSize)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
     }
 
 
@@ -389,10 +412,16 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                             try
                             {
                                 ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+                                GetOptions                   metadataSourceOptions        = classificationExplorerClient.getGetOptions();
+
+                                /*
+                                 * Only the metadata source's properties are used.
+                                 */
+                                metadataSourceOptions.setGraphQueryDepth(0);
 
                                 OpenMetadataRootElement metadataSource = classificationExplorerClient.getRootElementByUniqueName(catalogTargetProperties.getMetadataSourceQualifiedName(),
                                                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                                 classificationExplorerClient.getGetOptions());
+                                                                                                                                 metadataSourceOptions);
 
                                 if ((metadataSource != null) && (metadataSource.getProperties() instanceof FileSystemProperties properties))
                                 {
@@ -574,8 +603,14 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
         try
         {
             AssetClient folderClient = integrationContext.getAssetClient(OpenMetadataType.FILE_FOLDER.typeName);
+            GetOptions  getOptions   = folderClient.getGetOptions();
 
-            return folderClient.getAssetByGUID(folderElementGUID, folderClient.getGetOptions());
+            /*
+             * Callers use only the folder's header and properties.
+             */
+            getOptions.setGraphQueryDepth(0);
+
+            return folderClient.getAssetByGUID(folderElementGUID, getOptions);
         }
         catch (Exception error)
         {
@@ -616,6 +651,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             {
                 AssetClient fileClient = integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
                 String pathName = file.getCanonicalPath();
+                GetOptions getOptions = fileClient.getGetOptions();
+
+                /*
+                 * Only the file's header is used.
+                 */
+                getOptions.setGraphQueryDepth(0);
 
                 /*
                  * This will through an exception if more than one file is catalogued for the same path name.
@@ -623,7 +664,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                  */
                 OpenMetadataRootElement cataloguedElement = fileClient.getAssetByUniqueName(pathName,
                                                                                             OpenMetadataProperty.PATH_NAME.name,
-                                                                                            fileClient.getGetOptions());
+                                                                                            getOptions);
 
                 if (cataloguedElement == null)
                 {

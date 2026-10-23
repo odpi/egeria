@@ -18,7 +18,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecordProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListener;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
 import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
@@ -175,7 +177,15 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
 
                 ActorProfileClient actorProfileClient = watchdogContext.getActorProfileClient();
 
-                OpenMetadataRootElement actorProfile = actorProfileClient.getActorProfileByUserId(userId, actorProfileClient.getGetOptions());
+                /*
+                 * Only the profile's properties and its contribution record are used.
+                 */
+                GetOptions getOptions = actorProfileClient.getGetOptions();
+
+                getOptions.setGraphQueryDepth(1);
+                getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName));
+
+                OpenMetadataRootElement actorProfile = actorProfileClient.getActorProfileByUserId(userId, getOptions);
 
                 if (actorProfile != null)
                 {

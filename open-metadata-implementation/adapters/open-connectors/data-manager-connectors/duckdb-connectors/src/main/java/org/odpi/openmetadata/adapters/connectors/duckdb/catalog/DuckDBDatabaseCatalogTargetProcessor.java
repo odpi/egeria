@@ -21,17 +21,19 @@ import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.EndpointClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaTypeClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
@@ -45,8 +47,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.T
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -297,11 +301,12 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
          * FileClassifier-based matching/creation below when it is something else (for example, a FileFolder for the
          * directory the file lives in - see the class-level design note on the first-ever-refresh case).
          */
-        if ((super.getCatalogTargetElement() != null) && (super.getCatalogTargetElement().getElementHeader() != null) &&
-                (super.getCatalogTargetElement().getElementHeader().getType() != null) &&
-                (propertyHelper.isTypeOf(super.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RELATIONAL_DATABASE.typeName)))
+        ElementHeader catalogTargetHeader = super.getCatalogTargetElementHeader();
+
+        if ((catalogTargetHeader != null) && (catalogTargetHeader.getType() != null) &&
+                (propertyHelper.isTypeOf(catalogTargetHeader, OpenMetadataType.RELATIONAL_DATABASE.typeName)))
         {
-            return super.getCatalogTargetElement().getElementHeader().getGUID();
+            return catalogTargetHeader.getGUID();
         }
 
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.RELATIONAL_DATABASE.typeName);
@@ -338,7 +343,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
             }
         }
 
-        OpenMetadataRootElement existingAsset = assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, assetClient.getGetOptions());
+        OpenMetadataRootElement existingAsset = assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, this.getElementOnlyOptions(assetClient));
 
         if (existingAsset != null)
         {
@@ -554,7 +559,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         {
             AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.RELATIONAL_DATABASE.typeName);
 
-            OpenMetadataRootElement databaseElement = assetClient.getAssetByGUID(databaseGUID, assetClient.getGetOptions());
+            OpenMetadataRootElement databaseElement = assetClient.getAssetByGUID(databaseGUID, this.getElementOnlyOptions(assetClient));
 
             return assetClient.getQualifiedName(databaseElement);
         }
@@ -685,7 +690,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         {
             AssetClient fileClient = integrationContext.getAssetClient(OpenMetadataType.DATA_FILE.typeName);
 
-            OpenMetadataRootElement fileAsset = fileClient.getAssetByGUID(fileAssetGUID, fileClient.getGetOptions());
+            OpenMetadataRootElement fileAsset = fileClient.getAssetByGUID(fileAssetGUID, this.getElementOnlyOptions(fileClient));
             String                  fileAssetQualifiedName = fileClient.getQualifiedName(fileAsset);
 
             if (fileAssetQualifiedName == null)
@@ -737,7 +742,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
             SchemaAttributeClient duckdbColumnClient = integrationContext.getSchemaAttributeClient(OpenMetadataType.RELATIONAL_COLUMN.typeName);
 
-            List<OpenMetadataRootElement> duckdbColumns = duckdbColumnClient.getNestedSchemaAttributes(duckdbTableGUID, duckdbColumnClient.getQueryOptions());
+            List<OpenMetadataRootElement> duckdbColumns = duckdbColumnClient.getNestedSchemaAttributes(duckdbTableGUID, this.getElementOnlyQueryOptions(duckdbColumnClient));
 
             if (duckdbColumns == null)
             {
@@ -960,7 +965,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         AssetClient databaseClient = integrationContext.getAssetClient(OpenMetadataType.RELATIONAL_DATABASE.typeName);
 
-        OpenMetadataRootElement targetDatabase            = databaseClient.getAssetByGUID(targetDatabaseGUID, databaseClient.getGetOptions());
+        OpenMetadataRootElement targetDatabase            = databaseClient.getAssetByGUID(targetDatabaseGUID, this.getElementOnlyOptions(databaseClient));
         String                  targetDatabaseQualifiedName = databaseClient.getQualifiedName(targetDatabase);
 
         if (targetDatabaseQualifiedName == null)
@@ -1026,7 +1031,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         OpenMetadataRootElement existingDataSet = tabularDataSetClient.getAssetByUniqueName(dataSetQualifiedName,
                                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                             tabularDataSetClient.getGetOptions());
+                                                                                             this.getElementOnlyOptions(tabularDataSetClient));
 
         String dataSetGUID;
 
@@ -1175,7 +1180,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "findSchemaAttributeByQualifiedName";
 
-        List<OpenMetadataRootElement> candidates = client.getSchemaAttributesByName(qualifiedName, client.getQueryOptions());
+        List<OpenMetadataRootElement> candidates = client.getSchemaAttributesByName(qualifiedName, this.getElementOnlyQueryOptions(client));
 
         OpenMetadataRootElement match      = null;
         int                     matchCount = 0;
@@ -1217,7 +1222,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "findSchemaTypeGUIDByQualifiedName";
 
-        List<OpenMetadataRootElement> candidates = client.getSchemaTypesByName(qualifiedName, client.getQueryOptions());
+        List<OpenMetadataRootElement> candidates = client.getSchemaTypesByName(qualifiedName, this.getElementOnlyQueryOptions(client));
 
         String matchGUID  = null;
         int    matchCount = 0;
@@ -1248,6 +1253,39 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
 
     /**
+     * Return the options for retrieving a single element when only its header and properties are used - which is
+     * all this processor reads from the elements it looks up.
+     *
+     * @param client client making the request
+     * @return get options
+     */
+    private GetOptions getElementOnlyOptions(ConnectorContextClientBase client)
+    {
+        GetOptions getOptions = client.getGetOptions();
+
+        getOptions.setGraphQueryDepth(0);
+
+        return getOptions;
+    }
+
+
+    /**
+     * Return the options for retrieving a list of elements when only their headers and properties are used.
+     *
+     * @param client client making the request
+     * @return query options
+     */
+    private QueryOptions getElementOnlyQueryOptions(ConnectorContextClientBase client)
+    {
+        QueryOptions queryOptions = client.getQueryOptions();
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
+    }
+
+
+    /**
      * Extract a schema attribute's own name: its displayName if set (RelationalDatabaseCataloguer always sets
      * displayName to the JDBC column name), falling back to the last "::"-delimited segment of its qualifiedName.
      *
@@ -1257,11 +1295,14 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
      */
     private String getElementName(SchemaAttributeClient client, OpenMetadataRootElement element)
     {
-        String displayName = client.getDisplayName(element);
-
-        if (displayName != null)
+        /*
+         * The client's getDisplayName() falls back to the whole qualifiedName (or "Unknown"), so the displayName
+         * property is read directly here to let the last-segment fallback below apply.
+         */
+        if ((element.getProperties() instanceof ReferenceableProperties referenceableProperties) &&
+                (referenceableProperties.getDisplayName() != null))
         {
-            return displayName;
+            return referenceableProperties.getDisplayName();
         }
 
         String qualifiedName = client.getQualifiedName(element);
@@ -1308,7 +1349,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
             OpenMetadataRootElement existingElement = fileClient.getAssetByUniqueName(fileClassification.getQualifiedName(),
                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                       fileClient.getGetOptions());
+                                                                                       this.getElementOnlyOptions(fileClient));
 
             if (existingElement != null)
             {
@@ -1392,7 +1433,7 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         String qualifiedName = OpenMetadataType.RELATIONAL_DATABASE.typeName + "::" + sourceType + "::" + host + ":" + port + "/" + dbname;
 
-        OpenMetadataRootElement existingElement = assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, assetClient.getGetOptions());
+        OpenMetadataRootElement existingElement = assetClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, this.getElementOnlyOptions(assetClient));
 
         if (existingElement != null)
         {

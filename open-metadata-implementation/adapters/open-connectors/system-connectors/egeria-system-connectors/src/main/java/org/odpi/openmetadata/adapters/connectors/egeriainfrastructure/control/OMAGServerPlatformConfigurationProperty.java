@@ -31,6 +31,15 @@ public enum OMAGServerPlatformConfigurationProperty
                    OMAGServerPlatformPlaceholderProperty.SECRETS_STORE.getExample(),
                    true),
 
+    /**
+     * Name of the collection within the secrets store.
+     */
+    SECRETS_COLLECTION_NAME (OMAGServerPlatformPlaceholderProperty.SECRETS_COLLECTION_NAME.getName(),
+                             OMAGServerPlatformPlaceholderProperty.SECRETS_COLLECTION_NAME.getDescription(),
+                             OMAGServerPlatformPlaceholderProperty.SECRETS_COLLECTION_NAME.getDataType(),
+                             OMAGServerPlatformPlaceholderProperty.SECRETS_COLLECTION_NAME.getExample(),
+                             true),
+
     ;
 
     public final String           name;

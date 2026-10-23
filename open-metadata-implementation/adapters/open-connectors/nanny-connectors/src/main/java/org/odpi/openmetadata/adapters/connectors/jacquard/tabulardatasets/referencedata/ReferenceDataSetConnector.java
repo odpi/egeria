@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.T
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidValueDefinitionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
@@ -79,15 +80,11 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
         {
             ClassificationExplorerClient classificationExplorerClient = connectorContext.getClassificationExplorerClient(OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
             /*
-             * The set is read with its members and nothing else; each member is then read on its own, header and
-             * properties only.
+             * The set is read with its members and nothing else; each member is then read the same way so that
+             * nested sets are followed.
              */
-            GetOptions setOptions = classificationExplorerClient.getGetOptions();
-
-            setOptions.setGraphQueryDepth(1);
-            setOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName));
-
-            OpenMetadataRootElement validValueSet = classificationExplorerClient.getRootElementByGUID(startingElementGUID, setOptions);
+            OpenMetadataRootElement validValueSet = classificationExplorerClient.getRootElementByGUID(startingElementGUID,
+                                                                                                     this.getWithMembersOptions(classificationExplorerClient));
 
             if (validValueSet != null)
             {
@@ -134,8 +131,11 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
                 {
                     try
                     {
+                        /*
+                         * The member may itself be a set, so its members are read too.
+                         */
                         OpenMetadataRootElement rootElement = validValueDefinitionClient.getValidValueDefinitionByGUID(member.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                       this.getHeaderAndPropertiesOptions(validValueDefinitionClient));
+                                                                                                                       this.getWithMembersOptions(validValueDefinitionClient));
 
                         if (rootElement != null)
                         {
@@ -164,5 +164,22 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
                 }
             }
         }
+    }
+
+
+    /**
+     * Options for reading a valid value with its direct members and nothing else.
+     *
+     * @param client the client the options are for
+     * @return get options
+     */
+    private GetOptions getWithMembersOptions(ConnectorContextClientBase client)
+    {
+        GetOptions getOptions = client.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName));
+
+        return getOptions;
     }
 }

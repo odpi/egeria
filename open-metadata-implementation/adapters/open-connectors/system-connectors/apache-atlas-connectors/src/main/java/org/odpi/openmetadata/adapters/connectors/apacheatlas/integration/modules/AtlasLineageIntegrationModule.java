@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.LineageClient;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
@@ -283,7 +284,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    assetClient.getAssetByGUID(egeriaProcessGUID, assetClient.getGetOptions());
+                    assetClient.getAssetByGUID(egeriaProcessGUID, withoutRelationships(assetClient.getGetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.
@@ -423,7 +424,7 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
         if (atlasProcessEntity != null)
         {
             AtlasEntity             atlasEntity    = atlasProcessEntity.getEntity();
-            OpenMetadataRootElement processElement = assetClient.getAssetByGUID(egeriaProcessGUID, null);
+            OpenMetadataRootElement processElement = assetClient.getAssetByGUID(egeriaProcessGUID, withExternalIds(new GetOptions()));
 
             if (atlasEntity != null)
             {

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -266,7 +265,15 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
          */
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
 
-        OpenMetadataRootElement softwarePlatform = assetClient.getAssetByGUID(platformGUID, assetClient.getGetOptions());
+        /*
+         * Only the platform's properties and its CatalogTarget relationships are used.
+         */
+        GetOptions getOptions = assetClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement softwarePlatform = assetClient.getAssetByGUID(platformGUID, getOptions);
 
         if ((softwarePlatform != null) && (softwarePlatform.getProperties() instanceof SoftwareServerPlatformProperties softwareServerPlatformProperties))
         {
@@ -299,7 +306,7 @@ public class OMAGServerPlatformCatalogConnector extends DynamicIntegrationConnec
              * Read the platform back so that the relationship just written can be looked at - see
              * noteLocalMetadataCollection for why that is worth a second read.
              */
-            this.noteLocalMetadataCollection(assetClient.getAssetByGUID(platformGUID, assetClient.getGetOptions()));
+            this.noteLocalMetadataCollection(assetClient.getAssetByGUID(platformGUID, getOptions));
         }
 
         return platformGUID;

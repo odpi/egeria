@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -238,9 +239,16 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                 FileClassification fileClassification = fileClassifier.classifyFile(file);
 
+                /*
+                 * Only the file's header and properties are used.
+                 */
+                GetOptions getOptions = fileClient.getGetOptions();
+
+                getOptions.setGraphQueryDepth(0);
+
                 OpenMetadataRootElement cataloguedElement = fileClient.getAssetByUniqueName(fileClassification.getQualifiedName(),
                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                            fileClient.getGetOptions());
+                                                                                            getOptions);
 
                 if (cataloguedElement == null)
                 {
@@ -404,7 +412,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                     Date fileLastModifiedDate = new Date(file.lastModified());
 
-                    if ((properties.getStoreUpdateTime() == null) || (fileLastModifiedDate.after(properties.getStoreUpdateTime())))
+                    if ((dataFileProperties.getStoreUpdateTime() == null) || (fileLastModifiedDate.after(dataFileProperties.getStoreUpdateTime())))
                     {
                         properties.setStoreUpdateTime(fileLastModifiedDate);
 

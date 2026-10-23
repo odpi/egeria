@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Collections;
@@ -86,7 +88,14 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
 
         try
         {
-            OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElement();
+            /*
+             * Only the catalog target's header and properties are used.
+             */
+            GetOptions headerAndProperties = integrationContext.getClassificationExplorerClient().getGetOptions();
+
+            headerAndProperties.setGraphQueryDepth(0);
+
+            OpenMetadataRootElement catalogTargetElement = this.getCatalogTargetElement(headerAndProperties);
 
             if ((catalogTargetElement != null) &&
                     (propertyHelper.isTypeOf(catalogTargetElement.getElementHeader(), OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName)) &&
@@ -98,9 +107,13 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
                  */
                 AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
 
+                SearchOptions searchOptions = assetClient.getSearchOptions(0, 0);
+
+                searchOptions.setGraphQueryDepth(0); // Only whether any are found is used.
+
                 List<OpenMetadataRootElement> activeEngineActions = assetClient.findProcesses(governanceActionTypeProperties.getQualifiedName(),
                                                                                               liveActivityStatuses,
-                                                                                              assetClient.getSearchOptions(0, 0));
+                                                                                              searchOptions);
 
                 if ((activeEngineActions == null) || activeEngineActions.isEmpty())
                 {

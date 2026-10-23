@@ -31,7 +31,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -193,7 +195,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     /*
                      * Exchange all glossaries found in the open metadata ecosystem.
                      */
-                    List<OpenMetadataRootElement> glossaries = glossaryClient.findCollections(null, null);
+                    List<OpenMetadataRootElement> glossaries = glossaryClient.findCollections(null, withExternalIds(new SearchOptions()));
 
                     if (glossaries != null)
                     {
@@ -341,12 +343,19 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     {
                         if (validGlossaryElement(elementHeader))
                         {
-                            processGlossaryFromEgeria(glossaryClient.getCollectionByGUID(elementHeader.getGUID(), glossaryClient.getGetOptions()));
+                            processGlossaryFromEgeria(glossaryClient.getCollectionByGUID(elementHeader.getGUID(), withExternalIds(glossaryClient.getGetOptions())));
                         }
                     }
                     else if (myContext.isTypeOf(elementHeader, OpenMetadataType.GLOSSARY_TERM.typeName))
                     {
-                        OpenMetadataRootElement egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(elementHeader.getGUID(), null);
+                        /*
+                         * The term's external identifiers are used to synchronize it, and its collection memberships
+                         * to find its glossary.
+                         */
+                        OpenMetadataRootElement egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(elementHeader.getGUID(),
+                                                                                                              withOnlyRelationships(new GetOptions(),
+                                                                                                                                    OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
+                                                                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
 
                         if (egeriaGlossaryTerm != null)
                         {
@@ -434,7 +443,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
         try
         {
             OpenMetadataRootElement refreshedTerm = glossaryTermClient.getGlossaryTermByGUID(metadataElement.getElementHeader().getGUID(),
-                                                                                         null);
+                                                                                         withExternalIds(new GetOptions()));
 
             return this.getAtlasGUID(refreshedTerm);
         }
@@ -540,7 +549,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
              */
             int startFrom = 0;
             List<OpenMetadataRootElement> egeriaGlossaryMembers = glossaryClient.getCollectionMembers(egeriaGlossary.getElementHeader().getGUID(),
-                                                                                                   glossaryTermClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
+                                                                                                   withExternalIds(glossaryTermClient.getQueryOptions(startFrom, myContext.getMaxPageSize())));
 
             while (egeriaGlossaryMembers != null)
             {
@@ -556,7 +565,8 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 }
 
                 startFrom = startFrom + myContext.getMaxPageSize();
-                egeriaGlossaryMembers = glossaryClient.getCollectionMembers(egeriaGlossary.getElementHeader().getGUID(), glossaryTermClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
+                egeriaGlossaryMembers = glossaryClient.getCollectionMembers(egeriaGlossary.getElementHeader().getGUID(),
+                                                                            withExternalIds(glossaryTermClient.getQueryOptions(startFrom, myContext.getMaxPageSize())));
             }
         }
     }
@@ -635,7 +645,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
              */
             egeriaGlossaryGUID = this.createAtlasGlossaryInEgeria(atlasGlossaryElement);
 
-            OpenMetadataRootElement egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, null);
+            OpenMetadataRootElement egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withoutRelationships(new GetOptions())); // Only the header is used
 
 
             /*
@@ -650,7 +660,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             try
             {
-                egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, null);
+                egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withExternalIds(new GetOptions()));
             }
             catch (InvalidParameterException missingGlossary)
             {
@@ -683,7 +693,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             try
             {
-                egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, null);
+                egeriaGlossary = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withoutRelationships(new GetOptions())); // Existence check only
             }
             catch (InvalidParameterException missingGlossary)
             {
@@ -776,7 +786,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             try
             {
-                egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(egeriaTermGUID, null);
+                egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(egeriaTermGUID, withExternalIds(new GetOptions()));
             }
             catch (InvalidParameterException missingTerm)
             {
@@ -801,7 +811,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             try
             {
-                egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(egeriaTermGUID, null);
+                egeriaGlossaryTerm = glossaryTermClient.getGlossaryTermByGUID(egeriaTermGUID, withExternalIds(new GetOptions()));
             }
             catch (InvalidParameterException missingTerm)
             {
@@ -1239,7 +1249,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                      * Does the matching entity in the open metadata ecosystem still exist.  Notice effective time is set to null
                      * to make sure that this entity is found no matter what its effectivity dates are set to.
                      */
-                    glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, glossaryClient.getGetOptions());
+                    glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withoutRelationships(glossaryClient.getGetOptions()));
 
                     /*
                      * The Egeria equivalent is still in place.
@@ -1263,7 +1273,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
             if (egeriaGlossaryGUID != null)
             {
-                glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, glossaryClient.getGetOptions());
+                /*
+                 * The caller only uses the glossary's header.
+                 */
+                return glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withoutRelationships(glossaryClient.getGetOptions()));
             }
         }
 
@@ -1361,7 +1374,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
         if (atlasGlossaryEntity != null)
         {
             AtlasEntity             atlasEntity     = atlasGlossaryEntity.getEntity();
-            OpenMetadataRootElement glossaryElement = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, null);
+            OpenMetadataRootElement glossaryElement = glossaryClient.getCollectionByGUID(egeriaGlossaryGUID, withExternalIds(new GetOptions()));
 
             if (atlasEntity != null)
             {
@@ -1758,7 +1771,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
     {
         try
         {
-            List<OpenMetadataRootElement> egeriaGlossaries = glossaryClient.getCollectionsByName(glossaryQualifiedName, glossaryClient.getQueryOptions(0, 0));
+            List<OpenMetadataRootElement> egeriaGlossaries = glossaryClient.getCollectionsByName(glossaryQualifiedName, withExternalIds(glossaryClient.getQueryOptions(0, 0)));
 
             if (egeriaGlossaries != null)
             {

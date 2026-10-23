@@ -123,7 +123,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
          * Although this connector processes catalogs, its catalog target is the Unity Catalog Server.
          * The catalog to work on is passed in the configuration properties.
          */
-        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(this.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(this.getCatalogTargetElementHeader().getType().getTypeName()))
         {
             if ((this.getConfigurationProperties() != null) &&
                 (this.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()) != null))
@@ -132,13 +132,13 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                 {
                     String catalogName = this.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()).toString();
                     String catalogGUID = this.getConfigurationProperties().get(OpenMetadataProperty.GUID.name).toString();
-                    String serverGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
+                    String serverGUID  = this.getCatalogTargetElementHeader().getGUID();
 
                     String ucServerEndpoint = this.getNetworkAddress();
 
                     Map<String, String> ucFullNameToEgeriaGUID = new HashMap<>();
 
-                    ucFullNameToEgeriaGUID.put(catalogName, this.getCatalogTargetElement().getElementHeader().getGUID());
+                    ucFullNameToEgeriaGUID.put(catalogName, catalogGUID);
 
                     this.refreshCatalog(serverGUID,
                                         catalogName,

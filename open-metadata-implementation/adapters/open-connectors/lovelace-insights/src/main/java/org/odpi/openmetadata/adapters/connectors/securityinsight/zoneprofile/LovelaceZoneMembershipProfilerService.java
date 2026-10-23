@@ -67,6 +67,8 @@ public class LovelaceZoneMembershipProfilerService extends GeneralGovernanceActi
 
             SearchOptions searchOptions = governanceDefinitionClient.getSearchOptions(0, governanceContext.getMaxPageSize());
 
+            searchOptions.setGraphQueryDepth(0); // Only the zone's header and properties are used
+
             List<OpenMetadataRootElement> governanceZoneElements = governanceDefinitionClient.findGovernanceDefinitions(null, searchOptions);
 
             while (governanceZoneElements != null)

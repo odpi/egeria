@@ -9,8 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -62,12 +64,12 @@ public class BitolDocumentPublisherCatalogTargetProcessor extends CatalogTargetP
 
         try
         {
-            String catalogGUID = super.getCatalogTargetElement().getElementHeader().getGUID();
+            String catalogGUID = super.getCatalogTargetElementHeader().getGUID();
             int    startFrom   = 0;
             int    maxPageSize = integrationContext.getMaxPageSize();
 
             List<OpenMetadataRootElement> members = integrationContext.getCollectionClient().getCollectionMembers(catalogGUID,
-                                                                                                                  integrationContext.getCollectionClient().getQueryOptions(startFrom, maxPageSize));
+                                                                                                                  this.getMemberQueryOptions(startFrom, maxPageSize));
 
             while (members != null)
             {
@@ -82,7 +84,7 @@ public class BitolDocumentPublisherCatalogTargetProcessor extends CatalogTargetP
                 startFrom = startFrom + maxPageSize;
 
                 members = integrationContext.getCollectionClient().getCollectionMembers(catalogGUID,
-                                                                                        integrationContext.getCollectionClient().getQueryOptions(startFrom, maxPageSize));
+                                                                                        this.getMemberQueryOptions(startFrom, maxPageSize));
             }
         }
         catch (Exception error)
@@ -94,5 +96,25 @@ public class BitolDocumentPublisherCatalogTargetProcessor extends CatalogTargetP
                                                                                                                error.getMessage()),
                                   error);
         }
+    }
+
+
+    /**
+     * Return the query options for a page of the catalog's members.  Only each member's header is used - the
+     * product is read again, in full, when its document is generated.
+     *
+     * @param startFrom starting element
+     * @param pageSize maximum elements to return
+     * @return query options
+     */
+    private QueryOptions getMemberQueryOptions(int startFrom,
+                                               int pageSize)
+    {
+        CollectionClient collectionClient = integrationContext.getCollectionClient();
+        QueryOptions     queryOptions     = collectionClient.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
     }
 }

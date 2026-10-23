@@ -120,14 +120,22 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
     {
         final String methodName = "refresh";
 
-        if (propertyHelper.isTypeOf(this.getCatalogTargetElement().getElementHeader(), MSSQLDeployedImplementationType.MSSQL_SERVER.getAssociatedTypeName()))
+        if (propertyHelper.isTypeOf(this.getCatalogTargetElementHeader(), MSSQLDeployedImplementationType.MSSQL_SERVER.getAssociatedTypeName()))
         {
             JDBCResourceConnector assetConnector = null;
 
             try
             {
-                String                  databaseServerGUID  = this.getCatalogTargetElement().getElementHeader().getGUID();
-                OpenMetadataRootElement databaseManager     = this.getDatabaseManager(databaseServerGUID, this.getCatalogTargetElement());
+                /*
+                 * Only the server's properties and its supported software capabilities are used.
+                 */
+                GetOptions serverGetOptions = integrationContext.getClassificationExplorerClient().getGetOptions();
+
+                serverGetOptions.setGraphQueryDepth(1);
+                serverGetOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName));
+
+                String                  databaseServerGUID  = this.getCatalogTargetElementHeader().getGUID();
+                OpenMetadataRootElement databaseManager     = this.getDatabaseManager(databaseServerGUID, this.getCatalogTargetElement(serverGetOptions));
 
                 Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseServerGUID, auditLog);
 
@@ -256,7 +264,14 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
             }
         }
 
-        return softwareCapabilityClient.getSoftwareCapabilityByGUID(databaseManagerGUID, softwareCapabilityClient.getGetOptions());
+        /*
+         * Only the database manager's header and properties are used.
+         */
+        GetOptions getOptions = softwareCapabilityClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(0);
+
+        return softwareCapabilityClient.getSoftwareCapabilityByGUID(databaseManagerGUID, getOptions);
     }
 
 

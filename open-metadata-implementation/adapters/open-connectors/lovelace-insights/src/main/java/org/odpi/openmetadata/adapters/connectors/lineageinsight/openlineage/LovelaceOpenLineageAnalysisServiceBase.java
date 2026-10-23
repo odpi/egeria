@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
@@ -229,6 +230,23 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
      */
 
     /**
+     * Stop a read returning the relationships of each element it finds.  The elements found by findProcess,
+     * findDataAsset and findUniqueMatch are only used for their header (GUID and classifications such as
+     * RunMetrics and DataScope) and properties.
+     *
+     * @param options options from the client
+     * @param <T> type of options
+     * @return the same options, set not to return relationships
+     */
+    protected static <T extends GetOptions> T withoutRelationships(T options)
+    {
+        options.setGraphQueryDepth(0);
+
+        return options;
+    }
+
+
+    /**
      * Find the element that holds the run metrics of an OpenLineage job, using the same rules as the cataloguer.
      * For a step of a governance action process (reported by the governance action publisher) this is the
      * GovernanceActionProcessStep, since each step runs separately (see OpenLineageGovernanceActionResolver).
@@ -272,7 +290,7 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
                 {
                     ClassificationExplorerClient classificationClient = governanceContext.getClassificationExplorerClient();
 
-                    processStep = classificationClient.getRootElementByGUID(governanceAction.processStepGUID(), classificationClient.getGetOptions());
+                    processStep = classificationClient.getRootElementByGUID(governanceAction.processStepGUID(), withoutRelationships(classificationClient.getGetOptions()));
                 }
 
                 processCache.put(job, processStep);
@@ -286,11 +304,11 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         String qualifiedName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName + QUALIFIED_NAME_SEPARATOR +
                 ((job.namespace() == null) ? UNKNOWN_NAMESPACE : job.namespace()) + QUALIFIED_NAME_SEPARATOR + job.name();
 
-        OpenMetadataRootElement process = processClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, processClient.getGetOptions());
+        OpenMetadataRootElement process = processClient.getAssetByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, withoutRelationships(processClient.getGetOptions()));
 
         if (process == null)
         {
-            process = processClient.getAssetByUniqueName(LEGACY_JOB_QUALIFIED_NAME_PREFIX + job.name(), OpenMetadataProperty.QUALIFIED_NAME.name, processClient.getGetOptions());
+            process = processClient.getAssetByUniqueName(LEGACY_JOB_QUALIFIED_NAME_PREFIX + job.name(), OpenMetadataProperty.QUALIFIED_NAME.name, withoutRelationships(processClient.getGetOptions()));
         }
 
         if (process == null)
@@ -351,13 +369,13 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         {
             SchemaAttributeClient schemaAttributeClient = governanceContext.getSchemaAttributeClient();
 
-            asset = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), schemaAttributeClient.getGetOptions());
+            asset = schemaAttributeClient.getSchemaAttributeByGUID(primary.guid(), withoutRelationships(schemaAttributeClient.getGetOptions()));
         }
         else if (primary != null)
         {
             AssetClient assetClient = governanceContext.getAssetClient();
 
-            asset = assetClient.getAssetByGUID(primary.guid(), assetClient.getGetOptions());
+            asset = assetClient.getAssetByGUID(primary.guid(), withoutRelationships(assetClient.getGetOptions()));
         }
 
         assetCache.put(dataset, asset);
@@ -389,7 +407,7 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         int                           pageSize  = governanceContext.getMaxPageSize();
         int                           startFrom = 0;
 
-        List<OpenMetadataRootElement> candidates = assetClient.getAssetsByName(key.name(), assetClient.getQueryOptions(startFrom, pageSize));
+        List<OpenMetadataRootElement> candidates = assetClient.getAssetsByName(key.name(), withoutRelationships(assetClient.getQueryOptions(startFrom, pageSize)));
 
         while ((candidates != null) && (! candidates.isEmpty()))
         {
@@ -412,7 +430,7 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
             }
 
             startFrom  = startFrom + pageSize;
-            candidates = assetClient.getAssetsByName(key.name(), assetClient.getQueryOptions(startFrom, pageSize));
+            candidates = assetClient.getAssetsByName(key.name(), withoutRelationships(assetClient.getQueryOptions(startFrom, pageSize)));
         }
 
         if (matches.size() == 1)

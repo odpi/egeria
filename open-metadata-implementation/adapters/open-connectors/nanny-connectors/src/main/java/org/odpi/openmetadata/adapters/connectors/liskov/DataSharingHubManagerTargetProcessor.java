@@ -44,6 +44,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAtt
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -176,7 +177,16 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
              */
             Map<String, Set<String>> dataStructures = new HashMap<>();
 
-            OpenMetadataRootElement dataSharingHubElement = this.getCatalogTargetElement();
+            /*
+             * The hub's data dictionary and its members are all that is used from its graph.
+             */
+            GetOptions hubOptions = integrationContext.getCollectionClient().getGetOptions();
+
+            hubOptions.setGraphQueryDepth(1);
+            hubOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName,
+                                                           OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
+
+            OpenMetadataRootElement dataSharingHubElement = this.getCatalogTargetElement(hubOptions);
 
             /*
              * Notice that members that are not data sharing hubs are skipped.
@@ -237,7 +247,11 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                                                              dataSharingHubGUID));
                 }
 
-                OpenMetadataRootElement dataDictionary = collectionClient.getCollectionByGUID(dataDictionaryGUID, collectionClient.getGetOptions());
+                GetOptions dataDictionaryOptions = collectionClient.getGetOptions();
+
+                dataDictionaryOptions.setGraphQueryDepth(0); // Only checking that the data dictionary exists.
+
+                OpenMetadataRootElement dataDictionary = collectionClient.getCollectionByGUID(dataDictionaryGUID, dataDictionaryOptions);
 
                 if (dataDictionary != null)
                 {
@@ -371,9 +385,23 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
-        CollectionClient        collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.COLLECTION_FOLDER.typeName);
-        DataStructureClient     dataStructureClient = integrationContext.getDataStructureClient();
-        OpenMetadataRootElement dataStructuresFolder = collectionClient.getCollectionByGUID(dataStructuresFolderGUID, collectionClient.getGetOptions());
+        CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.COLLECTION_FOLDER.typeName);
+        DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
+
+        /*
+         * Only the folder's direct members, and the data fields that are members of each data structure, are used.
+         */
+        GetOptions folderOptions = collectionClient.getGetOptions();
+
+        folderOptions.setGraphQueryDepth(1);
+        folderOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName));
+
+        GetOptions dataStructureOptions = dataStructureClient.getGetOptions();
+
+        dataStructureOptions.setGraphQueryDepth(1);
+        dataStructureOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement dataStructuresFolder = collectionClient.getCollectionByGUID(dataStructuresFolderGUID, folderOptions);
 
         if ((dataStructuresFolder != null) && (dataStructuresFolder.getCollectionMembers() != null))
         {
@@ -382,7 +410,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                 if ((member != null) && (propertyHelper.isTypeOf(member.getRelatedElement().getElementHeader(), OpenMetadataType.DATA_STRUCTURE.typeName)))
                 {
                     String                  dataStructureGUID = member.getRelatedElement().getElementHeader().getGUID();
-                    OpenMetadataRootElement dataStructure     = dataStructureClient.getDataStructureByGUID(dataStructureGUID, dataStructureClient.getGetOptions());
+                    OpenMetadataRootElement dataStructure     = dataStructureClient.getDataStructureByGUID(dataStructureGUID, dataStructureOptions);
                     Set<String>             dataFieldGUIDs    = new HashSet<>();
 
                     if ((dataStructure != null) && (dataStructure.getContainsDataFields() != null))
@@ -1115,6 +1143,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                               0,
                                                                               validValueDefinitionClient.getMaxPagingSize());
 
+        /*
+         * The governance action types for the technology are linked to it through its resource list - nothing
+         * else attached to it is used.
+         */
+        queryOptions.setGraphQueryDepth(1);
+        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName));
+
         List<OpenMetadataRootElement> technologyTypes = validValueDefinitionClient.getValidValueDefinitionsByName(deployedImplementationType, queryOptions);
 
         OpenMetadataRootElement technologyType = null;
@@ -1163,8 +1198,16 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
 
-        OpenMetadataRootElement governanceActionType = classificationExplorerClient.getRootElementByGUID(governanceActionTypeGUID,
-                                                                                                        classificationExplorerClient.getGetOptions());
+        /*
+         * Its predefined action targets and its executor are all that is used from its graph.
+         */
+        GetOptions getOptions = classificationExplorerClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement governanceActionType = classificationExplorerClient.getRootElementByGUID(governanceActionTypeGUID, getOptions);
 
         actionTypeCache.put(governanceActionTypeGUID, governanceActionType);
 
@@ -1603,7 +1646,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         newActionTarget.setActionTargetGUID(assetGUID);
 
         return integrationContext.getStewardshipAction().initiateGovernanceActionType(governanceActionTypeQualifiedName,
-                                                                                      Collections.singletonList(this.getCatalogTargetElement().getElementHeader().getGUID()),
+                                                                                      Collections.singletonList(this.getCatalogTargetElementHeader().getGUID()),
                                                                                       null,
                                                                                       Collections.singletonList(newActionTarget),
                                                                                       null,
@@ -1696,8 +1739,11 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         AssetClient assetClient = integrationContext.getAssetClient();
         int         startFrom   = 0;
 
-        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID,
-                                                                                     assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize());
+
+        queryOptions.setGraphQueryDepth(0); // Only the catalog targets' GUIDs are used.
+
+        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID, queryOptions);
 
         while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
         {
@@ -1710,8 +1756,8 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             }
 
             startFrom      = startFrom + assetClient.getMaxPagingSize();
-            catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID,
-                                                           assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+            queryOptions.setStartFrom(startFrom);
+            catalogTargets = assetClient.getCatalogTargets(integrationConnectorGUID, queryOptions);
         }
 
         catalogTargetCache.put(integrationConnectorGUID, catalogTargetGUIDs);
@@ -1740,9 +1786,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.ENGINE_ACTION.typeName);
         int         startFrom   = 0;
 
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize());
+
+        queryOptions.setGraphQueryDepth(0); // Only the engine actions' properties are used.
+
         List<OpenMetadataRootElement> engineActions = assetClient.getActionsForActionTarget(assetGUID,
                                                                                             liveActivityStatuses,
-                                                                                            assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+                                                                                            queryOptions);
 
         while ((engineActions != null) && (! engineActions.isEmpty()))
         {
@@ -1757,9 +1807,10 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             }
 
             startFrom     = startFrom + assetClient.getMaxPagingSize();
+            queryOptions.setStartFrom(startFrom);
             engineActions = assetClient.getActionsForActionTarget(assetGUID,
                                                                   liveActivityStatuses,
-                                                                  assetClient.getQueryOptions(startFrom, assetClient.getMaxPagingSize()));
+                                                                  queryOptions);
         }
 
         return runningActionTypeGUIDs;

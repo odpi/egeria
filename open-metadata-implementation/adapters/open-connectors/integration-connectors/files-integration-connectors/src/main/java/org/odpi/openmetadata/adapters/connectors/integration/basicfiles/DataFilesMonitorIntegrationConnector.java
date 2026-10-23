@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
 import java.io.File;
 import java.util.List;
@@ -122,8 +123,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     int pageSize  = 100;
 
                     List<OpenMetadataRootElement> cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(),
-                                                                                                 startFrom,
-                                                                                                 pageSize);
+                                                                                                 this.getFileQueryOptions(assetClient, startFrom, pageSize));
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
@@ -151,7 +151,8 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         }
 
                         startFrom = startFrom + pageSize;
-                        cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                        cataloguedFiles = assetClient.getFilesInFolder(folder.getElementHeader().getGUID(),
+                                                                       this.getFileQueryOptions(assetClient, startFrom, pageSize));
                     }
                 }
             }
@@ -176,5 +177,25 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         directoryToMonitor.directoryFile.getAbsolutePath());
             }
         }
+    }
+
+
+    /**
+     * Return the query options for a page of the files in a folder.  Only each file's header and properties are used.
+     *
+     * @param assetClient client for retrieving the files
+     * @param startFrom starting element
+     * @param pageSize maximum elements to return
+     * @return query options
+     */
+    private QueryOptions getFileQueryOptions(AssetClient assetClient,
+                                             int         startFrom,
+                                             int         pageSize)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
     }
 }

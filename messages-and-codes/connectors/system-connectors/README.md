@@ -6,7 +6,7 @@
 
 These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself.
 
-This directory documents 79 messages in 13 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 77 messages in 13 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -17,8 +17,8 @@ This directory documents 79 messages in 13 message sets.  Return to the [message
 | [ApacheAtlasErrorCode](ApacheAtlasErrorCode.md) | Exception messages | `APACHE-ATLAS-REST-CONNECTOR-` | 6 | <https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/> |
 | [ApacheKafkaAuditCode](ApacheKafkaAuditCode.md) | Audit log messages | `APACHE-KAFKA-REST-CONNECTOR-` | 1 | <https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/> |
 | [ApacheKafkaErrorCode](ApacheKafkaErrorCode.md) | Exception messages | `APACHE-KAFKA-REST-CONNECTOR-` | 2 | <https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/> |
-| [AtlasIntegrationAuditCode](AtlasIntegrationAuditCode.md) | Audit log messages | `APACHE-ATLAS-INTEGRATION-CONNECTOR-` | 36 | <https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/> |
-| [AtlasIntegrationErrorCode](AtlasIntegrationErrorCode.md) | Exception messages | `APACHE-ATLAS-INTEGRATION-CONNECTOR-` | 5 | <https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/> |
+| [AtlasIntegrationAuditCode](AtlasIntegrationAuditCode.md) | Audit log messages | `APACHE-ATLAS-INTEGRATION-CONNECTOR-` | 35 | <https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/> |
+| [AtlasIntegrationErrorCode](AtlasIntegrationErrorCode.md) | Exception messages | `APACHE-ATLAS-INTEGRATION-CONNECTOR-` | 4 | <https://egeria-project.org/egeria-solutions/leveraging-apache-atlas/overview/> |
 | [AtlasSurveyAuditCode](AtlasSurveyAuditCode.md) | Audit log messages | `APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-` | 2 | <https://egeria-project.org/concepts/survey-action-service/> |
 | [AtlasSurveyErrorCode](AtlasSurveyErrorCode.md) | Exception messages | `APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-` | 3 | <https://egeria-project.org/concepts/survey-action-service/> |
 | [KafkaIntegrationConnectorAuditCode](KafkaIntegrationConnectorAuditCode.md) | Audit log messages | `APACHE-KAFKA-INTEGRATION-CONNECTOR-` | 5 | <https://egeria-project.org/egeria-solutions/leveraging-apache-kafka/overview/> |
