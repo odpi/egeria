@@ -29,10 +29,11 @@ public class FileStatsExtractor
     final private File file;
     final private SurveyActionServiceConnector surveyActionServiceConnector;
     final private FileClassifier fileClassifier;
+    final private String subjectName;
 
 
     /**
-     * Constructor captures the file that is to be analysed.
+     * Constructor captures the file that is to be analysed - where it is the asset being surveyed.
      *
      * @param file file to analyse
      */
@@ -40,9 +41,27 @@ public class FileStatsExtractor
                               FileClassifier               fileClassifier,
                               SurveyActionServiceConnector surveyActionServiceConnector)
     {
+        this(file, fileClassifier, surveyActionServiceConnector, null);
+    }
+
+
+    /**
+     * Constructor captures the file that is to be analysed - where it is one of several files measured in the
+     * same survey, such as the files in a surveyed folder.  The measurements are all attached to the survey's
+     * asset, so the subject name is what tells their qualified names apart.
+     *
+     * @param file file to analyse
+     * @param subjectName what the annotation is about - the file's path within the surveyed folder
+     */
+    public FileStatsExtractor(File                         file,
+                              FileClassifier               fileClassifier,
+                              SurveyActionServiceConnector surveyActionServiceConnector,
+                              String                       subjectName)
+    {
         this.file = file;
         this.fileClassifier = fileClassifier;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
+        this.subjectName = subjectName;
     }
 
 
@@ -61,7 +80,7 @@ public class FileStatsExtractor
          * leaves the annotation with no qualified name, and the annotation store refuses it with
          * OPEN-METADATA-400-004, which fails the whole survey after the file has already been read.
          */
-        surveyActionServiceConnector.setUpAnnotation(measurementAnnotation, SurveyFileAnnotationType.MEASUREMENTS);
+        surveyActionServiceConnector.setUpAnnotation(measurementAnnotation, SurveyFileAnnotationType.MEASUREMENTS, subjectName);
         measurementAnnotation.setResourceCreateTime(fileClassification.getCreationTime());
         measurementAnnotation.setResourceUpdateTime(fileClassification.getLastModifiedTime());
 

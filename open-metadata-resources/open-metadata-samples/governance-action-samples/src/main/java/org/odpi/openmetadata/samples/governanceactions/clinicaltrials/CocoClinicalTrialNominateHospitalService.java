@@ -311,12 +311,19 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                                                              OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name,
                                                              OpenMetadataProperty.GUID.name);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
-                                                                              hospitalGUID,
-                                                                              certificationTypeGUID,
-                                                                              null,
-                                                                              null,
-                                                                              elementProperties);
+        /*
+         * The certificate is given a new identifier and start date each time, so an earlier certification is
+         * recognized by its two ends: a hospital holds one certification of each trial's certification type.
+         */
+        if (this.getExistingRelationshipGUID(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName, hospitalGUID, certificationTypeGUID, null) == null)
+        {
+            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName,
+                                                                                  hospitalGUID,
+                                                                                  certificationTypeGUID,
+                                                                                  null,
+                                                                                  null,
+                                                                                  elementProperties);
+        }
 
     }
 }

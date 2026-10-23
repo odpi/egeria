@@ -22,8 +22,8 @@ not.** It needs a reachable PostgreSQL server *and* a reachable Kafka broker, bo
 [`src/test/resources/application.properties`](src/test/resources/application.properties).
 
 The defaults target the `egeria-shared-postgres` and `egeria-shared-kafka` containers used elsewhere in this
-project. One detail is worth knowing about the Kafka endpoint: it must be the broker's **EXTERNAL** advertised
-listener (`oak.local:9194`), not the internal one (`egeria-shared-kafka:9192`). This suite runs on the host
+project. One detail is worth knowing about the Kafka endpoint: it must be the broker's **EXTERNAL**
+listener (`localhost:9194`), not the internal one (`egeria-shared-kafka:9192`). This suite runs on the host
 rather than inside the docker network, and a client that connects on the internal listener is handed back an
 address it cannot resolve.
 

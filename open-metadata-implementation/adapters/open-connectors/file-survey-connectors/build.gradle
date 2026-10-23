@@ -27,6 +27,9 @@ dependencies {
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    testRuntimeOnly 'commons-io:commons-io'
 
 }
 

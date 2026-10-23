@@ -17,7 +17,7 @@ designed to run in and drives them the way an operator would: through the integr
 This is the normal deployment: a PostgreSQL repository and access services publishing to a real Apache Kafka
 broker, which is how the publisher connector hears about the products and agreements the cataloguers create.
 Both servers are named in `src/test/resources/application.properties`; the defaults are the `egeria-shared-postgres`
-(port 5442) and `egeria-shared-kafka` (external listener `oak.local:9194`) containers used elsewhere in this project.
+(port 5442) and `egeria-shared-kafka` (external listener `localhost:9194`) containers used elsewhere in this project.
 The suite's repository schema, `repository_bitolFvtMetadataStore`, is dropped at the start of every run so the
 repository always starts empty; the credentials come from the same secrets store the server is configured with.
 

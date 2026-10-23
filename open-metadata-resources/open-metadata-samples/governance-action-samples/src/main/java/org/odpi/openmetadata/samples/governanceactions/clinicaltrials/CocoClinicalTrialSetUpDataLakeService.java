@@ -353,18 +353,18 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                  */
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), validatedFilesDataSetGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
-                                                            validatedFilesDataSetGUID,
-                                                            informationSupplyChainQualifiedName,
-                                                            "get files from storage",
-                                                            "Validated files are retrieved from the Unity Catalog Volume.",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            ucVolumeAssetGUID);
+                this.createLineageRelationshipIfAbsent(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
+                                                       validatedFilesDataSetGUID,
+                                                       informationSupplyChainQualifiedName,
+                                                       "get files from storage",
+                                                       "Validated files are retrieved from the Unity Catalog Volume.",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       ucVolumeAssetGUID);
 
                 monitorVolumeAsset(lastUpdateConnectorGUID, ucVolumeAssetGUID, dataLakeCatalogQualifiedName);
 
@@ -399,31 +399,31 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                  */
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.POPULATE_SANDBOX.getGUID(), populateSandboxGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                            validatedFilesDataSetGUID,
-                                                            informationSupplyChainQualifiedName,
-                                                            "Copy Certified Data",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            populateSandboxGUID);
+                this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                       validatedFilesDataSetGUID,
+                                                       informationSupplyChainQualifiedName,
+                                                       "Copy Certified Data",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       populateSandboxGUID);
 
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                            populateSandboxGUID,
-                                                            informationSupplyChainQualifiedName,
-                                                            "Save Certified Data",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            sandboxSchemaGUID);
+                this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                       populateSandboxGUID,
+                                                       informationSupplyChainQualifiedName,
+                                                       "Save Certified Data",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       sandboxSchemaGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -747,7 +747,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
         propertyHelper.validateGUID(volumeAssetGUID, parameterName2, methodName);
         propertyHelper.validateMandatoryName(dataLakeCatalogQualifiedName, parameterName3, methodName);
 
-        if (integrationConnectorGUID != null)
+        if ((integrationConnectorGUID != null) &&
+            (this.getExistingRelationshipGUID(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, integrationConnectorGUID, volumeAssetGUID, null) == null))
         {
             CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 

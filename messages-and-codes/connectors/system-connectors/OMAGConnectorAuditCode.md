@@ -9,7 +9,7 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 12 |
+| **Number of messages** | 15 |
 | **Message identifiers begin** | `OMAG-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors](../../../open-metadata-implementation/adapters/open-connectors/system-connectors/egeria-system-connectors) |
@@ -32,6 +32,9 @@ The OMAGConnectorAuditCode is used to define the message content for the OMRS Au
 | [OMAG-CONNECTORS-0015](#omag-connectors-0015) | EXCEPTION | The {0} integration connector could not register the OMAG Server Platform at {1} yet; the {2} exception returned message {3} |
 | [OMAG-CONNECTORS-0016](#omag-connectors-0016) | INFO | The {0} integration connector has added audit log topic {1} ({2}) to the catalog targets of integration connector {3} |
 | [OMAG-CONNECTORS-0017](#omag-connectors-0017) | INFO | The {0} integration connector has not catalogued the OMAG Server Platform at {1} because it is the same platform as the one at {2} |
+| [OMAG-CONNECTORS-0018](#omag-connectors-0018) | INFO | The {0} integration connector has removed the audit log lineage from server {1} to topic {2} ({3}) because the server's configuration now names audit log topic {4} |
+| [OMAG-CONNECTORS-0019](#omag-connectors-0019) | INFO | The {0} integration connector has removed audit log topic {1} ({2}) from the catalog targets of integration connector {3} because no server writes its audit log to it |
+| [OMAG-CONNECTORS-0020](#omag-connectors-0020) | INFO | The {0} integration connector has updated the connection for audit log topic {1} ({2}): {3} was {4} and is now {5} |
 
 ----
 
@@ -295,6 +298,72 @@ The platforms at both addresses reported the same start time and origin, so they
 **User action**
 
 No action is required.  This is expected where a server's localServerURL is an external address of the platform (for example https://host.docker.internal:9443) and the metadata access server is reached through an internal one (for example https://localhost:9443).  Elements catalogued under the other address by an earlier release of this connector are no longer maintained and can be deleted.
+
+
+----
+
+### OMAG-CONNECTORS-0018
+
+> The {0} integration connector has removed the audit log lineage from server {1} to topic {2} ({3}) because the server's configuration now names audit log topic {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNLINKED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+The server's audit log destinations have changed since the lineage was catalogued, so the server no longer writes its audit log to this topic.  The lineage relationship is removed, and lineage to the topic named in the configuration is added in its place.
+
+**User action**
+
+No action is required.  If the topic is no longer used by any server, it is also removed from the catalog targets of the activity observer.  The topic element itself is not deleted, since the topic may still exist in the event broker.
+
+
+----
+
+### OMAG-CONNECTORS-0019
+
+> The {0} integration connector has removed audit log topic {1} ({2}) from the catalog targets of integration connector {3} because no server writes its audit log to it
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNREGISTERED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+The last server that wrote its audit log to this topic has been reconfigured to use a different destination.  The activity observer stops listening to the topic.
+
+**User action**
+
+No action is required.  The topic element remains in open metadata and can be deleted if the topic has also been removed from the event broker.
+
+
+----
+
+### OMAG-CONNECTORS-0020
+
+> The {0} integration connector has updated the connection for audit log topic {1} ({2}): {3} was {4} and is now {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
+
+**System action**
+
+The connection catalogued for the audit log topic no longer matched the configuration of the servers that write to it, so it has been updated.  Connectors that read the topic through this connection, such as the activity observer, use the new value when they next connect.
+
+**User action**
+
+No action is required.  If the activity observer is already connected to the topic, it may need to be restarted, or its catalog target refreshed, to pick up the change.
 
 
 ----

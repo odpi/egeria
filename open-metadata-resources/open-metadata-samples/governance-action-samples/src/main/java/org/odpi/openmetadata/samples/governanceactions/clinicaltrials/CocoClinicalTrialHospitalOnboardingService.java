@@ -280,18 +280,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                         clinicalTrialId.toLowerCase());
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                            hospitalGUID,
-                                                            informationSupplyChainQualifiedName,
-                                                            "publish weekly measurements",
-                                                            "A csv file containing the patient measurements for this week is sent from the hospital to the landing area folder.",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            landingAreaFolderGUID);
+                this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                       hospitalGUID,
+                                                       informationSupplyChainQualifiedName,
+                                                       "publish weekly measurements",
+                                                       "A csv file containing the patient measurements for this week is sent from the hospital to the landing area folder.",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       landingAreaFolderGUID);
 
                 /*
                  * These templates have the project and hospital information filled out, leaving specifics
@@ -347,18 +347,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 newFileProcessName);
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
-                governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                            landingAreaFolderGUID,
-                                                            informationSupplyChainQualifiedName,
-                                                            "new file notification",
-                                                            "The arrival of a new file creates a notification that is sent to the integration connector.",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            integrationConnectorGUID);
+                this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                       landingAreaFolderGUID,
+                                                       informationSupplyChainQualifiedName,
+                                                       "new file notification",
+                                                       "The arrival of a new file creates a notification that is sent to the integration connector.",
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       integrationConnectorGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -424,14 +424,14 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         propertyHelper.validateMandatoryName(hospitalName, parameterName5, methodName);
 
         String dataLakeFolderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(dataLakePathName, OpenMetadataProperty.PATH_NAME.name);
+        String contextEventName   = "Hospital " + hospitalName + " ready to onboard data into clinical trial " + clinicalTrialId + ": " + clinicalTrialName;
 
-        if (dataLakeFolderGUID != null)
+        if ((dataLakeFolderGUID != null) && (this.getElementGUIDByQualifiedName("ContextEvent:" + contextEventName) == null))
         {
             RelatedMetadataElement validDataSetCollection = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(dataLakeFolderGUID, 2, OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName, null);
 
             Map<String, RelationshipProperties> effectedDataSources    = new HashMap<>();
             ContextEventProperties                  contextEventProperties = new ContextEventProperties();
-            String                              contextEventName = "Hospital " + hospitalName + " ready to onboard data into clinical trial " + clinicalTrialId + ": " + clinicalTrialName;
 
             contextEventProperties.setQualifiedName("ContextEvent:" + contextEventName);
             contextEventProperties.setDisplayName(contextEventName);
@@ -704,6 +704,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         Map<String, String> placeholderPropertyValues = new HashMap<>();
 
         placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), landingAreaPathName);
+        placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_ADDRESS.getName(), landingAreaPathName);
         placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_NAME.getName(), topLevelProjectFolderName);
         placeholderPropertyValues.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
         placeholderPropertyValues.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
@@ -795,12 +796,19 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                                       null,
                                                                                                       true);
 
-        ElementProperties classificationProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.DISPLAY_NAME.name, clinicalTrialId + " specialized " + templateType + " template for " + hospitalName + " hospital");
+        /*
+         * getMetadataElementFromTemplate returns the existing element if an earlier run created it, and that
+         * element is already classified as a template.
+         */
+        if (! this.isClassified(templateGUID, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
+        {
+            ElementProperties classificationProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.DISPLAY_NAME.name, clinicalTrialId + " specialized " + templateType + " template for " + hospitalName + " hospital");
 
-        governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(templateGUID,
-                                                                                OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
-                                                                                governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
-                                                                                new NewElementProperties(classificationProperties));
+            governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(templateGUID,
+                                                                                    OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
+                                                                                    governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                    new NewElementProperties(classificationProperties));
+        }
 
         OpenMetadataElement templateElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(templateGUID);
 
@@ -873,39 +881,44 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         if (genericProcess != null)
         {
-            String processGUID = governanceContext.createGovernanceActionProcess(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
-                                                                                 processQualifiedName,
-                                                                                 "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
-                                                                                 null,
-                                                                                 null,
-                                                                                 Collections.singletonList(clinicalTrialGUID));
+            String processGUID = this.getElementGUIDByQualifiedName(processQualifiedName);
+
+            if (processGUID == null)
+            {
+                processGUID = governanceContext.createGovernanceActionProcess(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+                                                                              processQualifiedName,
+                                                                              "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
+                                                                              null,
+                                                                              null,
+                                                                              Collections.singletonList(clinicalTrialGUID));
+            }
 
             addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                        integrationConnectorGUID,
-                                                        informationSupplyChainQualifiedName,
-                                                        "new file trigger",
-                                                        "The arrival of a new file creates an instance of the onboarding pipeline process.",
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        processGUID);
+            this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                   integrationConnectorGUID,
+                                                   informationSupplyChainQualifiedName,
+                                                   "new file trigger",
+                                                   "The arrival of a new file creates an instance of the onboarding pipeline process.",
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   processGUID);
 
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
-                                                        processGUID,
-                                                        informationSupplyChainQualifiedName,
-                                                        "delivered validated file",
-                                                        "The onboarding pipeline process copies and validates the file.",
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        validatedWeeklyFilesDataSetGUID);
+            this.createLineageRelationshipIfAbsent(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                   processGUID,
+                                                   informationSupplyChainQualifiedName,
+                                                   "delivered validated file",
+                                                   "The onboarding pipeline process copies and validates the file.",
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   validatedWeeklyFilesDataSetGUID);
 
 
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
@@ -938,56 +951,57 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                              requestParameters);
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
-                                                                                      processGUID,
-                                                                                      firstProcessStep.getElement().getElementGUID(),
-                                                                                      null,
-                                                                                      null,
-                                                                                      relationshipProperties);
+                /*
+                 * A process has a single first step.  The request parameters are a map, so they are not compared.
+                 */
+                if (this.getExistingRelationshipGUID(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                     processGUID,
+                                                     firstProcessStep.getElement().getElementGUID(),
+                                                     null) == null)
+                {
+                    governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                                                          processGUID,
+                                                                                          firstProcessStep.getElement().getElementGUID(),
+                                                                                          null,
+                                                                                          null,
+                                                                                          relationshipProperties);
+                }
 
                 ElementProperties actionTargetProperties = propertyHelper.addStringProperty(null,
                                                                                             OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                                             ActionTarget.STEWARD.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                      processGUID,
-                                                                                      stewardGUID,
-                                                                                      null,
-                                                                                      null,
-                                                                                      actionTargetProperties);
+                this.createRelationshipIfAbsent(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                processGUID,
+                                                stewardGUID,
+                                                actionTargetProperties);
 
                 actionTargetProperties = propertyHelper.addStringProperty(null,
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                      processGUID,
-                                                                                      dataQualityCertificationType,
-                                                                                      null,
-                                                                                      null,
-                                                                                      actionTargetProperties);
+                this.createRelationshipIfAbsent(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                processGUID,
+                                                dataQualityCertificationType,
+                                                actionTargetProperties);
 
                 actionTargetProperties = propertyHelper.addStringProperty(null,
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           ActionTarget.SPONSOR.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                      processGUID,
-                                                                                      clinicalTrialGUID,
-                                                                                      null,
-                                                                                      null,
-                                                                                      actionTargetProperties);
+                this.createRelationshipIfAbsent(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                processGUID,
+                                                clinicalTrialGUID,
+                                                actionTargetProperties);
 
                 actionTargetProperties = propertyHelper.addStringProperty(null,
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                      processGUID,
-                                                                                      validatedWeeklyFilesDataSetGUID,
-                                                                                      null,
-                                                                                      null,
-                                                                                      actionTargetProperties);
+                this.createRelationshipIfAbsent(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                processGUID,
+                                                validatedWeeklyFilesDataSetGUID,
+                                                actionTargetProperties);
             }
 
             RelatedMetadataElementList actionTargetList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(onboardingProcessGUID,
@@ -1076,10 +1090,16 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         catalogTargetProperties.setConfigurationProperties(configurationProperties);
 
-        governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
-                                                            folderGUID,
-                                                            new MakeAnchorOptions(governanceContext.getAssetClient().getMetadataSourceOptions()),
-                                                            catalogTargetProperties);
+        /*
+         * A second catalog target for the same folder would have the connector process each new file twice.
+         */
+        if (this.getExistingRelationshipGUID(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, integrationConnectorGUID, folderGUID, null) == null)
+        {
+            governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
+                                                                folderGUID,
+                                                                new MakeAnchorOptions(governanceContext.getAssetClient().getMetadataSourceOptions()),
+                                                                catalogTargetProperties);
+        }
     }
 
 

@@ -57,7 +57,7 @@ public class OpenLineageKafkaListenerFVT
     @DisplayName("An event published to a Kafka topic attached to the listener reaches the cataloguer")
     void eventOnKafkaTopicIsCatalogued() throws Exception
     {
-        String kafkaEndpoint = OMAGPlatformExtension.getProperty("openlineage.fvt.kafka.endpoint", "oak.local:9194");
+        String kafkaEndpoint = OMAGPlatformExtension.getProperty("openlineage.fvt.kafka.endpoint", "localhost:9194");
         String topicName     = OMAGPlatformExtension.getProperty("openlineage.fvt.kafka.topic", "egeria.openlineage-fvt.events");
 
         ensureTopicIsACatalogTarget(kafkaEndpoint, topicName);

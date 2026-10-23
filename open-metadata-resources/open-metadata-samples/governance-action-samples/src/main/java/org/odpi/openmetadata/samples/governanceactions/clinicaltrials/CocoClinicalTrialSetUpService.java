@@ -304,15 +304,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 String              hospitalCertificationTypeGUID                 = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
                 String              dataQualityCertificationTypeGUID              = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
 
-                String nominateHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                                      "ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
-                                                                                                      "Nominate Hospital (" + clinicalTrialId + ")",
-                                                                                                      "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
-                                                                                                      ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
-                                                                                                      genericHospitalNominationGUID,
-                                                                                                      governanceContext.getRequestParameters(),
-                                                                                                      null,
-                                                                                                      Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
+                String nominateHospitalGUID = this.createProcessFromGovernanceActionTypeIfAbsent(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                 "ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
+                                                                                                 "Nominate Hospital (" + clinicalTrialId + ")",
+                                                                                                 "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
+                                                                                                 ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
+                                                                                                 genericHospitalNominationGUID,
+                                                                                                 governanceContext.getRequestParameters(),
+                                                                                                 null,
+                                                                                                 Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(), nominateHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), nominateHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -323,15 +323,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
 
 
-                String certifyHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                                     "ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
-                                                                                                     "Certify Hospital (" + clinicalTrialId + ")",
-                                                                                                     "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
-                                                                                                     ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
-                                                                                                     genericHospitalCertificationGUID,
-                                                                                                     governanceContext.getRequestParameters(),
-                                                                                                     null,
-                                                                                                     Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
+                String certifyHospitalGUID = this.createProcessFromGovernanceActionTypeIfAbsent(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                "ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
+                                                                                                "Certify Hospital (" + clinicalTrialId + ")",
+                                                                                                "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
+                                                                                                ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
+                                                                                                genericHospitalCertificationGUID,
+                                                                                                governanceContext.getRequestParameters(),
+                                                                                                null,
+                                                                                                Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.CERTIFY_HOSPITAL.getGUID(), certifyHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), certifyHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -341,15 +341,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName(), clinicalTrialManagerGUID);
 
 
-                String onboardHospitalGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                                     "ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
-                                                                                                     "Onboard Hospital (" + clinicalTrialId + ")",
-                                                                                                     "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
-                                                                                                     ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
-                                                                                                     genericHospitalOnboardingGUID,
-                                                                                                     governanceContext.getRequestParameters(),
-                                                                                                     null,
-                                                                                                     Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
+                String onboardHospitalGUID = this.createProcessFromGovernanceActionTypeIfAbsent(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                                                                "ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
+                                                                                                "Onboard Hospital (" + clinicalTrialId + ")",
+                                                                                                "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
+                                                                                                ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
+                                                                                                genericHospitalOnboardingGUID,
+                                                                                                governanceContext.getRequestParameters(),
+                                                                                                null,
+                                                                                                Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.ONBOARD_HOSPITAL.getGUID(), onboardHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), onboardHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -362,15 +362,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), treatmentValidationInformationSupplyChainGUID);
 
 
-                String setUpDataLakeProcessGUID = governanceContext.createProcessFromGovernanceActionType(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
-                                                                                                          "ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
-                                                                                                          "Set Up Data Lake (" + clinicalTrialId + ")",
-                                                                                                          "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
-                                                                                                          ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
-                                                                                                          genericSetUpDataLakeGUID,
-                                                                                                          governanceContext.getRequestParameters(),
-                                                                                                          null,
-                                                                                                          Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
+                String setUpDataLakeProcessGUID = this.createProcessFromGovernanceActionTypeIfAbsent(OpenMetadataType.PROVISIONING_ACTION_PROCESS.typeName,
+                                                                                                     "ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
+                                                                                                     "Set Up Data Lake (" + clinicalTrialId + ")",
+                                                                                                     "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
+                                                                                                     ClinicalTrialDomainDefinition.DRUG_DEVELOPMENT.getDomainIdentifier(),
+                                                                                                     genericSetUpDataLakeGUID,
+                                                                                                     governanceContext.getRequestParameters(),
+                                                                                                     null,
+                                                                                                     Collections.singletonList(projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName())));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE.getGUID(), setUpDataLakeProcessGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), setUpDataLakeProcessGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -433,8 +433,20 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                             if ((iscQualifiedName != null) && (iscQualifiedName.contains(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder())))
                             {
                                 String newISCQualifiedName = iscQualifiedName.replace(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder(), clinicalTrialId);
-                                newISCQualifiedNames.add(newISCQualifiedName);
+
+                                if (! newISCQualifiedNames.contains(newISCQualifiedName))
+                                {
+                                    newISCQualifiedNames.add(newISCQualifiedName);
+                                }
                             }
+                        }
+
+                        if (newISCQualifiedNames.size() == solutionLinkingWireProperties.getISCQualifiedNames().size())
+                        {
+                            /*
+                             * This clinical trial's supply chains are already on the wire.
+                             */
+                            continue;
                         }
 
                         SolutionLinkingWireProperties newSolutionLinkingWireProperties = new SolutionLinkingWireProperties(solutionLinkingWireProperties);
@@ -529,7 +541,18 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(), clinicalTrialId);
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName(), clinicalTrialName);
 
-        String informationSupplyChainGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
+        String informationSupplyChainGUID = this.getExistingTemplatedElementGUID(informationSupplyChainTemplateGUID, null, placeholderProperties);
+
+        if (informationSupplyChainGUID != null)
+        {
+            /*
+             * Set up by an earlier run - which may have stopped before the linking wires were updated.
+             */
+            updateSolutionLinkingWires(clinicalTrialId);
+            return this.getTreatmentValidationInformationSupplyChain(clinicalTrialId);
+        }
+
+        informationSupplyChainGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName,
                                                                                                                        null,
                                                                                                                        true,
                                                                                                                        Collections.singletonList(clinicalTrialProjectGUID),
@@ -585,6 +608,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         Map<String, String> placeholderProperties = new HashMap<>();
 
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(), clinicalTrialId);
+
+        String certificationTypeGUID = this.getExistingTemplatedElementGUID(certificationTypeTemplateGUID, null, placeholderProperties);
+
+        if (certificationTypeGUID != null)
+        {
+            return certificationTypeGUID;
+        }
 
         return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.CERTIFICATION_TYPE.typeName,
                                                                                           null,
@@ -765,23 +795,26 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, clinicalTrialDescription);
         properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_START_DATE.name, new Date());
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                     null,
-                                                                                     parentProjectGUID,
-                                                                                     false,
-                                                                                     null,
-                                                                                     new NewElementProperties(properties),
-                                                                                     parentProjectGUID,
-                                                                                     OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                     null,
-                                                                                     true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialOwnerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                null,
+                                                                                                parentProjectGUID,
+                                                                                                false,
+                                                                                                null,
+                                                                                                new NewElementProperties(properties),
+                                                                                                parentProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialOwnerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
 
         return projectGUID;
     }
@@ -835,35 +868,34 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the specification of the data needed to conduct this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   null,
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialOwnerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialManagerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              dataScientistGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                null,
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialOwnerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialManagerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        dataScientistGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
 
         initialClassifications = new HashMap<>();
 
@@ -876,23 +908,26 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Data Specification for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "The data needed to conduct this clinical trial.");
 
-        String dataSpecGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
-                                                                                                    null,
-                                                                                                    topLevelProjectGUID,
-                                                                                                    false,
-                                                                                                    null,
-                                                                                                    new NewElementProperties(properties),
-                                                                                                    topLevelProjectGUID,
-                                                                                                    OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                                                    getResourceUseProperties(ResourceUse.DATA_SPECIFICATION),
-                                                                                                    true);
+        String dataSpecGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              dataSpecGUID,
-                                                                              null,
-                                                                              null,
-                                                                              this.getResourceUseProperties(ResourceUse.DATA_SPECIFICATION));
+        if (dataSpecGUID == null)
+        {
+            dataSpecGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
+                                                                                                 null,
+                                                                                                 topLevelProjectGUID,
+                                                                                                 false,
+                                                                                                 null,
+                                                                                                 new NewElementProperties(properties),
+                                                                                                 topLevelProjectGUID,
+                                                                                                 OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                                                 getResourceUseProperties(ResourceUse.DATA_SPECIFICATION),
+                                                                                                 true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        dataSpecGUID,
+                                        this.getResourceUseProperties(ResourceUse.DATA_SPECIFICATION));
         return projectGUID;
     }
 
@@ -946,36 +981,35 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create Base Data Sharing Agreement for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the data sharing agreement offered to hospitals participating in this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   null,
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialOwnerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialManagerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                null,
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              dataSpecProjectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the data sharing agreement must protect."));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialOwnerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.OWNER.getDisplayName()));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialManagerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
+
+        this.createRelationshipIfAbsent(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        dataSpecProjectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the data sharing agreement must protect."));
         return projectGUID;
     }
 
@@ -1024,30 +1058,31 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new components for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the data-oriented components to support this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   null,
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              itProjectManager,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                null,
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              dataSpecProjectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the components need to support."));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        itProjectManager,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getDisplayName()));
+
+        this.createRelationshipIfAbsent(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        dataSpecProjectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the components need to support."));
 
         return projectGUID;
     }
@@ -1097,23 +1132,26 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new templates and data stores for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Define the metadata templates and data store definitions to support this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   null,
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   devProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              dataEngineerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                null,
+                                                                                                new NewElementProperties(properties),
+                                                                                                devProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        dataEngineerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
 
         return projectGUID;
     }
@@ -1163,23 +1201,26 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Create new data quality survey services for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Create the survey action services used to validate the values delivered to this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   Collections.singletonList(topLevelProjectGUID),
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   devProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              integrationDeveloperGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                Collections.singletonList(topLevelProjectGUID),
+                                                                                                new NewElementProperties(properties),
+                                                                                                devProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        integrationDeveloperGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
 
         return projectGUID;
     }
@@ -1229,30 +1270,31 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Manage hospitals relationships for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Set up the data sharing agreements and ensure certification and data delivery by the hospitals chosen to support this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   Collections.singletonList(topLevelProjectGUID),
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              clinicalTrialManagerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                Collections.singletonList(topLevelProjectGUID),
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              dataSharingAgreementProjectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the data needed in the data sharing agreements."));
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        clinicalTrialManagerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+
+        this.createRelationshipIfAbsent(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        dataSharingAgreementProjectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the data needed in the data sharing agreements."));
 
         return projectGUID;
     }
@@ -1301,29 +1343,30 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Weekly data onboarding pipelines for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Set up data onboarding pipelines from hospitals to support this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   Collections.singletonList(topLevelProjectGUID),
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              dataEngineerGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              devProjectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The new components are needed to set up the pipelines."));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                Collections.singletonList(topLevelProjectGUID),
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        dataEngineerGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        this.createRelationshipIfAbsent(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        devProjectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The new components are needed to set up the pipelines."));
 
         return projectGUID;
     }
@@ -1373,29 +1416,30 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, "Data analysis for " + clinicalTrialName);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, "Analyse the data from the hospitals to support this clinical trial.");
 
-        String projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
-                                                                                                   initialClassifications,
-                                                                                                   topLevelProjectGUID,
-                                                                                                   false,
-                                                                                                   Collections.singletonList(topLevelProjectGUID),
-                                                                                                   new NewElementProperties(properties),
-                                                                                                   topLevelProjectGUID,
-                                                                                                   OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
-                                                                                                   null,
-                                                                                                   true);
+        String projectGUID = this.getExistingElementGUID(properties);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                                              dataScientistGUID,
-                                                                              projectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
-                                                                              projectGUID,
-                                                                              onboardingPipelinesProjectGUID,
-                                                                              null,
-                                                                              null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The pipelines deliver the data for the analysis."));
+        if (projectGUID == null)
+        {
+            projectGUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.PROJECT.typeName,
+                                                                                                initialClassifications,
+                                                                                                topLevelProjectGUID,
+                                                                                                false,
+                                                                                                Collections.singletonList(topLevelProjectGUID),
+                                                                                                new NewElementProperties(properties),
+                                                                                                topLevelProjectGUID,
+                                                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                null,
+                                                                                                true);
+        }
+
+        this.createRelationshipIfAbsent(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                        dataScientistGUID,
+                                        projectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.CONTRIBUTOR.getDisplayName()));
+        this.createRelationshipIfAbsent(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        projectGUID,
+                                        onboardingPipelinesProjectGUID,
+                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The pipelines deliver the data for the analysis."));
 
         return projectGUID;
     }

@@ -24,7 +24,7 @@ Apache Kafka broker, and it is only run deliberately:
 Where those servers are and how long the suite waits for a connector are set in
 [application.properties](src/test/resources/application.properties); any setting can be overridden with `-D`
 (for example `-Dopenlineage.fvt.kafka.endpoint=localhost:9092`).  The defaults target the same shared PostgreSQL
-(`localhost:5442`) and Kafka (`oak.local:9194`, the container's external listener) that the other suites use.
+(`localhost:5442`) and Kafka (`localhost:9194`, the container's external listener) that the other suites use.
 
 ## What it stands up
 
