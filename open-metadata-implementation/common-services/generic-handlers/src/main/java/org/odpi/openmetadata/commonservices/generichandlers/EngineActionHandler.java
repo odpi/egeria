@@ -58,6 +58,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                  ActivityStatus.IN_PROGRESS);
 
     /**
+     * The activity statuses that a governance action process instance copies from its first engine action,
+     * before the process is IN_PROGRESS.
+     */
+    private static final List<ActivityStatus> STARTING_PROCESS_ACTIVITY_STATUSES = List.of(ActivityStatus.REQUESTED,
+                                                                                           ActivityStatus.APPROVED,
+                                                                                           ActivityStatus.WAITING,
+                                                                                           ActivityStatus.ACTIVATING);
+
+    /**
      * The activity statuses that mean an engine action has been claimed by a governance engine and is still
      * being worked on.  Narrower than {@link #ACTIVE_ACTIVITY_STATUSES}: an action that is only REQUESTED or
      * APPROVED has not been picked up by anyone yet, so it cannot have been claimed.
@@ -439,7 +448,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (suppliedStartTime == null)
         {
-            long startTime  = new Date().getTime() + (waitTime * 1000L); // waitTime is in minutes
+            /*
+             * waitTime is in minutes.  It used to be multiplied by 1000, which made it seconds, so a step
+             * configured to wait five minutes started after five seconds.
+             */
+            long startTime  = new Date().getTime() + (waitTime * 60000L);
 
             requestedStartDate = new Date(startTime);
         }
@@ -792,18 +805,21 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 }
 
                 /*
-                 * Create a process instance for this run of the process.
+                 * Create a process instance for this run of the process.  It starts in REQUESTED status and
+                 * then follows the first engine action until that action is IN_PROGRESS - see
+                 * updateEngineActionStatus.  Its start time is set at that point, not here, since this is only
+                 * when the run was requested.
                  */
-                Date processInstanceStartTime = new Date();
+                Date processInstanceRequestedTime = new Date();
 
                 String processInstanceQualifiedName = repositoryHelper.getStringProperty(serviceName,
                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                          governanceActionProcessEntity.getProperties(),
-                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + "::" + UUID.randomUUID();
+                                                                                         methodName) + "@" + processInstanceRequestedTime.getTime() + "::" + UUID.randomUUID();
                 String processInstanceName = repositoryHelper.getStringProperty(serviceName,
                                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                 governanceActionProcessEntity.getProperties(),
-                                                                                methodName) +  "@" + processInstanceStartTime;
+                                                                                methodName) +  "@" + processInstanceRequestedTime;
                 ProcessBuilder processBuilder = new ProcessBuilder(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
                                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
                                                                    processInstanceQualifiedName,
@@ -811,11 +827,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    null,
                                                                    null,
                                                                    null,
-                                                                   processInstanceStartTime,
-                                                                   null,
+                                                                   (Date) null,
+                                                                   (Date) null,
                                                                    repositoryHelper,
                                                                    serviceName,
                                                                    serverName);
+
+                processBuilder.setActivityProperties(processInstanceRequestedTime,
+                                                     requestedStartDate,
+                                                     ActivityStatus.REQUESTED);
 
                 String processInstanceGUID = this.createBeanInRepository(userId,
                                                                          null,
@@ -1014,7 +1034,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (suppliedStartTime == null)
         {
-            long startTime  = new Date().getTime() + (waitTime * 1000L); // waitTime is in minutes
+            /*
+             * waitTime is in minutes.  It used to be multiplied by 1000, which made it seconds, so a step
+             * configured to wait five minutes started after five seconds.
+             */
+            long startTime  = new Date().getTime() + (waitTime * 60000L);
 
             requestedStartDate = new Date(startTime);
         }
@@ -2249,24 +2273,37 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0 -> activityStatus = ActivityStatus.REQUESTED;
-                        case 1 -> activityStatus = ActivityStatus.APPROVED;
-                        case 2 -> activityStatus = ActivityStatus.WAITING;
-                        case 3 -> activityStatus = ActivityStatus.ACTIVATING;
-                        case 4 -> activityStatus = ActivityStatus.IN_PROGRESS;
-                        case 10 -> activityStatus = ActivityStatus.COMPLETED;
-                        case 11 -> activityStatus = ActivityStatus.INVALID;
-                        case 12 -> activityStatus = ActivityStatus.IGNORED;
-                        case 13 -> activityStatus = ActivityStatus.FAILED;
-                        case 14 -> activityStatus = ActivityStatus.CANCELLED;
-                    }
+                    /*
+                     * Matched against every value of the enum.  A hand-written list of ordinals missed PAUSED,
+                     * FOR_INFO and ABANDONED, so an abandoned engine action was reported as OTHER - which is
+                     * not a finished status, so it was counted as still running and could be cancelled.
+                     */
+                    activityStatus = this.getActivityStatus(enumPropertyValue.getOrdinal());
                 }
             }
         }
 
         return activityStatus;
+    }
+
+
+    /**
+     * Return the activity status with the supplied ordinal.
+     *
+     * @param ordinal ordinal of the status
+     * @return matching status, or OTHER if the ordinal is not recognized
+     */
+    private ActivityStatus getActivityStatus(int ordinal)
+    {
+        for (ActivityStatus activityStatus : ActivityStatus.values())
+        {
+            if (activityStatus.getOrdinal() == ordinal)
+            {
+                return activityStatus;
+            }
+        }
+
+        return ActivityStatus.OTHER;
     }
 
 
@@ -2399,6 +2436,17 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                                        engineActionGUID,
                                                                                                                        this.getEngineActionStatusName(status.getOrdinal()),
                                                                                                                        this.getEngineActionStatusName(ActivityStatus.ACTIVATING.getOrdinal())));
+
+                    /*
+                     * A claim moves the engine action to ACTIVATING without going through
+                     * updateEngineActionStatus, so the process instance is told here.
+                     */
+                    this.followFirstEngineAction(userId,
+                                                 entity,
+                                                 ActivityStatus.ACTIVATING.getOrdinal(),
+                                                 null,
+                                                 effectiveTime,
+                                                 methodName);
                 }
                 else
                 {
@@ -2472,7 +2520,30 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            effectiveTime,
                                                            methodName);
 
-        this.cancelEngineAction(userId, engineActionGUID, entity, effectiveTime, methodName);
+        Date cancelTime = this.cancelEngineAction(userId, engineActionGUID, entity, effectiveTime, methodName);
+
+        if (cancelTime != null)
+        {
+            /*
+             * A cancelled engine action starts no next step, so if it was the last unfinished engine action of
+             * its governance action process, the process is over and takes the cancelled status.
+             */
+            String processInstanceGUID = this.getProcessInstanceGUID(entity, methodName);
+
+            if (processInstanceGUID != null)
+            {
+                this.completeProcessInstanceIfFinished(userId,
+                                                       processInstanceGUID,
+                                                       repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataProperty.PROCESS_NAME.name,
+                                                                                          entity.getProperties(),
+                                                                                          methodName),
+                                                       ActivityStatus.CANCELLED.getOrdinal(),
+                                                       cancelTime,
+                                                       effectiveTime,
+                                                       methodName);
+            }
+        }
     }
 
 
@@ -2484,13 +2555,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param entity the engine action's entity
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     * @return true if the engine action was cancelled; false if it had already finished
+     * @return the completion time recorded on the cancelled engine action; null if it had already finished
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException the user is not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    private boolean cancelEngineAction(String       userId,
+    private Date cancelEngineAction(String       userId,
                                        String       engineActionGUID,
                                        EntityDetail entity,
                                        Date         effectiveTime,
@@ -2522,7 +2593,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         GenericHandlersAuditCode.ENGINE_ACTION_ALREADY_FINISHED.getMessageDefinition(engineActionGUID,
                                                                                                                      userId,
                                                                                                                      status.name()));
-                    return false;
+                    return null;
                 }
 
                 EngineActionBuilder builder = new EngineActionBuilder(ActivityStatus.CANCELLED.getOrdinal(),
@@ -2535,6 +2606,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                  * The provenance from the engine acton is used on this request so that engine actions from
                  * archives can be claimed.
                  */
+                InstanceProperties cancelProperties = builder.getCancelInstanceProperties(methodName);
+
                 updateBeanInRepository(userId,
                                        entity.getMetadataCollectionId(),
                                        entity.getMetadataCollectionName(),
@@ -2544,7 +2617,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        OpenMetadataType.ENGINE_ACTION.typeName,
                                        false,
                                        false,
-                                       builder.getCancelInstanceProperties(methodName),
+                                       cancelProperties,
                                        true,
                                        effectiveTime,
                                        methodName);
@@ -2554,7 +2627,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                           userId,
                                                                                                           status.name()));
 
-                return true;
+                return repositoryHelper.getDateProperty(serviceName,
+                                                        OpenMetadataProperty.COMPLETION_TIME.name,
+                                                        cancelProperties,
+                                                        methodName);
             }
             else
             {
@@ -2581,7 +2657,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Cancel a running governance action process instance.  Every engine action of the process instance that
      * has not yet finished is cancelled (and any governance service running it is told to stop), and the
-     * process instance is marked as complete.  Engine actions that have already finished are left unchanged.
+     * process instance is marked as cancelled.  Engine actions that have already finished are left unchanged.
+     * A process instance that has already finished is left unchanged.
      *
      * @param userId identifier of calling user
      * @param processInstanceGUID identifier of the governance action process instance - this is returned
@@ -2617,6 +2694,20 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           methodName);
 
         /*
+         * The process instance records when its last engine action finished, so a process that is already
+         * over has nothing left to cancel, and its status - the record of how it finished - is kept.
+         */
+        if (this.isProcessInstanceFinished(processInstanceEntity.getProperties()))
+        {
+            auditLog.logMessage(methodName,
+                                GenericHandlersAuditCode.GOVERNANCE_ACTION_PROCESS_ALREADY_FINISHED.getMessageDefinition(processInstanceGUID,
+                                                                                                                         userId,
+                                                                                                                         this.getActionStatus(OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                                                                                              processInstanceEntity.getProperties()).name()));
+            return;
+        }
+
+        /*
          * Every engine action created for a process instance carries the process instance's qualified name
          * as its process name - see initiateGovernanceActionProcess.  The qualified name includes a UUID, so
          * it identifies exactly this run of the process.
@@ -2628,22 +2719,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         invalidParameterHandler.validateName(processName, guidParameterName + ".qualifiedName", methodName);
 
-        List<PropertyCondition> conditions = new ArrayList<>();
-
-        conditions.add(this.getExactStringCondition(OpenMetadataProperty.PROCESS_NAME.name,
-                                                    processName,
-                                                    methodName));
-
-        PropertyCondition statusCondition = new PropertyCondition();
-
-        statusCondition.setNestedConditions(this.getActivityStatusSearchProperties(CANCELLABLE_ACTIVITY_STATUSES, methodName));
-
-        conditions.add(statusCondition);
-
-        SearchProperties searchProperties = new SearchProperties();
-
-        searchProperties.setConditions(conditions);
-        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+        SearchProperties searchProperties = this.getUnfinishedEngineActionSearchProperties(processName, methodName);
 
         /*
          * Cancelling an engine action takes it out of the result set, so the query is always for the first
@@ -2652,6 +2728,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
          */
         Set<String> processedEngineActionGUIDs = new HashSet<>();
         int         cancelledCount             = 0;
+        Date        lastCancelTime             = null;
         boolean     moreToCancel               = true;
 
         while (moreToCancel)
@@ -2682,13 +2759,20 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         moreToCancel = true;
 
-                        if (this.cancelEngineAction(userId,
-                                                    engineActionEntity.getGUID(),
-                                                    engineActionEntity,
-                                                    effectiveTime,
-                                                    methodName))
+                        Date cancelTime = this.cancelEngineAction(userId,
+                                                                  engineActionEntity.getGUID(),
+                                                                  engineActionEntity,
+                                                                  effectiveTime,
+                                                                  methodName);
+
+                        if (cancelTime != null)
                         {
                             cancelledCount++;
+
+                            if ((lastCancelTime == null) || (cancelTime.after(lastCancelTime)))
+                            {
+                                lastCancelTime = cancelTime;
+                            }
                         }
                     }
                 }
@@ -2697,32 +2781,16 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         /*
          * A process instance is normally marked complete when its last engine action records its completion.
-         * Cancelled engine actions never do, so the process instance is marked complete here - unless it had
-         * already finished, in which case its own completion time is kept.
+         * The engine actions cancelled here never do, so the process instance is marked as cancelled here -
+         * unless it finished while the cancel was in progress, in which case its own status is kept.  Its
+         * completion time is that of the last engine action cancelled, or now if there was nothing to cancel.
          */
-        InstanceProperties processInstanceProperties = processInstanceEntity.getProperties();
-
-        if ((processInstanceProperties == null) ||
-                (processInstanceProperties.getPropertyValue(OpenMetadataProperty.COMPLETION_TIME.name) == null))
-        {
-            this.updateBeanInRepository(userId,
-                                        processInstanceEntity.getMetadataCollectionId(),
-                                        processInstanceEntity.getMetadataCollectionName(),
-                                        processInstanceGUID,
-                                        guidParameterName,
-                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
-                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
-                                        false,
-                                        false,
-                                        repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                                   null,
-                                                                                   OpenMetadataProperty.COMPLETION_TIME.name,
-                                                                                   new Date(),
-                                                                                   methodName),
-                                        true,
-                                        effectiveTime,
-                                        methodName);
-        }
+        this.completeProcessInstance(userId,
+                                     processInstanceGUID,
+                                     ActivityStatus.CANCELLED,
+                                     (lastCancelTime == null) ? new Date() : lastCancelTime,
+                                     effectiveTime,
+                                     methodName);
 
         auditLog.logMessage(methodName,
                             GenericHandlersAuditCode.GOVERNANCE_ACTION_PROCESS_CANCELLED.getMessageDefinition(processInstanceGUID,
@@ -2821,12 +2889,16 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         throw new InvalidParameterException(error, OpenMetadataProperty.ACTIVITY_STATUS.name);
                     }
 
+                    Date engineActionStartTime = null;
+
                     if (engineActionStatus == ActivityStatus.IN_PROGRESS.getOrdinal())
                     {
+                        engineActionStartTime = new Date();
+
                         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                 properties,
                                                                                 OpenMetadataProperty.START_TIME.name,
-                                                                                new Date(),
+                                                                                engineActionStartTime,
                                                                                 methodName);
                     }
 
@@ -2853,6 +2925,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                                               engineActionGUID,
                                                                                                                               userId));
 
+                    this.followFirstEngineAction(userId,
+                                                 entity,
+                                                 engineActionStatus,
+                                                 engineActionStartTime,
+                                                 effectiveTime,
+                                                 methodName);
                 }
                 else
                 {
@@ -2967,6 +3045,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               serverName);
 
                         /*
+                         * Kept so that, if this is the last engine action of a governance action process, the
+                         * process instance records exactly the same completion time.
+                         */
+                        Date completionTime = new Date();
+
+                        /*
                          * The provenance from the engine acton is used on this request so that engine actions from
                          * archives can be updated.
                          */
@@ -2979,7 +3063,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                  OpenMetadataType.ENGINE_ACTION.typeName,
                                                                  builder.getCompletionInstanceProperties(engineActionEntity.getProperties(),
                                                                                                          status,
-                                                                                                         new Date(),
+                                                                                                         completionTime,
                                                                                                          outputGuards,
                                                                                                          completionMessage,
                                                                                                          methodName),
@@ -3003,7 +3087,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                          status);
 
                         /*
-                         * The anchor GUID is set if this is part of a governance action process.  It points to the first engine action entity
+                         * The anchor GUID is set if this is part of a governance action process.  It points to the process instance
                          * created when the governance action process was initiated.
                          */
                         AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(engineActionEntity, methodName);
@@ -3062,18 +3146,54 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             onwardRequestParameters.putAll(callerRequestParameters);
                         }
 
-                        this.initiateNextEngineActions(userId,
-                                                       engineActionGUID,
-                                                       iscQualifiedName,
-                                                       governanceActionProcessStepGUID,
-                                                       anchorGUID,
-                                                       processName,
-                                                       requesterUserId,
-                                                       outputGuards,
-                                                       newActionTargets,
-                                                       onwardRequestParameters.isEmpty() ? null : onwardRequestParameters,
-                                                       effectiveTime,
-                                                       methodName);
+                        String processInstanceGUID = this.getProcessInstanceGUID(engineActionEntity, methodName);
+
+                        if ((processInstanceGUID != null) && (storedStatus != ActivityStatus.IN_PROGRESS.getOrdinal()))
+                        {
+                            /*
+                             * An engine action can finish without ever reaching IN_PROGRESS - for example, it
+                             * fails while its governance service is being activated.  If it was the first
+                             * engine action, the process instance is still showing one of its early statuses.
+                             * It moves to IN_PROGRESS now, before any next step is started, so that it never
+                             * picks up the early statuses of a later engine action.  The first engine action has
+                             * no start time to copy, so the process starts when that action finished.
+                             */
+                            this.markProcessInstanceInProgress(userId,
+                                                               processInstanceGUID,
+                                                               completionTime,
+                                                               effectiveTime,
+                                                               methodName);
+                        }
+
+                        int nextEngineActionCount = this.initiateNextEngineActions(userId,
+                                                                                   engineActionGUID,
+                                                                                   iscQualifiedName,
+                                                                                   governanceActionProcessStepGUID,
+                                                                                   anchorGUID,
+                                                                                   processName,
+                                                                                   requesterUserId,
+                                                                                   outputGuards,
+                                                                                   newActionTargets,
+                                                                                   onwardRequestParameters.isEmpty() ? null : onwardRequestParameters,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+                        /*
+                         * When this engine action leads on to another, the process is not over.  When it does
+                         * not - whether because it was the last step on its flow, or because none of its output
+                         * guards matched a next step - the process may still be running on a parallel flow, so
+                         * it is complete only if none of its engine actions are left unfinished.
+                         */
+                        if ((processInstanceGUID != null) && (nextEngineActionCount == 0))
+                        {
+                            this.completeProcessInstanceIfFinished(userId,
+                                                                   processInstanceGUID,
+                                                                   processName,
+                                                                   status,
+                                                                   completionTime,
+                                                                   effectiveTime,
+                                                                   methodName);
+                        }
                     }
                     else
                     {
@@ -3212,7 +3332,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param previousEngineActionGUID unique identifier of engine action that has just completed
      * @param iscQualifiedName qualified name from the information supply chain
      * @param previousGovernanceActionProcessStepGUID governance action process driving previous engine action(s)
-     * @param anchorGUID unique identifier of the first engine action to execute for the process
+     * @param anchorGUID unique identifier of the governance action process instance that anchors the engine actions of the process
      * @param processName name of initiating process (if any)
      * @param requesterUserId original requesting user
      * @param outputGuards guards set up by the previous action(s)
@@ -3220,27 +3340,30 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param callerRequestParameters set of request parameters gathered so far in the process
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
+     * @return the number of engine actions that are now waiting to run as a result of this completion
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException the user is not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the metadata store.
      */
-    private void initiateNextEngineActions(String                userId,
-                                           String                previousEngineActionGUID,
-                                           String                iscQualifiedName,
-                                           String                previousGovernanceActionProcessStepGUID,
-                                           String                anchorGUID,
-                                           String                processName,
-                                           String                requesterUserId,
-                                           List<String>          outputGuards,
-                                           List<NewActionTarget> newActionTargets,
-                                           Map<String, String>   callerRequestParameters,
-                                           Date                  effectiveTime,
-                                           String                methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    private int initiateNextEngineActions(String                userId,
+                                          String                previousEngineActionGUID,
+                                          String                iscQualifiedName,
+                                          String                previousGovernanceActionProcessStepGUID,
+                                          String                anchorGUID,
+                                          String                processName,
+                                          String                requesterUserId,
+                                          List<String>          outputGuards,
+                                          List<NewActionTarget> newActionTargets,
+                                          Map<String, String>   callerRequestParameters,
+                                          Date                  effectiveTime,
+                                          String                methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String nextGovernanceActionProcessStepParameterName = "nextActionProcessStep.getEntityTwoProxy().getGUID()";
+
+        int nextEngineActionCount = 0;
 
         /*
          * Only need to do something if the completing engine action is part of a process.
@@ -3309,111 +3432,505 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                              * However, if there is an instance of this engine action waiting for mandatory guards to begin,
                              * then this result is attached to the waiting engine action.
                              */
-                            this.prepareEngineActionFromProcessStep(userId,
-                                                                    anchorGUID,
-                                                                    nextActionProcessStep.getEntityTwoProxy().getGUID(),
-                                                                    nextGovernanceActionProcessStepParameterName,
-                                                                    guard,
-                                                                    mandatoryGuard,
-                                                                    null,
-                                                                    previousEngineActionGUID,
-                                                                    iscQualifiedName,
-                                                                    requesterUserId,
-                                                                    callerRequestParameters,
-                                                                    null,
-                                                                    null,
-                                                                    newActionTargets,
-                                                                    processName,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    methodName);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                /*
-                 * No more steps in the current branch of the process.  Is this the end of the process?
-                 */
-                final String  processNameParameterName = "processName";
+                            String nextEngineActionGUID = this.prepareEngineActionFromProcessStep(userId,
+                                                                                                  anchorGUID,
+                                                                                                  nextActionProcessStep.getEntityTwoProxy().getGUID(),
+                                                                                                  nextGovernanceActionProcessStepParameterName,
+                                                                                                  guard,
+                                                                                                  mandatoryGuard,
+                                                                                                  null,
+                                                                                                  previousEngineActionGUID,
+                                                                                                  iscQualifiedName,
+                                                                                                  requesterUserId,
+                                                                                                  callerRequestParameters,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  newActionTargets,
+                                                                                                  processName,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  methodName);
 
-                List<String> specificMatchPropertyNames = new ArrayList<>();
-                specificMatchPropertyNames.add(OpenMetadataProperty.PROCESS_NAME.name);
-
-                List<EntityDetail> actionsInProcess = this.getEntitiesByValue(userId,
-                                                                              processName,
-                                                                              processNameParameterName,
-                                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                              OpenMetadataType.ENGINE_ACTION.typeName,
-                                                                              specificMatchPropertyNames,
-                                                                              true,
-                                                                              true,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              SequencingOrder.CREATION_DATE_RECENT,
-                                                                              null,
-                                                                              false,
-                                                                              false,
-                                                                              0,
-                                                                              0,
-                                                                              effectiveTime,
-                                                                              methodName);
-
-                if (actionsInProcess != null)
-                {
-                    int incompleteActions = 0;
-
-                    for (EntityDetail actionInProcess : actionsInProcess)
-                    {
-                        if (actionInProcess != null)
-                        {
-                            int storedStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                                       OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                                                                       actionInProcess.getProperties(),
-                                                                                       methodName);
-
-                            if ((storedStatus == ActivityStatus.REQUESTED.getOrdinal()) ||
-                                    (storedStatus == ActivityStatus.APPROVED.getOrdinal()) ||
-                                    (storedStatus == ActivityStatus.WAITING.getOrdinal()) ||
-                                    (storedStatus == ActivityStatus.ACTIVATING.getOrdinal()) ||
-                                    (storedStatus == ActivityStatus.IN_PROGRESS.getOrdinal()))
+                            /*
+                             * A null means that the next step only runs once and has already been triggered.
+                             * Otherwise the engine action is either new or one that was already waiting for
+                             * the mandatory guards of this step - either way it has still to run.
+                             */
+                            if (nextEngineActionGUID != null)
                             {
-                                incompleteActions++;
+                                nextEngineActionCount++;
                             }
                         }
-                    }
-
-                    if (incompleteActions == 0)
-                    {
-                        final String anchorGUIDParameterName = "anchorGUID";
-                        /*
-                         * The anchorGUID should be the guid of the process instance.
-                         */
-                        this.updateBeanInRepository(userId,
-                                                    null,
-                                                    null,
-                                                    anchorGUID,
-                                                    anchorGUIDParameterName,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
-                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
-                                                    false,
-                                                    false,
-                                                    repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                                               null,
-                                                                                               OpenMetadataProperty.COMPLETION_TIME.name,
-                                                                                               new Date(),
-                                                                                               methodName),
-                                                    true,
-                                                    effectiveTime,
-                                                    methodName);
                     }
                 }
             }
         }
+
+        return nextEngineActionCount;
+    }
+
+
+    /**
+     * Return the unique identifier of the governance action process instance that an engine action is part of.
+     * The engine actions of a governance action process are anchored to its process instance - see
+     * initiateGovernanceActionProcess.
+     *
+     * @param engineActionEntity engine action
+     * @param methodName calling method
+     * @return unique identifier of the process instance, or null if the engine action is not part of a governance action process
+     */
+    private String getProcessInstanceGUID(EntityDetail engineActionEntity,
+                                          String       methodName)
+    {
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(engineActionEntity, methodName);
+
+        if ((anchorIdentifiers != null) &&
+                (anchorIdentifiers.anchorGUID != null) &&
+                (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(anchorIdentifiers.anchorTypeName)))
+        {
+            return anchorIdentifiers.anchorGUID;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Is the process instance still showing one of the statuses it copies from its first engine action?
+     * A process instance created before its status was maintained has no status, and is treated the same way.
+     *
+     * @param processInstanceProperties properties of the process instance
+     * @return boolean flag
+     */
+    private boolean isProcessInstanceStarting(InstanceProperties processInstanceProperties)
+    {
+        if ((processInstanceProperties == null) ||
+                (processInstanceProperties.getPropertyValue(OpenMetadataProperty.ACTIVITY_STATUS.name) == null))
+        {
+            return ! this.isProcessInstanceFinished(processInstanceProperties);
+        }
+
+        return STARTING_PROCESS_ACTIVITY_STATUSES.contains(this.getActionStatus(OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                                processInstanceProperties));
+    }
+
+
+    /**
+     * Has the process instance finished?  Its status is taken from the engine action that finished last.
+     * A process instance created before its status was maintained only has its completion time.
+     *
+     * @param processInstanceProperties properties of the process instance
+     * @return boolean flag
+     */
+    private boolean isProcessInstanceFinished(InstanceProperties processInstanceProperties)
+    {
+        if (processInstanceProperties == null)
+        {
+            return false;
+        }
+
+        if (processInstanceProperties.getPropertyValue(OpenMetadataProperty.ACTIVITY_STATUS.name) == null)
+        {
+            return (processInstanceProperties.getPropertyValue(OpenMetadataProperty.COMPLETION_TIME.name) != null);
+        }
+
+        return FINISHED_ACTIVITY_STATUSES.contains(this.getActionStatus(OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                        processInstanceProperties));
+    }
+
+
+    /**
+     * Retrieve a governance action process instance.
+     *
+     * @param userId calling user
+     * @param processInstanceGUID unique identifier of the process instance
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return process instance entity
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private EntityDetail getProcessInstance(String userId,
+                                            String processInstanceGUID,
+                                            Date   effectiveTime,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        final String guidParameterName = "processInstanceGUID";
+
+        return this.getEntityFromRepository(userId,
+                                            processInstanceGUID,
+                                            guidParameterName,
+                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            effectiveTime,
+                                            methodName);
+    }
+
+
+    /**
+     * Update the properties of a governance action process instance that record the progress of its run.
+     * Null values leave the stored value unchanged.
+     *
+     * @param userId calling user
+     * @param processInstanceEntity process instance to update
+     * @param activityStatus new status
+     * @param requestedStartTime requested start time
+     * @param startTime start time
+     * @param completionTime completion time
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void updateProcessInstance(String         userId,
+                                       EntityDetail   processInstanceEntity,
+                                       ActivityStatus activityStatus,
+                                       Date           requestedStartTime,
+                                       Date           startTime,
+                                       Date           completionTime,
+                                       Date           effectiveTime,
+                                       String         methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String guidParameterName = "processInstanceGUID";
+
+        InstanceProperties properties;
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    null,
+                                                                    OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                    ActivityStatus.getOpenTypeGUID(),
+                                                                    ActivityStatus.getOpenTypeName(),
+                                                                    activityStatus.getOrdinal(),
+                                                                    methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTIVITY_STATUS.name);
+        }
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.REQUESTED_START_TIME.name,
+                                                                requestedStartTime,
+                                                                methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.START_TIME.name,
+                                                                startTime,
+                                                                methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.COMPLETION_TIME.name,
+                                                                completionTime,
+                                                                methodName);
+
+        this.updateBeanInRepository(userId,
+                                    processInstanceEntity.getMetadataCollectionId(),
+                                    processInstanceEntity.getMetadataCollectionName(),
+                                    processInstanceEntity.getGUID(),
+                                    guidParameterName,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                    false,
+                                    false,
+                                    properties,
+                                    true,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * A governance action process instance follows the status of its first engine action - REQUESTED, APPROVED,
+     * WAITING, ACTIVATING - until that action is IN_PROGRESS.  The process instance then stays IN_PROGRESS until
+     * its last engine action finishes.  Once it is IN_PROGRESS, the status changes of later engine actions are
+     * ignored, so it is only the first engine action that is followed.
+     *
+     * @param userId calling user
+     * @param engineActionEntity engine action whose status has changed
+     * @param engineActionStatus the engine action's new status
+     * @param engineActionStartTime the start time recorded on the engine action if it is now IN_PROGRESS
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void followFirstEngineAction(String       userId,
+                                         EntityDetail engineActionEntity,
+                                         int          engineActionStatus,
+                                         Date         engineActionStartTime,
+                                         Date         effectiveTime,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        ActivityStatus newStatus = this.getActivityStatus(engineActionStatus);
+
+        if (! ACTIVE_ACTIVITY_STATUSES.contains(newStatus))
+        {
+            return;
+        }
+
+        String processInstanceGUID = this.getProcessInstanceGUID(engineActionEntity, methodName);
+
+        if (processInstanceGUID == null)
+        {
+            return;
+        }
+
+        EntityDetail processInstanceEntity = this.getProcessInstance(userId, processInstanceGUID, effectiveTime, methodName);
+
+        if ((processInstanceEntity == null) || (! this.isProcessInstanceStarting(processInstanceEntity.getProperties())))
+        {
+            return;
+        }
+
+        InstanceProperties processInstanceProperties = processInstanceEntity.getProperties();
+
+        /*
+         * The requested start time is set from the caller when the process instance is created.  When the
+         * caller did not supply one, it is taken from the first engine action, which adds the wait time of the
+         * first step.
+         */
+        Date requestedStartTime = null;
+
+        if ((processInstanceProperties == null) ||
+                (processInstanceProperties.getPropertyValue(OpenMetadataProperty.REQUESTED_START_TIME.name) == null))
+        {
+            requestedStartTime = repositoryHelper.getDateProperty(serviceName,
+                                                                  OpenMetadataProperty.REQUESTED_START_TIME.name,
+                                                                  engineActionEntity.getProperties(),
+                                                                  methodName);
+        }
+
+        /*
+         * The process starts when its first engine action does, so the two start times are the same.
+         */
+        Date startTime = null;
+
+        if ((newStatus == ActivityStatus.IN_PROGRESS) &&
+                ((processInstanceProperties == null) ||
+                         (processInstanceProperties.getPropertyValue(OpenMetadataProperty.START_TIME.name) == null)))
+        {
+            startTime = (engineActionStartTime == null) ? new Date() : engineActionStartTime;
+        }
+
+        if ((requestedStartTime == null) && (startTime == null) &&
+                (processInstanceProperties != null) &&
+                (processInstanceProperties.getPropertyValue(OpenMetadataProperty.ACTIVITY_STATUS.name) != null) &&
+                (newStatus == this.getActionStatus(OpenMetadataProperty.ACTIVITY_STATUS.name, processInstanceProperties)))
+        {
+            return;
+        }
+
+        this.updateProcessInstance(userId,
+                                   processInstanceEntity,
+                                   newStatus,
+                                   requestedStartTime,
+                                   startTime,
+                                   null,
+                                   effectiveTime,
+                                   methodName);
+    }
+
+
+    /**
+     * Move a process instance to IN_PROGRESS if it is still showing one of the statuses it copies from its first
+     * engine action.  This is needed when the first engine action finishes without reaching IN_PROGRESS.
+     *
+     * @param userId calling user
+     * @param processInstanceGUID unique identifier of the process instance
+     * @param startTime start time for the process instance, if it has none
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void markProcessInstanceInProgress(String userId,
+                                               String processInstanceGUID,
+                                               Date   startTime,
+                                               Date   effectiveTime,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        EntityDetail processInstanceEntity = this.getProcessInstance(userId, processInstanceGUID, effectiveTime, methodName);
+
+        if ((processInstanceEntity != null) && (this.isProcessInstanceStarting(processInstanceEntity.getProperties())))
+        {
+            Date newStartTime = null;
+
+            if ((processInstanceEntity.getProperties() == null) ||
+                    (processInstanceEntity.getProperties().getPropertyValue(OpenMetadataProperty.START_TIME.name) == null))
+            {
+                newStartTime = startTime;
+            }
+
+            this.updateProcessInstance(userId,
+                                       processInstanceEntity,
+                                       ActivityStatus.IN_PROGRESS,
+                                       null,
+                                       newStartTime,
+                                       null,
+                                       effectiveTime,
+                                       methodName);
+        }
+    }
+
+
+    /**
+     * An engine action of a governance action process has finished and has not led on to another.  The process
+     * may still be running on a parallel flow, so it is only complete when none of its engine actions are left
+     * unfinished.  It then takes the status of this engine action, which is the last to finish.
+     *
+     * @param userId calling user
+     * @param processInstanceGUID unique identifier of the process instance
+     * @param processName qualified name of the process instance, which is the process name of each of its engine actions
+     * @param lastEngineActionStatus status ordinal of the engine action that has just finished
+     * @param lastEngineActionCompletionTime completion time recorded on the engine action that has just finished
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void completeProcessInstanceIfFinished(String userId,
+                                                   String processInstanceGUID,
+                                                   String processName,
+                                                   int    lastEngineActionStatus,
+                                                   Date   lastEngineActionCompletionTime,
+                                                   Date   effectiveTime,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        if (processName == null)
+        {
+            return;
+        }
+
+        /*
+         * Only one unfinished engine action is needed to show that the process is still running.
+         */
+        List<EntityDetail> unfinishedEngineActions = repositoryHandler.findEntities(userId,
+                                                                                    OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                                    null,
+                                                                                    this.getUnfinishedEngineActionSearchProperties(processName, methodName),
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    false,
+                                                                                    false,
+                                                                                    0,
+                                                                                    1,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+        if ((unfinishedEngineActions == null) || (unfinishedEngineActions.isEmpty()))
+        {
+            this.completeProcessInstance(userId,
+                                         processInstanceGUID,
+                                         this.getActivityStatus(lastEngineActionStatus),
+                                         lastEngineActionCompletionTime,
+                                         effectiveTime,
+                                         methodName);
+        }
+    }
+
+
+    /**
+     * Record that a governance action process instance has finished, unless it has already finished, in which
+     * case the record of how it finished is kept.
+     *
+     * @param userId calling user
+     * @param processInstanceGUID unique identifier of the process instance
+     * @param finalStatus status to give the process instance
+     * @param completionTime completion time to give the process instance
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    private void completeProcessInstance(String         userId,
+                                         String         processInstanceGUID,
+                                         ActivityStatus finalStatus,
+                                         Date           completionTime,
+                                         Date           effectiveTime,
+                                         String         methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        EntityDetail processInstanceEntity = this.getProcessInstance(userId, processInstanceGUID, effectiveTime, methodName);
+
+        if ((processInstanceEntity != null) && (! this.isProcessInstanceFinished(processInstanceEntity.getProperties())))
+        {
+            this.updateProcessInstance(userId,
+                                       processInstanceEntity,
+                                       finalStatus,
+                                       null,
+                                       null,
+                                       completionTime,
+                                       effectiveTime,
+                                       methodName);
+        }
+    }
+
+
+    /**
+     * Build the search properties that select the engine actions of a process instance that have not finished.
+     *
+     * @param processName qualified name of the process instance, which is the process name of each of its engine actions
+     * @param methodName calling method
+     * @return search properties
+     *
+     * @throws InvalidParameterException the activity status enum is not known to the repository
+     */
+    private SearchProperties getUnfinishedEngineActionSearchProperties(String processName,
+                                                                       String methodName) throws InvalidParameterException
+    {
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        conditions.add(this.getExactStringCondition(OpenMetadataProperty.PROCESS_NAME.name,
+                                                    processName,
+                                                    methodName));
+
+        PropertyCondition statusCondition = new PropertyCondition();
+
+        statusCondition.setNestedConditions(this.getActivityStatusSearchProperties(CANCELLABLE_ACTIVITY_STATUSES, methodName));
+
+        conditions.add(statusCondition);
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+        return searchProperties;
     }
 
 

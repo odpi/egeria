@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -24,6 +25,9 @@ public class ProcessBuilder extends AssetBuilder
     private String implementationLanguage     = null;
     private Date   processStartTime           = null;
     private Date   processEndTime             = null;
+    private Date   requestedTime              = null;
+    private Date   requestedStartTime         = null;
+    private ActivityStatus activityStatus     = null;
 
 
     /**
@@ -167,6 +171,24 @@ public class ProcessBuilder extends AssetBuilder
 
 
     /**
+     * Set up the properties that record the progress of a single run of a process - for example, a
+     * governance action process instance.
+     *
+     * @param requestedTime when the run was requested
+     * @param requestedStartTime when the run was requested to start (null for as soon as possible)
+     * @param activityStatus current status of the run
+     */
+    void setActivityProperties(Date           requestedTime,
+                               Date           requestedStartTime,
+                               ActivityStatus activityStatus)
+    {
+        this.requestedTime      = requestedTime;
+        this.requestedStartTime = requestedStartTime;
+        this.activityStatus     = activityStatus;
+    }
+
+
+    /**
      * Create the properties for the ProcessHierarchy relationship.
      *
      * @param processContainmentOrdinal ordinal for the containmentType property
@@ -235,6 +257,36 @@ public class ProcessBuilder extends AssetBuilder
                                                                 OpenMetadataProperty.COMPLETION_TIME.name,
                                                                 processEndTime,
                                                                 methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.REQUESTED_TIME.name,
+                                                                requestedTime,
+                                                                methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.REQUESTED_START_TIME.name,
+                                                                requestedStartTime,
+                                                                methodName);
+
+        if (activityStatus != null)
+        {
+            try
+            {
+                properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                        properties,
+                                                                        OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                        ActivityStatus.getOpenTypeGUID(),
+                                                                        ActivityStatus.getOpenTypeName(),
+                                                                        activityStatus.getOrdinal(),
+                                                                        methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.ACTIVITY_STATUS.name);
+            }
+        }
 
         return properties;
     }
