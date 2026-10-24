@@ -756,7 +756,8 @@ loadScripts(document, 'script');</script>
 <a href="../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Cancel a running governance action process instance.  Every engine action of the process instance that
  has not yet finished is cancelled (and any governance service running it is told to stop), and the
- process instance is marked as complete.  Engine actions that have already finished are left unchanged.</div>
+ process instance is marked as cancelled.  Engine actions that have already finished are left unchanged.
+ A process instance that has already finished is left unchanged.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
