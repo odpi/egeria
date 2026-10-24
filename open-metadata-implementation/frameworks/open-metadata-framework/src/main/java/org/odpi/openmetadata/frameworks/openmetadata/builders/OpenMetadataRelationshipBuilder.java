@@ -134,6 +134,9 @@ public class OpenMetadataRelationshipBuilder
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                          lineageRelationshipProperties.getISCQualifiedName());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DERIVATION.name,
+                                                                         lineageRelationshipProperties.getDerivation());
 
                     if (properties instanceof DataLineageRelationshipProperties dataLineageRelationshipProperties)
                     {
@@ -801,6 +804,9 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
                                                                      dataSetContentProperties.getISCQualifiedName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DERIVATION.name,
+                                                                     dataSetContentProperties.getDerivation());
             }
             else if (properties instanceof DeployedOnProperties deployedOnProperties)
             {

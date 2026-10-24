@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LineageRelationshipProperties extends LabeledRelationshipProperties
 {
     private String iscQualifiedName = null;
+    private String derivation       = null;
 
 
     /**
@@ -57,6 +58,7 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
         if (template != null)
         {
             iscQualifiedName = template.getISCQualifiedName();
+            derivation       = template.getDerivation();
         }
     }
 
@@ -86,6 +88,30 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
 
 
     /**
+     * Set up the rule or process that derived this relationship from other lineage.  It is set by the tool that
+     * derived the relationship.  The label summarizes the data that flows.
+     *
+     * @param derivation String
+     */
+    public void setDerivation(String derivation)
+    {
+        this.derivation = derivation;
+    }
+
+
+    /**
+     * Return the rule or process that derived this relationship from other lineage.  It is set by the tool that
+     * derived the relationship.  The label summarizes the data that flows.
+     *
+     * @return String
+     */
+    public String getDerivation()
+    {
+        return derivation;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -95,6 +121,7 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
     {
         return "LineageRelationshipProperties{" +
                 "iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", derivation='" + derivation + '\'' +
                 "} " + super.toString();
     }
 
@@ -118,7 +145,8 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
         }
         if (!super.equals(objectToCompare)) return false;
         LineageRelationshipProperties that = (LineageRelationshipProperties) objectToCompare;
-        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName());
+        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName()) &&
+                Objects.equals(getDerivation(), that.getDerivation());
     }
 
 
@@ -130,6 +158,6 @@ public class LineageRelationshipProperties extends LabeledRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), iscQualifiedName);
+        return Objects.hash(super.hashCode(), iscQualifiedName, derivation);
     }
 }

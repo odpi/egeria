@@ -91,15 +91,22 @@ are parsed and delivered through new default methods on `OpenLineageEventListene
 | `lifecycleStateChange` RENAME (assets this connector created) | asset's `displayName`, `resourceName`, `namespacePath` (and `pathName`, `qualifiedName` when it used this connector's convention) updated in place | The repository is bi-temporal so the previous names remain visible at their point in time. |
 | `lifecycleStateChange` DROP (assets this connector created) | asset archived (`Memento`) or deleted according to the connector's delete method | The dropped dataset takes no further part in the event's lineage. |
 | `schema` dataset facet | `TabularSchemaType` + `TabularColumn`s (nested fields as nested attributes; type in `TypeEmbeddedAttribute`; ordinal position on the parent relationship) | Optional (`catalogSchemas`); only for assets this connector created, and only when the asset has no schema - the columns of a catalogued table come from the technology connector. |
-| inputs → job → outputs | `DataFlow` relationships (input → process, process → output) | When a dataset is a table, the `DataFlow` is also created between the process and the table's schema (or database) asset, so the lineage is visible at the asset level as well as in detail.  Duplicate relationships are avoided by querying (and caching) existing ones. |
+| inputs → job → outputs | `DataFlow` relationships (input → process, process → output) when the dataset is an asset; `DataMapping` when it is a table (a schema attribute) | When a dataset is a table, a `DataFlow` is also created between the process and the table's schema (or database) asset, so the lineage is visible at the asset level as well as in detail.  Duplicate relationships are avoided by querying (and caching) existing ones. |
 | `columnLineage` dataset facet, field entries of the `lineage` facets | `DataMapping` between columns, and between the tables that hold them | label/description from the transformations. |
-| DATASET entries of the `lineage` job/dataset facets | `DataFlow` (and a `DataMapping` when both ends are tables) | |
-| Abstractions over a dataset (`TabularDataSet`, `TabularDataSetCollection`) | `DataSetContent` from the abstraction to the element it is a view over | One relationship for each information supply chain (DataSetContent is multi-link). |
+| DATASET entries of the `lineage` job/dataset facets | `DataFlow` between assets; `DataMapping` when either end is a table, plus a `DataFlow` between the table's asset and the other end | |
+| Abstractions over a dataset (`TabularDataSet`, `TabularDataSetCollection`) | `DataSetContent` from the abstraction to the element it is a view over | One relationship for each information supply chain (DataSetContent is multi-link).  The `derivation` records how the abstraction was matched: `matched by OpenLineage identity`, `matched by endpoint and table name`, `matched by endpoint and schema name`, `matched by endpoint and topic name`, `matched by path name`, `matched by Unity Catalog table name`, or - when the dataset is the abstraction itself, named in the `egeria` namespace - `matched through the data set's endpoint`. |
 | `inputStatistics`, `outputStatistics`, `dataQualityMetrics` | `ResourceProfileAnnotation` (profileCounts, profileDoubles, profileDates) | Optional (`captureStatistics`). |
 | `dataQualityAssertions`, `test` run facet | `QualityAnnotation` (dimension = assertion/test type, score 100/0, expected/actual/severity in the description, SQL in `expression`) | Optional (`captureDataQuality`). |
 | Annotations | `SurveyReport` per event, anchored to the run (or job), `ReportOriginator` → run/job, `ReportSubject` → dataset, `AssociatedAnnotation` → dataset/process | Created only when the event carries statistics or quality results. |
 | Write times and statistics | `DataScope` classification on output assets | Optional (`updateDataScope`); see below. |
 | Run frequency and volume | `RunMetrics` classification on the job's process | Always maintained; see below. |
+
+Every lineage relationship this connector creates records, in its `derivation`, the part of the event it was derived
+from: `derived from OpenLineage run inputs and outputs` (an input or output linked to the job's process),
+`derived from OpenLineage table lineage` (the `DataFlow` repeated at the level of a table's asset),
+`derived from OpenLineage columnLineage facet`, `derived from OpenLineage lineage facet` and
+`derived from OpenLineage jobDependencies facet`.  A relationship supported by several parts of an event records the
+part that first created it.  The `label` is left to summarize the data that flows.
 
 ### Matching jobs to existing elements
 
@@ -212,26 +219,30 @@ and technology type.
 ### Information supply chains
 
 Every lineage relationship created from an event (`DataFlow`, `ControlFlow`, `DataMapping`) and every
-`DataSetContent` link to an abstraction is tagged with the event's information supply chain.  It comes from:
+`DataSetContent` link to an abstraction is tagged with the event's information supply chains.  They come from:
 
 1. Egeria's `egeria_informationSupplyChain` run facet, which any producer can add - for example an Apache Airflow DAG
-   (see "Egeria's custom facets" below); otherwise
+   (see "Egeria's custom facets" below).  It names one chain in `iscQualifiedName`, several in `iscQualifiedNames`,
+   or both (they are combined); otherwise
 2. the `iscQualifiedName` in the `egeria_governanceAction` run facet that the governance action publisher adds.
 
-The same data flow can be part of several information supply chains, so a relationship is only reused if it is
-tagged with the same one.
+The same data flow can be part of several information supply chains, and these relationships are multi-links, so
+each relationship is created once for each of the run's information supply chains (or once, untagged, if it names
+none).  A relationship is only reused if it is tagged with the same one.
 
 ### Egeria's custom facets
 
 Both are run facets, named with the `egeria_` prefix as the OpenLineage spec requires for custom facets.  Their
 schemas are in the Open Integration Framework
-(`src/main/resources/openlineage/facets/1-0-0/`) and their `_schemaURL`s point at
-`https://egeria-project.org/openlineage/facets/1-0-0/{facet}.json`.
+(`src/main/resources/openlineage/facets/{version}/`) and their `_schemaURL`s point at
+`https://egeria-project.org/openlineage/facets/{version}/{facet}.json`.  A published schema version is never changed:
+`egeria_governanceAction` is at 1-0-0, and `egeria_informationSupplyChain` is at 1-1-0, which added
+`iscQualifiedNames`.  Events using 1-0-0 of `egeria_informationSupplyChain` are still accepted.
 
 | Facet | Schema | Content |
 |-------|--------|---------|
 | `egeria_governanceAction` | `EgeriaGovernanceActionRunFacet.json` | Added by the governance action publisher: `iscQualifiedName`, `engineActionGUID`, `governanceEngineName`, `requestType`, `governanceActionTypeName`, `processName`, `processStepName`. |
-| `egeria_informationSupplyChain` | `EgeriaInformationSupplyChainRunFacet.json` | `iscQualifiedName` - the information supply chain the run is part of.  For producers outside Egeria, such as Apache Airflow DAGs. |
+| `egeria_informationSupplyChain` | `EgeriaInformationSupplyChainRunFacet.json` | `iscQualifiedName` - the information supply chain the run is part of, and/or `iscQualifiedNames` - the information supply chains it is part of, when it moves data along several.  For producers outside Egeria, such as Apache Airflow DAGs. |
 
 An Apache Airflow DAG can add `egeria_informationSupplyChain` to its run events with the OpenLineage provider's
 custom run facets option (`[openlineage] custom_run_facets`, which names functions that return extra run facets).
@@ -243,10 +254,23 @@ The facet looks like this in the event:
   "facets": {
     "egeria_informationSupplyChain": {
       "_producer": "https://github.com/apache/airflow",
-      "_schemaURL": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
+      "_schemaURL": "https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
       "iscQualifiedName": "InformationSupplyChain::Personalized Treatment Ordering Information Supply Chain"
     }
   }
+}
+```
+
+A run that moves data along several information supply chains lists them instead:
+
+```json
+"egeria_informationSupplyChain": {
+  "_producer": "https://github.com/apache/airflow",
+  "_schemaURL": "https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
+  "iscQualifiedNames": [
+    "InformationSupplyChain::Batch Manufacturing and Release Information Supply Chain",
+    "InformationSupplyChain::Physical Inventory Tracking Information Supply Chain"
+  ]
 }
 ```
 

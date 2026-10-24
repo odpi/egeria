@@ -6,18 +6,22 @@
 This is a Functional Verification Test (FVT) suite for the
 [Darwin Product Dependency Manager](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors/README.md#darwin-product-dependency-manager),
 the nanny integration connector that maintains the coarse-grained lineage implied by the finer-grained
-lineage beneath it.  It covers all three levels Darwin works through, in the order it works through them:
+lineage beneath it.  It covers each boundary between the layers of lineage that Darwin works across, in the order it works across them:
 
-* **schema elements to data assets** - a `DataMapping` between two assets' columns becomes a `DataFlow`
-  between the assets;
-* **data assets to software servers** - lineage between the data assets that two servers' capabilities own
-  becomes a `DataFlow` between the servers, following indirect paths through intermediate elements;
+* **schema elements to the data fabric** - a `DataMapping` between two assets' columns, or between a column
+  and a process, becomes a `DataFlow` between the assets (or the asset and the process);
+* **the data fabric to the system fabric** - lineage between the data assets and processes that two servers'
+  capabilities use (owned data assets; processes whatever the use type) becomes a relationship between the
+  servers, following indirect paths through intermediate elements: a `DataFlow` for data lineage, a
+  `ProcessCall` for a process call, and a `ControlFlow` for control flow;
 * **data assets to digital products** - lineage between two products' assets becomes a
   `DigitalProductDependency` between the products, again following indirect paths.
 
 It also covers the way Darwin treats relationships asserted by external users: filling in a missing
 information supply chain when lineage proves the relationship, leaving the relationship alone otherwise, and
-recording an `Exception` against a product whose asserted dependency no lineage proves.
+recording an `Exception` - with an exception type per relationship type - against the element that depends on an
+asserted relationship that the layer beneath does not prove, provided that layer is catalogued for both of its
+ends.
 
 ## Running it
 
@@ -61,15 +65,32 @@ Darwin created between them - before loading the archive again.
 | 4 - unproven | A product whose asset has no lineage, with an asserted dependency on the mapped source product | The exception Darwin records, and clears once the dependency is removed |
 | 5 - stale | Two assets joined by a mapping and nothing else | The derived data flow withdrawn once the mapping is removed |
 | 6 - present | Two assets joined by a mapping, with the data flow between them already asserted | Darwin does not add a second data flow |
+| 7 - process use | A process used (`USES`) by one server's capability, feeding an asset owned by a second server and an asset that a third server's capability only uses | A process counts for the server that uses it; a data asset only for the server that owns it |
+| 8 - control flow | Two processes on their own servers, each the member of its own product, joined by a `ControlFlow` | A `ControlFlow` between the servers, no `DataFlow`, and no product dependency |
+| 9 - process call | Two processes on their own servers joined by a `ProcessCall` | A `ProcessCall` between the servers |
+| 10 - table to process | A column of an asset mapped to a process | A `DataFlow` from the asset to the process |
+| 11 - unproven data flow | Two assets whose columns are mapped to other assets but not to each other, with a `DataFlow` between them asserted by the archive | An `UnprovenDataFlow` exception against the asset the data reaches |
+| 12 - unchecked data flow | Two assets with no schema detail and a `DataFlow` between them asserted by the archive | No exception - the missing detail is no evidence against the data flow |
+| 13 - unproven control flow | Two servers each using a process, with a `ControlFlow` between the servers asserted by the archive and none between the processes | An `UnprovenControlFlow` exception against the server control passes to |
+| 14 - unchecked dependency | A product with no members and an asserted dependency on the mapped source product | No exception - no lineage could prove or disprove it |
+| 15 - supply chain within a path | Two products' assets joined through a process by an untagged `DataFlow` and then a tagged one | The dependency is derived for the tagged supply chain, and it is filled in on the untagged data flow |
+| 16 - supply chain from above | Two products' assets joined by an untagged `DataFlow`, with a dependency between the products asserted for a supply chain | The untagged path proves the dependency (no exception, no extra untagged dependency), and the dependency's supply chain is filled in on the data flow |
+| 17 - ambiguous supply chain | An untagged `DataFlow` to a process that feeds two products' assets along two supply chains | The data flow stays untagged, with one Darwin copy of it for each supply chain |
+| 18 - data sets as views | Products whose members are data sets over physical assets (`DataSetContent`), with lineage between the physical assets; a third product's data set covers the same content for a different supply chain | The dependency is derived through the data sets' content; the third product gets none |
+| 19 - data sets over tables | Products whose members are data sets over relational tables, with the tables joined through a process by `DataMapping` relationships and no asset-level lineage | The dependency is derived by following the table-to-process mappings |
+| 20 - adopted data flow | Two assets whose columns are mapped, each also mapped to a third asset; the test edits the data flow Darwin derives, then removes the mapping | The adopted data flow is kept, with the edit, and recorded as unproven |
 
-Sets 4 and 5 are changed by the tests that use them and are read by nothing else, so the order the tests run
+Sets 4, 5 and 20 are changed by the tests that use them and are read by nothing else, so the order the tests run
 in does not matter to the rest of the suite.
 
 ## How the tests control Darwin
 
 Darwin's refresh interval is an hour, so the tests drive it explicitly through the integration daemon's
-`refreshConnector` API rather than waiting.  The refresh is synchronous: when the call returns, all three
-levels and the exceptions have been reconciled.
+`refreshConnector` API rather than waiting.  That call is synchronous only when the connector is idle: while a
+refresh is already in progress - such as the first refresh, which the daemon starts as soon as Darwin is
+running - it returns at once without refreshing.  So the suite waits for Darwin to be idle, with its first refresh
+done, before asking, and again afterwards.  When that returns, every layer and the exceptions have been
+reconciled.
 
 ## Reading a failure
 
@@ -80,10 +101,16 @@ written to `build/darwin-fvt-data/logs/audit.log` while the run is in progress. 
 | Message | Meaning |
 |---|---|
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0002` | Darwin started, and the lineage depth it is using |
-| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012` | A data flow was derived (between assets or between servers) |
-| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013` | A derived data flow was withdrawn |
-| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014` | A supply chain was filled in on an asserted data flow |
-| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015` | The lineage levels completed, with tallies |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012` | A lineage relationship was derived (a data flow in the data fabric, or a data flow, process call or control flow between servers) |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013` | A derived lineage relationship was withdrawn |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014` | A supply chain was filled in on an asserted lineage relationship |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015` | The lineage levels completed, with tallies (including unproven and unchecked) |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0016` | An exception was recorded or updated for unproven lineage relationships |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0017` | An exception for unproven lineage relationships was cleared |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0018` | A copy of an untagged relationship was made for one of its supply chains |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0019` | A copy of an untagged relationship was removed |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0020` | The supply chains in the layers beneath were established, with tallies |
+| `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0003` | An exception type was created (one per relationship type, on first use) |
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0004` | A product dependency was derived |
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0006` | A supply chain was filled in on an asserted dependency |
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-0007` | An exception was recorded or updated |

@@ -32,7 +32,7 @@ public enum OpenLineageCataloguerConfigurationProperty
      */
     CATALOG_SCHEMAS("catalogSchemas",
                     "Create a schema (TabularSchemaType and TabularColumns) for a data asset from the schema dataset facet when the data asset has no schema.  " +
-                            "The columns are needed for column-level lineage (LineageMapping relationships) to be catalogued.",
+                            "The columns are needed for column-level lineage (DataMapping relationships) to be catalogued.",
                     "boolean",
                     "true",
                     false),

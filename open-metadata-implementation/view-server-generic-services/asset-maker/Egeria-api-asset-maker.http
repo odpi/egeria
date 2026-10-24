@@ -1382,6 +1382,7 @@ Content-Type: application/json
     "query": "add query",
     "queryType": "add query type",
     "iscQualifiedName": "add qualified name",
+    "derivation": "add how this data set was found to be a view over the content, if a tool derived it",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
@@ -1441,7 +1442,8 @@ Content-Type: application/json
     "queryId": "add id that is used on overall formula",
     "query": "add query",
     "queryType": "add query type",
-    "iscQualifiedName": "add qualified name"
+    "iscQualifiedName": "add qualified name",
+    "derivation": "add how this data set was found to be a view over the content, if a tool derived it"
   },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",

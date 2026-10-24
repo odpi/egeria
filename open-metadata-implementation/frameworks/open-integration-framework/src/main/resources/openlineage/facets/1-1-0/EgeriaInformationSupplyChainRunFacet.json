@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json",
+  "$defs": {
+    "EgeriaInformationSupplyChainRunFacet": {
+      "allOf": [
+        {
+          "$ref": "https://openlineage.io/spec/2-0-2/OpenLineage.json#/$defs/RunFacet"
+        },
+        {
+          "type": "object",
+          "description": "Names the Egeria information supply chains that a run is part of.  Egeria tags the lineage it catalogues from the run with these information supply chains, creating each lineage relationship once for each of them.",
+          "properties": {
+            "iscQualifiedName": {
+              "description": "Qualified name of the information supply chain that the run is part of.",
+              "type": "string"
+            },
+            "iscQualifiedNames": {
+              "description": "Qualified names of the information supply chains that the run is part of, when it is part of several.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "anyOf": [
+            { "required": ["iscQualifiedName"] },
+            { "required": ["iscQualifiedNames"] }
+          ],
+          "additionalProperties": true
+        }
+      ],
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "egeria_informationSupplyChain": {
+      "$ref": "#/$defs/EgeriaInformationSupplyChainRunFacet"
+    }
+  }
+}
