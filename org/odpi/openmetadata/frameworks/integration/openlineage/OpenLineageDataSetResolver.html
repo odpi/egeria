@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <p>Summary:</p>
 <ul>
 <li><a href="#nested-class-summary">Nested</a></li>
-<li>Field</li>
+<li><a href="#field-summary">Field</a></li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li>Field</li>
+<li><a href="#field-detail">Field</a></li>
 <li><a href="#constructor-detail">Constr</a></li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -59,13 +59,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -155,6 +155,61 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MATCHED_BY_ENDPOINT_AND_SCHEMA" class="member-name-link">MATCHED_BY_ENDPOINT_AND_SCHEMA</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+ the schema named in the dataset.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MATCHED_BY_ENDPOINT_AND_TABLE" class="member-name-link">MATCHED_BY_ENDPOINT_AND_TABLE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+ the table named in the dataset.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MATCHED_BY_ENDPOINT_AND_TOPIC" class="member-name-link">MATCHED_BY_ENDPOINT_AND_TOPIC</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The element is a topic whose endpoint names the dataset's topic and whose bootstrap servers include the broker.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MATCHED_BY_OPENLINEAGE_IDENTITY" class="member-name-link">MATCHED_BY_OPENLINEAGE_IDENTITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The element's resourceName and namespacePath are the dataset's OpenLineage name and namespace.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MATCHED_BY_PATH_NAME" class="member-name-link">MATCHED_BY_PATH_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The element is a data store whose pathName is the dataset's name.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MATCHED_BY_QUALIFIED_NAME" class="member-name-link">MATCHED_BY_QUALIFIED_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The dataset is in the egeria namespace and its name is the element's qualified name.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MATCHED_BY_UNITY_CATALOG_NAME" class="member-name-link">MATCHED_BY_UNITY_CATALOG_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The element is the Unity Catalog table named by the dataset.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MATCHED_THROUGH_DATA_SET_ENDPOINT" class="member-name-link">MATCHED_THROUGH_DATA_SET_ENDPOINT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The dataset is itself a view over physical data (an abstraction), and the element is the physical data that
+ the abstraction's own endpoint leads to.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -218,6 +273,137 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="MATCHED_BY_QUALIFIED_NAME">
+<h3>MATCHED_BY_QUALIFIED_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_QUALIFIED_NAME</span></div>
+<div class="block">The dataset is in the egeria namespace and its name is the element's qualified name.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_QUALIFIED_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_OPENLINEAGE_IDENTITY">
+<h3>MATCHED_BY_OPENLINEAGE_IDENTITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_OPENLINEAGE_IDENTITY</span></div>
+<div class="block">The element's resourceName and namespacePath are the dataset's OpenLineage name and namespace.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_OPENLINEAGE_IDENTITY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_PATH_NAME">
+<h3>MATCHED_BY_PATH_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_PATH_NAME</span></div>
+<div class="block">The element is a data store whose pathName is the dataset's name.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_PATH_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_ENDPOINT_AND_SCHEMA">
+<h3>MATCHED_BY_ENDPOINT_AND_SCHEMA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_ENDPOINT_AND_SCHEMA</span></div>
+<div class="block">The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+ the schema named in the dataset.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_ENDPOINT_AND_SCHEMA">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_ENDPOINT_AND_TABLE">
+<h3>MATCHED_BY_ENDPOINT_AND_TABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_ENDPOINT_AND_TABLE</span></div>
+<div class="block">The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+ the table named in the dataset.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_ENDPOINT_AND_TABLE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_ENDPOINT_AND_TOPIC">
+<h3>MATCHED_BY_ENDPOINT_AND_TOPIC</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_ENDPOINT_AND_TOPIC</span></div>
+<div class="block">The element is a topic whose endpoint names the dataset's topic and whose bootstrap servers include the broker.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_ENDPOINT_AND_TOPIC">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_BY_UNITY_CATALOG_NAME">
+<h3>MATCHED_BY_UNITY_CATALOG_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_BY_UNITY_CATALOG_NAME</span></div>
+<div class="block">The element is the Unity Catalog table named by the dataset.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_BY_UNITY_CATALOG_NAME">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MATCHED_THROUGH_DATA_SET_ENDPOINT">
+<h3>MATCHED_THROUGH_DATA_SET_ENDPOINT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MATCHED_THROUGH_DATA_SET_ENDPOINT</span></div>
+<div class="block">The dataset is itself a view over physical data (an abstraction), and the element is the physical data that
+ the abstraction's own endpoint leads to.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../constant-values.html#org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver.MATCHED_THROUGH_DATA_SET_ENDPOINT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">

@@ -105,14 +105,17 @@ loadScripts(document, 'script');</script>
 <div class="block">DarwinProductDependencyManagerConnector maintains the coarse-grained lineage that is implied by the finer-grained
  lineage beneath it, working upwards from the most detailed level on each refresh:
  <ul>
-     <li><b>Schema elements to data assets.</b>  A DataMapping relationship between two schema elements shows data
-     being copied from one to the other.  Where the two schema elements belong to different data assets, data flows
-     from the first asset to the second, so a DataFlow relationship is maintained between the assets.</li>
-     <li><b>Data assets to software servers.</b>  A software server hosts software capabilities (through the
-     SupportedSoftwareCapability relationship), and a capability owns data assets (through the CapabilityAssetUse
-     relationship with a useType of OWNS).  Where the data lineage leads - directly or through intermediate
-     elements - from an asset owned by one server's capability to an asset owned by another's, data flows from
-     the first server to the second, so a DataFlow relationship is maintained between the servers.</li>
+     <li><b>Schema elements to the data fabric.</b>  A DataMapping relationship between two schema elements - or between a
+     schema element and a process - shows data being copied from one to the other.  Where the two ends belong to
+     different data fabric elements (a schema element belongs to the data asset it is anchored to; a process is its
+     own), data flows from the first to the second, so a DataFlow relationship is maintained between them.</li>
+     <li><b>The data fabric to the system fabric.</b>  An item of IT infrastructure supports software capabilities
+     (through the SupportedSoftwareCapability relationship), and a capability uses data assets and processes (through
+     the CapabilityAssetUse relationship - with a useType of OWNS for a data asset, and any useType for a process).
+     Where the lineage leads - directly or through intermediate elements - from an element used by one item's
+     capabilities to an element used by another's, a relationship is maintained between the two items: a DataFlow
+     for data lineage, a ProcessCall where a ProcessCall reaches the element, and a ControlFlow for a path of
+     ControlFlow relationships.</li>
      <li><b>Data assets to digital products.</b>  The assets that are members of a digital product (through the
      CollectionMembership relationship) are the start of paths followed downstream through the data lineage.  A path
      may pass through any number of intermediate elements - processes, assets that belong to no product - but every
@@ -122,6 +125,12 @@ loadScripts(document, 'script');</script>
      relationship is maintained between the products.  The path stops there: the dependency on anything further
      downstream belongs to the product just reached.</li>
  </ul>
+ Each of these is a boundary between two layers of lineage (see LineageBoundary): a lineage path in the lower layer
+ between elements with different owners proves a relationship between the owners in the upper layer.  The lineage
+ of each lower layer is loaded once per refresh into a LineageGraph, and a LineageWalker follows the paths through
+ it using the boundary's owner function.  The layers are worked through from the bottom up, and the derived
+ relationships of each layer are written before the layer is read by the ones above it.
+ <p>
  The information supply chain of the finer-grained relationship is carried up onto the coarser one, and because
  every one of these relationship types is multi-link there is one relationship per information supply chain
  between the same two elements.  Each level is reconciled with the relationships in the repository the same way.
@@ -130,15 +139,30 @@ loadScripts(document, 'script');</script>
  users take precedence and are never removed: one whose information supply chain is not set is given the supply
  chain of the first finer-grained lineage that proves it.
  <p>
- A DigitalProductDependency asserted by an external user that no lineage path proves is recorded as an exception.
- The connector has its own ExceptionType, created on first use, and links it to each dependent digital product that
- has unproven dependencies with an Exception relationship whose affectedRelationships property lists the unproven
- DigitalProductDependency relationships.  The exception is updated as the list changes and removed once nothing on
- it is left.
+ When following the data fabric's lineage, a data set and the content it is a view over (DataSetContent) are treated
+ as the same element, so a product whose member is an abstract data set reaches the lineage attached to the physical
+ elements beneath it.
+ <p>
+ A relationship that names no information supply chain is treated as "supply chain unknown": it can join a path of any
+ supply chain, and a path whose relationships name none proves a relationship of any supply chain in the layer
+ above.  Once a path's supply chain is known - from a relationship on it or from the external relationship it proves
+ - the untagged external relationships on it are given that supply chain at the end of the refresh: filled in where
+ one supply chain is known for them, and copied once for each supply chain where there are several.
+ <p>
+ An externally asserted relationship that the lineage beneath it does not prove is recorded as an exception, provided
+ the layer beneath is catalogued for both of its ends - otherwise the missing detail is no evidence against it, and it
+ is only counted as unchecked.  The connector has an ExceptionType for each relationship type, created on first use,
+ and links it to each element with unproven relationships of that type - the element the data or control reaches, or
+ the dependent product - with an Exception relationship whose affectedRelationships property lists the unproven
+ relationships.  The exception is updated as the list changes and removed once nothing on it is left.
+ <p>
+ A relationship this connector created that someone else has since updated has been adopted.  It is treated from then
+ on as asserted by an external user: it is no longer updated or removed, and is validated like any other external
+ relationship.
  <p>
  This connector works across the whole open metadata ecosystem rather than through catalog targets, which is why
  it extends IntegrationConnectorBase rather than DynamicIntegrationConnectorBase.  Each refresh reconciles from a
- fresh snapshot, so nothing is carried between refreshes but the identity of the exception type.</div>
+ fresh snapshot, so nothing is carried between refreshes but the identities of the exception types.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -195,9 +219,10 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Bring the coarse-grained lineage into line with the finer-grained lineage beneath it, working upwards: data
- mappings between schema elements to data flows between assets, lineage between assets to data flows between
- servers, and lineage between assets to dependencies between digital products.</div>
+<div class="block">Bring the coarse-grained lineage into line with the finer-grained lineage beneath it, working upwards across
+ the boundaries between the layers: data mappings between schema elements to data flows between assets in the
+ data fabric, then lineage in the data fabric to data flows between servers in the system fabric and to
+ dependencies between digital products in the data mesh.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
@@ -271,10 +296,11 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Bring the coarse-grained lineage into line with the finer-grained lineage beneath it, working upwards: data
- mappings between schema elements to data flows between assets, lineage between assets to data flows between
- servers, and lineage between assets to dependencies between digital products.  The asset-level data flows are
- written to the repository before the product dependencies are derived, so that the products see them.</div>
+<div class="block">Bring the coarse-grained lineage into line with the finer-grained lineage beneath it, working upwards across
+ the boundaries between the layers: data mappings between schema elements to data flows between assets in the
+ data fabric, then lineage in the data fabric to data flows between servers in the system fabric and to
+ dependencies between digital products in the data mesh.  The data fabric's derived data flows are written to
+ the repository before the data fabric is read, so that the layers above see them.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is unable to refresh the metadata.</dd>

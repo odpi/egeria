@@ -151,45 +151,69 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 </div>
 <div class="col-first even-row-color"><code><a href="#LINEAGE_CREATED" class="member-name-link">LINEAGE_CREATED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has recorded that data flows from {1} to {2} through
- information supply chain {3} (relationship {4}) because {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has created a {1} relationship from {2} to {3} through
+ information supply chain {4} (relationship {5}) because {6}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#LINEAGE_DEPTH_EXCEEDED" class="member-name-link">LINEAGE_DEPTH_EXCEEDED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0009 - The {0} integration connector stopped following {1} lineage paths because they exceeded
  the limit of {2} steps</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LINEAGE_REFRESH_COMPLETE" class="member-name-link">LINEAGE_REFRESH_COMPLETE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LINEAGE_EXCEPTION_CLEARED" class="member-name-link">LINEAGE_EXCEPTION_CLEARED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets from the data
- mappings between their schema elements, and {2} data flows between software servers from the lineage between the data assets
- their capabilities own; it created {3} DataFlow relationships, removed {4} and set the information supply chain on {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0017 - The {0} integration connector has cleared the exception ({1}) against {2} because all of
+ the {3} relationships asserted by external users that it depends on are now proven by the lineage beneath them</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LINEAGE_REMOVED" class="member-name-link">LINEAGE_REMOVED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#LINEAGE_REFRESH_COMPLETE" class="member-name-link">LINEAGE_REFRESH_COMPLETE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the data flow ({1}) from {2} to {3} through
- information supply chain {4} because the finer-grained lineage no longer supports it</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets and processes
+ from the data mappings between their schema elements, and {2} data flows, process calls and control flows between items of IT
+ infrastructure from the lineage between the data assets and processes their capabilities use; it created {3} relationships,
+ removed {4}, set the information supply chain on {5}, found {6} unproven and left {7} unchecked; it raised {8} exceptions,
+ updated {9} and cleared {10}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LINEAGE_SUPPLY_CHAIN_SET" class="member-name-link">LINEAGE_SUPPLY_CHAIN_SET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LINEAGE_REMOVED" class="member-name-link">LINEAGE_REMOVED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the data flow ({1})
- from {2} to {3}, asserted by {4}, to {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the {1} relationship ({2}) from {3} to {4}
+ through information supply chain {5} because the finer-grained lineage no longer supports it</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_EXCEPTION_TYPE" class="member-name-link">NEW_EXCEPTION_TYPE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#LINEAGE_SUPPLY_CHAIN_SET" class="member-name-link">LINEAGE_SUPPLY_CHAIN_SET</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the {1}
+ relationship ({2}) from {3} to {4}, asserted by {5}, to {6}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NEW_EXCEPTION_TYPE" class="member-name-link">NEW_EXCEPTION_TYPE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0003 - The {0} integration connector has created the {1} exception type ({2}) to record the
- digital products whose externally asserted dependencies are not proven by lineage</div>
+ elements whose externally asserted {3} relationships are not proven by the lineage beneath them</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REFRESH_COMPLETE" class="member-name-link">REFRESH_COMPLETE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0010 - The {0} integration connector reviewed {1} digital products and derived {2} dependencies
- from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5} and found {6} unproven; it
- raised {7} exceptions, updated {8} and cleared {9}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#REFRESH_COMPLETE" class="member-name-link">REFRESH_COMPLETE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0010 - The {0} integration connector reviewed {1} digital products and derived {2} dependencies
+ from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5}, found {6} unproven and
+ left {7} unchecked; it raised {8} exceptions, updated {9} and cleared {10}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0002 - The {0} integration connector is starting to maintain the digital product dependencies in
  server {1} on platform {2}; lineage paths are followed for up to {3} steps</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SUPPLY_CHAIN_COPY_CREATED" class="member-name-link">SUPPLY_CHAIN_COPY_CREATED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0018 - The {0} integration connector has recorded a copy of the untagged {1} relationship
+ from {2} to {3} for information supply chain {4} (relationship {5}) because the relationship lies on the lineage paths of
+ several information supply chains</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SUPPLY_CHAIN_COPY_REMOVED" class="member-name-link">SUPPLY_CHAIN_COPY_REMOVED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0019 - The {0} integration connector has removed its copy ({2}) of the {1} relationship from
+ {3} to {4} for information supply chain {5} because the lineage no longer calls for it</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SUPPLY_CHAIN_REFRESH_COMPLETE" class="member-name-link">SUPPLY_CHAIN_REFRESH_COMPLETE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0020 - The {0} integration connector filled in the information supply chain on {1} untagged
+ relationships in the layers beneath the coarse-grained lineage, created {2} copies of relationships that lie on the paths of
+ several information supply chains and removed {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SUPPLY_CHAIN_SET" class="member-name-link">SUPPLY_CHAIN_SET</a></code></div>
 <div class="col-last even-row-color">
@@ -204,6 +228,11 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0007 - The {0} integration connector has recorded an exception ({1}) against digital product {2}
  because {3} of its dependencies asserted by external users are not proven by lineage: {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNPROVEN_LINEAGE" class="member-name-link">UNPROVEN_LINEAGE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0016 - The {0} integration connector has recorded an exception ({1}) against {2} because {3} of
+ the {4} relationships asserted by external users that it depends on are not proven by the lineage beneath them: {5}</div>
 </div>
 </div>
 </section>
@@ -285,7 +314,7 @@ the order they are declared.</div>
 <h3>NEW_EXCEPTION_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">NEW_EXCEPTION_TYPE</span></div>
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0003 - The {0} integration connector has created the {1} exception type ({2}) to record the
- digital products whose externally asserted dependencies are not proven by lineage</div>
+ elements whose externally asserted {3} relationships are not proven by the lineage beneath them</div>
 </section>
 </li>
 <li>
@@ -341,8 +370,8 @@ the order they are declared.</div>
 <h3>REFRESH_COMPLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">REFRESH_COMPLETE</span></div>
 <div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0010 - The {0} integration connector reviewed {1} digital products and derived {2} dependencies
- from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5} and found {6} unproven; it
- raised {7} exceptions, updated {8} and cleared {9}</div>
+ from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5}, found {6} unproven and
+ left {7} unchecked; it raised {8} exceptions, updated {9} and cleared {10}</div>
 </section>
 </li>
 <li>
@@ -357,33 +386,77 @@ the order they are declared.</div>
 <section class="detail" id="LINEAGE_CREATED">
 <h3>LINEAGE_CREATED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_CREATED</span></div>
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has recorded that data flows from {1} to {2} through
- information supply chain {3} (relationship {4}) because {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has created a {1} relationship from {2} to {3} through
+ information supply chain {4} (relationship {5}) because {6}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LINEAGE_REMOVED">
 <h3>LINEAGE_REMOVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_REMOVED</span></div>
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the data flow ({1}) from {2} to {3} through
- information supply chain {4} because the finer-grained lineage no longer supports it</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the {1} relationship ({2}) from {3} to {4}
+ through information supply chain {5} because the finer-grained lineage no longer supports it</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LINEAGE_SUPPLY_CHAIN_SET">
 <h3>LINEAGE_SUPPLY_CHAIN_SET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_SUPPLY_CHAIN_SET</span></div>
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the data flow ({1})
- from {2} to {3}, asserted by {4}, to {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the {1}
+ relationship ({2}) from {3} to {4}, asserted by {5}, to {6}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="LINEAGE_REFRESH_COMPLETE">
 <h3>LINEAGE_REFRESH_COMPLETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_REFRESH_COMPLETE</span></div>
-<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets from the data
- mappings between their schema elements, and {2} data flows between software servers from the lineage between the data assets
- their capabilities own; it created {3} DataFlow relationships, removed {4} and set the information supply chain on {5}</div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets and processes
+ from the data mappings between their schema elements, and {2} data flows, process calls and control flows between items of IT
+ infrastructure from the lineage between the data assets and processes their capabilities use; it created {3} relationships,
+ removed {4}, set the information supply chain on {5}, found {6} unproven and left {7} unchecked; it raised {8} exceptions,
+ updated {9} and cleared {10}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNPROVEN_LINEAGE">
+<h3>UNPROVEN_LINEAGE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">UNPROVEN_LINEAGE</span></div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0016 - The {0} integration connector has recorded an exception ({1}) against {2} because {3} of
+ the {4} relationships asserted by external users that it depends on are not proven by the lineage beneath them: {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LINEAGE_EXCEPTION_CLEARED">
+<h3>LINEAGE_EXCEPTION_CLEARED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">LINEAGE_EXCEPTION_CLEARED</span></div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0017 - The {0} integration connector has cleared the exception ({1}) against {2} because all of
+ the {3} relationships asserted by external users that it depends on are now proven by the lineage beneath them</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SUPPLY_CHAIN_COPY_CREATED">
+<h3>SUPPLY_CHAIN_COPY_CREATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">SUPPLY_CHAIN_COPY_CREATED</span></div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0018 - The {0} integration connector has recorded a copy of the untagged {1} relationship
+ from {2} to {3} for information supply chain {4} (relationship {5}) because the relationship lies on the lineage paths of
+ several information supply chains</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SUPPLY_CHAIN_COPY_REMOVED">
+<h3>SUPPLY_CHAIN_COPY_REMOVED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">SUPPLY_CHAIN_COPY_REMOVED</span></div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0019 - The {0} integration connector has removed its copy ({2}) of the {1} relationship from
+ {3} to {4} for information supply chain {5} because the lineage no longer calls for it</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SUPPLY_CHAIN_REFRESH_COMPLETE">
+<h3>SUPPLY_CHAIN_REFRESH_COMPLETE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DarwinAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.ffdc">DarwinAuditCode</a></span>&nbsp;<span class="element-name">SUPPLY_CHAIN_REFRESH_COMPLETE</span></div>
+<div class="block">DARWIN-PRODUCT-DEPENDENCY-MANAGER-0020 - The {0} integration connector filled in the information supply chain on {1} untagged
+ relationships in the layers beneath the coarse-grained lineage, created {2} copies of relationships that lie on the paths of
+ several information supply chains and removed {3}</div>
 </section>
 </li>
 </ul>

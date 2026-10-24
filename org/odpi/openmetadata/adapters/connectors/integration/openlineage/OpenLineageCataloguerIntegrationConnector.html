@@ -117,8 +117,11 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
      facet (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
      hierarchy, ownership and tags facets populate the asset.  The schema facet creates a tabular schema for the asset
      (optional).</li>
-     <li>Inputs are linked to the process, and the process to the outputs, with <b>DataFlow</b> relationships.
-     The columnLineage and lineage dataset facets create <b>LineageMapping</b> relationships between columns.</li>
+     <li>Inputs are linked to the process, and the process to the outputs, with lineage relationships.
+     Lineage between assets is a DataFlow.  Lineage with a schema attribute (a table or column) at either end is a
+     <b>DataMapping</b>, and a DataFlow is added between the table's asset and the other end.
+     The columnLineage and lineage dataset facets create DataMapping relationships between columns.  Every lineage
+     relationship carries the information supply chain's qualified name when the run event supplies one.</li>
      <li>Run counts, timings and data volumes are always maintained in the RunMetrics classification of the job's process.  Each <b>run</b> can
      optionally also become a TransientEmbeddedProcess owned by the job's process, recording the run's status,
      timing and run facets.</li>
@@ -149,12 +152,27 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#destinationName" class="member-name-link">destinationName</a></code></div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#DERIVED_FROM_COLUMN_LINEAGE_FACET" class="member-name-link">DERIVED_FROM_COLUMN_LINEAGE_FACET</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#myContext" class="member-name-link">myContext</a></code></div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#DERIVED_FROM_JOB_DEPENDENCIES_FACET" class="member-name-link">DERIVED_FROM_JOB_DEPENDENCIES_FACET</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#DERIVED_FROM_LINEAGE_FACET" class="member-name-link">DERIVED_FROM_LINEAGE_FACET</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS" class="member-name-link">DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#DERIVED_FROM_TABLE_LINEAGE" class="member-name-link">DERIVED_FROM_TABLE_LINEAGE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#destinationName" class="member-name-link">destinationName</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="../../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
+<div class="col-second even-row-color"><code><a href="#myContext" class="member-name-link">myContext</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
@@ -247,6 +265,76 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS">
+<h3>DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DERIVED_FROM_TABLE_LINEAGE">
+<h3>DERIVED_FROM_TABLE_LINEAGE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DERIVED_FROM_TABLE_LINEAGE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_TABLE_LINEAGE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DERIVED_FROM_COLUMN_LINEAGE_FACET">
+<h3>DERIVED_FROM_COLUMN_LINEAGE_FACET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DERIVED_FROM_COLUMN_LINEAGE_FACET</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_COLUMN_LINEAGE_FACET">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DERIVED_FROM_LINEAGE_FACET">
+<h3>DERIVED_FROM_LINEAGE_FACET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DERIVED_FROM_LINEAGE_FACET</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_LINEAGE_FACET">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DERIVED_FROM_JOB_DEPENDENCIES_FACET">
+<h3>DERIVED_FROM_JOB_DEPENDENCIES_FACET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DERIVED_FROM_JOB_DEPENDENCIES_FACET</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_JOB_DEPENDENCIES_FACET">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="destinationName">
 <h3>destinationName</h3>

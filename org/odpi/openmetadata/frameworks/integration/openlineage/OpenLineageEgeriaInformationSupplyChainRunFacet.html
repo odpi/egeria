@@ -97,9 +97,11 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenLineageEgeriaInformationSupplyChainRunFacet</span>
 <span class="extends-implements">extends <a href="OpenLineageRunFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunFacet</a></span></div>
 <div class="block">This class represents Egeria's custom egeria_informationSupplyChain run facet.  It names the information supply
- chain that a run is part of, so that the lineage Egeria catalogues from the run is tagged with it.  Any
+ chains that a run is part of, so that the lineage Egeria catalogues from the run is tagged with them.  A run that
+ moves data along a single information supply chain names it in iscQualifiedName; a run that moves data along
+ several lists them in iscQualifiedNames, and Egeria creates each lineage relationship once for each of them.  Any
  OpenLineage producer (for example an Apache Airflow DAG) can add it to its run events.
- It follows the facet schema at <a href="#SCHEMA_URL">"https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet"</a>.</div>
+ It follows the facet schema at <a href="#SCHEMA_URL">"https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet"</a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -161,15 +163,27 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name of the information supply chain that the run is part of.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIscQualifiedNames()" class="member-name-link">getIscQualifiedNames</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the qualified names of the information supply chains that the run is part of, when it is part of
+ several.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIscQualifiedName(java.lang.String)" class="member-name-link">setIscQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;iscQualifiedName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIscQualifiedName(java.lang.String)" class="member-name-link">setIscQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;iscQualifiedName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the qualified name of the information supply chain that the run is part of.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIscQualifiedNames(java.util.List)" class="member-name-link">setIscQualifiedNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;iscQualifiedNames)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the qualified names of the information supply chains that the run is part of, when it is part of
+ several.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -268,6 +282,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>iscQualifiedName</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIscQualifiedNames()">
+<h3>getIscQualifiedNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getIscQualifiedNames</span>()</div>
+<div class="block">Return the qualified names of the information supply chains that the run is part of, when it is part of
+ several.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of strings</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setIscQualifiedNames(java.util.List)">
+<h3>setIscQualifiedNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIscQualifiedNames</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;iscQualifiedNames)</span></div>
+<div class="block">Set up the qualified names of the information supply chains that the run is part of, when it is part of
+ several.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>iscQualifiedNames</code> - list of strings</dd>
 </dl>
 </section>
 </li>
