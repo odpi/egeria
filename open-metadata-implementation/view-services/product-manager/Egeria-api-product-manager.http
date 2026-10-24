@@ -350,6 +350,8 @@ Content-Type: application/json
     "class": "DigitalProductDependencyProperties",
     "label": "add label",
     "description": "add description",
+    "iscQualifiedName": "add qualifiedName of information supply chain here",
+    "derivation": "add the rule or process that derived this dependency, if it was derived from lineage",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },

@@ -2831,6 +2831,14 @@ public enum OpenMetadataProperty
     ISC_QUALIFIED_NAMES("iscQualifiedNames", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "List of unique names of the information supply chains that this wire belongs to.", null, "71916c51-d9f7-431b-b697-528f3ba2dc80"),
 
     /**
+     * The rule or process that derived a relationship - for example from the finer-grained lineage beneath it, or by
+     * matching names and endpoints.  It is set by the tool that derived the relationship, which uses it to recognize
+     * the relationships it maintains.  On a lineage relationship, the label summarizes the data that flows; the
+     * derivation records where the relationship came from.
+     */
+    DERIVATION("derivation", DataType.STRING, DataType.STRING.getDisplayName(), "The rule or process that derived this relationship - for example from other lineage, or by matching names and endpoints.  It is set by the tool that derived the relationship and is how that tool recognizes the relationships it maintains.", "derived from data mappings", "303fc1cc-c511-4c9c-8f39-6e4114e213f3"),
+
+    /**
      * Placeholder for a query.
      */
     QUERY_ID("queryId", DataType.STRING, DataType.STRING.getDisplayName(), "Placeholder for a query.", null, "4a480cb0-b87d-47a5-8a68-660c2a144c9b"),

@@ -26,6 +26,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
     private String query            = null;
     private String queryType        = null;
     private String iscQualifiedName = null;
+    private String derivation       = null;
 
 
     /**
@@ -53,6 +54,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
             query            = template.getQuery();
             queryType        = template.getQueryType();
             iscQualifiedName = template.getISCQualifiedName();
+            derivation       = template.getDerivation();
         }
     }
 
@@ -140,6 +142,29 @@ public class DataSetContentProperties extends RelationshipBeanProperties
         this.iscQualifiedName = iscQualifiedName;
     }
 
+
+    /**
+     * Return how the tool that created this relationship decided that the data set is a view over the content - for
+     * example by matching the data set's endpoint and name with the content's.
+     *
+     * @return string
+     */
+    public String getDerivation()
+    {
+        return derivation;
+    }
+
+
+    /**
+     * Set up how the tool that created this relationship decided that the data set is a view over the content.
+     *
+     * @param derivation string
+     */
+    public void setDerivation(String derivation)
+    {
+        this.derivation = derivation;
+    }
+
     /**
      * Standard toString method.
      *
@@ -153,6 +178,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
                 ", iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", derivation='" + derivation + '\'' +
                 "} " + super.toString();
     }
 
@@ -170,7 +196,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataSetContentProperties that = (DataSetContentProperties) objectToCompare;
-        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType) && Objects.equals(iscQualifiedName, that.iscQualifiedName);
+        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType) && Objects.equals(iscQualifiedName, that.iscQualifiedName) && Objects.equals(derivation, that.derivation);
     }
 
     /**
@@ -181,6 +207,6 @@ public class DataSetContentProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName);
+        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName, derivation);
     }
 }

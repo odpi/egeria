@@ -78,6 +78,7 @@ public class OpenLineageEventParsingTest
         assertEquals(runFacets.getEgeriaGovernanceAction().get_schemaURL(), URI.create(OpenLineageEgeriaGovernanceActionRunFacet.SCHEMA_URL));
         assertTrue((runFacets.getAdditionalProperties() == null) || (! runFacets.getAdditionalProperties().containsKey(OpenLineageEgeriaGovernanceActionRunFacet.FACET_NAME)), "The Egeria facet should be parsed into its own bean");
         assertEquals(runFacets.getEgeriaInformationSupplyChain().getIscQualifiedName(), "InformationSupplyChain::Orders");
+        assertEquals(runFacets.getEgeriaInformationSupplyChain().getIscQualifiedNames(), List.of("InformationSupplyChain::Orders", "InformationSupplyChain::Invoicing"));
         assertEquals(runFacets.getEgeriaInformationSupplyChain().get_schemaURL(), URI.create(OpenLineageEgeriaInformationSupplyChainRunFacet.SCHEMA_URL));
         assertTrue((runFacets.getAdditionalProperties() == null) || (! runFacets.getAdditionalProperties().containsKey(OpenLineageEgeriaInformationSupplyChainRunFacet.FACET_NAME)), "The Egeria facet should be parsed into its own bean");
 

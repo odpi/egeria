@@ -82,7 +82,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,8 +104,11 @@ import java.util.Set;
  *     facet (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
  *     hierarchy, ownership and tags facets populate the asset.  The schema facet creates a tabular schema for the asset
  *     (optional).</li>
- *     <li>Inputs are linked to the process, and the process to the outputs, with <b>DataFlow</b> relationships.
- *     The columnLineage and lineage dataset facets create <b>LineageMapping</b> relationships between columns.</li>
+ *     <li>Inputs are linked to the process, and the process to the outputs, with lineage relationships.
+ *     Lineage between assets is a DataFlow.  Lineage with a schema attribute (a table or column) at either end is a
+ *     <b>DataMapping</b>, and a DataFlow is added between the table's asset and the other end.
+ *     The columnLineage and lineage dataset facets create DataMapping relationships between columns.  Every lineage
+ *     relationship carries the information supply chain's qualified name when the run event supplies one.</li>
  *     <li>Run counts, timings and data volumes are always maintained in the RunMetrics classification of the job's process.  Each <b>run</b> can
  *     optionally also become a TransientEmbeddedProcess owned by the job's process, recording the run's status,
  *     timing and run facets.</li>
@@ -124,6 +127,17 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private static final String LEGACY_JOB_QUALIFIED_NAME_PREFIX = "OpenLineageJob:";
     private static final String RUN_QUALIFIED_NAME_PREFIX        = "OpenLineageRun::";
     private static final String REPORT_QUALIFIED_NAME_PREFIX     = "OpenLineageRunReport::";
+
+    /*
+     * The derivation recorded on each lineage relationship this connector creates: the part of the OpenLineage event
+     * that it was derived from.  A relationship supported by several parts of an event records the part that first
+     * created it.
+     */
+    public static final String DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS = "derived from OpenLineage run inputs and outputs";
+    public static final String DERIVED_FROM_TABLE_LINEAGE          = "derived from OpenLineage table lineage";
+    public static final String DERIVED_FROM_COLUMN_LINEAGE_FACET   = "derived from OpenLineage columnLineage facet";
+    public static final String DERIVED_FROM_LINEAGE_FACET          = "derived from OpenLineage lineage facet";
+    public static final String DERIVED_FROM_JOB_DEPENDENCIES_FACET = "derived from OpenLineage jobDependencies facet";
     private static final String QUALIFIED_NAME_SEPARATOR         = "::";
     private static final String UNKNOWN_NAMESPACE                = "default";
 
@@ -369,14 +383,14 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 return;
             }
 
-            String iscQualifiedName = getISCQualifiedName(event.getRun());
+            List<String> iscQualifiedNames = getISCQualifiedNames(event.getRun());
 
-            List<CataloguedElement> inputAssets  = syncInputDataSets(event.getInputs(), jobProcess, iscQualifiedName, eventDescription);
-            List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, iscQualifiedName, eventDescription);
+            List<CataloguedElement> inputAssets  = syncInputDataSets(event.getInputs(), jobProcess, iscQualifiedNames, eventDescription);
+            List<CataloguedElement> outputAssets = syncOutputDataSets(event.getOutputs(), jobProcess, iscQualifiedNames, eventDescription);
 
-            syncJobDependencies(event.getRun(), jobProcess, iscQualifiedName, eventDescription);
-            syncExplicitLineage(event.getJob(), jobProcess, iscQualifiedName, eventDescription);
-            syncColumnLineage(event.getOutputs(), outputAssets, iscQualifiedName, eventDescription);
+            syncJobDependencies(event.getRun(), jobProcess, iscQualifiedNames, eventDescription);
+            syncExplicitLineage(event.getJob(), jobProcess, iscQualifiedNames, eventDescription);
+            syncColumnLineage(event.getOutputs(), outputAssets, iscQualifiedNames, eventDescription);
 
             /*
              * The remaining metadata is optional and does not affect the lineage so a failure in one part
@@ -989,7 +1003,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param run run from the event
      * @param jobProcess catalogued process for the job
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
@@ -997,7 +1011,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private void syncJobDependencies(OpenLineageRun    run,
                                      CataloguedElement jobProcess,
-                                     String            iscQualifiedName,
+                                     List<String>      iscQualifiedNames,
                                      String            eventDescription) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -1019,7 +1033,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                     if (upstreamProcess != null)
                     {
-                        ensureControlFlow(upstreamProcess, jobProcess, dependency, iscQualifiedName);
+                        ensureControlFlow(upstreamProcess, jobProcess, dependency, iscQualifiedNames);
                     }
                 }
             }
@@ -1035,7 +1049,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                     if (downstreamProcess != null)
                     {
-                        ensureControlFlow(jobProcess, downstreamProcess, dependency, iscQualifiedName);
+                        ensureControlFlow(jobProcess, downstreamProcess, dependency, iscQualifiedNames);
                     }
                 }
             }
@@ -1049,7 +1063,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param fromProcess upstream process
      * @param toProcess downstream process
      * @param dependency details of the dependency (may be null)
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
@@ -1057,7 +1071,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private void ensureControlFlow(CataloguedElement                           fromProcess,
                                    CataloguedElement                           toProcess,
                                    OpenLineageJobDependenciesRunFacetDependency dependency,
-                                   String                                      iscQualifiedName) throws InvalidParameterException,
+                                   List<String>                                iscQualifiedNames) throws InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
@@ -1070,7 +1084,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             properties.setDescription(dependency.getSequenceTriggerRule());
         }
 
-        ensureLineage(fromProcess, toProcess, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, properties, iscQualifiedName);
+        ensureLineage(fromProcess, toProcess, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, properties, DERIVED_FROM_JOB_DEPENDENCIES_FACET, iscQualifiedNames);
     }
 
 
@@ -1477,33 +1491,75 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Return the information supply chain that the run is part of.  It is named by Egeria's
-     * egeria_informationSupplyChain run facet (which any producer, such as an Apache Airflow DAG, can add), or else by
-     * the egeria_governanceAction facet that the governance action publisher adds.  The lineage relationships
-     * created from the event are tagged with it.
+     * Return the information supply chains that the run is part of.  They are named by Egeria's
+     * egeria_informationSupplyChain run facet (which any producer, such as an Apache Airflow DAG, can add) - its
+     * iscQualifiedName and/or its iscQualifiedNames list - or else by the egeria_governanceAction facet that the
+     * governance action publisher adds.  The lineage relationships are multi-links, so each one created from the
+     * event is created once for each information supply chain.
      *
      * @param run run from the event
-     * @return qualified name of the information supply chain or null
+     * @return qualified names of the information supply chains - empty if the run names none
      */
-    private String getISCQualifiedName(OpenLineageRun run)
+    private List<String> getISCQualifiedNames(OpenLineageRun run)
     {
         if ((run == null) || (run.getFacets() == null))
         {
-            return null;
+            return Collections.emptyList();
         }
 
-        if ((run.getFacets().getEgeriaInformationSupplyChain() != null) &&
-            (run.getFacets().getEgeriaInformationSupplyChain().getIscQualifiedName() != null))
+        OpenLineageEgeriaInformationSupplyChainRunFacet supplyChainFacet = run.getFacets().getEgeriaInformationSupplyChain();
+
+        if (supplyChainFacet != null)
         {
-            return run.getFacets().getEgeriaInformationSupplyChain().getIscQualifiedName();
+            Set<String> iscQualifiedNames = new LinkedHashSet<>();
+
+            if (supplyChainFacet.getIscQualifiedName() != null)
+            {
+                iscQualifiedNames.add(supplyChainFacet.getIscQualifiedName());
+            }
+
+            if (supplyChainFacet.getIscQualifiedNames() != null)
+            {
+                for (String iscQualifiedName : supplyChainFacet.getIscQualifiedNames())
+                {
+                    if (iscQualifiedName != null)
+                    {
+                        iscQualifiedNames.add(iscQualifiedName);
+                    }
+                }
+            }
+
+            if (! iscQualifiedNames.isEmpty())
+            {
+                return new ArrayList<>(iscQualifiedNames);
+            }
         }
 
-        if (run.getFacets().getEgeriaGovernanceAction() != null)
+        if ((run.getFacets().getEgeriaGovernanceAction() != null) &&
+            (run.getFacets().getEgeriaGovernanceAction().getIscQualifiedName() != null))
         {
-            return run.getFacets().getEgeriaGovernanceAction().getIscQualifiedName();
+            return Collections.singletonList(run.getFacets().getEgeriaGovernanceAction().getIscQualifiedName());
         }
 
-        return null;
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * Return the information supply chains to create a lineage relationship for: once for each information supply
+     * chain, or once with no information supply chain if there are none.
+     *
+     * @param iscQualifiedNames qualified names of the information supply chains (may be empty)
+     * @return list with at least one entry - a null entry means no information supply chain
+     */
+    private List<String> getLineageSupplyChains(List<String> iscQualifiedNames)
+    {
+        if ((iscQualifiedNames == null) || (iscQualifiedNames.isEmpty()))
+        {
+            return Collections.singletonList(null);
+        }
+
+        return iscQualifiedNames;
     }
 
 
@@ -1512,11 +1568,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
 
     /**
-     * Catalogue the input datasets and link them to the job's process with DataFlow relationships.
+     * Catalogue the input datasets and link them to the job's process (DataFlow for an asset, DataMapping for a table).
      *
      * @param inputs input datasets from the event
      * @param jobProcess catalogued process for the job
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      * @return catalogued assets in the same order as the inputs (null entries for inputs that could not be catalogued)
      * @throws InvalidParameterException invalid parameter
@@ -1525,7 +1581,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private List<CataloguedElement> syncInputDataSets(List<OpenLineageInputDataSet> inputs,
                                                       CataloguedElement             jobProcess,
-                                                      String                        iscQualifiedName,
+                                                      List<String>                  iscQualifiedNames,
                                                       String                        eventDescription) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
@@ -1540,9 +1596,9 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 if (input != null)
                 {
-                    asset = syncDataSet(input.getNamespace(), input.getName(), input.getFacets(), iscQualifiedName, eventDescription);
+                    asset = syncDataSet(input.getNamespace(), input.getName(), input.getFacets(), iscQualifiedNames, eventDescription);
 
-                    ensureDataFlow(asset, jobProcess, iscQualifiedName);
+                    ensureDataLineage(asset, jobProcess, null, DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS, iscQualifiedNames);
                 }
 
                 assets.add(asset);
@@ -1554,11 +1610,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Catalogue the output datasets and link the job's process to them with DataFlow relationships.
+     * Catalogue the output datasets and link the job's process to them (DataFlow for an asset, DataMapping for a table).
      *
      * @param outputs output datasets from the event
      * @param jobProcess catalogued process for the job
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      * @return catalogued assets in the same order as the outputs (null entries for outputs that could not be catalogued)
      * @throws InvalidParameterException invalid parameter
@@ -1567,7 +1623,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private List<CataloguedElement> syncOutputDataSets(List<OpenLineageOutputDataSet> outputs,
                                                        CataloguedElement              jobProcess,
-                                                       String                         iscQualifiedName,
+                                                       List<String>                   iscQualifiedNames,
                                                        String                         eventDescription) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
@@ -1582,9 +1638,9 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
                 if (output != null)
                 {
-                    asset = syncDataSet(output.getNamespace(), output.getName(), output.getFacets(), iscQualifiedName, eventDescription);
+                    asset = syncDataSet(output.getNamespace(), output.getName(), output.getFacets(), iscQualifiedNames, eventDescription);
 
-                    ensureDataFlow(jobProcess, asset, iscQualifiedName);
+                    ensureDataLineage(jobProcess, asset, null, DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS, iscQualifiedNames);
                 }
 
                 assets.add(asset);
@@ -1613,7 +1669,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *     catalog template for the technology in the namespace (see getDataSetTemplate), or as a generic DataStore
      *     if the technology is not known.</li>
      *     <li>Each abstraction is linked to the element it is a view over with a DataSetContent relationship for the
-     *     event's information supply chain, if there is not one already.</li>
+     *     event's information supply chain, if there is not one already.  Its derivation records how the abstraction
+     *     was matched (for example "matched by endpoint and table name").</li>
      * </ul>
      * The dataset facets update the element only when this connector owns it (it created it from OpenLineage events);
      * elements catalogued by technology connectors only gain an ownership classification (if they have none) and the
@@ -1622,7 +1679,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param namespace dataset namespace
      * @param name dataset name
      * @param facets dataset facets (may be null)
-     * @param iscQualifiedName qualified name of the information supply chain for the relationships (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the relationships (may be empty)
      * @param eventDescription description of the event for logging
      * @return catalogued element or null if the dataset is not identifiable
      * @throws InvalidParameterException invalid parameter
@@ -1632,7 +1689,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private CataloguedElement syncDataSet(String                   namespace,
                                           String                   name,
                                           OpenLineageDataSetFacets facets,
-                                          String                   iscQualifiedName,
+                                          List<String>             iscQualifiedNames,
                                           String                   eventDescription) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1774,7 +1831,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         }
 
         linkPeerDuplicateElements(asset, resolvedDataSet.physical(), namespace, name, eventDescription);
-        linkAbstractions(asset, resolvedDataSet.abstractions(), iscQualifiedName, eventDescription);
+        linkAbstractions(asset, resolvedDataSet.abstractions(), iscQualifiedNames, eventDescription);
 
         /*
          * A dropped dataset is archived or deleted according to the connector's delete method, and takes no
@@ -2088,6 +2145,26 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
+     * Return how an abstraction was found to be a view over the element it is linked to, for the derivation of the
+     * DataSetContent relationship.  This is how the abstraction was matched to the dataset - except when the dataset
+     * is the abstraction itself (named by its qualified name in the egeria namespace), when the element was found
+     * through the abstraction's own endpoint.
+     *
+     * @param abstraction matched abstraction
+     * @return derivation
+     */
+    private String getDataSetContentDerivation(OpenLineageDataSetResolver.MatchedElement abstraction)
+    {
+        if (OpenLineageDataSetResolver.MATCHED_BY_QUALIFIED_NAME.equals(abstraction.matchedBy()))
+        {
+            return OpenLineageDataSetResolver.MATCHED_THROUGH_DATA_SET_ENDPOINT;
+        }
+
+        return abstraction.matchedBy();
+    }
+
+
+    /**
      * Link each abstraction over a dataset (a tabular data set or tabular data set collection) to the element it is a
      * view over with a DataSetContent relationship - the data set is at end 1 and its content at end 2.  An
      * abstraction over the dataset's parent (for example a collection over the schema that holds a table) is linked
@@ -2095,12 +2172,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param asset element used for the dataset
      * @param abstractions abstractions over the dataset
-     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains (may be empty)
      * @param eventDescription description of the event for logging
      */
     private void linkAbstractions(CataloguedElement                               asset,
                                   List<OpenLineageDataSetResolver.MatchedElement> abstractions,
-                                  String                                          iscQualifiedName,
+                                  List<String>                                    iscQualifiedNames,
                                   String                                          eventDescription)
     {
         final String methodName = "linkAbstractions";
@@ -2121,21 +2198,25 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             try
             {
-                if (! isRelationshipKnown(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName))
+                for (String iscQualifiedName : getLineageSupplyChains(iscQualifiedNames))
                 {
-                    AssetClient              assetClient = myContext.getAssetClient();
-                    DataSetContentProperties properties  = new DataSetContentProperties();
+                    if (! isRelationshipKnown(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName))
+                    {
+                        AssetClient              assetClient = myContext.getAssetClient();
+                        DataSetContentProperties properties  = new DataSetContentProperties();
 
-                    properties.setISCQualifiedName(iscQualifiedName);
+                        properties.setISCQualifiedName(iscQualifiedName);
+                        properties.setDerivation(getDataSetContentDerivation(abstraction));
 
-                    assetClient.linkDataSetContent(abstraction.guid(),
-                                                   content.guid(),
-                                                   new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
-                                                   properties);
+                        assetClient.linkDataSetContent(abstraction.guid(),
+                                                       content.guid(),
+                                                       new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
+                                                       properties);
 
-                    rememberRelationship(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName);
+                        rememberRelationship(abstraction.guid(), content.guid(), OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, iscQualifiedName);
 
-                    logLineageCatalogued(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, abstraction.qualifiedName(), content.qualifiedName());
+                        logLineageCatalogued(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, abstraction.qualifiedName(), content.qualifiedName());
+                    }
                 }
             }
             catch (Exception error)
@@ -2906,7 +2987,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param job job from the event
      * @param jobProcess catalogued process for the job
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
@@ -2914,7 +2995,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private void syncExplicitLineage(OpenLineageJob    job,
                                      CataloguedElement jobProcess,
-                                     String            iscQualifiedName,
+                                     List<String>      iscQualifiedNames,
                                      String            eventDescription) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -2935,12 +3016,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if ("DATASET".equalsIgnoreCase(entry.getType()))
             {
-                target = syncDataSet(entry.getNamespace(), entry.getName(), null, iscQualifiedName, eventDescription);
+                target = syncDataSet(entry.getNamespace(), entry.getName(), null, iscQualifiedNames, eventDescription);
 
                 /*
                  * The event's job writes the target dataset unless the inputs say otherwise.
                  */
-                ensureDataFlow(jobProcess, target, iscQualifiedName);
+                ensureDataLineage(jobProcess, target, null, DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
             }
             else if (entry.getName() == null)
             {
@@ -2960,19 +3041,17 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             {
                 for (OpenLineageLineageInput input : entry.getInputs())
                 {
-                    CataloguedElement source = syncLineageInput(input, jobProcess, iscQualifiedName, eventDescription);
+                    CataloguedElement source = syncLineageInput(input, jobProcess, iscQualifiedNames, eventDescription);
 
                     if (source != null)
                     {
                         if (("JOB".equalsIgnoreCase(input.getType())) && ("JOB".equalsIgnoreCase(entry.getType())))
                         {
-                            ensureLineage(source, target, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, getLineageProperties(new ControlFlowProperties(), input.getTransformations()), iscQualifiedName);
+                            ensureLineage(source, target, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, getLineageProperties(new ControlFlowProperties(), input.getTransformations()), DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
                         }
                         else
                         {
-                            ensureLineage(source, target, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()), iscQualifiedName);
-                            ensureAssetLevelDataFlow(source, target, iscQualifiedName);
-                            ensureTableMapping(source, target, iscQualifiedName);
+                            ensureDataLineage(source, target, input.getTransformations(), DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
                         }
                     }
                 }
@@ -2980,7 +3059,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (("DATASET".equalsIgnoreCase(entry.getType())) && (entry.getFields() != null))
             {
-                syncFieldLineage(target, entry.getFields(), iscQualifiedName, eventDescription);
+                syncFieldLineage(target, entry.getFields(), iscQualifiedNames, eventDescription);
             }
         }
     }
@@ -2991,7 +3070,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param input source
      * @param jobProcess the event's job process (used when the source is the event's own job)
-     * @param iscQualifiedName qualified name of the information supply chain for the relationships (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the relationships (may be empty)
      * @param eventDescription description of the event for logging
      * @return catalogued element or null
      * @throws InvalidParameterException invalid parameter
@@ -3000,7 +3079,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private CataloguedElement syncLineageInput(OpenLineageLineageInput input,
                                                CataloguedElement       jobProcess,
-                                               String                  iscQualifiedName,
+                                               List<String>            iscQualifiedNames,
                                                String                  eventDescription) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -3020,21 +3099,21 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             return syncJob(input.getNamespace(), input.getName(), null, null, eventDescription);
         }
 
-        return syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedName, eventDescription);
+        return syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedNames, eventDescription);
     }
 
 
     /**
-     * Create LineageMapping relationships between columns from the field-level entries of the lineage facets.
+     * Create DataMapping relationships between columns from the field-level entries of the lineage facets.
      *
      * @param targetAsset asset that owns the target fields
      * @param fields map of target field name to its source inputs
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      */
     private void syncFieldLineage(CataloguedElement                        targetAsset,
                                   Map<String, OpenLineageLineageFieldEntry> fields,
-                                  String                                    iscQualifiedName,
+                                  List<String>                              iscQualifiedNames,
                                   String                                    eventDescription)
     {
         final String methodName = "syncFieldLineage";
@@ -3061,13 +3140,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 {
                     if ((input != null) && ("DATASET".equalsIgnoreCase(input.getType())) && (input.getField() != null))
                     {
-                        CataloguedElement sourceAsset  = syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedName, eventDescription);
+                        CataloguedElement sourceAsset  = syncDataSet(input.getNamespace(), input.getName(), null, iscQualifiedNames, eventDescription);
                         CataloguedElement sourceColumn = findColumn(sourceAsset, input.getField());
 
                         if (sourceColumn != null)
                         {
-                            ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, getLineageProperties(new DataMappingProperties(), input.getTransformations()), iscQualifiedName);
-                            ensureTableMapping(sourceAsset, targetAsset, iscQualifiedName);
+                            ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, getLineageProperties(new DataMappingProperties(), input.getTransformations()), DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
+                            ensureTableMapping(sourceAsset, targetAsset, DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
                         }
                     }
                 }
@@ -3081,16 +3160,16 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
-     * Create LineageMapping relationships between columns from the columnLineage facets of the output datasets.
+     * Create DataMapping relationships between columns from the columnLineage facets of the output datasets.
      *
      * @param outputs output datasets from the event
      * @param outputAssets catalogued assets for the outputs (same order)
-     * @param iscQualifiedName qualified name of the information supply chain for the lineage (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
      * @param eventDescription description of the event for logging
      */
     private void syncColumnLineage(List<OpenLineageOutputDataSet> outputs,
                                    List<CataloguedElement>        outputAssets,
-                                   String                         iscQualifiedName,
+                                   List<String>                   iscQualifiedNames,
                                    String                         eventDescription)
     {
         final String methodName = "syncColumnLineage";
@@ -3136,7 +3215,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                         {
                             if ((inputField != null) && (inputField.getField() != null))
                             {
-                                CataloguedElement sourceAsset  = syncDataSet(inputField.getNamespace(), inputField.getName(), null, iscQualifiedName, eventDescription);
+                                CataloguedElement sourceAsset  = syncDataSet(inputField.getNamespace(), inputField.getName(), null, iscQualifiedNames, eventDescription);
                                 CataloguedElement sourceColumn = findColumn(sourceAsset, inputField.getField());
 
                                 if (sourceColumn != null)
@@ -3164,8 +3243,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                         properties.setDescription(outputField.getTransformationDescription());
                                     }
 
-                                    ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, properties, iscQualifiedName);
-                                    ensureTableMapping(sourceAsset, outputAsset, iscQualifiedName);
+                                    ensureLineage(sourceColumn, targetColumn, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, properties, DERIVED_FROM_COLUMN_LINEAGE_FACET, iscQualifiedNames);
+                                    ensureTableMapping(sourceAsset, outputAsset, DERIVED_FROM_COLUMN_LINEAGE_FACET, iscQualifiedNames);
                                 }
                             }
                         }
@@ -3180,20 +3259,18 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                     {
                         for (OpenLineageLineageInput input : lineage.getInputs())
                         {
-                            CataloguedElement source = syncLineageInput(input, null, iscQualifiedName, eventDescription);
+                            CataloguedElement source = syncLineageInput(input, null, iscQualifiedNames, eventDescription);
 
                             if (source != null)
                             {
-                                ensureLineage(source, outputAsset, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), input.getTransformations()), iscQualifiedName);
-                                ensureAssetLevelDataFlow(source, outputAsset, iscQualifiedName);
-                                ensureTableMapping(source, outputAsset, iscQualifiedName);
+                                ensureDataLineage(source, outputAsset, input.getTransformations(), DERIVED_FROM_LINEAGE_FACET, iscQualifiedNames);
                             }
                         }
                     }
 
                     if (lineage.getFields() != null)
                     {
-                        syncFieldLineage(outputAsset, lineage.getFields(), iscQualifiedName, eventDescription);
+                        syncFieldLineage(outputAsset, lineage.getFields(), iscQualifiedNames, eventDescription);
                     }
                 }
             }
@@ -3421,50 +3498,26 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             return null;
         }
 
-        return new CataloguedElement(current.getElementHeader().getGUID(), getQualifiedName(current), current);
+        return new CataloguedElement(current.getElementHeader().getGUID(), getQualifiedName(current), current, true, null);
     }
 
 
     /**
-     * Create the DataFlow between a dataset and a process (or the reverse), and between the asset that a table
-     * belongs to and the process, so that the lineage is visible at the asset level as well as in detail.
+     * When either end of the lineage is a table, add a DataFlow between the assets that the tables belong to (or
+     * between the table's asset and the other end when that is an asset, such as a process).  This keeps the
+     * lineage visible at the asset level as well as in detail.  Its derivation is always the table lineage, whatever
+     * part of the event the table-level relationship came from.
      *
      * @param end1 source of the data
      * @param end2 destination of the data
-     * @param iscQualifiedName qualified name of the information supply chain (may be null)
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException repository problem
-     * @throws UserNotAuthorizedException security problem
-     */
-    private void ensureDataFlow(CataloguedElement end1,
-                                CataloguedElement end2,
-                                String            iscQualifiedName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        if ((end1 == null) || (end2 == null))
-        {
-            return;
-        }
-
-        ensureLineage(end1, end2, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties(), iscQualifiedName);
-        ensureAssetLevelDataFlow(end1, end2, iscQualifiedName);
-    }
-
-
-    /**
-     * When either end of a data flow is a table, repeat the data flow between the assets the tables belong to.
-     *
-     * @param end1 source of the data
-     * @param end2 destination of the data
-     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @param iscQualifiedNames qualified names of the information supply chains (may be empty)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
      */
     private void ensureAssetLevelDataFlow(CataloguedElement end1,
                                           CataloguedElement end2,
-                                          String            iscQualifiedName) throws InvalidParameterException,
+                                          List<String>      iscQualifiedNames) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
@@ -3476,7 +3529,55 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         CataloguedElement assetLevelEnd1 = (end1.parentAsset() == null) ? end1 : end1.parentAsset();
         CataloguedElement assetLevelEnd2 = (end2.parentAsset() == null) ? end2 : end2.parentAsset();
 
-        ensureLineage(assetLevelEnd1, assetLevelEnd2, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties(), iscQualifiedName);
+        /*
+         * A table whose asset is not known has no asset-level lineage.
+         */
+        if ((assetLevelEnd1.schemaAttribute()) || (assetLevelEnd2.schemaAttribute()))
+        {
+            return;
+        }
+
+        ensureLineage(assetLevelEnd1, assetLevelEnd2, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, new DataFlowProperties(), DERIVED_FROM_TABLE_LINEAGE, iscQualifiedNames);
+    }
+
+
+    /**
+     * Create the lineage relationship for data that flows from one element to another.  Lineage between assets
+     * (data sets and processes) is a DataFlow.  When either end is a schema attribute (such as a table), the
+     * lineage is a DataMapping, and a DataFlow is added between the table's asset and the other end (see
+     * ensureAssetLevelDataFlow).
+     *
+     * @param source source of the data
+     * @param target destination of the data
+     * @param transformations transformations from the lineage facet (may be null)
+     * @param derivation the part of the event the relationship is derived from (one of the DERIVED_FROM constants)
+     * @param iscQualifiedNames qualified names of the information supply chains (may be empty)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private void ensureDataLineage(CataloguedElement                      source,
+                                   CataloguedElement                      target,
+                                   List<OpenLineageLineageTransformation> transformations,
+                                   String                                 derivation,
+                                   List<String>                           iscQualifiedNames) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        if ((source == null) || (target == null))
+        {
+            return;
+        }
+
+        if ((source.schemaAttribute()) || (target.schemaAttribute()))
+        {
+            ensureLineage(source, target, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, getLineageProperties(new DataMappingProperties(), transformations), derivation, iscQualifiedNames);
+            ensureAssetLevelDataFlow(source, target, iscQualifiedNames);
+        }
+        else
+        {
+            ensureLineage(source, target, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, getLineageProperties(new DataFlowProperties(), transformations), derivation, iscQualifiedNames);
+        }
     }
 
 
@@ -3486,20 +3587,22 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      *
      * @param source source table
      * @param target target table
-     * @param iscQualifiedName qualified name of the information supply chain (may be null)
+     * @param derivation the part of the event the column lineage came from (one of the DERIVED_FROM constants)
+     * @param iscQualifiedNames qualified names of the information supply chains (may be empty)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
      */
     private void ensureTableMapping(CataloguedElement source,
                                     CataloguedElement target,
-                                    String            iscQualifiedName) throws InvalidParameterException,
+                                    String            derivation,
+                                    List<String>      iscQualifiedNames) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
         if ((source != null) && (target != null) && (source.schemaAttribute()) && (target.schemaAttribute()))
         {
-            ensureLineage(source, target, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, new DataMappingProperties(), iscQualifiedName);
+            ensureLineage(source, target, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, new DataMappingProperties(), derivation, iscQualifiedNames);
         }
     }
 
@@ -3555,7 +3658,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param end2 element at end 2
      * @param relationshipTypeName type of lineage relationship
      * @param properties properties for the relationship
-     * @param iscQualifiedName qualified name of the information supply chain that the lineage belongs to (may be null)
+     * @param derivation the part of the event the relationship is derived from (one of the DERIVED_FROM constants)
+     * @param iscQualifiedNames qualified names of the information supply chains that the lineage belongs to (may be empty)
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository problem
      * @throws UserNotAuthorizedException security problem
@@ -3564,7 +3668,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                                CataloguedElement             end2,
                                String                        relationshipTypeName,
                                LineageRelationshipProperties properties,
-                               String                        iscQualifiedName) throws InvalidParameterException,
+                               String                        derivation,
+                               List<String>                  iscQualifiedNames) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -3573,21 +3678,26 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             return;
         }
 
-        properties.setISCQualifiedName(iscQualifiedName);
+        properties.setDerivation(derivation);
 
-        if (! isRelationshipKnown(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName))
+        for (String iscQualifiedName : getLineageSupplyChains(iscQualifiedNames))
         {
-            LineageClient lineageClient = myContext.getLineageClient();
+            properties.setISCQualifiedName(iscQualifiedName);
 
-            lineageClient.linkLineage(end1.guid(),
-                                      end2.guid(),
-                                      relationshipTypeName,
-                                      new MakeAnchorOptions(lineageClient.getMetadataSourceOptions()),
-                                      properties);
+            if (! isRelationshipKnown(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName))
+            {
+                LineageClient lineageClient = myContext.getLineageClient();
 
-            rememberRelationship(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName);
+                lineageClient.linkLineage(end1.guid(),
+                                          end2.guid(),
+                                          relationshipTypeName,
+                                          new MakeAnchorOptions(lineageClient.getMetadataSourceOptions()),
+                                          properties);
 
-            logLineageCatalogued(relationshipTypeName, end1.qualifiedName(), end2.qualifiedName());
+                rememberRelationship(end1.guid(), end2.guid(), relationshipTypeName, iscQualifiedName);
+
+                logLineageCatalogued(relationshipTypeName, end1.qualifiedName(), end2.qualifiedName());
+            }
         }
     }
 

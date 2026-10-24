@@ -159,7 +159,78 @@ public class OpenMetadataTypesArchive
          */
         update0795UsageActivity();
         update0540DataValueAssignment();
+        update0750LineageRelationship();
+        update0210DataSetContent();
     }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0210DataSetContent()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
+    }
+
+
+    /**
+     * DataSetContent gains the derivation attribute, which records how a tool decided that the data set is a view over
+     * the content - for example by matching the data set's endpoint and name with the content's.  DataSetContent is
+     * not a lineage relationship, so it does not inherit the attribute from LineageRelationship.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataSetContentRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DERIVATION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0750LineageRelationship()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateLineageRelationship());
+    }
+
+
+    /**
+     * LineageRelationship - and so every lineage relationship type - gains the derivation attribute, which records
+     * the rule or process that derived a relationship from other lineage.  The label of a lineage relationship
+     * summarizes the data that flows; a tool that derives lineage records its own rule in derivation instead, and
+     * uses it to recognize the relationships it maintains.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateLineageRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DERIVATION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

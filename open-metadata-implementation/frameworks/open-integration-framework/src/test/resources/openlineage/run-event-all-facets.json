@@ -88,8 +88,9 @@
       },
       "egeria_informationSupplyChain": {
         "_producer": "https://example.com/producer",
-        "_schemaURL": "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
-        "iscQualifiedName": "InformationSupplyChain::Orders"
+        "_schemaURL": "https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet",
+        "iscQualifiedName": "InformationSupplyChain::Orders",
+        "iscQualifiedNames": ["InformationSupplyChain::Orders", "InformationSupplyChain::Invoicing"]
       },
       "egeria_governanceAction": {
         "_producer": "https://egeria-project.org/",

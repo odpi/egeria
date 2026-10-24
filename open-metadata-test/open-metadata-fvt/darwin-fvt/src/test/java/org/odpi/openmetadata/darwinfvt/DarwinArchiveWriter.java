@@ -106,6 +106,20 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
         this.addUnprovenSet();
         this.addStaleSet();
         this.addPresentSet();
+        this.addProcessUseSet();
+        this.addControlFlowSet();
+        this.addProcessCallSet();
+        this.addTableToProcessSet();
+        this.addUnprovenDataFlowSet();
+        this.addUncheckedDataFlowSet();
+        this.addUnprovenControlFlowSet();
+        this.addUncheckedDependencySet();
+        this.addSupplyChainWithinPathSet();
+        this.addSupplyChainFromAboveSet();
+        this.addAmbiguousSupplyChainSet();
+        this.addDataSetViewSet();
+        this.addTableViewSet();
+        this.addAdoptedDataFlowSet();
 
         File parentDirectory = archiveFile.getParentFile();
 
@@ -279,6 +293,375 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
 
 
     /**
+     * Set 7 - a process used by one server's capability, feeding an asset owned by a second server and an asset
+     * that a third server's capability only uses.
+     */
+    private void addProcessUseSet()
+    {
+        EntityDetail process     = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_USED_GUID, "ProcessUse:process", null);
+        EntityDetail outputAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_PROCESS_OUTPUT_GUID, "ProcessUse:output", null);
+        EntityDetail usedAsset   = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ONLY_USED_GUID, "ProcessUse:only-used", null);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_PROCESS_USE_GUID,
+                            "ProcessUse:process:server",
+                            DarwinFvtTestSupport.CAPABILITY_PROCESS_USE_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_PROCESS_USE_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_PROCESS_USE_GUID,
+                            process,
+                            CapabilityAssetUseType.USES);
+
+        this.addOwningServer(DarwinFvtTestSupport.SERVER_PROCESS_OUTPUT_GUID,
+                             "ProcessUse:output:server",
+                             DarwinFvtTestSupport.CAPABILITY_PROCESS_OUTPUT_GUID,
+                             DarwinFvtTestSupport.SUPPORTED_CAPABILITY_PROCESS_OUTPUT_GUID,
+                             DarwinFvtTestSupport.ASSET_USE_PROCESS_OUTPUT_GUID,
+                             outputAsset);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_ONLY_USES_GUID,
+                            "ProcessUse:only-used:server",
+                            DarwinFvtTestSupport.CAPABILITY_ONLY_USES_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_ONLY_USES_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_ONLY_USES_GUID,
+                            usedAsset,
+                            CapabilityAssetUseType.USES);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.FLOW_PROCESS_TO_OUTPUT_GUID,
+                        process,
+                        outputAsset,
+                        DarwinFvtTestSupport.ISC_PROCESS_USE);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.FLOW_PROCESS_TO_ONLY_USED_GUID,
+                        process,
+                        usedAsset,
+                        DarwinFvtTestSupport.ISC_PROCESS_USE);
+    }
+
+
+    /**
+     * Set 8 - two processes on their own servers, each the member of its own product, joined by a ControlFlow.
+     */
+    private void addControlFlowSet()
+    {
+        EntityDetail fromProcess = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_CONTROL_FROM_GUID, "Control:from", null);
+        EntityDetail toProcess   = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_CONTROL_TO_GUID, "Control:to", null);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_CONTROL_FROM_GUID,
+                            "Control:from:server",
+                            DarwinFvtTestSupport.CAPABILITY_CONTROL_FROM_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_CONTROL_FROM_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_CONTROL_FROM_GUID,
+                            fromProcess,
+                            CapabilityAssetUseType.USES);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_CONTROL_TO_GUID,
+                            "Control:to:server",
+                            DarwinFvtTestSupport.CAPABILITY_CONTROL_TO_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_CONTROL_TO_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_CONTROL_TO_GUID,
+                            toProcess,
+                            CapabilityAssetUseType.USES);
+
+        this.addLineage(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.CONTROL_FLOW_GUID,
+                        fromProcess,
+                        toProcess,
+                        DarwinFvtTestSupport.ISC_CONTROL);
+
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_CONTROL_FROM_GUID, "Control:from:product", DarwinFvtTestSupport.MEMBERSHIP_CONTROL_FROM_GUID, fromProcess);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_CONTROL_TO_GUID, "Control:to:product", DarwinFvtTestSupport.MEMBERSHIP_CONTROL_TO_GUID, toProcess);
+    }
+
+
+    /**
+     * Set 9 - two processes on their own servers joined by a ProcessCall.
+     */
+    private void addProcessCallSet()
+    {
+        EntityDetail caller = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_CALLER_GUID, "Call:caller", null);
+        EntityDetail called = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_CALLED_GUID, "Call:called", null);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_CALLER_GUID,
+                            "Call:caller:server",
+                            DarwinFvtTestSupport.CAPABILITY_CALLER_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_CALLER_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_CALLER_GUID,
+                            caller,
+                            CapabilityAssetUseType.USES);
+
+        this.addUsingServer(DarwinFvtTestSupport.SERVER_CALLED_GUID,
+                            "Call:called:server",
+                            DarwinFvtTestSupport.CAPABILITY_CALLED_GUID,
+                            DarwinFvtTestSupport.SUPPORTED_CAPABILITY_CALLED_GUID,
+                            DarwinFvtTestSupport.ASSET_USE_CALLED_GUID,
+                            called,
+                            CapabilityAssetUseType.USES);
+
+        this.addLineage(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.PROCESS_CALL_GUID,
+                        caller,
+                        called,
+                        DarwinFvtTestSupport.ISC_CALL);
+    }
+
+
+    /**
+     * Set 10 - a column of an asset mapped to a process.
+     */
+    private void addTableToProcessSet()
+    {
+        EntityDetail tableAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_TABLE_GUID, "TableToProcess:asset", null);
+        EntityDetail column     = this.addColumn(DarwinFvtTestSupport.COLUMN_TABLE_GUID, "TableToProcess:asset:column", tableAsset);
+        EntityDetail process    = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_MAPPED_GUID, "TableToProcess:process", null);
+
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.MAPPING_TABLE_TO_PROCESS_GUID,
+                        column,
+                        process,
+                        DarwinFvtTestSupport.ISC_TABLE_PROCESS);
+    }
+
+
+    /**
+     * Set 11 - two assets whose columns are mapped to other assets' columns but not to each other, with a data flow
+     * between the two asserted by the archive.
+     */
+    private void addUnprovenDataFlowSet()
+    {
+        EntityDetail sourceAsset  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNPROVEN_FLOW_SOURCE_GUID, "UnprovenFlow:source", null);
+        EntityDetail targetAsset  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNPROVEN_FLOW_TARGET_GUID, "UnprovenFlow:target", null);
+        EntityDetail otherAsset1  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNPROVEN_FLOW_OTHER_1_GUID, "UnprovenFlow:other1", null);
+        EntityDetail otherAsset2  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNPROVEN_FLOW_OTHER_2_GUID, "UnprovenFlow:other2", null);
+        EntityDetail sourceColumn = this.addColumn(DarwinFvtTestSupport.COLUMN_UNPROVEN_FLOW_SOURCE_GUID, "UnprovenFlow:source:column", sourceAsset);
+        EntityDetail targetColumn = this.addColumn(DarwinFvtTestSupport.COLUMN_UNPROVEN_FLOW_TARGET_GUID, "UnprovenFlow:target:column", targetAsset);
+        EntityDetail otherColumn1 = this.addColumn(DarwinFvtTestSupport.COLUMN_UNPROVEN_FLOW_OTHER_1_GUID, "UnprovenFlow:other1:column", otherAsset1);
+        EntityDetail otherColumn2 = this.addColumn(DarwinFvtTestSupport.COLUMN_UNPROVEN_FLOW_OTHER_2_GUID, "UnprovenFlow:other2:column", otherAsset2);
+
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.MAPPING_UNPROVEN_FLOW_OUT_GUID,
+                        sourceColumn,
+                        otherColumn1,
+                        DarwinFvtTestSupport.ISC_UNPROVEN_FLOW);
+
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.MAPPING_UNPROVEN_FLOW_IN_GUID,
+                        otherColumn2,
+                        targetColumn,
+                        DarwinFvtTestSupport.ISC_UNPROVEN_FLOW);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.FLOW_UNPROVEN_GUID,
+                        sourceAsset,
+                        targetAsset,
+                        DarwinFvtTestSupport.ISC_UNPROVEN_FLOW);
+    }
+
+
+    /**
+     * Set 12 - two assets with no schema detail and a data flow between them asserted by the archive.
+     */
+    private void addUncheckedDataFlowSet()
+    {
+        EntityDetail sourceAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNCHECKED_SOURCE_GUID, "Unchecked:source", null);
+        EntityDetail targetAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_UNCHECKED_TARGET_GUID, "Unchecked:target", null);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.FLOW_UNCHECKED_GUID,
+                        sourceAsset,
+                        targetAsset,
+                        DarwinFvtTestSupport.ISC_UNCHECKED);
+    }
+
+
+    /**
+     * Set 13 - two servers, each using a process, with a control flow between the servers asserted by the archive and
+     * none between the processes.
+     */
+    private void addUnprovenControlFlowSet()
+    {
+        EntityDetail fromProcess = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_UNPROVEN_CONTROL_FROM_GUID, "UnprovenControl:from", null);
+        EntityDetail toProcess   = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_UNPROVEN_CONTROL_TO_GUID, "UnprovenControl:to", null);
+
+        EntityDetail fromServer = this.addUsingServer(DarwinFvtTestSupport.SERVER_UNPROVEN_CONTROL_FROM_GUID,
+                                                      "UnprovenControl:from:server",
+                                                      DarwinFvtTestSupport.CAPABILITY_UNPROVEN_CONTROL_FROM_GUID,
+                                                      DarwinFvtTestSupport.SUPPORTED_CAPABILITY_UNPROVEN_CONTROL_FROM_GUID,
+                                                      DarwinFvtTestSupport.ASSET_USE_UNPROVEN_CONTROL_FROM_GUID,
+                                                      fromProcess,
+                                                      CapabilityAssetUseType.USES);
+
+        EntityDetail toServer = this.addUsingServer(DarwinFvtTestSupport.SERVER_UNPROVEN_CONTROL_TO_GUID,
+                                                    "UnprovenControl:to:server",
+                                                    DarwinFvtTestSupport.CAPABILITY_UNPROVEN_CONTROL_TO_GUID,
+                                                    DarwinFvtTestSupport.SUPPORTED_CAPABILITY_UNPROVEN_CONTROL_TO_GUID,
+                                                    DarwinFvtTestSupport.ASSET_USE_UNPROVEN_CONTROL_TO_GUID,
+                                                    toProcess,
+                                                    CapabilityAssetUseType.USES);
+
+        this.addLineage(OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.CONTROL_FLOW_UNPROVEN_GUID,
+                        fromServer,
+                        toServer,
+                        DarwinFvtTestSupport.ISC_UNPROVEN_FLOW);
+    }
+
+
+    /**
+     * Set 14 - a product with no members and a dependency on the mapped source product asserted by the archive.
+     */
+    private void addUncheckedDependencySet()
+    {
+        EntityDetail sourceProduct   = archiveBuilder.getEntity(DarwinFvtTestSupport.PRODUCT_SOURCE_GUID);
+        EntityDetail noMemberProduct = this.addEntity(PRODUCT_TYPE_NAME, DarwinFvtTestSupport.PRODUCT_NO_MEMBERS_GUID, "NoMembers:product", null);
+
+        this.addLineage(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.DEPENDENCY_UNCHECKED_GUID,
+                        noMemberProduct,
+                        sourceProduct,
+                        DarwinFvtTestSupport.ISC_UNCHECKED);
+    }
+
+
+    /**
+     * Set 15 - two products' assets joined through a process by an untagged data flow and then a tagged one.
+     */
+    private void addSupplyChainWithinPathSet()
+    {
+        EntityDetail sourceAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_WITHIN_SOURCE_GUID, "WithinPath:source", null);
+        EntityDetail targetAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_WITHIN_TARGET_GUID, "WithinPath:target", null);
+        EntityDetail process     = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_WITHIN_GUID, "WithinPath:process", null);
+
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_WITHIN_SOURCE_GUID, "WithinPath:source:product", DarwinFvtTestSupport.MEMBERSHIP_WITHIN_SOURCE_GUID, sourceAsset);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_WITHIN_TARGET_GUID, "WithinPath:target:product", DarwinFvtTestSupport.MEMBERSHIP_WITHIN_TARGET_GUID, targetAsset);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_WITHIN_UNTAGGED_GUID, sourceAsset, process, null);
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_WITHIN_TAGGED_GUID, process, targetAsset, DarwinFvtTestSupport.ISC_WITHIN_PATH);
+    }
+
+
+    /**
+     * Set 16 - two products' assets joined by an untagged data flow, with a dependency between the products asserted
+     * for a supply chain.
+     */
+    private void addSupplyChainFromAboveSet()
+    {
+        EntityDetail sourceAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ABOVE_SOURCE_GUID, "FromAbove:source", null);
+        EntityDetail targetAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ABOVE_TARGET_GUID, "FromAbove:target", null);
+
+        EntityDetail sourceProduct = this.addProduct(DarwinFvtTestSupport.PRODUCT_ABOVE_SOURCE_GUID, "FromAbove:source:product", DarwinFvtTestSupport.MEMBERSHIP_ABOVE_SOURCE_GUID, sourceAsset);
+        EntityDetail targetProduct = this.addProduct(DarwinFvtTestSupport.PRODUCT_ABOVE_TARGET_GUID, "FromAbove:target:product", DarwinFvtTestSupport.MEMBERSHIP_ABOVE_TARGET_GUID, targetAsset);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_ABOVE_UNTAGGED_GUID, sourceAsset, targetAsset, null);
+
+        /*
+         * The target product depends on the source product - the dependent product is at end 1.
+         */
+        this.addLineage(OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName,
+                        DarwinFvtTestSupport.DEPENDENCY_ABOVE_GUID,
+                        targetProduct,
+                        sourceProduct,
+                        DarwinFvtTestSupport.ISC_FROM_ABOVE);
+    }
+
+
+    /**
+     * Set 17 - an untagged data flow from a product's asset to a process that feeds two other products' assets along
+     * two supply chains.
+     */
+    private void addAmbiguousSupplyChainSet()
+    {
+        EntityDetail sourceAsset  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_AMBIGUOUS_SOURCE_GUID, "Ambiguous:source", null);
+        EntityDetail targetAsset1 = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_AMBIGUOUS_TARGET_1_GUID, "Ambiguous:target1", null);
+        EntityDetail targetAsset2 = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_AMBIGUOUS_TARGET_2_GUID, "Ambiguous:target2", null);
+        EntityDetail process      = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_AMBIGUOUS_GUID, "Ambiguous:process", null);
+
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_AMBIGUOUS_SOURCE_GUID, "Ambiguous:source:product", DarwinFvtTestSupport.MEMBERSHIP_AMBIGUOUS_SOURCE_GUID, sourceAsset);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_AMBIGUOUS_TARGET_1_GUID, "Ambiguous:target1:product", DarwinFvtTestSupport.MEMBERSHIP_AMBIGUOUS_TARGET_1_GUID, targetAsset1);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_AMBIGUOUS_TARGET_2_GUID, "Ambiguous:target2:product", DarwinFvtTestSupport.MEMBERSHIP_AMBIGUOUS_TARGET_2_GUID, targetAsset2);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_AMBIGUOUS_UNTAGGED_GUID, sourceAsset, process, null);
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_AMBIGUOUS_1_GUID, process, targetAsset1, DarwinFvtTestSupport.ISC_AMBIGUOUS_1);
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_AMBIGUOUS_2_GUID, process, targetAsset2, DarwinFvtTestSupport.ISC_AMBIGUOUS_2);
+    }
+
+
+    /**
+     * Set 18 - products whose members are data sets over physical assets, with lineage between the physical assets.
+     * The data set is at end 1 of DataSetContent and its content at end 2.
+     */
+    private void addDataSetViewSet()
+    {
+        EntityDetail sourceDataSet = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.DATA_SET_VIEW_SOURCE_GUID, "View:source:dataset", null);
+        EntityDetail sourceAsset   = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_VIEW_SOURCE_GUID, "View:source:physical", null);
+        EntityDetail targetDataSet = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.DATA_SET_VIEW_TARGET_GUID, "View:target:dataset", null);
+        EntityDetail targetAsset   = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_VIEW_TARGET_GUID, "View:target:physical", null);
+        EntityDetail otherDataSet  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.DATA_SET_VIEW_OTHER_GUID, "View:other:dataset", null);
+        EntityDetail process       = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_VIEW_GUID, "View:process", null);
+
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_VIEW_SOURCE_GUID, "View:source:product", DarwinFvtTestSupport.MEMBERSHIP_VIEW_SOURCE_GUID, sourceDataSet);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_VIEW_TARGET_GUID, "View:target:product", DarwinFvtTestSupport.MEMBERSHIP_VIEW_TARGET_GUID, targetDataSet);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_VIEW_OTHER_GUID, "View:other:product", DarwinFvtTestSupport.MEMBERSHIP_VIEW_OTHER_GUID, otherDataSet);
+
+        this.addLineage(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, DarwinFvtTestSupport.CONTENT_VIEW_SOURCE_GUID, sourceDataSet, sourceAsset, null);
+        this.addLineage(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, DarwinFvtTestSupport.CONTENT_VIEW_TARGET_GUID, targetDataSet, targetAsset, DarwinFvtTestSupport.ISC_VIEW);
+        this.addLineage(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, DarwinFvtTestSupport.CONTENT_VIEW_OTHER_GUID, otherDataSet, targetAsset, DarwinFvtTestSupport.ISC_VIEW_OTHER);
+
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_VIEW_IN_GUID, sourceAsset, process, DarwinFvtTestSupport.ISC_VIEW);
+        this.addLineage(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, DarwinFvtTestSupport.FLOW_VIEW_OUT_GUID, process, targetAsset, DarwinFvtTestSupport.ISC_VIEW);
+    }
+
+
+    /**
+     * Set 19 - products whose members are data sets over relational tables, with the tables joined through a process
+     * by DataMapping relationships - the shape the Open Lineage Cataloguer produces.
+     */
+    private void addTableViewSet()
+    {
+        EntityDetail sourceDatabase = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_TABLE_VIEW_SOURCE_GUID, "TableView:source:database", null);
+        EntityDetail targetDatabase = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_TABLE_VIEW_TARGET_GUID, "TableView:target:database", null);
+        EntityDetail sourceTable    = this.addSchemaAttribute(OpenMetadataType.RELATIONAL_TABLE.typeName, DarwinFvtTestSupport.TABLE_VIEW_SOURCE_GUID, "TableView:source:table", sourceDatabase);
+        EntityDetail targetTable    = this.addSchemaAttribute(OpenMetadataType.RELATIONAL_TABLE.typeName, DarwinFvtTestSupport.TABLE_VIEW_TARGET_GUID, "TableView:target:table", targetDatabase);
+        EntityDetail sourceDataSet  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.DATA_SET_TABLE_VIEW_SOURCE_GUID, "TableView:source:dataset", null);
+        EntityDetail targetDataSet  = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.DATA_SET_TABLE_VIEW_TARGET_GUID, "TableView:target:dataset", null);
+        EntityDetail process        = this.addEntity(PROCESS_TYPE_NAME, DarwinFvtTestSupport.PROCESS_TABLE_VIEW_GUID, "TableView:process", null);
+
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_TABLE_VIEW_SOURCE_GUID, "TableView:source:product", DarwinFvtTestSupport.MEMBERSHIP_TABLE_VIEW_SOURCE_GUID, sourceDataSet);
+        this.addProduct(DarwinFvtTestSupport.PRODUCT_TABLE_VIEW_TARGET_GUID, "TableView:target:product", DarwinFvtTestSupport.MEMBERSHIP_TABLE_VIEW_TARGET_GUID, targetDataSet);
+
+        this.addLineage(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, DarwinFvtTestSupport.CONTENT_TABLE_VIEW_SOURCE_GUID, sourceDataSet, sourceTable, null);
+        this.addLineage(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, DarwinFvtTestSupport.CONTENT_TABLE_VIEW_TARGET_GUID, targetDataSet, targetTable, null);
+
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, DarwinFvtTestSupport.MAPPING_TABLE_VIEW_IN_GUID, sourceTable, process, DarwinFvtTestSupport.ISC_TABLE_VIEW);
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, DarwinFvtTestSupport.MAPPING_TABLE_VIEW_OUT_GUID, process, targetTable, DarwinFvtTestSupport.ISC_TABLE_VIEW);
+    }
+
+
+    /**
+     * Set 20 - two assets whose columns are joined by a mapping, each with another column mapped to a third asset so
+     * that both stay catalogued when the first mapping is removed.
+     */
+    private void addAdoptedDataFlowSet()
+    {
+        EntityDetail sourceAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ADOPTED_SOURCE_GUID, "Adopted:source", null);
+        EntityDetail targetAsset = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ADOPTED_TARGET_GUID, "Adopted:target", null);
+        EntityDetail otherAsset1 = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ADOPTED_OTHER_1_GUID, "Adopted:other1", null);
+        EntityDetail otherAsset2 = this.addEntity(ASSET_TYPE_NAME, DarwinFvtTestSupport.ASSET_ADOPTED_OTHER_2_GUID, "Adopted:other2", null);
+
+        EntityDetail sourceColumn  = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_SOURCE_GUID, "Adopted:source:column", sourceAsset);
+        EntityDetail sourceColumn2 = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_SOURCE_2_GUID, "Adopted:source:column2", sourceAsset);
+        EntityDetail targetColumn  = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_TARGET_GUID, "Adopted:target:column", targetAsset);
+        EntityDetail targetColumn2 = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_TARGET_2_GUID, "Adopted:target:column2", targetAsset);
+        EntityDetail otherColumn1  = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_OTHER_1_GUID, "Adopted:other1:column", otherAsset1);
+        EntityDetail otherColumn2  = this.addColumn(DarwinFvtTestSupport.COLUMN_ADOPTED_OTHER_2_GUID, "Adopted:other2:column", otherAsset2);
+
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, DarwinFvtTestSupport.MAPPING_ADOPTED_GUID, sourceColumn, targetColumn, DarwinFvtTestSupport.ISC_ADOPTED);
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, DarwinFvtTestSupport.MAPPING_ADOPTED_SOURCE_OUT_GUID, sourceColumn2, otherColumn1, DarwinFvtTestSupport.ISC_ADOPTED);
+        this.addLineage(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, DarwinFvtTestSupport.MAPPING_ADOPTED_TARGET_IN_GUID, otherColumn2, targetColumn2, DarwinFvtTestSupport.ISC_ADOPTED);
+    }
+
+
+    /**
      * Add a schema attribute anchored to an asset.
      *
      * @param guid unique identifier to give it
@@ -289,6 +672,24 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
     private EntityDetail addColumn(String       guid,
                                    String       name,
                                    EntityDetail asset)
+    {
+        return this.addSchemaAttribute(COLUMN_TYPE_NAME, guid, name, asset);
+    }
+
+
+    /**
+     * Add a schema attribute of a particular type anchored to an asset.
+     *
+     * @param typeName type of schema attribute
+     * @param guid unique identifier to give it
+     * @param name the part of the qualified name after the suite's prefix
+     * @param asset the asset it belongs to
+     * @return the new entity
+     */
+    private EntityDetail addSchemaAttribute(String       typeName,
+                                            String       guid,
+                                            String       name,
+                                            EntityDetail asset)
     {
         InstanceProperties anchorProperties = this.addStringProperty(null, OpenMetadataProperty.ANCHOR_GUID.name, asset.getGUID());
 
@@ -301,7 +702,7 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
                                                              anchorProperties,
                                                              InstanceStatus.ACTIVE));
 
-        return this.addEntity(COLUMN_TYPE_NAME, guid, name, classifications);
+        return this.addEntity(typeName, guid, name, classifications);
     }
 
 
@@ -322,6 +723,30 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
                                  String       assetUseGUID,
                                  EntityDetail asset)
     {
+        this.addUsingServer(serverGUID, serverName, capabilityGUID, supportedCapabilityGUID, assetUseGUID, asset, CapabilityAssetUseType.OWNS);
+    }
+
+
+    /**
+     * Add a software server with one capability that uses an asset in a particular way.
+     *
+     * @param serverGUID unique identifier for the server
+     * @param serverName the part of the server's qualified name after the suite's prefix
+     * @param capabilityGUID unique identifier for the capability
+     * @param supportedCapabilityGUID unique identifier for the SupportedSoftwareCapability relationship
+     * @param assetUseGUID unique identifier for the CapabilityAssetUse relationship
+     * @param asset the asset - a data asset or a process - the capability uses
+     * @param useType how the capability uses it
+     * @return the new server
+     */
+    private EntityDetail addUsingServer(String                 serverGUID,
+                                        String                 serverName,
+                                        String                 capabilityGUID,
+                                        String                 supportedCapabilityGUID,
+                                        String                 assetUseGUID,
+                                        EntityDetail           asset,
+                                        CapabilityAssetUseType useType)
+    {
         EntityDetail server     = this.addEntity(SERVER_TYPE_NAME, serverGUID, serverName, null);
         EntityDetail capability = this.addEntity(CAPABILITY_TYPE_NAME, capabilityGUID, serverName + ":capability", null);
 
@@ -335,7 +760,9 @@ class DarwinArchiveWriter extends OMRSArchiveWriter
                              assetUseGUID,
                              capability,
                              asset,
-                             this.getUseTypeProperties(CapabilityAssetUseType.OWNS));
+                             this.getUseTypeProperties(useType));
+
+        return server;
     }
 
 

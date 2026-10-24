@@ -53,14 +53,14 @@ public enum DarwinAuditCode implements AuditLogMessageSet
 
     /**
      * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0003 - The {0} integration connector has created the {1} exception type ({2}) to record the
-     * digital products whose externally asserted dependencies are not proven by lineage
+     * elements whose externally asserted {3} relationships are not proven by the lineage beneath them
      */
     NEW_EXCEPTION_TYPE("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0003",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector has created the {1} exception type ({2}) to record the digital products whose " +
-                               "externally asserted dependencies are not proven by lineage",
-                       "The exception type is created because there was no existing exception type with this name.  All of the " +
-                               "exceptions raised by this connector are linked to it.",
+                       "The {0} integration connector has created the {1} exception type ({2}) to record the elements whose " +
+                               "externally asserted {3} relationships are not proven by the lineage beneath them",
+                       "The exception type is created because there was no existing exception type with this name.  The exceptions " +
+                               "this connector raises for unproven relationships of this type are linked to it.",
                        "No action is required.  Link the exception type to the appropriate governance policy if the organization " +
                                "wants the exceptions it records to be reviewed as part of the governance program.",
                        "https://egeria-project.org/types/4/0455-Exception-Management/"),
@@ -137,8 +137,9 @@ public enum DarwinAuditCode implements AuditLogMessageSet
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} integration connector has cleared the exception ({1}) against digital product {2} because all of its " +
                               "dependencies asserted by external users are now proven by lineage",
-                      "The unproven dependencies that the exception recorded have either been removed or are now supported by the " +
-                              "data lineage between the products' assets, so the Exception relationship is deleted.",
+                      "The unproven dependencies that the exception recorded have either been removed, are now supported by the " +
+                              "data lineage between the products' assets, or can no longer be checked because one of the products has " +
+                              "no assets among its members, so the Exception relationship is deleted.",
                       "No action is required.  This message is for monitoring the resolution of exceptions.",
                       "https://egeria-project.org/types/4/0455-Exception-Management/"),
 
@@ -159,17 +160,20 @@ public enum DarwinAuditCode implements AuditLogMessageSet
 
     /**
      * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0010 - The {0} integration connector reviewed {1} digital products and derived {2} dependencies
-     * from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5} and found {6} unproven; it
-     * raised {7} exceptions, updated {8} and cleared {9}
+     * from their lineage; it created {3} relationships, removed {4}, set the information supply chain on {5}, found {6} unproven and
+     * left {7} unchecked; it raised {8} exceptions, updated {9} and cleared {10}
      */
     REFRESH_COMPLETE("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0010",
                      AuditLogRecordSeverityLevel.INFO,
                      "The {0} integration connector reviewed {1} digital products and derived {2} dependencies from their lineage; it " +
-                             "created {3} relationships, removed {4}, set the information supply chain on {5} and found {6} unproven; " +
-                             "it raised {7} exceptions, updated {8} and cleared {9}",
+                             "created {3} relationships, removed {4}, set the information supply chain on {5}, found {6} unproven and " +
+                             "left {7} unchecked; it raised {8} exceptions, updated {9} and cleared {10}",
                      "The refresh has completed and the DigitalProductDependency relationships are consistent with the data lineage " +
-                             "between the products' assets.",
-                     "No action is required.  This message is for monitoring the operation of the product dependency manager.",
+                             "between the products' assets.  An unchecked dependency is one asserted by an external user on or by a " +
+                             "product with no assets among its members, so there is no lineage that could prove it or show it to be " +
+                             "unproven.",
+                     "No action is required.  This message is for monitoring the operation of the product dependency manager.  A " +
+                             "high number of unchecked dependencies means the products' members are not catalogued.",
                      "https://egeria-project.org/concepts/digital-product/"),
 
     /**
@@ -184,67 +188,159 @@ public enum DarwinAuditCode implements AuditLogMessageSet
                        "https://egeria-project.org/concepts/digital-product/"),
 
     /**
-     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has recorded that data flows from {1} to {2} through
-     * information supply chain {3} (relationship {4}) because {5}
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012 - The {0} integration connector has created a {1} relationship from {2} to {3} through
+     * information supply chain {4} (relationship {5}) because {6}
      */
     LINEAGE_CREATED("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0012",
                     AuditLogRecordSeverityLevel.INFO,
-                    "The {0} integration connector has recorded that data flows from {1} to {2} through information supply chain {3} " +
-                            "(relationship {4}) because {5}",
-                    "Finer-grained lineage shows that data flows between the two elements, and there was no DataFlow relationship " +
-                            "recording this for the information supply chain, so the connector has created one.  This is how lineage " +
-                            "bubbles up from the detailed level to the coarse-grained: data mappings between schema elements imply a " +
-                            "data flow between their assets, and lineage between the assets owned by software servers' capabilities " +
-                            "implies a data flow between the servers.",
+                    "The {0} integration connector has created a {1} relationship from {2} to {3} through information supply chain {4} " +
+                            "(relationship {5}) because {6}",
+                    "Finer-grained lineage shows that data or control passes between the two elements, and there was no relationship " +
+                            "of this type recording this for the information supply chain, so the connector has created one.  This is " +
+                            "how lineage bubbles up from the detailed level to the coarse-grained: data mappings between schema " +
+                            "elements imply a data flow between their data assets and processes, and the lineage between the data " +
+                            "assets and processes used by the software capabilities of IT infrastructure implies a data flow, process " +
+                            "call or control flow between the items of infrastructure.",
                     "No action is required.  The relationship is removed automatically if the finer-grained lineage stops supporting it.",
                     "https://egeria-project.org/features/lineage-management/overview/"),
 
     /**
-     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the data flow ({1}) from {2} to {3} through
-     * information supply chain {4} because the finer-grained lineage no longer supports it
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013 - The {0} integration connector has removed the {1} relationship ({2}) from {3} to {4}
+     * through information supply chain {5} because the finer-grained lineage no longer supports it
      */
     LINEAGE_REMOVED("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0013",
                     AuditLogRecordSeverityLevel.INFO,
-                    "The {0} integration connector has removed the data flow ({1}) from {2} to {3} through information supply chain {4} " +
-                            "because the finer-grained lineage no longer supports it",
-                    "The connector created this DataFlow relationship on an earlier refresh from the finer-grained lineage between the " +
-                            "two elements.  That lineage is no longer there - or the data flow is now recorded by a relationship asserted " +
-                            "by an external user - so the connector's own relationship is removed.  Relationships asserted by external " +
+                    "The {0} integration connector has removed the {1} relationship ({2}) from {3} to {4} through information supply " +
+                            "chain {5} because the finer-grained lineage no longer supports it",
+                    "The connector created this relationship on an earlier refresh from the finer-grained lineage between the two " +
+                            "elements.  That lineage is no longer there - or the relationship is now recorded by one asserted by an " +
+                            "external user - so the connector's own relationship is removed.  Relationships asserted by external " +
                             "users are never removed.",
-                    "No action is required.  If the data flow is real but the finer-grained lineage is missing, correct the lineage " +
-                            "and the relationship is recreated on the next refresh.",
+                    "No action is required.  If the relationship is real but the finer-grained lineage is missing, correct the " +
+                            "lineage and the relationship is recreated on the next refresh.",
                     "https://egeria-project.org/features/lineage-management/overview/"),
 
     /**
-     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the data flow ({1})
-     * from {2} to {3}, asserted by {4}, to {5}
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014 - The {0} integration connector has set the information supply chain of the {1}
+     * relationship ({2}) from {3} to {4}, asserted by {5}, to {6}
      */
     LINEAGE_SUPPLY_CHAIN_SET("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0014",
                              AuditLogRecordSeverityLevel.INFO,
-                             "The {0} integration connector has set the information supply chain of the data flow ({1}) from {2} to {3}, " +
-                                     "asserted by {4}, to {5}",
-                             "A DataFlow relationship asserted by an external user did not name an information supply chain.  The " +
-                                     "finer-grained lineage between the two elements proves the data flow, so the connector has filled " +
-                                     "in the information supply chain from the first lineage that does.",
-                             "No action is required.  If the data flow belongs to a different information supply chain, correct the " +
-                                     "relationship; the connector does not change an information supply chain once it is set.",
+                             "The {0} integration connector has set the information supply chain of the {1} relationship ({2}) from " +
+                                     "{3} to {4}, asserted by {5}, to {6}",
+                             "A lineage relationship asserted by an external user did not name an information supply chain.  The " +
+                                     "finer-grained lineage between the two elements proves it, so the connector has filled in the " +
+                                     "information supply chain from the first lineage that does.",
+                             "No action is required.  If the relationship belongs to a different information supply chain, correct " +
+                                     "the relationship; the connector does not change an information supply chain once it is set.",
                              "https://egeria-project.org/concepts/information-supply-chain/"),
 
     /**
-     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets from the data
-     * mappings between their schema elements, and {2} data flows between software servers from the lineage between the data assets
-     * their capabilities own; it created {3} DataFlow relationships, removed {4} and set the information supply chain on {5}
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015 - The {0} integration connector derived {1} data flows between data assets and processes
+     * from the data mappings between their schema elements, and {2} data flows, process calls and control flows between items of IT
+     * infrastructure from the lineage between the data assets and processes their capabilities use; it created {3} relationships,
+     * removed {4}, set the information supply chain on {5}, found {6} unproven and left {7} unchecked; it raised {8} exceptions,
+     * updated {9} and cleared {10}
      */
     LINEAGE_REFRESH_COMPLETE("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0015",
                              AuditLogRecordSeverityLevel.INFO,
-                             "The {0} integration connector derived {1} data flows between data assets from the data mappings between their " +
-                                     "schema elements, and {2} data flows between software servers from the lineage between the data assets " +
-                                     "their capabilities own; it created {3} DataFlow relationships, removed {4} and set the information " +
-                                     "supply chain on {5}",
-                             "The coarse-grained lineage is consistent with the finer-grained lineage beneath it.  The digital product " +
-                                     "dependencies are derived next, from the asset-level lineage that this step has just completed.",
-                             "No action is required.  This message is for monitoring the derivation of the coarse-grained lineage.",
+                             "The {0} integration connector derived {1} data flows between data assets and processes from the data " +
+                                     "mappings between their schema elements, and {2} data flows, process calls and control flows " +
+                                     "between items of IT infrastructure from the lineage between the data assets and processes their " +
+                                     "capabilities use; it created {3} relationships, removed {4}, set the information supply chain on " +
+                                     "{5}, found {6} unproven and left {7} unchecked; it raised {8} exceptions, updated {9} and cleared {10}",
+                             "The coarse-grained lineage is consistent with the finer-grained lineage beneath it.  An unchecked " +
+                                     "relationship is one asserted by an external user where the layer beneath is not catalogued for both " +
+                                     "of its ends, so the missing detail is no evidence against it.  The digital product dependencies are " +
+                                     "derived next, from the data fabric lineage that this step has just completed.",
+                             "No action is required.  This message is for monitoring the derivation of the coarse-grained lineage.  The " +
+                                     "unchecked count shows how much of the asserted lineage could not be validated because the layer " +
+                                     "beneath it is not catalogued.",
                              "https://egeria-project.org/features/lineage-management/overview/"),
+
+    /**
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0016 - The {0} integration connector has recorded an exception ({1}) against {2} because {3} of
+     * the {4} relationships asserted by external users that it depends on are not proven by the lineage beneath them: {5}
+     */
+    UNPROVEN_LINEAGE("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0016",
+                     AuditLogRecordSeverityLevel.ACTION,
+                     "The {0} integration connector has recorded an exception ({1}) against {2} because {3} of the {4} relationships " +
+                             "asserted by external users that it depends on are not proven by the lineage beneath them: {5}",
+                     "The listed relationships were asserted by external users, and the layer beneath them is catalogued for both of " +
+                             "their ends, but there is no lineage path there that proves them for the information supply chain named " +
+                             "in the relationship.  The connector does not remove relationships it did not create, so it records the " +
+                             "discrepancy as an Exception relationship linking the element that the data or control reaches to the " +
+                             "exception type.  The affectedRelationships property of the exception lists the unproven relationships.",
+                     "Review the listed relationships.  Either add the missing finer-grained lineage, correct the information supply " +
+                             "chain named on the relationship, or remove the relationship if it does not reflect what happens.  The " +
+                             "exception is cleared automatically once all of the element's relationships of this type are proven.",
+                     "https://egeria-project.org/types/4/0455-Exception-Management/"),
+
+    /**
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0017 - The {0} integration connector has cleared the exception ({1}) against {2} because all of
+     * the {3} relationships asserted by external users that it depends on are now proven by the lineage beneath them
+     */
+    LINEAGE_EXCEPTION_CLEARED("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0017",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector has cleared the exception ({1}) against {2} because all of the {3} " +
+                                      "relationships asserted by external users that it depends on are now proven by the lineage beneath them",
+                              "The unproven relationships that the exception recorded have either been removed, are now supported by the " +
+                                      "finer-grained lineage, or can no longer be checked because the layer beneath is not catalogued for " +
+                                      "both of their ends, so the Exception relationship is deleted.",
+                              "No action is required.  This message is for monitoring the resolution of the exceptions for unproven " +
+                                      "lineage relationships.",
+                              "https://egeria-project.org/types/4/0455-Exception-Management/"),
+
+    /**
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0018 - The {0} integration connector has recorded a copy of the untagged {1} relationship
+     * from {2} to {3} for information supply chain {4} (relationship {5}) because the relationship lies on the lineage paths of
+     * several information supply chains
+     */
+    SUPPLY_CHAIN_COPY_CREATED("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0018",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector has recorded a copy of the untagged {1} relationship from {2} to {3} for " +
+                                      "information supply chain {4} (relationship {5}) because the relationship lies on the lineage paths " +
+                                      "of several information supply chains",
+                              "A relationship that names no information supply chain was found on lineage paths whose supply chain is " +
+                                      "known - from a relationship on the path that names one, or from the relationship the path proves " +
+                                      "in the layer above - and there is more than one such supply chain.  Rather than choose one, the " +
+                                      "connector leaves the relationship untagged and records a copy of it for each supply chain.",
+                              "No action is required.  The copy is removed automatically when the lineage no longer places the " +
+                                      "relationship on this supply chain's paths.  If the relationship belongs to only one of the supply " +
+                                      "chains, set its information supply chain and the copies are removed on the next refresh.",
+                              "https://egeria-project.org/concepts/information-supply-chain/"),
+
+    /**
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0019 - The {0} integration connector has removed its copy ({2}) of the {1} relationship from
+     * {3} to {4} for information supply chain {5} because the lineage no longer calls for it
+     */
+    SUPPLY_CHAIN_COPY_REMOVED("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0019",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector has removed its copy ({2}) of the {1} relationship from {3} to {4} for " +
+                                      "information supply chain {5} because the lineage no longer calls for it",
+                              "The connector made this copy on an earlier refresh because an untagged relationship between the same " +
+                                      "elements lay on the lineage paths of several information supply chains.  That is no longer so - " +
+                                      "the relationship has been given a supply chain, has gone, or is no longer on this supply chain's " +
+                                      "paths - or the copy duplicated another one, so the copy is removed.",
+                              "No action is required.  This message is for monitoring the maintenance of the information supply chains.",
+                              "https://egeria-project.org/concepts/information-supply-chain/"),
+
+    /**
+     * DARWIN-PRODUCT-DEPENDENCY-MANAGER-0020 - The {0} integration connector filled in the information supply chain on {1} untagged
+     * relationships in the layers beneath the coarse-grained lineage, created {2} copies of relationships that lie on the paths of
+     * several information supply chains and removed {3}
+     */
+    SUPPLY_CHAIN_REFRESH_COMPLETE("DARWIN-PRODUCT-DEPENDENCY-MANAGER-0020",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The {0} integration connector filled in the information supply chain on {1} untagged relationships in " +
+                                          "the layers beneath the coarse-grained lineage, created {2} copies of relationships that lie on " +
+                                          "the paths of several information supply chains and removed {3}",
+                                  "A relationship that names no information supply chain is given one when it lies on lineage paths " +
+                                          "whose supply chain is known: filled in when there is one such supply chain, and copied for each " +
+                                          "when there are several.  Only relationships asserted by external users are changed.",
+                                  "No action is required.  This message is for monitoring how the information supply chains are " +
+                                          "established across the layers of lineage.",
+                                  "https://egeria-project.org/concepts/information-supply-chain/"),
 
     ;
 

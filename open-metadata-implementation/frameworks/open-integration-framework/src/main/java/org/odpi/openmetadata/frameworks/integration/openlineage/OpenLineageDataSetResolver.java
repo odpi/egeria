@@ -87,6 +87,7 @@ public class OpenLineageDataSetResolver
      * @param parentAssetQualifiedName qualified name of the parent asset
      * @param coversParent for an abstraction, it is a view over the dataset's parent (for example a tabular data set
      *                     collection over the schema that holds the table) rather than over the dataset itself
+     * @param matchedBy how the element was found to describe the dataset - one of the MATCHED_BY constants
      */
     public record MatchedElement(String  guid,
                                  String  qualifiedName,
@@ -96,7 +97,57 @@ public class OpenLineageDataSetResolver
                                  boolean createdFromOpenLineage,
                                  String  parentAssetGUID,
                                  String  parentAssetQualifiedName,
-                                 boolean coversParent) {}
+                                 boolean coversParent,
+                                 String  matchedBy) {}
+
+
+    /*
+     * How a matching element was found to describe the dataset.  These are recorded as the derivation of the
+     * DataSetContent relationships made from the matches, so the wording is for people reading the metadata.
+     */
+
+    /**
+     * The dataset is in the egeria namespace and its name is the element's qualified name.
+     */
+    public static final String MATCHED_BY_QUALIFIED_NAME          = "matched by qualified name";
+
+    /**
+     * The element's resourceName and namespacePath are the dataset's OpenLineage name and namespace.
+     */
+    public static final String MATCHED_BY_OPENLINEAGE_IDENTITY    = "matched by OpenLineage identity";
+
+    /**
+     * The element is a data store whose pathName is the dataset's name.
+     */
+    public static final String MATCHED_BY_PATH_NAME               = "matched by path name";
+
+    /**
+     * The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+     * the schema named in the dataset.
+     */
+    public static final String MATCHED_BY_ENDPOINT_AND_SCHEMA     = "matched by endpoint and schema name";
+
+    /**
+     * The element's endpoint names the dataset's database server and database, and the element is (or is a view over)
+     * the table named in the dataset.
+     */
+    public static final String MATCHED_BY_ENDPOINT_AND_TABLE      = "matched by endpoint and table name";
+
+    /**
+     * The element is a topic whose endpoint names the dataset's topic and whose bootstrap servers include the broker.
+     */
+    public static final String MATCHED_BY_ENDPOINT_AND_TOPIC      = "matched by endpoint and topic name";
+
+    /**
+     * The element is the Unity Catalog table named by the dataset.
+     */
+    public static final String MATCHED_BY_UNITY_CATALOG_NAME      = "matched by Unity Catalog table name";
+
+    /**
+     * The dataset is itself a view over physical data (an abstraction), and the element is the physical data that
+     * the abstraction's own endpoint leads to.
+     */
+    public static final String MATCHED_THROUGH_DATA_SET_ENDPOINT  = "matched through the data set's endpoint";
 
 
     /**
@@ -239,14 +290,14 @@ public class OpenLineageDataSetResolver
 
             if (element != null)
             {
-                addMatch(element, namespace, name, false, null, null, physical, abstractions);
+                addMatch(element, namespace, name, false, MATCHED_BY_QUALIFIED_NAME, null, null, physical, abstractions);
             }
         }
         else
         {
             for (OpenMetadataElement element : findByOpenLineageIdentity(namespace, name))
             {
-                addMatch(element, namespace, name, false, null, null, physical, abstractions);
+                addMatch(element, namespace, name, false, MATCHED_BY_OPENLINEAGE_IDENTITY, null, null, physical, abstractions);
             }
 
             addTechnologyMatches(OpenLineageNamespace.fromNamespace(namespace), namespace, name, physical, abstractions);
@@ -298,6 +349,7 @@ public class OpenLineageDataSetResolver
      * @param namespace dataset namespace
      * @param name dataset name
      * @param coversParent the element is an abstraction over the dataset's parent
+     * @param matchedBy how the element was found to describe the dataset
      * @param parentAssetGUID parent asset of a schema attribute
      * @param parentAssetQualifiedName qualified name of the parent asset
      * @param physical physical elements found so far
@@ -307,6 +359,7 @@ public class OpenLineageDataSetResolver
                           String                      namespace,
                           String                      name,
                           boolean                     coversParent,
+                          String                      matchedBy,
                           String                      parentAssetGUID,
                           String                      parentAssetQualifiedName,
                           Map<String, MatchedElement> physical,
@@ -330,7 +383,8 @@ public class OpenLineageDataSetResolver
                                                            isCreatedFromOpenLineage(qualifiedName, namespace, name),
                                                            parentAssetGUID,
                                                            parentAssetQualifiedName,
-                                                           isAbstraction && coversParent);
+                                                           isAbstraction && coversParent,
+                                                           matchedBy);
 
         /*
          * An element created from OpenLineage events for the dataset is always the physical element, whatever its
@@ -463,7 +517,7 @@ public class OpenLineageDataSetResolver
         {
             for (OpenMetadataElement dataStore : findElements(OpenMetadataType.DATA_STORE.typeName, OpenMetadataProperty.PATH_NAME.name, name, PropertyComparisonOperator.EQ))
             {
-                addMatch(dataStore, namespace, name, false, null, null, physical, abstractions);
+                addMatch(dataStore, namespace, name, false, MATCHED_BY_PATH_NAME, null, null, physical, abstractions);
             }
         }
         else if ("unitycatalog".equals(location.scheme()))
@@ -536,7 +590,7 @@ public class OpenLineageDataSetResolver
                     {
                         if (tableName == null)
                         {
-                            addMatch(asset, namespace, name, false, null, null, physical, abstractions);
+                            addMatch(asset, namespace, name, false, MATCHED_BY_ENDPOINT_AND_SCHEMA, null, null, physical, abstractions);
                         }
                         else
                         {
@@ -558,7 +612,7 @@ public class OpenLineageDataSetResolver
                     {
                         if (schema != null)
                         {
-                            addMatch(schema, namespace, name, false, null, null, physical, abstractions);
+                            addMatch(schema, namespace, name, false, MATCHED_BY_ENDPOINT_AND_SCHEMA, null, null, physical, abstractions);
                         }
                     }
                     else if (schema != null)
@@ -613,7 +667,7 @@ public class OpenLineageDataSetResolver
              * The collection is a view over the schema: of the dataset itself if the dataset is the schema, or of
              * the table's parent if the dataset is a table.
              */
-            addMatch(asset, namespace, name, tableName != null, null, null, physical, abstractions);
+            addMatch(asset, namespace, name, tableName != null, MATCHED_BY_ENDPOINT_AND_SCHEMA, null, null, physical, abstractions);
         }
         else if (tableName != null)
         {
@@ -622,7 +676,7 @@ public class OpenLineageDataSetResolver
 
             if ((fullName.equalsIgnoreCase(displayName)) || (tableName.equalsIgnoreCase(displayName)))
             {
-                addMatch(asset, namespace, name, false, null, null, physical, abstractions);
+                addMatch(asset, namespace, name, false, MATCHED_BY_ENDPOINT_AND_TABLE, null, null, physical, abstractions);
             }
         }
     }
@@ -667,7 +721,7 @@ public class OpenLineageDataSetResolver
 
         if (table != null)
         {
-            addMatch(table, namespace, name, false, parentAssetGUID, parentAssetQualifiedName, physical, abstractions);
+            addMatch(table, namespace, name, false, MATCHED_BY_ENDPOINT_AND_TABLE, parentAssetGUID, parentAssetQualifiedName, physical, abstractions);
         }
     }
 
@@ -744,7 +798,7 @@ public class OpenLineageDataSetResolver
                     {
                         if (propertyHelper.isTypeOf(asset, OpenMetadataType.TOPIC.typeName))
                         {
-                            addMatch(asset, namespace, topicName, false, null, null, physical, abstractions);
+                            addMatch(asset, namespace, topicName, false, MATCHED_BY_ENDPOINT_AND_TOPIC, null, null, physical, abstractions);
                         }
                     }
                 }
@@ -788,7 +842,7 @@ public class OpenLineageDataSetResolver
                                                                                                               QUALIFIED_NAME_SEPARATOR + name,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name);
 
-            addMatch(table, namespace, name, false, null, null, physical, abstractions);
+            addMatch(table, namespace, name, false, MATCHED_BY_UNITY_CATALOG_NAME, null, null, physical, abstractions);
         }
     }
 

@@ -113,8 +113,8 @@ public class DarwinProductDependencyFVT
                      "The derived dependency should carry the information supply chain of the lineage path it was derived from");
         assertTrue(DarwinFvtTestSupport.isCreatedByDarwin(dependency),
                    "The dependency of the indirect product should have been created by Darwin");
-        assertNotNull(DarwinFvtTestSupport.getLabel(dependency),
-                      "Darwin should label the dependencies it derives");
+        assertEquals(DarwinFvtTestSupport.PRODUCT_DEPENDENCY_DERIVATION, DarwinFvtTestSupport.getDerivation(dependency),
+                     "Darwin should record the rule that derived the dependency in its derivation");
 
         /*
          * The dependency runs one way: the source product does not depend on the indirect one.

@@ -13452,6 +13452,28 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the derivation property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public String removeDerivation(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDerivation";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DERIVATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -15092,6 +15114,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ACTIONS_RELATIONSHIP.typeName))
             {
@@ -15457,6 +15480,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((ControlFlowProperties)relationshipBeanProperties).setGuard(this.removeGuard(elementProperties));
                 ((ControlFlowProperties)relationshipBeanProperties).setMandatoryGuard(this.removeMandatoryGuard(elementProperties));
             }
@@ -15516,6 +15540,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
@@ -15531,6 +15556,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setFormula(this.removeFormula(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setFormulaType(this.removeFormulaType(elementProperties));
                 ((DataMappingProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
@@ -15556,6 +15582,7 @@ public class OpenMetadataPropertyConverterBase
                 relationshipBeanProperties = new DataSetContentProperties();
 
                 ((DataSetContentProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((DataSetContentProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQuery(this.removeQuery(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQueryId(this.removeQueryId(elementProperties));
@@ -15606,6 +15633,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP.typeName))
             {
@@ -15850,6 +15878,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
@@ -16062,6 +16091,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
@@ -16508,6 +16538,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
@@ -16522,6 +16553,7 @@ public class OpenMetadataPropertyConverterBase
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
                 ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setOneWay(this.removeOneWay(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setIntegrationStyle(this.removeIntegrationStyle(elementProperties));
                 ((DataLineageRelationshipProperties)relationshipBeanProperties).setProtocol(this.removeProtocol(elementProperties));
@@ -16616,6 +16648,7 @@ public class OpenMetadataPropertyConverterBase
                     }
 
                     ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                    ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 }
                 else
                 {

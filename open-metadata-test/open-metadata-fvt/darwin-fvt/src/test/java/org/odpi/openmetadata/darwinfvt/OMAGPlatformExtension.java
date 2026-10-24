@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategor
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.platformchassis.springboot.OMAGServerPlatform;
@@ -132,14 +133,72 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Ask the integration daemon to refresh Darwin now, and wait for the call to return.  The refresh is
-     * synchronous, so when this returns the connector has worked through all three levels and the exceptions.
+     * Ask the integration daemon to refresh Darwin now, and wait for the refresh to finish.  The daemon's refresh
+     * call is synchronous, but only when the connector is idle: if a refresh is already in progress - such as the
+     * first refresh, which the daemon starts itself as soon as the connector is running - the call returns at once
+     * without refreshing.  So this waits for Darwin to be idle, having completed its first refresh, before asking,
+     * and again afterwards in case the daemon's own refresh started in between.  When this returns, the connector
+     * has worked through every layer and the exceptions.
      *
-     * @throws Exception the refresh failed
+     * @throws Exception the refresh failed, or Darwin did not become idle in time
      */
     public static void refreshDarwin() throws Exception
     {
-        getIntegrationDaemonClient().refreshConnector(DARWIN_CONNECTOR_NAME);
+        IntegrationDaemon integrationDaemon = getIntegrationDaemonClient();
+
+        waitUntilDarwinIsIdle(integrationDaemon);
+
+        integrationDaemon.refreshConnector(DARWIN_CONNECTOR_NAME);
+
+        waitUntilDarwinIsIdle(integrationDaemon);
+    }
+
+
+    /**
+     * Wait until Darwin has completed at least one refresh and is not refreshing now.
+     *
+     * @param integrationDaemon client for the integration daemon
+     * @throws Exception Darwin failed, or did not become idle within the integration daemon timeout
+     */
+    private static void waitUntilDarwinIsIdle(IntegrationDaemon integrationDaemon) throws Exception
+    {
+        long timeoutMilliseconds = getLongProperty("darwin.fvt.integration.daemon.timeout.seconds", 180) * 1000;
+        long pollMilliseconds    = 250;
+        long giveUpTime          = System.currentTimeMillis() + timeoutMilliseconds;
+
+        String lastKnownStatus = "none reported";
+
+        while (System.currentTimeMillis() < giveUpTime)
+        {
+            IntegrationGroupSummary summary = integrationDaemon.getIntegrationGroupSummary(INTEGRATION_GROUP_QUALIFIED_NAME);
+
+            if ((summary != null) && (summary.getIntegrationConnectorReports() != null))
+            {
+                for (IntegrationConnectorReport connectorReport : summary.getIntegrationConnectorReports())
+                {
+                    if (DARWIN_CONNECTOR_NAME.equals(connectorReport.getConnectorName()))
+                    {
+                        if (connectorReport.getFailingExceptionMessage() != null)
+                        {
+                            throw new IllegalStateException("Darwin failed: " + connectorReport.getFailingExceptionMessage());
+                        }
+
+                        lastKnownStatus = connectorReport.getConnectorStatus() + ", last refresh " + connectorReport.getLastRefreshTime();
+
+                        if ((connectorReport.getConnectorStatus() != IntegrationConnectorStatus.REFRESHING) &&
+                                (connectorReport.getLastRefreshTime() != null))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            Thread.sleep(pollMilliseconds);
+        }
+
+        throw new IllegalStateException("Darwin did not finish refreshing within " + (timeoutMilliseconds / 1000)
+                                                + " seconds (last known status: " + lastKnownStatus + ")");
     }
 
 

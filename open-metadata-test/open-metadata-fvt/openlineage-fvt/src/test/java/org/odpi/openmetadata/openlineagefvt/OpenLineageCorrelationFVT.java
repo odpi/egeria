@@ -6,12 +6,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageColumnLineageDataSetFacet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageColumnLineageDataSetFacetField;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageColumnLineageDataSetFacetInputField;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetFacets;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetResolver;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEgeriaInformationSupplyChainRunFacet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageInputDataSet;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLineageDataSetFacet;
+import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageLineageInput;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputDataSet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunFacets;
@@ -37,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -191,6 +197,21 @@ public class OpenLineageCorrelationFVT
 
         outputFacets.setColumnLineage(columnLineage);
 
+        /*
+         * The lineage dataset facet repeats the table-level lineage - between two tables this is a DataMapping.
+         */
+        OpenLineageLineageInput tableInput = new OpenLineageLineageInput();
+
+        tableInput.setType("DATASET");
+        tableInput.setNamespace(namespace);
+        tableInput.setName(inputName);
+
+        OpenLineageLineageDataSetFacet lineage = new OpenLineageLineageDataSetFacet();
+
+        lineage.setInputs(List.of(tableInput));
+
+        outputFacets.setLineage(lineage);
+
         OpenLineageOutputDataSet output = new OpenLineageOutputDataSet();
 
         output.setNamespace(namespace);
@@ -203,23 +224,45 @@ public class OpenLineageCorrelationFVT
         OpenLineageFvtTestSupport.publish(event);
 
         /*
-         * The lineage is attached to the tables that were catalogued first, and repeated at the level of their schema.
+         * The lineage is attached to the tables that were catalogued first (DataMapping, since a table is a schema attribute),
+         * and repeated at the level of their schema (DataFlow).
          */
         String processQN = OpenLineageFvtTestSupport.processQualifiedName(OpenLineageEventFactory.JOB_NAMESPACE, JOB_NAME);
 
         OpenMetadataRootElement process     = OpenLineageFvtTestSupport.waitForAsset(processQN, "the job's process");
         String                  processGUID = process.getElementHeader().getGUID();
 
-        waitForRelationship(inputTableGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "the orders table to feed the job");
-        waitForRelationship(processGUID, outputTableGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "the job to feed the order_totals table");
+        waitForRelationship(inputTableGUID, processGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, "the orders table to feed the job");
+        waitForRelationship(processGUID, outputTableGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, "the job to feed the order_totals table");
         waitForRelationship(schemaGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "the schema to feed the job (asset-level lineage)");
         waitForRelationship(processGUID, schemaGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "the job to feed the schema (asset-level lineage)");
+
+        assertFalse(OpenLineageFvtTestSupport.areLinked(inputTableGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName),
+                    "Lineage between a table (schema attribute) and a process should be a DataMapping, not a DataFlow");
+        assertFalse(OpenLineageFvtTestSupport.areLinked(processGUID, outputTableGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName),
+                    "Lineage between a process and a table (schema attribute) should be a DataMapping, not a DataFlow");
 
         /*
          * Column and table mappings.
          */
         waitForRelationship(amountGUID, totalGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, "the amount column to map to the total column");
         waitForRelationship(inputTableGUID, outputTableGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, "the orders table to map to the order_totals table");
+
+        /*
+         * Each relationship records the part of the event it was derived from.  The table mapping is supported by both
+         * the columnLineage facet and the lineage facet; the columnLineage facet is processed first, so it created it.
+         */
+        assertDerivation(inputTableGUID, processGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS);
+        assertDerivation(processGUID, outputTableGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS);
+        assertDerivation(schemaGUID, processGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_TABLE_LINEAGE);
+        assertDerivation(processGUID, schemaGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_TABLE_LINEAGE);
+        assertDerivation(amountGUID, totalGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_COLUMN_LINEAGE_FACET);
+        assertDerivation(inputTableGUID, outputTableGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, OpenLineageCataloguerIntegrationConnector.DERIVED_FROM_COLUMN_LINEAGE_FACET);
+
+        assertFalse(OpenLineageFvtTestSupport.areLinked(inputTableGUID, outputTableGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName),
+                   "Lineage between two tables (schema attributes) should be a DataMapping, not a DataFlow");
+        assertFalse(OpenLineageFvtTestSupport.areLinked(amountGUID, totalGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName),
+                   "Lineage between two columns (schema attributes) should be a DataMapping, not a DataFlow");
 
         /*
          * The duplicate catalogue entry takes no lineage but is linked as a peer duplicate.
@@ -235,6 +278,12 @@ public class OpenLineageCorrelationFVT
          */
         waitForRelationship(dataSetGUID, inputTableGUID, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, "the tabular data set to be linked to the orders table");
         waitForRelationship(collectionGUID, schemaGUID, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, "the collection to be linked to the schema");
+
+        /*
+         * Each link records how the abstraction was matched to the dataset.
+         */
+        assertDerivation(dataSetGUID, inputTableGUID, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, OpenLineageDataSetResolver.MATCHED_BY_ENDPOINT_AND_TABLE);
+        assertDerivation(collectionGUID, schemaGUID, OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName, OpenLineageDataSetResolver.MATCHED_BY_ENDPOINT_AND_SCHEMA);
 
         assertTrue(OpenLineageFvtTestSupport.getRelatedElements(dataSetGUID, 0, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName).isEmpty(),
                    "The tabular data set is an abstraction and should not take lineage");
@@ -296,6 +345,35 @@ public class OpenLineageCorrelationFVT
         }
 
         return false;
+    }
+
+
+    /**
+     * Check the derivation of the relationship of a type from one element to another.
+     *
+     * @param end1GUID element at end 1
+     * @param end2GUID element at end 2
+     * @param relationshipTypeName relationship type
+     * @param expectedDerivation the derivation it should record
+     * @throws Exception repository problem
+     */
+    private void assertDerivation(String end1GUID,
+                                  String end2GUID,
+                                  String relationshipTypeName,
+                                  String expectedDerivation) throws Exception
+    {
+        for (RelatedMetadataElement related : OpenLineageFvtTestSupport.getRelatedElements(end1GUID, 1, relationshipTypeName))
+        {
+            if ((related.getElement() != null) && (end2GUID.equals(related.getElement().getElementGUID())))
+            {
+                assertEquals(expectedDerivation,
+                             propertyHelper.getStringProperty("openlineage-fvt", OpenMetadataProperty.DERIVATION.name, related.getRelationshipProperties(), "assertDerivation"),
+                             "The " + relationshipTypeName + " from " + end1GUID + " to " + end2GUID + " should record how it was derived");
+                return;
+            }
+        }
+
+        throw new AssertionError("No " + relationshipTypeName + " from " + end1GUID + " to " + end2GUID);
     }
 
 

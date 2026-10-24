@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -14,7 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * This class represents Egeria's custom egeria_informationSupplyChain run facet.  It names the information supply
- * chain that a run is part of, so that the lineage Egeria catalogues from the run is tagged with it.  Any
+ * chains that a run is part of, so that the lineage Egeria catalogues from the run is tagged with them.  A run that
+ * moves data along a single information supply chain names it in iscQualifiedName; a run that moves data along
+ * several lists them in iscQualifiedNames, and Egeria creates each lineage relationship once for each of them.  Any
  * OpenLineage producer (for example an Apache Airflow DAG) can add it to its run events.
  * It follows the facet schema at {@value #SCHEMA_URL}.
  */
@@ -31,9 +34,10 @@ public class OpenLineageEgeriaInformationSupplyChainRunFacet extends OpenLineage
     /**
      * Location of the facet's schema.
      */
-    public static final String SCHEMA_URL = "https://egeria-project.org/openlineage/facets/1-0-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet";
+    public static final String SCHEMA_URL = "https://egeria-project.org/openlineage/facets/1-1-0/EgeriaInformationSupplyChainRunFacet.json#/$defs/EgeriaInformationSupplyChainRunFacet";
 
-    private String iscQualifiedName = null;
+    private String       iscQualifiedName  = null;
+    private List<String> iscQualifiedNames = null;
 
 
     /**
@@ -68,6 +72,30 @@ public class OpenLineageEgeriaInformationSupplyChainRunFacet extends OpenLineage
 
 
     /**
+     * Return the qualified names of the information supply chains that the run is part of, when it is part of
+     * several.
+     *
+     * @return list of strings
+     */
+    public List<String> getIscQualifiedNames()
+    {
+        return iscQualifiedNames;
+    }
+
+
+    /**
+     * Set up the qualified names of the information supply chains that the run is part of, when it is part of
+     * several.
+     *
+     * @param iscQualifiedNames list of strings
+     */
+    public void setIscQualifiedNames(List<String> iscQualifiedNames)
+    {
+        this.iscQualifiedNames = iscQualifiedNames;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -77,6 +105,7 @@ public class OpenLineageEgeriaInformationSupplyChainRunFacet extends OpenLineage
     {
         return "OpenLineageEgeriaInformationSupplyChainRunFacet{" +
                        "iscQualifiedName='" + iscQualifiedName + '\'' +
+                       ", iscQualifiedNames=" + iscQualifiedNames +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -106,7 +135,8 @@ public class OpenLineageEgeriaInformationSupplyChainRunFacet extends OpenLineage
             return false;
         }
         OpenLineageEgeriaInformationSupplyChainRunFacet that = (OpenLineageEgeriaInformationSupplyChainRunFacet) objectToCompare;
-        return Objects.equals(iscQualifiedName, that.iscQualifiedName);
+        return Objects.equals(iscQualifiedName, that.iscQualifiedName) &&
+                       Objects.equals(iscQualifiedNames, that.iscQualifiedNames);
     }
 
 
@@ -118,6 +148,6 @@ public class OpenLineageEgeriaInformationSupplyChainRunFacet extends OpenLineage
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), iscQualifiedName);
+        return Objects.hash(super.hashCode(), iscQualifiedName, iscQualifiedNames);
     }
 }

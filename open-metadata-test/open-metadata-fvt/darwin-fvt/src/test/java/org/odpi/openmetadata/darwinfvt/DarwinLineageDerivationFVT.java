@@ -15,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -73,8 +74,10 @@ public class DarwinLineageDerivationFVT
         assertTrue(DarwinFvtTestSupport.isCreatedByDarwin(dataFlow),
                    "The DataFlow between the mapped assets should have been created by Darwin (createdBy "
                            + DarwinFvtTestSupport.DARWIN_USER_ID + ") but was created by " + DarwinFvtTestSupport.getCreatedBy(dataFlow));
-        assertNotNull(DarwinFvtTestSupport.getLabel(dataFlow),
-                      "Darwin should label the DataFlow it derives so that its origin is visible in a lineage graph");
+        assertEquals(DarwinFvtTestSupport.ASSET_LINEAGE_DERIVATION, DarwinFvtTestSupport.getDerivation(dataFlow),
+                     "Darwin should record the rule that derived the DataFlow in its derivation");
+        assertNull(DarwinFvtTestSupport.getLabel(dataFlow),
+                   "Darwin should leave the label - the summary of the data that flows - to others");
 
         /*
          * Data flows one way.  A DataFlow in the other direction would mean Darwin had confused the mapping's
