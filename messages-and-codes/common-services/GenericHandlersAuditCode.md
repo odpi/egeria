@@ -9,7 +9,7 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 17 |
+| **Number of messages** | 18 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -34,6 +34,7 @@ The GenericHandlersAuditCode is used to define the message content for the OMRS 
 | [OMAG-GENERIC-HANDLERS-0027](#omag-generic-handlers-0027) | SHUTDOWN | Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request |
 | [OMAG-GENERIC-HANDLERS-0026](#omag-generic-handlers-0026) | INFO | Engine action {0} has not been cancelled for user {1} because it had already finished with status {2} |
 | [OMAG-GENERIC-HANDLERS-0031](#omag-generic-handlers-0031) | SHUTDOWN | Governance action process instance {0} has been cancelled by user {1}; {2} active engine action(s) were cancelled |
+| [OMAG-GENERIC-HANDLERS-0032](#omag-generic-handlers-0032) | INFO | Governance action process instance {0} has not been cancelled for user {1} because it had already finished with status {2} |
 | [OMAG-GENERIC-HANDLERS-0028](#omag-generic-handlers-0028) | INFO | Method {0} was unable to receive list of entities due to a {1} exception with message {2} |
 | [OMAG-GENERIC-HANDLERS-0029](#omag-generic-handlers-0029) | INFO | Method {0} detected multiple {1} entities with a {2} of {3}; they have been linked with PeerDuplicateLink relationships with a status of DISCOVERED.  The entities are {4} |
 | [OMAG-GENERIC-HANDLERS-0030](#omag-generic-handlers-0030) | ERROR | Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships due to a {2} exception with message {3} |
@@ -344,6 +345,28 @@ Each engine action of the process instance that had not yet finished is cancelle
 **User action**
 
 Monitor the shutdown of the requests in the engine host(s).
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-0032
+
+> Governance action process instance {0} has not been cancelled for user {1} because it had already finished with status {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersAuditCode.GOVERNANCE_ACTION_PROCESS_ALREADY_FINISHED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/services/generic-handlers/> |
+
+**System action**
+
+The process instance and its engine actions are left unchanged so that the record of how the process finished is preserved.
+
+**User action**
+
+No action is required.  The process finished before the cancel request arrived.
 
 
 ----

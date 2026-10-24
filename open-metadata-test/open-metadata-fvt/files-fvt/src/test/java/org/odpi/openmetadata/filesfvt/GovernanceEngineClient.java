@@ -6,10 +6,12 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CompletionStatusRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionStatusRequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -95,6 +97,28 @@ class GovernanceEngineClient
                                                            VoidResponse.class);
 
         checkResponse("claimEngineAction(" + engineActionGUID + ")", response);
+    }
+
+
+    /**
+     * Update the status of a claimed engine action - for example, to IN_PROGRESS once its work has started.
+     *
+     * @param engineActionGUID engine action to update
+     * @param status new status
+     * @throws Exception the service reported a problem
+     */
+    void updateEngineActionStatus(String         engineActionGUID,
+                                  ActivityStatus status) throws Exception
+    {
+        EngineActionStatusRequestBody requestBody = new EngineActionStatusRequestBody();
+
+        requestBody.setStatus(status);
+
+        VoidResponse response = restTemplate.postForObject(urlRoot + "/engine-actions/" + engineActionGUID + "/status/update",
+                                                           requestBody,
+                                                           VoidResponse.class);
+
+        checkResponse("updateEngineActionStatus(" + engineActionGUID + ")", response);
     }
 
 

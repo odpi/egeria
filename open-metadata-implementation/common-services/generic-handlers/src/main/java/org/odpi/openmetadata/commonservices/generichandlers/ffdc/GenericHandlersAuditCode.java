@@ -176,6 +176,16 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                         "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-0032 - Governance action process instance {0} has not been cancelled for user {1} because it had already finished with status {2}
+     */
+    GOVERNANCE_ACTION_PROCESS_ALREADY_FINISHED("OMAG-GENERIC-HANDLERS-0032",
+                                               AuditLogRecordSeverityLevel.INFO,
+                                               "Governance action process instance {0} has not been cancelled for user {1} because it had already finished with status {2}",
+                                               "The process instance and its engine actions are left unchanged so that the record of how the process finished is preserved.",
+                                               "No action is required.  The process finished before the cancel request arrived.",
+                                               "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-0028 - Method {0} was unable to receive list of entities due to a {1} exception with message {2}
      */
     FAILED_TO_RETRIEVE_ENTITIES("OMAG-GENERIC-HANDLERS-0028",
