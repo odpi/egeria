@@ -1233,30 +1233,39 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Distributes audit log events from one or more embedded topic connectors to one or more embedded audit log destinations.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">AuditLoggingBase is the base class for helper classes that are given an audit log when they are created - for
+ example, the classes that a connector delegates part of its work to.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">AuditLoggingComponent is an interface that components can implement to indicate that they can make use of an audit log.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">AuditLogMessageDefinition extends MessageDefinition to provide a container that describes
  a single instance of a message for an audit log record.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">AuditLogMessageSet is the interface implemented by an enum that contains the collection of message definitions for a component.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/test/unittest/utilities/AuditLogMessageSetTest.html" title="class in org.odpi.openmetadata.test.unittest.utilities">AuditLogMessageSetTest</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/test/unittest/utilities/AuditLogMessageSetTest.html" title="class in org.odpi.openmetadata.test.unittest.utilities">AuditLogMessageSetTest</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">AuditLogMessageSetTest is a base class for unit test cases that are validating audit log message sets.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/AuditLogProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">AuditLogProperties</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/AuditLogProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">AuditLogProperties</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Identifies an asset containing an audit log.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">AuditLogRecord provides a carrier for details about a single log record in the audit log.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">AuditLogRecorder writes audit log records to an audit log that may not have been supplied.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab1">

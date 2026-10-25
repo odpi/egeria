@@ -86,7 +86,9 @@ loadScripts(document, 'script');</script>
 <h1 title="Class OSSUnityCatalogInsideCatalogSyncBase" class="title">Class OSSUnityCatalogInsideCatalogSyncBase</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../../frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncBase</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -95,7 +97,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OSSUnityCatalogInsideCatalogSyncBase</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../../../frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></span></div>
 <div class="block">Common functions for the synchronizing between Egeria and Unity Catalog.</div>
 </section>
 <section class="summary">
@@ -112,79 +114,79 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
 <div class="col-second even-row-color"><code><a href="#assetClient" class="member-name-link">assetClient</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#catalogGUID" class="member-name-link">catalogGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#catalogGUID" class="member-name-link">catalogGUID</a></code></div>
+<div class="col-second even-row-color"><code><a href="#catalogTargetName" class="member-name-link">catalogTargetName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#catalogTargetName" class="member-name-link">catalogTargetName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#catalogTypeName" class="member-name-link">catalogTypeName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#catalogTypeName" class="member-name-link">catalogTypeName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#configurationProperties" class="member-name-link">configurationProperties</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#context" class="member-name-link">context</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../controls/UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a></code></div>
-<div class="col-second even-row-color"><code><a href="#deployedImplementationType" class="member-name-link">deployedImplementationType</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#configurationProperties" class="member-name-link">configurationProperties</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#entityTypeName" class="member-name-link">entityTypeName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#excludeNames" class="member-name-link">excludeNames</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
+<div class="col-second even-row-color"><code><a href="#context" class="member-name-link">context</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/ExternalIdClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalIdClient</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#externalIdClient" class="member-name-link">externalIdClient</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../controls/UnityCatalogDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">UnityCatalogDeployedImplementationType</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#deployedImplementationType" class="member-name-link">deployedImplementationType</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#includeNames" class="member-name-link">includeNames</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#entityTypeName" class="member-name-link">entityTypeName</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#excludeNames" class="member-name-link">excludeNames</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/ExternalIdClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ExternalIdClient</a></code></div>
+<div class="col-second even-row-color"><code><a href="#externalIdClient" class="member-name-link">externalIdClient</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#includeNames" class="member-name-link">includeNames</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#metadataCollectionGUID" class="member-name-link">metadataCollectionGUID</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#metadataCollectionGUID" class="member-name-link">metadataCollectionGUID</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#metadataCollectionQualifiedName" class="member-name-link">metadataCollectionQualifiedName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#metadataCollectionQualifiedName" class="member-name-link">metadataCollectionQualifiedName</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataStore</a></code></div>
+<div class="col-second even-row-color"><code><a href="#openMetadataStore" class="member-name-link">openMetadataStore</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataStore</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#openMetadataStore" class="member-name-link">openMetadataStore</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/PropertyFacetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">PropertyFacetClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyFacetClient" class="member-name-link">propertyFacetClient</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/connectorcontext/PropertyFacetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">PropertyFacetClient</a></code></div>
-<div class="col-second even-row-color"><code><a href="#propertyFacetClient" class="member-name-link">propertyFacetClient</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
+<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#serverGUID" class="member-name-link">serverGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#serverGUID" class="member-name-link">serverGUID</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
+<div class="col-second even-row-color"><code><a href="#targetPermittedSynchronization" class="member-name-link">targetPermittedSynchronization</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#targetPermittedSynchronization" class="member-name-link">targetPermittedSynchronization</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#templateGUID" class="member-name-link">templateGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#templateGUID" class="member-name-link">templateGUID</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#templates" class="member-name-link">templates</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#templates" class="member-name-link">templates</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#ucConnector" class="member-name-link">ucConnector</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ucConnector" class="member-name-link">ucConnector</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#ucFullNameToEgeriaGUID" class="member-name-link">ucFullNameToEgeriaGUID</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#ucFullNameToEgeriaGUID" class="member-name-link">ucFullNameToEgeriaGUID</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#ucServerEndpoint" class="member-name-link">ucServerEndpoint</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ucServerEndpoint" class="member-name-link">ucServerEndpoint</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.auditlog.<a href="../../../../frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></h3>
+<code><a href="../../../../frameworks/auditlog/AuditLoggingBase.html#auditLog">auditLog</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -396,6 +398,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.auditlog.<a href="../../../../frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></h3>
+<code><a href="../../../../frameworks/auditlog/AuditLoggingBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Throwable)">logExceptionRecord</a>, <a href="../../../../frameworks/auditlog/AuditLoggingBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)">logExceptionRecord</a>, <a href="../../../../frameworks/auditlog/AuditLoggingBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../../../frameworks/auditlog/AuditLoggingBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -503,12 +508,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="configurationProperties">
 <h3>configurationProperties</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">configurationProperties</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="auditLog">
-<h3>auditLog</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></span>&nbsp;<span class="element-name">auditLog</span></div>
 </section>
 </li>
 <li>

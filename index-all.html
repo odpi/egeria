@@ -8260,20 +8260,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">AuditableServerServiceInstanceHandler supports registered services that have an audit log.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/modules/AtlasIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasIntegrationModuleBase</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DirectoryToMonitor.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.adapters.connectors.integration.basicfiles.<a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/openapis/RESTClient.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.adapters.connectors.integration.openapis.<a href="org/odpi/openmetadata/adapters/connectors/integration/openapis/RESTClient.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openapis">RESTClient</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncBase.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncBase.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncBase</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/ffdc/rest/FFDCRESTClientBase.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.commonservices.ffdc.rest.<a href="org/odpi/openmetadata/commonservices/ffdc/rest/FFDCRESTClientBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCRESTClientBase</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIRootHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIRootHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/multitenant/AuditableServerServiceInstance.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.commonservices.multitenant.<a href="org/odpi/openmetadata/commonservices/multitenant/AuditableServerServiceInstance.html" title="class in org.odpi.openmetadata.commonservices.multitenant">AuditableServerServiceInstance</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Logging destination - may be null.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/client/ConnectedAssetClient.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.frameworks.connectors.client.<a href="org/odpi/openmetadata/frameworks/connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#auditLog" class="member-name-link">auditLog</a> - Variable in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
@@ -8364,6 +8360,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Principle constructor</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a> - Class in <a href="org/odpi/openmetadata/frameworks/auditlog/package-summary.html">org.odpi.openmetadata.frameworks.auditlog</a></dt>
+<dd>
+<div class="block">AuditLoggingBase is the base class for helper classes that are given an audit log when they are created - for
+ example, the classes that a connector delegates part of its work to.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">AuditLoggingBase(AuditLog)</a> - Constructor for class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingComponent.html" class="type-name-link" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a> - Interface in <a href="org/odpi/openmetadata/frameworks/auditlog/package-summary.html">org.odpi.openmetadata.frameworks.auditlog</a></dt>
 <dd>
 <div class="block">AuditLoggingComponent is an interface that components can implement to indicate that they can make use of an audit log.</div>
@@ -8414,6 +8419,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecord.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.auditlog.AuditLogRecord)" class="member-name-link">AuditLogRecord(AuditLogRecord)</a> - Constructor for class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a></dt>
 <dd>
 <div class="block">Copy/clone constructor</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a> - Class in <a href="org/odpi/openmetadata/frameworks/auditlog/package-summary.html">org.odpi.openmetadata.frameworks.auditlog</a></dt>
+<dd>
+<div class="block">AuditLogRecorder writes audit log records to an audit log that may not have been supplied.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" class="type-name-link" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a> - Interface in <a href="org/odpi/openmetadata/frameworks/auditlog/messagesets/package-summary.html">org.odpi.openmetadata.frameworks.auditlog.messagesets</a></dt>
 <dd>
@@ -108199,6 +108208,38 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the OMRS.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, String, Throwable)</a> - Method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception, with supporting information.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, String, Throwable)</a> - Method in class org.odpi.openmetadata.frameworks.integration.connectors.<a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception detected by the catalog target processor.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, String, Throwable)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception detected by the metadata collection.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, Throwable)</a> - Method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, Throwable)</a> - Method in class org.odpi.openmetadata.frameworks.integration.connectors.<a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception detected by the catalog target processor.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)" class="member-name-link">logExceptionRecord(String, AuditLogMessageDefinition, Throwable)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception detected by the metadata collection.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html#logExceptionRecord(org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String,java.lang.Throwable)" class="member-name-link">logExceptionRecord(AuditLog, String, AuditLogMessageDefinition, String, Throwable)</a> - Static method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception, with supporting information.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html#logExceptionRecord(org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)" class="member-name-link">logExceptionRecord(AuditLog, String, AuditLogMessageDefinition, Throwable)</a> - Static method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></dt>
+<dd>
+<div class="block">Log an audit log record for an exception.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/LogFileProperties.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">LogFileProperties</a> - Class in <a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/filesandfolders/package-summary.html">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders</a></dt>
 <dd>
 <div class="block">LogFileProperties describes a log file.</div>
@@ -108287,17 +108328,49 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/userauthn/LogoutController.html#%3Cinit%3E()" class="member-name-link">LogoutController()</a> - Constructor for class org.odpi.openmetadata.userauthn.<a href="org/odpi/openmetadata/userauthn/LogoutController.html" title="class in org.odpi.openmetadata.userauthn">LogoutController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(String, AuditLogMessageDefinition)</a> - Method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(String, AuditLogMessageDefinition)</a> - Method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
 <dd>
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the connector.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(String, AuditLogMessageDefinition)</a> - Method in class org.odpi.openmetadata.frameworks.integration.connectors.<a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception detected by the catalog target processor.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(String, AuditLogMessageDefinition)</a> - Method in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataSecurityConnector</a></dt>
 <dd>
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the connector.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(String, AuditLogMessageDefinition)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception detected by the metadata collection.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)" class="member-name-link">logRecord(String, AuditLogMessageDefinition, String)</a> - Method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception, with supporting information.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)" class="member-name-link">logRecord(String, AuditLogMessageDefinition, String)</a> - Method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></dt>
 <dd>
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the OMRS.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)" class="member-name-link">logRecord(String, AuditLogMessageDefinition, String)</a> - Method in class org.odpi.openmetadata.frameworks.integration.connectors.<a href="org/odpi/openmetadata/frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception detected by the catalog target processor.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)" class="member-name-link">logRecord(String, AuditLogMessageDefinition, String)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/OMRSMetadataCollection.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore">OMRSMetadataCollection</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception detected by the metadata collection.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html#logRecord(org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)" class="member-name-link">logRecord(AuditLog, String, AuditLogMessageDefinition)</a> - Static method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html#logRecord(org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)" class="member-name-link">logRecord(AuditLog, String, AuditLogMessageDefinition, String)</a> - Static method in class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></dt>
+<dd>
+<div class="block">Log an audit log record for an event, decision, error, or exception, with supporting information.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataPlatformSecurityConnector.html#logRecord(org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity,java.lang.String)" class="member-name-link">logRecord(AuditLogRecordSeverity, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataPlatformSecurityConnector</a></dt>
 <dd>
@@ -126692,6 +126765,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html#PINKY" class="member-name-link">PINKY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.mermaid.<a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">Colour</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#PLACEHOLDER_NOT_A_NUMBER" class="member-name-link">PLACEHOLDER_NOT_A_NUMBER</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
+<dd>
+<div class="block">OMAG-GENERIC-HANDLERS-400-017 - The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/SpecificationPropertyType.html#PLACEHOLDER_PROPERTY" class="member-name-link">PLACEHOLDER_PROPERTY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a></dt>
 <dd>
 <div class="block">Map of placeholder names to values that should be replaced in a template.</div>

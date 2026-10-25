@@ -111,13 +111,22 @@ loadScripts(document, 'script');</script>
 <div class="block">AuditLogDestination provides the support to push audit log records to the desired locations
  for either storage or processing.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">AuditLoggingBase is the base class for helper classes that are given an audit log when they are created - for
+ example, the classes that a connector delegates part of its work to.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">AuditLoggingComponent is an interface that components can implement to indicate that they can make use of an audit log.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AuditLogRecord.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecord</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">AuditLogRecord provides a carrier for details about a single log record in the audit log.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AuditLogRecorder.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecorder</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AuditLogRecorder writes audit log records to an audit log that may not have been supplied.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab3"><a href="AuditLogRecordSeverityLevel.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">AuditLogRecordSeverityLevel</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
