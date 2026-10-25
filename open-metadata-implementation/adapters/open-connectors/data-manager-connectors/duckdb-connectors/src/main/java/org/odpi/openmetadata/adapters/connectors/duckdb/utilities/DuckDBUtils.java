@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.duckdb.utilities;
 import org.odpi.openmetadata.adapters.connectors.duckdb.controls.DuckDBConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -145,13 +146,13 @@ public class DuckDBUtils
                      * "... is already attached by database ...".  The statement's purpose is already achieved, so
                      * this is not reported as a failure.
                      */
-                    if ((auditLog != null) && ((error.getMessage() == null) || (! error.getMessage().contains("is already attached"))))
+                    if ((error.getMessage() == null) || (! error.getMessage().contains("is already attached")))
                     {
-                        auditLog.logMessage("runAttachStatements",
-                                            DuckDBAuditCode.ATTACH_STATEMENT_FAILED.getMessageDefinition(connectorName,
-                                                                                                          attachStatement,
-                                                                                                          databaseName,
-                                                                                                          error.getMessage()));
+                        AuditLogRecorder.logRecord(auditLog, "runAttachStatements",
+                                                             DuckDBAuditCode.ATTACH_STATEMENT_FAILED.getMessageDefinition(connectorName,
+                                                                                                                           attachStatement,
+                                                                                                                           databaseName,
+                                                                                                                           error.getMessage()));
                     }
                 }
             }

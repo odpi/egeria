@@ -157,13 +157,10 @@ public class WSO2MIIntegrationConnector extends IntegrationConnectorBase
 
         if (apiGUID != null)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(callingMethodName,
-                                    WSO2MIAuditCode.SKIPPING_API.getMessageDefinition(connectorName,
-                                                                                     apiInfo.getName(),
-                                                                                     apiGUID));
-            }
+            logRecord(callingMethodName,
+                      WSO2MIAuditCode.SKIPPING_API.getMessageDefinition(connectorName,
+                                                                       apiInfo.getName(),
+                                                                       apiGUID));
         }
         else
         {
@@ -179,13 +176,10 @@ public class WSO2MIIntegrationConnector extends IntegrationConnectorBase
 
             apiGUID = apiClient.createAsset(newElementOptions, null, properties, null);
 
-            if (auditLog != null)
-            {
-                auditLog.logMessage(callingMethodName,
-                                    WSO2MIAuditCode.CATALOGED_API.getMessageDefinition(connectorName,
-                                                                                      apiInfo.getName(),
-                                                                                      apiGUID));
-            }
+            logRecord(callingMethodName,
+                      WSO2MIAuditCode.CATALOGED_API.getMessageDefinition(connectorName,
+                                                                        apiInfo.getName(),
+                                                                        apiGUID));
         }
     }
 

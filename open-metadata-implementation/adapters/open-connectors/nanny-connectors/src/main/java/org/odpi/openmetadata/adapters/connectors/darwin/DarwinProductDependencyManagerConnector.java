@@ -2371,7 +2371,7 @@ public class DarwinProductDependencyManagerConnector extends IntegrationConnecto
         {
             if (log.isDebugEnabled())
             {
-                log.debug("Element " + elementGUID + " at the end of a data mapping could not be retrieved: " + notFound.getMessage());
+                log.debug("Element " + forLog(elementGUID) + " at the end of a data mapping could not be retrieved: " + forLog(notFound.getMessage()));
             }
 
             return null;
@@ -2595,6 +2595,23 @@ public class DarwinProductDependencyManagerConnector extends IntegrationConnecto
                 metadataSourceOptions.setExternalSourceName(elementHeader.getOrigin().getHomeMetadataCollectionName());
             }
         }
+    }
+
+
+    /**
+     * Make a value from the metadata safe to write to the log: a line break in a stored value could forge log entries.
+     *
+     * @param value value from the metadata
+     * @return the value with its line breaks replaced - null if the value is null
+     */
+    private static String forLog(String value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        return value.replace('\r', '_').replace('\n', '_');
     }
 
 

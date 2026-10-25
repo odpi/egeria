@@ -302,7 +302,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
 
         if (log.isDebugEnabled())
         {
-            log.debug(templateProgress.toString());
+            log.debug(forLog(templateProgress.toString()));
         }
 
         /*

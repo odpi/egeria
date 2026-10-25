@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFolderAnnotati
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -815,16 +816,16 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (newLogFile)
             {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                  logFileName,
-                                                                                                  assetGUID));
+                logRecord(methodName,
+                          SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                        logFileName,
+                                                                                        assetGUID));
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                 logFileName));
+                logRecord(methodName,
+                          SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                       logFileName));
             }
 
 
@@ -907,16 +908,16 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (newLogFile)
             {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                  logFileName,
-                                                                                                  assetGUID));
+                logRecord(methodName,
+                          SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                        logFileName,
+                                                                                        assetGUID));
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                 logFileName));
+                logRecord(methodName,
+                          SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                       logFileName));
             }
 
 
@@ -940,12 +941,11 @@ public class FolderSurveyService extends SurveyActionServiceConnector
     /**
      * Provide a periodic progress report for the survey process.
      */
-    static class LogFileProgress
+    static class LogFileProgress extends AuditLoggingBase
     {
         private long fileLogPointer = 0;
         private long fileCount      = 0;
 
-        private final AuditLog auditLog;
         private final String   surveyActionServiceName;
 
         /**
@@ -956,7 +956,8 @@ public class FolderSurveyService extends SurveyActionServiceConnector
         public LogFileProgress(AuditLog auditLog,
                                String   surveyActionServiceName)
         {
-            this.auditLog = auditLog;
+            super(auditLog);
+
             this.surveyActionServiceName = surveyActionServiceName;
         }
 
@@ -976,8 +977,8 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             {
                 fileLogPointer = 0;
 
-                auditLog.logMessage(methodName, SurveyServiceAuditCode.PROGRESS_REPORT.getMessageDefinition(surveyActionServiceName,
-                                                                                                            Long.toString(fileCount)));
+                logRecord(methodName, SurveyServiceAuditCode.PROGRESS_REPORT.getMessageDefinition(surveyActionServiceName,
+                                                                                                  Long.toString(fileCount)));
             }
         }
     }

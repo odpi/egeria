@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
 import org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
  * rather than failing the whole survey/catalog pass.  The connections passed to it are expected to be in
  * auto-commit mode, so a failed query has no transaction to roll back.
  */
-public class DuckDBFederationExtractor
+public class DuckDBFederationExtractor extends AuditLoggingBase
 {
     private static final Pattern[] SCAN_FUNCTION_PATTERNS = new Pattern[]{
             Pattern.compile("read_parquet\\s*\\(\\s*'([^']+)'", Pattern.CASE_INSENSITIVE),
@@ -45,7 +46,6 @@ public class DuckDBFederationExtractor
             };
 
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       connectorName;
     private final List<AnnotationProperties>   annotations = new ArrayList<>();
 
@@ -61,8 +61,9 @@ public class DuckDBFederationExtractor
                                      AuditLog                     auditLog,
                                      String                       connectorName)
     {
+        super(auditLog);
+
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.connectorName                = connectorName;
     }
 
@@ -117,14 +118,11 @@ public class DuckDBFederationExtractor
 
                     annotations.add(annotation);
 
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            DuckDBAuditCode.ATTACHED_SOURCE_FOUND.getMessageDefinition(connectorName,
-                                                                                                        primaryDatabaseName,
-                                                                                                        databaseName,
-                                                                                                        (sourceType == null ? "<unknown>" : sourceType)));
-                    }
+                    logRecord(methodName,
+                              DuckDBAuditCode.ATTACHED_SOURCE_FOUND.getMessageDefinition(connectorName,
+                                                                                          primaryDatabaseName,
+                                                                                          databaseName,
+                                                                                          (sourceType == null ? "<unknown>" : sourceType)));
                 }
             }
         }
@@ -134,14 +132,11 @@ public class DuckDBFederationExtractor
              * Not every DuckDB version, or database, supports/uses federation - this must never fail the whole
              * survey/catalog pass.
              */
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                  "duckdb_databases()",
-                                                                                                  primaryDatabaseName,
-                                                                                                  error.getMessage()));
-            }
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "duckdb_databases()",
+                                                                                    primaryDatabaseName,
+                                                                                    error.getMessage()));
         }
     }
 
@@ -196,15 +191,12 @@ public class DuckDBFederationExtractor
 
                             annotations.add(annotation);
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    DuckDBAuditCode.EXTERNAL_FILE_SOURCE_FOUND.getMessageDefinition(connectorName,
-                                                                                                                    primaryDatabaseName,
-                                                                                                                    viewName,
-                                                                                                                    format,
-                                                                                                                    location));
-                            }
+                            logRecord(methodName,
+                                      DuckDBAuditCode.EXTERNAL_FILE_SOURCE_FOUND.getMessageDefinition(connectorName,
+                                                                                                      primaryDatabaseName,
+                                                                                                      viewName,
+                                                                                                      format,
+                                                                                                      location));
                         }
                     }
                 }
@@ -212,14 +204,11 @@ public class DuckDBFederationExtractor
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                  "duckdb_views()",
-                                                                                                  primaryDatabaseName,
-                                                                                                  error.getMessage()));
-            }
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "duckdb_views()",
+                                                                                    primaryDatabaseName,
+                                                                                    error.getMessage()));
         }
     }
 
@@ -286,14 +275,11 @@ public class DuckDBFederationExtractor
              * Not every DuckDB version supports duckdb_columns(), and the table/view may simply not exist (eg it
              * has not been created yet) - this must never fail the whole survey/catalog pass.
              */
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                  "duckdb_columns()",
-                                                                                                  tableName,
-                                                                                                  error.getMessage()));
-            }
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "duckdb_columns()",
+                                                                                    tableName,
+                                                                                    error.getMessage()));
         }
 
         return columns;
@@ -336,14 +322,11 @@ public class DuckDBFederationExtractor
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                  "duckdb_tables()",
-                                                                                                  databaseAlias,
-                                                                                                  error.getMessage()));
-            }
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "duckdb_tables()",
+                                                                                    databaseAlias,
+                                                                                    error.getMessage()));
         }
 
         return tableNames;
@@ -390,14 +373,11 @@ public class DuckDBFederationExtractor
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                  "duckdb_columns()",
-                                                                                                  databaseAlias + "." + tableName,
-                                                                                                  error.getMessage()));
-            }
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "duckdb_columns()",
+                                                                                    databaseAlias + "." + tableName,
+                                                                                    error.getMessage()));
         }
 
         return columns;

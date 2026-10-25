@@ -483,11 +483,11 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.CATALOG_UPDATE.getMessageDefinition(connectorName,
-                                                                             memberElement.getElement().getElementHeader().getGUID(),
-                                                                             catalogInfo.getName(),
-                                                                             ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.CATALOG_UPDATE.getMessageDefinition(connectorName,
+                                                                   memberElement.getElement().getElementHeader().getGUID(),
+                                                                   catalogInfo.getName(),
+                                                                   ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), catalogInfo.getId());
     }
@@ -649,12 +649,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                                     new MakeAnchorOptions(context.getAssetClient().getMetadataSourceOptions()),
                                                                                     catalogTargetProperties);
 
-                auditLog.logMessage(methodName,
-                                    UCAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                        relationshipGUID,
-                                                                                        friendshipConnectorGUID,
-                                                                                        ucServerGUID,
-                                                                                        ucCatalogName));
+                logRecord(methodName,
+                          UCAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                              relationshipGUID,
+                                                                              friendshipConnectorGUID,
+                                                                              ucServerGUID,
+                                                                              ucCatalogName));
             }
         }
     }

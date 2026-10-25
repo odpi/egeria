@@ -102,7 +102,7 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                        AuditLogRecordSeverityLevel.INFO,
                                        "The {0} watchdog action service for request type {1} is continuing to run in a background thread",
                                        "A watchdog action service has returned from the start() method without setting up the completion status prior to returning.",
-                                       "Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to" +
+                                       "Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to " +
                                                "still be running at this stage because it will have registered a listener.",
                                                "https://egeria-project.org/services/omes/watchdog-action/overview/"),
 

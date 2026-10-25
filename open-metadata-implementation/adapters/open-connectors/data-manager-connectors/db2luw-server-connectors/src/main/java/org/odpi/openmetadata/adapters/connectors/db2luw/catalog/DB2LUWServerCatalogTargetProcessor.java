@@ -98,9 +98,9 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                DB2LUWAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                    defaultFriendshipGUID));
+            logRecord(methodName,
+                      DB2LUWAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                          defaultFriendshipGUID));
         }
 
         for (DB2LUWTemplateType templateType : DB2LUWTemplateType.values())
@@ -153,12 +153,12 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
             finally
             {
@@ -196,12 +196,12 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             }
             catch (Exception exception)
             {
-                auditLog.logException(callingMethodName,
-                                      DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              callingMethodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(callingMethodName,
+                                   DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           callingMethodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -322,12 +322,12 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
             return;
         }
 
@@ -368,12 +368,12 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                 }
                 catch (Exception exception)
                 {
-                    auditLog.logException(methodName,
-                                          DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  exception.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  exception.getMessage()),
-                                          exception);
+                    logExceptionRecord(methodName,
+                                       DB2LUWAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               exception.getClass().getName(),
+                                                                                               methodName,
+                                                                                               exception.getMessage()),
+                                       exception);
                 }
             }
         }
@@ -440,9 +440,9 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
 
         if (databaseElement != null)
         {
-            auditLog.logMessage(methodName, DB2LUWAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                     databaseElement.getElementGUID(),
-                                                                                                     qualifiedName));
+            logRecord(methodName, DB2LUWAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                           databaseElement.getElementGUID(),
+                                                                                           qualifiedName));
         }
         else if (databaseManager.getProperties() instanceof DatabaseManagerProperties databaseManagerProperties)
         {
@@ -461,9 +461,9 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                     serverAssetUseProperties,
                                                                                     true);
 
-            auditLog.logMessage(methodName, DB2LUWAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                      qualifiedName,
-                                                                                                      databaseGUID));
+            logRecord(methodName, DB2LUWAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                            qualifiedName,
+                                                                                            databaseGUID));
 
             addCatalogTarget(friendshipConnectorGUID,
                              databaseGUID,
@@ -550,12 +550,12 @@ public class DB2LUWServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                                new MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                                catalogTargetProperties);
 
-                auditLog.logMessage(methodName,
-                                    DB2LUWAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                           relationshipGUID,
-                                                                                           friendshipConnectorGUID,
-                                                                                           databaseGUID,
-                                                                                           databaseName));
+                logRecord(methodName,
+                          DB2LUWAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                 relationshipGUID,
+                                                                                 friendshipConnectorGUID,
+                                                                                 databaseGUID,
+                                                                                 databaseName));
             }
         }
     }

@@ -123,12 +123,12 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
             {
                 integrationContext.validateIsActive(methodName);
 
-                auditLog.logException(methodName,
-                                      JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  methodName + "(" + getCatalogTargetName() + ")",
-                                                                                                  error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               error.getClass().getName(),
+                                                                                               methodName + "(" + getCatalogTargetName() + ")",
+                                                                                               error.getMessage()),
+                                   error);
             }
         }
     }
@@ -170,7 +170,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
         {
             if (tabularDataSource != null)
             {
-                auditLog.logMessage(methodName, JacquardAuditCode.REFRESH_CATALOG_TARGET.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
+                logRecord(methodName, JacquardAuditCode.REFRESH_CATALOG_TARGET.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
 
                 /*
                  * Make sure the data source has the latest information.
@@ -186,13 +186,13 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
 
                 if (lastUpdateColumnNumber < 0)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.NO_LAST_UPDATE_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
+                    logRecord(methodName,
+                              JacquardAuditCode.NO_LAST_UPDATE_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
                 }
                 else if (createTimeColumnNumber < 0)
                 {
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.NO_CREATION_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
+                    logRecord(methodName,
+                              JacquardAuditCode.NO_CREATION_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
                 }
                 else
                 {
@@ -229,7 +229,7 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                     if ((dataScopeCreateTime == null) || (dataScopeLastUpdateTime == null) ||
                             ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(dataScopeLastUpdateTime))))
                     {
-                        auditLog.logMessage(methodName, JacquardAuditCode.MAINTAINED_DATA_SCOPE.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
+                        logRecord(methodName, JacquardAuditCode.MAINTAINED_DATA_SCOPE.getMessageDefinition(connectorName, tabularDataSource.getTableName(), getCatalogTargetName()));
 
                         /*
                          * The data set has changed (or this is the first time it has been monitored).  Details of
@@ -296,12 +296,12 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
             /*
              * OK so this is really unexpected.
              */
-            auditLog.logException(methodName,
-                                  JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              error.getClass().getName(),
-                                                                                              methodName,
-                                                                                              error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               JacquardAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()),
+                               error);
 
 
             throw new ConnectorCheckedException(JacquardErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
@@ -400,13 +400,13 @@ public class JacquardCatalogTargetProcessor extends CatalogTargetProcessorBase
                 {
                     badValueSeen = true;
 
-                    auditLog.logMessage(methodName,
-                                        JacquardAuditCode.UNREADABLE_DATE_VALUE.getMessageDefinition(connectorName,
-                                                                                                    recordValues.get(columnNumber),
-                                                                                                    Long.toString(rowNumber),
-                                                                                                    Integer.toString(columnNumber),
-                                                                                                    tabularDataSource.getTableName(),
-                                                                                                    getCatalogTargetName()));
+                    logRecord(methodName,
+                              JacquardAuditCode.UNREADABLE_DATE_VALUE.getMessageDefinition(connectorName,
+                                                                                          recordValues.get(columnNumber),
+                                                                                          Long.toString(rowNumber),
+                                                                                          Integer.toString(columnNumber),
+                                                                                          tabularDataSource.getTableName(),
+                                                                                          getCatalogTargetName()));
                 }
             }
         }

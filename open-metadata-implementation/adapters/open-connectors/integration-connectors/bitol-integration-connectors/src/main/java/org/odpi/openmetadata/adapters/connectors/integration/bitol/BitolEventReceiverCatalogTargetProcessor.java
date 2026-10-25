@@ -72,10 +72,10 @@ public class BitolEventReceiverCatalogTargetProcessor extends CatalogTargetProce
 
             if (endpoint != null)
             {
-                auditLog.logMessage(methodName,
-                                    BitolIntegrationConnectorAuditCode.TOPIC_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                         endpoint.getNetworkAddress(),
-                                                                                                                         connectionDetails.getDisplayName()));
+                logRecord(methodName,
+                          BitolIntegrationConnectorAuditCode.TOPIC_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                               endpoint.getNetworkAddress(),
+                                                                                                               connectionDetails.getDisplayName()));
             }
         }
     }

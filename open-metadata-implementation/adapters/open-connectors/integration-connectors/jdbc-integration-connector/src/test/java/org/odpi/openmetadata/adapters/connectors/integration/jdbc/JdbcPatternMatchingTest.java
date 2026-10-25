@@ -218,7 +218,7 @@ public class JdbcPatternMatchingTest
     {
         Map<String, String> row = new java.util.HashMap<>();
 
-        for (int i = 0; i < keysAndValues.length; i = i + 2)
+        for (int i = 0; i + 1 < keysAndValues.length; i = i + 2)
         {
             row.put(keysAndValues[i], keysAndValues[i + 1]);
         }

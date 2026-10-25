@@ -154,12 +154,12 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
                 }
                 catch (Exception exception)
                 {
-                    auditLog.logException(methodName,
-                                          UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                exception.getClass().getName(),
-                                                                                                methodName,
-                                                                                                exception.getMessage()),
-                                          exception);
+                    logExceptionRecord(methodName,
+                                       UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             exception.getClass().getName(),
+                                                                                             methodName,
+                                                                                             exception.getMessage()),
+                                       exception);
                 }
             }
             else
@@ -253,11 +253,11 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
         }
         catch (Exception exception)
         {
-            auditLog.logMessage(methodName,
-                                UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                      exception.getClass().getName(),
-                                                                                      methodName,
-                                                                                      exception.getMessage()));
+            logRecord(methodName,
+                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                            exception.getClass().getName(),
+                                                                            methodName,
+                                                                            exception.getMessage()));
         }
     }
 
@@ -316,12 +316,12 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            exception.getClass().getName(),
-                                                                                            methodName,
-                                                                                            exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         exception.getClass().getName(),
+                                                                                         methodName,
+                                                                                         exception.getMessage()),
+                                   exception);
             }
         }
     }

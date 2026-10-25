@@ -203,9 +203,9 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-LOCAL-REPOSITORY-503-006](#omrs-local-repository-503-006) | 503 | An OMRS repository connector {0} has passed an invalid parameter to the repository content manager {1} operation as part of the {2} request |
 | [OMRS-LOCAL-REPOSITORY-503-007](#omrs-local-repository-503-007) | 503 | The local OMRS repository connector {0} hosts the home metadata collection for entity {1} but only has an entity proxy stored.  It is not able to complete the {2} request |
 | [OMRS-LOCAL-REPOSITORY-503-008](#omrs-local-repository-503-008) | 503 | An OMRS repository connector or access server {0} has passed a null classification to the repository helper {1} operation as part of the {2} request |
-| [OMRS-LOCAL-REPOSITORY-503-009](#omrs-local-repository-503-009) | 503 | The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner.It is not able to complete the {2} request |
-| [OMRS-LOCAL-REPOSITORY-503-010](#omrs-local-repository-503-010) | 503 | The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner.It is not able to complete the {2} request |
-| [OMRS-LOCAL-REPOSITORY-503-011](#omrs-local-repository-503-011) | 503 | The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned.It is not able to complete the {2} request |
+| [OMRS-LOCAL-REPOSITORY-503-009](#omrs-local-repository-503-009) | 503 | The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner. It is not able to complete the {2} request |
+| [OMRS-LOCAL-REPOSITORY-503-010](#omrs-local-repository-503-010) | 503 | The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner. It is not able to complete the {2} request |
+| [OMRS-LOCAL-REPOSITORY-503-011](#omrs-local-repository-503-011) | 503 | The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned. It is not able to complete the {2} request |
 | [OMRS-REPOSITORY-HELPER-503-001](#omrs-repository-helper-503-001) | 503 | A caller {0} has passed an invalid parameter to the repository helper {1} operation as part of the {2} request |
 | [OMRS-REPOSITORY-HELPER-503-002](#omrs-repository-helper-503-002) | 503 | A caller {0} has passed an invalid parameter to the repository helper {1} operation as part of the {2} request resulting in an unexpected exception {3} with message {4} |
 | [OMRS-REST-API-503-001](#omrs-rest-api-503-001) | 503 | There is no local repository to support REST API call {0} |
@@ -4040,7 +4040,7 @@ Raise a Github issue in order for this to be addressed by the Egeria team.
 
 ### OMRS-LOCAL-REPOSITORY-503-009
 
-> The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner.It is not able to complete the {2} request
+> The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner. It is not able to complete the {2} request
 
 |  |  |
 |---|---|
@@ -4061,7 +4061,7 @@ Open a Github issue in order for this to be addressed by the Egeria team.
 
 ### OMRS-LOCAL-REPOSITORY-503-010
 
-> The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner.It is not able to complete the {2} request
+> The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner. It is not able to complete the {2} request
 
 |  |  |
 |---|---|
@@ -4082,7 +4082,7 @@ Open up a Github issue in order for this to be addressed by the Egeria team.
 
 ### OMRS-LOCAL-REPOSITORY-503-011
 
-> The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned.It is not able to complete the {2} request
+> The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned. It is not able to complete the {2} request
 
 |  |  |
 |---|---|

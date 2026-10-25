@@ -204,15 +204,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
 
                 throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                         error.getClass().getName(),
@@ -286,11 +283,11 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                                                                               egeriaDatabaseGUID,
-                                                                                                               atlasDatabaseEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                                                     egeriaDatabaseGUID,
+                                                                                                     atlasDatabaseEntity.getEntity().getGuid()));
                     removeEgeriaGUID(atlasDatabaseEntity);
                     egeriaDatabaseGUID = createAtlasDatabaseInEgeria(atlasDatabaseEntity);
                 }
@@ -355,12 +352,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                             externalIdLinkProperties,
                                                                             externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                                                                          egeriaDatabaseGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                                                egeriaDatabaseGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaDatabaseGUID,
@@ -409,12 +406,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
 
                     if (dataAssetClient.updateAsset(egeriaDatabaseGUID, dataAssetClient.getUpdateOptions(true), dataAssetProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                                                                                  egeriaDatabaseGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                                                                        egeriaDatabaseGUID));
                     }
                 }
             }
@@ -490,11 +487,11 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                                                               egeriaDatabaseTableGUID,
-                                                                                                               atlasDatabaseTableEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                                                                     egeriaDatabaseTableGUID,
+                                                                                                     atlasDatabaseTableEntity.getEntity().getGuid()));
 
                     removeEgeriaGUID(atlasDatabaseTableEntity);
 
@@ -578,12 +575,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                       externalIdLinkProperties,
                                                       externalIdentifierProperties);
 
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                              OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                                                              egeriaDatabaseTableGUID,
-                                                                                                              atlasEntity.getTypeName(),
-                                                                                                              atlasEntity.getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                    OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                                                                    egeriaDatabaseTableGUID,
+                                                                                                    atlasEntity.getTypeName(),
+                                                                                                    atlasEntity.getGuid()));
 
                     saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                           egeriaDatabaseGUID,
@@ -637,12 +634,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                 schemaAttributeClient.getUpdateOptions(true),
                                                                 databaseTableProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                                                                  egeriaDatabaseTableGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                                                                        egeriaDatabaseTableGUID));
                     }
                 }
             }
@@ -710,11 +707,11 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                             /*
                              * The table in Egeria is not matched with an Atlas equivalent.
                              */
-                            auditLog.logMessage(methodName,
-                                                AtlasIntegrationAuditCode.DELETING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                      OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                                                                      egeriaDatabaseTable.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                      atlasDatabaseTableGUID));
+                            logRecord(methodName,
+                                      AtlasIntegrationAuditCode.DELETING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                            OpenMetadataType.RELATIONAL_TABLE.typeName,
+                                                                                                            egeriaDatabaseTable.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                            atlasDatabaseTableGUID));
 
                             schemaAttributeClient.deleteSchemaAttribute(egeriaDatabaseTable.getRelatedElement().getElementHeader().getGUID(), schemaAttributeClient.getDeleteOptions(true));
                         }
@@ -775,11 +772,11 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               OpenMetadataType.RELATIONAL_COLUMN.typeName,
-                                                                                                               egeriaDatabaseColumnGUID,
-                                                                                                               atlasDatabaseColumnEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     OpenMetadataType.RELATIONAL_COLUMN.typeName,
+                                                                                                     egeriaDatabaseColumnGUID,
+                                                                                                     atlasDatabaseColumnEntity.getEntity().getGuid()));
                     removeEgeriaGUID(atlasDatabaseColumnEntity);
                     egeriaDatabaseColumnGUID = createAtlasDatabaseColumnInEgeria(atlasDatabaseColumnEntity, egeriaDatabaseGUID, egeriaDatabaseTableGUID);
                 }
@@ -854,12 +851,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          OpenMetadataType.RELATIONAL_COLUMN.typeName,
-                                                                                                          egeriaDatabaseColumnGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                OpenMetadataType.RELATIONAL_COLUMN.typeName,
+                                                                                                egeriaDatabaseColumnGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaDatabaseColumnGUID,
@@ -910,12 +907,12 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                     schemaAttributeClient.getUpdateOptions(true),
                                                                     databaseColumnProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  OpenMetadataType.RELATIONAL_COLUMN.typeName,
-                                                                                                                  egeriaDatabaseColumnGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        OpenMetadataType.RELATIONAL_COLUMN.typeName,
+                                                                                                        egeriaDatabaseColumnGUID));
                     }
                 }
             }
@@ -982,11 +979,11 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                             /*
                              * The table in Egeria is not matched with an Atlas equivalent.
                              */
-                            auditLog.logMessage(methodName,
-                                                AtlasIntegrationAuditCode.DELETING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                      OpenMetadataType.RELATIONAL_COLUMN.typeName,
-                                                                                                                      egeriaDatabaseColumn.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                      atlasDatabaseColumnGUID));
+                            logRecord(methodName,
+                                      AtlasIntegrationAuditCode.DELETING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                            OpenMetadataType.RELATIONAL_COLUMN.typeName,
+                                                                                                            egeriaDatabaseColumn.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                            atlasDatabaseColumnGUID));
 
                             schemaAttributeClient.deleteSchemaAttribute(egeriaDatabaseColumn.getRelatedElement().getElementHeader().getGUID(),
                                                                         schemaAttributeClient.getDeleteOptions(true));

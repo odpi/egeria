@@ -100,9 +100,30 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
 
                 try
                 {
-                    secretsStoreFile.createNewFile();
-                    secretsStore = new SecretsStore();
-                    secretsStore.setSecretsCollections(new HashMap<>());
+                    if (secretsStoreFile.createNewFile())
+                    {
+                        secretsStore = null;
+                    }
+                    else
+                    {
+                        /*
+                         * Another process created the file after the check above, so load it rather than
+                         * overwrite its secrets collections.
+                         */
+                        super.refreshSecrets();
+                    }
+
+                    /*
+                     * A new file - or one the other process has not written to yet.
+                     */
+                    if (secretsStore == null)
+                    {
+                        secretsStore = new SecretsStore();
+                    }
+                    if (secretsStore.getSecretsCollections() == null)
+                    {
+                        secretsStore.setSecretsCollections(new HashMap<>());
+                    }
                 }
                 catch (IOException ioException)
                 {

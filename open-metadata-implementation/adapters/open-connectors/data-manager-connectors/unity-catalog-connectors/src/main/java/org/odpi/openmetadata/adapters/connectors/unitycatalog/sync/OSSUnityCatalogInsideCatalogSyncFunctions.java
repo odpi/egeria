@@ -422,11 +422,11 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.FUNCTION_UPDATE.getMessageDefinition(connectorName,
-                                                                          memberElement.getElement().getElementHeader().getGUID(),
-                                                                          functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
-                                                                          ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.FUNCTION_UPDATE.getMessageDefinition(connectorName,
+                                                                memberElement.getElement().getElementHeader().getGUID(),
+                                                                functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
+                                                                ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), functionInfo.getFunction_id());
     }
@@ -443,10 +443,10 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "deleteElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
-                                                                               functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
-                                                                               ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                     functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
+                                                                     ucServerEndpoint));
         ucConnector.deleteFunction(functionInfo.getFull_name());
     }
 

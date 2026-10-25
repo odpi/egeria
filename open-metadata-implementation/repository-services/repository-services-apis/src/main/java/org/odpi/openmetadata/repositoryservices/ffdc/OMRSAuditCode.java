@@ -341,7 +341,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                            AuditLogRecordSeverityLevel.STARTUP,
                            "The {0} event manager is starting with {1} type definition event consumer(s) and {2} instance event consumer(s)",
                            "The event manager is fully initialized and beginning to distribute events",
-                           "This message confirms that the dynamic configuration of the event manger is complete and the running OMRS components" +
+                           "This message confirms that the dynamic configuration of the event manager is complete and the running OMRS components " +
                                    "are now connected together.",
                                    "https://egeria-project.org/services/omrs/"),
 
@@ -899,7 +899,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                          "A remote member from cohort {0} with metadata collection id {1} is being removed by the enterprise connector manager",
                          "The enterprise connector manager is removing the connection for a remote member of the cohort from the list " +
                                  "of servers that are called during a metadata request from the access services.",
-                         "Validate that this remote server is shutting down, or unregistering from the cohort.  If it is not," +
+                         "Validate that this remote server is shutting down, or unregistering from the cohort.  If it is not, " +
                                  "then look for error messages to determine why it is being removed.",
                                  "https://egeria-project.org/services/omrs/"),
 

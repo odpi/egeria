@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.db2luw.survey;
 
 import org.odpi.openmetadata.adapters.connectors.db2luw.ffdc.DB2LUWAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
@@ -39,13 +40,12 @@ import java.util.UUID;
  * functions (a common situation, since they need more than the CONNECT privilege), or a dropped table leaves
  * a gap in the results rather than ending the survey.
  */
-public class DB2LUWDatabaseStatsExtractor
+public class DB2LUWDatabaseStatsExtractor extends AuditLoggingBase
 {
     private final List<String>                 validDatabases;
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -106,11 +106,12 @@ public class DB2LUWDatabaseStatsExtractor
                                         AuditLog                    auditLog,
                                         String                      surveyActionServiceName)
     {
+        super(auditLog);
+
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.surveyActionServiceName      = surveyActionServiceName;
     }
 
@@ -590,15 +591,12 @@ public class DB2LUWDatabaseStatsExtractor
     {
         final String methodName = "logQueryFailure";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                DB2LUWAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
-                                                                                         informationSought,
-                                                                                         elementName,
-                                                                                         sqlException.getClass().getName(),
-                                                                                         sqlException.getMessage()));
-        }
+        logRecord(methodName,
+                  DB2LUWAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                           informationSought,
+                                                                           elementName,
+                                                                           sqlException.getClass().getName(),
+                                                                           sqlException.getMessage()));
     }
 
 

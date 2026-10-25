@@ -96,9 +96,9 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                MSSQLAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                   defaultFriendshipGUID));
+            logRecord(methodName,
+                      MSSQLAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                         defaultFriendshipGUID));
         }
 
         for (MSSQLTemplateType templateType : MSSQLTemplateType.values())
@@ -151,12 +151,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
             finally
             {
@@ -194,12 +194,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
             }
             catch (Exception exception)
             {
-                auditLog.logException(callingMethodName,
-                                      MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              callingMethodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(callingMethodName,
+                                   MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           callingMethodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -345,12 +345,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
         }
 
         /*
@@ -372,12 +372,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   MSSQLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -443,9 +443,9 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
 
         if (databaseElement != null)
         {
-            auditLog.logMessage(methodName, MSSQLAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                   databaseElement.getElementGUID(),
-                                                                                                   qualifiedName));
+            logRecord(methodName, MSSQLAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                         databaseElement.getElementGUID(),
+                                                                                         qualifiedName));
         }
         else if (databaseManager.getProperties() instanceof DatabaseManagerProperties databaseManagerProperties)
         {
@@ -464,9 +464,9 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                                                                     serverAssetUseProperties,
                                                                                     true);
 
-            auditLog.logMessage(methodName, MSSQLAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                    qualifiedName,
-                                                                                                    databaseGUID));
+            logRecord(methodName, MSSQLAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                          qualifiedName,
+                                                                                          databaseGUID));
 
             addCatalogTarget(friendshipConnectorGUID,
                              databaseGUID,
@@ -552,12 +552,12 @@ public class MSSQLServerCatalogTargetProcessor extends CatalogTargetProcessorBas
                                                                                                new MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                                catalogTargetProperties);
 
-                auditLog.logMessage(methodName,
-                                    MSSQLAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                          relationshipGUID,
-                                                                                          friendshipConnectorGUID,
-                                                                                          databaseGUID,
-                                                                                          databaseName));
+                logRecord(methodName,
+                          MSSQLAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                relationshipGUID,
+                                                                                friendshipConnectorGUID,
+                                                                                databaseGUID,
+                                                                                databaseName));
             }
         }
     }

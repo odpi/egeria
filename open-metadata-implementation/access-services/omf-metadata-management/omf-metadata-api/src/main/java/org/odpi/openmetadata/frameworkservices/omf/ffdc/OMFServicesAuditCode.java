@@ -73,7 +73,7 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
                         "The Open Metadata Store is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an OMF Services instance.  " +
                                 "No more events will be published to the named topic.",
-                        "This is part of the normal shutdown of the service.   No action is required if this is service" +
+                        "This is part of the normal shutdown of the service.   No action is required if this service " +
                                 "shutdown was intentional.",
                                 "https://egeria-project.org/services/framework-services/"),
 

@@ -9,7 +9,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 28 |
+| **Number of messages** | 29 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -31,6 +31,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 | [OMAG-GENERIC-HANDLERS-400-014](#omag-generic-handlers-400-014) | 400 | The {0} element carries the TemplateSubstitute classification but has no SourcedFrom relationship to the template it stands in for, so the {1} request has no template to work from |
 | [OMAG-GENERIC-HANDLERS-400-016](#omag-generic-handlers-400-016) | 400 | Template {0} is a {1}, so it cannot be used to create a {2} with the {3} request |
 | [OMAG-GENERIC-HANDLERS-400-015](#omag-generic-handlers-400-015) | 400 | The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore |
+| [OMAG-GENERIC-HANDLERS-400-017](#omag-generic-handlers-400-017) | 400 | The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1} |
 | [OMAG-GENERIC-HANDLERS-403-001](#omag-generic-handlers-403-001) | 403 | The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it was not created by the requesting user {5} |
 | [OMAG-GENERIC-HANDLERS-403-002](#omag-generic-handlers-403-002) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3} |
 | [OMAG-GENERIC-HANDLERS-403-006](#omag-generic-handlers-403-006) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because the engine action has not been claimed |
@@ -258,6 +259,27 @@ The system cannot restore this element because it is active.  Restore reverses a
 **User action**
 
 Check that the unique identifier is for the element that was deleted or archived.  An element that was purged can not be restored: it is no longer in the repository.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-400-017
+
+> The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersErrorCode.PLACEHOLDER_NOT_A_NUMBER` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot create the element from the template because the value substituted into a numeric property can not be stored in it.
+
+**User action**
+
+Correct the placeholder property values supplied on the request so that the {0} property resolves to a whole number (a date is milliseconds since the epoch), or correct the template.
 
 
 ----

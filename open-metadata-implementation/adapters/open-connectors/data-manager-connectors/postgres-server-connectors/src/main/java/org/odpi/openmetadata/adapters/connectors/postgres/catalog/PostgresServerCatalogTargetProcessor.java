@@ -96,9 +96,9 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                PostgresAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                       defaultFriendshipGUID));
+            logRecord(methodName,
+                      PostgresAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                             defaultFriendshipGUID));
         }
 
         for (PostgreSQLTemplateType templateType : PostgreSQLTemplateType.values())
@@ -151,12 +151,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  exception.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               exception.getClass().getName(),
+                                                                                               methodName,
+                                                                                               exception.getMessage()),
+                                   exception);
             }
             finally
             {
@@ -194,12 +194,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception exception)
             {
-                auditLog.logException(callingMethodName,
-                                      PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  exception.getClass().getName(),
-                                                                                                  callingMethodName,
-                                                                                                  exception.getMessage()),
-                                      exception);
+                logExceptionRecord(callingMethodName,
+                                   PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               exception.getClass().getName(),
+                                                                                               callingMethodName,
+                                                                                               exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -342,12 +342,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                               exception);
         }
 
         /*
@@ -369,12 +369,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  exception.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                               exception.getClass().getName(),
+                                                                                               methodName,
+                                                                                               exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -440,9 +440,9 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (databaseElement != null)
         {
-            auditLog.logMessage(methodName, PostgresAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                     databaseElement.getElementGUID(),
-                                                                                                     qualifiedName));
+            logRecord(methodName, PostgresAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                           databaseElement.getElementGUID(),
+                                                                                           qualifiedName));
         }
         else if (databaseManager.getProperties() instanceof DatabaseManagerProperties databaseManagerProperties)
         {
@@ -461,9 +461,9 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                     serverAssetUseProperties,
                                                                                     true);
 
-            auditLog.logMessage(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                      qualifiedName,
-                                                                                                      databaseGUID));
+            logRecord(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                            qualifiedName,
+                                                                                            databaseGUID));
 
             addCatalogTarget(friendshipConnectorGUID,
                              databaseGUID,
@@ -549,12 +549,12 @@ public class PostgresServerCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                new MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                                catalogTargetProperties);
 
-                auditLog.logMessage(methodName,
-                                    PostgresAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                              relationshipGUID,
-                                                                                              friendshipConnectorGUID,
-                                                                                              databaseGUID,
-                                                                                              databaseName));
+                logRecord(methodName,
+                          PostgresAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                    relationshipGUID,
+                                                                                    friendshipConnectorGUID,
+                                                                                    databaseGUID,
+                                                                                    databaseName));
             }
         }
     }

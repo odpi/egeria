@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.oracle.survey;
 
 import org.odpi.openmetadata.adapters.connectors.oracle.ffdc.OracleAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
@@ -37,13 +38,12 @@ import java.util.UUID;
  * <br><br>
  * Oracle JDBC rejects a trailing ';' on a plain SQL statement, so none of the statements here have one.
  */
-public class OracleDatabaseStatsExtractor
+public class OracleDatabaseStatsExtractor extends AuditLoggingBase
 {
     private final List<String>                 validDatabases;
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -81,11 +81,12 @@ public class OracleDatabaseStatsExtractor
                                         AuditLog                    auditLog,
                                         String                      surveyActionServiceName)
     {
+        super(auditLog);
+
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.surveyActionServiceName      = surveyActionServiceName;
     }
 
@@ -560,15 +561,12 @@ public class OracleDatabaseStatsExtractor
     {
         final String methodName = "logQueryFailure";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OracleAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
-                                                                                         informationSought,
-                                                                                         elementName,
-                                                                                         sqlException.getClass().getName(),
-                                                                                         sqlException.getMessage()));
-        }
+        logRecord(methodName,
+                  OracleAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                           informationSought,
+                                                                           elementName,
+                                                                           sqlException.getClass().getName(),
+                                                                           sqlException.getMessage()));
     }
 
 

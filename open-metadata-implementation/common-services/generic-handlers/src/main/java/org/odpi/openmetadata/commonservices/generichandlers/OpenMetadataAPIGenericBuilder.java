@@ -610,9 +610,10 @@ public class OpenMetadataAPIGenericBuilder
      * @param templateProperties properties from template
      * @param placeholderProperties map of placeholder names to placeholder values to substitute into the template
      *                              properties
+     * @throws InvalidParameterException a numeric property's placeholders resolve to a value that is not a number
      */
     void setTemplateProperties(InstanceProperties  templateProperties,
-                               Map<String, String> placeholderProperties)
+                               Map<String, String> placeholderProperties) throws InvalidParameterException
     {
         this.templateProperties = this.replacePropertiesWithPlaceholders(templateProperties, placeholderProperties);
     }
@@ -626,9 +627,10 @@ public class OpenMetadataAPIGenericBuilder
      * @param placeholderProperties map of placeholder names to placeholder values to substitute into the template
      *                              properties
      * @return updated instance properties
+     * @throws InvalidParameterException a numeric property's placeholders resolve to a value that is not a number
      */
     InstanceProperties replacePropertiesWithPlaceholders(InstanceProperties  templateProperties,
-                                                         Map<String, String> placeholderProperties)
+                                                         Map<String, String> placeholderProperties) throws InvalidParameterException
     {
         final String methodName = "replacePropertiesWithPlaceholders";
 
@@ -682,7 +684,7 @@ public class OpenMetadataAPIGenericBuilder
                                 repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                               newTemplateProperties,
                                                                               propertyName,
-                                                                              Integer.parseInt(newProperty),
+                                                                              parseIntPlaceholder(propertyName, newProperty),
                                                                               methodName);
                             }
                             else
@@ -703,7 +705,7 @@ public class OpenMetadataAPIGenericBuilder
                                 repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                            newTemplateProperties,
                                                                            propertyName,
-                                                                           Long.parseLong(newProperty),
+                                                                           parseLongPlaceholder(propertyName, newProperty, "long"),
                                                                            methodName);
                             }
                             else
@@ -724,7 +726,7 @@ public class OpenMetadataAPIGenericBuilder
                                 repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                            newTemplateProperties,
                                                                            propertyName,
-                                                                           new Date(Long.parseLong(newProperty)),
+                                                                           new Date(parseLongPlaceholder(propertyName, newProperty, "date")),
                                                                            methodName);
                             }
                             else
@@ -794,6 +796,79 @@ public class OpenMetadataAPIGenericBuilder
         }
 
         return null;
+    }
+
+
+    /**
+     * Convert the resolved value of an int property from the template.
+     *
+     * @param propertyName name of the property
+     * @param resolvedValue value after the placeholders have been substituted
+     * @return integer value
+     * @throws InvalidParameterException the resolved value is not an integer
+     */
+    private int parseIntPlaceholder(String propertyName,
+                                    String resolvedValue) throws InvalidParameterException
+    {
+        try
+        {
+            return Integer.parseInt(resolvedValue.trim());
+        }
+        catch (NumberFormatException notANumber)
+        {
+            throw placeholderNotANumber(propertyName, resolvedValue, "int", notANumber);
+        }
+    }
+
+
+    /**
+     * Convert the resolved value of a long or date property from the template.  A date is milliseconds since the epoch.
+     *
+     * @param propertyName name of the property
+     * @param resolvedValue value after the placeholders have been substituted
+     * @param propertyTypeName type of the property, for the error message
+     * @return long value
+     * @throws InvalidParameterException the resolved value is not a long
+     */
+    private long parseLongPlaceholder(String propertyName,
+                                      String resolvedValue,
+                                      String propertyTypeName) throws InvalidParameterException
+    {
+        try
+        {
+            return Long.parseLong(resolvedValue.trim());
+        }
+        catch (NumberFormatException notANumber)
+        {
+            throw placeholderNotANumber(propertyName, resolvedValue, propertyTypeName, notANumber);
+        }
+    }
+
+
+    /**
+     * Build the exception for a numeric template property whose placeholders resolve to something that is not a number.
+     *
+     * @param propertyName name of the property
+     * @param resolvedValue value after the placeholders have been substituted
+     * @param propertyTypeName type of the property
+     * @param notANumber parsing error
+     * @return exception to throw
+     */
+    private InvalidParameterException placeholderNotANumber(String                propertyName,
+                                                            String                resolvedValue,
+                                                            String                propertyTypeName,
+                                                            NumberFormatException notANumber)
+    {
+        final String methodName                    = "replacePropertiesWithPlaceholders";
+        final String placeholderPropertiesParameter = "placeholderProperties";
+
+        return new InvalidParameterException(GenericHandlersErrorCode.PLACEHOLDER_NOT_A_NUMBER.getMessageDefinition(propertyName,
+                                                                                                                  propertyTypeName,
+                                                                                                                  resolvedValue),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             notANumber,
+                                             placeholderPropertiesParameter);
     }
 
 
@@ -1086,7 +1161,7 @@ public class OpenMetadataAPIGenericBuilder
         {
             for (Classification classification : existingClassifications)
             {
-                if ((classification != null) && (newClassifications.get(classification.getName()) == null))
+                if ((classification != null) && ((newClassifications == null) || (newClassifications.get(classification.getName()) == null)))
                 {
                     entityClassifications.add(classification);
                 }

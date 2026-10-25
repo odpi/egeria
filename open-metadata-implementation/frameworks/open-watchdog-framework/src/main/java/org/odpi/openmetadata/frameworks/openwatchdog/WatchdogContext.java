@@ -430,11 +430,14 @@ public class WatchdogContext extends ConnectorContextBase
 
             if (!ignoredNotificationTypes.isEmpty())
             {
-                auditLog.logMessage(methodName,
-                                    OWFAuditCode.IGNORING_NOTIFICATION_TYPES.getMessageDefinition(watchdogActionServiceName,
-                                                                                                  requestType,
-                                                                                                  engineActionGUID,
-                                                                                                  ignoredNotificationTypes.toString()));
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OWFAuditCode.IGNORING_NOTIFICATION_TYPES.getMessageDefinition(watchdogActionServiceName,
+                                                                                                      requestType,
+                                                                                                      engineActionGUID,
+                                                                                                      ignoredNotificationTypes.toString()));
+                }
             }
 
             /*

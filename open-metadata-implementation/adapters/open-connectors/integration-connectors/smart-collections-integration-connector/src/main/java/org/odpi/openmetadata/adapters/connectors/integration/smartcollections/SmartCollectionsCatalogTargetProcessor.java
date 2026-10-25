@@ -83,7 +83,7 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
         String           resultsSetGUID  = super.getCatalogTargetElementHeader().getGUID();
         CollectionClient collectionClient = integrationContext.getCollectionClient();
 
-        auditLog.logMessage(methodName, SmartCollectionsAuditCode.REFRESHING_RESULTS_SET.getMessageDefinition(connectorName, resultsSetGUID));
+        logRecord(methodName, SmartCollectionsAuditCode.REFRESHING_RESULTS_SET.getMessageDefinition(connectorName, resultsSetGUID));
 
         Date                 startTime          = new Date();
         Date                 createdTime        = null;
@@ -115,9 +115,9 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
             {
                 int savedQueryCount = (savedQueries == null) ? 0 : savedQueries.size();
 
-                auditLog.logMessage(methodName, SmartCollectionsAuditCode.WRONG_NUMBER_OF_SAVED_QUERIES.getMessageDefinition(connectorName,
-                                                                                                                              Integer.toString(savedQueryCount),
-                                                                                                                              resultsSetGUID));
+                logRecord(methodName, SmartCollectionsAuditCode.WRONG_NUMBER_OF_SAVED_QUERIES.getMessageDefinition(connectorName,
+                                                                                                                    Integer.toString(savedQueryCount),
+                                                                                                                    resultsSetGUID));
             }
             else
             {
@@ -147,13 +147,13 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
         {
             completionMessage = error.getMessage();
 
-            auditLog.logException(methodName,
-                                  SmartCollectionsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       resultsSetGUID,
-                                                                                                       error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               SmartCollectionsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                    error.getClass().getName(),
+                                                                                                    methodName,
+                                                                                                    resultsSetGUID,
+                                                                                                    error.getMessage()),
+                               error);
         }
 
         Date completionTime = new Date();
@@ -191,13 +191,13 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  SmartCollectionsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       resultsSetGUID,
-                                                                                                       error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               SmartCollectionsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                    error.getClass().getName(),
+                                                                                                    methodName,
+                                                                                                    resultsSetGUID,
+                                                                                                    error.getMessage()),
+                               error);
         }
     }
 
@@ -299,10 +299,10 @@ public class SmartCollectionsCatalogTargetProcessor extends CatalogTargetProcess
             }
         }
 
-        auditLog.logMessage(methodName, SmartCollectionsAuditCode.RESULTS_SET_REFRESHED.getMessageDefinition(connectorName,
-                                                                                                               resultsSetGUID,
-                                                                                                               Integer.toString(membersAdded),
-                                                                                                               Integer.toString(membersRemoved)));
+        logRecord(methodName, SmartCollectionsAuditCode.RESULTS_SET_REFRESHED.getMessageDefinition(connectorName,
+                                                                                                     resultsSetGUID,
+                                                                                                     Integer.toString(membersAdded),
+                                                                                                     Integer.toString(membersRemoved)));
     }
 
 

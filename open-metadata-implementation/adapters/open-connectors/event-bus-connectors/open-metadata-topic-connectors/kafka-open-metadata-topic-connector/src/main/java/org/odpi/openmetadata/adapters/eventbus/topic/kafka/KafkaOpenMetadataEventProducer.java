@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.RetriableException;
 import org.apache.kafka.common.errors.WakeupException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,9 @@ import java.util.concurrent.TimeUnit;
  * rest of the server.  So the role of this class is to manage the sending of events in a separate thread
  * and manage the logging of errors to alert the operations team that Kafka needs restarting.
  */
-public class KafkaOpenMetadataEventProducer implements Runnable {
+public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
     private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
-    private final AuditLog auditLog;
     private final String topicName;
     private final String localServerId;
     private final Properties producerProperties;
@@ -56,19 +56,18 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
      */
     KafkaOpenMetadataEventProducer(String topicName, String localServerId, Properties producerProperties,
                                    AuditLog auditLog) {
-        this.auditLog = auditLog;
+        super(auditLog);
+
         this.topicName = topicName;
         this.localServerId = localServerId;
         this.producerProperties = producerProperties;
 
         final String           actionDescription = "new producer";
 
-        if (auditLog != null) {
-            auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES.getMessageDefinition(
-                                        Integer.toString(producerProperties.size()), topicName),
-                                producerProperties.toString());
-        }
+        logRecord(actionDescription,
+                  KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES.getMessageDefinition(
+                          Integer.toString(producerProperties.size()), topicName),
+                  producerProperties.toString());
     }
 
 
@@ -93,11 +92,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 log.debug("Creating new producer for topic {}", topicName);
                 producer = new KafkaProducer<>(producerProperties);
             } catch (Exception error) {
-                if (auditLog != null) {
-                    auditLog.logException(methodName,
-                                          KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
-                                                  topicName), error);
-                }
+                logExceptionRecord(methodName,
+                                   KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
+                                           topicName), error);
 
                 throw new ConnectorCheckedException(
                         KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
@@ -149,12 +146,10 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 } else {
                     if (eventRetryCount == 0) {
                         log.debug("Retrying event warning - count is {}", eventRetryCount);
-                        if (auditLog != null) {
-                            auditLog.logMessage(methodName,
-                                                KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
-                                                        topicName, Long.toString(messageSendCount),
-                                                        Long.toString(this.getSendBufferSize()), error.getMessage()));
-                        }
+                        logRecord(methodName,
+                                  KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
+                                          topicName, Long.toString(messageSendCount),
+                                          Long.toString(this.getSendBufferSize()), error.getMessage()));
                     }
 
                     eventRetryCount++;
@@ -217,12 +212,10 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
 
         Thread.currentThread().setName(listenerThreadName);
 
-        if (auditLog != null) {
-            auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(
-                                        topicName, String.valueOf(sendBuffer.size())),
-                                this.producerProperties.toString());
-        }
+        logRecord(actionDescription,
+                  KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(
+                          topicName, String.valueOf(sendBuffer.size())),
+                  this.producerProperties.toString());
 
         log.info("Main loop started for topic {}", topicName);
         int sleepTime = 1000;
@@ -270,12 +263,10 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
             producer = null;
         }
 
-        if (auditLog != null) {
-            auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN.getMessageDefinition(
-                                        topicName, Integer.toString(getSendBufferSize()),
-                                        Long.toString(messageSendCount)), this.producerProperties.toString());
-        }
+        logRecord(actionDescription,
+                  KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN.getMessageDefinition(
+                          topicName, Integer.toString(getSendBufferSize()),
+                          Long.toString(messageSendCount)), this.producerProperties.toString());
     }
 
 

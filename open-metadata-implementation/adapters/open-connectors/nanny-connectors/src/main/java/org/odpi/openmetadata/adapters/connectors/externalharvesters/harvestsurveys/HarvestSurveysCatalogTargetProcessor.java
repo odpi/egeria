@@ -187,12 +187,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -316,12 +316,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -399,12 +399,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -444,12 +444,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -548,15 +548,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                            error.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     error.getMessage()),
+                                   error);
             }
         }
     }
@@ -598,12 +595,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -634,12 +631,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                        error.getClass().getName(),
-                                                                                                        methodName,
-                                                                                                        error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     error.getMessage()),
+                                   error);
             }
         }
     }
@@ -704,12 +701,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -821,12 +818,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -929,12 +926,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -1098,12 +1095,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -1200,12 +1197,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -1280,12 +1277,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -1361,12 +1358,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -1518,12 +1515,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  error.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1552,12 +1549,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  error.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1587,12 +1584,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                methodName,
-                                                                                                                error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1621,12 +1618,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                methodName,
-                                                                                                                error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1655,12 +1652,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                methodName,
-                                                                                                                error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1689,12 +1686,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     }
                     catch (Exception error)
                     {
-                        auditLog.logException(methodName,
-                                              HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                methodName,
-                                                                                                                error.getMessage()),
-                                              error);
+                        logExceptionRecord(methodName,
+                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                           error);
 
                         throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                               error.getClass().getName(),
@@ -1774,12 +1771,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -2219,12 +2216,12 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                 error.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 error.getMessage()),
+                               error);
         }
     }
 }

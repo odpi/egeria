@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesTemplateType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -21,11 +22,9 @@ import java.util.Map;
 /**
  * Directory to monitor caches information about a specific directory that is at the root of the monitoring.
  */
-public abstract class DirectoryToMonitor implements FileDirectoryListenerInterface
+public abstract class DirectoryToMonitor extends AuditLoggingBase implements FileDirectoryListenerInterface
 {
     protected final PropertyHelper                            propertyHelper = new PropertyHelper();
-
-    protected final AuditLog                                  auditLog;
     protected final BasicFilesMonitorIntegrationConnectorBase integrationConnector;
     protected final String                                    connectorName;
 
@@ -130,6 +129,8 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
                                BasicFilesMonitorIntegrationConnectorBase integrationConnector,
                                AuditLog                                  auditLog)
     {
+        super(auditLog);
+
         final String methodName = "DirectoryToMonitor";
 
         this.connectorName = connectorName;
@@ -150,7 +151,6 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
         this.catalogTargetGUID = catalogTargetGUID;
         this.integrationConnector = integrationConnector;
-        this.auditLog = auditLog;
 
         if (configurationProperties != null)
         {
@@ -211,15 +211,15 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
             allowCatalogDelete = deleteMethod.equals(DeleteMethod.SOFT_DELETE);
         }
 
-        auditLog.logMessage(methodName,
-                            BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                  this.directoryName,
-                                                                                                                  Boolean.toString(waitForDirectory),
-                                                                                                                  toDoTemplateQualifiedName,
-                                                                                                                  incidentReportTemplateQualifiedName,
-                                                                                                                  fileSystemName,
-                                                                                                                  localMountPoint,
-                                                                                                                  canonicalMountPoint));
+        logRecord(methodName,
+                  BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                        this.directoryName,
+                                                                                                        Boolean.toString(waitForDirectory),
+                                                                                                        toDoTemplateQualifiedName,
+                                                                                                        incidentReportTemplateQualifiedName,
+                                                                                                        fileSystemName,
+                                                                                                        localMountPoint,
+                                                                                                        canonicalMountPoint));
     }
 
 
