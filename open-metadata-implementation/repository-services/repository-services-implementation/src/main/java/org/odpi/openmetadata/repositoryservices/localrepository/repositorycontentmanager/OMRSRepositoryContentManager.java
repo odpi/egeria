@@ -2975,15 +2975,18 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                        originatorServerName,
                                        typeDef.toString());
 
-            outboundRepositoryEventManager.processTypeDefConflictEvent(sourceName,
-                                                                       localRepositoryConnector.getMetadataCollectionId(),
-                                                                       localRepositoryConnector.getLocalServerName(),
-                                                                       localRepositoryConnector.getLocalServerType(),
-                                                                       localRepositoryConnector.getOrganizationName(),
-                                                                       typeDef,
-                                                                       originatorMetadataCollectionId,
-                                                                       knownTypeDefNames.get(typeDef.getName()),
-                                                                       error.getReportedErrorMessage());
+            if ((localRepositoryConnector != null) && (outboundRepositoryEventManager != null))
+            {
+                outboundRepositoryEventManager.processTypeDefConflictEvent(sourceName,
+                                                                           localRepositoryConnector.getMetadataCollectionId(),
+                                                                           localRepositoryConnector.getLocalServerName(),
+                                                                           localRepositoryConnector.getLocalServerType(),
+                                                                           localRepositoryConnector.getOrganizationName(),
+                                                                           typeDef,
+                                                                           originatorMetadataCollectionId,
+                                                                           knownTypeDefNames.get(typeDef.getName()),
+                                                                           error.getReportedErrorMessage());
+            }
         }
         catch (InvalidTypeDefException error)
         {
@@ -3157,16 +3160,19 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             log.debug("TypeDef not added because it conflicts with another TypeDef already in the repository: " + attributeTypeDef);
             log.debug("TypeDefConflictException:", error);
 
-            outboundRepositoryEventManager.processAttributeTypeDefConflictEvent(sourceName,
-                                                                                localRepositoryConnector.getMetadataCollectionId(),
-                                                                                localRepositoryConnector.getLocalServerName(),
-                                                                                localRepositoryConnector.getLocalServerType(),
-                                                                                localRepositoryConnector.getOrganizationName(),
-                                                                                attributeTypeDef,
-                                                                                originatorMetadataCollectionId,
-                                                                                knownAttributeTypeDefNames.get(
-                                                                                        attributeTypeDef.getName()),
-                                                                                null);
+            if ((localRepositoryConnector != null) && (outboundRepositoryEventManager != null))
+            {
+                outboundRepositoryEventManager.processAttributeTypeDefConflictEvent(sourceName,
+                                                                                    localRepositoryConnector.getMetadataCollectionId(),
+                                                                                    localRepositoryConnector.getLocalServerName(),
+                                                                                    localRepositoryConnector.getLocalServerType(),
+                                                                                    localRepositoryConnector.getOrganizationName(),
+                                                                                    attributeTypeDef,
+                                                                                    originatorMetadataCollectionId,
+                                                                                    knownAttributeTypeDefNames.get(
+                                                                                            attributeTypeDef.getName()),
+                                                                                    null);
+            }
         }
         catch (InvalidTypeDefException error)
         {

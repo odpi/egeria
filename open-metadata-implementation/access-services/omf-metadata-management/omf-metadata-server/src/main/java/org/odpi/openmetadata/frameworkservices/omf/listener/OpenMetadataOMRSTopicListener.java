@@ -1030,7 +1030,7 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
             {
                 log.debug("Element " + entity.getGUID() + " not visible");
             }
-            else
+            else if (entityProxy != null)
             {
                 log.debug("Element " + entityProxy.getGUID() + " not visible");
             }

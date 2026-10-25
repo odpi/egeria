@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
@@ -165,25 +166,19 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
             {
                 if (copyFile)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            GovernanceActionConnectorsAuditCode.COPY_FILE.getMessageDefinition(governanceServiceName,
-                                                                                                               sourceFilePathName,
-                                                                                                               destinationFileName));
-                    }
+                    AuditLogRecorder.logRecord(auditLog, methodName,
+                                                         GovernanceActionConnectorsAuditCode.COPY_FILE.getMessageDefinition(governanceServiceName,
+                                                                                                                            sourceFilePathName,
+                                                                                                                            destinationFileName));
 
                     FileUtils.copyFile(sourceFile, destinationFile, true);
                 }
                 else
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            GovernanceActionConnectorsAuditCode.MOVE_FILE.getMessageDefinition(governanceServiceName,
-                                                                                                               sourceFilePathName,
-                                                                                                               destinationFileName));
-                    }
+                    AuditLogRecorder.logRecord(auditLog, methodName,
+                                                         GovernanceActionConnectorsAuditCode.MOVE_FILE.getMessageDefinition(governanceServiceName,
+                                                                                                                            sourceFilePathName,
+                                                                                                                            destinationFileName));
 
                     FileUtils.moveFile(sourceFile, destinationFile);
                 }
@@ -197,14 +192,11 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         /*
          * No suitable file name can be found
          */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                GovernanceActionConnectorsAuditCode.FILE_PATTERN_FULL.getMessageDefinition(governanceServiceName,
-                                                                                                           sourceFilePathName,
-                                                                                                           destinationFolderName,
-                                                                                                           fileNamePattern));
-        }
+        AuditLogRecorder.logRecord(auditLog, methodName,
+                                             GovernanceActionConnectorsAuditCode.FILE_PATTERN_FULL.getMessageDefinition(governanceServiceName,
+                                                                                                                        sourceFilePathName,
+                                                                                                                        destinationFolderName,
+                                                                                                                        fileNamePattern));
 
         return null;
     }

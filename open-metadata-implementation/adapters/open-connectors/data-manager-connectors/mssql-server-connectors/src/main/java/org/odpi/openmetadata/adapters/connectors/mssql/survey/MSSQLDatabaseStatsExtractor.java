@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.mssql.survey;
 
 import org.odpi.openmetadata.adapters.connectors.mssql.ffdc.MSSQLAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
@@ -31,13 +32,12 @@ import java.util.UUID;
  * skipped, so one inaccessible schema, missing permission or dropped table leaves a gap in the results rather
  * than ending the survey.
  */
-public class MSSQLDatabaseStatsExtractor
+public class MSSQLDatabaseStatsExtractor extends AuditLoggingBase
 {
     private final List<String>                 validDatabases;
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -75,11 +75,12 @@ public class MSSQLDatabaseStatsExtractor
                                        AuditLog                    auditLog,
                                        String                      surveyActionServiceName)
     {
+        super(auditLog);
+
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.surveyActionServiceName      = surveyActionServiceName;
     }
 
@@ -578,15 +579,12 @@ public class MSSQLDatabaseStatsExtractor
     {
         final String methodName = "logQueryFailure";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                MSSQLAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
-                                                                                        informationSought,
-                                                                                        elementName,
-                                                                                        sqlException.getClass().getName(),
-                                                                                        sqlException.getMessage()));
-        }
+        logRecord(methodName,
+                  MSSQLAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                          informationSought,
+                                                                          elementName,
+                                                                          sqlException.getClass().getName(),
+                                                                          sqlException.getMessage()));
     }
 
 

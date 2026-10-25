@@ -374,12 +374,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                               error);
 
 
             throw new ConnectorCheckedException(HarvestOpenMetadataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
@@ -440,12 +440,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         if (assignedUserIdentityForRole != null)
@@ -522,12 +522,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -570,12 +570,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -620,12 +620,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -670,12 +670,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -742,12 +742,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -788,12 +788,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -900,12 +900,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -978,12 +978,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return commentCount;
@@ -1105,12 +1105,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -1206,12 +1206,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -1277,12 +1277,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
-                                                                                                         methodName,
-                                                                                                         error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                      error.getClass().getName(),
+                                                                                                      methodName,
+                                                                                                      error.getMessage()),
+                               error);
         }
     }
 
@@ -1316,12 +1316,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
-                                                                                                         methodName,
-                                                                                                         error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                      error.getClass().getName(),
+                                                                                                      methodName,
+                                                                                                      error.getMessage()),
+                               error);
         }
     }
 
@@ -1424,12 +1424,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
-                                                                                                         methodName,
-                                                                                                         error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                      error.getClass().getName(),
+                                                                                                      methodName,
+                                                                                                      error.getMessage()),
+                               error);
         }
     }
 
@@ -1502,12 +1502,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -1560,12 +1560,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -1603,12 +1603,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -1710,12 +1710,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -1755,12 +1755,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -1826,12 +1826,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -1878,12 +1878,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return false;
@@ -1971,12 +1971,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -2043,12 +2043,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         syncTermActivity(databaseConnection, glossaryTerm, glossaryGUID, lastFeedbackTime, numberOfLinkedElements, lastLinkTime);
@@ -2097,12 +2097,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -2392,12 +2392,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -2489,12 +2489,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -2556,12 +2556,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -2615,12 +2615,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -2677,12 +2677,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -2760,12 +2760,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -2887,12 +2887,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;
@@ -2926,12 +2926,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3007,12 +3007,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3076,12 +3076,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3150,12 +3150,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3230,12 +3230,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3330,12 +3330,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3425,12 +3425,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -3602,12 +3602,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
     }
 
@@ -3714,12 +3714,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3779,12 +3779,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3852,12 +3852,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -3926,12 +3926,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4057,12 +4057,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4176,12 +4176,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4270,12 +4270,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                         }
                         catch (Exception error)
                         {
-                            auditLog.logException(methodName,
-                                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         methodName,
-                                                                                                                         error.getMessage()),
-                                                  error);
+                            logExceptionRecord(methodName,
+                                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      methodName,
+                                                                                                                      error.getMessage()),
+                                               error);
                         }
                     }
                 }
@@ -4359,12 +4359,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4457,12 +4457,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4561,12 +4561,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4643,12 +4643,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4738,12 +4738,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4810,12 +4810,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()),
-                                      error);
+                logExceptionRecord(methodName,
+                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                   error);
             }
         }
     }
@@ -4886,12 +4886,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(HarvestOpenMetadataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                        error.getClass().getName(),
@@ -4978,12 +4978,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
         }
 
         return null;

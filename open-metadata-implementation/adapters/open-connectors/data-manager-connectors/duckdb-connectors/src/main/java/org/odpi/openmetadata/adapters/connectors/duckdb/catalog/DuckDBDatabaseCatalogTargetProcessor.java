@@ -135,9 +135,9 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                     defaultFriendshipGUID));
+            logRecord(methodName,
+                      DuckDBAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                           defaultFriendshipGUID));
         }
 
         for (DuckDBTemplateType templateType : DuckDBTemplateType.values())
@@ -228,11 +228,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                 }
                 catch (Exception error)
                 {
-                    auditLog.logMessage(methodName,
-                                        DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                                      "federation discovery",
-                                                                                                      databasePath,
-                                                                                                      error.getMessage()));
+                    logRecord(methodName,
+                              DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                            "federation discovery",
+                                                                                            databasePath,
+                                                                                            error.getMessage()));
                 }
             }
         }
@@ -242,12 +242,12 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  DuckDBAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               DuckDBAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
         }
     }
 
@@ -347,18 +347,18 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (existingAsset != null)
         {
-            auditLog.logMessage(methodName, DuckDBAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                     existingAsset.getElementHeader().getGUID(),
-                                                                                                     qualifiedName));
+            logRecord(methodName, DuckDBAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                           existingAsset.getElementHeader().getGUID(),
+                                                                                           qualifiedName));
 
             return existingAsset.getElementHeader().getGUID();
         }
 
         String databaseGUID = this.createDuckDBDatabaseAsset(qualifiedName, databaseName, fileAddress);
 
-        auditLog.logMessage(methodName, DuckDBAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                  qualifiedName,
-                                                                                                  databaseGUID));
+        logRecord(methodName, DuckDBAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                        qualifiedName,
+                                                                                        databaseGUID));
 
         return databaseGUID;
     }
@@ -472,12 +472,12 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                             new org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                             catalogTargetProperties);
 
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                        relationshipGUID,
-                                                                                        friendshipConnectorGUID,
-                                                                                        databaseGUID,
-                                                                                        databaseName));
+            logRecord(methodName,
+                      DuckDBAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                              relationshipGUID,
+                                                                              friendshipConnectorGUID,
+                                                                              databaseGUID,
+                                                                              databaseName));
         }
     }
 
@@ -532,11 +532,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                 }
                 catch (Exception error)
                 {
-                    auditLog.logMessage(methodName,
-                                        DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                                      resourceMeasureAnnotation.getResourceProperties().toString(),
-                                                                                                      databaseName,
-                                                                                                      error.getMessage()));
+                    logRecord(methodName,
+                              DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                            resourceMeasureAnnotation.getResourceProperties().toString(),
+                                                                                            databaseName,
+                                                                                            error.getMessage()));
                 }
             }
         }
@@ -565,11 +565,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
-                                                                                              "database qualifiedName lookup",
-                                                                                              databaseGUID,
-                                                                                              error.getMessage()));
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_QUERY_FAILED.getMessageDefinition(connectorName,
+                                                                                    "database qualifiedName lookup",
+                                                                                    databaseGUID,
+                                                                                    error.getMessage()));
             return null;
         }
     }
@@ -730,11 +730,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                  * Not an error - the friendship connector runs on its own separate refresh cycle and may simply
                  * not have catalogued this view yet.  The file asset and its schema have still been catalogued.
                  */
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.DUCKDB_TABLE_NOT_YET_CATALOGUED.getMessageDefinition(connectorName,
-                                                                                                          viewName,
-                                                                                                          primaryTableQualifiedName,
-                                                                                                          fallbackTableQualifiedName));
+                logRecord(methodName,
+                          DuckDBAuditCode.DUCKDB_TABLE_NOT_YET_CATALOGUED.getMessageDefinition(connectorName,
+                                                                                                viewName,
+                                                                                                primaryTableQualifiedName,
+                                                                                                fallbackTableQualifiedName));
                 return;
             }
 
@@ -781,11 +781,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                             "schema/lineage for view " + viewName,
-                                                                                             (databaseQualifiedName == null ? "<unknown>" : databaseQualifiedName),
-                                                                                             error.getMessage()));
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                   "schema/lineage for view " + viewName,
+                                                                                   (databaseQualifiedName == null ? "<unknown>" : databaseQualifiedName),
+                                                                                   error.getMessage()));
         }
     }
 
@@ -878,20 +878,20 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                                 "file column " + column.columnName(),
-                                                                                                 fileAssetQualifiedName,
-                                                                                                 error.getMessage()));
+                logRecord(methodName,
+                          DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                       "file column " + column.columnName(),
+                                                                                       fileAssetQualifiedName,
+                                                                                       error.getMessage()));
             }
         }
 
         if (schemaTypeIsNew)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FILE_SCHEMA_CATALOGED.getMessageDefinition(connectorName,
-                                                                                           fileAssetQualifiedName,
-                                                                                           Integer.toString(columnGUIDs.size())));
+            logRecord(methodName,
+                      DuckDBAuditCode.FILE_SCHEMA_CATALOGED.getMessageDefinition(connectorName,
+                                                                                 fileAssetQualifiedName,
+                                                                                 Integer.toString(columnGUIDs.size())));
         }
 
         return columnGUIDs;
@@ -930,11 +930,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                             "DerivedSchemaTypeQueryTarget for column " + columnName,
-                                                                                             viewName,
-                                                                                             error.getMessage()));
+            logRecord(methodName,
+                      DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                   "DerivedSchemaTypeQueryTarget for column " + columnName,
+                                                                                   viewName,
+                                                                                   error.getMessage()));
         }
     }
 
@@ -983,11 +983,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                                 "attached table " + tableName,
-                                                                                                 alias,
-                                                                                                 error.getMessage()));
+                logRecord(methodName,
+                          DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                       "attached table " + tableName,
+                                                                                       alias,
+                                                                                       error.getMessage()));
             }
         }
     }
@@ -1063,11 +1063,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
                                                     new MakeAnchorOptions(tabularDataSetClient.getMetadataSourceOptions()),
                                                     dataSetContentProperties);
 
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.ATTACHED_TABLE_CATALOGED.getMessageDefinition(connectorName,
-                                                                                              tableName,
-                                                                                              alias,
-                                                                                              Integer.toString(columns.size())));
+            logRecord(methodName,
+                      DuckDBAuditCode.ATTACHED_TABLE_CATALOGED.getMessageDefinition(connectorName,
+                                                                                    tableName,
+                                                                                    alias,
+                                                                                    Integer.toString(columns.size())));
         }
 
         this.getOrCreateRelationalTableSchema(dataSetGUID, dataSetQualifiedName, columns);
@@ -1151,11 +1151,11 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
             }
             catch (Exception error)
             {
-                auditLog.logMessage(methodName,
-                                    DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
-                                                                                                 "attached table column " + column.columnName(),
-                                                                                                 dataSetQualifiedName,
-                                                                                                 error.getMessage()));
+                logRecord(methodName,
+                          DuckDBAuditCode.FEDERATION_LINK_FAILED.getMessageDefinition(connectorName,
+                                                                                       "attached table column " + column.columnName(),
+                                                                                       dataSetQualifiedName,
+                                                                                       error.getMessage()));
             }
         }
     }
@@ -1199,10 +1199,10 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (matchCount > 1)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.AMBIGUOUS_ELEMENT_FOUND.getMessageDefinition(connectorName,
-                                                                                              Integer.toString(matchCount),
-                                                                                              qualifiedName));
+            logRecord(methodName,
+                      DuckDBAuditCode.AMBIGUOUS_ELEMENT_FOUND.getMessageDefinition(connectorName,
+                                                                                    Integer.toString(matchCount),
+                                                                                    qualifiedName));
             return null;
         }
 
@@ -1241,10 +1241,10 @@ public class DuckDBDatabaseCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (matchCount > 1)
         {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.AMBIGUOUS_ELEMENT_FOUND.getMessageDefinition(connectorName,
-                                                                                              Integer.toString(matchCount),
-                                                                                              qualifiedName));
+            logRecord(methodName,
+                      DuckDBAuditCode.AMBIGUOUS_ELEMENT_FOUND.getMessageDefinition(connectorName,
+                                                                                    Integer.toString(matchCount),
+                                                                                    qualifiedName));
             return null;
         }
 

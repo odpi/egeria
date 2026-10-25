@@ -212,11 +212,11 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
 
         final String methodName = "refresh";
 
-        auditLog.logMessage(methodName,
-                            KafkaIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                            eventBrokerGUID,
-                                                                                                            super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
-                                                                                                            templateGUID));
+        logRecord(methodName,
+                  KafkaIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                  eventBrokerGUID,
+                                                                                                  super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
+                                                                                                  templateGUID));
 
         try
         {
@@ -234,10 +234,10 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
              */
             if (activeTopicNames != null)
             {
-                auditLog.logMessage(methodName,
-                                    KafkaIntegrationConnectorAuditCode.RETRIEVED_TOPICS.getMessageDefinition(connectorName,
-                                                                                                             super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
-                                                                                                             Integer.toString(activeTopicNames.size())));
+                logRecord(methodName,
+                          KafkaIntegrationConnectorAuditCode.RETRIEVED_TOPICS.getMessageDefinition(connectorName,
+                                                                                                   super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
+                                                                                                   Integer.toString(activeTopicNames.size())));
 
                 /*
                  * Retrieve the topics that are catalogued for this event broker.
@@ -278,10 +278,10 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                                                                                       consumedAsset.getRelatedElement().getElementHeader().getGUID(),
                                                                                       softwareCapabilityClient.getDeleteOptions(true));
 
-                                    auditLog.logMessage(methodName,
-                                                        KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
-                                                                                                                              cataloguedTopicName,
-                                                                                                                              consumedAsset.getRelatedElement().getElementHeader().getGUID()));
+                                    logRecord(methodName,
+                                              KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
+                                                                                                                    cataloguedTopicName,
+                                                                                                                    consumedAsset.getRelatedElement().getElementHeader().getGUID()));
                                 }
                                 else
                                 {
@@ -338,22 +338,22 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
 
                         assetClient.updateAsset(topicGUID, assetClient.getUpdateOptions(true), topicProperties);
 
-                        auditLog.logMessage(methodName,
-                                            KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
-                                                                                                                  topicName,
-                                                                                                                  topicGUID));
+                        logRecord(methodName,
+                                  KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
+                                                                                                        topicName,
+                                                                                                        topicGUID));
                     }
                 }
             }
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  KafkaIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_TOPICS.getMessageDefinition(connectorName,
-                                                                                                                    super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
-                                                                                                                    error.getClass().getName(),
-                                                                                                                    error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               KafkaIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_TOPICS.getMessageDefinition(connectorName,
+                                                                                                                 super.connectorToTarget.getConnection().getEndpoint().getNetworkAddress(),
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
+                               error);
         }
     }
 

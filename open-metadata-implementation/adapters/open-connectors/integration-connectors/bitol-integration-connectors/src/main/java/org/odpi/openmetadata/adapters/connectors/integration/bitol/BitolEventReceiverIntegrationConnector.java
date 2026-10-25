@@ -51,11 +51,11 @@ public class BitolEventReceiverIntegrationConnector extends DynamicIntegrationCo
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                             error.getClass().getName(),
-                                                                                                             methodName,
-                                                                                                             error.getMessage()));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()));
         }
     }
 

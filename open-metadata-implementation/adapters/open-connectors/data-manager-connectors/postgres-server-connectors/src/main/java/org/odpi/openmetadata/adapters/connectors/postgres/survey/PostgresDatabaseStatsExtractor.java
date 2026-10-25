@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
@@ -28,13 +29,12 @@ import java.util.UUID;
  * skipped, so one inaccessible schema or dropped table leaves a gap in the results rather than ending the
  * survey.
  */
-public class PostgresDatabaseStatsExtractor
+public class PostgresDatabaseStatsExtractor extends AuditLoggingBase
 {
     private final List<String>                 validDatabases;
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -72,11 +72,12 @@ public class PostgresDatabaseStatsExtractor
                                           AuditLog                    auditLog,
                                           String                      surveyActionServiceName)
     {
+        super(auditLog);
+
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.surveyActionServiceName      = surveyActionServiceName;
     }
 
@@ -482,15 +483,12 @@ public class PostgresDatabaseStatsExtractor
     {
         final String methodName = "logQueryFailure";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                PostgresAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
-                                                                                           informationSought,
-                                                                                           elementName,
-                                                                                           sqlException.getClass().getName(),
-                                                                                           sqlException.getMessage()));
-        }
+        logRecord(methodName,
+                  PostgresAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                             informationSought,
+                                                                             elementName,
+                                                                             sqlException.getClass().getName(),
+                                                                             sqlException.getMessage()));
     }
 
 

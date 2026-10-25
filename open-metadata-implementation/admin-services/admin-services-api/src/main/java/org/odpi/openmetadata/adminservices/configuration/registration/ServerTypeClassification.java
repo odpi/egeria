@@ -29,7 +29,7 @@ public enum ServerTypeClassification
      * open metadata repositories connected through one or more open metadata repository cohorts.
      */
     METADATA_ACCESS_SERVER("Metadata Access Server",
-                           "Server that provides specialist APIs for accessing and storing metadata in" +
+                           "Server that provides specialist APIs for accessing and storing metadata in " +
                             "open metadata repositories connected through one or more open metadata repository cohorts.",
                            ServerTypeClassification.COHORT_MEMBER,
                            "https://egeria-project.org/concepts/metadata-access-server/"),

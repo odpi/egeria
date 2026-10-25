@@ -207,12 +207,12 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              exception.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                           exception.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           exception.getMessage()),
+                               exception);
         }
     }
 
@@ -245,17 +245,17 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
              * Stopping here is deliberate.  Cataloguing without knowing which schema was meant would hang
              * another schema's tables off this asset, and that failure reports success.
              */
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.UNKNOWN_DATABASE_SCHEMA.getMessageDefinition(connectorName,
-                                                                                                               schemaElement.getElementHeader().getGUID(),
-                                                                                                               schemaName));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.UNKNOWN_DATABASE_SCHEMA.getMessageDefinition(connectorName,
+                                                                                                     schemaElement.getElementHeader().getGUID(),
+                                                                                                     schemaName));
             return;
         }
 
-        auditLog.logMessage(methodName,
-                            JDBCIntegrationConnectorAuditCode.STARTING_SCHEMA_METADATA_TRANSFER.getMessageDefinition(connectorName,
-                                                                                                                     jdbcSchemaName,
-                                                                                                                     schemaName));
+        logRecord(methodName,
+                  JDBCIntegrationConnectorAuditCode.STARTING_SCHEMA_METADATA_TRANSFER.getMessageDefinition(connectorName,
+                                                                                                           jdbcSchemaName,
+                                                                                                           schemaName));
 
         Connection connection = this.connectToDatabase(schemaName, jdbcResourceConnector);
 
@@ -291,24 +291,24 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
 
             cataloguer.catalogSchemaContents(schemaElement, jdbcSchemaName);
 
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, schemaName));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, schemaName));
         }
         catch (SQLException sqlException)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
-                                  sqlException);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
+                               sqlException);
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              exception.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              schemaName,
-                                                                                                              exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                           exception.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           schemaName,
+                                                                                                           exception.getMessage()),
+                               exception);
         }
         finally
         {
@@ -385,9 +385,9 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
     {
         final String methodName = "JDBCIntegrationConnector.refresh";
 
-        auditLog.logMessage(methodName,
-                            JDBCIntegrationConnectorAuditCode.STARTING_METADATA_TRANSFER.getMessageDefinition(connectorName,
-                                                                                                              databaseName));
+        logRecord(methodName,
+                  JDBCIntegrationConnectorAuditCode.STARTING_METADATA_TRANSFER.getMessageDefinition(connectorName,
+                                                                                                    databaseName));
 
         Connection connection = this.connectToDatabase(databaseName, jdbcResourceConnector);
 
@@ -433,27 +433,27 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                 }
                 else
                 {
-                    auditLog.logMessage("Verifying database metadata transferred. None found. Stopping transfer",
-                                        JDBCIntegrationConnectorAuditCode.EXITING_ON_DATABASE_TRANSFER_FAIL.getMessageDefinition(methodName));
+                    logRecord("Verifying database metadata transferred. None found. Stopping transfer",
+                              JDBCIntegrationConnectorAuditCode.EXITING_ON_DATABASE_TRANSFER_FAIL.getMessageDefinition(methodName));
                 }
 
-                auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, databaseName));
+                logRecord(methodName, JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, databaseName));
             }
             catch (SQLException sqlException)
             {
-                auditLog.logException(methodName,
-                                      JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
-                                      sqlException);
+                logExceptionRecord(methodName,
+                                   JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
+                                   sqlException);
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  exception.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  databaseName,
-                                                                                                                  exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               exception.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               databaseName,
+                                                                                                               exception.getMessage()),
+                                   exception);
             }
             finally
             {
@@ -505,22 +505,22 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
                 databaseClient.updateAsset(existingDatabase.getElementHeader().getGUID(),
                                            databaseClient.getUpdateOptions(false),
                                            databaseProperties);
-                auditLog.logMessage(methodName,
-                                    JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
+                logRecord(methodName,
+                          JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
                 return existingDatabase;
             }
 
             String databaseGUID = databaseClient.createAsset(null, null, databaseProperties, null);
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
 
             return databaseClient.getAssetByGUID(databaseGUID, RelationalDatabaseCataloguer.withoutRelationships(databaseClient.getGetOptions()));
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
             return null;
         }
     }
@@ -573,12 +573,12 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
         }
         catch (SQLException sqlException)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.CONNECTION_FAILED.getMessageDefinition(connectorName,
-                                                                                                           databaseName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           sqlException.getMessage()),
-                                  sqlException);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.CONNECTION_FAILED.getMessageDefinition(connectorName,
+                                                                                                        databaseName,
+                                                                                                        sqlException.getClass().getName(),
+                                                                                                        sqlException.getMessage()),
+                               sqlException);
         }
 
         return null;
@@ -603,8 +603,8 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
         }
         catch (SQLException sqlException)
         {
-            auditLog.logException("Closing connection to database server",
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()), sqlException);
+            logExceptionRecord("Closing connection to database server",
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()), sqlException);
         }
     }
 }

@@ -29,6 +29,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasObjectId;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasRelationship;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -44,7 +45,7 @@ import java.util.*;
 /**
  * AtlasIntegrationModuleBase defines the interface that classes that support the synchronization of particular types of metadata with Apache Atlas.
  */
-public abstract class AtlasIntegrationModuleBase
+public abstract class AtlasIntegrationModuleBase extends AuditLoggingBase
 {
     /*
      * These definitions help to extract information from the Apache Atlas beans.
@@ -85,8 +86,6 @@ public abstract class AtlasIntegrationModuleBase
     private final static String atlasNameMappingPropertyName  = "atlasName";
     private final static String egeriaNameMappingPropertyName = "lastKnownEgeriaDisplayName";
     private final static String modulePropertyName            = "originator";
-
-    protected final AuditLog                 auditLog;
     protected final String                   connectorName;
     protected final String                   moduleName;
     protected final Connection               connectionDetails;
@@ -126,7 +125,8 @@ public abstract class AtlasIntegrationModuleBase
                                       String                   targetRootURL,
                                       ApacheAtlasRESTConnector atlasClient) throws UserNotAuthorizedException
     {
-        this.auditLog           = auditLog;
+        super(auditLog);
+
         this.connectorName      = connectorName;
         this.moduleName         = moduleName;
         this.connectionDetails  = connectionDetails;
@@ -392,13 +392,13 @@ public abstract class AtlasIntegrationModuleBase
 
         if (relatedExternalId == null)
         {
-            auditLog.logMessage(methodName,
-                                AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
-                                                                                                   egeriaMetadataElement.getElementHeader().getType().getTypeName(),
-                                                                                                   egeriaMetadataElement.getElementHeader().getGUID(),
-                                                                                                   myContext.getMetadataSourceGUID(),
-                                                                                                   atlasEntity.getGuid(),
-                                                                                                   atlasEntity.getTypeName()));
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
+                                                                                         egeriaMetadataElement.getElementHeader().getType().getTypeName(),
+                                                                                         egeriaMetadataElement.getElementHeader().getGUID(),
+                                                                                         myContext.getMetadataSourceGUID(),
+                                                                                         atlasEntity.getGuid(),
+                                                                                         atlasEntity.getTypeName()));
             throw new PropertyServerException(AtlasIntegrationErrorCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                                  egeriaMetadataElement.getElementHeader().getType().getTypeName(),
                                                                                                                  egeriaMetadataElement.getElementHeader().getGUID(),
@@ -473,12 +473,12 @@ public abstract class AtlasIntegrationModuleBase
 
         if (relatedExternalId == null)
         {
-            auditLog.logMessage(methodName,
-                                AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
-                                                                                                   egeriaMetadataElement.getElementHeader().getType().getTypeName(),
-                                                                                                   egeriaMetadataElement.getElementHeader().getGUID(),
-                                                                                                   atlasEntity.getGuid(),
-                                                                                                   atlasEntity.getTypeName()));
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
+                                                                                         egeriaMetadataElement.getElementHeader().getType().getTypeName(),
+                                                                                         egeriaMetadataElement.getElementHeader().getGUID(),
+                                                                                         atlasEntity.getGuid(),
+                                                                                         atlasEntity.getTypeName()));
             throw new PropertyServerException(AtlasIntegrationErrorCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                                  egeriaMetadataElement.getElementHeader().getType().getTypeName(),
                                                                                                                  egeriaMetadataElement.getElementHeader().getGUID(),
@@ -537,13 +537,13 @@ public abstract class AtlasIntegrationModuleBase
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
-                                                                                                   egeriaElement.getElementHeader().getType().getTypeName(),
-                                                                                                   egeriaElement.getElementHeader().getGUID(),
-                                                                                                   myContext.getMetadataSourceGUID(),
-                                                                                                   atlasEntity.getGuid(),
-                                                                                                   atlasEntity.getTypeName()));
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
+                                                                                         egeriaElement.getElementHeader().getType().getTypeName(),
+                                                                                         egeriaElement.getElementHeader().getGUID(),
+                                                                                         myContext.getMetadataSourceGUID(),
+                                                                                         atlasEntity.getGuid(),
+                                                                                         atlasEntity.getTypeName()));
             throw new PropertyServerException(AtlasIntegrationErrorCode.MISSING_CORRELATION.getMessageDefinition(connectorName,
                                                                                                                  egeriaElement.getElementHeader().getType().getTypeName(),
                                                                                                                  egeriaElement.getElementHeader().getGUID(),
@@ -1088,11 +1088,11 @@ public abstract class AtlasIntegrationModuleBase
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               egeriaTypeName,
-                                                                                                               egeriaDataSetGUID,
-                                                                                                               atlasDataSetEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     egeriaTypeName,
+                                                                                                     egeriaDataSetGUID,
+                                                                                                     atlasDataSetEntity.getEntity().getGuid()));
                     removeEgeriaGUID(atlasDataSetEntity);
                     egeriaDataSetGUID = createAtlasDataSetAsDataSetInEgeria(atlasDataSetEntity, atlasTypeName, egeriaTypeName);
                 }
@@ -1158,12 +1158,12 @@ public abstract class AtlasIntegrationModuleBase
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          atlasTypeName,
-                                                                                                          egeriaDataSetGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                atlasTypeName,
+                                                                                                egeriaDataSetGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaDataSetGUID,
@@ -1217,12 +1217,12 @@ public abstract class AtlasIntegrationModuleBase
                                                     dataAssetClient.getUpdateOptions(true),
                                                     dataAssetProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  atlasTypeName,
-                                                                                                                  egeriaDataSetGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        atlasTypeName,
+                                                                                                        egeriaDataSetGUID));
                     }
                 }
             }

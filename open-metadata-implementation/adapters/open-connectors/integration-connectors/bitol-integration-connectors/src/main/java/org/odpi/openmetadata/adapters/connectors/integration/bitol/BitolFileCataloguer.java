@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesTemplateType;
 import org.odpi.openmetadata.adapters.connectors.integration.bitol.ffdc.BitolIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -42,10 +43,9 @@ import java.util.Map;
  * connector and the documents continue to flow: cataloguing the file is an addition to publishing the document, not
  * a condition of it.
  */
-public class BitolFileCataloguer
+public class BitolFileCataloguer extends AuditLoggingBase
 {
     private final IntegrationContext integrationContext;
-    private final AuditLog           auditLog;
     private final String             connectorName;
     private final PropertyHelper     propertyHelper = new PropertyHelper();
 
@@ -63,8 +63,9 @@ public class BitolFileCataloguer
                                AuditLog           auditLog,
                                String             connectorName)
     {
+        super(auditLog);
+
         this.integrationContext = integrationContext;
-        this.auditLog           = auditLog;
         this.connectorName      = connectorName;
     }
 
@@ -147,12 +148,12 @@ public class BitolFileCataloguer
 
             linkToCataloguedElement(kind, document, assetGUID);
 
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.FILE_CATALOGUED.getMessageDefinition(connectorName,
-                                                                                                        kind,
-                                                                                                        file.getPath(),
-                                                                                                        assetGUID,
-                                                                                                        deployedImplementationType.getDeployedImplementationType()));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.FILE_CATALOGUED.getMessageDefinition(connectorName,
+                                                                                              kind,
+                                                                                              file.getPath(),
+                                                                                              assetGUID,
+                                                                                              deployedImplementationType.getDeployedImplementationType()));
 
             return assetGUID;
         }
@@ -242,11 +243,11 @@ public class BitolFileCataloguer
     {
         if (! templatesReported)
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.FILE_NOT_CATALOGUED.getMessageDefinition(connectorName,
-                                                                                                            kind,
-                                                                                                            file.getPath(),
-                                                                                                            reason));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.FILE_NOT_CATALOGUED.getMessageDefinition(connectorName,
+                                                                                                  kind,
+                                                                                                  file.getPath(),
+                                                                                                  reason));
             templatesReported = true;
         }
     }

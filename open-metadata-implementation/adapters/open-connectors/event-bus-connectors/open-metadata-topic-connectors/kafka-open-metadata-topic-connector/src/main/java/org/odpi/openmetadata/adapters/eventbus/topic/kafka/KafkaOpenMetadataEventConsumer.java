@@ -14,6 +14,7 @@ import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,17 +25,19 @@ import static java.lang.Thread.sleep;
  * KafkaOpenMetadataEventConsumer is used to process events from kafka topic and is part of native
  * Apache Kafka event/messaging infrastructure.
  */
-public class KafkaOpenMetadataEventConsumer implements Runnable
+public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements Runnable
 {
     private static final Logger log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
-    private final AuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
     private final long pollTimeout;
     private final long maxQueueSize;
 
-    private              KafkaConsumer<String, String>   consumer;
+    /*
+     * Volatile because safeCloseConsumer reads it from another thread while the main loop closes and clears it.
+     */
+    private volatile     KafkaConsumer<String, String>   consumer;
     private final              String                    topicToSubscribe;
     private final              String                    localServerId;
 
@@ -89,23 +92,21 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                    KafkaOpenMetadataTopicConnector             connector,
                                    AuditLog                                    auditLog)
     {
+        super(auditLog);
 
-        this.auditLog = auditLog;
+
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
         this.topicToSubscribe = topicName;
-        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance(auditLog));
+        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
         this.connector = connector;
         this.localServerId = localServerId;
 
         final String           actionDescription = "initialize";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
-                                                                                                             (Integer.toString(kafkaConsumerProperties.size()), topicName),
-                                kafkaConsumerProperties.toString());
-        }
+        logRecord(actionDescription,
+                  KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
+                                                                                               (Integer.toString(kafkaConsumerProperties.size()), topicName),
+                  kafkaConsumerProperties.toString());
         
         this.maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
@@ -202,15 +203,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                             log.debug("Metrics: messagesFailedToProcess: {}", countMessagesFailedToProcess);
                             log.warn("Error distributing inbound event: {}", error.getMessage());
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logException(actionDescription,
-                                                      KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT.getMessageDefinition
-                                                            (topicToSubscribe,
-                                                             error.getClass().getName(), json,
-                                                             error.getMessage()),
-                                                      error);
-                            }
+                            logExceptionRecord(actionDescription,
+                                               KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT.getMessageDefinition
+                                                     (topicToSubscribe,
+                                                      error.getClass().getName(), json,
+                                                      error.getMessage()),
+                                               error);
                         }
                     }
                     else
@@ -244,14 +242,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             {
                 log.warn("Unexpected error: {}", error.getMessage());
 
-                if (auditLog != null)
-                {
-                    auditLog.logException(actionDescription,
-                                          KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT.getMessageDefinition(topicToSubscribe,
-                                                                                                                                  error.getClass().getName(),
-                                                                                                                                  error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(actionDescription,
+                                   KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT.getMessageDefinition(topicToSubscribe,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
+                                   error);
                 recoverAfterError();
             }
             finally
@@ -293,15 +288,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     }
                     catch( Exception error)
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logException("consumer.commitSync",
-                                    KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                               topicToSubscribe,
-                                                                                                                               error.getMessage()),
-                                    error);
-
-                        }
+                        logExceptionRecord("consumer.commitSync",
+                             KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                        topicToSubscribe,
+                                                                                                                        error.getMessage()),
+                             error);
 
                     }
                 }
@@ -386,14 +377,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             }
             catch( Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException("checkForFullyProcessedMessages.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       topicToSubscribe,
-                                                                                                                       error.getMessage()),
-                            error);
-                }
+                logExceptionRecord("checkForFullyProcessedMessages.commitSync",
+                     KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                topicToSubscribe,
+                                                                                                                error.getMessage()),
+                     error);
 
 
             }
@@ -509,10 +497,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         /*
          * Wake the thread up so it shuts down quicker.
          */
-        if (consumer != null)
+        KafkaConsumer<String, String> currentConsumer = consumer;
+
+        if (currentConsumer != null)
         {
             log.debug("Waking up consumer thread");
-            consumer.wakeup();
+            currentConsumer.wakeup();
         }
     }
 
@@ -539,10 +529,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
 
     private class HandleRebalance implements ConsumerRebalanceListener {
-        AuditLog auditLog;
-
-        public HandleRebalance(AuditLog auditLog) {
-            this.auditLog = auditLog;
+        public HandleRebalance() {
         }
 
         @Override
@@ -667,21 +654,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     This is usually encountered during development because a debug session has prevented the kafka client
                     from honouring the heartbeat configuration.
                      */
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
-                    }
+                    logRecord( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
-                                        topicToSubscribe,
-                                        error.getMessage()),
-                                error);
-                    }
+                    logExceptionRecord(methodName,
+                         KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                 topicToSubscribe,
+                                 error.getMessage()),
+                         error);
 
                 }
             }

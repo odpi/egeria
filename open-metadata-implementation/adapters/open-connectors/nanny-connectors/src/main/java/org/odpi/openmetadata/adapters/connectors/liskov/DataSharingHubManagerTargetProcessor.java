@@ -242,9 +242,9 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                            dataDictionaryProperties,
                                                                            dataDescriptionProperties);
 
-                    auditLog.logMessage(methodName, LiskovAuditCode.NEW_DATA_DICTIONARY.getMessageDefinition(connectorName,
-                                                                                                             dataSharingHubProperties.getDisplayName(),
-                                                                                                             dataSharingHubGUID));
+                    logRecord(methodName, LiskovAuditCode.NEW_DATA_DICTIONARY.getMessageDefinition(connectorName,
+                                                                                                   dataSharingHubProperties.getDisplayName(),
+                                                                                                   dataSharingHubGUID));
                 }
 
                 GetOptions dataDictionaryOptions = collectionClient.getGetOptions();
@@ -255,9 +255,9 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
                 if (dataDictionary != null)
                 {
-                    auditLog.logMessage(methodName, LiskovAuditCode.RETRIEVING_DATA_FIELDS.getMessageDefinition(connectorName,
-                                                                                                                dataSharingHubProperties.getDisplayName(),
-                                                                                                                dataSharingHubGUID));
+                    logRecord(methodName, LiskovAuditCode.RETRIEVING_DATA_FIELDS.getMessageDefinition(connectorName,
+                                                                                                      dataSharingHubProperties.getDisplayName(),
+                                                                                                      dataSharingHubGUID));
 
                     /*
                      * Extract the existing data fields into the common collection folders.
@@ -291,12 +291,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                         {
                             if ((member != null) && (member.getRelatedElement().getProperties() instanceof DataAssetProperties dataAssetProperties))
                             {
-                                auditLog.logMessage(methodName, LiskovAuditCode.REFRESHING_DATA_HUB_STORE.getMessageDefinition(connectorName,
-                                                                                                                               member.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                                                                                               dataAssetProperties.getDisplayName(),
-                                                                                                                               member.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                               dataSharingHubProperties.getDisplayName(),
-                                                                                                                               dataSharingHubGUID));
+                                logRecord(methodName, LiskovAuditCode.REFRESHING_DATA_HUB_STORE.getMessageDefinition(connectorName,
+                                                                                                                     member.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                                                     dataAssetProperties.getDisplayName(),
+                                                                                                                     member.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                     dataSharingHubProperties.getDisplayName(),
+                                                                                                                     dataSharingHubGUID));
 
                                 refreshDataStore(dataFieldsFolderGUID, dataStructureFolderGUID, member.getRelatedElement().getElementHeader().getGUID(), dataSharingHubGUID, dataSharingHubProperties.getQualifiedName(), dataStructures);
                             }
@@ -307,12 +307,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
 
 
             throw new ConnectorCheckedException(LiskovErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
@@ -487,12 +487,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
         }
     }
 
@@ -577,13 +577,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         if (dataStoreElement.getProperties() instanceof CSVFileProperties csvFileProperties)
         {
-            auditLog.logMessage(methodName,
-                                LiskovAuditCode.REFRESHING_CSV_FILE.getMessageDefinition(connectorName,
-                                                                                         csvFileProperties.getFileName(),
-                                                                                         csvFileProperties.getQualifiedName(),
-                                                                                         dataStoreElement.getElementHeader().getGUID(),
-                                                                                         dataSharingHubQualifiedName,
-                                                                                         dataSharingHubGUID));
+            logRecord(methodName,
+                      LiskovAuditCode.REFRESHING_CSV_FILE.getMessageDefinition(connectorName,
+                                                                               csvFileProperties.getFileName(),
+                                                                               csvFileProperties.getQualifiedName(),
+                                                                               dataStoreElement.getElementHeader().getGUID(),
+                                                                               dataSharingHubQualifiedName,
+                                                                               dataSharingHubGUID));
 
             if ((dataStoreElement.getSchemaType() instanceof RelatedMetadataHierarchySummary schemaType) && (schemaType.getNestedElements() != null))
             {
@@ -952,12 +952,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
             dataFieldGUID = dataFieldClient.createDataField(newElementOptions, null, dataFieldProperties, null);
 
-            auditLog.logMessage(methodName,
-                                LiskovAuditCode.NEW_DATA_FIELD.getMessageDefinition(connectorName,
-                                                                                    dataFieldProperties.getDisplayName(),
-                                                                                    dataFieldGUID,
-                                                                                    dataSharingHubQualifiedName,
-                                                                                    dataSharingHubGUID));
+            logRecord(methodName,
+                      LiskovAuditCode.NEW_DATA_FIELD.getMessageDefinition(connectorName,
+                                                                          dataFieldProperties.getDisplayName(),
+                                                                          dataFieldGUID,
+                                                                          dataSharingHubQualifiedName,
+                                                                          dataSharingHubGUID));
         }
 
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
@@ -1015,12 +1015,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
             dataStructureGUID = dataStructureClient.createDataStructure(newElementOptions, null, dataStructuresProperties, null);
 
-            auditLog.logMessage(methodName,
-                                LiskovAuditCode.NEW_DATA_STRUCTURE.getMessageDefinition(connectorName,
-                                                                                        dataStructuresProperties.getDisplayName(),
-                                                                                        dataStructureGUID,
-                                                                                        dataSharingHubQualifiedName,
-                                                                                        dataSharingHubGUID));
+            logRecord(methodName,
+                      LiskovAuditCode.NEW_DATA_STRUCTURE.getMessageDefinition(connectorName,
+                                                                              dataStructuresProperties.getDisplayName(),
+                                                                              dataStructureGUID,
+                                                                              dataSharingHubQualifiedName,
+                                                                              dataSharingHubGUID));
         }
 
         return dataStructureGUID;
@@ -1066,12 +1066,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
             if (technologyType == null)
             {
-                auditLog.logMessage(methodName,
-                                    LiskovAuditCode.NO_TECHNOLOGY_TYPE.getMessageDefinition(connectorName,
-                                                                                            assetProperties.getDeployedImplementationType(),
-                                                                                            assetElement.getElementHeader().getType().getTypeName(),
-                                                                                            assetProperties.getDisplayName(),
-                                                                                            assetElement.getElementHeader().getGUID()));
+                logRecord(methodName,
+                          LiskovAuditCode.NO_TECHNOLOGY_TYPE.getMessageDefinition(connectorName,
+                                                                                  assetProperties.getDeployedImplementationType(),
+                                                                                  assetElement.getElementHeader().getType().getTypeName(),
+                                                                                  assetProperties.getDisplayName(),
+                                                                                  assetElement.getElementHeader().getGUID()));
                 return;
             }
 
@@ -1103,12 +1103,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            error.getClass().getName(),
-                                                                                            methodName,
-                                                                                            error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                               error);
         }
     }
 
@@ -1281,13 +1281,13 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);
 
-        auditLog.logMessage(methodName,
-                            LiskovAuditCode.ENABLING_CATALOGUING.getMessageDefinition(connectorName,
-                                                                                      engineActionGUID,
-                                                                                      assetElement.getElementHeader().getType().getTypeName(),
-                                                                                      assetProperties.getDisplayName(),
-                                                                                      assetGUID,
-                                                                                      governanceActionTypeProperties.getQualifiedName()));
+        logRecord(methodName,
+                  LiskovAuditCode.ENABLING_CATALOGUING.getMessageDefinition(connectorName,
+                                                                            engineActionGUID,
+                                                                            assetElement.getElementHeader().getType().getTypeName(),
+                                                                            assetProperties.getDisplayName(),
+                                                                            assetGUID,
+                                                                            governanceActionTypeProperties.getQualifiedName()));
     }
 
 
@@ -1333,14 +1333,14 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
         String engineActionGUID = initiateGovernanceActionType(governanceActionTypeProperties.getQualifiedName(), assetGUID);
 
-        auditLog.logMessage(methodName,
-                            LiskovAuditCode.STARTING_SURVEY.getMessageDefinition(connectorName,
-                                                                                 engineActionGUID,
-                                                                                 assetElement.getElementHeader().getType().getTypeName(),
-                                                                                 assetProperties.getDisplayName(),
-                                                                                 assetGUID,
-                                                                                 governanceActionTypeProperties.getQualifiedName(),
-                                                                                 decision.reason()));
+        logRecord(methodName,
+                  LiskovAuditCode.STARTING_SURVEY.getMessageDefinition(connectorName,
+                                                                       engineActionGUID,
+                                                                       assetElement.getElementHeader().getType().getTypeName(),
+                                                                       assetProperties.getDisplayName(),
+                                                                       assetGUID,
+                                                                       governanceActionTypeProperties.getQualifiedName(),
+                                                                       decision.reason()));
     }
 
 

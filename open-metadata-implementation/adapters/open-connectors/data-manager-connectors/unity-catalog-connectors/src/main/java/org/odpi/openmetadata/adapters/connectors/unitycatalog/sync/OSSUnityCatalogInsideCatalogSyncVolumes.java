@@ -458,11 +458,11 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.VOLUME_UPDATE.getMessageDefinition(connectorName,
-                                                                           memberElement.getElement().getElementHeader().getGUID(),
-                                                                           volumeInfo.getFull_name(),
-                                                                           ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.VOLUME_UPDATE.getMessageDefinition(connectorName,
+                                                                 memberElement.getElement().getElementHeader().getGUID(),
+                                                                 volumeInfo.getFull_name(),
+                                                                 ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), volumeInfo.getVolume_id());
     }
@@ -479,10 +479,10 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     {
         final String methodName = "deleteElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
-                                                                               volumeInfo.getFull_name(),
-                                                                               ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                     volumeInfo.getFull_name(),
+                                                                     ucServerEndpoint));
 
         ucConnector.deleteVolume(volumeInfo.getFull_name());
     }

@@ -71,7 +71,7 @@ This is not only a test-harness detail - see defect 6 below.
 | [PlatformCatalogBasicsFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogBasicsFVT.java) | Is the platform catalogued once, named from its own public properties?  Is every server the platform reports catalogued, attached to the platform, and qualified by the platform's URL root?  Does a second refresh change anything? |
 | [PlatformCatalogOrganizationNameFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogOrganizationNameFVT.java) | An organization name is set on a server's configuration document after that server has already been catalogued.  Is the element that is already there renamed, or is a second one created beside it?  And does clearing the organization name again put it back? |
 | [PlatformCatalogMultiplePlatformsFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogMultiplePlatformsFVT.java) | Two platforms, with identically named servers behind both.  Are they catalogued as two platforms with two sets of servers?  Does restarting the connector catalog its own platform a second time?  And is a platform element left under an earlier release's name adopted rather than catalogued again? |
-| [PlatformCatalogLocalServerURLFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogLocalServerURLFVT.java) | The integration daemon is on a different platform from the metadata access store it writes to.  Is the daemon's own platform catalogued and taken under management as well as the store's - and without registering the same platform twice when the two coincide? |
+| [PlatformCatalogLocalServerURLFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogLocalServerURLFVT.java) | The integration daemon records its own platform under a different address from the one the metadata access store is reached at.  Is the store's platform registered once, and is an address that is only an alias of the same platform recognised rather than catalogued a second time? |
 | [PlatformCatalogCohortFVT](src/test/java/org/odpi/openmetadata/platformcatalogfvt/PlatformCatalogCohortFVT.java) | Two real platforms, each with its own metadata access store and its own instance of the connector, the two stores joined in one cohort so every query is federated across both.  Both platforms carry identical names.  Do the two instances of the connector clash? |
 
 ### How two platforms are staged
@@ -278,10 +278,12 @@ record, and the rest of the platform is catalogued as normal.
 
 ## What it does not attempt
 
-**A genuinely separate second platform.**  `PlatformCatalogLocalServerURLFVT` puts the connector into a
-split deployment by giving the integration daemon a different spelling of the one platform's address, which
-is enough to exercise the registration but is still one platform with one set of servers.  A suite that
-could show two platforms with their own servers and their own configurations would need two JVMs.
+**A genuinely separate second platform.**  `PlatformCatalogLocalServerURLFVT` gives the integration daemon
+a different spelling of the one platform's address.  Since the connector checks with the platform behind a
+second address before cataloguing it (`PlatformAliasCheck`, audit message `PLATFORM_ALIAS_IGNORED`), that
+spelling is recognised as an alias of the same platform, so the class tests that it is not catalogued twice.
+A `localServerURL` that reaches a genuinely separate platform, with its own servers and configuration, would
+need two JVMs; the alias decision itself is unit tested in `PlatformAliasTest`.
 
 **A registration that fails and is then retried.**  The connector retries a failed registration on its next
 refresh, and the mechanism is small - a platform missing from the connector's record of what it has
@@ -299,7 +301,8 @@ connector's own platform went uncatalogued unless somebody registered it by hand
 way of knowing its own address.  `getLocalServerURL()` now carries it, plumbed from the local server's
 configured `localServerURL` through the integration daemon's operational services and context manager.  The
 connector always catalogs the metadata access store's platform, and also catalogs its own whenever
-`localServerURL` is set and different.
+`localServerURL` is set and reaches a different platform - an address that answers as the same running
+platform is recorded as an alias instead.
 
 **The lineage check reached across the whole ecosystem.**  `checkServerLineage()` worked through every
 `SoftwareServer` in open metadata and opened a connector to each one.  In an estate of any size that is

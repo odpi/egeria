@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
@@ -34,7 +35,7 @@ import java.util.List;
  * DirectoryBasedOpenMetadataArchiveStore provides the mechanisms to store and retrieve files
  * from the directory based open metadata archive store.
  */
-public class DirectoryBasedOpenMetadataArchiveStore
+public class DirectoryBasedOpenMetadataArchiveStore extends AuditLoggingBase
 {
     private static final Logger log = LoggerFactory.getLogger(DirectoryBasedOpenMetadataArchiveStore.class);
     
@@ -60,7 +61,6 @@ public class DirectoryBasedOpenMetadataArchiveStore
     private static final String classificationsDirectoryName = instanceStoreDirectoryName + "/classifications";
 
     private String   archiveStoreName;
-    private AuditLog auditLog;
     private boolean  keepVersionHistory;
 
 
@@ -75,8 +75,9 @@ public class DirectoryBasedOpenMetadataArchiveStore
                                            AuditLog auditLog,
                                            boolean  keepVersionHistory)
     {
+        super(auditLog);
+
         this.archiveStoreName = archiveStoreName;
-        this.auditLog = auditLog;
         this.keepVersionHistory = keepVersionHistory;
     }
 
@@ -108,15 +109,12 @@ public class DirectoryBasedOpenMetadataArchiveStore
 
             log.error("Unusable Audit Log Store :(", ioException);
 
-            if (auditLog != null)
-            {
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
 
             throw new ConnectorCheckedException(
                     DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(
@@ -145,16 +143,13 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.error(methodName + " unusable Archive Store :(", ioException);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
         }
     }
 
@@ -175,16 +170,13 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.error(methodName + " unusable Archive Store :(", ioException);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName + archivePropertiesFileName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName + archivePropertiesFileName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
         }
     }
 
@@ -206,16 +198,13 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.error(methodName + " unusable Archive Store :(", ioException);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName + archivePropertiesFileName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(archiveStoreName + archivePropertiesFileName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
         }
 
         return null;
@@ -257,16 +246,13 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.error(methodName + " unusable Archive Store :(", ioException);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(fileName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(fileName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
         }
     }
 
@@ -299,16 +285,13 @@ public class DirectoryBasedOpenMetadataArchiveStore
         {
             log.error(methodName + " unusable Archive Store :(", ioException);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(fileName,
-                                                                                                                             ioException.getClass().getName(),
-                                                                                                                             ioException.getMessage()),
-                                      ioException);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(fileName,
+                                                                                                                      ioException.getClass().getName(),
+                                                                                                                      ioException.getMessage()),
+                               ioException);
         }
 
         return null;

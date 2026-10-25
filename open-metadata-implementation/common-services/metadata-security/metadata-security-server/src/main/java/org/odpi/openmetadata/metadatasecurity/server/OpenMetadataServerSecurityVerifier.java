@@ -401,7 +401,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
             if (selectedConnection == null)
             {
-                throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NO_CONNECTIONS_ALLOWED.getMessageDefinition(Integer.toString(connectionEntities.size()),
+                throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NO_CONNECTIONS_ALLOWED.getMessageDefinition(Integer.toString((connectionEntities == null) ? 0 : connectionEntities.size()),
                                                                                                                                assetEntity.getGUID(),
                                                                                                                                userId,
                                                                                                                                methodName),

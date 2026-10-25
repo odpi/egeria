@@ -135,7 +135,7 @@ The local administrator has requested shut down of an OMF Services instance.  No
 
 **User action**
 
-This is part of the normal shutdown of the service.   No action is required if this is serviceshutdown was intentional.
+This is part of the normal shutdown of the service.   No action is required if this service shutdown was intentional.
 
 
 ----

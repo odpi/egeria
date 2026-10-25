@@ -127,23 +127,23 @@ public class BabbageAnalyticalEngineTargetProcessor extends CatalogTargetProcess
                                                                                                                      null,
                                                                                                                      null);
 
-                    auditLog.logMessage(methodName,
-                                        BabbageAuditCode.NEW_ENGINE_ACTION.getMessageDefinition(connectorName,
-                                                                                                engineActionGUID,
-                                                                                                governanceActionTypeProperties.getQualifiedName(),
-                                                                                                catalogTargetElement.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              BabbageAuditCode.NEW_ENGINE_ACTION.getMessageDefinition(connectorName,
+                                                                                      engineActionGUID,
+                                                                                      governanceActionTypeProperties.getQualifiedName(),
+                                                                                      catalogTargetElement.getElementHeader().getGUID()));
                 }
             }
 
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BabbageAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                             error.getClass().getName(),
-                                                                                             methodName,
-                                                                                             error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BabbageAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                          error.getClass().getName(),
+                                                                                          methodName,
+                                                                                          error.getMessage()),
+                               error);
 
 
             throw new ConnectorCheckedException(BabbageErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,

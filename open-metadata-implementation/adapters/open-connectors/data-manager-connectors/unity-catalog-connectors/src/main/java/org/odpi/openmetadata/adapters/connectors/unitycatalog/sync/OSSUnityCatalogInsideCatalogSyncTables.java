@@ -460,11 +460,11 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.TABLE_UPDATE.getMessageDefinition(connectorName,
-                                                                          memberElement.getElement().getElementHeader().getGUID(),
-                                                                          tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
-                                                                          ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.TABLE_UPDATE.getMessageDefinition(connectorName,
+                                                                memberElement.getElement().getElementHeader().getGUID(),
+                                                                tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), tableInfo.getTable_id());
     }
@@ -481,10 +481,10 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         final String methodName = "deleteElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
-                                                                               tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
-                                                                               ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                     tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                     ucServerEndpoint));
         ucConnector.deleteTable(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
     }
 

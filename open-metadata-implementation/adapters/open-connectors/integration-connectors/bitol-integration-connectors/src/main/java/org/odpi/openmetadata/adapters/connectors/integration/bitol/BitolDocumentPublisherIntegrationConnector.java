@@ -120,12 +120,12 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                               error);
         }
     }
 
@@ -154,12 +154,12 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
 
         if (publishIfChanged(digitalProductGUID, yaml, () -> context.publishDataProduct(dataProduct)))
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,
-                                                                                                           BitolDocument.DATA_PRODUCT_KIND,
-                                                                                                           dataProduct.getId(),
-                                                                                                           dataProduct.getVersion(),
-                                                                                                           digitalProductGUID));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,
+                                                                                                 BitolDocument.DATA_PRODUCT_KIND,
+                                                                                                 dataProduct.getId(),
+                                                                                                 dataProduct.getVersion(),
+                                                                                                 digitalProductGUID));
         }
 
         /*
@@ -244,12 +244,12 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
 
         if (publishIfChanged(agreementGUID, yaml, () -> context.publishDataContract(dataContract)))
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,
-                                                                                                           BitolDocument.DATA_CONTRACT_KIND,
-                                                                                                           dataContract.getId(),
-                                                                                                           dataContract.getVersion(),
-                                                                                                           agreementGUID));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,
+                                                                                                 BitolDocument.DATA_CONTRACT_KIND,
+                                                                                                 dataContract.getId(),
+                                                                                                 dataContract.getVersion(),
+                                                                                                 agreementGUID));
         }
     }
 

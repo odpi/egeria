@@ -562,11 +562,11 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.SCHEMA_UPDATE.getMessageDefinition(connectorName,
-                                                                             memberElement.getElement().getElementHeader().getGUID(),
-                                                                             schemaInfo.getCatalog_name() + "." + schemaInfo.getName(),
-                                                                             ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.SCHEMA_UPDATE.getMessageDefinition(connectorName,
+                                                                   memberElement.getElement().getElementHeader().getGUID(),
+                                                                   schemaInfo.getCatalog_name() + "." + schemaInfo.getName(),
+                                                                   ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), schemaInfo.getSchema_id());
     }

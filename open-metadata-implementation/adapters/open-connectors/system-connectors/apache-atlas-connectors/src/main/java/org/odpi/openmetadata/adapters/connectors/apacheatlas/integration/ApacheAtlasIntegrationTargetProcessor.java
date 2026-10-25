@@ -291,16 +291,13 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      AtlasIntegrationAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       targetRootURL,
-                                                                                                       methodName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               AtlasIntegrationAuditCode.BAD_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                error.getClass().getName(),
+                                                                                                targetRootURL,
+                                                                                                methodName,
+                                                                                                error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                     error.getClass().getName(),
@@ -353,23 +350,20 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
             }
         }
 
-        if (auditLog != null)
+        if (result == null)
         {
-            if (result == null)
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
-                                                                                                                  "null",
-                                                                                                                  propertyName));
-            }
-            else
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.LIST_CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
-                                                                                                                   Integer.toString(result.size()),
-                                                                                                                   result.toString(),
-                                                                                                                   connectorName));
-            }
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                    "null",
+                                                                                                    propertyName));
+        }
+        else
+        {
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.LIST_CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                     Integer.toString(result.size()),
+                                                                                                     result.toString(),
+                                                                                                     connectorName));
         }
 
         return result;
@@ -398,22 +392,19 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
             result = propertyValue.toString();
         }
 
-        if (auditLog != null)
+        if (result == null)
         {
-            if (result == null)
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
-                                                                                                                  defaultValue,
-                                                                                                                  propertyName));
-            }
-            else
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
-                                                                                                              result,
-                                                                                                              connectorName));
-            }
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                    defaultValue,
+                                                                                                    propertyName));
+        }
+        else
+        {
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                result,
+                                                                                                connectorName));
         }
 
         if (result == null)
@@ -453,22 +444,19 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
             }
         }
 
-        if (auditLog != null)
+        if (result == null)
         {
-            if (result == null)
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
-                                                                                                                  defaultValue,
-                                                                                                                  propertyName));
-            }
-            else
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
-                                                                                                              result,
-                                                                                                              connectorName));
-            }
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_NOT_SET.getMessageDefinition(connectorName,
+                                                                                                    defaultValue,
+                                                                                                    propertyName));
+        }
+        else
+        {
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.CONFIGURATION_PROPERTY_SET.getMessageDefinition(propertyName,
+                                                                                                result,
+                                                                                                connectorName));
         }
 
         if (result == null)
@@ -528,12 +516,9 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
          */
         for (RegisteredIntegrationModule registeredModule : moduleList)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.SYNC_INTEGRATION_MODULE.getMessageDefinition(connectorName,
-                                                                                                           registeredModule.getModuleName()));
-            }
+            logRecord(methodName,
+                      AtlasIntegrationAuditCode.SYNC_INTEGRATION_MODULE.getMessageDefinition(connectorName,
+                                                                                             registeredModule.getModuleName()));
 
             registeredModule.refresh();
         }
@@ -800,14 +785,11 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
                         }
                         catch (Exception error)
                         {
-                            if (auditLog != null)
-                            {
-                                auditLog.logException(methodName,
-                                                      AtlasIntegrationAuditCode.UNABLE_TO_DEFINE_TYPE_IN_ATLAS.getMessageDefinition(connectorName,
-                                                                                                                                    error.getClass().getName(),
-                                                                                                                                    error.getMessage()),
-                                                      error);
-                            }
+                            logExceptionRecord(methodName,
+                                               AtlasIntegrationAuditCode.UNABLE_TO_DEFINE_TYPE_IN_ATLAS.getMessageDefinition(connectorName,
+                                                                                                                             error.getClass().getName(),
+                                                                                                                             error.getMessage()),
+                                               error);
                         }
                     }
                 }
@@ -826,10 +808,7 @@ public class ApacheAtlasIntegrationTargetProcessor extends CatalogTargetProcesso
     {
         final String methodName = "disconnect";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName, targetRootURL));
-        }
+        logRecord(methodName, AtlasIntegrationAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName, targetRootURL));
 
         if (atlasClient != null)
         {

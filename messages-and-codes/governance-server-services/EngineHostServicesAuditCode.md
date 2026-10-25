@@ -295,7 +295,7 @@ Verify that all integration connectors that support the metadata exchange have s
 
 **System action**
 
-Some, or all the metadata definitions needed for the governance engines are not accessible from the openmetadata ecosystem.
+Some, or all the metadata definitions needed for the governance engines are not accessible from the open metadata ecosystem.
 
 **User action**
 

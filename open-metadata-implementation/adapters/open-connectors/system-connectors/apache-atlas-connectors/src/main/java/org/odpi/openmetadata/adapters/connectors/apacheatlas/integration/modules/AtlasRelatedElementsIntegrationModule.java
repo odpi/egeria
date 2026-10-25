@@ -221,14 +221,11 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      AtlasIntegrationAuditCode.UNABLE_TO_PROCESS_RELATED_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               AtlasIntegrationAuditCode.UNABLE_TO_PROCESS_RELATED_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
+                               error);
         }
     }
 
@@ -291,16 +288,13 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                                                                    null,
                                                                                    null);
 
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            AtlasIntegrationAuditCode.ASSIGNING_REFERENCE_VALUE.getMessageDefinition(connectorName,
-                                                                                                                                     egeriaEntity.getType().getTypeName(),
-                                                                                                                                     egeriaEntity.getElementGUID(),
-                                                                                                                                     referenceValue.getElementHeader().getGUID(),
-                                                                                                                                     atlasClassification.getTypeName(),
-                                                                                                                                     atlasEntity.getEntity().getGuid()));
-                                    }
+                                    logRecord(methodName,
+                                              AtlasIntegrationAuditCode.ASSIGNING_REFERENCE_VALUE.getMessageDefinition(connectorName,
+                                                                                                                       egeriaEntity.getType().getTypeName(),
+                                                                                                                       egeriaEntity.getElementGUID(),
+                                                                                                                       referenceValue.getElementHeader().getGUID(),
+                                                                                                                       atlasClassification.getTypeName(),
+                                                                                                                       atlasEntity.getEntity().getGuid()));
                                 }
                             }
                         }
@@ -319,16 +313,13 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS.getMessageDefinition(connectorName,
-                                                                                                                                   error.getClass().getName(),
-                                                                                                                                   egeriaEntity.getElementGUID(),
-                                                                                                                                   atlasEntity.getEntity().getGuid(),
-                                                                                                                                   error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS.getMessageDefinition(connectorName,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            egeriaEntity.getElementGUID(),
+                                                                                                                            atlasEntity.getEntity().getGuid(),
+                                                                                                                            error.getMessage()),
+                                   error);
             }
         }
     }
@@ -389,15 +380,12 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNABLE_TO_GET_REFERENCE_VALUE_ASSIGNMENTS.getMessageDefinition(connectorName,
-                                                                                                                                   error.getClass().getName(),
-                                                                                                                                   egeriaGUID,
-                                                                                                                                   error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNABLE_TO_GET_REFERENCE_VALUE_ASSIGNMENTS.getMessageDefinition(connectorName,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            egeriaGUID,
+                                                                                                                            error.getMessage()),
+                                   error);
             }
 
             if (! results.isEmpty())
@@ -446,15 +434,12 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNABLE_TO_GET_RELATED_ELEMENTS.getMessageDefinition(connectorName,
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        egeriaGUID,
-                                                                                                                        error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNABLE_TO_GET_RELATED_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 egeriaGUID,
+                                                                                                                 error.getMessage()),
+                                   error);
             }
 
             if (! results.isEmpty())

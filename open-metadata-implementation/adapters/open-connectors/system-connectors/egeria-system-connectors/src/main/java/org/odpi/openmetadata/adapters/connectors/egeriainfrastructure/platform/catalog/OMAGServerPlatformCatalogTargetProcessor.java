@@ -139,11 +139,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         /*
          * Record the start to show correct handover to the catalog target(s).
          */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.EGERIA_TARGET_START.getMessageDefinition(connectorName, getCatalogTargetName()));
-        }
+        logRecord(methodName,
+                  OMAGConnectorAuditCode.EGERIA_TARGET_START.getMessageDefinition(connectorName, getCatalogTargetName()));
     }
 
 
@@ -165,11 +162,8 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         /*
          * Record the refresh
          */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.EGERIA_TARGET_REFRESH.getMessageDefinition(connectorName, getCatalogTargetName()));
-        }
+        logRecord(methodName,
+                  OMAGConnectorAuditCode.EGERIA_TARGET_REFRESH.getMessageDefinition(connectorName, getCatalogTargetName()));
 
         auditLogTopicsCheckedThisRefresh.clear();
 
@@ -372,15 +366,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                             /*
                                              * The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}
                                              */
-                                            if (auditLog != null)
-                                            {
-                                                auditLog.logMessage(methodName,
-                                                                    OMAGConnectorAuditCode.NEW_SERVER.getMessageDefinition(connectorName,
-                                                                                                                           omagServerProperties.getServerType(),
-                                                                                                                           matchingServerGUID,
-                                                                                                                           omagServerProperties.getServerName(),
-                                                                                                                           platformProperties.getPlatformURLRoot()));
-                                            }
+                                            logRecord(methodName,
+                                                      OMAGConnectorAuditCode.NEW_SERVER.getMessageDefinition(connectorName,
+                                                                                                             omagServerProperties.getServerType(),
+                                                                                                             matchingServerGUID,
+                                                                                                             omagServerProperties.getServerName(),
+                                                                                                             platformProperties.getPlatformURLRoot()));
                                         }
                                         else
                                         {
@@ -428,14 +419,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                     error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     error.getMessage()));
-            }
+            logRecord(methodName,
+                      OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                       error.getClass().getName(),
+                                                                                       methodName,
+                                                                                       error.getMessage()));
         }
     }
 
@@ -451,16 +439,13 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                      String    serverName,
                                      Exception error)
     {
-        if (auditLog != null)
-        {
-            auditLog.logException(methodName,
-                                  OMAGConnectorAuditCode.SERVER_CATALOG_FAILED.getMessageDefinition(connectorName,
-                                                                                                    serverName,
-                                                                                                    getCatalogTargetName(),
-                                                                                                    error.getClass().getName(),
-                                                                                                    error.getMessage()),
-                                  error);
-        }
+        logExceptionRecord(methodName,
+                           OMAGConnectorAuditCode.SERVER_CATALOG_FAILED.getMessageDefinition(connectorName,
+                                                                                             serverName,
+                                                                                             getCatalogTargetName(),
+                                                                                             error.getClass().getName(),
+                                                                                             error.getMessage()),
+                           error);
     }
 
 
@@ -585,12 +570,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                           error.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           error.getMessage()),
-                                          error);
+                    logExceptionRecord(methodName,
+                                       OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                        error.getClass().getName(),
+                                                                                                        methodName,
+                                                                                                        error.getMessage()),
+                                       error);
                 }
             }
         }
@@ -1669,9 +1654,9 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
             }
             else
             {
-                auditLog.logMessage(methodName, OMAGConnectorAuditCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(connectorName,
-                                                                                                                        omagServerProperties.getServerName(),
-                                                                                                                        omagServerProperties.getServerType()));
+                logRecord(methodName, OMAGConnectorAuditCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(connectorName,
+                                                                                                              omagServerProperties.getServerName(),
+                                                                                                              omagServerProperties.getServerType()));
             }
         }
 
@@ -1898,15 +1883,12 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                     lineageClient.detachLineage(lineageLink.getRelationshipHeader().getGUID(),
                                                 lineageClient.getDeleteOptions(false));
 
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNLINKED.getMessageDefinition(connectorName,
-                                                                                                                 softwareServerProperties.getDisplayName(),
-                                                                                                                 staleTopicName,
-                                                                                                                 staleTopicGUID,
-                                                                                                                 Objects.requireNonNullElse(topicName, "<none>")));
-                    }
+                    logRecord(methodName,
+                              OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNLINKED.getMessageDefinition(connectorName,
+                                                                                                   softwareServerProperties.getDisplayName(),
+                                                                                                   staleTopicName,
+                                                                                                   staleTopicGUID,
+                                                                                                   Objects.requireNonNullElse(topicName, "<none>")));
 
                     this.removeTopicFromActivityObserverIfUnused(staleTopicGUID);
                 }
@@ -2137,16 +2119,13 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                                   connectionClient.getUpdateOptions(true),
                                                   newConnectionProperties);
 
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                       topicDisplayName,
-                                                                                                                       topicGUID,
-                                                                                                                       "bootstrap.servers",
-                                                                                                                       cataloguedBootstrapServer,
-                                                                                                                       bootstrapServer));
-                }
+                logRecord(methodName,
+                          OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
+                                                                                                         topicDisplayName,
+                                                                                                         topicGUID,
+                                                                                                         "bootstrap.servers",
+                                                                                                         cataloguedBootstrapServer,
+                                                                                                         bootstrapServer));
             }
 
             /*
@@ -2164,16 +2143,13 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                                               endpointClient.getUpdateOptions(true),
                                               newEndpointProperties);
 
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                       topicDisplayName,
-                                                                                                                       topicGUID,
-                                                                                                                       "networkAddress",
-                                                                                                                       endpointProperties.getNetworkAddress(),
-                                                                                                                       topicName));
-                }
+                logRecord(methodName,
+                          OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_CONNECTION_UPDATED.getMessageDefinition(connectorName,
+                                                                                                         topicDisplayName,
+                                                                                                         topicGUID,
+                                                                                                         "networkAddress",
+                                                                                                         endpointProperties.getNetworkAddress(),
+                                                                                                         topicName));
             }
         }
     }
@@ -2277,21 +2253,18 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
                     assetClient.removeCatalogTarget(refreshedByConnector.getRelationshipHeader().getGUID(),
                                                     assetClient.getDeleteOptions(false));
 
-                    if (auditLog != null)
+                    String topicName = topicGUID;
+
+                    if ((topic.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getDisplayName() != null))
                     {
-                        String topicName = topicGUID;
-
-                        if ((topic.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getDisplayName() != null))
-                        {
-                            topicName = assetProperties.getDisplayName();
-                        }
-
-                        auditLog.logMessage(methodName,
-                                            OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNREGISTERED.getMessageDefinition(connectorName,
-                                                                                                                     topicName,
-                                                                                                                     topicGUID,
-                                                                                                                     friendshipGUID));
+                        topicName = assetProperties.getDisplayName();
                     }
+
+                    logRecord(methodName,
+                              OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_UNREGISTERED.getMessageDefinition(connectorName,
+                                                                                                       topicName,
+                                                                                                       topicGUID,
+                                                                                                       friendshipGUID));
                 }
             }
         }
@@ -2371,14 +2344,11 @@ public class OMAGServerPlatformCatalogTargetProcessor extends CatalogTargetProce
 
         topicsRegisteredWithActivityObserver.add(topicGUID);
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_REGISTERED.getMessageDefinition(connectorName,
-                                                                                                       topicName,
-                                                                                                       topicGUID,
-                                                                                                       friendshipGUID));
-        }
+        logRecord(methodName,
+                  OMAGConnectorAuditCode.AUDIT_LOG_TOPIC_REGISTERED.getMessageDefinition(connectorName,
+                                                                                         topicName,
+                                                                                         topicGUID,
+                                                                                         friendshipGUID));
     }
 
 

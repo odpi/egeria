@@ -28,7 +28,7 @@ public enum FileBasedRegistryStoreConnectorAuditCode implements AuditLogMessageS
                          "Creating new cohort registry store {0}",
                          "The local server is creating a new cohort registry store. " +
                                  "The local server should continue to operate correctly.",
-                         "Verify that the local server is connecting to the open metadata repository cohort for" +
+                         "Verify that the local server is connecting to the open metadata repository cohort for " +
                                  "the first time.",
                                  "https://egeria-project.org/concepts/cohort-registry-store-connector/"),
 

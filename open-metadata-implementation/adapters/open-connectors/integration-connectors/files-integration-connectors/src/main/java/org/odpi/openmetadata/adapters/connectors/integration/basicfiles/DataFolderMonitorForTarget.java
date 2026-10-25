@@ -110,12 +110,12 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                                                                  dataFolderClient.getUpdateOptions(true),
                                                                  properties))
                                 {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
-                                                                sourceName,
-                                                                directoryToMonitor.directoryFile.getCanonicalPath(),
-                                                                modifiedTime.toString(),
-                                                                fileChanged.getCanonicalPath()));
+                                    logRecord(methodName,
+                                              BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
+                                                      sourceName,
+                                                      directoryToMonitor.directoryFile.getCanonicalPath(),
+                                                      modifiedTime.toString(),
+                                                      fileChanged.getCanonicalPath()));
                                 }
                             }
                         }
@@ -123,14 +123,14 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  sourceName,
-                                                  directoryToMonitor.dataFolderGUID,
-                                                  directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
+                    logExceptionRecord(methodName,
+                                       BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
+                                               error.getClass().getName(),
+                                               sourceName,
+                                               directoryToMonitor.dataFolderGUID,
+                                               directoryToMonitor.directoryFile.getAbsolutePath(),
+                                               error.getMessage()),
+                                       error);
                 }
             }
             else

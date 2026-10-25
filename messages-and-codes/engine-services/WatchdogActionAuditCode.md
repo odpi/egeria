@@ -198,7 +198,7 @@ A watchdog action service has returned from the start() method without setting u
 
 **User action**
 
-Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service tostill be running at this stage because it will have registered a listener.
+Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to still be running at this stage because it will have registered a listener.
 
 
 ----

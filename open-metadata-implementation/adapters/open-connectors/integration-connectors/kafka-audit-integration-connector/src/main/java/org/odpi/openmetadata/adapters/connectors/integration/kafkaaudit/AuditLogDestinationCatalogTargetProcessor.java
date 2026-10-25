@@ -72,11 +72,11 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                   error.getClass().getName(),
-                                                                                                   methodName,
-                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()));
         }
     }
 
@@ -116,12 +116,12 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
             }
             catch (Exception error)
             {
-                auditLog.logException(methodName,
-                                      DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
+                logExceptionRecord(methodName,
+                                   DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                      error.getClass().getName(),
 
-                                                                                                         error.getMessage()),
-                                      error);
+                                                                                                      error.getMessage()),
+                                   error);
             }
         }
     }

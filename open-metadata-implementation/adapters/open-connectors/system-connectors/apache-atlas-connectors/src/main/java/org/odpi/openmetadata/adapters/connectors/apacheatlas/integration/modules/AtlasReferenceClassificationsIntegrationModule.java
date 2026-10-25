@@ -111,15 +111,12 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              AtlasIntegrationAuditCode.UNABLE_TO_SET_UP_CLASSIFICATION_REFERENCE_SET.getMessageDefinition(connectorName,
-                                                                                                                                           error.getClass().getName(),
-                                                                                                                                           classificationReferenceSetName,
-                                                                                                                                           error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       AtlasIntegrationAuditCode.UNABLE_TO_SET_UP_CLASSIFICATION_REFERENCE_SET.getMessageDefinition(connectorName,
+                                                                                                                                    error.getClass().getName(),
+                                                                                                                                    classificationReferenceSetName,
+                                                                                                                                    error.getMessage()),
+                                       error);
 
                     return classificationNameToReferenceElement;
                 }
@@ -160,15 +157,12 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNABLE_TO_GET_CLASSIFICATION_REFERENCE_SET_MEMBERS.getMessageDefinition(connectorName,
-                                                                                                                                            error.getClass().getName(),
-                                                                                                                                            classificationReferenceSetName,
-                                                                                                                                            error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNABLE_TO_GET_CLASSIFICATION_REFERENCE_SET_MEMBERS.getMessageDefinition(connectorName,
+                                                                                                                                     error.getClass().getName(),
+                                                                                                                                     classificationReferenceSetName,
+                                                                                                                                     error.getMessage()),
+                                   error);
 
                 return classificationNameToReferenceElement;
             }
@@ -249,15 +243,12 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              AtlasIntegrationAuditCode.UNABLE_TO_BUILD_CLASSIFICATION_REFERENCE_SET_FROM_ATLAS.getMessageDefinition(connectorName,
-                                                                                                                                                     error.getClass().getName(),
-                                                                                                                                                     classificationReferenceSetName,
-                                                                                                                                                     error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       AtlasIntegrationAuditCode.UNABLE_TO_BUILD_CLASSIFICATION_REFERENCE_SET_FROM_ATLAS.getMessageDefinition(connectorName,
+                                                                                                                                              error.getClass().getName(),
+                                                                                                                                              classificationReferenceSetName,
+                                                                                                                                              error.getMessage()),
+                                       error);
                 }
             }
 
@@ -287,15 +278,12 @@ public class AtlasReferenceClassificationsIntegrationModule extends AtlasIntegra
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              AtlasIntegrationAuditCode.UNABLE_TO_ADD_CLASSIFICATION_REFERENCE_SET_TO_ATLAS.getMessageDefinition(connectorName,
-                                                                                                                                                 error.getClass().getName(),
-                                                                                                                                                 classificationReferenceSetName,
-                                                                                                                                                 error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       AtlasIntegrationAuditCode.UNABLE_TO_ADD_CLASSIFICATION_REFERENCE_SET_TO_ATLAS.getMessageDefinition(connectorName,
+                                                                                                                                          error.getClass().getName(),
+                                                                                                                                          classificationReferenceSetName,
+                                                                                                                                          error.getMessage()),
+                                       error);
                 }
             }
         }
