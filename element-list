@@ -273,6 +273,7 @@ org.odpi.openmetadata.contentpacks.core.openlineage
 org.odpi.openmetadata.contentpacks.core.oracle
 org.odpi.openmetadata.contentpacks.core.organizationinsight
 org.odpi.openmetadata.contentpacks.core.postgres
+org.odpi.openmetadata.contentpacks.core.security
 org.odpi.openmetadata.contentpacks.core.unitycatalog
 org.odpi.openmetadata.engineservices.assetanalysis.server.spring
 org.odpi.openmetadata.engineservices.governanceaction.admin
