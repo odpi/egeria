@@ -3479,11 +3479,19 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null,
+                                                         OpenMetadataType.SUBJECT_AREA.typeName,
+                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                         null,
+                                                         methodName));
+
         EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.SUBJECT_AREA.typeName,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
-                                                               null);
+                                                               classifications);
 
         archiveBuilder.addEntity(newEntity);
 
