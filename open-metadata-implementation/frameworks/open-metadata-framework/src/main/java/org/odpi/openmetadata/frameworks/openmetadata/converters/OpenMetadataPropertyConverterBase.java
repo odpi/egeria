@@ -8978,6 +8978,587 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the cvssScore property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or 0
+     */
+    protected float removeCvssScore(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCvssScore";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeFloatProperty(localServiceName,
+                                                      OpenMetadataProperty.CVSS_SCORE.name,
+                                                      elementProperties,
+                                                      methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the cvssVector property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeCvssVector(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCvssVector";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.CVSS_VECTOR.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the vulnerabilityIdentifiers property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected List<String> removeVulnerabilityIdentifiers(ElementProperties elementProperties)
+    {
+        final String methodName = "removeVulnerabilityIdentifiers";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.VULNERABILITY_IDENTIFIERS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the weaknessIdentifiers property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected List<String> removeWeaknessIdentifiers(ElementProperties elementProperties)
+    {
+        final String methodName = "removeWeaknessIdentifiers";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.WEAKNESS_IDENTIFIERS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the affectedLocation property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeAffectedLocation(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAffectedLocation";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.AFFECTED_LOCATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the evidence property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeEvidence(ElementProperties elementProperties)
+    {
+        final String methodName = "removeEvidence";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.EVIDENCE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the remediation property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeRemediation(ElementProperties elementProperties)
+    {
+        final String methodName = "removeRemediation";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.REMEDIATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the exploitAvailable property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or false
+     */
+    protected boolean removeExploitAvailable(ElementProperties elementProperties)
+    {
+        final String methodName = "removeExploitAvailable";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeBooleanProperty(localServiceName,
+                                                        OpenMetadataProperty.EXPLOIT_AVAILABLE.name,
+                                                        elementProperties,
+                                                        methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extract and delete the packageURL property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removePackageURL(ElementProperties elementProperties)
+    {
+        final String methodName = "removePackageURL";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PACKAGE_URL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the installedVersion property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeInstalledVersion(ElementProperties elementProperties)
+    {
+        final String methodName = "removeInstalledVersion";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.INSTALLED_VERSION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the fixedVersion property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeFixedVersion(ElementProperties elementProperties)
+    {
+        final String methodName = "removeFixedVersion";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.FIXED_VERSION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the patchAvailable property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or false
+     */
+    protected boolean removePatchAvailable(ElementProperties elementProperties)
+    {
+        final String methodName = "removePatchAvailable";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeBooleanProperty(localServiceName,
+                                                        OpenMetadataProperty.PATCH_AVAILABLE.name,
+                                                        elementProperties,
+                                                        methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Extract and delete the attackVector property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeAttackVector(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAttackVector";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.ATTACK_VECTOR.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the attackTechniques property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected List<String> removeAttackTechniques(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAttackTechniques";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.ATTACK_TECHNIQUES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the privilegesGained property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removePrivilegesGained(ElementProperties elementProperties)
+    {
+        final String methodName = "removePrivilegesGained";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PRIVILEGES_GAINED.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the compromisedResources property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected List<String> removeCompromisedResources(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCompromisedResources";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.COMPROMISED_RESOURCES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the reproductionSteps property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected String removeReproductionSteps(ElementProperties elementProperties)
+    {
+        final String methodName = "removeReproductionSteps";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.REPRODUCTION_STEPS.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the findingCountsBySeverity property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or null
+     */
+    protected Map<String, Long> removeFindingCountsBySeverity(ElementProperties elementProperties)
+    {
+        final String methodName = "removeFindingCountsBySeverity";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongMapFromProperty(localServiceName,
+                                                            OpenMetadataProperty.FINDING_COUNTS_BY_SEVERITY.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the resourcesInScopeCount property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or 0
+     */
+    protected long removeResourcesInScopeCount(ElementProperties elementProperties)
+    {
+        final String methodName = "removeResourcesInScopeCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.RESOURCES_IN_SCOPE_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the resourcesTestedCount property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or 0
+     */
+    protected long removeResourcesTestedCount(ElementProperties elementProperties)
+    {
+        final String methodName = "removeResourcesTestedCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.RESOURCES_TESTED_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the newFindingCount property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or 0
+     */
+    protected long removeNewFindingCount(ElementProperties elementProperties)
+    {
+        final String methodName = "removeNewFindingCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.NEW_FINDING_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the resolvedFindingCount property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return value or 0
+     */
+    protected long removeResolvedFindingCount(ElementProperties elementProperties)
+    {
+        final String methodName = "removeResolvedFindingCount";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.RESOLVED_FINDING_COUNT.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Extract and delete the isApplicable property from the supplied element properties.  A control is assumed to
+     * be applicable unless the property says otherwise.
+     *
+     * @param elementProperties properties from element
+     * @return boolean
+     */
+    protected boolean removeIsApplicable(ElementProperties elementProperties)
+    {
+        final String methodName = "removeIsApplicable";
+
+        if ((elementProperties != null) && (elementProperties.getPropertyValue(OpenMetadataProperty.IS_APPLICABLE.name) != null))
+        {
+            return propertyHelper.removeBooleanProperty(localServiceName,
+                                                        OpenMetadataProperty.IS_APPLICABLE.name,
+                                                        elementProperties,
+                                                        methodName);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Extract and delete the justification property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeJustification(ElementProperties elementProperties)
+    {
+        final String methodName = "removeJustification";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.JUSTIFICATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the inclusionReasons property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return list of reasons or null
+     */
+    protected List<String> removeInclusionReasons(ElementProperties elementProperties)
+    {
+        final String methodName = "removeInclusionReasons";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.INCLUSION_REASONS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the implementationStatus property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return enum or null
+     */
+    protected ControlImplementationStatus removeImplementationStatus(ElementProperties elementProperties)
+    {
+        final String methodName = "removeImplementationStatus";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.IMPLEMENTATION_STATUS.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (ControlImplementationStatus controlImplementationStatus : ControlImplementationStatus.values())
+            {
+                if (controlImplementationStatus.name().equals(retrievedProperty))
+                {
+                    return controlImplementationStatus;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the implementationDescription property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -16173,6 +16754,19 @@ public class OpenMetadataPropertyConverterBase
                 ((RegulationCertificationTypeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((RegulationCertificationTypeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.CONTROL_APPLICABILITY_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ControlApplicabilityProperties();
+
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setIsApplicable(this.removeIsApplicable(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setJustification(this.removeJustification(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setInclusionReasons(this.removeInclusionReasons(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setImplementationStatus(this.removeImplementationStatus(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setImplementationDescription(this.removeImplementationDescription(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setReviewDate(this.removeReviewDate(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ControlApplicabilityProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REGULATOR_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new RegulatorProperties();
@@ -16875,6 +17469,16 @@ public class OpenMetadataPropertyConverterBase
                                 ((ResourcePhysicalStatusAnnotationProperties)beanProperties).setSize(this.removeSize(elementProperties));
                                 ((ResourcePhysicalStatusAnnotationProperties)beanProperties).setEncodingType(this.removeEncoding(elementProperties));
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_POSTURE_ANNOTATION.typeName))
+                            {
+                                beanProperties = new SecurityPostureAnnotationProperties();
+
+                                ((SecurityPostureAnnotationProperties)beanProperties).setFindingCountsBySeverity(this.removeFindingCountsBySeverity(elementProperties));
+                                ((SecurityPostureAnnotationProperties)beanProperties).setResourcesInScopeCount(this.removeResourcesInScopeCount(elementProperties));
+                                ((SecurityPostureAnnotationProperties)beanProperties).setResourcesTestedCount(this.removeResourcesTestedCount(elementProperties));
+                                ((SecurityPostureAnnotationProperties)beanProperties).setNewFindingCount(this.removeNewFindingCount(elementProperties));
+                                ((SecurityPostureAnnotationProperties)beanProperties).setResolvedFindingCount(this.removeResolvedFindingCount(elementProperties));
+                            }
                             else
                             {
                                 beanProperties = new ResourceMeasureAnnotationProperties();
@@ -16904,6 +17508,42 @@ public class OpenMetadataPropertyConverterBase
                             ((ContributorAnalysisAnnotationProperties)beanProperties).setCopyCount(this.removeCopyCount(elementProperties));
                             ((ContributorAnalysisAnnotationProperties)beanProperties).setActiveCopyCount(this.removeActiveCopyCount(elementProperties));
                             ((ContributorAnalysisAnnotationProperties)beanProperties).setStargazerCount(this.removeStargazerCount(elementProperties));
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SECURITY_FINDING_ANNOTATION.typeName))
+                        {
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VULNERABILITY_ANNOTATION.typeName))
+                            {
+                                beanProperties = new VulnerabilityAnnotationProperties();
+
+                                ((VulnerabilityAnnotationProperties)beanProperties).setPackageURL(this.removePackageURL(elementProperties));
+                                ((VulnerabilityAnnotationProperties)beanProperties).setInstalledVersion(this.removeInstalledVersion(elementProperties));
+                                ((VulnerabilityAnnotationProperties)beanProperties).setFixedVersion(this.removeFixedVersion(elementProperties));
+                                ((VulnerabilityAnnotationProperties)beanProperties).setPatchAvailable(this.removePatchAvailable(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PENETRATION_TEST_FINDING_ANNOTATION.typeName))
+                            {
+                                beanProperties = new PenetrationTestFindingAnnotationProperties();
+
+                                ((PenetrationTestFindingAnnotationProperties)beanProperties).setAttackVector(this.removeAttackVector(elementProperties));
+                                ((PenetrationTestFindingAnnotationProperties)beanProperties).setAttackTechniques(this.removeAttackTechniques(elementProperties));
+                                ((PenetrationTestFindingAnnotationProperties)beanProperties).setPrivilegesGained(this.removePrivilegesGained(elementProperties));
+                                ((PenetrationTestFindingAnnotationProperties)beanProperties).setCompromisedResources(this.removeCompromisedResources(elementProperties));
+                                ((PenetrationTestFindingAnnotationProperties)beanProperties).setReproductionSteps(this.removeReproductionSteps(elementProperties));
+                            }
+                            else
+                            {
+                                beanProperties = new SecurityFindingAnnotationProperties();
+                            }
+
+                            ((SecurityFindingAnnotationProperties)beanProperties).setSeverity(this.removeSeverity(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setCvssScore(this.removeCvssScore(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setCvssVector(this.removeCvssVector(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setVulnerabilityIdentifiers(this.removeVulnerabilityIdentifiers(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setWeaknessIdentifiers(this.removeWeaknessIdentifiers(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setAffectedLocation(this.removeAffectedLocation(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setEvidence(this.removeEvidence(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setRemediation(this.removeRemediation(elementProperties));
+                            ((SecurityFindingAnnotationProperties)beanProperties).setExploitAvailable(this.removeExploitAvailable(elementProperties));
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CODE_ANALYSIS_ANNOTATION.typeName))
                         {
@@ -17659,6 +18299,13 @@ public class OpenMetadataPropertyConverterBase
                         ((GovernanceDefinitionProperties)beanProperties).setImplications(this.removeImplications(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setOutcomes(this.removeOutcomes(elementProperties));
                         ((GovernanceDefinitionProperties)beanProperties).setResults(this.removeResults(elementProperties));
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.STATEMENT_OF_APPLICABILITY.typeName))
+                    {
+                        beanProperties = new StatementOfApplicabilityProperties();
+
+                        ((StatementOfApplicabilityProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                        ((StatementOfApplicabilityProperties)beanProperties).setReviewDate(this.removeReviewDate(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.OPERATING_PLATFORM.typeName))
                     {

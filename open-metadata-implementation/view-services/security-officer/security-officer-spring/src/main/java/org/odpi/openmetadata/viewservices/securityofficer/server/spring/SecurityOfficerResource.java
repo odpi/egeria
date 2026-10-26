@@ -677,4 +677,263 @@ public class SecurityOfficerResource
     {
         return restAPI.clearZoneMembershipProfile(serverName, governanceZoneGUID, requestBody);
     }
+
+
+    /**
+     * Create a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createStatementOfApplicability",
+            description="Create a statement of applicability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public GUIDResponse createStatementOfApplicability(@PathVariable String serverName,
+                                                       @RequestBody (required = false)
+                                                       NewElementRequestBody requestBody)
+    {
+        return restAPI.createStatementOfApplicability(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a statement of applicability using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createStatementOfApplicabilityFromTemplate",
+            description="Create a new metadata element to represent a statement of applicability using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public GUIDResponse createStatementOfApplicabilityFromTemplate(@PathVariable String serverName,
+                                                                   @RequestBody (required = false)
+                                                                   TemplateRequestBody requestBody)
+    {
+        return restAPI.createStatementOfApplicabilityFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/{statementOfApplicabilityGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateStatementOfApplicability",
+            description="Update the properties of a statement of applicability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public BooleanResponse updateStatementOfApplicability(@PathVariable String serverName,
+                                                          @PathVariable String statementOfApplicabilityGUID,
+                                                          @RequestBody (required = false)
+                                                          UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateStatementOfApplicability(serverName, statementOfApplicabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/{statementOfApplicabilityGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteStatementOfApplicability",
+            description="Delete a statement of applicability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public VoidResponse deleteStatementOfApplicability(@PathVariable String serverName,
+                                                       @PathVariable String statementOfApplicabilityGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteStatementOfApplicability(serverName, statementOfApplicabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of statements of applicability with a particular name.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getStatementsOfApplicabilityByName",
+            description="Returns the list of statements of applicability with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public OpenMetadataRootElementsResponse getStatementsOfApplicabilityByName(@PathVariable String serverName,
+                                                                               @RequestBody (required = false)
+                                                                               FilterRequestBody requestBody)
+    {
+        return restAPI.getStatementsOfApplicabilityByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of statement of applicability metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findStatementsOfApplicability",
+            description="Retrieve the list of statement of applicability metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public OpenMetadataRootElementsResponse findStatementsOfApplicability(@PathVariable String serverName,
+                                                                          @RequestBody (required = false)
+                                                                          SearchStringRequestBody requestBody)
+    {
+        return restAPI.findStatementsOfApplicability(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/{statementOfApplicabilityGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getStatementOfApplicabilityByGUID",
+            description="Return the properties of a specific statement of applicability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public OpenMetadataRootElementResponse getStatementOfApplicabilityByGUID(@PathVariable String serverName,
+                                                                             @PathVariable String statementOfApplicabilityGUID,
+                                                                             @RequestBody (required = false)
+                                                                             GetRequestBody requestBody)
+    {
+        return restAPI.getStatementOfApplicabilityByGUID(serverName, statementOfApplicabilityGUID, requestBody);
+    }
+
+
+    /**
+     * Link a control from a standard to a statement of applicability, recording whether the control applies, why,
+     * and how far it has been implemented.  Linking a control that is already linked updates the properties of the
+     * existing relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param controlGUID unique identifier of the governance definition describing the control
+     * @param requestBody properties for the relationship
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/{statementOfApplicabilityGUID}/control-applicability/{controlGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkControlApplicability",
+            description="Link a control from a standard to a statement of applicability, recording whether the control applies, why, and how far it has been implemented.  Linking a control that is already linked updates the properties of the existing relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public VoidResponse linkControlApplicability(@PathVariable String serverName,
+                                                 @PathVariable String statementOfApplicabilityGUID,
+                                                 @PathVariable String controlGUID,
+                                                 @RequestBody (required = false)
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkControlApplicability(serverName, statementOfApplicabilityGUID, controlGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a control from a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param controlGUID unique identifier of the governance definition describing the control
+     * @param requestBody delete options
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/statements-of-applicability/{statementOfApplicabilityGUID}/control-applicability/{controlGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachControlApplicability",
+            description="Remove a control from a statement of applicability.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/4/0423-Security-Definitions/"))
+
+    public VoidResponse detachControlApplicability(@PathVariable String serverName,
+                                                   @PathVariable String statementOfApplicabilityGUID,
+                                                   @PathVariable String controlGUID,
+                                                   @RequestBody (required = false)
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachControlApplicability(serverName, statementOfApplicabilityGUID, controlGUID, requestBody);
+    }
 }

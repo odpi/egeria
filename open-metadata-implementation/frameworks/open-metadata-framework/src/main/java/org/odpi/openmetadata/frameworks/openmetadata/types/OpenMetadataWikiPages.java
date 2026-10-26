@@ -732,6 +732,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0660_MEASUREMENTS                 = "https://egeria-project.org/types/6/0660-Resource-Measures/";
 
     /**
+     * <a href="https://egeria-project.org/types/6/0665-Security-Annotations/">...</a>
+     */
+    public static final String MODEL_0665_SECURITY_ANNOTATIONS         = "https://egeria-project.org/types/6/0665-Security-Annotations/";
+
+    /**
      * <a href="https://egeria-project.org/types/6/0680-Code-Analysis/">...</a>
      */
     public static final String MODEL_0680_CODE_ANALYSIS                = "https://egeria-project.org/types/6/0680-Code-Analysis/";
