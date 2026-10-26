@@ -762,6 +762,17 @@ public class OpenMetadataElementBuilder
                                                                                  operatingPlatformProperties.getOperatingSystemPatchLevel());
                         }
 
+                        if (properties instanceof StatementOfApplicabilityProperties statementOfApplicabilityProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                                 statementOfApplicabilityProperties.getScope());
+
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.REVIEW_DATE.name,
+                                                                               statementOfApplicabilityProperties.getReviewDate());
+                        }
+
                         if (properties instanceof AnnotationProperties annotationProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -1053,6 +1064,28 @@ public class OpenMetadataElementBuilder
                                                                                          OpenMetadataProperty.ENCODING_TYPE.name,
                                                                                          resourcePhysicalStatusAnnotationProperties.getEncodingType());
                                 }
+                                else if (properties instanceof SecurityPostureAnnotationProperties securityPostureAnnotationProperties)
+                                {
+                                    elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                                          OpenMetadataProperty.FINDING_COUNTS_BY_SEVERITY.name,
+                                                                                          securityPostureAnnotationProperties.getFindingCountsBySeverity());
+
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.RESOURCES_IN_SCOPE_COUNT.name,
+                                                                                       securityPostureAnnotationProperties.getResourcesInScopeCount());
+
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.RESOURCES_TESTED_COUNT.name,
+                                                                                       securityPostureAnnotationProperties.getResourcesTestedCount());
+
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.NEW_FINDING_COUNT.name,
+                                                                                       securityPostureAnnotationProperties.getNewFindingCount());
+
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.RESOLVED_FINDING_COUNT.name,
+                                                                                       securityPostureAnnotationProperties.getResolvedFindingCount());
+                                }
                             }
                             else if (properties instanceof SchemaAnalysisAnnotationProperties schemaAnalysisAnnotationProperties)
                             {
@@ -1113,6 +1146,84 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                    OpenMetadataProperty.STARGAZER_COUNT.name,
                                                                                    contributorAnalysisAnnotationProperties.getStargazerCount());
+                            }
+                            else if (properties instanceof SecurityFindingAnnotationProperties securityFindingAnnotationProperties)
+                            {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.SEVERITY.name,
+                                                                                     securityFindingAnnotationProperties.getSeverity());
+
+                                elementProperties = propertyHelper.addFloatProperty(elementProperties,
+                                                                                    OpenMetadataProperty.CVSS_SCORE.name,
+                                                                                    securityFindingAnnotationProperties.getCvssScore());
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.CVSS_VECTOR.name,
+                                                                                     securityFindingAnnotationProperties.getCvssVector());
+
+                                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                          OpenMetadataProperty.VULNERABILITY_IDENTIFIERS.name,
+                                                                                          securityFindingAnnotationProperties.getVulnerabilityIdentifiers());
+
+                                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                          OpenMetadataProperty.WEAKNESS_IDENTIFIERS.name,
+                                                                                          securityFindingAnnotationProperties.getWeaknessIdentifiers());
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.AFFECTED_LOCATION.name,
+                                                                                     securityFindingAnnotationProperties.getAffectedLocation());
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.EVIDENCE.name,
+                                                                                     securityFindingAnnotationProperties.getEvidence());
+
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.REMEDIATION.name,
+                                                                                     securityFindingAnnotationProperties.getRemediation());
+
+                                elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                      OpenMetadataProperty.EXPLOIT_AVAILABLE.name,
+                                                                                      securityFindingAnnotationProperties.getExploitAvailable());
+                                if (properties instanceof VulnerabilityAnnotationProperties vulnerabilityAnnotationProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PACKAGE_URL.name,
+                                                                                         vulnerabilityAnnotationProperties.getPackageURL());
+
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.INSTALLED_VERSION.name,
+                                                                                         vulnerabilityAnnotationProperties.getInstalledVersion());
+
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.FIXED_VERSION.name,
+                                                                                         vulnerabilityAnnotationProperties.getFixedVersion());
+
+                                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                          OpenMetadataProperty.PATCH_AVAILABLE.name,
+                                                                                          vulnerabilityAnnotationProperties.getPatchAvailable());
+                                }
+                                else if (properties instanceof PenetrationTestFindingAnnotationProperties penetrationTestFindingAnnotationProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.ATTACK_VECTOR.name,
+                                                                                         penetrationTestFindingAnnotationProperties.getAttackVector());
+
+                                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                              OpenMetadataProperty.ATTACK_TECHNIQUES.name,
+                                                                                              penetrationTestFindingAnnotationProperties.getAttackTechniques());
+
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PRIVILEGES_GAINED.name,
+                                                                                         penetrationTestFindingAnnotationProperties.getPrivilegesGained());
+
+                                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                              OpenMetadataProperty.COMPROMISED_RESOURCES.name,
+                                                                                              penetrationTestFindingAnnotationProperties.getCompromisedResources());
+
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.REPRODUCTION_STEPS.name,
+                                                                                         penetrationTestFindingAnnotationProperties.getReproductionSteps());
+                                }
                             }
                             else if (properties instanceof CodeAnalysisAnnotationProperties codeAnalysisAnnotationProperties)
                             {

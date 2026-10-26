@@ -2630,6 +2630,136 @@ public enum OpenMetadataProperty
     SECURITY_PROPERTIES("securityProperties", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getDisplayName(), "Properties that apply to the referenceable.", null, "0d36a7b3-95f8-42bf-836b-4abd4a376ffc"),
 
     /**
+     * Common Vulnerability Scoring System (CVSS) base score for the finding, from 0.0 to 10.0.
+     */
+    CVSS_SCORE("cvssScore", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "Common Vulnerability Scoring System (CVSS) base score for the finding, from 0.0 to 10.0.", "7.5", "ba198b2c-0f62-461d-ab93-30007e3bb4c9"),
+
+    /**
+     * CVSS vector string that shows how the score was calculated.
+     */
+    CVSS_VECTOR("cvssVector", DataType.STRING, DataType.STRING.getDisplayName(), "CVSS vector string that shows how the score was calculated.", "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N", "245c976e-dbd3-4cfe-a90d-dae830f00ba1"),
+
+    /**
+     * Identifiers of the publicly disclosed vulnerabilities behind the finding, such as CVE identifiers.
+     */
+    VULNERABILITY_IDENTIFIERS("vulnerabilityIdentifiers", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Identifiers of the publicly disclosed vulnerabilities behind the finding, such as CVE identifiers.", "CVE-2021-44228", "dc239608-c043-4b30-8116-99f841891f06"),
+
+    /**
+     * Identifiers of the types of weakness behind the finding, such as CWE identifiers.
+     */
+    WEAKNESS_IDENTIFIERS("weaknessIdentifiers", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Identifiers of the types of weakness behind the finding, such as CWE identifiers.", "CWE-79", "ec896d02-f117-4329-823c-7a9558416c92"),
+
+    /**
+     * Where the finding was detected - for example a host and port, a URL, a file path or a software package.  If the element at this location is catalogued, the annotation can also be linked to it with the AssociatedAnnotation relationship.
+     */
+    AFFECTED_LOCATION("affectedLocation", DataType.STRING, DataType.STRING.getDisplayName(), "Where the finding was detected - for example a host and port, a URL, a file path or a software package.  If the element at this location is catalogued, the annotation can also be linked to it with the AssociatedAnnotation relationship.", "https://portal.example.com/login", "e98e4a74-a3f2-49d6-93c4-9357da2b715e"),
+
+    /**
+     * Evidence that supports the finding, such as the request and response that demonstrated it.
+     */
+    EVIDENCE("evidence", DataType.STRING, DataType.STRING.getDisplayName(), "Evidence that supports the finding, such as the request and response that demonstrated it.", null, "6110313e-e3af-4cd9-ac73-fbe242d87287"),
+
+    /**
+     * Recommended action to remove the weakness or reduce its impact.
+     */
+    REMEDIATION("remediation", DataType.STRING, DataType.STRING.getDisplayName(), "Recommended action to remove the weakness or reduce its impact.", null, "08a9c78a-cfa1-428a-a8dc-f8bc46f74b18"),
+
+    /**
+     * Is an exploit for the weakness publicly available?
+     */
+    EXPLOIT_AVAILABLE("exploitAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is an exploit for the weakness publicly available?", null, "17b345d2-8826-4741-aba4-647b4425a31e"),
+
+    /**
+     * Package URL (purl) of the affected software package.
+     */
+    PACKAGE_URL("packageURL", DataType.STRING, DataType.STRING.getDisplayName(), "Package URL (purl) of the affected software package.", "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1", "d81d2c3d-0128-4882-bee5-7859398b706a"),
+
+    /**
+     * Version of the affected software that is installed.
+     */
+    INSTALLED_VERSION("installedVersion", DataType.STRING, DataType.STRING.getDisplayName(), "Version of the affected software that is installed.", "2.14.1", "1fb4585a-8ea5-4bd0-90cc-6bd41c23b76d"),
+
+    /**
+     * Version of the software in which the vulnerability is fixed.
+     */
+    FIXED_VERSION("fixedVersion", DataType.STRING, DataType.STRING.getDisplayName(), "Version of the software in which the vulnerability is fixed.", "2.17.1", "814b764b-5dd0-4b98-a01f-7294bfbc780c"),
+
+    /**
+     * Is a fix for the vulnerability available?
+     */
+    PATCH_AVAILABLE("patchAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is a fix for the vulnerability available?", null, "3cf1107a-2433-4f89-82bf-fc56133120a0"),
+
+    /**
+     * How the weakness was reached - for example Network, Adjacent network, Local, Physical or Social engineering.
+     */
+    ATTACK_VECTOR("attackVector", DataType.STRING, DataType.STRING.getDisplayName(), "How the weakness was reached - for example Network, Adjacent network, Local, Physical or Social engineering.", "Network", "953ff227-bb13-49f5-97a7-30ca5931927a"),
+
+    /**
+     * Techniques used to exploit the weakness, such as MITRE ATT&amp;CK technique identifiers.
+     */
+    ATTACK_TECHNIQUES("attackTechniques", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Techniques used to exploit the weakness, such as MITRE ATT&CK technique identifiers.", "T1190", "4dc046bc-b5f1-48af-a48b-7f91d0319d3c"),
+
+    /**
+     * Access or privileges that the tester gained by exploiting the weakness.
+     */
+    PRIVILEGES_GAINED("privilegesGained", DataType.STRING, DataType.STRING.getDisplayName(), "Access or privileges that the tester gained by exploiting the weakness.", "Administrator on the web server", "daf3a12a-c4a4-4890-b7ee-2f6b0a10288f"),
+
+    /**
+     * Names of the resources that the tester was able to reach or control by exploiting the weakness.  If these resources are catalogued, the annotation can also be linked to each of them with the AssociatedAnnotation relationship.
+     */
+    COMPROMISED_RESOURCES("compromisedResources", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Names of the resources that the tester was able to reach or control by exploiting the weakness.  If these resources are catalogued, the annotation can also be linked to each of them with the AssociatedAnnotation relationship.", null, "03f6f23a-616c-4e06-9c89-b434ba7d4e97"),
+
+    /**
+     * Steps to reproduce the finding.
+     */
+    REPRODUCTION_STEPS("reproductionSteps", DataType.STRING, DataType.STRING.getDisplayName(), "Steps to reproduce the finding.", null, "35f84978-79d2-481c-b20e-ab2f8354ae02"),
+
+    /**
+     * Number of open findings for each severity.
+     */
+    FINDING_COUNTS_BY_SEVERITY("findingCountsBySeverity", DataType.MAP_STRING_LONG, DataType.MAP_STRING_LONG.getDisplayName(), "Number of open findings for each severity.", null, "320d89d5-c261-4bf1-903b-e084097432fc"),
+
+    /**
+     * Number of resources in the scope of the security test.
+     */
+    RESOURCES_IN_SCOPE_COUNT("resourcesInScopeCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in the scope of the security test.", "120", "ef21fc7f-400f-46ff-ab79-f2bc2cbd3dc4"),
+
+    /**
+     * Number of resources in scope that were tested.
+     */
+    RESOURCES_TESTED_COUNT("resourcesTestedCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in scope that were tested.", "118", "4ae2c142-28ab-444a-91c3-056567563de1"),
+
+    /**
+     * Number of findings detected for the first time in this run.
+     */
+    NEW_FINDING_COUNT("newFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings detected for the first time in this run.", "4", "a24ba0d2-165c-4d83-b41b-289be55c3b7e"),
+
+    /**
+     * Number of findings from earlier runs that are no longer detected.
+     */
+    RESOLVED_FINDING_COUNT("resolvedFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings from earlier runs that are no longer detected.", "7", "cec4e8a5-f662-48fa-a1e8-f1e1b74e19ac"),
+
+    /**
+     * Does the control apply within the scope of the statement of applicability?
+     */
+    IS_APPLICABLE("isApplicable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Does the control apply within the scope of the statement of applicability?", "true", "7043b919-4bc4-4807-8dd1-3de7e5ac9e5f"),
+
+    /**
+     * Justification for including or excluding a control.
+     */
+    JUSTIFICATION("justification", DataType.STRING, DataType.STRING.getDisplayName(), "Justification for including or excluding the control.", null, "f2d186a6-b4e8-45cf-90d1-f1ef96ea8fc6"),
+
+    /**
+     * Reasons that a control is included.
+     */
+    INCLUSION_REASONS("inclusionReasons", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "Reasons that the control is included - for example, risk treatment, a legal or regulatory requirement, a contractual obligation or a business requirement.", "Risk Treatment", "dbab2712-05aa-4079-9aef-564846a90a8a"),
+
+    /**
+     * How far a control has been implemented.
+     */
+    IMPLEMENTATION_STATUS("implementationStatus", DataType.STRING, ControlImplementationStatus.getOpenTypeName(), ControlImplementationStatus.getOpenTypeDescription(), ControlImplementationStatus.IMPLEMENTED.name(), "dfb242d2-ac36-4533-a215-d9f52df11301"),
+
+    /**
      * Description of how this governance control should be implemented.
      */
     IMPLEMENTATION_DESCRIPTION("implementationDescription", DataType.STRING, DataType.STRING.getDisplayName(), "Description of how this governance control should be implemented.", null, "cebf5cd8-60a2-402c-9216-b13ba16279d5"),

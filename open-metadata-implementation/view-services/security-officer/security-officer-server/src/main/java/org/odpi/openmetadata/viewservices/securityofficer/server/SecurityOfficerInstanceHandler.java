@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StatementOfApplicabilityHandler;
 
 
 /**
@@ -53,6 +54,34 @@ public class SecurityOfficerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getGovernanceDefinitionHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the handler for statements of applicability.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public StatementOfApplicabilityHandler getStatementOfApplicabilityHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
+    {
+        SecurityOfficerInstance instance = (SecurityOfficerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getStatementOfApplicabilityHandler();
         }
 
         return null;
