@@ -291,7 +291,7 @@ public class GovernanceActionPublisherFVT
 
             return (step != null) && (step.getElementHeader().getRunMetrics() != null) &&
                    (step.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties runMetrics) &&
-                   (runMetrics.getRunCount() >= 1);
+                   (OpenMetadataProperty.RUN_COUNT.longValueOrDefault(runMetrics.getRunCount()) >= 1);
         });
 
         assertTrue(OpenLineageFvtTestSupport.getAsset(OpenLineageFvtTestSupport.processQualifiedName(GA_NAMESPACE, PROCESS_QN + ":processStep1")) == null,

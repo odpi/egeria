@@ -207,7 +207,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                 if ((schemaAttribute.getRelationshipProperties() != null) &&
                                         (schemaAttribute.getRelationshipProperties() instanceof AttributeForSchemaProperties attributeForSchemaProperties))
                                 {
-                                    int position = attributeForSchemaProperties.getPosition();
+                                    int position = OpenMetadataProperty.POSITION.intValueOrDefault(attributeForSchemaProperties.getPosition());
 
                                     expectedColumns.put(displayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
                                     expectedColumnNames.put(position, displayName);
@@ -230,7 +230,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 {
                     columnCountAnnotation.setQualityScore(actualColumnNames.size() - expectedColumns.size());
 
-                    if (columnCountAnnotation.getQualityScore() == 0)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnCountAnnotation.getQualityScore()) == 0)
                     {
                         int errorCount = 0;
 
@@ -245,9 +245,9 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
 
                         columnNamesAnnotation.setQualityScore(errorCount);
                     }
-                    else if (columnCountAnnotation.getQualityScore() > 0)
+                    else if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnCountAnnotation.getQualityScore()) > 0)
                     {
-                        columnNamesAnnotation.setQualityScore(-columnCountAnnotation.getQualityScore());
+                        columnNamesAnnotation.setQualityScore(-OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnCountAnnotation.getQualityScore()));
                     }
                     else
                     {
@@ -258,7 +258,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 columnCountAnnotationGUID = annotationStore.addAnnotation(columnCountAnnotation, schemaTypeGUID);
                 columnNamesAnnotationGUID = annotationStore.addAnnotation(columnNamesAnnotation, schemaTypeGUID);
 
-                if (columnNamesAnnotation.getQualityScore() == 0)
+                if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnNamesAnnotation.getQualityScore()) == 0)
                 {
                     annotationStore.setAnalysisStep(AnalysisStep.DATA_VALIDATION.getName());
 
@@ -354,12 +354,12 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
 
                 annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_ACTIONS.getName());
 
-                if (columnCountAnnotation.getQualityScore() == 0 &&
-                    columnNamesAnnotation.getQualityScore() == 0 &&
-                    patientIdAnnotation.getQualityScore() == 0 &&
-                    dateAnnotation.getQualityScore() == 0 &&
-                    angleLeftAnnotation.getQualityScore() == 0 &&
-                    angleRightAnnotation.getQualityScore() == 0)
+                if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnCountAnnotation.getQualityScore()) == 0 &&
+                    OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnNamesAnnotation.getQualityScore()) == 0 &&
+                    OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(patientIdAnnotation.getQualityScore()) == 0 &&
+                    OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(dateAnnotation.getQualityScore()) == 0 &&
+                    OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(angleLeftAnnotation.getQualityScore()) == 0 &&
+                    OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(angleRightAnnotation.getQualityScore()) == 0)
                 {
                     ElementProperties elementProperties = propertyHelper.addDateProperty(null,
                                                                                          OpenMetadataProperty.COVERAGE_START.name,
@@ -437,7 +437,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     /*
                      * Set up Associated Annotations as appropriate
                      */
-                    if (columnCountAnnotation.getQualityScore() != 0 && columnCountAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnCountAnnotation.getQualityScore()) != 0 && columnCountAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           columnCountAnnotationGUID,
@@ -446,7 +446,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                           null,
                                                                                           null);
                     }
-                    if (columnNamesAnnotation.getQualityScore() != 0 && columnNamesAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(columnNamesAnnotation.getQualityScore()) != 0 && columnNamesAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           columnNamesAnnotationGUID,
@@ -455,7 +455,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                           null,
                                                                                           null);
                     }
-                    if (patientIdAnnotation.getQualityScore() != 0 && patientIdAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(patientIdAnnotation.getQualityScore()) != 0 && patientIdAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           patientIdAnnotationGUID,
@@ -464,7 +464,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                           null,
                                                                                           null);
                     }
-                    if (dateAnnotation.getQualityScore() != 0 && dateAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(dateAnnotation.getQualityScore()) != 0 && dateAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           dateAnnotationGUID,
@@ -473,7 +473,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                           null,
                                                                                           null);
                     }
-                    if (angleLeftAnnotation.getQualityScore() != 0 && angleLeftAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(angleLeftAnnotation.getQualityScore()) != 0 && angleLeftAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           angleLeftAnnotationGUID,
@@ -482,7 +482,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                                                                                           null,
                                                                                           null);
                     }
-                    if (angleRightAnnotation.getQualityScore() != 0 && angleRightAnnotationGUID != null)
+                    if (OpenMetadataProperty.QUALITY_SCORE.intValueOrDefault(angleRightAnnotation.getQualityScore()) != 0 && angleRightAnnotationGUID != null)
                     {
                         surveyContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                           angleRightAnnotationGUID,

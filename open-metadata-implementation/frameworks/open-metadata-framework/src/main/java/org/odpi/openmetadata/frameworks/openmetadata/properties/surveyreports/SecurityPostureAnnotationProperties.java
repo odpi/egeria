@@ -22,10 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotationProperties
 {
     private Map<String, Long> findingCountsBySeverity = null;
-    private long              resourcesInScopeCount   = 0;
-    private long              resourcesTestedCount    = 0;
-    private long              newFindingCount         = 0;
-    private long              resolvedFindingCount    = 0;
+    private Long              resourcesInScopeCount   = null;
+    private Long              resourcesTestedCount    = null;
+    private Long              newFindingCount         = null;
+    private Long              resolvedFindingCount    = null;
 
 
     /**
@@ -85,7 +85,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @return long
      */
-    public long getResourcesInScopeCount()
+    public Long getResourcesInScopeCount()
     {
         return resourcesInScopeCount;
     }
@@ -96,7 +96,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @param resourcesInScopeCount long
      */
-    public void setResourcesInScopeCount(long resourcesInScopeCount)
+    public void setResourcesInScopeCount(Long resourcesInScopeCount)
     {
         this.resourcesInScopeCount = resourcesInScopeCount;
     }
@@ -107,7 +107,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @return long
      */
-    public long getResourcesTestedCount()
+    public Long getResourcesTestedCount()
     {
         return resourcesTestedCount;
     }
@@ -118,7 +118,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @param resourcesTestedCount long
      */
-    public void setResourcesTestedCount(long resourcesTestedCount)
+    public void setResourcesTestedCount(Long resourcesTestedCount)
     {
         this.resourcesTestedCount = resourcesTestedCount;
     }
@@ -129,7 +129,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @return long
      */
-    public long getNewFindingCount()
+    public Long getNewFindingCount()
     {
         return newFindingCount;
     }
@@ -140,7 +140,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @param newFindingCount long
      */
-    public void setNewFindingCount(long newFindingCount)
+    public void setNewFindingCount(Long newFindingCount)
     {
         this.newFindingCount = newFindingCount;
     }
@@ -151,7 +151,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @return long
      */
-    public long getResolvedFindingCount()
+    public Long getResolvedFindingCount()
     {
         return resolvedFindingCount;
     }
@@ -162,7 +162,7 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
      *
      * @param resolvedFindingCount long
      */
-    public void setResolvedFindingCount(long resolvedFindingCount)
+    public void setResolvedFindingCount(Long resolvedFindingCount)
     {
         this.resolvedFindingCount = resolvedFindingCount;
     }
@@ -209,10 +209,10 @@ public class SecurityPostureAnnotationProperties extends ResourceMeasureAnnotati
         }
         SecurityPostureAnnotationProperties that = (SecurityPostureAnnotationProperties) objectToCompare;
         return Objects.equals(findingCountsBySeverity, that.findingCountsBySeverity) &&
-                resourcesInScopeCount == that.resourcesInScopeCount &&
-                resourcesTestedCount == that.resourcesTestedCount &&
-                newFindingCount == that.newFindingCount &&
-                resolvedFindingCount == that.resolvedFindingCount;
+                Objects.equals(resourcesInScopeCount, that.resourcesInScopeCount) &&
+                Objects.equals(resourcesTestedCount, that.resourcesTestedCount) &&
+                Objects.equals(newFindingCount, that.newFindingCount) &&
+                Objects.equals(resolvedFindingCount, that.resolvedFindingCount);
     }
 
 

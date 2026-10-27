@@ -25,10 +25,10 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
 {
     private CapabilityAssetUseType useType             = null;
     private String                 description         = null;
-    private boolean                minimumInstancesSet = false;
-    private int                    minimumInstances    = 0;
-    private boolean                maximumInstancesSet = false;
-    private int                    maximumInstances    = 0;
+    private Boolean                minimumInstancesSet = null;
+    private Integer                minimumInstances    = null;
+    private Boolean                maximumInstancesSet = null;
+    private Integer                maximumInstances    = null;
 
 
     /**
@@ -111,7 +111,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @return flag
      */
-    public boolean getMinimumInstancesSet()
+    public Boolean getMinimumInstancesSet()
     {
         return minimumInstancesSet;
     }
@@ -122,7 +122,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @param minimumInstancesSet flag
      */
-    public void setMinimumInstancesSet(boolean minimumInstancesSet)
+    public void setMinimumInstancesSet(Boolean minimumInstancesSet)
     {
         this.minimumInstancesSet = minimumInstancesSet;
     }
@@ -133,7 +133,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @return integer
      */
-    public int getMinimumInstances()
+    public Integer getMinimumInstances()
     {
         return minimumInstances;
     }
@@ -144,7 +144,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @param minimumInstances integer
      */
-    public void setMinimumInstances(int minimumInstances)
+    public void setMinimumInstances(Integer minimumInstances)
     {
         this.minimumInstances = minimumInstances;
     }
@@ -155,7 +155,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @return flag
      */
-    public boolean getMaximumInstancesSet()
+    public Boolean getMaximumInstancesSet()
     {
         return maximumInstancesSet;
     }
@@ -166,7 +166,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @param maximumInstancesSet flag
      */
-    public void setMaximumInstancesSet(boolean maximumInstancesSet)
+    public void setMaximumInstancesSet(Boolean maximumInstancesSet)
     {
         this.maximumInstancesSet = maximumInstancesSet;
     }
@@ -177,7 +177,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @return integer
      */
-    public int getMaximumInstances()
+    public Integer getMaximumInstances()
     {
         return maximumInstances;
     }
@@ -188,7 +188,7 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
      *
      * @param maximumInstances integer
      */
-    public void setMaximumInstances(int maximumInstances)
+    public void setMaximumInstances(Integer maximumInstances)
     {
         this.maximumInstances = maximumInstances;
     }
@@ -235,10 +235,10 @@ public class CapabilityAssetUseProperties extends RelationshipBeanProperties
             return false;
         }
         CapabilityAssetUseProperties that = (CapabilityAssetUseProperties) objectToCompare;
-        return minimumInstancesSet == that.minimumInstancesSet &&
-                       minimumInstances == that.minimumInstances &&
-                       maximumInstancesSet == that.maximumInstancesSet &&
-                       maximumInstances == that.maximumInstances &&
+        return Objects.equals(minimumInstancesSet, that.minimumInstancesSet) &&
+                       Objects.equals(minimumInstances, that.minimumInstances) &&
+                       Objects.equals(maximumInstancesSet, that.maximumInstancesSet) &&
+                       Objects.equals(maximumInstances, that.maximumInstances) &&
                        useType == that.useType &&
                        Objects.equals(description, that.description);
     }

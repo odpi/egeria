@@ -1347,6 +1347,59 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
+    /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Integer getNullableIntProperty(String             sourceName,
+                                      String             propertyName,
+                                      InstanceProperties properties,
+                                      String             methodName)
+    {
+        if ((properties != null) && (properties.getPropertyValue(propertyName) != null))
+        {
+            return this.getIntProperty(sourceName, propertyName, properties, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Integer removeNullableIntProperty(String             sourceName,
+                                         String             propertyName,
+                                         InstanceProperties properties,
+                                         String             methodName)
+    {
+        Integer retrievedProperty = this.getNullableIntProperty(sourceName, propertyName, properties, methodName);
+
+        if (retrievedProperty != null)
+        {
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
 
     /**
      * Return the requested property or 0 if property is not found.  If the property is not
@@ -1430,6 +1483,59 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         }
 
         log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Long getNullableLongProperty(String             sourceName,
+                                    String             propertyName,
+                                    InstanceProperties properties,
+                                    String             methodName)
+    {
+        if ((properties != null) && (properties.getPropertyValue(propertyName) != null))
+        {
+            return this.getLongProperty(sourceName, propertyName, properties, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Long removeNullableLongProperty(String             sourceName,
+                                       String             propertyName,
+                                       InstanceProperties properties,
+                                       String             methodName)
+    {
+        Long retrievedProperty = this.getNullableLongProperty(sourceName, propertyName, properties, methodName);
+
+        if (retrievedProperty != null)
+        {
+            this.removeProperty(propertyName, properties);
+        }
+
         return retrievedProperty;
     }
 
@@ -1610,6 +1716,59 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Boolean getNullableBooleanProperty(String             sourceName,
+                                          String             propertyName,
+                                          InstanceProperties properties,
+                                          String             methodName)
+    {
+        if ((properties != null) && (properties.getPropertyValue(propertyName) != null))
+        {
+            return this.getBooleanProperty(sourceName, propertyName, properties, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    @Override
+    public Boolean removeNullableBooleanProperty(String             sourceName,
+                                             String             propertyName,
+                                             InstanceProperties properties,
+                                             String             methodName)
+    {
+        Boolean retrievedProperty = this.getNullableBooleanProperty(sourceName, propertyName, properties, methodName);
+
+        if (retrievedProperty != null)
+        {
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -1771,6 +1930,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addIntPropertyToInstance(String             sourceName,
+                                                   InstanceProperties properties,
+                                                   String             propertyName,
+                                                   Integer            propertyValue,
+                                                   String             methodName)
+    {
+        if (propertyValue != null)
+        {
+            return this.addIntPropertyToInstance(sourceName, properties, propertyName, (int) propertyValue, methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -1815,6 +2002,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
         return resultingProperties;
+    }
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addLongPropertyToInstance(String             sourceName,
+                                                    InstanceProperties properties,
+                                                    String             propertyName,
+                                                    Long               propertyValue,
+                                                    String             methodName)
+    {
+        if (propertyValue != null)
+        {
+            return this.addLongPropertyToInstance(sourceName, properties, propertyName, (long) propertyValue, methodName);
+        }
+
+        return properties;
     }
 
 
@@ -1867,6 +2082,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addDoublePropertyToInstance(String             sourceName,
+                                                      InstanceProperties properties,
+                                                      String             propertyName,
+                                                      Double             propertyValue,
+                                                      String             methodName)
+    {
+        if (propertyValue != null)
+        {
+            return this.addDoublePropertyToInstance(sourceName, properties, propertyName, (double) propertyValue, methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -1911,6 +2154,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
         return resultingProperties;
+    }
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addFloatPropertyToInstance(String             sourceName,
+                                                     InstanceProperties properties,
+                                                     String             propertyName,
+                                                     Float              propertyValue,
+                                                     String             methodName)
+    {
+        if (propertyValue != null)
+        {
+            return this.addFloatPropertyToInstance(sourceName, properties, propertyName, (float) propertyValue, methodName);
+        }
+
+        return properties;
     }
 
 
@@ -2016,6 +2287,34 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
         return resultingProperties;
+    }
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addBooleanPropertyToInstance(String             sourceName,
+                                                       InstanceProperties properties,
+                                                       String             propertyName,
+                                                       Boolean            propertyValue,
+                                                       String             methodName)
+    {
+        if (propertyValue != null)
+        {
+            return this.addBooleanPropertyToInstance(sourceName, properties, propertyName, (boolean) propertyValue, methodName);
+        }
+
+        return properties;
     }
 
 

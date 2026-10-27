@@ -35,8 +35,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataFieldAnnotationProperties extends AnnotationProperties
 {
     private String dataType          = null;
-    private long   matchingValues    = 0L;
-    private long   nonMatchingValues = 0L;
+    private Long   matchingValues    = null;
+    private Long   nonMatchingValues = null;
 
     /**
      * Default constructor
@@ -90,7 +90,7 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getMatchingValues()
+    public Long getMatchingValues()
     {
         return matchingValues;
     }
@@ -101,7 +101,7 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      *
      * @param matchingValues long
      */
-    public void setMatchingValues(long matchingValues)
+    public void setMatchingValues(Long matchingValues)
     {
         this.matchingValues = matchingValues;
     }
@@ -112,7 +112,7 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getNonMatchingValues()
+    public Long getNonMatchingValues()
     {
         return nonMatchingValues;
     }
@@ -123,7 +123,7 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      *
      * @param nonMatchingValues long
      */
-    public void setNonMatchingValues(long nonMatchingValues)
+    public void setNonMatchingValues(Long nonMatchingValues)
     {
         this.nonMatchingValues = nonMatchingValues;
     }
@@ -167,8 +167,8 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
             return false;
         }
         DataFieldAnnotationProperties that = (DataFieldAnnotationProperties) objectToCompare;
-        return matchingValues == that.matchingValues &&
-                nonMatchingValues == that.nonMatchingValues &&
+        return Objects.equals(matchingValues, that.matchingValues) &&
+                Objects.equals(nonMatchingValues, that.nonMatchingValues) &&
                 Objects.equals(dataType, that.dataType);
     }
 

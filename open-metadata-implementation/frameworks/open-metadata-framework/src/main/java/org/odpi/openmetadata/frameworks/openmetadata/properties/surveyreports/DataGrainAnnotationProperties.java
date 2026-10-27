@@ -23,7 +23,7 @@ public class DataGrainAnnotationProperties extends DataFieldAnnotationProperties
 {
     private String granularityBasis    = null;
     private String grainStatement      = null;
-    private long   interval            = 0L;
+    private Long   interval            = null;
     private List<String> candidateDataGrainGUIDs = null;
 
 
@@ -106,7 +106,7 @@ public class DataGrainAnnotationProperties extends DataFieldAnnotationProperties
      *
      * @return long
      */
-    public long getInterval()
+    public Long getInterval()
     {
         return interval;
     }
@@ -117,7 +117,7 @@ public class DataGrainAnnotationProperties extends DataFieldAnnotationProperties
      *
      * @param interval long
      */
-    public void setInterval(long interval)
+    public void setInterval(Long interval)
     {
         this.interval = interval;
     }
@@ -174,7 +174,7 @@ public class DataGrainAnnotationProperties extends DataFieldAnnotationProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataGrainAnnotationProperties that = (DataGrainAnnotationProperties) objectToCompare;
-        return interval == that.interval &&
+        return Objects.equals(interval, that.interval) &&
                 Objects.equals(granularityBasis, that.granularityBasis) &&
                 Objects.equals(grainStatement, that.grainStatement) &&
                 Objects.equals(candidateDataGrainGUIDs, that.candidateDataGrainGUIDs);

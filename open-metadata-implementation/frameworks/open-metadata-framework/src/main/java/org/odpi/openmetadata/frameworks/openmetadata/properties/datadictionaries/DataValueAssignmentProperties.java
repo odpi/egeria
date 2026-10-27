@@ -25,8 +25,8 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
 {
     private String                    method              = null;
     private DataValueAssignmentStatus assignmentStatus    = null;
-    private int                       confidence          = 0;
-    private int                       threshold           = 0;
+    private Integer                   confidence          = null;
+    private Integer                   threshold           = null;
     private String                    steward             = null;
     private String                    stewardTypeName     = null;
     private String                    stewardPropertyName = null;
@@ -116,7 +116,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -128,7 +128,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -139,7 +139,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getThreshold()
+    public Integer getThreshold()
     {
         return threshold;
     }
@@ -150,7 +150,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
      *
      * @param threshold int
      */
-    public void setThreshold(int threshold)
+    public void setThreshold(Integer threshold)
     {
         this.threshold = threshold;
     }
@@ -285,7 +285,7 @@ public class DataValueAssignmentProperties extends LabeledRelationshipProperties
         {
             return false;
         }
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                 Objects.equals(method, that.method) &&
                 assignmentStatus == that.assignmentStatus &&
                 Objects.equals(threshold, that.threshold) &&

@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamStructureProperties extends RelationshipBeanProperties
 {
-    private boolean delegationEscalationAuthority = true;
+    private Boolean delegationEscalationAuthority = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class TeamStructureProperties extends RelationshipBeanProperties
      *
      * @return boolean
      */
-    public boolean getDelegationEscalationAuthority()
+    public Boolean getDelegationEscalationAuthority()
     {
         return delegationEscalationAuthority;
     }
@@ -66,7 +66,7 @@ public class TeamStructureProperties extends RelationshipBeanProperties
      *
      * @param delegationEscalationAuthority boolean
      */
-    public void setDelegationEscalationAuthority(boolean delegationEscalationAuthority)
+    public void setDelegationEscalationAuthority(Boolean delegationEscalationAuthority)
     {
         this.delegationEscalationAuthority = delegationEscalationAuthority;
     }

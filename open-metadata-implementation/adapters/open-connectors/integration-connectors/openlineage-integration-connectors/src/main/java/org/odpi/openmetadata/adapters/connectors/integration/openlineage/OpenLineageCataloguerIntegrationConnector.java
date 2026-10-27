@@ -1317,7 +1317,8 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 /*
                  * First event seen for this run.
                  */
-                runMetrics.setRunCount(runMetrics.getRunCount() + 1);
+                runMetrics.setRunCount(OpenMetadataProperty.RUN_COUNT.longValueOrDefault(runMetrics.getRunCount()) + 1);
+                runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()));
                 runMetrics.setLastRunId(runId);
                 runMetrics.setLastRunStartTime(eventTime);
                 runMetrics.setLastRunEndTime(null);
@@ -1353,12 +1354,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                     long duration = eventTime.getTime() - runMetrics.getLastRunStartTime().getTime();
 
                     runMetrics.setLastRunDuration(duration);
-                    runMetrics.setTotalRunDuration(runMetrics.getTotalRunDuration() + duration);
+                    runMetrics.setTotalRunDuration(OpenMetadataProperty.TOTAL_RUN_DURATION.longValueOrDefault(runMetrics.getTotalRunDuration()) + duration);
                 }
 
                 if ("FAIL".equals(eventType))
                 {
-                    runMetrics.setFailedRunCount(runMetrics.getFailedRunCount() + 1);
+                    runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()) + 1);
                 }
             }
 
@@ -1435,10 +1436,10 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
                 runMetrics.setLastRunBytesRead(bytesRead);
                 runMetrics.setLastRunRowsWritten(rowsWritten);
                 runMetrics.setLastRunBytesWritten(bytesWritten);
-                runMetrics.setTotalRowsRead(runMetrics.getTotalRowsRead() + rowsRead);
-                runMetrics.setTotalBytesRead(runMetrics.getTotalBytesRead() + bytesRead);
-                runMetrics.setTotalRowsWritten(runMetrics.getTotalRowsWritten() + rowsWritten);
-                runMetrics.setTotalBytesWritten(runMetrics.getTotalBytesWritten() + bytesWritten);
+                runMetrics.setTotalRowsRead(OpenMetadataProperty.TOTAL_ROWS_READ.longValueOrDefault(runMetrics.getTotalRowsRead()) + rowsRead);
+                runMetrics.setTotalBytesRead(OpenMetadataProperty.TOTAL_BYTES_READ.longValueOrDefault(runMetrics.getTotalBytesRead()) + bytesRead);
+                runMetrics.setTotalRowsWritten(OpenMetadataProperty.TOTAL_ROWS_WRITTEN.longValueOrDefault(runMetrics.getTotalRowsWritten()) + rowsWritten);
+                runMetrics.setTotalBytesWritten(OpenMetadataProperty.TOTAL_BYTES_WRITTEN.longValueOrDefault(runMetrics.getTotalBytesWritten()) + bytesWritten);
             }
 
             if (classified)

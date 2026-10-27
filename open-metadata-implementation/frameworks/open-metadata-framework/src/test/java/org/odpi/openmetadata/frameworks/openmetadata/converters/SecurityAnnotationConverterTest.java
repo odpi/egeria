@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementTyp
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.PenetrationTestFindingAnnotationProperties;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.Se
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.VulnerabilityAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.testng.annotations.Test;
 
@@ -24,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -74,11 +78,11 @@ public class SecurityAnnotationConverterTest
         assertEquals(retrieved.getWeaknessIdentifiers(), List.of("CWE-502", "CWE-917"));
         assertEquals(retrieved.getAffectedLocation(), properties.getAffectedLocation());
         assertEquals(retrieved.getRemediation(), properties.getRemediation());
-        assertTrue(retrieved.getExploitAvailable());
+        assertEquals(retrieved.getExploitAvailable(), Boolean.TRUE);
         assertEquals(retrieved.getPackageURL(), properties.getPackageURL());
         assertEquals(retrieved.getInstalledVersion(), "2.14.1");
         assertEquals(retrieved.getFixedVersion(), "2.17.1");
-        assertTrue(retrieved.getPatchAvailable());
+        assertEquals(retrieved.getPatchAvailable(), Boolean.TRUE);
     }
 
 
@@ -137,10 +141,10 @@ public class SecurityAnnotationConverterTest
 
         properties.setQualifiedName("SecurityPostureAnnotation::weekly-scan");
         properties.setFindingCountsBySeverity(Map.of("Critical", 1L, "High", 4L, "Medium", 12L));
-        properties.setResourcesInScopeCount(120);
-        properties.setResourcesTestedCount(118);
-        properties.setNewFindingCount(4);
-        properties.setResolvedFindingCount(7);
+        properties.setResourcesInScopeCount(120L);
+        properties.setResourcesTestedCount(118L);
+        properties.setNewFindingCount(4L);
+        properties.setResolvedFindingCount(7L);
         properties.setResourceProperties(Map.of("scanner", "Trivy"));
 
         SecurityPostureAnnotationProperties retrieved = (SecurityPostureAnnotationProperties) roundTrip(properties,
@@ -148,11 +152,43 @@ public class SecurityAnnotationConverterTest
                                                                                                           OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName);
 
         assertEquals(retrieved.getFindingCountsBySeverity(), properties.getFindingCountsBySeverity());
-        assertEquals(retrieved.getResourcesInScopeCount(), 120);
-        assertEquals(retrieved.getResourcesTestedCount(), 118);
-        assertEquals(retrieved.getNewFindingCount(), 4);
-        assertEquals(retrieved.getResolvedFindingCount(), 7);
+        assertEquals(retrieved.getResourcesInScopeCount(), Long.valueOf(120));
+        assertEquals(retrieved.getResourcesTestedCount(), Long.valueOf(118));
+        assertEquals(retrieved.getNewFindingCount(), Long.valueOf(4));
+        assertEquals(retrieved.getResolvedFindingCount(), Long.valueOf(7));
         assertEquals(retrieved.getResourceProperties(), Map.of("scanner", "Trivy"));
+    }
+
+
+    /**
+     * Numbers and flags that are not set must not be stored, and must come back as null rather than 0 or false.
+     * Otherwise an unset value looks like a real answer, and a merge update that leaves them out overwrites
+     * the stored values.
+     */
+    @Test
+    public void testUnsetValuesAreNotStored() throws Exception
+    {
+        VulnerabilityAnnotationProperties properties = new VulnerabilityAnnotationProperties();
+
+        properties.setQualifiedName("VulnerabilityAnnotation::unset");
+        properties.setSeverity("Medium");
+
+        ElementProperties stored = new OpenMetadataElementBuilder().getElementProperties(properties);
+
+        assertNull(stored.getPropertyValue(OpenMetadataProperty.CVSS_SCORE.name));
+        assertNull(stored.getPropertyValue(OpenMetadataProperty.EXPLOIT_AVAILABLE.name));
+        assertNull(stored.getPropertyValue(OpenMetadataProperty.PATCH_AVAILABLE.name));
+
+        VulnerabilityAnnotationProperties retrieved = (VulnerabilityAnnotationProperties) roundTrip(properties,
+                                                                                                      OpenMetadataType.VULNERABILITY_ANNOTATION.typeName,
+                                                                                                      OpenMetadataType.SECURITY_FINDING_ANNOTATION.typeName);
+
+        assertEquals(retrieved.getSeverity(), "Medium");
+        assertNull(retrieved.getCvssScore());
+        assertNull(retrieved.getExploitAvailable());
+        assertNull(retrieved.getPatchAvailable());
+        assertNull(retrieved.getConfidence());
+        assertFalse(OpenMetadataProperty.EXPLOIT_AVAILABLE.booleanValueOrDefault(retrieved.getExploitAvailable()));
     }
 
 

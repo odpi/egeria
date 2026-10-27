@@ -87,7 +87,7 @@ public enum OpenMetadataProperty
     /**
      * Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.
      */
-    VERSION("version", DataType.LONG, DataType.LONG.getDisplayName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414", PropertyCategory.HEADER),
+    VERSION("version", DataType.LONG, DataType.LONG.getDisplayName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create and all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414", PropertyCategory.HEADER, "0"),
 
     /**
      * Status of this instance. Values from the Instance Status enum. (use only for ordering results),
@@ -316,17 +316,17 @@ public enum OpenMetadataProperty
     /**
      * The anchor element count for the attached governance zone.
      */
-    TOTAL_MEMBERSHIP("totalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor element count for the attached governance zone.", null, "59af4502-6cad-42e3-a9f6-3b72470a5d9c"),
+    TOTAL_MEMBERSHIP("totalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor element count for the attached governance zone.", null, "59af4502-6cad-42e3-a9f6-3b72470a5d9c", "0"),
 
     /**
      * The anchored element count for the attached governance zone.
      */
-    ANCHORED_TOTAL_MEMBERSHIP("anchoredTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchored element count for the attached governance zone.", null, "be78c74c-e579-44fd-8fd8-de4b17af43ab"),
+    ANCHORED_TOTAL_MEMBERSHIP("anchoredTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchored element count for the attached governance zone.", null, "be78c74c-e579-44fd-8fd8-de4b17af43ab", "0"),
 
     /**
      * The anchor and anchored elements count for the attached governance zone.
      */
-    ALL_TOTAL_MEMBERSHIP("allTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor and anchored elements count for the attached governance zone.", null, "42120d2f-76fa-4cce-ac71-0cadc9b3146e"),
+    ALL_TOTAL_MEMBERSHIP("allTotalMembership", DataType.LONG, DataType.LONG.getDisplayName(), "The anchor and anchored elements count for the attached governance zone.", null, "42120d2f-76fa-4cce-ac71-0cadc9b3146e", "0"),
 
     /**
      * Definition of the types of assets that belong in this zone.
@@ -412,47 +412,47 @@ public enum OpenMetadataProperty
     /**
      * Count of the user accounts in the secrets store.
      */
-    USER_ACCOUNT_COUNT("userAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the user accounts in the secrets store.", "25", "77c9fc43-a5cb-4a3a-9f66-f024a7ecbb3c"),
+    USER_ACCOUNT_COUNT("userAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the user accounts in the secrets store.", "25", "77c9fc43-a5cb-4a3a-9f66-f024a7ecbb3c", "0"),
 
     /**
      * Count of the employee user accounts in the secrets store.
      */
-    EMPLOYEE_ACCOUNT_COUNT("employeeAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the employee user accounts in the secrets store.", "25", "5e7c8eee-6ebe-4b60-9cc9-e3397c89a9fb"),
+    EMPLOYEE_ACCOUNT_COUNT("employeeAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the employee user accounts in the secrets store.", "25", "5e7c8eee-6ebe-4b60-9cc9-e3397c89a9fb", "0"),
 
     /**
      * Count of the contractor user accounts in the secrets store.
      */
-    CONTRACTOR_ACCOUNT_COUNT("contractorAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the contractor user accounts in the secrets store.", "25", "1332d1ae-6fd6-4552-8be6-ebdf4d671d66"),
+    CONTRACTOR_ACCOUNT_COUNT("contractorAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the contractor user accounts in the secrets store.", "25", "1332d1ae-6fd6-4552-8be6-ebdf4d671d66", "0"),
 
     /**
      * Count of the external user accounts in the secrets store.
      */
-    EXTERNAL_ACCOUNT_COUNT("externalAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the external user accounts in the secrets store.", "25", "09806719-e33e-4f94-9b83-f18473908012"),
+    EXTERNAL_ACCOUNT_COUNT("externalAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the external user accounts in the secrets store.", "25", "09806719-e33e-4f94-9b83-f18473908012", "0"),
 
     /**
      * Count of the digital user accounts in the secrets store.
      */
-    DIGITAL_ACCOUNT_COUNT("digitalAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the digital user accounts in the secrets store.", "25", "2f55b2c7-f359-4558-9ed5-d320190cecbc"),
+    DIGITAL_ACCOUNT_COUNT("digitalAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the digital user accounts in the secrets store.", "25", "2f55b2c7-f359-4558-9ed5-d320190cecbc", "0"),
 
     /**
      * Count of the active user accounts in the secrets store.
      */
-    ACTIVE_ACCOUNT_COUNT("activeAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the active user accounts in the secrets store.", "25", "273bc6fd-ce3a-43af-88b3-76f80ad1e10b"),
+    ACTIVE_ACCOUNT_COUNT("activeAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the active user accounts in the secrets store.", "25", "273bc6fd-ce3a-43af-88b3-76f80ad1e10b", "0"),
 
     /**
      * Count of the user accounts with expired credentials in the secrets store.
      */
-    EXPIRED_ACCOUNT_COUNT("expiredAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the user accounts with expired credentials in the secrets store.", "25", "828cf91e-9b79-4c77-8f70-2865debaee81"),
+    EXPIRED_ACCOUNT_COUNT("expiredAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the user accounts with expired credentials in the secrets store.", "25", "828cf91e-9b79-4c77-8f70-2865debaee81", "0"),
 
     /**
      * Count of the locked user accounts in the secrets store.
      */
-    LOCKED_ACCOUNT_COUNT("lockedAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the locked user accounts in the secrets store.", "25", "7f9e3063-ce61-4e53-a45e-2a3fbda0bd43"),
+    LOCKED_ACCOUNT_COUNT("lockedAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the locked user accounts in the secrets store.", "25", "7f9e3063-ce61-4e53-a45e-2a3fbda0bd43", "0"),
 
     /**
      * Count of the disabled user accounts in the secrets store.
      */
-    DISABLED_ACCOUNT_COUNT("disabledAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the disabled user accounts in the secrets store.", "25", "dc692ffb-8973-4583-8f2e-9437b4a1d4af"),
+    DISABLED_ACCOUNT_COUNT("disabledAccountCount", DataType.LONG, DataType.LONG.getDisplayName(), "Count of the disabled user accounts in the secrets store.", "25", "dc692ffb-8973-4583-8f2e-9437b4a1d4af", "0"),
 
     /**
      * Map showing the number of accounts for each account type.
@@ -467,12 +467,12 @@ public enum OpenMetadataProperty
     /**
      * Count of elements in the sample.
      */
-    SAMPLE_SIZE("sampleSize", DataType.LONG, DataType.LONG.getDisplayName(), "Count of elements in the sample.", null, "25f87465-5777-48b7-bd21-f94fe370af3d"),
+    SAMPLE_SIZE("sampleSize", DataType.LONG, DataType.LONG.getDisplayName(), "Count of elements in the sample.", null, "25f87465-5777-48b7-bd21-f94fe370af3d", "0"),
 
     /**
      * Percentage of total elements in the sample.
      */
-    SAMPLE_PERCENT("samplePercent", DataType.INT, DataType.INT.getDisplayName(), "Percentage of total elements in the sample.", "20", "386fe49e-5335-4b0f-bf40-e2883c83b708"),
+    SAMPLE_PERCENT("samplePercent", DataType.INT, DataType.INT.getDisplayName(), "Percentage of total elements in the sample.", "20", "386fe49e-5335-4b0f-bf40-e2883c83b708", "0"),
 
     /**
      * Description of the technique used to create the sample.
@@ -512,7 +512,7 @@ public enum OpenMetadataProperty
     /**
      * The version number of the template element when the copy was created.
      */
-    SOURCE_VERSION_NUMBER("sourceVersionNumber", DataType.LONG, DataType.LONG.getDisplayName(), "The version number of the template element when the copy was created.", null, "4729488f-2e42-4801-bc17-9dfad508c1fa"),
+    SOURCE_VERSION_NUMBER("sourceVersionNumber", DataType.LONG, DataType.LONG.getDisplayName(), "The version number of the template element when the copy was created.", null, "4729488f-2e42-4801-bc17-9dfad508c1fa", "0"),
 
     /**
      * The fully qualified physical location of the data store.
@@ -614,7 +614,7 @@ public enum OpenMetadataProperty
     /**
      * If the end of a relationship is significant, set to 1 or 2 to indicate the desired end; otherwise use 0.
      */
-    RELATIONSHIP_END("relationshipEnd", DataType.INT, DataType.INT.getDisplayName(), "If the end of a relationship is significant, set to 1 or 2 to indicated the desired end; otherwise use 0.", null, "8b53224f-e330-4ded-9d18-da6517094994"),
+    RELATIONSHIP_END("relationshipEnd", DataType.INT, DataType.INT.getDisplayName(), "If the end of a relationship is significant, set to 1 or 2 to indicated the desired end; otherwise use 0.", null, "8b53224f-e330-4ded-9d18-da6517094994", "0"),
 
     /**
      * Display name for the relationship end.
@@ -634,7 +634,7 @@ public enum OpenMetadataProperty
     /**
      * The amount of data the volume can store.
      */
-    STORAGE_CAPACITY("storageCapacity", DataType.LONG, DataType.LONG.getDisplayName(), "The amount of data the volume can store.", "1", "0c84982d-684e-4181-af4b-ee0b0f9197ee"),
+    STORAGE_CAPACITY("storageCapacity", DataType.LONG, DataType.LONG.getDisplayName(), "The amount of data the volume can store.", "1", "0c84982d-684e-4181-af4b-ee0b0f9197ee", "0"),
 
     /**
      * The units of measure used in the data value.
@@ -644,12 +644,12 @@ public enum OpenMetadataProperty
     /**
      * The range of variation in the accuracy of the measurement expressed in the units of the measurement.
      */
-    ABSOLUTE_UNCERTAINTY("absoluteUncertainty", DataType.LONG, DataType.LONG.getDisplayName(), "The range of variation in the accuracy of the measurement expressed in the units of the measurement.", "+/- 6", "f6ce9a33-5896-4604-ab38-3601d4b4da8e"),
+    ABSOLUTE_UNCERTAINTY("absoluteUncertainty", DataType.LONG, DataType.LONG.getDisplayName(), "The range of variation in the accuracy of the measurement expressed in the units of the measurement.", "+/- 6", "f6ce9a33-5896-4604-ab38-3601d4b4da8e", "0"),
 
     /**
      * The range of variation in the accuracy of the measurement expressed as a percentage.
      */
-    RELATIVE_UNCERTAINTY("relativeUncertainty", DataType.LONG, DataType.LONG.getDisplayName(), "The range of variation in the accuracy of the measurement expressed as a percentage.", "5%", "5d17ef61-55e8-43e4-ae87-ba124a725839"),
+    RELATIVE_UNCERTAINTY("relativeUncertainty", DataType.LONG, DataType.LONG.getDisplayName(), "The range of variation in the accuracy of the measurement expressed as a percentage.", "5%", "5d17ef61-55e8-43e4-ae87-ba124a725839", "0"),
 
     /**
      * The dimension or aspect of the data that controls its granularity.
@@ -664,7 +664,7 @@ public enum OpenMetadataProperty
     /**
      * The interval that described the granularity of the data.
      */
-    INTERVAL("interval", DataType.LONG, DataType.LONG.getDisplayName(), "The interval that described the granularity of the data expressing in the units of the grain.", "60", "f075a12c-cb12-47a1-98ec-6f95ce65f47f"),
+    INTERVAL("interval", DataType.LONG, DataType.LONG.getDisplayName(), "The interval that described the granularity of the data expressing in the units of the grain.", "60", "f075a12c-cb12-47a1-98ec-6f95ce65f47f", "0"),
 
     /**
      * Value that is used when an instance of the data field is created.
@@ -694,52 +694,52 @@ public enum OpenMetadataProperty
     /**
      * Position of the element in a collection of relationships.
      */
-    POSITION("position", DataType.INT, DataType.INT.getDisplayName(), "Position of the element in a collection of relationships.  Zero means no position set. A positive value identified the position starting from 1 for the first position.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae"),
+    POSITION("position", DataType.INT, DataType.INT.getDisplayName(), "Position of the element in a collection of relationships.  Zero means no position set. A positive value identified the position starting from 1 for the first position.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae", "0"),
 
     /**
      * Minimum length of the data value (zero means unlimited).
      */
-    MINIMUM_LENGTH("minimumLength", DataType.INT, DataType.INT.getDisplayName(), "Minimum length of the data value (zero means unlimited).", null, "c7b61891-759f-425c-b0f8-268374e7d72a"),
+    MINIMUM_LENGTH("minimumLength", DataType.INT, DataType.INT.getDisplayName(), "Minimum length of the data value (zero means unlimited).", null, "c7b61891-759f-425c-b0f8-268374e7d72a", "0"),
 
     /**
      * Accepts null values or not.
      */
-    IS_NULLABLE("isNullable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Accepts null values or not.", null, "6e66ed4e-bc2e-446b-a884-d358044730e7"),
+    IS_NULLABLE("isNullable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Accepts null values or not.", null, "6e66ed4e-bc2e-446b-a884-d358044730e7", "true"),
 
     /**
      * Number of digits after the decimal point.
      */
-    PRECISION("precision", DataType.INT, DataType.INT.getDisplayName(), "Number of digits after the decimal point.", null, "45992a6f-096a-4ec2-a14f-886cb5467070"),
+    PRECISION("precision", DataType.INT, DataType.INT.getDisplayName(), "Number of digits after the decimal point.", null, "45992a6f-096a-4ec2-a14f-886cb5467070", "0"),
 
     /**
      * Minimum number of allowed instances.
      */
-    MIN_CARDINALITY("minCardinality", DataType.INT, DataType.INT.getDisplayName(), "Minimum number of allowed instances.", null, "d3e13cd5-414f-4c82-94b8-e61dad64f7c3"),
+    MIN_CARDINALITY("minCardinality", DataType.INT, DataType.INT.getDisplayName(), "Minimum number of allowed instances.", null, "d3e13cd5-414f-4c82-94b8-e61dad64f7c3", "0"),
 
     /**
      * Maximum number of allowed instances.
      */
-    MAX_CARDINALITY("maxCardinality", DataType.INT, DataType.INT.getDisplayName(), "Maximum number of allowed instances.", null, "5caa1b1a-590f-4a2e-85ad-260b64f4bbc1"),
+    MAX_CARDINALITY("maxCardinality", DataType.INT, DataType.INT.getDisplayName(), "Maximum number of allowed instances.", null, "5caa1b1a-590f-4a2e-85ad-260b64f4bbc1", "0"),
 
     /**
      * When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.
      */
-    ALLOWS_DUPLICATE_VALUES("allowsDuplicateValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "67a94396-93ca-4a20-94a8-78538bacaa65"),
+    ALLOWS_DUPLICATE_VALUES("allowsDuplicateValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "67a94396-93ca-4a20-94a8-78538bacaa65", "true"),
 
     /**
      * When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.
      */
-    UNIQUE_VALUES("uniqueValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "a93093de-6817-43ee-ae5a-8625e8366cac"),
+    UNIQUE_VALUES("uniqueValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.", null, "a93093de-6817-43ee-ae5a-8625e8366cac", "false"),
 
     /**
      * When multiple occurrences are allowed, indicates whether the values are ordered or not.
      */
-    ORDERED_VALUES("orderedValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether the values are ordered or not.", null, "3e136e52-5afe-49ae-9e18-b88368e83ab8"),
+    ORDERED_VALUES("orderedValues", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "When multiple occurrences are allowed, indicates whether the values are ordered or not.", null, "3e136e52-5afe-49ae-9e18-b88368e83ab8", "false"),
 
     /**
      * Is it possible to follow the link in this direction.
      */
-    NAVIGABLE("navigable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is it possible to follow the link in this direction.", null, "214c098b-ccea-4068-abe2-ab3d95368990"),
+    NAVIGABLE("navigable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is it possible to follow the link in this direction.", null, "214c098b-ccea-4068-abe2-ab3d95368990", "true"),
 
     /**
      * Usage and lifecycle for this connection between the concept bead and the link.
@@ -764,7 +764,7 @@ public enum OpenMetadataProperty
     /**
      * Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.
      */
-    MATCH_THRESHOLD("matchThreshold", DataType.INT, DataType.INT.getDisplayName(), "Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
+    MATCH_THRESHOLD("matchThreshold", DataType.INT, DataType.INT.getDisplayName(), "Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044", "100"),
 
     /**
      * Each word in the name should be capitalized, with spaces
@@ -806,7 +806,7 @@ public enum OpenMetadataProperty
     /**
      * Level of certainty in the accuracy of the results.
      */
-    CONFIDENCE_LEVEL("confidenceLevel", DataType.INT, DataType.INT.getDisplayName(), "Level of certainty in the accuracy of the results.", Integer.toString(ConfidenceLevel.AUTHORITATIVE.getOrdinal()), "29372374-38bb-472d-9d6e-529b68aed1e0"),
+    CONFIDENCE_LEVEL("confidenceLevel", DataType.INT, DataType.INT.getDisplayName(), "Level of certainty in the accuracy of the results.", Integer.toString(ConfidenceLevel.AUTHORITATIVE.getOrdinal()), "29372374-38bb-472d-9d6e-529b68aed1e0", "0"),
 
     /**
      * Expression used to create the annotation.
@@ -946,12 +946,12 @@ public enum OpenMetadataProperty
     /**
      * Is this value required?
      */
-    REQUIRED("required", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this value required?", null, "fb810cde-18a7-46a0-88a3-6a0fb69b2286"),
+    REQUIRED("required", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this value required?", null, "fb810cde-18a7-46a0-88a3-6a0fb69b2286", "true"),
 
     /**
      * Is this data field accepting new  data from the end user or not.
      */
-    INPUT_FIELD("inputField", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this data field accepting new  data from the end user or not.", null, "d2091eb1-0ab6-4038-87e3-695d5d626f57"),
+    INPUT_FIELD("inputField", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this data field accepting new  data from the end user or not.", null, "d2091eb1-0ab6-4038-87e3-695d5d626f57", "false"),
 
     /**
      * Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.
@@ -996,7 +996,7 @@ public enum OpenMetadataProperty
     /**
      * Length of the data field (zero means unlimited).
      */
-    LENGTH("length", DataType.INT, DataType.INT.getDisplayName(), "Length of the data field (zero means unlimited).", null, "35a17811-1635-4ab1-9a15-0f79bc771a27"),
+    LENGTH("length", DataType.INT, DataType.INT.getDisplayName(), "Length of the data field (zero means unlimited).", null, "35a17811-1635-4ab1-9a15-0f79bc771a27", "0"),
 
     /**
      * Potential classification names and properties as JSON.
@@ -1016,17 +1016,17 @@ public enum OpenMetadataProperty
     /**
      * Inferred data field length based on the data values.
      */
-    INFERRED_LENGTH("inferredLength", DataType.INT, DataType.INT.getDisplayName(), "Inferred data field length based on the data values.", null, "e67b7353-20e0-46be-b912-e96192a200fc"),
+    INFERRED_LENGTH("inferredLength", DataType.INT, DataType.INT.getDisplayName(), "Inferred data field length based on the data values.", null, "e67b7353-20e0-46be-b912-e96192a200fc", "0"),
 
     /**
      * Inferred precision of the data based on the data values.
      */
-    INFERRED_PRECISION("inferredPrecision", DataType.INT, DataType.INT.getDisplayName(), "Inferred precision of the data based on the data values.", null, "4ce73780-f940-4da6-bfcb-3b726ede2f7b"),
+    INFERRED_PRECISION("inferredPrecision", DataType.INT, DataType.INT.getDisplayName(), "Inferred precision of the data based on the data values.", null, "4ce73780-f940-4da6-bfcb-3b726ede2f7b", "0"),
 
     /**
      * Inferred scale applied to the data based on the data values.
      */
-    INFERRED_SCALE("inferredScale", DataType.INT, DataType.INT.getDisplayName(), "Inferred scale applied to the data based on the data values.", null, "bd28ec07-01bd-4db4-9377-33b15097ded4"),
+    INFERRED_SCALE("inferredScale", DataType.INT, DataType.INT.getDisplayName(), "Inferred scale applied to the data based on the data values.", null, "bd28ec07-01bd-4db4-9377-33b15097ded4", "0"),
 
     /**
      * Time at which the profiling started collecting data.
@@ -1106,12 +1106,12 @@ public enum OpenMetadataProperty
     /**
      * Count of values that match the specification.
      */
-    MATCHING_VALUES("matchingValues", DataType.LONG, DataType.LONG.getDisplayName(), "Count of values that match the data class specification.", null, "96c33d36-cff9-455e-944f-38224eb7448b"),
+    MATCHING_VALUES("matchingValues", DataType.LONG, DataType.LONG.getDisplayName(), "Count of values that match the data class specification.", null, "96c33d36-cff9-455e-944f-38224eb7448b", "0"),
 
     /**
      * Count of values that do not match the specification.
      */
-    NON_MATCHING_VALUES("nonMatchingValues", DataType.LONG, DataType.LONG.getDisplayName(), "Count of values that do not match the data class specification.", null, "7bb6364d-486f-4005-97c9-941c7b7154d5"),
+    NON_MATCHING_VALUES("nonMatchingValues", DataType.LONG, DataType.LONG.getDisplayName(), "Count of values that do not match the data class specification.", null, "7bb6364d-486f-4005-97c9-941c7b7154d5", "0"),
 
     /**
      * Suggested term based on the analysis.
@@ -1141,7 +1141,7 @@ public enum OpenMetadataProperty
     /**
      * Calculated quality value.
      */
-    QUALITY_SCORE("qualityScore", DataType.INT, DataType.INT.getDisplayName(), "Calculated quality value.", null, "cdbe5189-771d-42a5-917a-42923dedaf89"),
+    QUALITY_SCORE("qualityScore", DataType.INT, DataType.INT.getDisplayName(), "Calculated quality value.", null, "cdbe5189-771d-42a5-917a-42923dedaf89", "0"),
 
     /**
      * Type name of the potential relationship.
@@ -1207,7 +1207,7 @@ public enum OpenMetadataProperty
     /**
      * Size of the data source.
      */
-    SIZE("size", DataType.LONG, DataType.LONG.getDisplayName(), "Size of the data source.", null, "c2d67f78-3387-4b83-9c1c-bd0aa88a4df0"),
+    SIZE("size", DataType.LONG, DataType.LONG.getDisplayName(), "Size of the data source.", null, "c2d67f78-3387-4b83-9c1c-bd0aa88a4df0", "0"),
 
     /**
      * Encoding scheme used on the data.
@@ -1272,12 +1272,12 @@ public enum OpenMetadataProperty
     /**
      * Maximum running asset instances controlled by the software capability.
      */
-    MAXIMUM_INSTANCES("maximumInstances", DataType.INT, DataType.INT.getDisplayName(), "Maximum running asset instances controlled by the software capability.", "0", "76b06411-e3bf-4a39-9351-140e6ad0b82f"),
+    MAXIMUM_INSTANCES("maximumInstances", DataType.INT, DataType.INT.getDisplayName(), "Maximum running asset instances controlled by the software capability.", "0", "76b06411-e3bf-4a39-9351-140e6ad0b82f", "0"),
 
     /**
      * Minimum running asset instances controlled by the software capability.
      */
-    MINIMUM_INSTANCES("minimumInstances", DataType.INT, DataType.INT.getDisplayName(), "Minimum running asset instances controlled by the software capability.", "12", "d5033e20-3cd7-4c27-a07f-4a95feee10d8"),
+    MINIMUM_INSTANCES("minimumInstances", DataType.INT, DataType.INT.getDisplayName(), "Minimum running asset instances controlled by the software capability.", "12", "d5033e20-3cd7-4c27-a07f-4a95feee10d8", "0"),
 
     /**
      * Identifier used in an external system.
@@ -1312,7 +1312,7 @@ public enum OpenMetadataProperty
     /**
      * The latest version of the element in the external system.
      */
-    EXT_INSTANCE_VERSION("externalInstanceVersion", DataType.LONG, DataType.LONG.getDisplayName(), "The latest version of the element in the external system.", null, "349199e2-5781-4413-8550-c85241e20cc5"),
+    EXT_INSTANCE_VERSION("externalInstanceVersion", DataType.LONG, DataType.LONG.getDisplayName(), "The latest version of the element in the external system.", null, "349199e2-5781-4413-8550-c85241e20cc5", "0"),
 
     /**
      * Additional properties to aid the mapping to the element in an external resource.
@@ -1362,12 +1362,12 @@ public enum OpenMetadataProperty
     /**
      * Level of confidence in the correctness of the element.
      */
-    CONFIDENCE("confidence", DataType.INT, DataType.INT.getDisplayName(), "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
+    CONFIDENCE("confidence", DataType.INT, DataType.INT.getDisplayName(), "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000", "0"),
 
     /**
      * The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.
      */
-    USES_BLOCKING_CALLS("usesBlockingCalls", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.", "false", "cd23ea21-75b0-45d2-9292-e63510c3a1e2"),
+    USES_BLOCKING_CALLS("usesBlockingCalls", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.", "false", "cd23ea21-75b0-45d2-9292-e63510c3a1e2", "false"),
 
     /**
      * Type of topic.
@@ -1477,22 +1477,22 @@ public enum OpenMetadataProperty
     /**
      * Defines how important a data item is to the organization.
      */
-    CRITICALITY_LEVEL("criticalityLevel", DataType.INT, DataType.INT.getDisplayName(), "Defines how important a data item is to the organization.", Integer.toString(CriticalityLevel.IMPORTANT.getOrdinal()), "b2c99d60-4078-4d06-beec-f7fcc588c344"),
+    CRITICALITY_LEVEL("criticalityLevel", DataType.INT, DataType.INT.getDisplayName(), "Defines how important a data item is to the organization.", Integer.toString(CriticalityLevel.IMPORTANT.getOrdinal()), "b2c99d60-4078-4d06-beec-f7fcc588c344", "0"),
 
     /**
      * Defines how confidential a data item is.
      */
-    CONFIDENTIALITY_LEVEL("confidentialityLevel", DataType.INT, DataType.INT.getDisplayName(), "Defines the level of confidence to place in the accuracy of a data item.", Integer.toString(ConfidentialityLevel.CONFIDENTIAL.getOrdinal()), "908488a2-13f2-469d-b28d-20a7af6be4a1"),
+    CONFIDENTIALITY_LEVEL("confidentialityLevel", DataType.INT, DataType.INT.getDisplayName(), "Defines the level of confidence to place in the accuracy of a data item.", Integer.toString(ConfidentialityLevel.CONFIDENTIAL.getOrdinal()), "908488a2-13f2-469d-b28d-20a7af6be4a1", "0"),
 
     /**
      * Defines the retention requirements associated with a data item.
      */
-    RETENTION_BASIS("retentionBasis", DataType.INT, DataType.INT.getDisplayName(), "Defines the retention requirements associated with a data item.", Integer.toString(RetentionBasis.PROJECT_LIFETIME.getOrdinal()), "68069d73-0e20-4cb7-a7ec-1555edbbc280"),
+    RETENTION_BASIS("retentionBasis", DataType.INT, DataType.INT.getDisplayName(), "Defines the retention requirements associated with a data item.", Integer.toString(RetentionBasis.PROJECT_LIFETIME.getOrdinal()), "68069d73-0e20-4cb7-a7ec-1555edbbc280", "0"),
 
     /**
      * Defines the status values of a governance action classification.
      */
-    STATUS_IDENTIFIER("statusIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Defines the status values of a governance action classification.", Integer.toString(StatusIdentifier.VALIDATED.getOrdinal()), "8279602a-c86d-4cf7-b66d-1ea98b75c491"),
+    STATUS_IDENTIFIER("statusIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Defines the status values of a governance action classification.", Integer.toString(StatusIdentifier.VALIDATED.getOrdinal()), "8279602a-c86d-4cf7-b66d-1ea98b75c491", "0"),
 
     /**
      * Defines the suggested order that data values in this data item should be sorted by.
@@ -1547,7 +1547,7 @@ public enum OpenMetadataProperty
     /**
      * An indication of the relative position in which this work item should be tackled compared to others in the overall work list.
      */
-    PRIORITY("priority", DataType.INT, DataType.INT.getDisplayName(), "An indication of the relative position in which this work item should be tackled compared to others in the overall work list.", "10", "6168ae13-f6ee-49e7-9f21-693e7a401926"),
+    PRIORITY("priority", DataType.INT, DataType.INT.getDisplayName(), "An indication of the relative position in which this work item should be tackled compared to others in the overall work list.", "10", "6168ae13-f6ee-49e7-9f21-693e7a401926", "0"),
 
     /**
      * Metadata properties embedded in the media file.
@@ -1572,7 +1572,7 @@ public enum OpenMetadataProperty
     /**
      * Number of pages that this external source has.
      */
-    NUMBER_OF_PAGES("numberOfPages", DataType.INT, DataType.INT.getDisplayName(), "Number of pages that this external source has.", null, "dfdb0daa-3b5d-4f76-a674-bf2e683f587c"),
+    NUMBER_OF_PAGES("numberOfPages", DataType.INT, DataType.INT.getDisplayName(), "Number of pages that this external source has.", null, "dfdb0daa-3b5d-4f76-a674-bf2e683f587c", "0"),
 
     /**
      * Range of pages that this reference covers.
@@ -1949,17 +1949,17 @@ public enum OpenMetadataProperty
     /**
      * Points capturing a person's engagement with open metadata.
      */
-    KARMA_POINTS("karmaPoints", DataType.LONG, DataType.LONG.getDisplayName(), "Points capturing a person's engagement with open metadata.", null, "ec847574-376b-4b21-a8a9-4bcdfcb2000d"),
+    KARMA_POINTS("karmaPoints", DataType.LONG, DataType.LONG.getDisplayName(), "Points capturing a person's engagement with open metadata.", null, "ec847574-376b-4b21-a8a9-4bcdfcb2000d", "0"),
 
     /**
      * Number of people that can be appointed to the role.
      */
-    HEAD_COUNT("headCount", DataType.INT, DataType.INT.getDisplayName(), "Number of people that can be appointed to the role.", null, "58e9c9c4-d5e3-4576-a2a7-9f459bcdd439"),
+    HEAD_COUNT("headCount", DataType.INT, DataType.INT.getDisplayName(), "Number of people that can be appointed to the role.", null, "58e9c9c4-d5e3-4576-a2a7-9f459bcdd439", "0"),
 
     /**
      * What percentage of time is the appointee expected to devote to this role.
      */
-    EXPECTED_TIME_ALLOCATION_PERCENT("expectedTimeAllocationPercent", DataType.INT, DataType.INT.getDisplayName(), "What percentage of time is the appointee expected to devote to this role.", "50", "027c580d-c5c9-4dda-a7d3-79a9951a85ad"),
+    EXPECTED_TIME_ALLOCATION_PERCENT("expectedTimeAllocationPercent", DataType.INT, DataType.INT.getDisplayName(), "What percentage of time is the appointee expected to devote to this role.", "50", "027c580d-c5c9-4dda-a7d3-79a9951a85ad","100"),
 
     /**
      * Type of team, such as department.
@@ -1969,7 +1969,7 @@ public enum OpenMetadataProperty
     /**
      * Can delegations and escalations flow on this relationship.
      */
-    DELEGATION_ESCALATION("delegationEscalationAuthority", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Can delegations and escalations flow on this relationship.", null, "c8238d05-07ac-4c1e-a89c-34299d9827f8"),
+    DELEGATION_ESCALATION("delegationEscalationAuthority", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Can delegations and escalations flow on this relationship.", null, "c8238d05-07ac-4c1e-a89c-34299d9827f8", "true"),
 
     /**
      * What is the scope or nature of the assignment.
@@ -1994,7 +1994,7 @@ public enum OpenMetadataProperty
     /**
      * Is this valid value case-sensitive, or should the values match irrespective of case?
      */
-    IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174"),
+    IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174", "false"),
 
     /**
      * "Reason for the meeting and intended outcome.
@@ -2289,7 +2289,7 @@ public enum OpenMetadataProperty
     /**
      * How severe is the impact on the resource?
      */
-    SEVERITY_LEVEL("severityLevel", DataType.INT, DataType.INT.getDisplayName(), "How severe is the impact on the resource?", Integer.toString(SeverityLevel.HIGH.getOrdinal()), "2f549dab-9938-46fc-b35d-9773231bffd9"),
+    SEVERITY_LEVEL("severityLevel", DataType.INT, DataType.INT.getDisplayName(), "How severe is the impact on the resource?", Integer.toString(SeverityLevel.HIGH.getOrdinal()), "2f549dab-9938-46fc-b35d-9773231bffd9", "0"),
 
     /**
      * Describes the expected effects of the event on the organization.
@@ -2309,17 +2309,17 @@ public enum OpenMetadataProperty
     /**
      * Defines, in milliseconds, the length of time that the event is expected to last.
      */
-    PLANNED_DURATION("plannedDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, the length of time that the event is expected to last.", null, "63ccec87-8c1a-4b02-bb6f-e3995a0a59cc"),
+    PLANNED_DURATION("plannedDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, the length of time that the event is expected to last.", null, "63ccec87-8c1a-4b02-bb6f-e3995a0a59cc", "0"),
 
     /**
      * Defines, in milliseconds, the length of time that the event did last.
      */
-    ACTUAL_DURATION("actualDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, the length of time that the event did last.", null, "a68e8d73-e36c-47cb-946a-13f40233121d"),
+    ACTUAL_DURATION("actualDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, the length of time that the event did last.", null, "a68e8d73-e36c-47cb-946a-13f40233121d", "0"),
 
     /**
      * Defines, in milliseconds, how frequently the event is expected to repeat.
      */
-    REPEAT_INTERVAL("repeatInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, how frequently the event is expected to repeat.", null, "815c6947-137f-4c6e-9459-b2179339acb3"),
+    REPEAT_INTERVAL("repeatInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Defines, in milliseconds, how frequently the event is expected to repeat.", null, "815c6947-137f-4c6e-9459-b2179339acb3", "0"),
 
     /**
      * Provides an expected date/time when the event is complete.
@@ -2370,32 +2370,32 @@ public enum OpenMetadataProperty
     /**
      * If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.
      */
-    MIN_LONGITUDE("minLongitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "9d1694e3-2197-49d4-b651-8d6ab0b8bc42"),
+    MIN_LONGITUDE("minLongitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "9d1694e3-2197-49d4-b651-8d6ab0b8bc42", "0.0"),
 
     /**
      * If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.
      */
-    MIN_LATITUDE("minLatitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "ea7134ed-bb6d-4b1f-b938-48ae8f5686ac"),
+    MIN_LATITUDE("minLatitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "ea7134ed-bb6d-4b1f-b938-48ae8f5686ac", "0.0"),
 
     /**
      * If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data.
      */
-    MAX_LONGITUDE("maxLongitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "5e379349-632c-40c8-8125-694e339c475d"),
+    MAX_LONGITUDE("maxLongitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "5e379349-632c-40c8-8125-694e339c475d", "0.0"),
 
     /**
      * If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.
      */
-    MAX_LATITUDE("maxLatitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "bce87e2b-603f-449a-9c90-15ca3d2bda81"),
+    MAX_LATITUDE("maxLatitude", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "bce87e2b-603f-449a-9c90-15ca3d2bda81", "0.0"),
 
     /**
      * If the height above ground is relevant, this is the lowest height that the data covers.
      */
-    MIN_HEIGHT("minHeight", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the height above ground is relevant, this is the lowest height that the data covers.", null, "33309620-ca7a-4aa3-a8d0-f98175e82672"),
+    MIN_HEIGHT("minHeight", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the height above ground is relevant, this is the lowest height that the data covers.", null, "33309620-ca7a-4aa3-a8d0-f98175e82672", "0.0"),
 
     /**
      * If the height above ground is relevant, this is the highest height that the data covers.
      */
-    MAX_HEIGHT("maxHeight", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the height above ground is relevant, this is the highest height that the data covers.", null, "cd188a84-17b7-410a-8aba-6195141268ec"),
+    MAX_HEIGHT("maxHeight", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "If the height above ground is relevant, this is the highest height that the data covers.", null, "cd188a84-17b7-410a-8aba-6195141268ec", "0.0"),
 
     /**
      * This is the start time that the data collection begins.
@@ -2410,12 +2410,12 @@ public enum OpenMetadataProperty
     /**
      * Number of runs of the process that have been recorded.
      */
-    RUN_COUNT("runCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of runs of the process that have been recorded.", null, "848c71e0-c379-4de6-b876-16e31a30c836"),
+    RUN_COUNT("runCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of runs of the process that have been recorded.", null, "848c71e0-c379-4de6-b876-16e31a30c836", "0"),
 
     /**
      * Number of recorded runs of the process that failed.
      */
-    FAILED_RUN_COUNT("failedRunCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of recorded runs of the process that failed.", null, "513513d5-f635-4bcc-bead-a831ea224ceb"),
+    FAILED_RUN_COUNT("failedRunCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of recorded runs of the process that failed.", null, "513513d5-f635-4bcc-bead-a831ea224ceb", "0"),
 
     /**
      * Start time of the earliest recorded run of the process.
@@ -2445,92 +2445,92 @@ public enum OpenMetadataProperty
     /**
      * Duration of the most recent completed run of the process in milliseconds.
      */
-    LAST_RUN_DURATION("lastRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Duration of the most recent completed run of the process in milliseconds.", null, "f4363d77-c5d0-40ae-ac5c-07f9b60b4a6c"),
+    LAST_RUN_DURATION("lastRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Duration of the most recent completed run of the process in milliseconds.", null, "f4363d77-c5d0-40ae-ac5c-07f9b60b4a6c", "0"),
 
     /**
      * Sum of the durations of the recorded completed runs of the process in milliseconds.
      */
-    TOTAL_RUN_DURATION("totalRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the durations of the recorded completed runs of the process in milliseconds.", null, "27a30a46-a316-4905-aae3-7578107a8775"),
+    TOTAL_RUN_DURATION("totalRunDuration", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the durations of the recorded completed runs of the process in milliseconds.", null, "27a30a46-a316-4905-aae3-7578107a8775", "0"),
 
     /**
      * Number of rows (records) read by the most recent run of the process.
      */
-    LAST_RUN_ROWS_READ("lastRunRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) read by the most recent run of the process.", null, "92e427a4-1670-42bc-9e6d-80f4aa582450"),
+    LAST_RUN_ROWS_READ("lastRunRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) read by the most recent run of the process.", null, "92e427a4-1670-42bc-9e6d-80f4aa582450", "0"),
 
     /**
      * Number of rows (records) written by the most recent run of the process.
      */
-    LAST_RUN_ROWS_WRITTEN("lastRunRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) written by the most recent run of the process.", null, "86350b43-0f9b-49fe-84b6-27293378cc89"),
+    LAST_RUN_ROWS_WRITTEN("lastRunRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of rows (records) written by the most recent run of the process.", null, "86350b43-0f9b-49fe-84b6-27293378cc89", "0"),
 
     /**
      * Number of bytes read by the most recent run of the process.
      */
-    LAST_RUN_BYTES_READ("lastRunBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes read by the most recent run of the process.", null, "a2232c45-a284-4ccc-bacf-6f510602a5b5"),
+    LAST_RUN_BYTES_READ("lastRunBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes read by the most recent run of the process.", null, "a2232c45-a284-4ccc-bacf-6f510602a5b5", "0"),
 
     /**
      * Number of bytes written by the most recent run of the process.
      */
-    LAST_RUN_BYTES_WRITTEN("lastRunBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes written by the most recent run of the process.", null, "4a991f23-60c6-457e-b992-3616946486ba"),
+    LAST_RUN_BYTES_WRITTEN("lastRunBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Number of bytes written by the most recent run of the process.", null, "4a991f23-60c6-457e-b992-3616946486ba", "0"),
 
     /**
      * Sum of the rows (records) read by the recorded runs of the process.
      */
-    TOTAL_ROWS_READ("totalRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) read by the recorded runs of the process.", null, "7326e222-42a8-4bdd-ad57-11d47bdc9d1b"),
+    TOTAL_ROWS_READ("totalRowsRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) read by the recorded runs of the process.", null, "7326e222-42a8-4bdd-ad57-11d47bdc9d1b", "0"),
 
     /**
      * Sum of the rows (records) written by the recorded runs of the process.
      */
-    TOTAL_ROWS_WRITTEN("totalRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) written by the recorded runs of the process.", null, "c5ef07c9-40de-4b61-b43d-40d4e3eec496"),
+    TOTAL_ROWS_WRITTEN("totalRowsWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the rows (records) written by the recorded runs of the process.", null, "c5ef07c9-40de-4b61-b43d-40d4e3eec496", "0"),
 
     /**
      * Sum of the bytes read by the recorded runs of the process.
      */
-    TOTAL_BYTES_READ("totalBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes read by the recorded runs of the process.", null, "7ce57c70-699d-4e10-827b-6e905de23908"),
+    TOTAL_BYTES_READ("totalBytesRead", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes read by the recorded runs of the process.", null, "7ce57c70-699d-4e10-827b-6e905de23908", "0"),
 
     /**
      * Sum of the bytes written by the recorded runs of the process.
      */
-    TOTAL_BYTES_WRITTEN("totalBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes written by the recorded runs of the process.", null, "86cf1bb3-48c6-4700-9983-8833b0345c58"),
+    TOTAL_BYTES_WRITTEN("totalBytesWritten", DataType.LONG, DataType.LONG.getDisplayName(), "Sum of the bytes written by the recorded runs of the process.", null, "86cf1bb3-48c6-4700-9983-8833b0345c58", "0"),
 
     /**
      * The number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.
      */
-    EXPLICIT_GET_COUNT("explicitGetCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.", null, "6acf7394-379a-4394-9199-70b5c7535495"),
+    EXPLICIT_GET_COUNT("explicitGetCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been explicitly retrieved from the repository by an identifier or name.", null, "6acf7394-379a-4394-9199-70b5c7535495", "0"),
 
     /**
      * The number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.
      */
-    FIND_COUNT("findCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.", null, "87aa0371-5813-4895-a3c7-c2251a199895"),
+    FIND_COUNT("findCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the element, or one of its anchored elements, has been retrieved from the repository as part of a search request.", null, "87aa0371-5813-4895-a3c7-c2251a199895", "0"),
 
     /**
      * The number of times the properties of the element have been updated.
      */
-    UPDATE_PROPERTY_COUNT("updatePropertyCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the properties of the element have been updated.", null, "8013f2b6-143c-4d6e-a1cf-5d3ceca6c645"),
+    UPDATE_PROPERTY_COUNT("updatePropertyCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times the properties of the element have been updated.", null, "8013f2b6-143c-4d6e-a1cf-5d3ceca6c645", "0"),
 
     /**
      * The number of times an element anchored to the element has been created, linked, unlinked or updated.
      */
-    UPDATE_ATTACHMENT_COUNT("updateAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been created, linked, unlinked or updated.", null, "d663e94c-707d-458b-a28c-be1864a2645e"),
+    UPDATE_ATTACHMENT_COUNT("updateAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been created, linked, unlinked or updated.", null, "d663e94c-707d-458b-a28c-be1864a2645e", "0"),
 
     /**
      * The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.
      */
-    UPDATE_FEEDBACK_COUNT("updateFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.", null, "d47299fe-39b5-417b-aff3-c2f4c80be2e8"),
+    UPDATE_FEEDBACK_COUNT("updateFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been added or updated.", null, "d47299fe-39b5-417b-aff3-c2f4c80be2e8", "0"),
 
     /**
      * The number of times an element anchored to the element has been deleted.
      */
-    DELETE_ATTACHMENT_COUNT("deleteAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been deleted.", null, "e1058147-017e-4370-a79a-baabf9ee5c15"),
+    DELETE_ATTACHMENT_COUNT("deleteAttachmentCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times an element anchored to the element has been deleted.", null, "e1058147-017e-4370-a79a-baabf9ee5c15", "0"),
 
     /**
      * The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.
      */
-    DELETE_FEEDBACK_COUNT("deleteFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.", null, "0ddcdc6e-df87-4e1a-91bd-d27464504571"),
+    DELETE_FEEDBACK_COUNT("deleteFeedbackCount", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times feedback (comments, likes, ratings and informal tags) attached to the element has been deleted.", null, "0ddcdc6e-df87-4e1a-91bd-d27464504571", "0"),
 
     /**
      * The number of times any of the members has been explicitly retrieved from the repository by an identifier or name.
      */
-    EXPLICIT_GET_COUNT_TOTAL("explicitGetCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been explicitly retrieved from the repository by an identifier or name.", null, "3bb85d41-fc93-4e15-b509-a2255ddb277b"),
+    EXPLICIT_GET_COUNT_TOTAL("explicitGetCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been explicitly retrieved from the repository by an identifier or name.", null, "3bb85d41-fc93-4e15-b509-a2255ddb277b", "0"),
 
     /**
      * A map of member GUID to the number of times that member has been explicitly retrieved from the repository by an identifier or name.
@@ -2540,7 +2540,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has been retrieved from the repository as part of a search request.
      */
-    FIND_COUNT_TOTAL("findCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been retrieved from the repository as part of a search request.", null, "8c756d32-5448-447a-98f7-22e8032ca100"),
+    FIND_COUNT_TOTAL("findCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has been retrieved from the repository as part of a search request.", null, "8c756d32-5448-447a-98f7-22e8032ca100", "0"),
 
     /**
      * A map of member GUID to the number of times that member has been retrieved from the repository as part of a search request.
@@ -2550,7 +2550,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has had its properties updated.
      */
-    UPDATE_PROPERTY_COUNT_TOTAL("updatePropertyCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had its properties updated.", null, "f855e161-f017-402f-bc09-8b7954ccd846"),
+    UPDATE_PROPERTY_COUNT_TOTAL("updatePropertyCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had its properties updated.", null, "f855e161-f017-402f-bc09-8b7954ccd846", "0"),
 
     /**
      * A map of member GUID to the number of times that member has had its properties updated.
@@ -2560,7 +2560,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has had an element anchored to it created, linked, unlinked or updated.
      */
-    UPDATE_ATTACHMENT_COUNT_TOTAL("updateAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it created, linked, unlinked or updated.", null, "29b746b2-e79c-4d73-afae-f694acf09bdd"),
+    UPDATE_ATTACHMENT_COUNT_TOTAL("updateAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it created, linked, unlinked or updated.", null, "29b746b2-e79c-4d73-afae-f694acf09bdd", "0"),
 
     /**
      * A map of member GUID to the number of times that member has had an element anchored to it created, linked, unlinked or updated.
@@ -2570,7 +2570,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.
      */
-    UPDATE_FEEDBACK_COUNT_TOTAL("updateFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.", null, "280cabb3-4e42-4134-b64b-5a7008ac1b55"),
+    UPDATE_FEEDBACK_COUNT_TOTAL("updateFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) added or updated.", null, "280cabb3-4e42-4134-b64b-5a7008ac1b55", "0"),
 
     /**
      * A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) added or updated.
@@ -2580,7 +2580,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has had an element anchored to it deleted.
      */
-    DELETE_ATTACHMENT_COUNT_TOTAL("deleteAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it deleted.", null, "b707cb45-5035-4bbb-99e3-cdaf942287cf"),
+    DELETE_ATTACHMENT_COUNT_TOTAL("deleteAttachmentCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had an element anchored to it deleted.", null, "b707cb45-5035-4bbb-99e3-cdaf942287cf", "0"),
 
     /**
      * A map of member GUID to the number of times that member has had an element anchored to it deleted.
@@ -2590,7 +2590,7 @@ public enum OpenMetadataProperty
     /**
      * The number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.
      */
-    DELETE_FEEDBACK_COUNT_TOTAL("deleteFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.", null, "46bdf0d7-ace7-476b-b979-7078e1d36be4"),
+    DELETE_FEEDBACK_COUNT_TOTAL("deleteFeedbackCountTotal", DataType.LONG, DataType.LONG.getDisplayName(), "The number of times any of the members has had feedback (comments, likes, ratings and informal tags) deleted.", null, "46bdf0d7-ace7-476b-b979-7078e1d36be4", "0"),
 
     /**
      * A map of member GUID to the number of times that member has had feedback (comments, likes, ratings and informal tags) deleted.
@@ -2632,7 +2632,7 @@ public enum OpenMetadataProperty
     /**
      * Common Vulnerability Scoring System (CVSS) base score for the finding, from 0.0 to 10.0.
      */
-    CVSS_SCORE("cvssScore", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "Common Vulnerability Scoring System (CVSS) base score for the finding, from 0.0 to 10.0.", "7.5", "ba198b2c-0f62-461d-ab93-30007e3bb4c9"),
+    CVSS_SCORE("cvssScore", DataType.FLOAT, DataType.FLOAT.getDisplayName(), "Common Vulnerability Scoring System (CVSS) base score for the finding, from 0.0 to 10.0.", "7.5", "ba198b2c-0f62-461d-ab93-30007e3bb4c9", "0.0"),
 
     /**
      * CVSS vector string that shows how the score was calculated.
@@ -2667,7 +2667,7 @@ public enum OpenMetadataProperty
     /**
      * Is an exploit for the weakness publicly available?
      */
-    EXPLOIT_AVAILABLE("exploitAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is an exploit for the weakness publicly available?", null, "17b345d2-8826-4741-aba4-647b4425a31e"),
+    EXPLOIT_AVAILABLE("exploitAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is an exploit for the weakness publicly available?", null, "17b345d2-8826-4741-aba4-647b4425a31e", "false"),
 
     /**
      * Package URL (purl) of the affected software package.
@@ -2687,7 +2687,7 @@ public enum OpenMetadataProperty
     /**
      * Is a fix for the vulnerability available?
      */
-    PATCH_AVAILABLE("patchAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is a fix for the vulnerability available?", null, "3cf1107a-2433-4f89-82bf-fc56133120a0"),
+    PATCH_AVAILABLE("patchAvailable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is a fix for the vulnerability available?", null, "3cf1107a-2433-4f89-82bf-fc56133120a0", "false"),
 
     /**
      * How the weakness was reached - for example Network, Adjacent network, Local, Physical or Social engineering.
@@ -2722,27 +2722,27 @@ public enum OpenMetadataProperty
     /**
      * Number of resources in the scope of the security test.
      */
-    RESOURCES_IN_SCOPE_COUNT("resourcesInScopeCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in the scope of the security test.", "120", "ef21fc7f-400f-46ff-ab79-f2bc2cbd3dc4"),
+    RESOURCES_IN_SCOPE_COUNT("resourcesInScopeCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in the scope of the security test.", "120", "ef21fc7f-400f-46ff-ab79-f2bc2cbd3dc4", "0"),
 
     /**
      * Number of resources in scope that were tested.
      */
-    RESOURCES_TESTED_COUNT("resourcesTestedCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in scope that were tested.", "118", "4ae2c142-28ab-444a-91c3-056567563de1"),
+    RESOURCES_TESTED_COUNT("resourcesTestedCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of resources in scope that were tested.", "118", "4ae2c142-28ab-444a-91c3-056567563de1", "0"),
 
     /**
      * Number of findings detected for the first time in this run.
      */
-    NEW_FINDING_COUNT("newFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings detected for the first time in this run.", "4", "a24ba0d2-165c-4d83-b41b-289be55c3b7e"),
+    NEW_FINDING_COUNT("newFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings detected for the first time in this run.", "4", "a24ba0d2-165c-4d83-b41b-289be55c3b7e", "0"),
 
     /**
      * Number of findings from earlier runs that are no longer detected.
      */
-    RESOLVED_FINDING_COUNT("resolvedFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings from earlier runs that are no longer detected.", "7", "cec4e8a5-f662-48fa-a1e8-f1e1b74e19ac"),
+    RESOLVED_FINDING_COUNT("resolvedFindingCount", DataType.LONG, DataType.LONG.getDisplayName(), "Number of findings from earlier runs that are no longer detected.", "7", "cec4e8a5-f662-48fa-a1e8-f1e1b74e19ac", "0"),
 
     /**
      * Does the control apply within the scope of the statement of applicability?
      */
-    IS_APPLICABLE("isApplicable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Does the control apply within the scope of the statement of applicability?", "true", "7043b919-4bc4-4807-8dd1-3de7e5ac9e5f"),
+    IS_APPLICABLE("isApplicable", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Does the control apply within the scope of the statement of applicability?", "true", "7043b919-4bc4-4807-8dd1-3de7e5ac9e5f", "true"),
 
     /**
      * Justification for including or excluding a control.
@@ -2828,7 +2828,7 @@ public enum OpenMetadataProperty
     /**
      * Describes how frequently the processing should run - in minutes.
      */
-    REFRESH_TIME_INTERVAL("refreshTimeInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Describes how frequently the processing should run - in minutes.", null, "d261dc24-a26f-460f-808d-11b586c8ca7a"),
+    REFRESH_TIME_INTERVAL("refreshTimeInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Describes how frequently the processing should run - in minutes.", null, "d261dc24-a26f-460f-808d-11b586c8ca7a", "0"),
 
     /**
      * Latest time that the connector can run.
@@ -2838,22 +2838,22 @@ public enum OpenMetadataProperty
     /**
      * Should the service/connector create integration reports based on its activity? (Default is true.)
      */
-    GENERATE_CONNECTOR_ACTIVITY_REPORT("generateConnectorActivityReports", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
+    GENERATE_CONNECTOR_ACTIVITY_REPORT("generateConnectorActivityReports", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Should the service/connector create integration reports based on its activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194", "true"),
 
     /**
      * Defines whether multiple notifications may be sent to a subscriber.  The default is true.
      */
-    MULTIPLE_NOTIFICATIONS_PERMITTED("multipleNotificationsPermitted", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Defines whether multiple notifications may be sent to a subscriber.  The default is true.", "true", "b8e84c95-73b4-4bbc-9da6-26fc2b4f72c6"),
+    MULTIPLE_NOTIFICATIONS_PERMITTED("multipleNotificationsPermitted", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Defines whether multiple notifications may be sent to a subscriber.  The default is true.", "true", "b8e84c95-73b4-4bbc-9da6-26fc2b4f72c6", "true"),
 
     /**
      * Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).
      */
-    NOTIFICATION_INTERVAL("notificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).", "60", "e4fed721-659f-4367-9c88-d70534cd8801"),
+    NOTIFICATION_INTERVAL("notificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).", "60", "e4fed721-659f-4367-9c88-d70534cd8801", "0"),
 
     /**
      * Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.
      */
-    MINIMUM_NOTIFICATION_INTERVAL("minimumNotificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.", "60", "c04eb336-14ba-4b35-b751-618265b32e1c"),
+    MINIMUM_NOTIFICATION_INTERVAL("minimumNotificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.", "60", "c04eb336-14ba-4b35-b751-618265b32e1c", "0"),
 
     /**
      * Records the next time a scheduled notification is to be sent to the active subscribers.
@@ -2863,7 +2863,7 @@ public enum OpenMetadataProperty
     /**
      * Records the number of times a notification type has been triggered.
      */
-    NOTIFICATION_COUNT("notificationCount", DataType.LONG, DataType.LONG.getDisplayName(), "Records the number of times a notification type has been triggered.", null, "ea032888-f5c6-4f4d-9ab7-53acf8ba46e3"),
+    NOTIFICATION_COUNT("notificationCount", DataType.LONG, DataType.LONG.getDisplayName(), "Records the number of times a notification type has been triggered.", null, "ea032888-f5c6-4f4d-9ab7-53acf8ba46e3", "0"),
 
     /**
      * Records the last time a notification was sent to a subscriber.
@@ -2908,7 +2908,7 @@ public enum OpenMetadataProperty
     /**
      * Is the data flowing one-way or bidirectional?
      */
-    ONE_WAY("oneWay", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is the data flowing one-way or bidirectional?", "true", "e53b41c2-ea95-4d4c-a3ef-62b00f8d41a4"),
+    ONE_WAY("oneWay", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is the data flowing one-way or bidirectional?", "true", "e53b41c2-ea95-4d4c-a3ef-62b00f8d41a4", "true"),
 
     /**
      * Properties that describe the expected volumes of data flowing through this segment.
@@ -2996,7 +2996,7 @@ public enum OpenMetadataProperty
     /**
      * Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.
      */
-    DOMAIN_IDENTIFIER("domainIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.", "0", "f76e01aa-6f89-4214-b79f-f2c2a87d261b"),
+    DOMAIN_IDENTIFIER("domainIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Identifier of the governance domain that recognizes this process. Zero typically means 'any' domain.", "0", "f76e01aa-6f89-4214-b79f-f2c2a87d261b", "0"),
 
     /**
      * Format or description of the measurements captured for this metric.
@@ -3016,7 +3016,7 @@ public enum OpenMetadataProperty
     /**
      * The minimum number of minutes that the governance engine should wait before calling the governance service.
      */
-    WAIT_TIME("waitTime", DataType.INT, DataType.INT.getDisplayName(), "The minimum number of minutes that the governance engine should wait before calling the governance service.", "0", "fc0ed593-e4d5-465a-8e32-beeef0d7d736"),
+    WAIT_TIME("waitTime", DataType.INT, DataType.INT.getDisplayName(), "The minimum number of minutes that the governance engine should wait before calling the governance service.", "0", "fc0ed593-e4d5-465a-8e32-beeef0d7d736", "0"),
 
     /**
      * List of guards that this action type produces.
@@ -3026,12 +3026,12 @@ public enum OpenMetadataProperty
     /**
      * Trigger one or many engine action instances within a process instance?
      */
-    IGNORE_MULTIPLE_TRIGGERS("ignoreMultipleTriggers", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Trigger one or many engine action instances within a process instance?", "true", "2c31c693-e347-4369-9cdf-cf52a1af872e"),
+    IGNORE_MULTIPLE_TRIGGERS("ignoreMultipleTriggers", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Trigger one or many engine action instances within a process instance?", "true", "2c31c693-e347-4369-9cdf-cf52a1af872e", "false"),
 
     /**
      * Is this guard mandatory for the next step to run.
      */
-    MANDATORY_GUARD("mandatoryGuard", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this guard mandatory for the next step to run.", "true", "bd5acc27-7b8f-4460-b75c-94453a5d93dd"),
+    MANDATORY_GUARD("mandatoryGuard", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is this guard mandatory for the next step to run.", "true", "bd5acc27-7b8f-4460-b75c-94453a5d93dd", "false"),
 
     /**
      * User identity of the governance engine running in the engine host server that has claimed responsibility for executing this engine action.
@@ -3056,7 +3056,7 @@ public enum OpenMetadataProperty
     /**
      * Numeric value for the classification level.
      */
-    LEVEL_IDENTIFIER("levelIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Numeric value for the classification level.", null, "07962ad3-a239-4207-bdd1-0ddfa085e0b9"),
+    LEVEL_IDENTIFIER("levelIdentifier", DataType.INT, DataType.INT.getDisplayName(), "Numeric value for the classification level.", null, "07962ad3-a239-4207-bdd1-0ddfa085e0b9", "0"),
 
     /**
      * List of security group names.
@@ -3232,17 +3232,17 @@ public enum OpenMetadataProperty
     /**
      * Only values from the ValidValues set/definition are allowed.
      */
-    STRICT_REQUIREMENT("strictRequirement", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Only values from the ValidValues set/definition are allowed.", null, "5d0ff357-906c-4483-8962-2df1bf978de4"),
+    STRICT_REQUIREMENT("strictRequirement", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Only values from the ValidValues set/definition are allowed.", null, "5d0ff357-906c-4483-8962-2df1bf978de4", "true"),
 
     /**
      * A number used to provide an order to the values in a set.
      */
-    ORDINAL("ordinal", DataType.INT, DataType.INT.getDisplayName(), "A number used to provide an order to the values in a set.", null, "672c36b0-cea0-418c-ad57-fd26dfedd224"),
+    ORDINAL("ordinal", DataType.INT, DataType.INT.getDisplayName(), "A number used to provide an order to the values in a set.", null, "672c36b0-cea0-418c-ad57-fd26dfedd224", "0"),
 
     /**
      * Is the member the default value in the set?
      */
-    IS_DEFAULT_VALUE("isDefaultValue", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is the member the default value in the set?", null, "b6c3a286-dc8a-4a2f-a7ab-d9117f53ec9e"),
+    IS_DEFAULT_VALUE("isDefaultValue", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Is the member the default value in the set?", null, "b6c3a286-dc8a-4a2f-a7ab-d9117f53ec9e", "false"),
 
     /**
      * Name of the valid value used in code.
@@ -3272,7 +3272,7 @@ public enum OpenMetadataProperty
     /**
      * What was the percentage of matching values used to determine that the data class matched.
      */
-    THRESHOLD("threshold", DataType.INT, DataType.INT.getDisplayName(), "What was the percentage of matching values used to determine that the data class matched.", null, "af41954a-2c59-41f6-b70f-2dd55297a8f8"),
+    THRESHOLD("threshold", DataType.INT, DataType.INT.getDisplayName(), "What was the percentage of matching values used to determine that the data class matched.", null, "af41954a-2c59-41f6-b70f-2dd55297a8f8", "0"),
 
     /**
      * Description of the situation where this pattern may be useful.
@@ -3327,7 +3327,7 @@ public enum OpenMetadataProperty
     /**
      * An integer value that represents the content of the digital resource.
      */
-    HASH("hash", DataType.LONG, DataType.LONG.getDisplayName(), "An long value that represents the content of the digital resource.", null, "7f62687d-482a-41a4-8f76-3ac2ec28f619"),
+    HASH("hash", DataType.LONG, DataType.LONG.getDisplayName(), "An long value that represents the content of the digital resource.", null, "7f62687d-482a-41a4-8f76-3ac2ec28f619", "0"),
 
     /**
      * The algorithm use to generate the hash.
@@ -3518,7 +3518,7 @@ public enum OpenMetadataProperty
                DataType.INT, DataType.INT.getDisplayName(),
                "Number of Kafka partitions.",
                null,
-               "af7a04a0-d5a5-4245-8c90-7280d1f6d71e"),
+               "af7a04a0-d5a5-4245-8c90-7280d1f6d71e", "0"),
 
     /**
      * Number of Kafka replicas.
@@ -3527,7 +3527,7 @@ public enum OpenMetadataProperty
              DataType.INT, DataType.INT.getDisplayName(),
              "Number of Kafka replicas.",
              null,
-             "f8739877-1c2c-461c-a8e4-cfef6a808317"),
+             "f8739877-1c2c-461c-a8e4-cfef6a808317", "0"),
 
 
     /**
@@ -3560,7 +3560,7 @@ public enum OpenMetadataProperty
                DataType.INT, DataType.INT.getDisplayName(),
                "The minimum number of team members that have to suddenly disappear from a project before the project stalls due to lack of knowledgeable or competent personnel.",
                "3",
-               "5790f24f-0b85-4278-b431-67433d15cf95"),
+               "5790f24f-0b85-4278-b431-67433d15cf95", "0"),
 
     /**
      * The number of distinct contributors to the repository during its lifetime.
@@ -3569,7 +3569,7 @@ public enum OpenMetadataProperty
                             DataType.LONG, DataType.LONG.getDisplayName(),
                             "The number of distinct contributors to the repository during its lifetime.",
                             "250",
-                            "e31b451c-5f18-4d38-9f67-46fcdb5cabae"),
+                            "e31b451c-5f18-4d38-9f67-46fcdb5cabae", "0"),
 
     /**
      * The number of distinct contributors to the repository in the last year.
@@ -3578,7 +3578,7 @@ public enum OpenMetadataProperty
                              DataType.LONG, DataType.LONG.getDisplayName(),
                              "The number of distinct contributors to the repository in the last year.",
                              "25",
-                             "12820701-5f9a-4c76-9917-b2a0749c0de4"),
+                             "12820701-5f9a-4c76-9917-b2a0749c0de4", "0"),
 
     /**
      * The number of commits to the repository during its lifetime.
@@ -3587,7 +3587,7 @@ public enum OpenMetadataProperty
                  DataType.LONG, DataType.LONG.getDisplayName(),
                  "The number of commits to the repository during its lifetime.",
                  "12500",
-                 "7e27e23e-225e-4d61-8cda-c3d05bd51579"),
+                 "7e27e23e-225e-4d61-8cda-c3d05bd51579", "0"),
 
     /**
      * The number of commits to the repository in the last year.
@@ -3596,7 +3596,7 @@ public enum OpenMetadataProperty
                         DataType.LONG, DataType.LONG.getDisplayName(),
                         "The number of commits to the repository in the last year.",
                         "1250",
-                        "ae39cbe2-abf0-4147-910e-6839c1941868"),
+                        "ae39cbe2-abf0-4147-910e-6839c1941868", "0"),
 
     /**
      * The number of issues reported in the repository during its lifetime.
@@ -3605,7 +3605,7 @@ public enum OpenMetadataProperty
                 DataType.LONG, DataType.LONG.getDisplayName(),
                 "The number of issues reported in the repository during its lifetime.",
                 "900",
-                "999fb851-ee7d-4066-a1b0-74e176e0be0f"),
+                "999fb851-ee7d-4066-a1b0-74e176e0be0f", "0"),
 
     /**
      * The number of issues reported in the repository in the last year.
@@ -3614,7 +3614,7 @@ public enum OpenMetadataProperty
                        DataType.LONG, DataType.LONG.getDisplayName(),
                        "The number of issues reported in the repository in the last year.",
                        "90",
-                       "0d165fcc-822b-4e3f-8f71-deef831a47b1"),
+                       "0d165fcc-822b-4e3f-8f71-deef831a47b1", "0"),
 
     /**
      * The number of pull requests opened in the repository during its lifetime.
@@ -3623,7 +3623,7 @@ public enum OpenMetadataProperty
                        DataType.LONG, DataType.LONG.getDisplayName(),
                        "The number of pull requests opened in the repository during its lifetime.",
                        "4000",
-                       "d81304de-f6d1-40c2-ba17-b09a99c0d371"),
+                       "d81304de-f6d1-40c2-ba17-b09a99c0d371", "0"),
 
     /**
      * The number of pull requests opened in the repository in the last year.
@@ -3632,7 +3632,7 @@ public enum OpenMetadataProperty
                               DataType.LONG, DataType.LONG.getDisplayName(),
                               "The number of pull requests opened in the repository in the last year.",
                               "400",
-                              "f5b50469-1a1c-4e92-a18c-1e5bf2ae6bde"),
+                              "f5b50469-1a1c-4e92-a18c-1e5bf2ae6bde", "0"),
 
     /**
      * The number of forks of the repository during its lifetime.
@@ -3641,7 +3641,7 @@ public enum OpenMetadataProperty
                DataType.LONG, DataType.LONG.getDisplayName(),
                "The number of forks of the repository during its lifetime.",
                "120",
-               "d2148166-1565-47da-ae65-3e626e4d8319"),
+               "d2148166-1565-47da-ae65-3e626e4d8319", "0"),
 
     /**
      * The number of forks of the repository in the last year.
@@ -3650,7 +3650,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "The number of forks of the repository in the last year.",
                       "12",
-                      "39b1f964-7dd1-41ed-a0db-01eb09afc1d4"),
+                      "39b1f964-7dd1-41ed-a0db-01eb09afc1d4", "0"),
 
     /**
      * The number of people who have starred the repository during its lifetime.
@@ -3659,7 +3659,7 @@ public enum OpenMetadataProperty
                     DataType.LONG, DataType.LONG.getDisplayName(),
                     "The number of people who have starred the repository during its lifetime.",
                     "800",
-                    "141f7136-fa64-4c4c-8433-85797e628345"),
+                    "141f7136-fa64-4c4c-8433-85797e628345", "0"),
 
     /* ======================================================
      * These values are measures of the content of the code in a software source code repository.
@@ -3673,7 +3673,7 @@ public enum OpenMetadataProperty
                DataType.LONG, DataType.LONG.getDisplayName(),
                "Number of files in the source code repository.",
                "450",
-               "a82b6835-9aed-4096-bd79-676e3b6f2c83"),
+               "a82b6835-9aed-4096-bd79-676e3b6f2c83", "0"),
 
     /**
      * Total number of physical lines in the source code repository, including blank lines and comments.
@@ -3682,7 +3682,7 @@ public enum OpenMetadataProperty
                DataType.LONG, DataType.LONG.getDisplayName(),
                "Total number of physical lines in the source code repository, including blank lines and comments.",
                "120000",
-               "acde4557-9b78-4aa4-a315-08ea0ad04910"),
+               "acde4557-9b78-4aa4-a315-08ea0ad04910", "0"),
 
     /**
      * Number of lines of code in the source code repository, excluding blank lines and comments.
@@ -3691,7 +3691,7 @@ public enum OpenMetadataProperty
                     DataType.LONG, DataType.LONG.getDisplayName(),
                     "Number of lines of code in the source code repository, excluding blank lines and comments.",
                     "85000",
-                    "cf4919e3-4e9c-45d8-9e71-245ea405d3e7"),
+                    "cf4919e3-4e9c-45d8-9e71-245ea405d3e7", "0"),
 
     /**
      * Number of comment lines in the source code repository.  This is measured directly rather than derived from the other line counts so that it is still available when one of them is missing.
@@ -3700,7 +3700,7 @@ public enum OpenMetadataProperty
                        DataType.LONG, DataType.LONG.getDisplayName(),
                        "Number of comment lines in the source code repository.  This is measured directly rather than derived from the other line counts so that it is still available when one of them is missing.",
                        "20000",
-                       "5329c4ca-4233-4768-a12d-7f185e574471"),
+                       "5329c4ca-4233-4768-a12d-7f185e574471", "0"),
 
     /**
      * The programming language that most of the source code in the repository is written in.
@@ -3718,7 +3718,7 @@ public enum OpenMetadataProperty
                    DataType.LONG, DataType.LONG.getDisplayName(),
                    "Number of distinct programming languages used in the source code repository.  Polyglot components carry a higher maintenance cost.",
                    "3",
-                   "d8d12e02-e8b7-4cad-b57d-15a3e22df5e8"),
+                   "d8d12e02-e8b7-4cad-b57d-15a3e22df5e8", "0"),
 
     /**
      * Number of symbols that the component exports for use by its callers, such as public functions, classes and endpoints.
@@ -3727,7 +3727,7 @@ public enum OpenMetadataProperty
                         DataType.LONG, DataType.LONG.getDisplayName(),
                         "Number of symbols that the component exports for use by its callers, such as public functions, classes and endpoints.",
                         "1200",
-                        "ee87eba9-4d86-4522-9823-c4b774c34aab"),
+                        "ee87eba9-4d86-4522-9823-c4b774c34aab", "0"),
 
     /**
      * Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.
@@ -3736,7 +3736,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of entry points into the component, such as main methods, command line commands, route handlers and task definitions.",
                       "12",
-                      "a76e3408-2309-42de-b493-a71db56221a0"),
+                      "a76e3408-2309-42de-b493-a71db56221a0", "0"),
 
     /**
      * Number of places in the code where data is read.
@@ -3745,7 +3745,7 @@ public enum OpenMetadataProperty
                     DataType.LONG, DataType.LONG.getDisplayName(),
                     "Number of places in the code where data is read.",
                     "340",
-                    "155c444a-0a5d-4f81-834b-4a90beaa928f"),
+                    "155c444a-0a5d-4f81-834b-4a90beaa928f", "0"),
 
     /**
      * Number of places in the code where data is created.
@@ -3754,7 +3754,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of places in the code where data is created.",
                       "120",
-                      "f695782b-0a82-487c-9c4e-3a94d0c5d1b1"),
+                      "f695782b-0a82-487c-9c4e-3a94d0c5d1b1", "0"),
 
     /**
      * Number of places in the code where data is updated.
@@ -3763,7 +3763,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of places in the code where data is updated.",
                       "95",
-                      "7ce649b3-230e-45f2-ace8-f126f99606ab"),
+                      "7ce649b3-230e-45f2-ace8-f126f99606ab", "0"),
 
     /**
      * Number of places in the code where data is deleted.
@@ -3772,7 +3772,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of places in the code where data is deleted.",
                       "40",
-                      "410e60bb-7cd0-470a-8f8b-4cd15f1b99fd"),
+                      "410e60bb-7cd0-470a-8f8b-4cd15f1b99fd", "0"),
 
     /**
      * Number of places in the code where data is validated.
@@ -3781,7 +3781,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "Number of places in the code where data is validated.",
                       "260",
-                      "f46e5fd5-a112-44cd-8319-b98e1cb4fc25"),
+                      "f46e5fd5-a112-44cd-8319-b98e1cb4fc25", "0"),
 
     /**
      * Number of distinct data stores that the code touches.  This gives the magnitude of the blast radius when the component misbehaves.
@@ -3790,7 +3790,7 @@ public enum OpenMetadataProperty
                      DataType.LONG, DataType.LONG.getDisplayName(),
                      "Number of distinct data stores that the code touches.  This gives the magnitude of the blast radius when the component misbehaves.",
                      "4",
-                     "c2791dc9-54f1-409f-a279-63048f760208"),
+                     "c2791dc9-54f1-409f-a279-63048f760208", "0"),
 
     /**
      * Number of calls that the code makes out of the component.
@@ -3799,7 +3799,7 @@ public enum OpenMetadataProperty
                         DataType.LONG, DataType.LONG.getDisplayName(),
                         "Number of calls that the code makes out of the component.",
                         "75",
-                        "1e7f76c6-a9dc-43a8-b317-26339b634ef1"),
+                        "1e7f76c6-a9dc-43a8-b317-26339b634ef1", "0"),
 
     /**
      * Number of functions in the source code repository.  Paired with cyclomaticComplexityTotal, this makes the mean cyclomatic complexity derivable.
@@ -3808,7 +3808,7 @@ public enum OpenMetadataProperty
                    DataType.LONG, DataType.LONG.getDisplayName(),
                    "Number of functions in the source code repository.  Paired with cyclomaticComplexityTotal, this makes the mean cyclomatic complexity derivable.",
                    "2800",
-                   "6e968c86-cb13-4abf-abf9-71e522a04658"),
+                   "6e968c86-cb13-4abf-abf9-71e522a04658", "0"),
 
     /**
      * Sum of the cyclomatic complexity of every function in the source code repository.
@@ -3817,7 +3817,7 @@ public enum OpenMetadataProperty
                                 DataType.LONG, DataType.LONG.getDisplayName(),
                                 "Sum of the cyclomatic complexity of every function in the source code repository.",
                                 "9500",
-                                "7f546b5c-74c4-4e39-803d-d212700af7d7"),
+                                "7f546b5c-74c4-4e39-803d-d212700af7d7", "0"),
 
     /**
      * The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.
@@ -3826,7 +3826,7 @@ public enum OpenMetadataProperty
                               DataType.LONG, DataType.LONG.getDisplayName(),
                               "The highest cyclomatic complexity found in any single function in the source code repository.  A single very complex function is a risk that a mean value hides.",
                               "48",
-                              "912013ab-2cd4-44ad-b486-f75b33b66e48"),
+                              "912013ab-2cd4-44ad-b486-f75b33b66e48", "0"),
 
     /**
      * The deepest level of nested control flow found in any single function in the source code repository.
@@ -3835,7 +3835,7 @@ public enum OpenMetadataProperty
                       DataType.LONG, DataType.LONG.getDisplayName(),
                       "The deepest level of nested control flow found in any single function in the source code repository.",
                       "7",
-                      "d9b1e75f-30a7-40bc-85d2-f3d8f93e9649"),
+                      "d9b1e75f-30a7-40bc-85d2-f3d8f93e9649", "0"),
 
     /**
      * Number of files in the source code repository that contain tests.
@@ -3844,7 +3844,7 @@ public enum OpenMetadataProperty
                     DataType.LONG, DataType.LONG.getDisplayName(),
                     "Number of files in the source code repository that contain tests.",
                     "180",
-                    "4d9a80e2-2943-433f-91f5-3ef6a2f864ee"),
+                    "4d9a80e2-2943-433f-91f5-3ef6a2f864ee", "0"),
 
     /**
      * Number of exported symbols that carry documentation.  Paired with publicSymbolCount, this gives the documentation coverage of the component's public surface.
@@ -3853,7 +3853,7 @@ public enum OpenMetadataProperty
                             DataType.LONG, DataType.LONG.getDisplayName(),
                             "Number of exported symbols that carry documentation.  Paired with publicSymbolCount, this gives the documentation coverage of the component's public surface.",
                             "900",
-                            "58d24cf3-df31-4c2a-bdd9-ea281372382e"),
+                            "58d24cf3-df31-4c2a-bdd9-ea281372382e", "0"),
 
     /**
      * The type of data quality check.
@@ -3903,12 +3903,12 @@ public enum OpenMetadataProperty
     /**
      * Indicates whether the data field is part of the key used to partition the data.
      */
-    IS_PARTITION_KEY("isPartitionKey", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Indicates whether the data field is part of the key used to partition the data.", null, "cb58580e-7ddc-45b6-88fc-3d2fa2f94be5"),
+    IS_PARTITION_KEY("isPartitionKey", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Indicates whether the data field is part of the key used to partition the data.", null, "cb58580e-7ddc-45b6-88fc-3d2fa2f94be5", "false"),
 
     /**
      * Position of the data field in the partition key, starting from 1.
      */
-    PARTITION_KEY_POSITION("partitionKeyPosition", DataType.INT, DataType.INT.getDisplayName(), "Position of the data field in the partition key, starting from 1.", "1", "961d1524-321b-462c-91ee-6f138e059c21"),
+    PARTITION_KEY_POSITION("partitionKeyPosition", DataType.INT, DataType.INT.getDisplayName(), "Position of the data field in the partition key, starting from 1.", "1", "961d1524-321b-462c-91ee-6f138e059c21", "0"),
 
     ;
 
@@ -3948,6 +3948,12 @@ public enum OpenMetadataProperty
      */
     public final PropertyCategory propertyCategory;
 
+    /**
+     * The value to assume when the property is not set - for example, when a bean's property is null.
+     * Null for properties with no default.
+     */
+    public final String defaultValue;
+
 
     /**
      * Constructor.
@@ -3973,6 +3979,37 @@ public enum OpenMetadataProperty
         this.example          = example;
         this.descriptionGUID  = descriptionGUID;
         this.propertyCategory = PropertyCategory.ATTRIBUTE;
+        this.defaultValue     = null;
+    }
+
+
+    /**
+     * Constructor for individual enum value.
+     *
+     * @param name            property name
+     * @param dataType        data type enum
+     * @param type            property type
+     * @param description     property description
+     * @param example         an example of a value for this property
+     * @param descriptionGUID unique identifier of the valid value describing this property
+     * @param defaultValue    value to assume when the property is not set
+     */
+    OpenMetadataProperty(String   name,
+                         DataType dataType,
+                         String   type,
+                         String   description,
+                         String   example,
+                         String   descriptionGUID,
+                         String   defaultValue)
+    {
+        this.name             = name;
+        this.dataType         = dataType;
+        this.type             = type;
+        this.description      = description;
+        this.example          = example;
+        this.descriptionGUID  = descriptionGUID;
+        this.propertyCategory = PropertyCategory.ATTRIBUTE;
+        this.defaultValue     = defaultValue;
     }
 
 
@@ -4002,5 +4039,147 @@ public enum OpenMetadataProperty
         this.example          = example;
         this.descriptionGUID  = descriptionGUID;
         this.propertyCategory = propertyCategory;
+        this.defaultValue     = null;
+    }
+
+
+    /**
+     * Constructor for individual enum value.
+     *
+     * @param name            property name
+     * @param dataType        data type enum
+     * @param type            property type
+     * @param description     property description
+     * @param example         an example of a value for this property
+     * @param descriptionGUID unique identifier of the valid value describing this property
+     * @param propertyCategory where is this property used
+     * @param defaultValue    value to assume when the property is not set
+     */
+    OpenMetadataProperty(String           name,
+                         DataType         dataType,
+                         String           type,
+                         String           description,
+                         String           example,
+                         String           descriptionGUID,
+                         PropertyCategory propertyCategory,
+                         String           defaultValue)
+    {
+        this.name             = name;
+        this.dataType         = dataType;
+        this.type             = type;
+        this.description      = description;
+        this.example          = example;
+        this.descriptionGUID  = descriptionGUID;
+        this.propertyCategory = propertyCategory;
+        this.defaultValue     = defaultValue;
+    }
+
+
+    /**
+     * Return the supplied value, or this property's default value if the supplied value is null.
+     *
+     * @param value value of the property, may be null
+     * @return value to use
+     */
+    public boolean booleanValueOrDefault(Boolean value)
+    {
+        if (value != null)
+        {
+            return value;
+        }
+
+        return Boolean.parseBoolean(defaultValue);
+    }
+
+
+    /**
+     * Return the supplied value, or this property's default value if the supplied value is null.
+     * If the property has no default value, 0 is returned.
+     *
+     * @param value value of the property, may be null
+     * @return value to use
+     */
+    public int intValueOrDefault(Integer value)
+    {
+        if (value != null)
+        {
+            return value;
+        }
+
+        if (defaultValue != null)
+        {
+            return Integer.parseInt(defaultValue);
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Return the supplied value, or this property's default value if the supplied value is null.
+     * If the property has no default value, 0 is returned.
+     *
+     * @param value value of the property, may be null
+     * @return value to use
+     */
+    public long longValueOrDefault(Long value)
+    {
+        if (value != null)
+        {
+            return value;
+        }
+
+        if (defaultValue != null)
+        {
+            return Long.parseLong(defaultValue);
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Return the supplied value, or this property's default value if the supplied value is null.
+     * If the property has no default value, 0 is returned.
+     *
+     * @param value value of the property, may be null
+     * @return value to use
+     */
+    public float floatValueOrDefault(Float value)
+    {
+        if (value != null)
+        {
+            return value;
+        }
+
+        if (defaultValue != null)
+        {
+            return Float.parseFloat(defaultValue);
+        }
+
+        return 0F;
+    }
+
+
+    /**
+     * Return the supplied value, or this property's default value if the supplied value is null.
+     * If the property has no default value, 0 is returned.
+     *
+     * @param value value of the property, may be null
+     * @return value to use
+     */
+    public double doubleValueOrDefault(Double value)
+    {
+        if (value != null)
+        {
+            return value;
+        }
+
+        if (defaultValue != null)
+        {
+            return Double.parseDouble(defaultValue);
+        }
+
+        return 0D;
     }
 }

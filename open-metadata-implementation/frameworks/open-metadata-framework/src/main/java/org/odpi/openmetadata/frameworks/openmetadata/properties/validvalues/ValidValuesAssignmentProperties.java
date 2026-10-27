@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValuesAssignmentProperties extends RelationshipBeanProperties
 {
-    private boolean              strictRequirement = true;
+    private Boolean              strictRequirement = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class ValidValuesAssignmentProperties extends RelationshipBeanProperties
      *
      * @return boolean
      */
-    public boolean getStrictRequirement()
+    public Boolean getStrictRequirement()
     {
         return strictRequirement;
     }
@@ -66,7 +66,7 @@ public class ValidValuesAssignmentProperties extends RelationshipBeanProperties
      *
      * @param strictRequirement string type name
      */
-    public void setStrictRequirement(boolean strictRequirement)
+    public void setStrictRequirement(Boolean strictRequirement)
     {
         this.strictRequirement = strictRequirement;
     }
@@ -105,7 +105,7 @@ public class ValidValuesAssignmentProperties extends RelationshipBeanProperties
             return false;
         }
         ValidValuesAssignmentProperties that = (ValidValuesAssignmentProperties) objectToCompare;
-        return strictRequirement == that.strictRequirement;
+        return Objects.equals(strictRequirement, that.strictRequirement);
     }
 
 

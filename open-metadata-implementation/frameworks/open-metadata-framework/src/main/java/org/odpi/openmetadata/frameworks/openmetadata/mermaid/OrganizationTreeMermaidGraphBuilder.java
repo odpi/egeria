@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMet
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class OrganizationTreeMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                 LineStyle lineStyle = LineStyle.DOTTED;
                 if ((subteam.getRelationshipProperties() instanceof TeamStructureProperties teamStructureProperties) &&
-                    (teamStructureProperties.getDelegationEscalationAuthority()))
+                    (OpenMetadataProperty.DELEGATION_ESCALATION.booleanValueOrDefault(teamStructureProperties.getDelegationEscalationAuthority())))
                 {
                    lineStyle = LineStyle.NORMAL;
                 }

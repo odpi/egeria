@@ -24,12 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class DataScopeProperties extends ClassificationBeanProperties
 {
-    private float               minLongitude            = 0F;
-    private float               minLatitude             = 0F;
-    private float               maxLongitude            = 0F;
-    private float               maxLatitude             = 0F;
-    private float               minHeight               = 0F;
-    private float               maxHeight               = 0F;
+    private Float               minLongitude            = null;
+    private Float               minLatitude             = null;
+    private Float               maxLongitude            = null;
+    private Float               maxLatitude             = null;
+    private Float               minHeight               = null;
+    private Float               maxHeight               = null;
     private Date                dataCollectionStartTime = null;
     private Date                dataCollectionEndTime   = null;
     private Date                dataValidityStartTime   = null;
@@ -84,7 +84,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMinLongitude()
+    public Float getMinLongitude()
     {
         return minLongitude;
     }
@@ -95,7 +95,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param minLongitude float
      */
-    public void setMinLongitude(float minLongitude)
+    public void setMinLongitude(Float minLongitude)
     {
         this.minLongitude = minLongitude;
     }
@@ -106,7 +106,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMinLatitude()
+    public Float getMinLatitude()
     {
         return minLatitude;
     }
@@ -117,7 +117,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param minLatitude float
      */
-    public void setMinLatitude(float minLatitude)
+    public void setMinLatitude(Float minLatitude)
     {
         this.minLatitude = minLatitude;
     }
@@ -128,7 +128,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMaxLongitude()
+    public Float getMaxLongitude()
     {
         return maxLongitude;
     }
@@ -139,7 +139,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param maxLongitude float
      */
-    public void setMaxLongitude(float maxLongitude)
+    public void setMaxLongitude(Float maxLongitude)
     {
         this.maxLongitude = maxLongitude;
     }
@@ -150,7 +150,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMaxLatitude()
+    public Float getMaxLatitude()
     {
         return maxLatitude;
     }
@@ -161,7 +161,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param maxLatitude float
      */
-    public void setMaxLatitude(float maxLatitude)
+    public void setMaxLatitude(Float maxLatitude)
     {
         this.maxLatitude = maxLatitude;
     }
@@ -172,7 +172,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMinHeight()
+    public Float getMinHeight()
     {
         return minHeight;
     }
@@ -183,7 +183,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param minHeight float
      */
-    public void setMinHeight(float minHeight)
+    public void setMinHeight(Float minHeight)
     {
         this.minHeight = minHeight;
     }
@@ -194,7 +194,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @return float
      */
-    public float getMaxHeight()
+    public Float getMaxHeight()
     {
         return maxHeight;
     }
@@ -205,7 +205,7 @@ public class DataScopeProperties extends ClassificationBeanProperties
      *
      * @param maxHeight float
      */
-    public void setMaxHeight(float maxHeight)
+    public void setMaxHeight(Float maxHeight)
     {
         this.maxHeight = maxHeight;
     }
@@ -429,12 +429,12 @@ public class DataScopeProperties extends ClassificationBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataScopeProperties that = (DataScopeProperties) objectToCompare;
-        return Float.compare(minLongitude, that.minLongitude) == 0 &&
-                Float.compare(minLatitude, that.minLatitude) == 0 &&
-                Float.compare(maxLongitude, that.maxLongitude) == 0 &&
-                Float.compare(maxLatitude, that.maxLatitude) == 0 &&
-                Float.compare(minHeight, that.minHeight) == 0 &&
-                Float.compare(maxHeight, that.maxHeight) == 0 &&
+        return Objects.equals(minLongitude, that.minLongitude) &&
+                Objects.equals(minLatitude, that.minLatitude) &&
+                Objects.equals(maxLongitude, that.maxLongitude) &&
+                Objects.equals(maxLatitude, that.maxLatitude) &&
+                Objects.equals(minHeight, that.minHeight) &&
+                Objects.equals(maxHeight, that.maxHeight) &&
                 Objects.equals(dataCollectionStartTime, that.dataCollectionStartTime) &&
                 Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) &&
                 Objects.equals(dataValidityStartTime, that.dataValidityStartTime) &&

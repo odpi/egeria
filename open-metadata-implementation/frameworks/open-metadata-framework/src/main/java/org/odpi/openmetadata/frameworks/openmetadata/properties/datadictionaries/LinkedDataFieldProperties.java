@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LinkedDataFieldProperties extends RelationshipBeanProperties
 {
     private String              relationshipTypeName = null;
-    private int                 relationshipEnd      = 0;
-    private int                 minCardinality       = 0;
-    private int                 maxCardinality       = 0;
+    private Integer             relationshipEnd      = null;
+    private Integer             minCardinality       = null;
+    private Integer             maxCardinality       = null;
     private String              displayName          = null;
     private String              description          = null;
     private Map<String, String> additionalProperties = null;
@@ -76,7 +76,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @return int position in schema - 0 means none or not applicable
      */
-    public int getRelationshipEnd() { return relationshipEnd; }
+    public Integer getRelationshipEnd() { return relationshipEnd; }
 
 
     /**
@@ -84,7 +84,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @param relationshipEnd int position in schema - 0 means none or not applicable
      */
-    public void setRelationshipEnd(int relationshipEnd)
+    public void setRelationshipEnd(Integer relationshipEnd)
     {
         this.relationshipEnd = relationshipEnd;
     }
@@ -95,7 +95,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getMinCardinality()
+    public Integer getMinCardinality()
     {
         return minCardinality;
     }
@@ -106,7 +106,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @param minCardinality int
      */
-    public void setMinCardinality(int minCardinality)
+    public void setMinCardinality(Integer minCardinality)
     {
         this.minCardinality = minCardinality;
     }
@@ -117,7 +117,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @return int (-1 means infinite)
      */
-    public int getMaxCardinality()
+    public Integer getMaxCardinality()
     {
         return maxCardinality;
     }
@@ -128,7 +128,7 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
      *
      * @param maxCardinality int (-1 means infinite)
      */
-    public void setMaxCardinality(int maxCardinality)
+    public void setMaxCardinality(Integer maxCardinality)
     {
         this.maxCardinality = maxCardinality;
     }
@@ -235,9 +235,9 @@ public class LinkedDataFieldProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         LinkedDataFieldProperties that = (LinkedDataFieldProperties) objectToCompare;
-        return relationshipEnd == that.relationshipEnd &&
-                minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
+        return Objects.equals(relationshipEnd, that.relationshipEnd) &&
+                Objects.equals(minCardinality, that.minCardinality) &&
+                Objects.equals(maxCardinality, that.maxCardinality) &&
                 Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&

@@ -1991,7 +1991,7 @@ public class MermaidGraphBuilderBase
                 }
                 else if (properties instanceof ContributionRecordProperties contributionRecordProperties)
                 {
-                    nodeDisplayName = "karma points: " + contributionRecordProperties.getKarmaPoints();
+                    nodeDisplayName = "karma points: " + OpenMetadataProperty.KARMA_POINTS.longValueOrDefault(contributionRecordProperties.getKarmaPoints());
                 }
                 else if (properties instanceof ExternalReferenceProperties externalReferenceProperties)
                 {
@@ -2335,9 +2335,9 @@ public class MermaidGraphBuilderBase
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof PartOfRelationshipProperties partOfRelationshipProperties)
         {
-            label = this.getCardinalityLabel(partOfRelationshipProperties.getPosition(),
-                                             partOfRelationshipProperties.getMinCardinality(),
-                                             partOfRelationshipProperties.getMaxCardinality());
+            label = this.getCardinalityLabel(OpenMetadataProperty.POSITION.intValueOrDefault(partOfRelationshipProperties.getPosition()),
+                                             OpenMetadataProperty.MIN_CARDINALITY.intValueOrDefault(partOfRelationshipProperties.getMinCardinality()),
+                                             OpenMetadataProperty.MAX_CARDINALITY.intValueOrDefault(partOfRelationshipProperties.getMaxCardinality()));
         }
         else if (relatedMetadataElement.getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties)
         {
