@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ControlFlowProperties extends LineageRelationshipProperties
 {
     private String  guard          = null;
-    private boolean mandatoryGuard = false;
+    private Boolean mandatoryGuard = null;
 
 
     /**
@@ -78,7 +78,7 @@ public class ControlFlowProperties extends LineageRelationshipProperties
      *
      * @return boolean
      */
-    public boolean getMandatoryGuard()
+    public Boolean getMandatoryGuard()
     {
         return mandatoryGuard;
     }
@@ -89,7 +89,7 @@ public class ControlFlowProperties extends LineageRelationshipProperties
      *
      * @param mandatoryGuard boolean
      */
-    public void setMandatoryGuard(boolean mandatoryGuard)
+    public void setMandatoryGuard(Boolean mandatoryGuard)
     {
         this.mandatoryGuard = mandatoryGuard;
     }
@@ -123,7 +123,7 @@ public class ControlFlowProperties extends LineageRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ControlFlowProperties that = (ControlFlowProperties) objectToCompare;
-        return mandatoryGuard == that.mandatoryGuard && Objects.equals(guard, that.guard);
+        return Objects.equals(mandatoryGuard, that.mandatoryGuard) && Objects.equals(guard, that.guard);
     }
 
 

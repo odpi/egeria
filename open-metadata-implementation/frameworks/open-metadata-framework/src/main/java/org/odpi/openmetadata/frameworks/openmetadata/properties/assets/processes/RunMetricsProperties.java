@@ -26,23 +26,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RunMetricsProperties extends ClassificationBeanProperties
 {
-    private long                runCount = 0L;
-    private long                failedRunCount = 0L;
+    private Long                runCount = null;
+    private Long                failedRunCount = null;
     private Date                firstRunStartTime = null;
     private String              lastRunId = null;
     private Date                lastRunStartTime = null;
     private Date                lastRunEndTime = null;
     private String              lastRunStatus = null;
-    private long                lastRunDuration = 0L;
-    private long                totalRunDuration = 0L;
-    private long                lastRunRowsRead = 0L;
-    private long                lastRunRowsWritten = 0L;
-    private long                lastRunBytesRead = 0L;
-    private long                lastRunBytesWritten = 0L;
-    private long                totalRowsRead = 0L;
-    private long                totalRowsWritten = 0L;
-    private long                totalBytesRead = 0L;
-    private long                totalBytesWritten = 0L;
+    private Long                lastRunDuration = null;
+    private Long                totalRunDuration = null;
+    private Long                lastRunRowsRead = null;
+    private Long                lastRunRowsWritten = null;
+    private Long                lastRunBytesRead = null;
+    private Long                lastRunBytesWritten = null;
+    private Long                totalRowsRead = null;
+    private Long                totalRowsWritten = null;
+    private Long                totalBytesRead = null;
+    private Long                totalBytesWritten = null;
     private Map<String, String> additionalProperties = null;
 
 
@@ -94,7 +94,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getRunCount()
+    public Long getRunCount()
     {
         return runCount;
     }
@@ -105,7 +105,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param runCount long
      */
-    public void setRunCount(long runCount)
+    public void setRunCount(Long runCount)
     {
         this.runCount = runCount;
     }
@@ -116,7 +116,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getFailedRunCount()
+    public Long getFailedRunCount()
     {
         return failedRunCount;
     }
@@ -127,7 +127,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param failedRunCount long
      */
-    public void setFailedRunCount(long failedRunCount)
+    public void setFailedRunCount(Long failedRunCount)
     {
         this.failedRunCount = failedRunCount;
     }
@@ -248,7 +248,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLastRunDuration()
+    public Long getLastRunDuration()
     {
         return lastRunDuration;
     }
@@ -259,7 +259,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param lastRunDuration long
      */
-    public void setLastRunDuration(long lastRunDuration)
+    public void setLastRunDuration(Long lastRunDuration)
     {
         this.lastRunDuration = lastRunDuration;
     }
@@ -270,7 +270,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getTotalRunDuration()
+    public Long getTotalRunDuration()
     {
         return totalRunDuration;
     }
@@ -281,7 +281,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param totalRunDuration long
      */
-    public void setTotalRunDuration(long totalRunDuration)
+    public void setTotalRunDuration(Long totalRunDuration)
     {
         this.totalRunDuration = totalRunDuration;
     }
@@ -292,7 +292,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLastRunRowsRead()
+    public Long getLastRunRowsRead()
     {
         return lastRunRowsRead;
     }
@@ -303,7 +303,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param lastRunRowsRead long
      */
-    public void setLastRunRowsRead(long lastRunRowsRead)
+    public void setLastRunRowsRead(Long lastRunRowsRead)
     {
         this.lastRunRowsRead = lastRunRowsRead;
     }
@@ -314,7 +314,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLastRunRowsWritten()
+    public Long getLastRunRowsWritten()
     {
         return lastRunRowsWritten;
     }
@@ -325,7 +325,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param lastRunRowsWritten long
      */
-    public void setLastRunRowsWritten(long lastRunRowsWritten)
+    public void setLastRunRowsWritten(Long lastRunRowsWritten)
     {
         this.lastRunRowsWritten = lastRunRowsWritten;
     }
@@ -336,7 +336,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLastRunBytesRead()
+    public Long getLastRunBytesRead()
     {
         return lastRunBytesRead;
     }
@@ -347,7 +347,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param lastRunBytesRead long
      */
-    public void setLastRunBytesRead(long lastRunBytesRead)
+    public void setLastRunBytesRead(Long lastRunBytesRead)
     {
         this.lastRunBytesRead = lastRunBytesRead;
     }
@@ -358,7 +358,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLastRunBytesWritten()
+    public Long getLastRunBytesWritten()
     {
         return lastRunBytesWritten;
     }
@@ -369,7 +369,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param lastRunBytesWritten long
      */
-    public void setLastRunBytesWritten(long lastRunBytesWritten)
+    public void setLastRunBytesWritten(Long lastRunBytesWritten)
     {
         this.lastRunBytesWritten = lastRunBytesWritten;
     }
@@ -380,7 +380,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getTotalRowsRead()
+    public Long getTotalRowsRead()
     {
         return totalRowsRead;
     }
@@ -391,7 +391,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param totalRowsRead long
      */
-    public void setTotalRowsRead(long totalRowsRead)
+    public void setTotalRowsRead(Long totalRowsRead)
     {
         this.totalRowsRead = totalRowsRead;
     }
@@ -402,7 +402,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getTotalRowsWritten()
+    public Long getTotalRowsWritten()
     {
         return totalRowsWritten;
     }
@@ -413,7 +413,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param totalRowsWritten long
      */
-    public void setTotalRowsWritten(long totalRowsWritten)
+    public void setTotalRowsWritten(Long totalRowsWritten)
     {
         this.totalRowsWritten = totalRowsWritten;
     }
@@ -424,7 +424,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getTotalBytesRead()
+    public Long getTotalBytesRead()
     {
         return totalBytesRead;
     }
@@ -435,7 +435,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param totalBytesRead long
      */
-    public void setTotalBytesRead(long totalBytesRead)
+    public void setTotalBytesRead(Long totalBytesRead)
     {
         this.totalBytesRead = totalBytesRead;
     }
@@ -446,7 +446,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getTotalBytesWritten()
+    public Long getTotalBytesWritten()
     {
         return totalBytesWritten;
     }
@@ -457,7 +457,7 @@ public class RunMetricsProperties extends ClassificationBeanProperties
      *
      * @param totalBytesWritten long
      */
-    public void setTotalBytesWritten(long totalBytesWritten)
+    public void setTotalBytesWritten(Long totalBytesWritten)
     {
         this.totalBytesWritten = totalBytesWritten;
     }
@@ -538,23 +538,23 @@ public class RunMetricsProperties extends ClassificationBeanProperties
             return false;
         }
         RunMetricsProperties that = (RunMetricsProperties) objectToCompare;
-        return runCount == that.runCount &&
-               failedRunCount == that.failedRunCount &&
+        return Objects.equals(runCount, that.runCount) &&
+               Objects.equals(failedRunCount, that.failedRunCount) &&
                Objects.equals(firstRunStartTime, that.firstRunStartTime) &&
                Objects.equals(lastRunId, that.lastRunId) &&
                Objects.equals(lastRunStartTime, that.lastRunStartTime) &&
                Objects.equals(lastRunEndTime, that.lastRunEndTime) &&
                Objects.equals(lastRunStatus, that.lastRunStatus) &&
-               lastRunDuration == that.lastRunDuration &&
-               totalRunDuration == that.totalRunDuration &&
-               lastRunRowsRead == that.lastRunRowsRead &&
-               lastRunRowsWritten == that.lastRunRowsWritten &&
-               lastRunBytesRead == that.lastRunBytesRead &&
-               lastRunBytesWritten == that.lastRunBytesWritten &&
-               totalRowsRead == that.totalRowsRead &&
-               totalRowsWritten == that.totalRowsWritten &&
-               totalBytesRead == that.totalBytesRead &&
-               totalBytesWritten == that.totalBytesWritten &&
+               Objects.equals(lastRunDuration, that.lastRunDuration) &&
+               Objects.equals(totalRunDuration, that.totalRunDuration) &&
+               Objects.equals(lastRunRowsRead, that.lastRunRowsRead) &&
+               Objects.equals(lastRunRowsWritten, that.lastRunRowsWritten) &&
+               Objects.equals(lastRunBytesRead, that.lastRunBytesRead) &&
+               Objects.equals(lastRunBytesWritten, that.lastRunBytesWritten) &&
+               Objects.equals(totalRowsRead, that.totalRowsRead) &&
+               Objects.equals(totalRowsWritten, that.totalRowsWritten) &&
+               Objects.equals(totalBytesRead, that.totalBytesRead) &&
+               Objects.equals(totalBytesWritten, that.totalBytesWritten) &&
                Objects.equals(additionalProperties, that.additionalProperties);
     }
 

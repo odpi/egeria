@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -282,7 +283,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
             if ((notificationType != null) && (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
             {
-                long                  notificationCount = notificationTypeProperties.getNotificationCount() + 1;
+                long                  notificationCount = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
                 List<NewActionTarget> newActionTargets  = new ArrayList<>();
                 NewActionTarget       newActionTarget   = new NewActionTarget();
 

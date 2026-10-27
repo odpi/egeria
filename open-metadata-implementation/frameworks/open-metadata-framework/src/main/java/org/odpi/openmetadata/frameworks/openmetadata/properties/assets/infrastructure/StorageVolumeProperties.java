@@ -21,10 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StorageVolumeProperties extends ReferenceableProperties
 {
-    private long   storageCapacity     = 0L;
+    private Long   storageCapacity     = null;
     private String units               = null;
-    private long   relativeUncertainty = 0L;
-    private long   absoluteUncertainty = 0L;
+    private Long   relativeUncertainty = null;
+    private Long   absoluteUncertainty = null;
 
 
     /**
@@ -61,7 +61,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getStorageCapacity()
+    public Long getStorageCapacity()
     {
         return storageCapacity;
     }
@@ -72,7 +72,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @param storageCapacity long
      */
-    public void setStorageCapacity(long storageCapacity)
+    public void setStorageCapacity(Long storageCapacity)
     {
         this.storageCapacity = storageCapacity;
     }
@@ -105,7 +105,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getRelativeUncertainty()
+    public Long getRelativeUncertainty()
     {
         return relativeUncertainty;
     }
@@ -116,7 +116,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @param relativeUncertainty long
      */
-    public void setRelativeUncertainty(long relativeUncertainty)
+    public void setRelativeUncertainty(Long relativeUncertainty)
     {
         this.relativeUncertainty = relativeUncertainty;
     }
@@ -127,7 +127,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getAbsoluteUncertainty()
+    public Long getAbsoluteUncertainty()
     {
         return absoluteUncertainty;
     }
@@ -138,7 +138,7 @@ public class StorageVolumeProperties extends ReferenceableProperties
      *
      * @param absoluteUncertainty long
      */
-    public void setAbsoluteUncertainty(long absoluteUncertainty)
+    public void setAbsoluteUncertainty(Long absoluteUncertainty)
     {
         this.absoluteUncertainty = absoluteUncertainty;
     }
@@ -183,9 +183,9 @@ public class StorageVolumeProperties extends ReferenceableProperties
             return false;
         }
         StorageVolumeProperties that = (StorageVolumeProperties) objectToCompare;
-        return storageCapacity == that.storageCapacity &&
-                       relativeUncertainty == that.relativeUncertainty &&
-                       absoluteUncertainty == that.absoluteUncertainty &&
+        return Objects.equals(storageCapacity, that.storageCapacity) &&
+                       Objects.equals(relativeUncertainty, that.relativeUncertainty) &&
+                       Objects.equals(absoluteUncertainty, that.absoluteUncertainty) &&
                        Objects.equals(units, that.units);
     }
 

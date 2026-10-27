@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.UsageActivityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
@@ -438,13 +439,13 @@ public class PepysActivityObserverConnector extends DynamicIntegrationConnectorB
 
         UsageActivityProperties usageActivityProperties = new UsageActivityProperties();
 
-        usageActivityProperties.setExplicitGetCount(storedProperties.getExplicitGetCount() + activity.getCount(ObservedActivity.UsageCount.EXPLICIT_GET));
-        usageActivityProperties.setFindCount(storedProperties.getFindCount() + activity.getCount(ObservedActivity.UsageCount.FIND));
-        usageActivityProperties.setUpdatePropertyCount(storedProperties.getUpdatePropertyCount() + activity.getCount(ObservedActivity.UsageCount.UPDATE_PROPERTY));
-        usageActivityProperties.setUpdateAttachmentCount(storedProperties.getUpdateAttachmentCount() + activity.getCount(ObservedActivity.UsageCount.UPDATE_ATTACHMENT));
-        usageActivityProperties.setUpdateFeedbackCount(storedProperties.getUpdateFeedbackCount() + activity.getCount(ObservedActivity.UsageCount.UPDATE_FEEDBACK));
-        usageActivityProperties.setDeleteAttachmentCount(storedProperties.getDeleteAttachmentCount() + activity.getCount(ObservedActivity.UsageCount.DELETE_ATTACHMENT));
-        usageActivityProperties.setDeleteFeedbackCount(storedProperties.getDeleteFeedbackCount() + activity.getCount(ObservedActivity.UsageCount.DELETE_FEEDBACK));
+        usageActivityProperties.setExplicitGetCount(OpenMetadataProperty.EXPLICIT_GET_COUNT.longValueOrDefault(storedProperties.getExplicitGetCount()) + activity.getCount(ObservedActivity.UsageCount.EXPLICIT_GET));
+        usageActivityProperties.setFindCount(OpenMetadataProperty.FIND_COUNT.longValueOrDefault(storedProperties.getFindCount()) + activity.getCount(ObservedActivity.UsageCount.FIND));
+        usageActivityProperties.setUpdatePropertyCount(OpenMetadataProperty.UPDATE_PROPERTY_COUNT.longValueOrDefault(storedProperties.getUpdatePropertyCount()) + activity.getCount(ObservedActivity.UsageCount.UPDATE_PROPERTY));
+        usageActivityProperties.setUpdateAttachmentCount(OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.longValueOrDefault(storedProperties.getUpdateAttachmentCount()) + activity.getCount(ObservedActivity.UsageCount.UPDATE_ATTACHMENT));
+        usageActivityProperties.setUpdateFeedbackCount(OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.longValueOrDefault(storedProperties.getUpdateFeedbackCount()) + activity.getCount(ObservedActivity.UsageCount.UPDATE_FEEDBACK));
+        usageActivityProperties.setDeleteAttachmentCount(OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.longValueOrDefault(storedProperties.getDeleteAttachmentCount()) + activity.getCount(ObservedActivity.UsageCount.DELETE_ATTACHMENT));
+        usageActivityProperties.setDeleteFeedbackCount(OpenMetadataProperty.DELETE_FEEDBACK_COUNT.longValueOrDefault(storedProperties.getDeleteFeedbackCount()) + activity.getCount(ObservedActivity.UsageCount.DELETE_FEEDBACK));
 
         if (isClassified)
         {

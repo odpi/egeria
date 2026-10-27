@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorProperties extends DeployedConnectorProperties
 {
-    private boolean usesBlockingCalls = false;
+    private Boolean usesBlockingCalls = null;
 
 
     /**
@@ -56,7 +56,7 @@ public class IntegrationConnectorProperties extends DeployedConnectorProperties
      *
      * @return boolean
      */
-    public boolean getUsesBlockingCalls()
+    public Boolean getUsesBlockingCalls()
     {
         return usesBlockingCalls;
     }
@@ -67,7 +67,7 @@ public class IntegrationConnectorProperties extends DeployedConnectorProperties
      *
      * @param usesBlockingCalls boolean
      */
-    public void setUsesBlockingCalls(boolean usesBlockingCalls)
+    public void setUsesBlockingCalls(Boolean usesBlockingCalls)
     {
         this.usesBlockingCalls = usesBlockingCalls;
     }
@@ -110,7 +110,7 @@ public class IntegrationConnectorProperties extends DeployedConnectorProperties
             return false;
         }
         IntegrationConnectorProperties that = (IntegrationConnectorProperties) objectToCompare;
-        return getUsesBlockingCalls() == that.getUsesBlockingCalls();
+        return Objects.equals(getUsesBlockingCalls(), that.getUsesBlockingCalls());
     }
 
 

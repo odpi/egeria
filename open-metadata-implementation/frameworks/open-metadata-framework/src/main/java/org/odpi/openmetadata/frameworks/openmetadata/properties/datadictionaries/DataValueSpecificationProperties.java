@@ -33,13 +33,13 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
 {
     private List<String>        matchPropertyNames   = null;
     private String              namespacePath        = null;
-    private int                 matchThreshold       = 100;
+    private Integer             matchThreshold       = null;
     private String              specification        = null;
     private Map<String, String> specificationDetails = null;
     private String              dataType             = null;
     private String              units                = null;
-    private long                absoluteUncertainty  = 0L;
-    private long                relativeUncertainty  = 0L;
+    private Long                absoluteUncertainty  = null;
+    private Long                relativeUncertainty  = null;
 
 
     /**
@@ -103,7 +103,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @return float
      */
-    public int getMatchThreshold()
+    public Integer getMatchThreshold()
     {
         return matchThreshold;
     }
@@ -114,7 +114,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @param matchThreshold float
      */
-    public void setMatchThreshold(int matchThreshold)
+    public void setMatchThreshold(Integer matchThreshold)
     {
         this.matchThreshold = matchThreshold;
     }
@@ -233,7 +233,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @return long
      */
-    public long getAbsoluteUncertainty()
+    public Long getAbsoluteUncertainty()
     {
         return absoluteUncertainty;
     }
@@ -244,7 +244,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @param absoluteUncertainty long
      */
-    public void setAbsoluteUncertainty(long absoluteUncertainty)
+    public void setAbsoluteUncertainty(Long absoluteUncertainty)
     {
         this.absoluteUncertainty = absoluteUncertainty;
     }
@@ -255,7 +255,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @return long
      */
-    public long getRelativeUncertainty()
+    public Long getRelativeUncertainty()
     {
         return relativeUncertainty;
     }
@@ -266,7 +266,7 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
      *
      * @param relativeUncertainty long
      */
-    public void setRelativeUncertainty(long relativeUncertainty)
+    public void setRelativeUncertainty(Long relativeUncertainty)
     {
         this.relativeUncertainty = relativeUncertainty;
     }
@@ -307,8 +307,8 @@ public class DataValueSpecificationProperties extends AuthoredReferenceablePrope
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataValueSpecificationProperties that = (DataValueSpecificationProperties) objectToCompare;
-        return  absoluteUncertainty == that.absoluteUncertainty &&
-                relativeUncertainty == that.relativeUncertainty &&
+        return  Objects.equals(absoluteUncertainty, that.absoluteUncertainty) &&
+                Objects.equals(relativeUncertainty, that.relativeUncertainty) &&
                 Objects.equals(matchPropertyNames, that.matchPropertyNames) &&
                 Objects.equals(namespacePath, that.namespacePath) &&
                 Objects.equals(matchThreshold, that.matchThreshold) &&

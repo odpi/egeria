@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RetentionProperties extends GovernedDataClassificationBase
 {
-    private int    retentionBasis = 0;
+    private Integer retentionBasis = null;
     private String associatedGUID = null;
     private Date   archiveAfter   = null;
     private Date   deleteAfter    = null;
@@ -62,7 +62,7 @@ public class RetentionProperties extends GovernedDataClassificationBase
      *
      * @return int
      */
-    public int getRetentionBasis()
+    public Integer getRetentionBasis()
     {
         return retentionBasis;
     }
@@ -73,7 +73,7 @@ public class RetentionProperties extends GovernedDataClassificationBase
      *
      * @param retentionBasis int
      */
-    public void setRetentionBasis(int retentionBasis)
+    public void setRetentionBasis(Integer retentionBasis)
     {
         this.retentionBasis = retentionBasis;
     }
@@ -188,7 +188,7 @@ public class RetentionProperties extends GovernedDataClassificationBase
             return false;
         }
         RetentionProperties that = (RetentionProperties) objectToCompare;
-        return retentionBasis == that.retentionBasis &&
+        return Objects.equals(retentionBasis, that.retentionBasis) &&
                 Objects.equals(associatedGUID, that.associatedGUID) &&
                 Objects.equals(archiveAfter, that.archiveAfter) &&
                 Objects.equals(deleteAfter, that.deleteAfter);
