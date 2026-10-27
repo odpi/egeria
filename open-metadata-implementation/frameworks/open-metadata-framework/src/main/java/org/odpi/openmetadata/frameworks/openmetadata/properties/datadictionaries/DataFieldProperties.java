@@ -27,17 +27,17 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
     private List<String> aliases       = null;
     private List<String>      namePatterns      = null;
     private String            defaultValue      = null;
-    private boolean           isNullable        = true;
+    private Boolean           isNullable        = null;
     private String            dataType          = null;
     private String            units             = null;
-    private int               minimumLength     = 0;
-    private int               length            = 0;
-    private int               precision         = 0;
-    private boolean           orderedValues     = false;
+    private Integer           minimumLength     = null;
+    private Integer           length            = null;
+    private Integer           precision         = null;
+    private Boolean           orderedValues     = null;
     private DataItemSortOrder sortOrder         = null;
-    private boolean           isPartitionKey        = false;
-    private int               partitionKeyPosition  = 0;
-    private boolean           allowsDuplicateValues = true;
+    private Boolean           isPartitionKey        = null;
+    private Integer           partitionKeyPosition  = null;
+    private Boolean           allowsDuplicateValues = null;
 
 
     /**
@@ -173,7 +173,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return boolean
      */
-    public boolean getIsNullable()
+    public Boolean getIsNullable()
     {
         return isNullable;
     }
@@ -184,7 +184,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param nullable boolean
      */
-    public void setIsNullable(boolean nullable)
+    public void setIsNullable(Boolean nullable)
     {
         isNullable = nullable;
     }
@@ -237,7 +237,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getMinimumLength()
+    public Integer getMinimumLength()
     {
         return minimumLength;
     }
@@ -248,7 +248,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param minimumLength int
      */
-    public void setMinimumLength(int minimumLength)
+    public void setMinimumLength(Integer minimumLength)
     {
         this.minimumLength = minimumLength;
     }
@@ -259,7 +259,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getLength()
+    public Integer getLength()
     {
         return length;
     }
@@ -270,7 +270,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param length int
      */
-    public void setLength(int length)
+    public void setLength(Integer length)
     {
         this.length = length;
     }
@@ -281,7 +281,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getPrecision()
+    public Integer getPrecision()
     {
         return precision;
     }
@@ -292,7 +292,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param precision int
      */
-    public void setPrecision(int precision)
+    public void setPrecision(Integer precision)
     {
         this.precision = precision;
     }
@@ -303,7 +303,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return boolean flag
      */
-    public boolean getOrderedValues()
+    public Boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -314,7 +314,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param orderedValues boolean flag
      */
-    public void setOrderedValues(boolean orderedValues)
+    public void setOrderedValues(Boolean orderedValues)
     {
         this.orderedValues = orderedValues;
     }
@@ -350,7 +350,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return boolean
      */
-    public boolean getIsPartitionKey()
+    public Boolean getIsPartitionKey()
     {
         return isPartitionKey;
     }
@@ -361,7 +361,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param isPartitionKey boolean
      */
-    public void setIsPartitionKey(boolean isPartitionKey)
+    public void setIsPartitionKey(Boolean isPartitionKey)
     {
         this.isPartitionKey = isPartitionKey;
     }
@@ -372,7 +372,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getPartitionKeyPosition()
+    public Integer getPartitionKeyPosition()
     {
         return partitionKeyPosition;
     }
@@ -383,7 +383,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param partitionKeyPosition int
      */
-    public void setPartitionKeyPosition(int partitionKeyPosition)
+    public void setPartitionKeyPosition(Integer partitionKeyPosition)
     {
         this.partitionKeyPosition = partitionKeyPosition;
     }
@@ -395,7 +395,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @return boolean
      */
-    public boolean getAllowsDuplicateValues()
+    public Boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -406,7 +406,7 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
      *
      * @param allowsDuplicateValues boolean
      */
-    public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
+    public void setAllowsDuplicateValues(Boolean allowsDuplicateValues)
     {
         this.allowsDuplicateValues = allowsDuplicateValues;
     }
@@ -452,18 +452,18 @@ public class DataFieldProperties extends AuthoredReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataFieldProperties that = (DataFieldProperties) objectToCompare;
-        return isNullable == that.isNullable &&
-                minimumLength == that.minimumLength && length == that.length && precision == that.precision &&
-                orderedValues == that.orderedValues &&
+        return Objects.equals(isNullable, that.isNullable) &&
+                Objects.equals(minimumLength, that.minimumLength) && Objects.equals(length, that.length) && Objects.equals(precision, that.precision) &&
+                Objects.equals(orderedValues, that.orderedValues) &&
                 Objects.equals(namespacePath, that.namespacePath) && Objects.equals(aliases, that.aliases) &&
                 Objects.equals(namePatterns, that.namePatterns) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
                 Objects.equals(dataType, that.dataType) &&
                 Objects.equals(units, that.units) &&
                 sortOrder == that.sortOrder &&
-                isPartitionKey == that.isPartitionKey &&
-                partitionKeyPosition == that.partitionKeyPosition &&
-                allowsDuplicateValues == that.allowsDuplicateValues;
+                Objects.equals(isPartitionKey, that.isPartitionKey) &&
+                Objects.equals(partitionKeyPosition, that.partitionKeyPosition) &&
+                Objects.equals(allowsDuplicateValues, that.allowsDuplicateValues);
     }
 
     /**

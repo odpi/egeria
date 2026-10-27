@@ -28,14 +28,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SecurityFindingAnnotationProperties extends AnnotationProperties
 {
     private String       severity                 = null;
-    private float        cvssScore                = 0;
+    private Float        cvssScore                = null;
     private String       cvssVector               = null;
     private List<String> vulnerabilityIdentifiers = null;
     private List<String> weaknessIdentifiers      = null;
     private String       affectedLocation         = null;
     private String       evidence                 = null;
     private String       remediation              = null;
-    private boolean      exploitAvailable         = false;
+    private Boolean      exploitAvailable         = null;
 
 
     /**
@@ -99,7 +99,7 @@ public class SecurityFindingAnnotationProperties extends AnnotationProperties
      *
      * @return float
      */
-    public float getCvssScore()
+    public Float getCvssScore()
     {
         return cvssScore;
     }
@@ -110,7 +110,7 @@ public class SecurityFindingAnnotationProperties extends AnnotationProperties
      *
      * @param cvssScore float
      */
-    public void setCvssScore(float cvssScore)
+    public void setCvssScore(Float cvssScore)
     {
         this.cvssScore = cvssScore;
     }
@@ -257,7 +257,7 @@ public class SecurityFindingAnnotationProperties extends AnnotationProperties
      *
      * @return boolean
      */
-    public boolean getExploitAvailable()
+    public Boolean getExploitAvailable()
     {
         return exploitAvailable;
     }
@@ -268,7 +268,7 @@ public class SecurityFindingAnnotationProperties extends AnnotationProperties
      *
      * @param exploitAvailable boolean
      */
-    public void setExploitAvailable(boolean exploitAvailable)
+    public void setExploitAvailable(Boolean exploitAvailable)
     {
         this.exploitAvailable = exploitAvailable;
     }
@@ -319,14 +319,14 @@ public class SecurityFindingAnnotationProperties extends AnnotationProperties
         }
         SecurityFindingAnnotationProperties that = (SecurityFindingAnnotationProperties) objectToCompare;
         return Objects.equals(severity, that.severity) &&
-                Float.compare(cvssScore, that.cvssScore) == 0 &&
+                Objects.equals(cvssScore, that.cvssScore) &&
                 Objects.equals(cvssVector, that.cvssVector) &&
                 Objects.equals(vulnerabilityIdentifiers, that.vulnerabilityIdentifiers) &&
                 Objects.equals(weaknessIdentifiers, that.weaknessIdentifiers) &&
                 Objects.equals(affectedLocation, that.affectedLocation) &&
                 Objects.equals(evidence, that.evidence) &&
                 Objects.equals(remediation, that.remediation) &&
-                exploitAvailable == that.exploitAvailable;
+                Objects.equals(exploitAvailable, that.exploitAvailable);
     }
 
 

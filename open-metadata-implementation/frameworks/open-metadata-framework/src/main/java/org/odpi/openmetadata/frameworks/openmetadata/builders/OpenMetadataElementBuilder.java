@@ -283,20 +283,20 @@ public class OpenMetadataElementBuilder
                                                                                       governanceRoleProperties.getDomainIdentifier());
                                 }
 
-                                if ((personRoleProperties.getHeadCountLimitSet()) || (personRoleProperties.getHeadCount() > 0))
+                                if ((Boolean.TRUE.equals(personRoleProperties.getHeadCountLimitSet())) || (personRoleProperties.getHeadCount() != null))
                                 {
                                     elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                                       OpenMetadataProperty.HEAD_COUNT.name,
-                                                                                      personRoleProperties.getHeadCount());
+                                                                                      OpenMetadataProperty.HEAD_COUNT.intValueOrDefault(personRoleProperties.getHeadCount()));
                                 }
                             }
                             else if (properties instanceof TeamRoleProperties teamRoleProperties)
                             {
-                                if ((teamRoleProperties.getHeadCountLimitSet()) || (teamRoleProperties.getHeadCount() > 0))
+                                if ((Boolean.TRUE.equals(teamRoleProperties.getHeadCountLimitSet())) || (teamRoleProperties.getHeadCount() != null))
                                 {
                                     elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                                       OpenMetadataProperty.HEAD_COUNT.name,
-                                                                                      teamRoleProperties.getHeadCount());
+                                                                                      OpenMetadataProperty.HEAD_COUNT.intValueOrDefault(teamRoleProperties.getHeadCount()));
                                 }
                             }
                         }

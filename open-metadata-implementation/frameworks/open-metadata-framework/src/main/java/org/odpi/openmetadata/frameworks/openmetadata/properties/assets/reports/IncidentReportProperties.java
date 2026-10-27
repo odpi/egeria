@@ -16,7 +16,7 @@ public class IncidentReportProperties extends ReportProperties
     private String               background          = null;
     private IncidentReportStatus incidentStatus      = null;
     private Map<String, Integer> incidentClassifiers = null;
-    private int                  domainIdentifier    = 0;
+    private Integer              domainIdentifier    = null;
 
 
     /**
@@ -119,7 +119,7 @@ public class IncidentReportProperties extends ReportProperties
      *
      * @return int identifier
      */
-    public int getDomainIdentifier()
+    public Integer getDomainIdentifier()
     {
         return domainIdentifier;
     }
@@ -130,7 +130,7 @@ public class IncidentReportProperties extends ReportProperties
      *
      * @param domainIdentifier int identifier
      */
-    public void setDomainIdentifier(int domainIdentifier)
+    public void setDomainIdentifier(Integer domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
     }
@@ -175,7 +175,7 @@ public class IncidentReportProperties extends ReportProperties
             return false;
         }
         IncidentReportProperties that = (IncidentReportProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
+        return Objects.equals(domainIdentifier, that.domainIdentifier) &&
                        Objects.equals(background, that.background) &&
                        Objects.equals(incidentStatus, that.incidentStatus) &&
                        Objects.equals(incidentClassifiers, that.incidentClassifiers);

@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 
 import java.util.HashMap;
@@ -85,7 +86,7 @@ public class GovernanceServiceCache
             }
 
             this.requestParameters  = supportedGovernanceServiceProperties.getRequestParameters();
-            this.generateIntegrationReport = supportedGovernanceServiceProperties.getGenerateConnectorActivityReports();
+            this.generateIntegrationReport = OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.booleanValueOrDefault(supportedGovernanceServiceProperties.getGenerateConnectorActivityReports());
 
             if (supportedGovernanceServiceProperties.getDeleteMethod() == null)
             {

@@ -40,6 +40,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Associa
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ConfidentialityLevel;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CriticalityLevel;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.IOException;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * DataContractGenerator builds an Open Data Contract Standard (ODCS) document from an Agreement in open metadata.  It is
@@ -332,10 +334,10 @@ public class DataContractGenerator extends BitolGeneratorBase
         property.setPhysicalName(getBitolValue(additionalProperties, "physicalName"));
         property.setLogicalType((getBitolValue(additionalProperties, "logicalType") != null) ? getBitolValue(additionalProperties, "logicalType") : fieldProperties.getDataType());
         property.setPhysicalType((getBitolValue(additionalProperties, "physicalType") != null) ? getBitolValue(additionalProperties, "physicalType") : fieldProperties.getDataType());
-        property.setRequired(! fieldProperties.getIsNullable());
-        property.setUnique(! fieldProperties.getAllowsDuplicateValues());
+        property.setRequired(! OpenMetadataProperty.IS_NULLABLE.booleanValueOrDefault(fieldProperties.getIsNullable()));
+        property.setUnique(! OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.booleanValueOrDefault(fieldProperties.getAllowsDuplicateValues()));
         property.setPartitioned(fieldProperties.getIsPartitionKey());
-        property.setPartitionKeyPosition(fieldProperties.getIsPartitionKey() ? fieldProperties.getPartitionKeyPosition() : -1);
+        property.setPartitionKeyPosition(Boolean.TRUE.equals(fieldProperties.getIsPartitionKey()) ? OpenMetadataProperty.PARTITION_KEY_POSITION.intValueOrDefault(fieldProperties.getPartitionKeyPosition()) : -1);
         property.setClassification(getClassification(field.getElementHeader().getConfidentiality(), additionalProperties));
         property.setEncryptedName(getBitolValue(additionalProperties, "encryptedName"));
         property.setTransformLogic(getBitolValue(additionalProperties, "transformLogic"));
@@ -558,7 +560,7 @@ public class DataContractGenerator extends BitolGeneratorBase
         {
             for (ConfidentialityLevel level : ConfidentialityLevel.values())
             {
-                if (level.getOrdinal() == properties.getConfidentialityLevel())
+                if (Objects.equals(level.getOrdinal(), properties.getConfidentialityLevel()))
                 {
                     return level.getDisplayName().toLowerCase(java.util.Locale.ROOT);
                 }
@@ -586,7 +588,7 @@ public class DataContractGenerator extends BitolGeneratorBase
 
         if ((criticality != null) && (criticality.getClassificationProperties() instanceof CriticalityProperties properties))
         {
-            return properties.getCriticalityLevel() >= CriticalityLevel.CRITICAL.getOrdinal() ? Boolean.TRUE : null;
+            return OpenMetadataProperty.CRITICALITY_LEVEL.intValueOrDefault(properties.getCriticalityLevel()) >= CriticalityLevel.CRITICAL.getOrdinal() ? Boolean.TRUE : null;
         }
 
         return null;
@@ -606,14 +608,17 @@ public class DataContractGenerator extends BitolGeneratorBase
         DataContractLogicalTypeOptions options = new DataContractLogicalTypeOptions();
         boolean                        anySet  = false;
 
-        if (fieldProperties.getMinimumLength() > 0)
+        Integer minimumLength = fieldProperties.getMinimumLength();
+        Integer length        = fieldProperties.getLength();
+
+        if ((minimumLength != null) && (minimumLength > 0))
         {
-            options.setMinLength(fieldProperties.getMinimumLength());
+            options.setMinLength(minimumLength);
             anySet = true;
         }
-        if (fieldProperties.getLength() > 0)
+        if ((length != null) && (length > 0))
         {
-            options.setMaxLength(fieldProperties.getLength());
+            options.setMaxLength(length);
             anySet = true;
         }
 
@@ -1164,9 +1169,14 @@ public class DataContractGenerator extends BitolGeneratorBase
      */
     private static int getPosition(RelatedMetadataElementSummary related)
     {
-        if ((related != null) && (related.getRelationshipProperties() instanceof PartOfRelationshipProperties partOf) && (partOf.getPosition() > 0))
+        if ((related != null) && (related.getRelationshipProperties() instanceof PartOfRelationshipProperties partOf))
         {
-            return partOf.getPosition();
+            Integer position = partOf.getPosition();
+
+            if ((position != null) && (position > 0))
+            {
+                return position;
+            }
         }
 
         return Integer.MAX_VALUE;

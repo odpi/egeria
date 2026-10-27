@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class UserAccountTypeProfileMermaidPieChartBuilder extends PieChartBuilde
     {
         if ((element.getElementHeader().getUserAccountProfile() != null) &&
                 (element.getElementHeader().getUserAccountProfile().getClassificationProperties() instanceof UserAccountProfileProperties profileProperties) &&
-                (profileProperties.getUserAccountCount() > 0))
+                (OpenMetadataProperty.USER_ACCOUNT_COUNT.longValueOrDefault(profileProperties.getUserAccountCount()) > 0))
         {
             return profileProperties.getUserAccountTypes();
         }

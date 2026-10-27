@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.usageinsight.popularity;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MemberPopularityProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.UsageActivityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,13 +48,13 @@ public class MemberActivity
 
         if ((usageActivity != null) && (usageActivity.getClassificationProperties() instanceof UsageActivityProperties properties))
         {
-            activity.explicitGetCount      = properties.getExplicitGetCount();
-            activity.findCount             = properties.getFindCount();
-            activity.updatePropertyCount   = properties.getUpdatePropertyCount();
-            activity.updateAttachmentCount = properties.getUpdateAttachmentCount();
-            activity.updateFeedbackCount   = properties.getUpdateFeedbackCount();
-            activity.deleteAttachmentCount = properties.getDeleteAttachmentCount();
-            activity.deleteFeedbackCount   = properties.getDeleteFeedbackCount();
+            activity.explicitGetCount      = OpenMetadataProperty.EXPLICIT_GET_COUNT.longValueOrDefault(properties.getExplicitGetCount());
+            activity.findCount             = OpenMetadataProperty.FIND_COUNT.longValueOrDefault(properties.getFindCount());
+            activity.updatePropertyCount   = OpenMetadataProperty.UPDATE_PROPERTY_COUNT.longValueOrDefault(properties.getUpdatePropertyCount());
+            activity.updateAttachmentCount = OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.longValueOrDefault(properties.getUpdateAttachmentCount());
+            activity.updateFeedbackCount   = OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.longValueOrDefault(properties.getUpdateFeedbackCount());
+            activity.deleteAttachmentCount = OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.longValueOrDefault(properties.getDeleteAttachmentCount());
+            activity.deleteFeedbackCount   = OpenMetadataProperty.DELETE_FEEDBACK_COUNT.longValueOrDefault(properties.getDeleteFeedbackCount());
         }
 
         return activity;
@@ -72,13 +73,13 @@ public class MemberActivity
 
         if ((memberPopularityProfile != null) && (memberPopularityProfile.getClassificationProperties() instanceof MemberPopularityProfileProperties properties))
         {
-            activity.explicitGetCount      = properties.getExplicitGetCountTotal();
-            activity.findCount             = properties.getFindCountTotal();
-            activity.updatePropertyCount   = properties.getUpdatePropertyCountTotal();
-            activity.updateAttachmentCount = properties.getUpdateAttachmentCountTotal();
-            activity.updateFeedbackCount   = properties.getUpdateFeedbackCountTotal();
-            activity.deleteAttachmentCount = properties.getDeleteAttachmentCountTotal();
-            activity.deleteFeedbackCount   = properties.getDeleteFeedbackCountTotal();
+            activity.explicitGetCount      = OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL.longValueOrDefault(properties.getExplicitGetCountTotal());
+            activity.findCount             = OpenMetadataProperty.FIND_COUNT_TOTAL.longValueOrDefault(properties.getFindCountTotal());
+            activity.updatePropertyCount   = OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL.longValueOrDefault(properties.getUpdatePropertyCountTotal());
+            activity.updateAttachmentCount = OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL.longValueOrDefault(properties.getUpdateAttachmentCountTotal());
+            activity.updateFeedbackCount   = OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL.longValueOrDefault(properties.getUpdateFeedbackCountTotal());
+            activity.deleteAttachmentCount = OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL.longValueOrDefault(properties.getDeleteAttachmentCountTotal());
+            activity.deleteFeedbackCount   = OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL.longValueOrDefault(properties.getDeleteFeedbackCountTotal());
         }
 
         return activity;
@@ -195,13 +196,13 @@ public class MemberActivity
             return false;
         }
 
-        return existing.getExplicitGetCountTotal() == latest.getExplicitGetCountTotal() &&
-               existing.getFindCountTotal() == latest.getFindCountTotal() &&
-               existing.getUpdatePropertyCountTotal() == latest.getUpdatePropertyCountTotal() &&
-               existing.getUpdateAttachmentCountTotal() == latest.getUpdateAttachmentCountTotal() &&
-               existing.getUpdateFeedbackCountTotal() == latest.getUpdateFeedbackCountTotal() &&
-               existing.getDeleteAttachmentCountTotal() == latest.getDeleteAttachmentCountTotal() &&
-               existing.getDeleteFeedbackCountTotal() == latest.getDeleteFeedbackCountTotal() &&
+        return Objects.equals(existing.getExplicitGetCountTotal(), latest.getExplicitGetCountTotal()) &&
+               Objects.equals(existing.getFindCountTotal(), latest.getFindCountTotal()) &&
+               Objects.equals(existing.getUpdatePropertyCountTotal(), latest.getUpdatePropertyCountTotal()) &&
+               Objects.equals(existing.getUpdateAttachmentCountTotal(), latest.getUpdateAttachmentCountTotal()) &&
+               Objects.equals(existing.getUpdateFeedbackCountTotal(), latest.getUpdateFeedbackCountTotal()) &&
+               Objects.equals(existing.getDeleteAttachmentCountTotal(), latest.getDeleteAttachmentCountTotal()) &&
+               Objects.equals(existing.getDeleteFeedbackCountTotal(), latest.getDeleteFeedbackCountTotal()) &&
                sameProfile(existing.getExplicitGetCountProfile(), latest.getExplicitGetCountProfile()) &&
                sameProfile(existing.getFindCountProfile(), latest.getFindCountProfile()) &&
                sameProfile(existing.getUpdatePropertyCountProfile(), latest.getUpdatePropertyCountProfile()) &&

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationGroupElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
@@ -397,12 +398,12 @@ public class IntegrationGroupHandler
                                                                        userId,
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getStartDate(),
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate(),
-                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval(),
+                                                                       OpenMetadataProperty.REFRESH_TIME_INTERVAL.longValueOrDefault(registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval()),
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataCollectionQualifiedName(),
                                                                        registeredIntegrationConnectorElement.getProperties().getConnection(),
                                                                        registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
                                                                        registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
-                                                                       registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports(),
+                                                                       OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.booleanValueOrDefault(registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports()),
                                                                        serverName,
                                                                        integrationGroupGUID,
                                                                        integrationGroupName,
