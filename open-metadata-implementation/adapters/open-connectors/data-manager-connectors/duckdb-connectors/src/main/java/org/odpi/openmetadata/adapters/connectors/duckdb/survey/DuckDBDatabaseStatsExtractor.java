@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.duckdb.survey;
 
 import org.odpi.openmetadata.adapters.connectors.duckdb.ffdc.DuckDBAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.DatabaseElementAnnotation;
@@ -34,13 +35,12 @@ import java.util.UUID;
  * transaction.  Each schema is surveyed with its own set of queries, and a query that fails is logged and
  * skipped, so one problem schema leaves a gap in the results rather than ending the survey.
  */
-public class DuckDBDatabaseStatsExtractor
+public class DuckDBDatabaseStatsExtractor extends AuditLoggingBase
 {
     private final List<String>                 validDatabases;
     private final List<String>                 excludedSchemas;
     private final List<String>                 includedSchemas;
     private final SurveyActionServiceConnector surveyActionServiceConnector;
-    private final AuditLog                     auditLog;
     private final String                       surveyActionServiceName;
     private final Map<String, DatabaseDetails> databaseResults = new HashMap<>();
 
@@ -78,11 +78,12 @@ public class DuckDBDatabaseStatsExtractor
                                         AuditLog                     auditLog,
                                         String                       surveyActionServiceName)
     {
+        super(auditLog);
+
         this.validDatabases               = validDatabases;
         this.excludedSchemas              = excludedSchemas;
         this.includedSchemas              = includedSchemas;
         this.surveyActionServiceConnector = surveyActionServiceConnector;
-        this.auditLog                     = auditLog;
         this.surveyActionServiceName      = surveyActionServiceName;
     }
 
@@ -371,15 +372,12 @@ public class DuckDBDatabaseStatsExtractor
     {
         final String methodName = "logQueryFailure";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                DuckDBAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
-                                                                                         informationSought,
-                                                                                         elementName,
-                                                                                         sqlException.getClass().getName(),
-                                                                                         sqlException.getMessage()));
-        }
+        logRecord(methodName,
+                  DuckDBAuditCode.SURVEY_QUERY_FAILED.getMessageDefinition(surveyActionServiceName,
+                                                                           informationSought,
+                                                                           elementName,
+                                                                           sqlException.getClass().getName(),
+                                                                           sqlException.getMessage()));
     }
 
 

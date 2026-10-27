@@ -91,6 +91,16 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         writeExceptionTypes();
 
         /*
+         * Write the certification types for standards that organizations commonly work towards.
+         */
+        writeCertificationTypes();
+
+        /*
+         * Write the six STRIDE threats that threat models link their risks to.
+         */
+        writeStrideThreats();
+
+        /*
          * Add the perspectives for the digital product catalogs.
          */
         for (ProductPerspectiveDefinition perspectiveDefinition : ProductPerspectiveDefinition.values())
@@ -581,6 +591,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       BusinessCapabilityType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(BusinessCapabilityType.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataProperty.IMPLEMENTATION_STATUS.name,
+                                      ControlImplementationStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ControlImplementationStatus.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataProperty.BYTE_ORDERING.name,
                                       ByteOrdering.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ByteOrdering.values())));
@@ -1022,6 +1036,18 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     {
         String parentSetGUID = this.getParentSet(OpenMetadataProperty.PROPERTY_NAME.name);
 
+        /*
+         * The default value is the value to assume when the property is not set.
+         */
+        Map<String, String> additionalProperties = null;
+
+        if (openMetadataProperty.defaultValue != null)
+        {
+            additionalProperties = new HashMap<>();
+
+            additionalProperties.put(OpenMetadataProperty.DEFAULT_VALUE.name, openMetadataProperty.defaultValue);
+        }
+
         String qualifiedName = constructValidValueQualifiedName(null,
                                                                 OpenMetadataProperty.PROPERTY_NAME.name,
                                                                 null,
@@ -1048,7 +1074,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  true,
                                                                  openMetadataProperty.ordinal(),
                                                                  false,
-                                                                 null);
+                                                                 additionalProperties);
 
         assert(openMetadataProperty.descriptionGUID.equals(validValueGUID));
     }
@@ -1511,6 +1537,70 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                         null,
                                                         methodName);
             }
+        }
+    }
+
+
+    /**
+     * Creates CertificationType definitions for standards that organizations commonly work towards.
+     */
+    private void writeCertificationTypes()
+    {
+        for (CertificationTypeDefinition certificationTypeDefinition : CertificationTypeDefinition.values())
+        {
+            archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
+
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE.typeName,
+                                                                certificationTypeDefinition.getQualifiedName(),
+                                                                certificationTypeDefinition.getIdentifier(),
+                                                                certificationTypeDefinition.getDisplayName(),
+                                                                certificationTypeDefinition.getSummary(),
+                                                                certificationTypeDefinition.getDescription(),
+                                                                certificationTypeDefinition.getScope(),
+                                                                certificationTypeDefinition.getUsage(),
+                                                                certificationTypeDefinition.getDomainIdentifier(),
+                                                                certificationTypeDefinition.getURL(),
+                                                                null,
+                                                                certificationTypeDefinition.getImplications(),
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null);
+
+            assert (certificationTypeDefinition.getGUID().equals(guid));
+        }
+    }
+
+
+    /**
+     * Creates the Threat definitions for the six categories of the STRIDE threat modelling method.
+     */
+    private void writeStrideThreats()
+    {
+        for (StrideThreatDefinition strideThreatDefinition : StrideThreatDefinition.values())
+        {
+            archiveHelper.setGUID(strideThreatDefinition.getQualifiedName(), strideThreatDefinition.getGUID());
+
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.THREAT.typeName,
+                                                                strideThreatDefinition.getQualifiedName(),
+                                                                strideThreatDefinition.getIdentifier(),
+                                                                strideThreatDefinition.getDisplayName(),
+                                                                strideThreatDefinition.getSummary(),
+                                                                strideThreatDefinition.getSummary(),
+                                                                null,
+                                                                strideThreatDefinition.getUsage(),
+                                                                strideThreatDefinition.getDomainIdentifier(),
+                                                                null,
+                                                                null,
+                                                                strideThreatDefinition.getImplications(),
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null);
+
+            assert (strideThreatDefinition.getGUID().equals(guid));
         }
     }
 

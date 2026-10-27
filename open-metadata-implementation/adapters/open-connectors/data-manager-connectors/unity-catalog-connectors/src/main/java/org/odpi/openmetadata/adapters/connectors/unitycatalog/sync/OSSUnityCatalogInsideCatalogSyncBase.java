@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicEl
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
@@ -51,7 +52,7 @@ import java.util.*;
 /**
  * Common functions for the synchronizing between Egeria and Unity Catalog.
  */
-public abstract class OSSUnityCatalogInsideCatalogSyncBase
+public abstract class OSSUnityCatalogInsideCatalogSyncBase extends AuditLoggingBase
 {
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -70,7 +71,6 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     protected final UnityCatalogDeployedImplementationType deployedImplementationType;
     protected final Map<String, String>                    templates;
     protected final Map<String, Object>                    configurationProperties;
-    protected final AuditLog                               auditLog;
     protected final OpenMetadataStore                      openMetadataStore;
     protected final ExternalIdClient                       externalIdClient;
     protected final PropertyFacetClient                    propertyFacetClient;
@@ -131,6 +131,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                 AuditLog                               auditLog) throws UserNotAuthorizedException,
                                                                                                         InvalidParameterException
     {
+        super(auditLog);
         final String methodName = "OSSUnityCatalogInsideCatalogSyncBase";
 
         this.connectorName                   = connectorName;
@@ -150,7 +151,6 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.configurationProperties         = configurationProperties;
         this.excludeNames                    = excludeNames;
         this.includeNames                    = includeNames;
-        this.auditLog                        = auditLog;
 
         /*
          * Simplify access to the clients.  The metadata collection should be set up through the catalog target
@@ -686,10 +686,10 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                 return true;
             }
 
-            auditLog.logMessage(methodName, UCAuditCode.IDENTITY_MISMATCH.getMessageDefinition(connectorName,
-                                                                                               externalIdProperties.getKey(),
-                                                                                               thirdPartyExternalIdentifier,
-                                                                                               ucServerEndpoint));
+            logRecord(methodName, UCAuditCode.IDENTITY_MISMATCH.getMessageDefinition(connectorName,
+                                                                                     externalIdProperties.getKey(),
+                                                                                     thirdPartyExternalIdentifier,
+                                                                                     ucServerEndpoint));
         }
 
         return false;
@@ -716,13 +716,10 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
             elementString = element.toString();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, UCAuditCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
-                                                                                           missingPropertyName,
-                                                                                           methodName,
-                                                                                           elementString));
-        }
+        logRecord(methodName, UCAuditCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
+                                                                             missingPropertyName,
+                                                                             methodName,
+                                                                             elementString));
 
         throw new ConnectorCheckedException(UCErrorCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
                                                                                           missingPropertyName,
@@ -761,16 +758,13 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
             }
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, UCAuditCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
-                                                                                                   elementGUID,
-                                                                                                   expectedType.typeName,
-                                                                                                   actualBeanPropertyType,
-                                                                                                   expectedType.beanClass.getName(),
-                                                                                                   methodName,
-                                                                                                   elementString));
-        }
+        logRecord(methodName, UCAuditCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
+                                                                                     elementGUID,
+                                                                                     expectedType.typeName,
+                                                                                     actualBeanPropertyType,
+                                                                                     expectedType.beanClass.getName(),
+                                                                                     methodName,
+                                                                                     elementString));
 
         throw new ConnectorCheckedException(UCErrorCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
                                                                                                    elementGUID,
@@ -1005,6 +999,4 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         return null;
     }
-
-
 }

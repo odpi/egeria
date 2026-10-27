@@ -122,14 +122,11 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(methodName,
-                                    BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                                       error.getMessage()));
-            }
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
         }
     }
 
@@ -269,11 +266,11 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         }
         catch (ClassCastException | RepositoryErrorException | ConnectionCheckedException | ConnectorCheckedException error)
         {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
         }
     }
 
@@ -567,7 +564,20 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                             }
                             else if (domainIdentifier instanceof String string)
                             {
-                                securityAccessControlProperties.setDomainIdentifier(Integer.parseInt(string));
+                                try
+                                {
+                                    securityAccessControlProperties.setDomainIdentifier(Integer.parseInt(string.trim()));
+                                }
+                                catch (NumberFormatException notANumber)
+                                {
+                                    /*
+                                     * A typing error in the secrets file should not stop the rest of the collection
+                                     * from being catalogued: the control is created without a domain.
+                                     */
+                                    log.warn("Ignoring domain identifier {} for security access control {}: it is not a number",
+                                             string.replace('\r', '_').replace('\n', '_'),
+                                             controlName.replace('\r', '_').replace('\n', '_'));
+                                }
                             }
                         }
 
@@ -932,13 +942,13 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                                 }
                                 else
                                 {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.UNKNOWN_LIST_NAME.getMessageDefinition(connectorName,
-                                                                                                                                        listMemberName,
-                                                                                                                                        listName,
-                                                                                                                                        secretsCollection.getDisplayName(),
-                                                                                                                                        secretsCollectionGUID,
-                                                                                                                                        listGUID));
+                                    logRecord(methodName,
+                                              BasicFilesIntegrationConnectorsAuditCode.UNKNOWN_LIST_NAME.getMessageDefinition(connectorName,
+                                                                                                                              listMemberName,
+                                                                                                                              listName,
+                                                                                                                              secretsCollection.getDisplayName(),
+                                                                                                                              secretsCollectionGUID,
+                                                                                                                              listGUID));
                                 }
                             }
                         }
@@ -1143,11 +1153,11 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
         }
         catch (Exception error)
         {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
         }
     }
 

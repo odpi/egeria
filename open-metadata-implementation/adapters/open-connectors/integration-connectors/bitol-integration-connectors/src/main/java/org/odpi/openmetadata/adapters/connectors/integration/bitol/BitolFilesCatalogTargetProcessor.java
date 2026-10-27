@@ -83,18 +83,18 @@ public class BitolFilesCatalogTargetProcessor extends CatalogTargetProcessorBase
 
         if (directory != null)
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DIRECTORY_MONITORED.getMessageDefinition(connectorName,
-                                                                                                            directory.getPath(),
-                                                                                                            sourceName));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DIRECTORY_MONITORED.getMessageDefinition(connectorName,
+                                                                                                  directory.getPath(),
+                                                                                                  sourceName));
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
-                                                                                                                 null,
-                                                                                                                 sourceName,
-                                                                                                                 "no directory path name found in the catalog target"));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
+                                                                                                       null,
+                                                                                                       sourceName,
+                                                                                                       "no directory path name found in the catalog target"));
         }
     }
 

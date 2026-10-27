@@ -87,42 +87,42 @@ public class DataProductCataloguerIntegrationConnector extends IntegrationConnec
         {
             if (dataProduct.getId() == null)
             {
-                auditLog.logMessage(methodName,
-                                    BitolIntegrationConnectorAuditCode.DOCUMENT_WITHOUT_ID.getMessageDefinition(connectorName,
-                                                                                                                BitolDocument.DATA_PRODUCT_KIND,
-                                                                                                                getDocumentStart(rawDocument)));
+                logRecord(methodName,
+                          BitolIntegrationConnectorAuditCode.DOCUMENT_WITHOUT_ID.getMessageDefinition(connectorName,
+                                                                                                      BitolDocument.DATA_PRODUCT_KIND,
+                                                                                                      getDocumentStart(rawDocument)));
                 return;
             }
 
             BitolMappingResult result = mapper.catalogueDataProduct(dataProduct, connectorName);
 
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DOCUMENT_CATALOGUED.getMessageDefinition(connectorName,
-                                                                                                            result.getAction().name().toLowerCase(),
-                                                                                                            result.getElementGUID(),
-                                                                                                            result.getKind(),
-                                                                                                            result.getDocumentId(),
-                                                                                                            result.getDocumentVersion()));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DOCUMENT_CATALOGUED.getMessageDefinition(connectorName,
+                                                                                                  result.getAction().name().toLowerCase(),
+                                                                                                  result.getElementGUID(),
+                                                                                                  result.getKind(),
+                                                                                                  result.getDocumentId(),
+                                                                                                  result.getDocumentVersion()));
 
             for (String warning : result.getWarnings())
             {
-                auditLog.logMessage(methodName,
-                                    BitolIntegrationConnectorAuditCode.DOCUMENT_MAPPING_WARNING.getMessageDefinition(connectorName,
-                                                                                                                     result.getKind(),
-                                                                                                                     result.getDocumentId(),
-                                                                                                                     result.getDocumentVersion(),
-                                                                                                                     warning));
+                logRecord(methodName,
+                          BitolIntegrationConnectorAuditCode.DOCUMENT_MAPPING_WARNING.getMessageDefinition(connectorName,
+                                                                                                           result.getKind(),
+                                                                                                           result.getDocumentId(),
+                                                                                                           result.getDocumentVersion(),
+                                                                                                           warning));
             }
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  rawDocument,
-                                  error);
+            logExceptionRecord(methodName,
+                               BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                               rawDocument,
+                               error);
         }
     }
 

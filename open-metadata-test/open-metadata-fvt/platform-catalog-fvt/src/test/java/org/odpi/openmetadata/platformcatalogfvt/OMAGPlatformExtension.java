@@ -494,9 +494,9 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * the platform it is running on.
      * <br>
      * That address is the server's {@code localServerURL}, and it is what reaches a connector as
-     * {@code getLocalServerURL()}.  Varying it is how {@link PlatformCatalogLocalServerURLFVT} puts the
-     * suite into the shape of a deployment where the integration daemon and the metadata access store are
-     * on different platforms, without needing a second platform to do it.
+     * {@code getLocalServerURL()}.  {@link PlatformCatalogLocalServerURLFVT} sets it to another spelling
+     * of this platform's address to check that the connector recognises an alias of the same platform
+     * rather than cataloguing it twice.
      *
      * @param configurationClient client for the server being configured
      * @param organizationName organization name to store in the configuration document - may be null

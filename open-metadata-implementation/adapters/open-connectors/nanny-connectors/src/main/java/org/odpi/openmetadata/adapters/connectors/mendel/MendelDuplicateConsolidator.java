@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.mendel;
 
 import org.odpi.openmetadata.adapters.connectors.mendel.ffdc.MendelAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationExplorerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
@@ -66,12 +67,11 @@ import java.util.Set;
  * linked to each of its members with a ConsolidatedDuplicateLink relationship.  That combination causes the
  * retrieval processing to return the consolidated element in place of the members.
  */
-public class MendelDuplicateConsolidator
+public class MendelDuplicateConsolidator extends AuditLoggingBase
 {
     private final IntegrationContext integrationContext;
     private final PropertyHelper     propertyHelper;
     private final String             connectorName;
-    private final AuditLog           auditLog;
 
     /**
      * The relationships that describe the duplicate processing itself are not copied to the consolidated element.
@@ -114,10 +114,11 @@ public class MendelDuplicateConsolidator
                                        String             connectorName,
                                        AuditLog           auditLog)
     {
+        super(auditLog);
+
         this.integrationContext = integrationContext;
         this.propertyHelper     = propertyHelper;
         this.connectorName      = connectorName;
-        this.auditLog           = auditLog;
     }
 
 
@@ -189,11 +190,11 @@ public class MendelDuplicateConsolidator
 
         this.combineRelationships(consolidatedElementGUID, clusterMembers);
 
-        auditLog.logMessage(methodName,
-                            MendelAuditCode.DUPLICATES_CONSOLIDATED.getMessageDefinition(connectorName,
-                                                                                         consolidatedElementGUID,
-                                                                                         Integer.toString(clusterMembers.size()),
-                                                                                         latestMember.getType().getTypeName()));
+        logRecord(methodName,
+                  MendelAuditCode.DUPLICATES_CONSOLIDATED.getMessageDefinition(connectorName,
+                                                                               consolidatedElementGUID,
+                                                                               Integer.toString(clusterMembers.size()),
+                                                                               latestMember.getType().getTypeName()));
     }
 
 
@@ -350,12 +351,12 @@ public class MendelDuplicateConsolidator
                              * only an earlier member's type defines has nowhere to go.  Storing it anyway would
                              * have the repository reject the whole consolidation.
                              */
-                            auditLog.logMessage(methodName,
-                                                MendelAuditCode.INCOMPATIBLE_PROPERTY.getMessageDefinition(connectorName,
-                                                                                                           propertyName,
-                                                                                                           this.getValueAsString(propertyValue),
-                                                                                                           clusterMember.getElementGUID(),
-                                                                                                           consolidatedTypeName));
+                            logRecord(methodName,
+                                      MendelAuditCode.INCOMPATIBLE_PROPERTY.getMessageDefinition(connectorName,
+                                                                                                 propertyName,
+                                                                                                 this.getValueAsString(propertyValue),
+                                                                                                 clusterMember.getElementGUID(),
+                                                                                                 consolidatedTypeName));
                         }
                         else if (! valuesTaken.containsKey(propertyName))
                         {
@@ -373,13 +374,13 @@ public class MendelDuplicateConsolidator
                              */
                             if (! OpenMetadataProperty.QUALIFIED_NAME.name.equals(propertyName))
                             {
-                                auditLog.logMessage(methodName,
-                                                    MendelAuditCode.CONFLICTING_PROPERTY.getMessageDefinition(connectorName,
-                                                                                                              this.getValueAsString(propertyValue),
-                                                                                                              clusterMember.getElementGUID(),
-                                                                                                              propertyName,
-                                                                                                              valueSuppliers.get(propertyName),
-                                                                                                              this.getValueAsString(valuesTaken.get(propertyName))));
+                                logRecord(methodName,
+                                          MendelAuditCode.CONFLICTING_PROPERTY.getMessageDefinition(connectorName,
+                                                                                                    this.getValueAsString(propertyValue),
+                                                                                                    clusterMember.getElementGUID(),
+                                                                                                    propertyName,
+                                                                                                    valueSuppliers.get(propertyName),
+                                                                                                    this.getValueAsString(valuesTaken.get(propertyName))));
                             }
                         }
                     }
@@ -443,11 +444,11 @@ public class MendelDuplicateConsolidator
                     {
                         if (! this.isValidClassification(classificationName, latestMember))
                         {
-                            auditLog.logMessage(methodName,
-                                                MendelAuditCode.INCOMPATIBLE_CLASSIFICATION.getMessageDefinition(connectorName,
-                                                                                                                 classificationName,
-                                                                                                                 clusterMember.getElementGUID(),
-                                                                                                                 latestMember.getType().getTypeName()));
+                            logRecord(methodName,
+                                      MendelAuditCode.INCOMPATIBLE_CLASSIFICATION.getMessageDefinition(connectorName,
+                                                                                                       classificationName,
+                                                                                                       clusterMember.getElementGUID(),
+                                                                                                       latestMember.getType().getTypeName()));
                             continue;
                         }
 
@@ -460,13 +461,13 @@ public class MendelDuplicateConsolidator
                     else if (! this.samePropertyValues(classificationTaken.getClassificationProperties(),
                                                         classification.getClassificationProperties()))
                     {
-                        auditLog.logMessage(methodName,
-                                            MendelAuditCode.CONFLICTING_CLASSIFICATION.getMessageDefinition(connectorName,
-                                                                                                             classificationName,
-                                                                                                             this.getPropertiesAsString(classification.getClassificationProperties()),
-                                                                                                             clusterMember.getElementGUID(),
-                                                                                                             classificationSuppliers.get(classificationName),
-                                                                                                             this.getPropertiesAsString(classificationTaken.getClassificationProperties())));
+                        logRecord(methodName,
+                                  MendelAuditCode.CONFLICTING_CLASSIFICATION.getMessageDefinition(connectorName,
+                                                                                                   classificationName,
+                                                                                                   this.getPropertiesAsString(classification.getClassificationProperties()),
+                                                                                                   clusterMember.getElementGUID(),
+                                                                                                   classificationSuppliers.get(classificationName),
+                                                                                                   this.getPropertiesAsString(classificationTaken.getClassificationProperties())));
                     }
                 }
             }
@@ -522,12 +523,12 @@ public class MendelDuplicateConsolidator
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    MendelAuditCode.INCOMPATIBLE_CLASSIFICATION_PROPERTY.getMessageDefinition(connectorName,
-                                                                                                              memberProperty.getKey(),
-                                                                                                              this.getValueAsString(memberProperty.getValue()),
-                                                                                                              classification.getClassificationName(),
-                                                                                                              memberGUID));
+                logRecord(methodName,
+                          MendelAuditCode.INCOMPATIBLE_CLASSIFICATION_PROPERTY.getMessageDefinition(connectorName,
+                                                                                                    memberProperty.getKey(),
+                                                                                                    this.getValueAsString(memberProperty.getValue()),
+                                                                                                    classification.getClassificationName(),
+                                                                                                    memberGUID));
             }
         }
 
@@ -820,12 +821,12 @@ public class MendelDuplicateConsolidator
 
             if (! singletonEndsUsed.add(singletonKey))
             {
-                auditLog.logMessage(methodName,
-                                    MendelAuditCode.CONFLICTING_RELATIONSHIP.getMessageDefinition(connectorName,
-                                                                                                  relationshipTypeName,
-                                                                                                  memberGUID,
-                                                                                                  otherElementGUID,
-                                                                                                  consolidatedElementGUID));
+                logRecord(methodName,
+                          MendelAuditCode.CONFLICTING_RELATIONSHIP.getMessageDefinition(connectorName,
+                                                                                        relationshipTypeName,
+                                                                                        memberGUID,
+                                                                                        otherElementGUID,
+                                                                                        consolidatedElementGUID));
                 return;
             }
         }

@@ -23,13 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UsageActivityProperties extends ClassificationBeanProperties
 {
-    private long explicitGetCount = 0L;
-    private long findCount = 0L;
-    private long updatePropertyCount = 0L;
-    private long updateAttachmentCount = 0L;
-    private long updateFeedbackCount = 0L;
-    private long deleteAttachmentCount = 0L;
-    private long deleteFeedbackCount = 0L;
+    private Long explicitGetCount = null;
+    private Long findCount = null;
+    private Long updatePropertyCount = null;
+    private Long updateAttachmentCount = null;
+    private Long updateFeedbackCount = null;
+    private Long deleteAttachmentCount = null;
+    private Long deleteFeedbackCount = null;
 
 
     /**
@@ -69,7 +69,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getExplicitGetCount()
+    public Long getExplicitGetCount()
     {
         return explicitGetCount;
     }
@@ -80,7 +80,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param explicitGetCount long
      */
-    public void setExplicitGetCount(long explicitGetCount)
+    public void setExplicitGetCount(Long explicitGetCount)
     {
         this.explicitGetCount = explicitGetCount;
     }
@@ -91,7 +91,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getFindCount()
+    public Long getFindCount()
     {
         return findCount;
     }
@@ -102,7 +102,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param findCount long
      */
-    public void setFindCount(long findCount)
+    public void setFindCount(Long findCount)
     {
         this.findCount = findCount;
     }
@@ -113,7 +113,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getUpdatePropertyCount()
+    public Long getUpdatePropertyCount()
     {
         return updatePropertyCount;
     }
@@ -124,7 +124,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param updatePropertyCount long
      */
-    public void setUpdatePropertyCount(long updatePropertyCount)
+    public void setUpdatePropertyCount(Long updatePropertyCount)
     {
         this.updatePropertyCount = updatePropertyCount;
     }
@@ -135,7 +135,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getUpdateAttachmentCount()
+    public Long getUpdateAttachmentCount()
     {
         return updateAttachmentCount;
     }
@@ -146,7 +146,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param updateAttachmentCount long
      */
-    public void setUpdateAttachmentCount(long updateAttachmentCount)
+    public void setUpdateAttachmentCount(Long updateAttachmentCount)
     {
         this.updateAttachmentCount = updateAttachmentCount;
     }
@@ -157,7 +157,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getUpdateFeedbackCount()
+    public Long getUpdateFeedbackCount()
     {
         return updateFeedbackCount;
     }
@@ -168,7 +168,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param updateFeedbackCount long
      */
-    public void setUpdateFeedbackCount(long updateFeedbackCount)
+    public void setUpdateFeedbackCount(Long updateFeedbackCount)
     {
         this.updateFeedbackCount = updateFeedbackCount;
     }
@@ -179,7 +179,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getDeleteAttachmentCount()
+    public Long getDeleteAttachmentCount()
     {
         return deleteAttachmentCount;
     }
@@ -190,7 +190,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param deleteAttachmentCount long
      */
-    public void setDeleteAttachmentCount(long deleteAttachmentCount)
+    public void setDeleteAttachmentCount(Long deleteAttachmentCount)
     {
         this.deleteAttachmentCount = deleteAttachmentCount;
     }
@@ -201,7 +201,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getDeleteFeedbackCount()
+    public Long getDeleteFeedbackCount()
     {
         return deleteFeedbackCount;
     }
@@ -212,7 +212,7 @@ public class UsageActivityProperties extends ClassificationBeanProperties
      *
      * @param deleteFeedbackCount long
      */
-    public void setDeleteFeedbackCount(long deleteFeedbackCount)
+    public void setDeleteFeedbackCount(Long deleteFeedbackCount)
     {
         this.deleteFeedbackCount = deleteFeedbackCount;
     }
@@ -260,13 +260,13 @@ public class UsageActivityProperties extends ClassificationBeanProperties
             return false;
         }
         UsageActivityProperties that = (UsageActivityProperties) objectToCompare;
-        return explicitGetCount == that.explicitGetCount &&
-               findCount == that.findCount &&
-               updatePropertyCount == that.updatePropertyCount &&
-               updateAttachmentCount == that.updateAttachmentCount &&
-               updateFeedbackCount == that.updateFeedbackCount &&
-               deleteAttachmentCount == that.deleteAttachmentCount &&
-               deleteFeedbackCount == that.deleteFeedbackCount;
+        return Objects.equals(explicitGetCount, that.explicitGetCount) &&
+               Objects.equals(findCount, that.findCount) &&
+               Objects.equals(updatePropertyCount, that.updatePropertyCount) &&
+               Objects.equals(updateAttachmentCount, that.updateAttachmentCount) &&
+               Objects.equals(updateFeedbackCount, that.updateFeedbackCount) &&
+               Objects.equals(deleteAttachmentCount, that.deleteAttachmentCount) &&
+               Objects.equals(deleteFeedbackCount, that.deleteFeedbackCount);
     }
 
 

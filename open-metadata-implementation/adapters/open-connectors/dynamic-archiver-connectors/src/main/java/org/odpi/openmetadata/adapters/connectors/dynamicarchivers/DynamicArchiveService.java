@@ -101,7 +101,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    public synchronized void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
 

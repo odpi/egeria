@@ -50,7 +50,7 @@ The local server is creating a new cohort registry store. The local server shoul
 
 **User action**
 
-Verify that the local server is connecting to the open metadata repository cohort forthe first time.
+Verify that the local server is connecting to the open metadata repository cohort for the first time.
 
 
 ----

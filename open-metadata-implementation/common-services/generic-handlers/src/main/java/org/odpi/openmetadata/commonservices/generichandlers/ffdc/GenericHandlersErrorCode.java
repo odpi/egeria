@@ -135,6 +135,17 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                        "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-400-017 - The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}
+     */
+    PLACEHOLDER_NOT_A_NUMBER(400, "OMAG-GENERIC-HANDLERS-400-017",
+                             "The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}",
+                             "The system cannot create the element from the template because the value substituted into a numeric " +
+                                     "property can not be stored in it.",
+                             "Correct the placeholder property values supplied on the request so that the {0} property resolves to " +
+                                     "a whole number (a date is milliseconds since the epoch), or correct the template.",
+                             "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-403-001 - The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it
      * was not created by the requesting user {5}
      */

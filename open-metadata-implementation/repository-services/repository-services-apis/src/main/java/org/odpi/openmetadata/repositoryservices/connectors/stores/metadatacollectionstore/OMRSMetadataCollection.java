@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.EndMatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
@@ -197,6 +199,67 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
         }
 
         return null;
+    }
+
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the metadata collection.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition)
+    {
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition);
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the metadata collection.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param additionalInformation supporting information
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition,
+                             String                    additionalInformation)
+    {
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition, additionalInformation);
+    }
+
+
+    /**
+     * Log an audit log record for an exception detected by the metadata collection.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param exception the exception associated with the message
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      Throwable                 exception)
+    {
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, exception);
+    }
+
+
+    /**
+     * Log an audit log record for an exception detected by the metadata collection.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param additionalInformation supporting information
+     * @param exception the exception associated with the message
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      String                    additionalInformation,
+                                      Throwable                 exception)
+    {
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, additionalInformation, exception);
     }
 
 
@@ -3640,12 +3703,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
             {
                 log.error("Default saveInstanceReferenceCopies received invalid entity", exception);
 
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
-                                                                                                           exception.getReportedErrorMessage()),
-                                          exception);
-                }
+                logExceptionRecord(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                    exception.getReportedErrorMessage()),
+                                   exception);
 
                 throw new InvalidEntityException(OMRSErrorCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
                                                                                                       exception.getReportedErrorMessage()),
@@ -3656,12 +3716,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
             {
                 log.error("Default saveInstanceReferenceCopies received invalid relationship", exception);
 
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
-                                                                                                           exception.getReportedErrorMessage()),
-                                          exception);
-                }
+                logExceptionRecord(methodName, OMRSAuditCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
+                                                                                                    exception.getReportedErrorMessage()),
+                                   exception);
 
                 throw new InvalidRelationshipException(OMRSErrorCode.INVALID_INSTANCES.getMessageDefinition(exception.getClass().getName(),
                                                                                                             exception.getReportedErrorMessage()),

@@ -89,12 +89,12 @@ public class BitolDocumentPublisherCatalogTargetProcessor extends CatalogTargetP
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                               error);
         }
     }
 

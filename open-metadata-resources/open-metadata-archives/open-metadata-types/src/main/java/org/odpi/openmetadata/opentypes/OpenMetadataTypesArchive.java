@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ControlImplementationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -161,6 +162,272 @@ public class OpenMetadataTypesArchive
         update0540DataValueAssignment();
         update0750LineageRelationship();
         update0210DataSetContent();
+        add0482StatementsOfApplicability();
+        add0665SecurityAnnotations();
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0665SecurityAnnotations()
+    {
+        this.archiveBuilder.addEntityDef(getSecurityFindingAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getVulnerabilityAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getPenetrationTestFindingAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getSecurityPostureAnnotationEntity());
+    }
+
+
+    /**
+     * A weakness found in a resource by a security test, such as a vulnerability scan or a penetration test.
+     *
+     * @return entity definition
+     */
+    private EntityDef getSecurityFindingAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_FINDING_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CVSS_SCORE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CVSS_VECTOR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VULNERABILITY_IDENTIFIERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WEAKNESS_IDENTIFIERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AFFECTED_LOCATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EVIDENCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REMEDIATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPLOIT_AVAILABLE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * A known vulnerability in the software used by a resource, typically found by a vulnerability scan.
+     *
+     * @return entity definition
+     */
+    private EntityDef getVulnerabilityAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.VULNERABILITY_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_FINDING_ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PACKAGE_URL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INSTALLED_VERSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FIXED_VERSION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATCH_AVAILABLE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * A weakness that a penetration test was able to exploit, with how it was exploited and what was gained.
+     *
+     * @return entity definition
+     */
+    private EntityDef getPenetrationTestFindingAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.PENETRATION_TEST_FINDING_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SECURITY_FINDING_ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACK_VECTOR));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACK_TECHNIQUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRIVILEGES_GAINED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPROMISED_RESOURCES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REPRODUCTION_STEPS));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * A summary of the findings and coverage of one run of a security test.
+     *
+     * @return entity definition
+     */
+    private EntityDef getSecurityPostureAnnotationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_POSTURE_ANNOTATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FINDING_COUNTS_BY_SEVERITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCES_IN_SCOPE_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCES_TESTED_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEW_FINDING_COUNT));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOLVED_FINDING_COUNT));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0482StatementsOfApplicability()
+    {
+        this.archiveBuilder.addEnumDef(getControlImplementationStatusEnum());
+        this.archiveBuilder.addEntityDef(getStatementOfApplicabilityEntity());
+        this.archiveBuilder.addRelationshipDef(getControlApplicabilityRelationship());
+    }
+
+
+    /**
+     * ControlImplementationStatus records how far a control listed in a statement of applicability has been implemented.
+     *
+     * @return enum definition
+     */
+    private EnumDef getControlImplementationStatusEnum()
+    {
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ControlImplementationStatus.getOpenTypeGUID(),
+                                                        ControlImplementationStatus.getOpenTypeName(),
+                                                        ControlImplementationStatus.getOpenTypeDescription(),
+                                                        ControlImplementationStatus.getOpenTypeDescriptionGUID(),
+                                                        ControlImplementationStatus.getOpenTypeDescriptionWiki());
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        for (ControlImplementationStatus controlImplementationStatus : ControlImplementationStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(controlImplementationStatus.getOrdinal(),
+                                                         controlImplementationStatus.name(),
+                                                         controlImplementationStatus.getDescription(),
+                                                         controlImplementationStatus.getDescriptionGUID());
+
+            elementDefs.add(elementDef);
+
+            if (controlImplementationStatus.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    /**
+     * A StatementOfApplicability records which controls from a standard - such as the Annex A controls of
+     * ISO/IEC 27001 - apply to an organization, why, and how far each one has been implemented.  The controls
+     * are linked to it with the ControlApplicability relationship.  It is an AuthoredReferenceable so that its
+     * authors, version and content status (for example, DRAFT then APPROVED) are recorded as it is reviewed
+     * for each audit.
+     *
+     * @return entity definition
+     */
+    private EntityDef getStatementOfApplicabilityEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.STATEMENT_OF_APPLICABILITY,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.AUTHORED_REFERENCEABLE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REVIEW_DATE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * ControlApplicability links a statement of applicability to a control defined by a standard, and records
+     * whether the control applies, why, and how far it has been implemented.
+     *
+     * @return relationship definition
+     */
+    private RelationshipDef getControlApplicabilityRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTROL_APPLICABILITY_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "statementsOfApplicability";
+        final String                     end1AttributeDescription     = "The statements of applicability that assess whether this control applies.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.STATEMENT_OF_APPLICABILITY.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "assessedControls";
+        final String                     end2AttributeDescription     = "The controls from a standard whose applicability is recorded in the statement.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_APPLICABLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.JUSTIFICATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INCLUSION_REASONS));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.IMPLEMENTATION_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IMPLEMENTATION_DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REVIEW_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
     }
 
     /*

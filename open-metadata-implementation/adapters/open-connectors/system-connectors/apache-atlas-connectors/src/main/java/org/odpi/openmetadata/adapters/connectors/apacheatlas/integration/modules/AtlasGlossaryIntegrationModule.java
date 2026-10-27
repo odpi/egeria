@@ -126,26 +126,23 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
         /*
          * Record the configuration
          */
-        if (auditLog != null)
+        if (fixedEgeriaGlossaryQualifiedName == null)
         {
-            if (fixedEgeriaGlossaryQualifiedName == null)
-            {
-                auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_ALL_EGERIA_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL));
-            }
-            else
-            {
-                auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_SPECIFIC_EGERIA_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL,
-                                                                                                                                                  fixedEgeriaGlossaryQualifiedName));
-            }
+            logRecord(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_ALL_EGERIA_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL));
+        }
+        else
+        {
+            logRecord(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_SPECIFIC_EGERIA_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL,
+                                                                                                                                    fixedEgeriaGlossaryQualifiedName));
+        }
 
-            if (atlasGlossaryName == null)
-            {
-                auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_ALL_ATLAS_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL));
-            }
-            else
-            {
-                auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_SPECIFIC_ATLAS_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL, atlasGlossaryName));
-            }
+        if (atlasGlossaryName == null)
+        {
+            logRecord(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_ALL_ATLAS_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL));
+        }
+        else
+        {
+            logRecord(methodName, AtlasIntegrationAuditCode.CONNECTOR_CONFIGURATION_SPECIFIC_ATLAS_GLOSSARIES.getMessageDefinition(connectorName, targetRootURL, atlasGlossaryName));
         }
 
         /*
@@ -218,12 +215,9 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     }
                     else
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                AtlasIntegrationAuditCode.UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY.getMessageDefinition(connectorName,
-                                                                                                                                  fixedEgeriaGlossaryQualifiedName));
-                        }
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UNABLE_TO_RETRIEVE_EGERIA_GLOSSARY.getMessageDefinition(connectorName,
+                                                                                                                    fixedEgeriaGlossaryQualifiedName));
                     }
                 }
             }
@@ -286,26 +280,20 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                  */
                 if (requestedAtlasGlossaryMissing)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY.getMessageDefinition(connectorName,
-                                                                                                                             atlasGlossaryName));
-                    }
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.UNABLE_TO_RETRIEVE_ATLAS_GLOSSARY.getMessageDefinition(connectorName,
+                                                                                                               atlasGlossaryName));
                 }
             }
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                     error.getClass().getName(),
@@ -379,15 +367,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
             {
                 final String methodName = "processEvent";
 
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
             }
         }
     }
@@ -504,9 +489,9 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     /*
                      * Something has caused the external identifier for this entity to disappear
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.EGERIA_GUID_MISSING.getMessageDefinition("Glossary",
-                                                                                                           egeriaGlossary.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.EGERIA_GUID_MISSING.getMessageDefinition("Glossary",
+                                                                                                 egeriaGlossary.getElementHeader().getGUID()));
                 }
             }
             else
@@ -603,14 +588,14 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 {
                     updateAtlasGlossaryTermInEgeria(atlasClient.getEntityByGUID(atlasGlossaryTermGUID), egeriaGlossaryTerm);
                 }
-                else if (auditLog != null)
+                else
                 {
                     /*
                      * Something has caused the external identifier for this entity to disappear
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.EGERIA_GUID_MISSING.getMessageDefinition(egeriaGlossaryTermTypeName,
-                                                                                                           egeriaGlossaryTerm.getElementHeader().getGUID()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.EGERIA_GUID_MISSING.getMessageDefinition(egeriaGlossaryTermTypeName,
+                                                                                                 egeriaGlossaryTerm.getElementHeader().getGUID()));
                 }
             }
             else
@@ -667,13 +652,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 /*
                  * The Egeria glossary has been unilaterally deleted - so remove the atlas equivalent.
                  */
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.EGERIA_GLOSSARY_DELETED.getMessageDefinition(egeriaGlossaryGUID,
-                                                                                                               this.getAtlasStringProperty(atlasGlossaryElement.getEntity().getAttributes(),
-                                                                                                                                      atlasNamePropertyName)));
-                }
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.EGERIA_GLOSSARY_DELETED.getMessageDefinition(egeriaGlossaryGUID,
+                                                                                                 this.getAtlasStringProperty(atlasGlossaryElement.getEntity().getAttributes(),
+                                                                                                                        atlasNamePropertyName)));
             }
 
             if (egeriaGlossary == null)
@@ -702,13 +684,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                  * First remove the GUID for the deleted glossary from the Apache Atlas Glossary
                  * and then make a new copy the Atlas glossary in the open metadata ecosystem.
                  */
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_GLOSSARY.getMessageDefinition(egeriaGlossaryGUID,
-                                                                                                                 this.getAtlasStringProperty(atlasGlossaryElement.getEntity().getAttributes(), atlasNamePropertyName),
-                                                                                                                 connectorName));
-                }
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.REPLACING_EGERIA_GLOSSARY.getMessageDefinition(egeriaGlossaryGUID,
+                                                                                                   this.getAtlasStringProperty(atlasGlossaryElement.getEntity().getAttributes(), atlasNamePropertyName),
+                                                                                                   connectorName));
 
                 this.removeEgeriaGUID(atlasGlossaryElement);
             }
@@ -790,10 +769,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
             }
             catch (InvalidParameterException missingTerm)
             {
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.EGERIA_GLOSSARY_TERM_DELETED.getMessageDefinition(egeriaTermGUID,
-                                                                                                                getAtlasStringProperty(atlasGlossaryTerm.getEntity().getAttributes(),
-                                                                                                                                  atlasQualifiedNamePropertyName)));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.EGERIA_GLOSSARY_TERM_DELETED.getMessageDefinition(egeriaTermGUID,
+                                                                                                      getAtlasStringProperty(atlasGlossaryTerm.getEntity().getAttributes(),
+                                                                                                                        atlasQualifiedNamePropertyName)));
             }
 
             if (egeriaGlossaryTerm == null)
@@ -820,13 +799,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                  * First remove the GUID for the deleted glossary from the Apache Atlas Glossary
                  * and then make a new copy the Atlas glossary in the open metadata ecosystem.
                  */
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_GLOSSARY_TERM.getMessageDefinition(egeriaTermGUID,
-                                                                                                                      this.getAtlasStringProperty(atlasGlossaryTerm.getEntity().getAttributes(), atlasNamePropertyName),
-                                                                                                                      connectorName));
-                }
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.REPLACING_EGERIA_GLOSSARY_TERM.getMessageDefinition(egeriaTermGUID,
+                                                                                                        this.getAtlasStringProperty(atlasGlossaryTerm.getEntity().getAttributes(), atlasNamePropertyName),
+                                                                                                        connectorName));
 
                 this.removeEgeriaGUID(atlasGlossaryTerm);
             }
@@ -915,12 +891,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
         String atlasGlossaryGUID = atlasClient.addEntity(atlasGlossary.getEntity());
 
-        auditLog.logMessage(methodName,
-                            AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                  egeriaGlossaryTypeName,
-                                                                                                  egeriaGlossary.getElementHeader().getGUID(),
-                                                                                                  atlasGlossary.getEntity().getTypeName(),
-                                                                                                  atlasGlossaryGUID));
+        logRecord(methodName,
+                  AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                        egeriaGlossaryTypeName,
+                                                                                        egeriaGlossary.getElementHeader().getGUID(),
+                                                                                        atlasGlossary.getEntity().getTypeName(),
+                                                                                        atlasGlossaryGUID));
 
         if (egeriaGlossary.getProperties() instanceof GlossaryProperties glossaryProperties)
         {
@@ -1001,11 +977,11 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 this.updateExternalIdentifierAfterAtlasUpdate(egeriaGlossaryElement,
                                                               latestAtlasGlossary.getEntity());
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.UPDATING_ATLAS_ENTITY.getMessageDefinition(connectorName,
-                                                                                                         atlasGlossaryTypeName,
-                                                                                                         egeriaGlossaryElement.getElementHeader().getGUID(),
-                                                                                                         atlasGlossary.getEntity().getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.UPDATING_ATLAS_ENTITY.getMessageDefinition(connectorName,
+                                                                                               atlasGlossaryTypeName,
+                                                                                               egeriaGlossaryElement.getElementHeader().getGUID(),
+                                                                                               atlasGlossary.getEntity().getGuid()));
 
                 return latestAtlasGlossary;
             }
@@ -1104,12 +1080,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
 
         String atlasGlossaryTermGUID = atlasClient.addEntity(atlasGlossaryTerm.getEntity());
 
-        auditLog.logMessage(methodName,
-                            AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                  egeriaGlossaryTermTypeName,
-                                                                                                  egeriaGlossaryTerm.getElementHeader().getGUID(),
-                                                                                                  atlasGlossaryTerm.getEntity().getTypeName(),
-                                                                                                  atlasGlossaryTermGUID));
+        logRecord(methodName,
+                  AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                        egeriaGlossaryTermTypeName,
+                                                                                        egeriaGlossaryTerm.getElementHeader().getGUID(),
+                                                                                        atlasGlossaryTerm.getEntity().getTypeName(),
+                                                                                        atlasGlossaryTermGUID));
 
         saveEgeriaGUIDInAtlas(atlasGlossaryTermGUID,
                                   egeriaGlossaryTerm.getElementHeader().getGUID(),
@@ -1193,11 +1169,11 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 this.updateExternalIdentifierAfterAtlasUpdate(egeriaGlossaryTerm,
                                                               latestAtlasGlossaryTerm.getEntity());
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.UPDATING_ATLAS_ENTITY.getMessageDefinition(connectorName,
-                                                                                                         atlasGlossaryTermTypeName,
-                                                                                                         egeriaGlossaryTerm.getElementHeader().getGUID(),
-                                                                                                         atlasGlossaryTerm.getEntity().getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.UPDATING_ATLAS_ENTITY.getMessageDefinition(connectorName,
+                                                                                               atlasGlossaryTermTypeName,
+                                                                                               egeriaGlossaryTerm.getElementHeader().getGUID(),
+                                                                                               atlasGlossaryTerm.getEntity().getGuid()));
 
                 return latestAtlasGlossaryTerm;
             }
@@ -1261,11 +1237,11 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               egeriaGlossaryTypeName,
-                                                                                                               egeriaGlossaryGUID,
-                                                                                                               atlasGlossaryEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     egeriaGlossaryTypeName,
+                                                                                                     egeriaGlossaryGUID,
+                                                                                                     atlasGlossaryEntity.getEntity().getGuid()));
                     removeEgeriaGUID(atlasGlossaryEntity);
                     egeriaGlossaryGUID = createAtlasGlossaryInEgeria(atlasGlossaryEntity);
                 }
@@ -1329,12 +1305,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          egeriaGlossaryTypeName,
-                                                                                                          egeriaGlossaryGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                egeriaGlossaryTypeName,
+                                                                                                egeriaGlossaryGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
                 /*
                  * Save the egeriaGlossaryGUID from Egeria in the Atlas Glossary's AdditionalAttributes.
                  */
@@ -1382,12 +1358,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                 {
                     GlossaryProperties egeriaGlossaryProperties = this.getEgeriaGlossaryProperties(atlasGlossaryEntity);
 
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                              atlasEntity.getTypeName(),
-                                                                                                              atlasEntity.getGuid(),
-                                                                                                              egeriaGlossaryTypeName,
-                                                                                                              egeriaGlossaryGUID));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                    atlasEntity.getTypeName(),
+                                                                                                    atlasEntity.getGuid(),
+                                                                                                    egeriaGlossaryTypeName,
+                                                                                                    egeriaGlossaryGUID));
 
                     glossaryClient.updateCollection(egeriaGlossaryGUID,
                                                     glossaryClient.getUpdateOptions(false),
@@ -1444,12 +1420,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          egeriaGlossaryTermTypeName,
-                                                                                                          egeriaTermGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                egeriaGlossaryTermTypeName,
+                                                                                                egeriaTermGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaTermGUID,
@@ -1500,12 +1476,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                               glossaryClient.getUpdateOptions(true),
                                                               glossaryTermProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  egeriaGlossaryTermTypeName,
-                                                                                                                  egeriaGlossaryTermGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        egeriaGlossaryTermTypeName,
+                                                                                                        egeriaGlossaryTermGUID));
                     }
 
 
@@ -1551,16 +1527,13 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                     /*
                      * The glossary is not found - ignore the element for now - it is probably a timing window, and it is about to be deleted.
                      */
-                    if (auditLog != null)
-                    {
-                        final String methodName = "getEgeriaDestinationGlossaryForElement";
-                        auditLog.logException(methodName,
-                                              AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  notFound.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  notFound.getMessage()),
-                                              notFound);
-                    }
+                    final String methodName = "getEgeriaDestinationGlossaryForElement";
+                    logExceptionRecord(methodName,
+                                       AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                           notFound.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           notFound.getMessage()),
+                                       notFound);
                 }
             }
         }
@@ -1625,15 +1598,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
             /*
              * The Egeria glossary is not found - ignore the element for now - it is probably a timing window and the term is about to be deleted.
              */
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          notFound.getClass().getName(),
-                                                                                                          methodName + "(" + egeriaGlossary.getElementHeader().getGUID() + ")",
-                                                                                                          notFound.getMessage()),
-                                      notFound);
-            }
+            logExceptionRecord(methodName,
+                               AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   notFound.getClass().getName(),
+                                                                                                   methodName + "(" + egeriaGlossary.getElementHeader().getGUID() + ")",
+                                                                                                   notFound.getMessage()),
+                               notFound);
         }
 
         return null;
@@ -1715,12 +1685,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          egeriaGlossaryCategoryTypeName,
-                                                                                                          egeriaCategoryGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                egeriaGlossaryCategoryTypeName,
+                                                                                                egeriaCategoryGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaCategoryGUID,
@@ -1791,17 +1761,12 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                      error);
-
-
-            }
+            logExceptionRecord(methodName,
+                               AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                     error.getClass().getName(),

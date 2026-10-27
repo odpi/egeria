@@ -73,12 +73,12 @@ public class PepysTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
         {
             Endpoint endpoint = connection.getEndpoint();
 
-            if ((endpoint != null) && (auditLog != null))
+            if (endpoint != null)
             {
-                auditLog.logMessage(methodName,
-                                    PepysAuditCode.LISTENING_TO_TOPIC.getMessageDefinition(connectorName,
-                                                                                           endpoint.getNetworkAddress(),
-                                                                                           connection.getDisplayName()));
+                logRecord(methodName,
+                          PepysAuditCode.LISTENING_TO_TOPIC.getMessageDefinition(connectorName,
+                                                                                 endpoint.getNetworkAddress(),
+                                                                                 connection.getDisplayName()));
             }
         }
 

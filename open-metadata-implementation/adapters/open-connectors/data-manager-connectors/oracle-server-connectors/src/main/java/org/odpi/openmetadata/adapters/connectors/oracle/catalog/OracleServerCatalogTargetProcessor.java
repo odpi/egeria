@@ -96,9 +96,9 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
 
         if (defaultFriendshipGUID != null)
         {
-            auditLog.logMessage(methodName,
-                                OracleAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                    defaultFriendshipGUID));
+            logRecord(methodName,
+                      OracleAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                          defaultFriendshipGUID));
         }
 
         for (OracleTemplateType templateType : OracleTemplateType.values())
@@ -151,12 +151,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
             finally
             {
@@ -194,12 +194,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             }
             catch (Exception exception)
             {
-                auditLog.logException(callingMethodName,
-                                      OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              callingMethodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(callingMethodName,
+                                   OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           callingMethodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -344,12 +344,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
         }
         catch (Exception exception)
         {
-            auditLog.logException(methodName,
-                                  OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                          exception.getClass().getName(),
-                                                                                          methodName,
-                                                                                          exception.getMessage()),
-                                  exception);
+            logExceptionRecord(methodName,
+                               OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                       exception.getClass().getName(),
+                                                                                       methodName,
+                                                                                       exception.getMessage()),
+                               exception);
         }
 
         /*
@@ -371,12 +371,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   OracleAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           exception.getClass().getName(),
+                                                                                           methodName,
+                                                                                           exception.getMessage()),
+                                   exception);
             }
         }
     }
@@ -442,9 +442,9 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
 
         if (databaseElement != null)
         {
-            auditLog.logMessage(methodName, OracleAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
-                                                                                                     databaseElement.getElementGUID(),
-                                                                                                     qualifiedName));
+            logRecord(methodName, OracleAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                           databaseElement.getElementGUID(),
+                                                                                           qualifiedName));
         }
         else if (databaseManager.getProperties() instanceof DatabaseManagerProperties databaseManagerProperties)
         {
@@ -463,9 +463,9 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                     serverAssetUseProperties,
                                                                                     true);
 
-            auditLog.logMessage(methodName, OracleAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
-                                                                                                      qualifiedName,
-                                                                                                      databaseGUID));
+            logRecord(methodName, OracleAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                            qualifiedName,
+                                                                                            databaseGUID));
 
             addCatalogTarget(friendshipConnectorGUID,
                              databaseGUID,
@@ -551,12 +551,12 @@ public class OracleServerCatalogTargetProcessor extends CatalogTargetProcessorBa
                                                                                                new MakeAnchorOptions(integrationContext.getAssetClient().getMetadataSourceOptions()),
                                                                                                catalogTargetProperties);
 
-                auditLog.logMessage(methodName,
-                                    OracleAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                           relationshipGUID,
-                                                                                           friendshipConnectorGUID,
-                                                                                           databaseGUID,
-                                                                                           databaseName));
+                logRecord(methodName,
+                          OracleAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                 relationshipGUID,
+                                                                                 friendshipConnectorGUID,
+                                                                                 databaseGUID,
+                                                                                 databaseName));
             }
         }
     }

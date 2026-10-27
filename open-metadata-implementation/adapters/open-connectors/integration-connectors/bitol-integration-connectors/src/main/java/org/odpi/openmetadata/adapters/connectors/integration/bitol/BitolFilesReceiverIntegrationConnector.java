@@ -61,10 +61,10 @@ public class BitolFilesReceiverIntegrationConnector extends DynamicIntegrationCo
 
             endpointScanner = new BitolDirectoryScanner(new File(stripFilePrefix(endpoint.getNetworkAddress())), sourceName);
 
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DIRECTORY_MONITORED.getMessageDefinition(connectorName,
-                                                                                                            endpointScanner.getDirectory().getPath(),
-                                                                                                            sourceName));
+            logRecord(methodName,
+                      BitolIntegrationConnectorAuditCode.DIRECTORY_MONITORED.getMessageDefinition(connectorName,
+                                                                                                  endpointScanner.getDirectory().getPath(),
+                                                                                                  sourceName));
         }
     }
 

@@ -160,12 +160,12 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                                             /*
                                              * Set up the lineage relationship
                                              */
-                                            auditLog.logMessage(methodName,
-                                                                AtlasIntegrationAuditCode.ADDING_LINEAGE.getMessageDefinition(connectorName,
-                                                                                                                              egeriaDataSetTypeName,
-                                                                                                                              egeriaDataSetGUID,
-                                                                                                                              egeriaProcessTypeName,
-                                                                                                                              egeriaProcessGUID));
+                                            logRecord(methodName,
+                                                      AtlasIntegrationAuditCode.ADDING_LINEAGE.getMessageDefinition(connectorName,
+                                                                                                                    egeriaDataSetTypeName,
+                                                                                                                    egeriaDataSetGUID,
+                                                                                                                    egeriaProcessTypeName,
+                                                                                                                    egeriaProcessGUID));
                                             lineageClient.linkLineage(egeriaDataSetGUID,
                                                                       egeriaProcessGUID,
                                                                       OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
@@ -200,12 +200,12 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                                             /*
                                              * Set up the lineage relationship
                                              */
-                                            auditLog.logMessage(methodName,
-                                                                AtlasIntegrationAuditCode.ADDING_LINEAGE.getMessageDefinition(connectorName,
-                                                                                                                              egeriaProcessTypeName,
-                                                                                                                              egeriaProcessGUID,
-                                                                                                                              egeriaDataSetTypeName,
-                                                                                                                              egeriaDataSetGUID));
+                                            logRecord(methodName,
+                                                      AtlasIntegrationAuditCode.ADDING_LINEAGE.getMessageDefinition(connectorName,
+                                                                                                                    egeriaProcessTypeName,
+                                                                                                                    egeriaProcessGUID,
+                                                                                                                    egeriaDataSetTypeName,
+                                                                                                                    egeriaDataSetGUID));
                                             lineageClient.linkLineage(egeriaProcessGUID,
                                                                       egeriaDataSetGUID,
                                                                       OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
@@ -227,15 +227,12 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
 
                 throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                         error.getClass().getName(),
@@ -296,11 +293,11 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                     /*
                      * The open metadata ecosystem entity has been deleted - put it back.
                      */
-                    auditLog.logMessage(methodName,
-                                        AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                               egeriaProcessTypeName,
-                                                                                                               egeriaProcessGUID,
-                                                                                                               atlasProcessEntity.getEntity().getGuid()));
+                    logRecord(methodName,
+                              AtlasIntegrationAuditCode.REPLACING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                     egeriaProcessTypeName,
+                                                                                                     egeriaProcessGUID,
+                                                                                                     atlasProcessEntity.getEntity().getGuid()));
                     removeEgeriaGUID(atlasProcessEntity);
                     egeriaProcessGUID = createAtlasProcessInEgeria(atlasProcessEntity);
                 }
@@ -381,12 +378,12 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
                                                                    processProperties,
                                                                    null);
 
-                auditLog.logMessage(methodName,
-                                    AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                          egeriaProcessTypeName,
-                                                                                                          egeriaProcessGUID,
-                                                                                                          atlasEntity.getTypeName(),
-                                                                                                          atlasEntity.getGuid()));
+                logRecord(methodName,
+                          AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                egeriaProcessTypeName,
+                                                                                                egeriaProcessGUID,
+                                                                                                atlasEntity.getTypeName(),
+                                                                                                atlasEntity.getGuid()));
 
                 saveEgeriaGUIDInAtlas(atlasEntity.getGuid(),
                                       egeriaProcessGUID,
@@ -434,12 +431,12 @@ public class AtlasLineageIntegrationModule extends AtlasIntegrationModuleBase
 
                     if (assetClient.updateAsset(egeriaProcessGUID, assetClient.getUpdateOptions(true), processProperties))
                     {
-                        auditLog.logMessage(methodName,
-                                            AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
-                                                                                                                  atlasEntity.getTypeName(),
-                                                                                                                  atlasEntity.getGuid(),
-                                                                                                                  egeriaProcessTypeName,
-                                                                                                                  egeriaProcessGUID));
+                        logRecord(methodName,
+                                  AtlasIntegrationAuditCode.UPDATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
+                                                                                                        atlasEntity.getTypeName(),
+                                                                                                        atlasEntity.getGuid(),
+                                                                                                        egeriaProcessTypeName,
+                                                                                                        egeriaProcessGUID));
                     }
                 }
             }

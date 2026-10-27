@@ -40,7 +40,6 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     static final private String defaultRepositoryName = "REST-connected Repository ";
 
     private final LocalRepositoryServicesClient omrsClient;   /* Initialized in constructor */
-    private final AuditLog                      auditLog; /* Initialized in constructor */
     private final List<String>                  unsupportedFunctionList = new ArrayList<>();
 
     private String                        errorMessage = null;
@@ -165,12 +164,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (! unsupportedFunctionList.contains(methodName))
         {
-            if (auditLog != null)
-            {
-                auditLog.logMessage(localMethodName, OMRSAuditCode.UNSUPPORTED_REMOTE_FUNCTION.getMessageDefinition(repositoryName,
-                                                                                                                    metadataCollectionId,
-                                                                                                                    methodName));
-            }
+            logRecord(localMethodName, OMRSAuditCode.UNSUPPORTED_REMOTE_FUNCTION.getMessageDefinition(repositoryName,
+                                                                                                      metadataCollectionId,
+                                                                                                      methodName));
 
             unsupportedFunctionList.add(methodName);
         }

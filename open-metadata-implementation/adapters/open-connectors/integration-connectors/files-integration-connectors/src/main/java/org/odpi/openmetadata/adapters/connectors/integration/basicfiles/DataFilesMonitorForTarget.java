@@ -300,10 +300,10 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             if (guid != null)
                             {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
-                                                                                                                                    properties.getPathName(),
-                                                                                                                                    guid));
+                                logRecord(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
+                                                                                                                          properties.getPathName(),
+                                                                                                                          guid));
                             }
 
                             return guid;
@@ -357,13 +357,13 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                         if (newFileGUID != null)
                         {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
-                                                        sourceName,
-                                                        fileClassification.getCanonicalPathName(),
-                                                        newFileGUID,
-                                                        fileClassification.getDeployedImplementationType(),
-                                                        fileTemplateGUID));
+                            logRecord(methodName,
+                                      BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
+                                              sourceName,
+                                              fileClassification.getCanonicalPathName(),
+                                              newFileGUID,
+                                              fileClassification.getDeployedImplementationType(),
+                                              fileTemplateGUID));
 
 
                             if (newFileProcessName != null)
@@ -418,10 +418,10 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                         if (fileClient.updateAsset(cataloguedElement.getElementHeader().getGUID(), fileClient.getUpdateOptions(true), properties))
                         {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                dataFileProperties.getPathName(),
-                                                                                                                                cataloguedElement.getElementHeader().getGUID()));
+                            logRecord(methodName,
+                                      BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                      dataFileProperties.getPathName(),
+                                                                                                                      cataloguedElement.getElementHeader().getGUID()));
                         }
                     }
 
@@ -429,24 +429,20 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                 }
                 else
                 {
-                    auditLog.logMessage(methodName,
-                                        BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                       cataloguedElement.toString()));
+                    logRecord(methodName,
+                              BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
+                                                                                                             cataloguedElement.toString()));
                 }
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  connectorName,
-                                                  file.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-
-                }
+                logExceptionRecord(methodName,
+                                   BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                           error.getClass().getName(),
+                                           connectorName,
+                                           file.getAbsolutePath(),
+                                           error.getMessage()),
+                                   error);
             }
         }
 

@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -130,10 +131,10 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
 
         if (notificationTypeGUID == null)
         {
-            auditLog.logMessage(methodName,
-                                BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                  this.getCatalogTargetName(),
-                                                                                                  "null"));
+            logRecord(methodName,
+                      BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                        this.getCatalogTargetName(),
+                                                                                        "null"));
             return;
         }
 
@@ -172,19 +173,19 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
                                                              notificationTypeDisplayName,
                                                              integrationContext);
 
-                    auditLog.logMessage(methodName,
-                                        BaudotAuditCode.MONITORED_RESOURCE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                                  notificationTypeDisplayName,
-                                                                                                                  notificationTypeGUID,
-                                                                                                                  Integer.toString(notificationTypeElement.getMonitoredResources().size())));
+                    logRecord(methodName,
+                              BaudotAuditCode.MONITORED_RESOURCE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                                        notificationTypeDisplayName,
+                                                                                                        notificationTypeGUID,
+                                                                                                        Integer.toString(notificationTypeElement.getMonitoredResources().size())));
                 }
             }
             else
             {
-                auditLog.logMessage(methodName,
-                                    BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                      this.getCatalogTargetName(),
-                                                                                                      notificationTypeGUID));
+                logRecord(methodName,
+                          BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                            this.getCatalogTargetName(),
+                                                                                            notificationTypeGUID));
             }
         }
         catch (UserNotAuthorizedException error)
@@ -200,13 +201,13 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
              * A problem with one notification type is logged and left; the other notification types are still
              * refreshed, and this one is tried again on the next cycle.
              */
-            auditLog.logException(methodName,
-                                  BaudotAuditCode.NOTIFICATION_TYPE_REFRESH_FAILED.getMessageDefinition(connectorName,
-                                                                                                        notificationTypeDisplayName,
-                                                                                                        notificationTypeGUID,
-                                                                                                        error.getClass().getName(),
-                                                                                                        error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BaudotAuditCode.NOTIFICATION_TYPE_REFRESH_FAILED.getMessageDefinition(connectorName,
+                                                                                                     notificationTypeDisplayName,
+                                                                                                     notificationTypeGUID,
+                                                                                                     error.getClass().getName(),
+                                                                                                     error.getMessage()),
+                               error);
         }
     }
 
@@ -226,33 +227,33 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
     {
         final String methodName = "notifySubscribers";
 
-        long                   notificationCount          = notificationTypeProperties.getNotificationCount() + 1;
+        long                   notificationCount          = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
         NotificationProperties nextNotificationProperties;
 
-        if (notificationTypeProperties.getMultipleNotificationsPermitted())
+        if (OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationTypeProperties.getMultipleNotificationsPermitted()))
         {
             Date   nextRefresh     = integrationContext.getNextScheduledRefreshTime();
             String nextRefreshText = (nextRefresh == null) ? "the next refresh of this connector" : nextRefresh.toString();
 
-            auditLog.logMessage(methodName,
-                                BaudotAuditCode.PERIODIC_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                notificationTypeDisplayName,
-                                                                                                notificationTypeGUID,
-                                                                                                Long.toString(notificationTypeProperties.getMinimumNotificationInterval()),
-                                                                                                nextRefreshText));
+            logRecord(methodName,
+                      BaudotAuditCode.PERIODIC_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                      notificationTypeDisplayName,
+                                                                                      notificationTypeGUID,
+                                                                                      Long.toString(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval())),
+                                                                                      nextRefreshText));
 
             nextNotificationProperties = this.getNotificationProperties(BaudotNotificationMessageSet.PERIODIC_NOTIFICATION.getMessageDefinition(notificationTypeDisplayName,
                                                                                                                                                 notificationTypeGUID,
-                                                                                                                                                Long.toString(notificationTypeProperties.getMinimumNotificationInterval())),
+                                                                                                                                                Long.toString(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval()))),
                                                                         notificationTypeGUID,
                                                                         notificationCount);
         }
         else
         {
-            auditLog.logMessage(methodName,
-                                BaudotAuditCode.ONE_TIME_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
-                                                                                                notificationTypeDisplayName,
-                                                                                                notificationTypeGUID));
+            logRecord(methodName,
+                      BaudotAuditCode.ONE_TIME_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
+                                                                                      notificationTypeDisplayName,
+                                                                                      notificationTypeGUID));
 
             nextNotificationProperties = this.getNotificationProperties(BaudotNotificationMessageSet.ONE_TIME_NOTIFICATION.getMessageDefinition(notificationTypeDisplayName,
                                                                                                                                                 notificationTypeGUID),

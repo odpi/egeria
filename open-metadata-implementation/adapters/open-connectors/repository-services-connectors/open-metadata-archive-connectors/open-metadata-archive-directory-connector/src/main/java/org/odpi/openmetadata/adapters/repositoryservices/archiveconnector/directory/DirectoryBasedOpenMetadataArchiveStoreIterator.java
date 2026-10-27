@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc.DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends RepositoryElementHeader> implements Iterator<T>
+public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends RepositoryElementHeader> extends AuditLoggingBase implements Iterator<T>
 {
     private static final Logger log = LoggerFactory.getLogger(DirectoryBasedOpenMetadataArchiveStoreIterator.class);
 
@@ -23,7 +24,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
     private List<File>                             files;
     private int                                    length = 0;
     private int                                    pointer = 0;
-    private AuditLog                               auditLog;
 
     private static final ObjectReader OBJECT_READER = new ObjectMapper().reader();
 
@@ -32,9 +32,10 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
                                                           List<File>                             files,
                                                           AuditLog                               auditLog)
     {
+        super(auditLog);
+
         this.files = files;
         this.archiveStore = archiveStore;
-        this.auditLog = auditLog;
 
         if (files != null)
         {
@@ -67,16 +68,13 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
         {
             log.error(methodName + " unusable Archive Store :(", error);
 
-            if (auditLog != null)
-            {
-                final String actionDescription = "Unable to open archive directory";
+            final String actionDescription = "Unable to open archive directory";
 
-                auditLog.logException(actionDescription,
-                                      DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(elementFile.getName(),
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(actionDescription,
+                               DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE.getMessageDefinition(elementFile.getName(),
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                               error);
         }
 
         return null;

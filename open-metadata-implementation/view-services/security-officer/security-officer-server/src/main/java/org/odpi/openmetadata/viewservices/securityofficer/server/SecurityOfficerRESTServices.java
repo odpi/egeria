@@ -15,6 +15,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountS
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccountType;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StatementOfApplicabilityHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ControlApplicabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StatementOfApplicabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
@@ -1443,6 +1446,492 @@ public class SecurityOfficerRESTServices extends TokenController
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
             handler.clearZoneMembershipProfile(userId, governanceZoneGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Statements of applicability
+     *
+     * A statement of applicability records which controls from a standard - such as the Annex A controls of
+     * ISO/IEC 27001 - apply to the organization, why, and how far each one has been implemented.  Each control is
+     * linked to the statement with a ControlApplicability relationship.
+     */
+
+    /**
+     * Create a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return unique identifier of the newly created element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createStatementOfApplicability(String                serverName,
+                                                       NewElementRequestBody requestBody)
+    {
+        final String methodName = "createStatementOfApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof StatementOfApplicabilityProperties statementOfApplicabilityProperties)
+                {
+                    response.setGUID(handler.createStatementOfApplicability(userId,
+                                                                            requestBody,
+                                                                            requestBody.getInitialClassifications(),
+                                                                            statementOfApplicabilityProperties,
+                                                                            requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(StatementOfApplicabilityProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a statement of applicability using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return unique identifier of the newly created element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createStatementOfApplicabilityFromTemplate(String              serverName,
+                                                                   TemplateRequestBody requestBody)
+    {
+        final String methodName = "createStatementOfApplicabilityFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createStatementOfApplicabilityFromTemplate(userId,
+                                                                                    requestBody,
+                                                                                    requestBody.getTemplateGUID(),
+                                                                                    requestBody.getReplacementProperties(),
+                                                                                    requestBody.getReplacementClassifications(),
+                                                                                    requestBody.getPlaceholderPropertyValues(),
+                                                                                    requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return boolean - true if an update occurred or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public BooleanResponse updateStatementOfApplicability(String                   serverName,
+                                                          String                   statementOfApplicabilityGUID,
+                                                          UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateStatementOfApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof StatementOfApplicabilityProperties statementOfApplicabilityProperties)
+                {
+                    response.setFlag(handler.updateStatementOfApplicability(userId, statementOfApplicabilityGUID, requestBody, statementOfApplicabilityProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(StatementOfApplicabilityProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse deleteStatementOfApplicability(String                   serverName,
+                                                       String                   statementOfApplicabilityGUID,
+                                                       DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteStatementOfApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            handler.deleteStatementOfApplicability(userId, statementOfApplicabilityGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Returns the list of statements of applicability with a particular name.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return a list of elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getStatementsOfApplicabilityByName(String            serverName,
+                                                                               FilterRequestBody requestBody)
+    {
+        final String methodName = "getStatementsOfApplicabilityByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getStatementsOfApplicabilityByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of statement of applicability metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody properties for the request
+     *
+     * @return a list of elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findStatementsOfApplicability(String                  serverName,
+                                                                          SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findStatementsOfApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findStatementsOfApplicability(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findStatementsOfApplicability(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return the properties of a specific statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param requestBody properties for the request
+     *
+     * @return matching element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getStatementOfApplicabilityByGUID(String         serverName,
+                                                                             String         statementOfApplicabilityGUID,
+                                                                             GetRequestBody requestBody)
+    {
+        final String methodName = "getStatementOfApplicabilityByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getStatementOfApplicabilityByGUID(userId, statementOfApplicabilityGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Link a control from a standard to a statement of applicability, recording whether the control applies, why,
+     * and how far it has been implemented.  Linking a control that is already linked updates the properties of the
+     * existing relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param controlGUID unique identifier of the governance definition describing the control
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkControlApplicability(String                     serverName,
+                                                 String                     statementOfApplicabilityGUID,
+                                                 String                     controlGUID,
+                                                 NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkControlApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkControlApplicability(userId, statementOfApplicabilityGUID, controlGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ControlApplicabilityProperties properties)
+            {
+                handler.linkControlApplicability(userId, statementOfApplicabilityGUID, controlGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkControlApplicability(userId, statementOfApplicabilityGUID, controlGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ControlApplicabilityProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove a control from a statement of applicability.
+     *
+     * @param serverName name of the server to route the request to
+     * @param statementOfApplicabilityGUID unique identifier of the statement of applicability
+     * @param controlGUID unique identifier of the governance definition describing the control
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachControlApplicability(String                        serverName,
+                                                   String                        statementOfApplicabilityGUID,
+                                                   String                        controlGUID,
+                                                   DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachControlApplicability";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            StatementOfApplicabilityHandler handler = instanceHandler.getStatementOfApplicabilityHandler(userId, serverName, methodName);
+
+            handler.detachControlApplicability(userId, statementOfApplicabilityGUID, controlGUID, requestBody);
         }
         catch (Throwable error)
         {

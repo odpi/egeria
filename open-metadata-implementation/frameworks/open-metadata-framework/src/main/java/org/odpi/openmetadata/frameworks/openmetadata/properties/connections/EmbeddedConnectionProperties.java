@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EmbeddedConnectionProperties extends RelationshipBeanProperties
 {
-    protected int                 position           = 0;
+    protected Integer             position           = null;
     protected String              displayName        = null;
     protected Map<String, Object> arguments          = null;
 
@@ -61,7 +61,7 @@ public class EmbeddedConnectionProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getPosition()
+    public Integer getPosition()
     {
         return position;
     }
@@ -72,7 +72,7 @@ public class EmbeddedConnectionProperties extends RelationshipBeanProperties
      *
      * @param position int
      */
-    public void setPosition(int position)
+    public void setPosition(Integer position)
     {
         this.position = position;
     }
@@ -160,7 +160,7 @@ public class EmbeddedConnectionProperties extends RelationshipBeanProperties
             return false;
         }
         EmbeddedConnectionProperties that = (EmbeddedConnectionProperties) objectToCompare;
-        return position == that.position && Objects.equals(displayName, that.displayName) && Objects.equals(arguments,
+        return Objects.equals(position, that.position) && Objects.equals(displayName, that.displayName) && Objects.equals(arguments,
                                                                                                             that.arguments);
     }
 

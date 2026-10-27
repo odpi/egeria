@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.bitol;
 
 import org.odpi.openmetadata.adapters.connectors.integration.bitol.ffdc.BitolIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -243,10 +244,10 @@ public class BitolDirectoryScanner
 
             for (PublishedDocument publishedDocument : publishedDocuments)
             {
-                auditLog.logMessage(methodName,
-                                    BitolIntegrationConnectorAuditCode.DOCUMENT_PUBLISHED.getMessageDefinition(connectorName,
-                                                                                                               publishedDocument.kind(),
-                                                                                                               publishedDocument.file().getPath()));
+                AuditLogRecorder.logRecord(auditLog, methodName,
+                                                     BitolIntegrationConnectorAuditCode.DOCUMENT_PUBLISHED.getMessageDefinition(connectorName,
+                                                                                                                                publishedDocument.kind(),
+                                                                                                                                publishedDocument.file().getPath()));
 
                 /*
                  * The document has been catalogued by the listeners (synchronously), so the file can now be
@@ -268,20 +269,20 @@ public class BitolDirectoryScanner
         }
         catch (IOException error)
         {
-            auditLog.logMessage(methodName,
-                                BitolIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
-                                                                                                                 String.valueOf(directory),
-                                                                                                                 sourceName,
-                                                                                                                 error.getMessage()));
+            AuditLogRecorder.logRecord(auditLog, methodName,
+                                                 BitolIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
+                                                                                                                                  String.valueOf(directory),
+                                                                                                                                  sourceName,
+                                                                                                                                  error.getMessage()));
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  error);
+            AuditLogRecorder.logExceptionRecord(auditLog, methodName,
+                                                          BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                                       error.getClass().getName(),
+                                                                                                                                       methodName,
+                                                                                                                                       error.getMessage()),
+                                                          error);
         }
     }
 }

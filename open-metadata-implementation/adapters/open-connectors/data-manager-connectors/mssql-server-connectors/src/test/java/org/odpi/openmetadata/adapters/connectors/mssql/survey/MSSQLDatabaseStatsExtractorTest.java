@@ -187,7 +187,7 @@ public class MSSQLDatabaseStatsExtractorTest
         SurveyActionServiceConnector surveyActionService = new SurveyActionServiceConnector()
         {
             @Override
-            public boolean isActive()
+            public synchronized boolean isActive()
             {
                 return true;
             }

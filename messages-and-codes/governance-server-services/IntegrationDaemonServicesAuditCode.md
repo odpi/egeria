@@ -223,7 +223,7 @@ The integration daemon services has completed initialization.
 
 **User action**
 
-Verify that all the configured integration services, and their connectors within have successfully started andare able to connect both to their third party technology and their partner OMAS.
+Verify that all the configured integration services, and their connectors within have successfully started and are able to connect both to their third party technology and their partner OMAS.
 
 
 ----
@@ -576,7 +576,7 @@ Verify that the time between refresh calls is appropriate for the connector.
 
 **System action**
 
-Some, or all the metadata from the connected third party technologies can not be exchanged with the openmetadata ecosystem.
+Some, or all the metadata from the connected third party technologies can not be exchanged with the open metadata ecosystem.
 
 **User action**
 

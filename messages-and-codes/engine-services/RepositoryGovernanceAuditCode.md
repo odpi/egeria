@@ -155,7 +155,7 @@ An repository governance service has returned from the start() method and withou
 
 **User action**
 
-Validate that this governance action service should still be running.  Typically you would expect an repository governance service tostill be running at this stage because it will have registered a listener.
+Validate that this governance action service should still be running.  Typically you would expect a repository governance service to still be running at this stage because it will have registered a listener.
 
 
 ----

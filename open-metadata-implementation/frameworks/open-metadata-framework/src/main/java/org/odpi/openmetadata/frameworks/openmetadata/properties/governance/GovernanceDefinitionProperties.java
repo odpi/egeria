@@ -34,7 +34,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
     private String       summary          = null;
     private String       scope            = null;
     private String       usage            = null;
-    private int          domainIdentifier = 0;
+    private Integer      domainIdentifier = null;
     private String       importance       = null;
     private List<String> implications     = null;
     private List<String> outcomes         = null;
@@ -147,7 +147,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @return int
      */
-    public int getDomainIdentifier()
+    public Integer getDomainIdentifier()
     {
         return domainIdentifier;
     }
@@ -158,7 +158,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @param domainIdentifier int
      */
-    public void setDomainIdentifier(int domainIdentifier)
+    public void setDomainIdentifier(Integer domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
     }
@@ -292,7 +292,7 @@ public class GovernanceDefinitionProperties extends AuthoredReferenceablePropert
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
+        return Objects.equals(domainIdentifier, that.domainIdentifier) &&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(usage, that.usage) &&

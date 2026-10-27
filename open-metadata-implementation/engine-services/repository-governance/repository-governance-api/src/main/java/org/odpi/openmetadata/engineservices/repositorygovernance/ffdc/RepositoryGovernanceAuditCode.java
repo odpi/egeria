@@ -82,7 +82,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                           AuditLogRecordSeverityLevel.INFO,
                                           "The repository governance service {0} for request type {1} is continuing to run in a background thread",
                                           "An repository governance service has returned from the start() method and without setting up the completion status prior to returning.  ",
-                                          "Validate that this governance action service should still be running.  Typically you would expect an repository governance service to" +
+                                          "Validate that this governance action service should still be running.  Typically you would expect a repository governance service to " +
                                                "still be running at this stage because it will have registered a listener.",
                                                "https://egeria-project.org/services/omes/repository-governance/overview/"),
 

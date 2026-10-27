@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DisplayDataFieldProperties extends SchemaAttributeProperties
 {
-    private boolean inputField = false;
+    private Boolean inputField = null;
 
 
     /**
@@ -56,7 +56,7 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
      *
      * @return boolean flag
      */
-    public boolean getInputField()
+    public Boolean getInputField()
     {
         return inputField;
     }
@@ -67,7 +67,7 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
      *
      * @param inputField boolean flag
      */
-    public void setInputField(boolean inputField)
+    public void setInputField(Boolean inputField)
     {
         this.inputField = inputField;
     }
@@ -109,7 +109,7 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
             return false;
         }
         DisplayDataFieldProperties that = (DisplayDataFieldProperties) objectToCompare;
-        return inputField == that.inputField;
+        return Objects.equals(inputField, that.inputField);
     }
 
 

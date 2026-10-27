@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcSchema;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcTable;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SchemaAttributeClient;
@@ -55,7 +56,7 @@ import java.util.Set;
  * which is what previously caused elements (in particular columns) to be recreated - and rejected as duplicates - on
  * every refresh.
  */
-class RelationalDatabaseCataloguer
+class RelationalDatabaseCataloguer extends AuditLoggingBase
 {
     private static final String JDBC_CATALOG_KEY    = "jdbc.catalog";
     private static final String JDBC_SCHEMA_KEY      = "jdbc.schema";
@@ -70,7 +71,6 @@ class RelationalDatabaseCataloguer
     private final TransferCustomizations transferCustomizations;
     private final String                 catalogName;
     private final String                 connectorName;
-    private final AuditLog               auditLog;
 
     /**
      * The qualified name every table and column name below is built from: the database's when a whole database
@@ -110,11 +110,12 @@ class RelationalDatabaseCataloguer
                                  String                   connectorName,
                                  AuditLog                 auditLog)
     {
+        super(auditLog);
+
         this.jdbcMetadata           = jdbcMetadata;
         this.transferCustomizations = transferCustomizations;
         this.catalogName            = catalogName;
         this.connectorName          = connectorName;
-        this.auditLog               = auditLog;
 
         this.dataAssetClient         = integrationContext.getAssetClient(OpenMetadataType.DATA_ASSET.typeName);
         this.databaseSchemaClient    = integrationContext.getAssetClient(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName);
@@ -265,13 +266,13 @@ class RelationalDatabaseCataloguer
                 databaseSchemaClient.createAsset(newElementOptions, null, schemaProperties, null);
             }
 
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("schema " + qualifiedName));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("schema " + qualifiedName));
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -324,9 +325,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
+                               e);
         }
 
         return remaining;
@@ -345,8 +346,8 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(schemaGUID, schemaQualifiedName));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(schemaGUID, schemaQualifiedName));
         }
     }
 
@@ -462,9 +463,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
             return null;
         }
     }
@@ -515,14 +516,14 @@ class RelationalDatabaseCataloguer
             attributeForSchemaProperties.setMinCardinality(1);
 
             String tableGUID = databaseTableClient.createSchemaAttribute(newElementOptions, null, tableProperties, attributeForSchemaProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("table " + tableProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("table " + tableProperties.getQualifiedName()));
             return tableGUID;
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
             return null;
         }
     }
@@ -535,13 +536,13 @@ class RelationalDatabaseCataloguer
         try
         {
             databaseTableClient.updateSchemaAttribute(tableGUID, databaseTableClient.getUpdateOptions(false), tableProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("table " + tableProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("table " + tableProperties.getQualifiedName()));
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -596,14 +597,14 @@ class RelationalDatabaseCataloguer
             initialClassifications.put(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName, null);
 
             String viewGUID = databaseViewClient.createSchemaAttribute(newElementOptions, initialClassifications, viewProperties, attributeForSchemaProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
             return viewGUID;
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
             return null;
         }
     }
@@ -616,13 +617,13 @@ class RelationalDatabaseCataloguer
         try
         {
             databaseViewClient.updateSchemaAttribute(viewGUID, databaseViewClient.getUpdateOptions(false), viewProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("view " + viewProperties.getQualifiedName()));
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -671,9 +672,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -690,8 +691,8 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(guid, qualifiedName));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(guid, qualifiedName));
         }
     }
 
@@ -804,14 +805,14 @@ class RelationalDatabaseCataloguer
             }
 
             String columnGUID = databaseColumnClient.createSchemaAttribute(newElementOptions, initialClassifications, columnProperties, nestedSchemaAttributeProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
             return columnGUID;
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
             return null;
         }
     }
@@ -824,13 +825,13 @@ class RelationalDatabaseCataloguer
         try
         {
             databaseColumnClient.updateSchemaAttribute(columnGUID, databaseColumnClient.getUpdateOptions(false), columnProperties);
-            auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
+            logRecord(methodName, JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("column " + columnProperties.getQualifiedName()));
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -903,9 +904,9 @@ class RelationalDatabaseCataloguer
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -920,9 +921,9 @@ class RelationalDatabaseCataloguer
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -950,9 +951,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -969,8 +970,8 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(guid, qualifiedName));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS.getMessageDefinition(guid, qualifiedName));
         }
     }
 
@@ -1132,14 +1133,14 @@ class RelationalDatabaseCataloguer
                                                 fkColumnGUID,
                                                 new MakeAnchorOptions(databaseColumnClient.getMetadataSourceOptions()),
                                                 foreignKeyProperties);
-            auditLog.logMessage(methodName,
-                                JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("foreign key relationship from " + pkColumnGUID + " to " + fkColumnGUID));
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("foreign key relationship from " + pkColumnGUID + " to " + fkColumnGUID));
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_WRITING_OMAS.getMessageDefinition(e.getClass().getName(), methodName, e.getMessage()),
+                               e);
         }
     }
 
@@ -1161,9 +1162,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
+                               e);
         }
 
         return null;
@@ -1206,10 +1207,10 @@ class RelationalDatabaseCataloguer
 
             if (matchCount > 1)
             {
-                auditLog.logMessage(methodName,
-                                    JDBCIntegrationConnectorAuditCode.MULTIPLE_ELEMENTS_FOUND.getMessageDefinition(connectorName,
-                                                                                                                    Integer.toString(matchCount),
-                                                                                                                    qualifiedName));
+                logRecord(methodName,
+                          JDBCIntegrationConnectorAuditCode.MULTIPLE_ELEMENTS_FOUND.getMessageDefinition(connectorName,
+                                                                                                          Integer.toString(matchCount),
+                                                                                                          qualifiedName));
                 return new ElementLookup(null, true);
             }
 
@@ -1217,9 +1218,9 @@ class RelationalDatabaseCataloguer
         }
         catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e)
         {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
-                                  e);
+            logExceptionRecord(methodName,
+                               JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_OMAS.getMessageDefinition(methodName, e.getMessage()),
+                               e);
             return new ElementLookup(null, true);
         }
     }

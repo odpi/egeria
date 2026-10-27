@@ -157,7 +157,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                           AuditLogRecordSeverityLevel.SECURITY,
                           "Engine host server {0} is not authorized to call the Governance Engine " +
                                   "OMAS running in server {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}",
-                          "Some, or all the metadata definitions needed for the governance engines are not accessible from the open" +
+                          "Some, or all the metadata definitions needed for the governance engines are not accessible from the open " +
                                   "metadata ecosystem.",
                           "The userId comes from the engine host's configuration document.  It is stored as the localServerUserId.  " +
                                   "The authorization failure may be limited to a single operation, or extend to all requests to the Governance " +

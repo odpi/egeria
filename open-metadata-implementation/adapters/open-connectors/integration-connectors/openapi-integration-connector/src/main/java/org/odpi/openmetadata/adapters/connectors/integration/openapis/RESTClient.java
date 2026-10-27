@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenA
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -19,11 +20,10 @@ import java.util.Map;
 /**
  * RESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-public class RESTClient
+public class RESTClient extends AuditLoggingBase
 {
     protected String   serverName;             /* Initialized in constructor */
     protected String   url;                    /* Initialized in constructor */
-    protected AuditLog auditLog = null;        /* Initialized in constructor */
 
     
     private final RESTClientConnector clientConnector;    /* Initialized in constructor */
@@ -51,11 +51,12 @@ public class RESTClient
                          SecretsStorePurpose secretsStorePurpose,
                          AuditLog            auditLog) throws InvalidParameterException
     {
+        super(auditLog);
+
         final String  methodName = "RESTClient(no authentication)";
 
         this.serverName = serverName;
         this.url = url;
-        this.auditLog = auditLog;
 
         try
         {
@@ -95,11 +96,12 @@ public class RESTClient
                          Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
                          AuditLog                           auditLog) throws InvalidParameterException
     {
+        super(auditLog);
+
         final String  methodName = "RESTClient(userId and password)";
 
         this.serverName = serverName;
         this.url = url;
-        this.auditLog = auditLog;
 
         try
         {
@@ -312,15 +314,12 @@ public class RESTClient
     private void logRESTCallException(String    methodName,
                                       Exception error) throws PropertyServerException
     {
-        if (auditLog != null)
-        {
-            auditLog.logException(methodName,
-                                  OpenAPIIntegrationConnectorAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                                                       serverName,
-                                                                                                                       url,
-                                                                                                                       error.getMessage()),
-                                  error);
-        }
+        logExceptionRecord(methodName,
+                           OpenAPIIntegrationConnectorAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                                                serverName,
+                                                                                                                url,
+                                                                                                                error.getMessage()),
+                           error);
 
         throw new PropertyServerException(OpenAPIIntegrationConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                               serverName,

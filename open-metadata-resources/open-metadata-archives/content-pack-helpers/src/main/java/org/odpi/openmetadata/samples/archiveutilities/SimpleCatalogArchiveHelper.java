@@ -3097,6 +3097,28 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Link two governance controls together - for example, a control from a catalog to the control enhancements
+     * that strengthen it.
+     *
+     * @param linkingControlGUID unique identifier of the control at end 1
+     * @param linkedControlGUID unique identifier of the control at end 2
+     */
+    public void addGovernanceControlLink(String linkingControlGUID,
+                                         String linkedControlGUID)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(linkingControlGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(linkedControlGUID));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(linkingControlGUID + "_to_" + linkedControlGUID + "_governance_control_link_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
      * Link a referenceable to a scope to define the scope there it applies.
      *
      * @param referenceableQName qualified name of the referenceable
@@ -3479,11 +3501,19 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null,
+                                                         OpenMetadataType.SUBJECT_AREA.typeName,
+                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                         null,
+                                                         methodName));
+
         EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.SUBJECT_AREA.typeName,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
-                                                               null);
+                                                               classifications);
 
         archiveBuilder.addEntity(newEntity);
 

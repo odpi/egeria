@@ -338,6 +338,39 @@ public class OpenMetadataRelationshipBuilder
                                                                          OpenMetadataProperty.DESCRIPTION.name,
                                                                          referenceableFacetProperties.getDescription());
                 }
+                else if (properties instanceof ControlApplicabilityProperties controlApplicabilityProperties)
+                {
+                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                          OpenMetadataProperty.IS_APPLICABLE.name,
+                                                                          controlApplicabilityProperties.getIsApplicable());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.JUSTIFICATION.name,
+                                                                         controlApplicabilityProperties.getJustification());
+                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                              OpenMetadataProperty.INCLUSION_REASONS.name,
+                                                                              controlApplicabilityProperties.getInclusionReasons());
+
+                    if (controlApplicabilityProperties.getImplementationStatus() != null)
+                    {
+                        elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                           OpenMetadataProperty.IMPLEMENTATION_STATUS.name,
+                                                                           ControlImplementationStatus.getOpenTypeName(),
+                                                                           controlApplicabilityProperties.getImplementationStatus().name());
+                    }
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.IMPLEMENTATION_DESCRIPTION.name,
+                                                                         controlApplicabilityProperties.getImplementationDescription());
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.REVIEW_DATE.name,
+                                                                       controlApplicabilityProperties.getReviewDate());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.LABEL.name,
+                                                                         controlApplicabilityProperties.getLabel());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DESCRIPTION.name,
+                                                                         controlApplicabilityProperties.getDescription());
+                }
                 else if (properties instanceof RegulatorProperties regulatorProperties)
                 {
                     elementProperties = propertyHelper.addStringProperty(elementProperties,

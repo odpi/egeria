@@ -88,15 +88,12 @@ public class ApacheKafkaIntegrationModule extends AtlasRegisteredIntegrationModu
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   AtlasIntegrationAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage()),
+                                   error);
 
                 throw new ConnectorCheckedException(AtlasIntegrationErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                         error.getClass().getName(),

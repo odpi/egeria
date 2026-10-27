@@ -4120,6 +4120,16 @@ public enum OpenMetadataType
                        CertificationTypeProperties.class),
 
     /**
+     * A statement of which controls from a standard apply to an organization, why, and how far each one has been implemented.
+     */
+    STATEMENT_OF_APPLICABILITY("57f60046-aa59-4f0e-bc09-08714d40d4f5",
+                               "StatementOfApplicability",
+                               OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                               "aab8ed40-0220-441f-b2e5-5a683e368579",
+                               "A statement of which controls from a standard apply to an organization, why, and how far each one has been implemented.",
+                               StatementOfApplicabilityProperties.class),
+
+    /**
      * Who is responsible for making decisions on the management and governance of this element.
      */
     OWNERSHIP_CLASSIFICATION("8139a911-a4bd-432b-a9f4-f6d11c511abe",
@@ -4894,6 +4904,17 @@ public enum OpenMetadataType
                                "An awarded certification of a specific type.",
                                CertificationProperties.class,
                                OpenMetadataRelationshipPurpose.ASSIGNMENT),
+
+    /**
+     * Records whether a control from a standard applies within the scope of a statement of applicability, and how far it has been implemented.
+     */
+    CONTROL_APPLICABILITY_RELATIONSHIP("92562d3e-1838-4a86-9295-8b39d80c3773",
+                                       "ControlApplicability",
+                                       OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                       "fb68b45d-0c3e-4222-ac08-4cbc94232519",
+                                       "Records whether a control from a standard applies within the scope of a statement of applicability, and how far it has been implemented.",
+                                       ControlApplicabilityProperties.class,
+                                       OpenMetadataRelationshipPurpose.ASSOCIATION),
 
     /**
      * Identifies a certification required by a regulation.
@@ -6413,6 +6434,46 @@ public enum OpenMetadataType
                                     "0cd374d8-ae62-4172-b790-9844a6906f49",
                                     "A set of properties describing the level of activity around a code repository like GitHub.",
                                     ContributorAnalysisAnnotationProperties.class),
+
+    /**
+     * A weakness found in a resource by a security test, such as a vulnerability scan or a penetration test.
+     */
+    SECURITY_FINDING_ANNOTATION("6a9ac809-aee9-4785-a3b0-4be237f81c08",
+                                "SecurityFindingAnnotation",
+                                OpenMetadataWikiPages.MODEL_0665_SECURITY_ANNOTATIONS,
+                                "334467eb-d970-49ed-9b4e-b6b4a61a6039",
+                                "A weakness found in a resource by a security test, such as a vulnerability scan or a penetration test.",
+                                SecurityFindingAnnotationProperties.class),
+
+    /**
+     * A known vulnerability in the software used by a resource, typically found by a vulnerability scan.
+     */
+    VULNERABILITY_ANNOTATION("e743e3a7-6848-4e4d-bc05-aace812aa21e",
+                             "VulnerabilityAnnotation",
+                             OpenMetadataWikiPages.MODEL_0665_SECURITY_ANNOTATIONS,
+                             "4e936e7c-1538-40e7-bce1-3556bfed80ff",
+                             "A known vulnerability in the software used by a resource, typically found by a vulnerability scan.",
+                             VulnerabilityAnnotationProperties.class),
+
+    /**
+     * A weakness that a penetration test was able to exploit, with how it was exploited and what was gained.
+     */
+    PENETRATION_TEST_FINDING_ANNOTATION("33b327e5-4afa-4445-8b42-5e3c36cd97a6",
+                                        "PenetrationTestFindingAnnotation",
+                                        OpenMetadataWikiPages.MODEL_0665_SECURITY_ANNOTATIONS,
+                                        "4cdd6473-827d-4742-b141-814307797cf1",
+                                        "A weakness that a penetration test was able to exploit, with how it was exploited and what was gained.",
+                                        PenetrationTestFindingAnnotationProperties.class),
+
+    /**
+     * A summary of the findings and coverage of one run of a security test.
+     */
+    SECURITY_POSTURE_ANNOTATION("3ef4ffc5-af73-444f-82b0-403fa2cce4ee",
+                                "SecurityPostureAnnotation",
+                                OpenMetadataWikiPages.MODEL_0665_SECURITY_ANNOTATIONS,
+                                "9a61d403-2338-47cd-a967-7966359b466d",
+                                "A summary of the findings and coverage of one run of a security test.",
+                                SecurityPostureAnnotationProperties.class),
 
     /**
      * A set of properties describing the content of the code in a code repository like GitHub.

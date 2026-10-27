@@ -112,9 +112,9 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
              * Individual catalogs will not be synchronized unless the friendship connector is set up in the
              * catalog target's configuration properties.
              */
-            auditLog.logMessage(methodName,
-                                UCAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
-                                                                                 defaultFriendshipGUID));
+            logRecord(methodName,
+                      UCAuditCode.FRIENDSHIP_GUID.getMessageDefinition(connectorName,
+                                                                       defaultFriendshipGUID));
         }
 
 
@@ -244,12 +244,12 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            exception.getClass().getName(),
-                                                                                            methodName,
-                                                                                            exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         exception.getClass().getName(),
+                                                                                         methodName,
+                                                                                         exception.getMessage()),
+                                   exception);
             }
         }
         else
@@ -361,12 +361,12 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
             }
             catch (Exception exception)
             {
-                auditLog.logException(methodName,
-                                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                            exception.getClass().getName(),
-                                                                                            methodName,
-                                                                                            exception.getMessage()),
-                                      exception);
+                logExceptionRecord(methodName,
+                                   UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         exception.getClass().getName(),
+                                                                                         methodName,
+                                                                                         exception.getMessage()),
+                                   exception);
             }
         }
     }

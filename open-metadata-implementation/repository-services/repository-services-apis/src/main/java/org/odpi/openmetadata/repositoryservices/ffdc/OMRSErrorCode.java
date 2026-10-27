@@ -1759,7 +1759,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * It is not able to complete the {2} request
      */
     ENTITY_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-009",
-             "The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner." +
+             "The local OMRS repository connector {0} has been asked to update entity {1} but it is not the owner. " +
                                  "It is not able to complete the {2} request",
              "There is a logic issue either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
                                  "routed to the wrong repository, or there is an error in the local repository.",
@@ -1771,7 +1771,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * It is not able to complete the {2} request
      */
     RELATIONSHIP_CAN_NOT_BE_UPDATED(503, "OMRS-LOCAL-REPOSITORY-503-010",
-                              "The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner." +
+                              "The local OMRS repository connector {0} has been asked to update relationship {1} but it is not the owner. " +
                                       "It is not able to complete the {2} request",
              "There is a logic problem either in the EnterpriseOMRSRepositoryConnector causing an update request to be " +
                                       "routed to the wrong repository, or there is an error in the local repository.",
@@ -1783,7 +1783,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * a null was returned.  It is not able to complete the {2} request
      */
     NULL_INSTANCE(503, "OMRS-LOCAL-REPOSITORY-503-011",
-             "The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned." +
+             "The local OMRS repository connector {0} requested an instance {1} from the real metadata collection but a null was returned. " +
                                             "It is not able to complete the {2} request",
              "There is probably a logic error in the repository connector for the real repository because it should have thrown an exception rather" +
                           " than return null.",

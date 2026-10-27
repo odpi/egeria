@@ -687,7 +687,7 @@ public enum PersonDefinition implements ActorDefinition
     @Override
     public String getQualifiedName()
     {
-        if (employeeNumber != null)
+        if ((employeeNumber != null) && (countryCode != null))
         {
             return "Person::" + countryCode.getPreferredValue() + "::" + employeeNumber;
         }

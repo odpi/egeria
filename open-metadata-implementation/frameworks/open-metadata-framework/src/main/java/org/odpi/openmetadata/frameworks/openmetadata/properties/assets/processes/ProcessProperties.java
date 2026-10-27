@@ -40,7 +40,7 @@ public class ProcessProperties extends AssetProperties
     private Date           lastPauseTime             = null;
     private Date           lastResumeTime            = null;
     private Date           completionTime            = null;
-    private int            priority                  = 0;
+    private Integer        priority                  = null;
     private String         formula                   = null;
     private String         formulaType               = null;
     private ActivityStatus activityStatus            = null;
@@ -341,7 +341,7 @@ public class ProcessProperties extends AssetProperties
      *
      * @return int
      */
-    public int getPriority()
+    public Integer getPriority()
     {
         return priority;
     }
@@ -352,7 +352,7 @@ public class ProcessProperties extends AssetProperties
      *
      * @param priority integer
      */
-    public void setPriority(int priority)
+    public void setPriority(Integer priority)
     {
         this.priority = priority;
     }
@@ -443,7 +443,7 @@ public class ProcessProperties extends AssetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return priority == that.priority && Objects.equals(expectedBehaviour, that.expectedBehaviour) && Objects.equals(requestedTime, that.requestedTime) && Objects.equals(startTime, that.startTime) && Objects.equals(dueTime, that.dueTime) && Objects.equals(lastReviewTime, that.lastReviewTime) && Objects.equals(lastPauseTime, that.lastPauseTime) && Objects.equals(lastResumeTime, that.lastResumeTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType) && activityStatus == that.activityStatus && Objects.equals(userDefinedActivityStatus, that.userDefinedActivityStatus);
+        return Objects.equals(priority, that.priority) && Objects.equals(expectedBehaviour, that.expectedBehaviour) && Objects.equals(requestedTime, that.requestedTime) && Objects.equals(startTime, that.startTime) && Objects.equals(dueTime, that.dueTime) && Objects.equals(lastReviewTime, that.lastReviewTime) && Objects.equals(lastPauseTime, that.lastPauseTime) && Objects.equals(lastResumeTime, that.lastResumeTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType) && activityStatus == that.activityStatus && Objects.equals(userDefinedActivityStatus, that.userDefinedActivityStatus);
     }
 
     /**

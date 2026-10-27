@@ -159,12 +159,12 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                               error);
         }
     }
 
@@ -355,10 +355,10 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
 
                 FileUtils.writeStringToFile(file, content, StandardCharsets.UTF_8, false);
 
-                auditLog.logMessage(methodName,
-                                    BitolIntegrationConnectorAuditCode.DOCUMENT_STORED.getMessageDefinition(connectorName,
-                                                                                                            kind,
-                                                                                                            file.getPath()));
+                logRecord(methodName,
+                          BitolIntegrationConnectorAuditCode.DOCUMENT_STORED.getMessageDefinition(connectorName,
+                                                                                                  kind,
+                                                                                                  file.getPath()));
 
                 if (fileCataloguer != null)
                 {
@@ -368,13 +368,13 @@ public class FileBasedBitolStoreConnector extends IntegrationConnectorBase imple
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               error.getMessage()),
-                                  rawDocument,
-                                  error);
+            logExceptionRecord(methodName,
+                               BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            error.getMessage()),
+                               rawDocument,
+                               error);
         }
     }
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -13,8 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -132,14 +131,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     protected void logRecord(String                    actionDescription,
                              AuditLogMessageDefinition messageDefinition)
     {
-        if (auditLog != null)
-        {
-            auditLog.logMessage(actionDescription, messageDefinition);
-        }
-        else
-        {
-            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
-        }
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition);
     }
 
 
@@ -148,20 +140,13 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      *
      * @param messageDefinition description of the audit log record including specific resources involved
      * @param actionDescription calling method
+     * @param additionalInformation supporting information
      */
     protected void logRecord(String                    actionDescription,
                              AuditLogMessageDefinition messageDefinition,
                              String                    additionalInformation)
     {
-        if (auditLog != null)
-        {
-            auditLog.logMessage(actionDescription, messageDefinition, additionalInformation);
-        }
-        else
-        {
-            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
-            System.out.println(additionalInformation);
-        }
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition, additionalInformation);
     }
 
 
@@ -176,19 +161,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
                                       AuditLogMessageDefinition messageDefinition,
                                       Exception                 exception)
     {
-        if (auditLog != null)
-        {
-            auditLog.logException(actionDescription, messageDefinition, exception);
-        }
-        else
-        {
-            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
-
-            StringWriter stackTrace = new StringWriter();
-            exception.printStackTrace(new PrintWriter(stackTrace));
-
-            System.out.println(stackTrace);
-        }
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, exception);
     }
 
 
@@ -205,20 +178,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
                                       String                    additionalInformation,
                                       Exception                 exception)
     {
-        if (auditLog != null)
-        {
-            auditLog.logException(actionDescription, messageDefinition, additionalInformation, exception);
-        }
-        else
-        {
-            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
-            System.out.println(additionalInformation);
-
-            StringWriter stackTrace = new StringWriter();
-            exception.printStackTrace(new PrintWriter(stackTrace));
-
-            System.out.println(stackTrace);
-        }
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, additionalInformation, exception);
     }
 
 

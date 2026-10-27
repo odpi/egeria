@@ -145,7 +145,7 @@ public class OracleDatabaseStatsExtractorTest
         SurveyActionServiceConnector surveyActionService = new SurveyActionServiceConnector()
         {
             @Override
-            public boolean isActive()
+            public synchronized boolean isActive()
             {
                 return true;
             }

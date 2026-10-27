@@ -290,11 +290,11 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
         catch (ClassCastException | RepositoryErrorException | ConnectionCheckedException |
                ConnectorCheckedException error)
         {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()));
+            logRecord(methodName,
+                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()));
         }
 
         return archiveElementProperties;

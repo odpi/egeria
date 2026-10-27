@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConfidenceProperties extends GovernedDataClassificationBase
 {
-    private int confidenceLevel = 0;
+    private Integer confidenceLevel = null;
 
     /**
      * Default constructor
@@ -54,7 +54,7 @@ public class ConfidenceProperties extends GovernedDataClassificationBase
      *
      * @return int
      */
-    public int getConfidenceLevel()
+    public Integer getConfidenceLevel()
     {
         return confidenceLevel;
     }
@@ -65,7 +65,7 @@ public class ConfidenceProperties extends GovernedDataClassificationBase
      *
      * @param confidenceLevel int
      */
-    public void setConfidenceLevel(int confidenceLevel)
+    public void setConfidenceLevel(Integer confidenceLevel)
     {
         this.confidenceLevel = confidenceLevel;
     }
@@ -107,7 +107,7 @@ public class ConfidenceProperties extends GovernedDataClassificationBase
             return false;
         }
         ConfidenceProperties that = (ConfidenceProperties) objectToCompare;
-        return confidenceLevel == that.confidenceLevel;
+        return Objects.equals(confidenceLevel, that.confidenceLevel);
     }
 
 

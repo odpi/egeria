@@ -401,11 +401,11 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
     {
         final String methodName = "updateElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.VOLUME_UPDATE.getMessageDefinition(connectorName,
-                                                                           memberElement.getElement().getElementHeader().getGUID(),
-                                                                           modelInfo.getFull_name(),
-                                                                           ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.VOLUME_UPDATE.getMessageDefinition(connectorName,
+                                                                 memberElement.getElement().getElementHeader().getGUID(),
+                                                                 modelInfo.getFull_name(),
+                                                                 ucServerEndpoint));
 
         externalIdClient.confirmSynchronization(memberElement.getElement(), modelInfo.getId());
     }
@@ -422,10 +422,10 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
     {
         final String methodName = "deleteElementInThirdParty";
 
-        auditLog.logMessage(methodName,
-                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
-                                                                               modelInfo.getFull_name(),
-                                                                               ucServerEndpoint));
+        logRecord(methodName,
+                  UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                     modelInfo.getFull_name(),
+                                                                     ucServerEndpoint));
 
         ucConnector.deleteRegisteredModel(modelInfo.getFull_name());
     }

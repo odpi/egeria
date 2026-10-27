@@ -94,7 +94,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
                            "The {0} server has completed shutdown",
                            "The request to shutdown the server has completed.  No REST API calls nor events will be " +
                                     "processed by this server until it is restarted.",
-                           "Review the shutdown messages to ensure that all the subsystems have successfully released the" +
+                           "Review the shutdown messages to ensure that all the subsystems have successfully released the " +
                                     "resources that they were using.",
                                     "https://egeria-project.org/services/server-operations/"),
 
@@ -106,7 +106,7 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
                             "The {0} server has detected an {1} exception during server shutdown.  The error message was {2}",
                             "The request to shutdown the server has failed with an exception.  The server is in an " +
                                   "undetermined state.",
-                            "Review the shutdown messages to ensure that all the subsystems have successfully released the" +
+                            "Review the shutdown messages to ensure that all the subsystems have successfully released the " +
                                     "resources that they were using.  Restart the server whenever its services are needed again.",
                                     "https://egeria-project.org/services/server-operations/"),
 

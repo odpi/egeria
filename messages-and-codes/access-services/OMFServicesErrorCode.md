@@ -197,7 +197,7 @@ The system cannot create a connector which means some of its services will not w
 
 **User action**
 
-This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connectionand correct if necessary.  If the connection is correct, contact the Egeria community for help.
+This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection and correct if necessary.  If the connection is correct, contact the Egeria community for help.
 
 
 ----

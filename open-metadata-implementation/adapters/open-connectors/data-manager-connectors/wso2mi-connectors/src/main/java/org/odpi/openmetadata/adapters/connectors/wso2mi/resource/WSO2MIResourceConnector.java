@@ -46,7 +46,6 @@ import java.util.List;
  */
 public class WSO2MIResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
-    private AuditLog auditLog      = null;
     private String   connectorName = "WSO2 Micro Integrator Connector";
 
     private String targetRootURL   = null;
@@ -147,15 +146,12 @@ public class WSO2MIResourceConnector extends ConnectorBase implements AuditLoggi
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      WSO2MIAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                               error.getClass().getName(),
-                                                                                               methodName,
-                                                                                               error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               WSO2MIAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                        error.getClass().getName(),
+                                                                                        methodName,
+                                                                                        error.getMessage()),
+                               error);
 
             throw new ConnectorCheckedException(WSO2MIErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                          error.getClass().getName(),
@@ -195,11 +191,8 @@ public class WSO2MIResourceConnector extends ConnectorBase implements AuditLoggi
 
         this.bearerToken = response.getAccessToken();
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                WSO2MIAuditCode.AUTHENTICATED.getMessageDefinition(connectorName, targetRootURL));
-        }
+        logRecord(methodName,
+                  WSO2MIAuditCode.AUTHENTICATED.getMessageDefinition(connectorName, targetRootURL));
     }
 
 

@@ -3034,6 +3034,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                               originalEntity.getGUID(),
                                                                               methodName);
 
+            if (recoveredEntity == null)
+            {
+                /*
+                 * There was no earlier version to go back to, so nothing has changed.
+                 */
+                return null;
+            }
+
             /*
              * There is an extra security check if the update is for an asset or glossary.
              */
@@ -3077,10 +3085,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                                                                   serviceName));
             }
 
-            if (recoveredEntity != null)
-            {
-                return converter.getNewBean(beanClass, recoveredEntity, methodName);
-            }
+            return converter.getNewBean(beanClass, recoveredEntity, methodName);
         }
         else
         {

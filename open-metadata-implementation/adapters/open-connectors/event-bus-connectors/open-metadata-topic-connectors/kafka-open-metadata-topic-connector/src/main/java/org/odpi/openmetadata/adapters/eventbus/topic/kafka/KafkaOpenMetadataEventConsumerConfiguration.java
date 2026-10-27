@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
 import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 
 import java.util.Properties;
@@ -13,16 +14,16 @@ import java.util.Properties;
  * 
  *
  */
-public class KafkaOpenMetadataEventConsumerConfiguration
+public class KafkaOpenMetadataEventConsumerConfiguration extends AuditLoggingBase
 {
 	private final Properties properties;
-	private final AuditLog   auditLog;
 
 	KafkaOpenMetadataEventConsumerConfiguration(Properties properties,
 												AuditLog   auditLog)
 	{
+		super(auditLog);
+
 		this.properties = properties;
-		this.auditLog = auditLog;
 	}
 
 
@@ -64,11 +65,8 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 		{
 			final String actionDescription = "getProperty";
 
-			if (auditLog != null)
-			{
-				auditLog.logMessage(actionDescription,
-									KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY.getMessageDefinition(property.getPropertyName()));
-			}
+			logRecord(actionDescription,
+			          KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY.getMessageDefinition(property.getPropertyName()));
 
 			return "0";
 		}

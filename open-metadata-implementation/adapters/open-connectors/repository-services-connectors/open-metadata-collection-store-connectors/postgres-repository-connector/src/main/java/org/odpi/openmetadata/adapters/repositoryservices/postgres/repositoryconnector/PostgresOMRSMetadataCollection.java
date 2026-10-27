@@ -109,23 +109,20 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             int repairCount = repositoryStore.repairSuperTypeChains();
 
-            if ((repairCount > 0) && (auditLog != null))
+            if (repairCount > 0)
             {
-                auditLog.logMessage(methodName,
-                                    PostgresAuditCode.SUPERTYPE_CHAINS_REPAIRED.getMessageDefinition(repositoryName,
-                                                                                                      Integer.toString(repairCount)));
+                logRecord(methodName,
+                          PostgresAuditCode.SUPERTYPE_CHAINS_REPAIRED.getMessageDefinition(repositoryName,
+                                                                                            Integer.toString(repairCount)));
             }
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      PostgresAuditCode.SUPERTYPE_CHAIN_CHECK_FAILED.getMessageDefinition(repositoryName,
-                                                                                                           error.getClass().getName(),
-                                                                                                           error.getMessage()),
-                                      error);
-            }
+            logExceptionRecord(methodName,
+                               PostgresAuditCode.SUPERTYPE_CHAIN_CHECK_FAILED.getMessageDefinition(repositoryName,
+                                                                                                    error.getClass().getName(),
+                                                                                                    error.getMessage()),
+                               error);
         }
     }
 

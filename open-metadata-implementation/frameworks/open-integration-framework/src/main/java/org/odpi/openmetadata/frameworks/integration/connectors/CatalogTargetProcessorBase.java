@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecorder;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.NumericPropertyParser;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -174,15 +176,15 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
 
         OpenMetadataRootElement catalogTargetElement = super.getCatalogTargetElement();
 
-        if ((super.getCatalogTargetElementRetrievalException() != null) && (auditLog != null))
+        if (super.getCatalogTargetElementRetrievalException() != null)
         {
             Exception error = super.getCatalogTargetElementRetrievalException();
 
-            auditLog.logException(methodName,
-                                  OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                 connectorName,
-                                                                                                 error.getMessage()),
-                                  error);
+            logExceptionRecord(methodName,
+                               OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                              connectorName,
+                                                                                              error.getMessage()),
+                               error);
         }
 
         return catalogTargetElement;
@@ -249,15 +251,12 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
                         }
                         catch (Exception error)
                         {
-                            if (auditLog != null)
-                            {
-                                auditLog.logException(methodName,
-                                                      OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                            error.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            error.getMessage()),
-                                                      error);
-                            }
+                            logExceptionRecord(methodName,
+                                               OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                     error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     error.getMessage()),
+                                               error);
 
                             throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                       error.getClass().getName(),
@@ -308,15 +307,12 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logException(methodName,
-                                              OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                              error);
-                    }
+                    logExceptionRecord(methodName,
+                                       OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName,
+                                                                                             error.getMessage()),
+                                       error);
 
                     throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                               error.getClass().getName(),
@@ -362,15 +358,12 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                error.getClass().getName(),
-                                                                                                methodName,
-                                                                                                error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                                   error);
 
                 throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                           error.getClass().getName(),
@@ -456,15 +449,12 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                error.getClass().getName(),
-                                                                                                methodName,
-                                                                                                error.getMessage()),
-                                          error);
-                }
+                logExceptionRecord(methodName,
+                                   OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                         error.getClass().getName(),
+                                                                                         methodName,
+                                                                                         error.getMessage()),
+                                   error);
 
                 throw new ConnectorCheckedException(OIFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                           error.getClass().getName(),
@@ -555,13 +545,10 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             elementString = element.toString();
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, OIFAuditCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
-                                                                                           missingPropertyName,
-                                                                                           methodName,
-                                                                                           elementString));
-        }
+        logRecord(methodName, OIFAuditCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
+                                                                             missingPropertyName,
+                                                                             methodName,
+                                                                             elementString));
 
         throw new ConnectorCheckedException(OIFErrorCode.BAD_OM_VALUE.getMessageDefinition(connectorName,
                                                                                            missingPropertyName,
@@ -599,16 +586,13 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
             }
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName, OIFAuditCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
-                                                                                                   elementGUID,
-                                                                                                   expectedType.typeName,
-                                                                                                   actualBeanPropertyType,
-                                                                                                   expectedType.beanClass.getName(),
-                                                                                                   methodName,
-                                                                                                   elementString));
-        }
+        logRecord(methodName, OIFAuditCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
+                                                                                     elementGUID,
+                                                                                     expectedType.typeName,
+                                                                                     actualBeanPropertyType,
+                                                                                     expectedType.beanClass.getName(),
+                                                                                     methodName,
+                                                                                     elementString));
 
         throw new ConnectorCheckedException(OIFErrorCode.BAD_OM_PROPERTY_TYPE.getMessageDefinition(connectorName,
                                                                                                    elementGUID,
@@ -919,5 +903,65 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
         }
 
         return 0L;
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the catalog target processor.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition)
+    {
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition);
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the catalog target processor.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param additionalInformation supporting information
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition,
+                             String                    additionalInformation)
+    {
+        AuditLogRecorder.logRecord(auditLog, actionDescription, messageDefinition, additionalInformation);
+    }
+
+
+    /**
+     * Log an audit log record for an exception detected by the catalog target processor.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param exception the exception associated with the message
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      Throwable                 exception)
+    {
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, exception);
+    }
+
+
+    /**
+     * Log an audit log record for an exception detected by the catalog target processor.
+     *
+     * @param actionDescription calling method
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param additionalInformation supporting information
+     * @param exception the exception associated with the message
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      String                    additionalInformation,
+                                      Throwable                 exception)
+    {
+        AuditLogRecorder.logExceptionRecord(auditLog, actionDescription, messageDefinition, additionalInformation, exception);
     }
 }

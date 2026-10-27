@@ -169,7 +169,7 @@ The request to shutdown the server has completed.  No REST API calls nor events 
 
 **User action**
 
-Review the shutdown messages to ensure that all the subsystems have successfully released theresources that they were using.
+Review the shutdown messages to ensure that all the subsystems have successfully released the resources that they were using.
 
 
 ----
@@ -190,7 +190,7 @@ The request to shutdown the server has failed with an exception.  The server is 
 
 **User action**
 
-Review the shutdown messages to ensure that all the subsystems have successfully released theresources that they were using.  Restart the server whenever its services are needed again.
+Review the shutdown messages to ensure that all the subsystems have successfully released the resources that they were using.  Restart the server whenever its services are needed again.
 
 
 ----

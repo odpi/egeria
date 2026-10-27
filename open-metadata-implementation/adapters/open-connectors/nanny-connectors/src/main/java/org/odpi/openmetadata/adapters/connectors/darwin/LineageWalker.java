@@ -229,8 +229,8 @@ class LineageWalker
 
                     if (log.isDebugEnabled())
                     {
-                        log.debug("Abandoning lineage path from " + startElementGUID + " at " + point.elementGUID() +
-                                          " for information supply chain " + point.iscQualifiedName() + " after " + point.depth() + " steps");
+                        log.debug("Abandoning lineage path from " + forLog(startElementGUID) + " at " + forLog(point.elementGUID()) +
+                                          " for information supply chain " + forLog(point.iscQualifiedName()) + " after " + point.depth() + " steps");
                     }
                 }
 
@@ -423,5 +423,23 @@ class LineageWalker
         }
 
         return untaggedEdges;
+    }
+
+
+    /**
+     * Make a value from the metadata safe to write to the log.  Values such as an information supply chain's
+     * qualified name are stored properties that anyone can set, so a line break in one could forge log entries.
+     *
+     * @param value value from the metadata
+     * @return the value with its line breaks replaced - null if the value is null
+     */
+    private static String forLog(String value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        return value.replace('\r', '_').replace('\n', '_');
     }
 }

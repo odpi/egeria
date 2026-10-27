@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProperties
 {
-    private boolean uniqueValues  = false;
-    private boolean orderedValues = false;
+    private Boolean uniqueValues  = null;
+    private Boolean orderedValues = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
      *
      * @return boolean
      */
-    public boolean getUniqueValues()
+    public Boolean getUniqueValues()
     {
         return uniqueValues;
     }
@@ -69,7 +69,7 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
      *
      * @param flag boolean
      */
-    public void setUniqueValues(boolean flag)
+    public void setUniqueValues(Boolean flag)
     {
         this.uniqueValues = flag;
     }
@@ -80,7 +80,7 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
      *
      * @return boolean
      */
-    public boolean getOrderedValues() { return orderedValues; }
+    public Boolean getOrderedValues() { return orderedValues; }
 
 
     /**
@@ -88,7 +88,7 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
      *
      * @param orderedValues boolean
      */
-    public void setOrderedValues(boolean orderedValues)
+    public void setOrderedValues(Boolean orderedValues)
     {
         this.orderedValues = orderedValues;
     }
@@ -122,8 +122,8 @@ public class ConceptBeadAttributeLinkProperties extends PartOfRelationshipProper
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ConceptBeadAttributeLinkProperties that = (ConceptBeadAttributeLinkProperties) objectToCompare;
-        return orderedValues == that.orderedValues &&
-                uniqueValues == that.uniqueValues ;
+        return Objects.equals(orderedValues, that.orderedValues) &&
+                Objects.equals(uniqueValues, that.uniqueValues) ;
     }
 
     /**

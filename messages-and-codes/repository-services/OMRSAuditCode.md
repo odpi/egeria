@@ -696,7 +696,7 @@ The event manager is fully initialized and beginning to distribute events
 
 **User action**
 
-This message confirms that the dynamic configuration of the event manger is complete and the running OMRS componentsare now connected together.
+This message confirms that the dynamic configuration of the event manager is complete and the running OMRS components are now connected together.
 
 
 ----
@@ -1662,7 +1662,7 @@ The enterprise connector manager is removing the connection for a remote member 
 
 **User action**
 
-Validate that this remote server is shutting down, or unregistering from the cohort.  If it is not,then look for error messages to determine why it is being removed.
+Validate that this remote server is shutting down, or unregistering from the cohort.  If it is not, then look for error messages to determine why it is being removed.
 
 
 ----

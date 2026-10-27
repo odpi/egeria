@@ -215,7 +215,7 @@ public class DB2LUWDatabaseStatsExtractorTest
         SurveyActionServiceConnector surveyActionService = new SurveyActionServiceConnector()
         {
             @Override
-            public boolean isActive()
+            public synchronized boolean isActive()
             {
                 return true;
             }
@@ -285,7 +285,7 @@ public class DB2LUWDatabaseStatsExtractorTest
         SurveyActionServiceConnector surveyActionService = new SurveyActionServiceConnector()
         {
             @Override
-            public boolean isActive()
+            public synchronized boolean isActive()
             {
                 return true;
             }
@@ -328,7 +328,7 @@ public class DB2LUWDatabaseStatsExtractorTest
     {
         Map<String, Object> row = new HashMap<>();
 
-        for (int i = 0; i < namesAndValues.length; i = i + 2)
+        for (int i = 0; i + 1 < namesAndValues.length; i = i + 2)
         {
             row.put(namesAndValues[i].toString().toLowerCase(), namesAndValues[i + 1]);
         }
