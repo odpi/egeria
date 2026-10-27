@@ -143,6 +143,14 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
             logRecord(methodName, YAMLAuditCode.ADDING_CLIENT_SIDE_SECRET.getMessageDefinition(collectionName, secretsStoreFile.getPath()));
             secretsStore.getSecretsCollections().put(collectionName, new SecretsCollection(newSecretsCollection));
             saveSecrets();
+
+            /*
+             * The user accounts and security access controls of the replaced collection are cached by the base
+             * class, so both caches are replaced - as refreshSecrets() does - rather than left holding accounts
+             * that the new collection no longer contains.
+             */
+            userAccountMap           = new HashMap<>();
+            securityAccessControlMap = new HashMap<>();
         }
     }
 
@@ -167,6 +175,13 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
             secretsStore.getSecretsCollections().remove(collectionName);
 
             saveSecrets();
+
+            /*
+             * The accounts and controls of the deleted collection are still cached, and the next collection to
+             * be selected would be served from them.
+             */
+            userAccountMap           = new HashMap<>();
+            securityAccessControlMap = new HashMap<>();
         }
     }
 

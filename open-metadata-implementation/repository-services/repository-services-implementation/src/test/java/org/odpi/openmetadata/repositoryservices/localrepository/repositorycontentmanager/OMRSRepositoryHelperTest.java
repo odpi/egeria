@@ -113,6 +113,34 @@ public class OMRSRepositoryHelperTest
 
 
     @Test
+    void testFormatResultsWithLargePageSizeBeyondFirstPage() throws PropertyErrorException, PagingErrorException {
+        List<Relationship> fullRelationships = new ArrayList<>();
+        fullRelationships.add(new Relationship());
+        fullRelationships.add(new Relationship());
+        fullRelationships.add(new Relationship());
+
+        List<Relationship> relationships = createHelper().formatRelationshipResults(fullRelationships,
+                1,
+                null,
+                SequencingOrder.ANY,
+                Integer.MAX_VALUE);
+        assertEquals(relationships.size(), 2);
+
+        List<EntityDetail> fullEntities = new ArrayList<>();
+        fullEntities.add(new EntityDetail());
+        fullEntities.add(new EntityDetail());
+        fullEntities.add(new EntityDetail());
+
+        List<EntityDetail> entities = createHelper().formatEntityResults(fullEntities,
+                1,
+                null,
+                SequencingOrder.ANY,
+                Integer.MAX_VALUE);
+        assertEquals(entities.size(), 2);
+    }
+
+
+    @Test
     void testCommonDifferencesAcrossInstances() {
 
         OMRSRepositoryHelper helper = createHelper();
