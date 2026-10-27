@@ -209,7 +209,7 @@ public class LovelaceKarmaPointAwardsService extends WatchdogActionServiceConnec
                          */
                         if (actorProfile.getContributionRecord().getRelatedElement().getProperties() instanceof ContributionRecordProperties contributionRecordProperties)
                         {
-                            this.incrementKarmaPointTotalInContributionRecord(actorProfile.getContributionRecord().getRelatedElement().getElementHeader().getGUID(), contributionRecordProperties.getKarmaPoints(), userId);
+                            this.incrementKarmaPointTotalInContributionRecord(actorProfile.getContributionRecord().getRelatedElement().getElementHeader().getGUID(), OpenMetadataProperty.KARMA_POINTS.longValueOrDefault(contributionRecordProperties.getKarmaPoints()), userId);
                         }
                     }
                     else if (actorProfile.getProperties() instanceof ActorProfileProperties actorProfileProperties)

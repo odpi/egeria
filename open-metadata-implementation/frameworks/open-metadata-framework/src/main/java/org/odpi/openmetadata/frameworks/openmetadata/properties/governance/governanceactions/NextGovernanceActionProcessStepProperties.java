@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class NextGovernanceActionProcessStepProperties extends RelationshipBeanProperties
 {
     private String  guard          = null;
-    private boolean mandatoryGuard = false;
+    private Boolean mandatoryGuard = null;
 
     /**
      * Typical Constructor
@@ -78,7 +78,7 @@ public class NextGovernanceActionProcessStepProperties extends RelationshipBeanP
      *
      * @return boolean
      */
-    public boolean getMandatoryGuard()
+    public Boolean getMandatoryGuard()
     {
         return mandatoryGuard;
     }
@@ -89,7 +89,7 @@ public class NextGovernanceActionProcessStepProperties extends RelationshipBeanP
      *
      * @param mandatoryGuard boolean
      */
-    public void setMandatoryGuard(boolean mandatoryGuard)
+    public void setMandatoryGuard(Boolean mandatoryGuard)
     {
         this.mandatoryGuard = mandatoryGuard;
     }
@@ -124,7 +124,7 @@ public class NextGovernanceActionProcessStepProperties extends RelationshipBeanP
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         NextGovernanceActionProcessStepProperties that = (NextGovernanceActionProcessStepProperties) objectToCompare;
-        return mandatoryGuard == that.mandatoryGuard && Objects.equals(guard, that.guard);
+        return Objects.equals(mandatoryGuard, that.mandatoryGuard) && Objects.equals(guard, that.guard);
     }
 
     /**

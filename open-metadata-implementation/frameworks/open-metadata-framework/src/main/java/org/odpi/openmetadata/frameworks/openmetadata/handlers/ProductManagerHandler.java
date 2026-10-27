@@ -976,8 +976,8 @@ public class ProductManagerHandler extends CollectionHandler
              */
             if ((notificationTypeElement.getProperties() instanceof NotificationTypeProperties existingProperties) &&
                     ((existingProperties.getContentStatus() != ContentStatus.ACTIVE) ||
-                     (existingProperties.getMultipleNotificationsPermitted() != multipleNotificationsPermitted) ||
-                     (existingProperties.getMinimumNotificationInterval() != minimumNotificationInterval)))
+                     (OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(existingProperties.getMultipleNotificationsPermitted()) != multipleNotificationsPermitted) ||
+                     (OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(existingProperties.getMinimumNotificationInterval()) != minimumNotificationInterval)))
             {
                 NotificationTypeProperties updatedProperties = new NotificationTypeProperties();
 

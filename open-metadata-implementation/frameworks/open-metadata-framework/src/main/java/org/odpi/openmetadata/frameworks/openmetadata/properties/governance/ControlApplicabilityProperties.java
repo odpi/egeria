@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ControlApplicabilityProperties extends LabeledRelationshipProperties
 {
-    private boolean                     isApplicable              = true;
+    private Boolean                     isApplicable              = null;
     private String                      justification             = null;
     private List<String>                inclusionReasons          = null;
     private ControlImplementationStatus implementationStatus      = null;
@@ -69,7 +69,7 @@ public class ControlApplicabilityProperties extends LabeledRelationshipPropertie
      *
      * @return boolean
      */
-    public boolean getIsApplicable()
+    public Boolean getIsApplicable()
     {
         return isApplicable;
     }
@@ -80,7 +80,7 @@ public class ControlApplicabilityProperties extends LabeledRelationshipPropertie
      *
      * @param isApplicable boolean
      */
-    public void setIsApplicable(boolean isApplicable)
+    public void setIsApplicable(Boolean isApplicable)
     {
         this.isApplicable = isApplicable;
     }
@@ -239,7 +239,7 @@ public class ControlApplicabilityProperties extends LabeledRelationshipPropertie
             return false;
         }
         ControlApplicabilityProperties that = (ControlApplicabilityProperties) objectToCompare;
-        return isApplicable == that.isApplicable &&
+        return Objects.equals(isApplicable, that.isApplicable) &&
                 Objects.equals(justification, that.justification) &&
                 Objects.equals(inclusionReasons, that.inclusionReasons) &&
                 implementationStatus == that.implementationStatus &&

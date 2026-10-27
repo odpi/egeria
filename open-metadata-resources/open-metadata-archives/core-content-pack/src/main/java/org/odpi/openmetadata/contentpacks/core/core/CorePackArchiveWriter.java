@@ -1036,6 +1036,18 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     {
         String parentSetGUID = this.getParentSet(OpenMetadataProperty.PROPERTY_NAME.name);
 
+        /*
+         * The default value is the value to assume when the property is not set.
+         */
+        Map<String, String> additionalProperties = null;
+
+        if (openMetadataProperty.defaultValue != null)
+        {
+            additionalProperties = new HashMap<>();
+
+            additionalProperties.put(OpenMetadataProperty.DEFAULT_VALUE.name, openMetadataProperty.defaultValue);
+        }
+
         String qualifiedName = constructValidValueQualifiedName(null,
                                                                 OpenMetadataProperty.PROPERTY_NAME.name,
                                                                 null,
@@ -1062,7 +1074,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  true,
                                                                  openMetadataProperty.ordinal(),
                                                                  false,
-                                                                 null);
+                                                                 additionalProperties);
 
         assert(openMetadataProperty.descriptionGUID.equals(validValueGUID));
     }

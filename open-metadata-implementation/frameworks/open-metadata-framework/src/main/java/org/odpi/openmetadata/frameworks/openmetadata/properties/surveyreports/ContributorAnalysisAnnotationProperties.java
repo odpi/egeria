@@ -20,18 +20,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContributorAnalysisAnnotationProperties extends AnnotationProperties
 {
-    private int     busFactor                  = 0;
-    private long    totalContributorCount      = 0;
-    private long    activeContributorCount     = 0;
-    private long    commitCount                = 0;
-    private long    activeCommitCount          = 0;
-    private long    issueCount                 = 0;
-    private long    activeIssueCount           = 0;
-    private long    contributionCount          = 0;
-    private long    activeContributionCount    = 0;
-    private long    copyCount                  = 0;
-    private long    activeCopyCount            = 0;
-    private long    stargazerCount             = 0;
+    private Integer busFactor                  = null;
+    private Long    totalContributorCount      = null;
+    private Long    activeContributorCount     = null;
+    private Long    commitCount                = null;
+    private Long    activeCommitCount          = null;
+    private Long    issueCount                 = null;
+    private Long    activeIssueCount           = null;
+    private Long    contributionCount          = null;
+    private Long    activeContributionCount    = null;
+    private Long    copyCount                  = null;
+    private Long    activeCopyCount            = null;
+    private Long    stargazerCount             = null;
 
 
     /**
@@ -76,7 +76,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return int
      */
-    public int getBusFactor()
+    public Integer getBusFactor()
     {
         return busFactor;
     }
@@ -87,7 +87,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param busFactor int
      */
-    public void setBusFactor(int busFactor)
+    public void setBusFactor(Integer busFactor)
     {
         this.busFactor = busFactor;
     }
@@ -98,7 +98,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getTotalContributorCount()
+    public Long getTotalContributorCount()
     {
         return totalContributorCount;
     }
@@ -109,7 +109,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param totalContributorCount long
      */
-    public void setTotalContributorCount(long totalContributorCount)
+    public void setTotalContributorCount(Long totalContributorCount)
     {
         this.totalContributorCount = totalContributorCount;
     }
@@ -120,7 +120,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getActiveContributorCount()
+    public Long getActiveContributorCount()
     {
         return activeContributorCount;
     }
@@ -131,7 +131,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param activeContributorCount long
      */
-    public void setActiveContributorCount(long activeContributorCount)
+    public void setActiveContributorCount(Long activeContributorCount)
     {
         this.activeContributorCount = activeContributorCount;
     }
@@ -142,7 +142,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getCommitCount()
+    public Long getCommitCount()
     {
         return commitCount;
     }
@@ -153,7 +153,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param commitCount long
      */
-    public void setCommitCount(long commitCount)
+    public void setCommitCount(Long commitCount)
     {
         this.commitCount = commitCount;
     }
@@ -164,7 +164,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getActiveCommitCount()
+    public Long getActiveCommitCount()
     {
         return activeCommitCount;
     }
@@ -175,7 +175,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param activeCommitCount long
      */
-    public void setActiveCommitCount(long activeCommitCount)
+    public void setActiveCommitCount(Long activeCommitCount)
     {
         this.activeCommitCount = activeCommitCount;
     }
@@ -186,7 +186,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getIssueCount()
+    public Long getIssueCount()
     {
         return issueCount;
     }
@@ -197,7 +197,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param issueCount long
      */
-    public void setIssueCount(long issueCount)
+    public void setIssueCount(Long issueCount)
     {
         this.issueCount = issueCount;
     }
@@ -208,7 +208,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getActiveIssueCount()
+    public Long getActiveIssueCount()
     {
         return activeIssueCount;
     }
@@ -219,7 +219,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param activeIssueCount long
      */
-    public void setActiveIssueCount(long activeIssueCount)
+    public void setActiveIssueCount(Long activeIssueCount)
     {
         this.activeIssueCount = activeIssueCount;
     }
@@ -230,7 +230,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getContributionCount()
+    public Long getContributionCount()
     {
         return contributionCount;
     }
@@ -241,7 +241,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param contributionCount long
      */
-    public void setContributionCount(long contributionCount)
+    public void setContributionCount(Long contributionCount)
     {
         this.contributionCount = contributionCount;
     }
@@ -252,7 +252,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getActiveContributionCount()
+    public Long getActiveContributionCount()
     {
         return activeContributionCount;
     }
@@ -263,7 +263,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param activeContributionCount long
      */
-    public void setActiveContributionCount(long activeContributionCount)
+    public void setActiveContributionCount(Long activeContributionCount)
     {
         this.activeContributionCount = activeContributionCount;
     }
@@ -274,7 +274,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getCopyCount()
+    public Long getCopyCount()
     {
         return copyCount;
     }
@@ -285,7 +285,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param copyCount long
      */
-    public void setCopyCount(long copyCount)
+    public void setCopyCount(Long copyCount)
     {
         this.copyCount = copyCount;
     }
@@ -296,7 +296,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getActiveCopyCount()
+    public Long getActiveCopyCount()
     {
         return activeCopyCount;
     }
@@ -307,7 +307,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param activeCopyCount long
      */
-    public void setActiveCopyCount(long activeCopyCount)
+    public void setActiveCopyCount(Long activeCopyCount)
     {
         this.activeCopyCount = activeCopyCount;
     }
@@ -318,7 +318,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @return long
      */
-    public long getStargazerCount()
+    public Long getStargazerCount()
     {
         return stargazerCount;
     }
@@ -329,7 +329,7 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
      *
      * @param stargazerCount long
      */
-    public void setStargazerCount(long stargazerCount)
+    public void setStargazerCount(Long stargazerCount)
     {
         this.stargazerCount = stargazerCount;
     }
@@ -382,18 +382,18 @@ public class ContributorAnalysisAnnotationProperties extends AnnotationPropertie
             return false;
         }
         ContributorAnalysisAnnotationProperties that = (ContributorAnalysisAnnotationProperties) objectToCompare;
-        return busFactor == that.busFactor &&
-               totalContributorCount == that.totalContributorCount &&
-               activeContributorCount == that.activeContributorCount &&
-               commitCount == that.commitCount &&
-               activeCommitCount == that.activeCommitCount &&
-               issueCount == that.issueCount &&
-               activeIssueCount == that.activeIssueCount &&
-               contributionCount == that.contributionCount &&
-               activeContributionCount == that.activeContributionCount &&
-               copyCount == that.copyCount &&
-               activeCopyCount == that.activeCopyCount &&
-               stargazerCount == that.stargazerCount;
+        return Objects.equals(busFactor, that.busFactor) &&
+               Objects.equals(totalContributorCount, that.totalContributorCount) &&
+               Objects.equals(activeContributorCount, that.activeContributorCount) &&
+               Objects.equals(commitCount, that.commitCount) &&
+               Objects.equals(activeCommitCount, that.activeCommitCount) &&
+               Objects.equals(issueCount, that.issueCount) &&
+               Objects.equals(activeIssueCount, that.activeIssueCount) &&
+               Objects.equals(contributionCount, that.contributionCount) &&
+               Objects.equals(activeContributionCount, that.activeContributionCount) &&
+               Objects.equals(copyCount, that.copyCount) &&
+               Objects.equals(activeCopyCount, that.activeCopyCount) &&
+               Objects.equals(stargazerCount, that.stargazerCount);
     }
 
 

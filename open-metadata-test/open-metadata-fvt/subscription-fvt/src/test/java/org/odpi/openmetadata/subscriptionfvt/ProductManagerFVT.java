@@ -266,7 +266,7 @@ public class ProductManagerFVT
 
         NotificationTypeProperties notificationType = notificationTypeProperties(notificationTypeGUID);
 
-        assertFalse(notificationType.getMultipleNotificationsPermitted(),
+        assertFalse(OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationType.getMultipleNotificationsPermitted()),
                     "The one-time subscription type's notification type permits repeated notifications, so an evaluation"
                             + " subscription would have its data delivered again on every refresh.");
         assertEquals(ContentStatus.ACTIVE, notificationType.getContentStatus(),
@@ -298,7 +298,7 @@ public class ProductManagerFVT
 
         NotificationTypeProperties notificationType = notificationTypeProperties(notificationTypeGUID);
 
-        assertTrue(notificationType.getMultipleNotificationsPermitted(),
+        assertTrue(OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationType.getMultipleNotificationsPermitted()),
                    "The periodic subscription type's notification type permits a single notification, so subscribers"
                            + " would receive the data once and never again.");
         assertEquals(PERIODIC_INTERVAL_MINUTES, notificationType.getMinimumNotificationInterval(),
@@ -327,7 +327,7 @@ public class ProductManagerFVT
 
         NotificationTypeProperties notificationType = notificationTypeProperties(notificationTypeGUID);
 
-        assertTrue(notificationType.getMultipleNotificationsPermitted(),
+        assertTrue(OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationType.getMultipleNotificationsPermitted()),
                    "The ongoing update subscription type's notification type permits a single notification.");
         assertEquals(ONGOING_INTERVAL_MINUTES, notificationType.getMinimumNotificationInterval(),
                      "The ongoing update subscription type does not carry the minimum interval it was created with.");

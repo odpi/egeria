@@ -723,19 +723,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeExpectedTimeAllocationPercent(ElementProperties  elementProperties)
+    protected Integer removeExpectedTimeAllocationPercent(ElementProperties  elementProperties)
     {
         final String methodName = "removeExpectedTimeAllocationPercent";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
     /**
@@ -744,19 +744,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeMinimumInstances(ElementProperties  elementProperties)
+    protected Integer removeMinimumInstances(ElementProperties  elementProperties)
     {
         final String methodName = "removeMinimumInstances";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MINIMUM_INSTANCES.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MINIMUM_INSTANCES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
     /**
@@ -765,19 +765,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeMaximumInstances(ElementProperties  elementProperties)
+    protected Integer removeMaximumInstances(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaximumInstances";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MAXIMUM_INSTANCES.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MAXIMUM_INSTANCES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -1540,19 +1540,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExternalInstanceVersion(ElementProperties  elementProperties)
+    protected Long removeExternalInstanceVersion(ElementProperties  elementProperties)
     {
         final String methodName = "removeExternalInstanceVersion";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXT_INSTANCE_VERSION.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXT_INSTANCE_VERSION.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1562,19 +1562,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUserAccountCount(ElementProperties  elementProperties)
+    protected Long removeUserAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeUserAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.USER_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.USER_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1584,19 +1584,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeEmployeeAccountCount(ElementProperties  elementProperties)
+    protected Long removeEmployeeAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeEmployeeAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EMPLOYEE_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EMPLOYEE_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1606,19 +1606,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeContractorAccountCount(ElementProperties  elementProperties)
+    protected Long removeContractorAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeContractorAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.CONTRACTOR_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.CONTRACTOR_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1628,19 +1628,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExternalAccountCount(ElementProperties  elementProperties)
+    protected Long removeExternalAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeExternalAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXTERNAL_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXTERNAL_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1651,19 +1651,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDigitalAccountCount(ElementProperties  elementProperties)
+    protected Long removeDigitalAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDigitalAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DIGITAL_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DIGITAL_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1674,19 +1674,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveAccountCount(ElementProperties  elementProperties)
+    protected Long removeActiveAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1696,19 +1696,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExpiredAccountCount(ElementProperties  elementProperties)
+    protected Long removeExpiredAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeExpiredAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1718,19 +1718,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLockedAccountCount(ElementProperties  elementProperties)
+    protected Long removeLockedAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeLockedAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LOCKED_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LOCKED_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1740,19 +1740,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDisabledAccountCount(ElementProperties  elementProperties)
+    protected Long removeDisabledAccountCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDisabledAccountCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -1784,19 +1784,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeThreshold(ElementProperties  elementProperties)
+    protected Integer removeThreshold(ElementProperties  elementProperties)
     {
         final String methodName = "removeThreshold";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.THRESHOLD.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.THRESHOLD.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -1806,19 +1806,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeMatchThreshold(ElementProperties  elementProperties)
+    protected Integer removeMatchThreshold(ElementProperties  elementProperties)
     {
         final String methodName = "removeMatchThreshold";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MATCH_THRESHOLD.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MATCH_THRESHOLD.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 100;
+        return null;
     }
 
 
@@ -1829,19 +1829,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeNumberOfPages(ElementProperties  elementProperties)
+    protected Integer removeNumberOfPages(ElementProperties  elementProperties)
     {
         final String methodName = "removeNumberOfPages";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.NUMBER_OF_PAGES.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.NUMBER_OF_PAGES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -3579,19 +3579,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return map
      */
-    protected long removeTotalMembership(ElementProperties elementProperties)
+    protected Long removeTotalMembership(ElementProperties elementProperties)
     {
         final String methodName = "removeTotalMembership";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_MEMBERSHIP.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_MEMBERSHIP.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -3601,19 +3601,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return map
      */
-    protected long removeAnchoredTotalMembership(ElementProperties elementProperties)
+    protected Long removeAnchoredTotalMembership(ElementProperties elementProperties)
     {
         final String methodName = "removeAnchoredTotalMembership";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -3623,19 +3623,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return map
      */
-    protected long removeAllTotalMembership(ElementProperties elementProperties)
+    protected Long removeAllTotalMembership(ElementProperties elementProperties)
     {
         final String methodName = "removeAllTotalMembership";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -4023,19 +4023,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return ordinal or 0 for not specified
      */
-    protected long removeKarmaPoints(ElementProperties elementProperties)
+    protected Long removeKarmaPoints(ElementProperties elementProperties)
     {
         final String methodName = "removeKarmaPoints";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.KARMA_POINTS.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.KARMA_POINTS.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5051,19 +5051,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeIsDefaultValue(ElementProperties  elementProperties)
+    protected Boolean removeIsDefaultValue(ElementProperties  elementProperties)
     {
         final String methodName = "removeIsDefaultValue";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IS_DEFAULT_VALUE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IS_DEFAULT_VALUE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -5073,19 +5073,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeDelegationEscalationAuthority(ElementProperties  elementProperties)
+    protected Boolean removeDelegationEscalationAuthority(ElementProperties  elementProperties)
     {
         final String methodName = "removeDelegationEscalationAuthority";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.DELEGATION_ESCALATION.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.DELEGATION_ESCALATION.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -5271,19 +5271,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMinLongitude(ElementProperties  elementProperties)
+    protected Float removeMinLongitude(ElementProperties  elementProperties)
     {
         final String methodName = "removeMinLongitude";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                       OpenMetadataProperty.MIN_LONGITUDE.name,
-                                                       elementProperties,
-                                                       methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                               OpenMetadataProperty.MIN_LONGITUDE.name,
+                                                               elementProperties,
+                                                               methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5293,19 +5293,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMaxLongitude(ElementProperties  elementProperties)
+    protected Float removeMaxLongitude(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxLongitude";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.MAX_LONGITUDE.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.MAX_LONGITUDE.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5315,19 +5315,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMinLatitude(ElementProperties  elementProperties)
+    protected Float removeMinLatitude(ElementProperties  elementProperties)
     {
         final String methodName = "removeMinLatitude";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.MIN_LATITUDE.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.MIN_LATITUDE.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5337,19 +5337,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMaxLatitude(ElementProperties  elementProperties)
+    protected Float removeMaxLatitude(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxLatitude";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.MAX_LATITUDE.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.MAX_LATITUDE.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5359,19 +5359,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMinHeight(ElementProperties  elementProperties)
+    protected Float removeMinHeight(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxHeight";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.MIN_HEIGHT.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.MIN_HEIGHT.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5381,19 +5381,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected float removeMaxHeight(ElementProperties  elementProperties)
+    protected Float removeMaxHeight(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxHeight";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.MAX_HEIGHT.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.MAX_HEIGHT.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0F;
+        return null;
     }
 
 
@@ -5627,19 +5627,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeRunCount(ElementProperties  elementProperties)
+    protected Long removeRunCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeRunCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.RUN_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.RUN_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5649,19 +5649,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeFailedRunCount(ElementProperties  elementProperties)
+    protected Long removeFailedRunCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeFailedRunCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.FAILED_RUN_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.FAILED_RUN_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5781,19 +5781,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLastRunDuration(ElementProperties  elementProperties)
+    protected Long removeLastRunDuration(ElementProperties  elementProperties)
     {
         final String methodName = "removeLastRunDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LAST_RUN_DURATION.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LAST_RUN_DURATION.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5803,19 +5803,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalRunDuration(ElementProperties  elementProperties)
+    protected Long removeTotalRunDuration(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalRunDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_RUN_DURATION.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_RUN_DURATION.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5825,19 +5825,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLastRunRowsRead(ElementProperties  elementProperties)
+    protected Long removeLastRunRowsRead(ElementProperties  elementProperties)
     {
         final String methodName = "removeLastRunRowsRead";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LAST_RUN_ROWS_READ.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LAST_RUN_ROWS_READ.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5847,19 +5847,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLastRunRowsWritten(ElementProperties  elementProperties)
+    protected Long removeLastRunRowsWritten(ElementProperties  elementProperties)
     {
         final String methodName = "removeLastRunRowsWritten";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LAST_RUN_ROWS_WRITTEN.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LAST_RUN_ROWS_WRITTEN.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5869,19 +5869,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLastRunBytesRead(ElementProperties  elementProperties)
+    protected Long removeLastRunBytesRead(ElementProperties  elementProperties)
     {
         final String methodName = "removeLastRunBytesRead";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LAST_RUN_BYTES_READ.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LAST_RUN_BYTES_READ.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5891,19 +5891,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLastRunBytesWritten(ElementProperties  elementProperties)
+    protected Long removeLastRunBytesWritten(ElementProperties  elementProperties)
     {
         final String methodName = "removeLastRunBytesWritten";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LAST_RUN_BYTES_WRITTEN.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LAST_RUN_BYTES_WRITTEN.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5913,19 +5913,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalRowsRead(ElementProperties  elementProperties)
+    protected Long removeTotalRowsRead(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalRowsRead";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_ROWS_READ.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_ROWS_READ.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5935,19 +5935,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalRowsWritten(ElementProperties  elementProperties)
+    protected Long removeTotalRowsWritten(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalRowsWritten";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_ROWS_WRITTEN.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_ROWS_WRITTEN.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5957,19 +5957,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalBytesRead(ElementProperties  elementProperties)
+    protected Long removeTotalBytesRead(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalBytesRead";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_BYTES_READ.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_BYTES_READ.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -5979,19 +5979,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalBytesWritten(ElementProperties  elementProperties)
+    protected Long removeTotalBytesWritten(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalBytesWritten";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_BYTES_WRITTEN.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_BYTES_WRITTEN.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6001,19 +6001,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExplicitGetCount(ElementProperties  elementProperties)
+    protected Long removeExplicitGetCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeExplicitGetCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXPLICIT_GET_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXPLICIT_GET_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6023,19 +6023,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeFindCount(ElementProperties  elementProperties)
+    protected Long removeFindCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeFindCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.FIND_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.FIND_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6045,19 +6045,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdatePropertyCount(ElementProperties  elementProperties)
+    protected Long removeUpdatePropertyCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdatePropertyCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_PROPERTY_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_PROPERTY_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6067,19 +6067,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdateAttachmentCount(ElementProperties  elementProperties)
+    protected Long removeUpdateAttachmentCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdateAttachmentCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6089,19 +6089,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdateFeedbackCount(ElementProperties  elementProperties)
+    protected Long removeUpdateFeedbackCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdateFeedbackCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_FEEDBACK_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6111,19 +6111,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDeleteAttachmentCount(ElementProperties  elementProperties)
+    protected Long removeDeleteAttachmentCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDeleteAttachmentCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DELETE_ATTACHMENT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6133,19 +6133,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDeleteFeedbackCount(ElementProperties  elementProperties)
+    protected Long removeDeleteFeedbackCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDeleteFeedbackCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DELETE_FEEDBACK_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DELETE_FEEDBACK_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6155,19 +6155,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExplicitGetCountTotal(ElementProperties  elementProperties)
+    protected Long removeExplicitGetCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeExplicitGetCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXPLICIT_GET_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6199,19 +6199,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeFindCountTotal(ElementProperties  elementProperties)
+    protected Long removeFindCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeFindCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.FIND_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.FIND_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6243,19 +6243,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdatePropertyCountTotal(ElementProperties  elementProperties)
+    protected Long removeUpdatePropertyCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdatePropertyCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_PROPERTY_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6287,19 +6287,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdateAttachmentCountTotal(ElementProperties  elementProperties)
+    protected Long removeUpdateAttachmentCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdateAttachmentCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_ATTACHMENT_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6331,19 +6331,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeUpdateFeedbackCountTotal(ElementProperties  elementProperties)
+    protected Long removeUpdateFeedbackCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeUpdateFeedbackCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.UPDATE_FEEDBACK_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6375,19 +6375,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDeleteAttachmentCountTotal(ElementProperties  elementProperties)
+    protected Long removeDeleteAttachmentCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeDeleteAttachmentCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DELETE_ATTACHMENT_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6419,19 +6419,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDeleteFeedbackCountTotal(ElementProperties  elementProperties)
+    protected Long removeDeleteFeedbackCountTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeDeleteFeedbackCountTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DELETE_FEEDBACK_COUNT_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -6881,19 +6881,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default 0
      */
-    protected int removePosition(ElementProperties  elementProperties)
+    protected Integer removePosition(ElementProperties  elementProperties)
     {
         final String methodName = "removePosition";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.POSITION.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.POSITION.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -6904,19 +6904,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default 0
      */
-    protected int removeMinCardinality(ElementProperties  elementProperties)
+    protected Integer removeMinCardinality(ElementProperties  elementProperties)
     {
         final String methodName = "removeMinCardinality";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MIN_CARDINALITY.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -6926,19 +6926,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default -1 which is unlimited
      */
-    protected int removeMaxCardinality(ElementProperties  elementProperties)
+    protected Integer removeMaxCardinality(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxCardinality";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MAX_CARDINALITY.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return -1;
+        return null;
     }
 
 
@@ -6948,19 +6948,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is true
      */
-    protected boolean removeAllowsDuplicateValues(ElementProperties  elementProperties)
+    protected Boolean removeAllowsDuplicateValues(ElementProperties  elementProperties)
     {
         final String methodName = "removeAllowsDuplicateValues";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return true;
+        return null;
     }
 
 
@@ -6970,19 +6970,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from entity
      * @return boolean flag
      */
-    protected boolean removeInputField(ElementProperties  elementProperties)
+    protected Boolean removeInputField(ElementProperties  elementProperties)
     {
         final String methodName = "removeInputField";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.INPUT_FIELD.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.INPUT_FIELD.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -6992,19 +6992,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeOrderedValues(ElementProperties  elementProperties)
+    protected Boolean removeOrderedValues(ElementProperties  elementProperties)
     {
         final String methodName = "removeOrderedValues";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.ORDERED_VALUES.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.ORDERED_VALUES.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -7014,19 +7014,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeUniqueValues(ElementProperties  elementProperties)
+    protected Boolean removeUniqueValues(ElementProperties  elementProperties)
     {
         final String methodName = "removeUniqueValues";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.UNIQUE_VALUES.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.UNIQUE_VALUES.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -7036,19 +7036,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeNavigable(ElementProperties  elementProperties)
+    protected Boolean removeNavigable(ElementProperties  elementProperties)
     {
         final String methodName = "removeNavigable";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.NAVIGABLE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.NAVIGABLE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -7081,19 +7081,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default 0
      */
-    protected int removeMinimumLength(ElementProperties  elementProperties)
+    protected Integer removeMinimumLength(ElementProperties  elementProperties)
     {
         final String methodName = "removeMinimumLength";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.MINIMUM_LENGTH.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.MINIMUM_LENGTH.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -7103,19 +7103,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default 0
      */
-    protected int removeLength(ElementProperties  elementProperties)
+    protected Integer removeLength(ElementProperties  elementProperties)
     {
         final String methodName = "removeLength";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.LENGTH.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.LENGTH.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -7125,19 +7125,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer - default 0
      */
-    protected int removePrecision(ElementProperties  elementProperties)
+    protected Integer removePrecision(ElementProperties  elementProperties)
     {
         final String methodName = "removePrecision";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.PRECISION.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.PRECISION.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -7147,19 +7147,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeIsNullable(ElementProperties  elementProperties)
+    protected Boolean removeIsNullable(ElementProperties  elementProperties)
     {
         final String methodName = "removeIsNullable";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IS_NULLABLE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IS_NULLABLE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -7169,19 +7169,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the classification
      * @return boolean - default is false
      */
-    protected boolean removeRequired(ElementProperties  elementProperties)
+    protected Boolean removeRequired(ElementProperties  elementProperties)
     {
         final String methodName = "removeRequired";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.REQUIRED.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.REQUIRED.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -7456,19 +7456,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeRelationshipEnd(ElementProperties  elementProperties)
+    protected Integer removeRelationshipEnd(ElementProperties  elementProperties)
     {
         final String methodName = "removeRelationshipEndName";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.RELATIONSHIP_END.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.RELATIONSHIP_END.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -7921,19 +7921,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string text or null
      */
-    protected boolean removeUsesBlockingCalls(ElementProperties  elementProperties)
+    protected Boolean removeUsesBlockingCalls(ElementProperties  elementProperties)
     {
         final String methodName = "removeUsesBlockingCalls";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.USES_BLOCKING_CALLS.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.USES_BLOCKING_CALLS.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -8299,19 +8299,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from governance entities
      * @return string property or null
      */
-    protected int removeIntPriority(ElementProperties elementProperties)
+    protected Integer removeIntPriority(ElementProperties elementProperties)
     {
         final String methodName = "removeIntPriority";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.PRIORITY.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.PRIORITY.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -8321,19 +8321,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from governance entities
      * @return string property or null
      */
-    protected int removeHeadCount(ElementProperties elementProperties)
+    protected Integer removeHeadCount(ElementProperties elementProperties)
     {
         final String methodName = "removeHeadCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.HEAD_COUNT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.HEAD_COUNT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -8983,19 +8983,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or 0
      */
-    protected float removeCvssScore(ElementProperties elementProperties)
+    protected Float removeCvssScore(ElementProperties elementProperties)
     {
         final String methodName = "removeCvssScore";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeFloatProperty(localServiceName,
-                                                      OpenMetadataProperty.CVSS_SCORE.name,
-                                                      elementProperties,
-                                                      methodName);
+            return propertyHelper.removeNullableFloatProperty(localServiceName,
+                                                              OpenMetadataProperty.CVSS_SCORE.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9137,19 +9137,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or false
      */
-    protected boolean removeExploitAvailable(ElementProperties elementProperties)
+    protected Boolean removeExploitAvailable(ElementProperties elementProperties)
     {
         final String methodName = "removeExploitAvailable";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.EXPLOIT_AVAILABLE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.EXPLOIT_AVAILABLE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -9225,19 +9225,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or false
      */
-    protected boolean removePatchAvailable(ElementProperties elementProperties)
+    protected Boolean removePatchAvailable(ElementProperties elementProperties)
     {
         final String methodName = "removePatchAvailable";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.PATCH_AVAILABLE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.PATCH_AVAILABLE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -9379,19 +9379,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or 0
      */
-    protected long removeResourcesInScopeCount(ElementProperties elementProperties)
+    protected Long removeResourcesInScopeCount(ElementProperties elementProperties)
     {
         final String methodName = "removeResourcesInScopeCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.RESOURCES_IN_SCOPE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.RESOURCES_IN_SCOPE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9401,19 +9401,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or 0
      */
-    protected long removeResourcesTestedCount(ElementProperties elementProperties)
+    protected Long removeResourcesTestedCount(ElementProperties elementProperties)
     {
         final String methodName = "removeResourcesTestedCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.RESOURCES_TESTED_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.RESOURCES_TESTED_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9423,19 +9423,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or 0
      */
-    protected long removeNewFindingCount(ElementProperties elementProperties)
+    protected Long removeNewFindingCount(ElementProperties elementProperties)
     {
         final String methodName = "removeNewFindingCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.NEW_FINDING_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.NEW_FINDING_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9445,19 +9445,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return value or 0
      */
-    protected long removeResolvedFindingCount(ElementProperties elementProperties)
+    protected Long removeResolvedFindingCount(ElementProperties elementProperties)
     {
         final String methodName = "removeResolvedFindingCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.RESOLVED_FINDING_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.RESOLVED_FINDING_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9468,19 +9468,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return boolean
      */
-    protected boolean removeIsApplicable(ElementProperties elementProperties)
+    protected Boolean removeIsApplicable(ElementProperties elementProperties)
     {
         final String methodName = "removeIsApplicable";
 
         if ((elementProperties != null) && (elementProperties.getPropertyValue(OpenMetadataProperty.IS_APPLICABLE.name) != null))
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IS_APPLICABLE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IS_APPLICABLE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return true;
+        return null;
     }
 
 
@@ -9608,20 +9608,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer = default is 0 which is ALL
      */
-    protected int removeDomainIdentifier(ElementProperties elementProperties)
+    protected Integer removeDomainIdentifier(ElementProperties elementProperties)
 
     {
         final String methodName = "removeDomainIdentifier";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9631,20 +9631,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer = default is 0 which is ALL
      */
-    protected int removeConfidentialityLevel(ElementProperties elementProperties)
+    protected Integer removeConfidentialityLevel(ElementProperties elementProperties)
 
     {
         final String methodName = "removeConfidentialityLevel";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.CONFIDENTIALITY_LEVEL.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.CONFIDENTIALITY_LEVEL.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9654,20 +9654,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer = default is 0 which is ALL
      */
-    protected int removeLevelIdentifier(ElementProperties elementProperties)
+    protected Integer removeLevelIdentifier(ElementProperties elementProperties)
 
     {
         final String methodName = "removeLevelIdentifier";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.LEVEL_IDENTIFIER.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.LEVEL_IDENTIFIER.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9677,20 +9677,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return integer = default is 0
      */
-    protected int removeSeverityLevel(ElementProperties elementProperties)
+    protected Integer removeSeverityLevel(ElementProperties elementProperties)
 
     {
         final String methodName = "removeSeverityLevelIdentifier";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.SEVERITY_LEVEL.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.SEVERITY_LEVEL.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -9948,20 +9948,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string
      */
-    protected boolean removeGenerateConnectorActivityReports(ElementProperties elementProperties)
+    protected Boolean removeGenerateConnectorActivityReports(ElementProperties elementProperties)
 
     {
         final String methodName = "removeGenerateConnectorActivityReports";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -10207,20 +10207,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return flag
      */
-    protected boolean removeMandatoryGuard(ElementProperties elementProperties)
+    protected Boolean removeMandatoryGuard(ElementProperties elementProperties)
 
     {
         final String methodName = "removeMandatoryGuard";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.MANDATORY_GUARD.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.MANDATORY_GUARD.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -10230,20 +10230,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return flag
      */
-    protected boolean removeIgnoreMultipleTriggers(ElementProperties elementProperties)
+    protected Boolean removeIgnoreMultipleTriggers(ElementProperties elementProperties)
 
     {
         final String methodName = "removeIgnoreMultipleTriggers";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IGNORE_MULTIPLE_TRIGGERS.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IGNORE_MULTIPLE_TRIGGERS.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -10253,20 +10253,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return flag
      */
-    protected int removeWaitTime(ElementProperties elementProperties)
+    protected Integer removeWaitTime(ElementProperties elementProperties)
 
     {
         final String methodName = "removeWaitTime";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.WAIT_TIME.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.WAIT_TIME.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -10717,19 +10717,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeMinimumNotificationInterval(ElementProperties elementProperties)
+    protected Long removeMinimumNotificationInterval(ElementProperties elementProperties)
     {
         final String methodName = "removeMinimumNotificationInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10739,19 +10739,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeNotificationInterval(ElementProperties elementProperties)
+    protected Long removeNotificationInterval(ElementProperties elementProperties)
     {
         final String methodName = "removeNotificationInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10761,19 +10761,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeNotificationCount(ElementProperties elementProperties)
+    protected Long removeNotificationCount(ElementProperties elementProperties)
     {
         final String methodName = "removeNotificationCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.NOTIFICATION_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.NOTIFICATION_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10783,19 +10783,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeRefreshTimeInterval(ElementProperties elementProperties)
+    protected Long removeRefreshTimeInterval(ElementProperties elementProperties)
     {
         final String methodName = "removeRefreshTimeInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10805,19 +10805,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removePlannedDuration(ElementProperties elementProperties)
+    protected Long removePlannedDuration(ElementProperties elementProperties)
     {
         final String methodName = "removePlannedDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.PLANNED_DURATION.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.PLANNED_DURATION.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10827,19 +10827,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActualDuration(ElementProperties elementProperties)
+    protected Long removeActualDuration(ElementProperties elementProperties)
     {
         final String methodName = "removeActualDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTUAL_DURATION.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTUAL_DURATION.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10849,20 +10849,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeRepeatInterval(ElementProperties elementProperties)
+    protected Long removeRepeatInterval(ElementProperties elementProperties)
 
     {
         final String methodName = "removeRepeatInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.REPEAT_INTERVAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.REPEAT_INTERVAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10872,20 +10872,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeMatchingValues(ElementProperties elementProperties)
+    protected Long removeMatchingValues(ElementProperties elementProperties)
 
     {
         final String methodName = "removeMatchingValues";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.MATCHING_VALUES.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.MATCHING_VALUES.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -10895,20 +10895,20 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeNonMatchingValues(ElementProperties elementProperties)
+    protected Long removeNonMatchingValues(ElementProperties elementProperties)
 
     {
         final String methodName = "removeNonMatchingValues";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.NON_MATCHING_VALUES.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.NON_MATCHING_VALUES.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -11345,19 +11345,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from  entity
      * @return boolean
      */
-    protected boolean removeIsCaseSensitive(ElementProperties  elementProperties)
+    protected Boolean removeIsCaseSensitive(ElementProperties  elementProperties)
     {
         final String methodName = "removeIsCaseSensitive";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IS_CASE_SENSITIVE.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IS_CASE_SENSITIVE.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -11367,19 +11367,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from the entity
      * @return boolean
      */
-    protected boolean removeMultipleNotificationsPermitted(ElementProperties  elementProperties)
+    protected Boolean removeMultipleNotificationsPermitted(ElementProperties  elementProperties)
     {
         final String methodName = "removeMultipleNotificationsPermitted";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -11389,19 +11389,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from ValidValuesAssignment relationship
      * @return boolean
      */
-    protected boolean removeStrictRequirement(ElementProperties  elementProperties)
+    protected Boolean removeStrictRequirement(ElementProperties  elementProperties)
     {
         final String methodName = "removeStrictRequirement";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                     OpenMetadataProperty.STRICT_REQUIREMENT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                             OpenMetadataProperty.STRICT_REQUIREMENT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -11653,19 +11653,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeConfidenceLevel(ElementProperties elementProperties)
+    protected Integer removeConfidenceLevel(ElementProperties elementProperties)
     {
         final String methodName = "removeConfidenceLevel";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.CONFIDENCE_LEVEL.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.CONFIDENCE_LEVEL.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11676,19 +11676,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeCriticalityLevel(ElementProperties elementProperties)
+    protected Integer removeCriticalityLevel(ElementProperties elementProperties)
     {
         final String methodName = "removeCriticalityLevel";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.CRITICALITY_LEVEL.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.CRITICALITY_LEVEL.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11698,19 +11698,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeOrdinal(ElementProperties elementProperties)
+    protected Integer removeOrdinal(ElementProperties elementProperties)
     {
         final String methodName = "removeConfidenceLevel";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.ORDINAL.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.ORDINAL.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11720,19 +11720,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeConfidence(ElementProperties elementProperties)
+    protected Integer removeConfidence(ElementProperties elementProperties)
     {
         final String methodName = "removeConfidence";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.CONFIDENCE.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.CONFIDENCE.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11742,19 +11742,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeStatusIdentifier(ElementProperties elementProperties)
+    protected Integer removeStatusIdentifier(ElementProperties elementProperties)
     {
         final String methodName = "removeStatusIdentifier";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11764,19 +11764,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeRetentionBasis(ElementProperties elementProperties)
+    protected Integer removeRetentionBasis(ElementProperties elementProperties)
     {
         final String methodName = "removeRetentionBasis";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.RETENTION_BASIS.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.RETENTION_BASIS.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11829,19 +11829,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return integer or 0
      */
-    protected int removeSamplePercent(ElementProperties elementProperties)
+    protected Integer removeSamplePercent(ElementProperties elementProperties)
     {
         final String methodName = "removeSamplePercent";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.SAMPLE_PERCENT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.SAMPLE_PERCENT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -11851,19 +11851,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return long or 0
      */
-    protected long removeSampleSize(ElementProperties elementProperties)
+    protected Long removeSampleSize(ElementProperties elementProperties)
     {
         final String methodName = "removeSampleSize";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.SAMPLE_SIZE.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.SAMPLE_SIZE.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -11873,19 +11873,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return long or 0
      */
-    protected long removeAbsoluteUncertainty(ElementProperties elementProperties)
+    protected Long removeAbsoluteUncertainty(ElementProperties elementProperties)
     {
         final String methodName = "removeAbsoluteUncertainty";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ABSOLUTE_UNCERTAINTY.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ABSOLUTE_UNCERTAINTY.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -11895,19 +11895,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from storage volume entities
      * @return long or 0
      */
-    protected long removeStorageCapacity(ElementProperties elementProperties)
+    protected Long removeStorageCapacity(ElementProperties elementProperties)
     {
         final String methodName = "removeStorageCapacity";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.STORAGE_CAPACITY.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.STORAGE_CAPACITY.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -11917,19 +11917,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return long or 0
      */
-    protected long removeInterval(ElementProperties elementProperties)
+    protected Long removeInterval(ElementProperties elementProperties)
     {
         final String methodName = "removeInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.INTERVAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.INTERVAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -11939,19 +11939,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return long or 0
      */
-    protected long removeRelativeUncertainty(ElementProperties elementProperties)
+    protected Long removeRelativeUncertainty(ElementProperties elementProperties)
     {
         final String methodName = "removeRelativeUncertainty";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.RELATIVE_UNCERTAINTY.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.RELATIVE_UNCERTAINTY.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -12313,19 +12313,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return long property or 0
      */
-    protected long removeHash(ElementProperties elementProperties)
+    protected Long removeHash(ElementProperties elementProperties)
     {
         final String methodName = "removeHash";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.HASH.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.HASH.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -12445,19 +12445,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected int removeInferredLength(ElementProperties elementProperties)
+    protected Integer removeInferredLength(ElementProperties elementProperties)
     {
         final String methodName = "removeInferredLength";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.INFERRED_LENGTH.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.INFERRED_LENGTH.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -12467,19 +12467,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected int removeInferredPrecision(ElementProperties elementProperties)
+    protected Integer removeInferredPrecision(ElementProperties elementProperties)
     {
         final String methodName = "removeInferredPrecision";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.INFERRED_PRECISION.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.INFERRED_PRECISION.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -12489,19 +12489,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected int removeInferredScale(ElementProperties elementProperties)
+    protected Integer removeInferredScale(ElementProperties elementProperties)
     {
         final String methodName = "removeInferredScale";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.INFERRED_SCALE.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.INFERRED_SCALE.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -12844,19 +12844,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return boolean
      */
-    protected boolean removeIsPartitionKey(ElementProperties elementProperties)
+    protected Boolean removeIsPartitionKey(ElementProperties elementProperties)
     {
         final String methodName = "removeIsPartitionKey";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                        OpenMetadataProperty.IS_PARTITION_KEY.name,
-                                                        elementProperties,
-                                                        methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                                OpenMetadataProperty.IS_PARTITION_KEY.name,
+                                                                elementProperties,
+                                                                methodName);
         }
 
-        return false;
+        return null;
     }
 
 
@@ -12866,19 +12866,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removePartitionKeyPosition(ElementProperties elementProperties)
+    protected Integer removePartitionKeyPosition(ElementProperties elementProperties)
     {
         final String methodName = "removePartitionKeyPosition";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.PARTITION_KEY_POSITION.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.PARTITION_KEY_POSITION.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -13242,19 +13242,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected long removeSize(ElementProperties elementProperties)
+    protected Long removeSize(ElementProperties elementProperties)
     {
         final String methodName = "removeSize";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.SIZE.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.SIZE.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -13264,19 +13264,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected long removeSourceVersionNumber(ElementProperties elementProperties)
+    protected Long removeSourceVersionNumber(ElementProperties elementProperties)
     {
         final String methodName = "removeSourceVersionNumber";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -13355,19 +13355,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from annotation entities
      * @return int property or 0
      */
-    protected int removeQualityScore(ElementProperties elementProperties)
+    protected Integer removeQualityScore(ElementProperties elementProperties)
     {
         final String methodName = "removeQualityScore";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.QUALITY_SCORE.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.QUALITY_SCORE.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -13706,19 +13706,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected boolean removeOneWay(ElementProperties  elementProperties)
+    protected Boolean removeOneWay(ElementProperties  elementProperties)
     {
         final String methodName = "removeOneWay";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeBooleanProperty(localServiceName,
-                                                       OpenMetadataProperty.ONE_WAY.name,
-                                                       elementProperties,
-                                                       methodName);
+            return propertyHelper.removeNullableBooleanProperty(localServiceName,
+                                                               OpenMetadataProperty.ONE_WAY.name,
+                                                               elementProperties,
+                                                               methodName);
         }
 
-        return true;
+        return null;
     }
 
 
@@ -19720,19 +19720,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected int removeBusFactor(ElementProperties  elementProperties)
+    protected Integer removeBusFactor(ElementProperties  elementProperties)
     {
         final String methodName = "removeBusFactor";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeIntProperty(localServiceName,
-                                                    OpenMetadataProperty.BUS_FACTOR.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableIntProperty(localServiceName,
+                                                            OpenMetadataProperty.BUS_FACTOR.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -19742,19 +19742,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeTotalContributorCount(ElementProperties  elementProperties)
+    protected Long removeTotalContributorCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeTotalContributorCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.TOTAL_CONTRIBUTOR_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.TOTAL_CONTRIBUTOR_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19764,19 +19764,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveContributorCount(ElementProperties  elementProperties)
+    protected Long removeActiveContributorCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveContributorCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_CONTRIBUTOR_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_CONTRIBUTOR_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19786,19 +19786,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeCommitCount(ElementProperties  elementProperties)
+    protected Long removeCommitCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeCommitCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.COMMIT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.COMMIT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19808,19 +19808,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveCommitCount(ElementProperties  elementProperties)
+    protected Long removeActiveCommitCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveCommitCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_COMMIT_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_COMMIT_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19830,19 +19830,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeIssueCount(ElementProperties  elementProperties)
+    protected Long removeIssueCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeIssueCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ISSUE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ISSUE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19852,19 +19852,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveIssueCount(ElementProperties  elementProperties)
+    protected Long removeActiveIssueCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveIssueCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_ISSUE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_ISSUE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19874,19 +19874,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeContributionCount(ElementProperties  elementProperties)
+    protected Long removeContributionCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeContributionCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.CONTRIBUTION_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.CONTRIBUTION_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19896,19 +19896,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveContributionCount(ElementProperties  elementProperties)
+    protected Long removeActiveContributionCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveContributionCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_CONTRIBUTION_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_CONTRIBUTION_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19918,19 +19918,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeCopyCount(ElementProperties  elementProperties)
+    protected Long removeCopyCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeCopyCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.COPY_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.COPY_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19940,19 +19940,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeActiveCopyCount(ElementProperties  elementProperties)
+    protected Long removeActiveCopyCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeActiveCopyCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.ACTIVE_COPY_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.ACTIVE_COPY_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19962,19 +19962,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeStargazerCount(ElementProperties  elementProperties)
+    protected Long removeStargazerCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeStargazerCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.STARGAZER_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.STARGAZER_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -19984,19 +19984,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeFileCount(ElementProperties  elementProperties)
+    protected Long removeFileCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeFileCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.FILE_COUNT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.FILE_COUNT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20006,19 +20006,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeLineCount(ElementProperties  elementProperties)
+    protected Long removeLineCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeLineCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.LINE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.LINE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20028,19 +20028,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeCodeLineCount(ElementProperties  elementProperties)
+    protected Long removeCodeLineCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeCodeLineCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.CODE_LINE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.CODE_LINE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20050,19 +20050,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeCommentLineCount(ElementProperties  elementProperties)
+    protected Long removeCommentLineCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeCommentLineCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.COMMENT_LINE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.COMMENT_LINE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20094,19 +20094,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeLanguageCount(ElementProperties  elementProperties)
+    protected Long removeLanguageCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeLanguageCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.LANGUAGE_COUNT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.LANGUAGE_COUNT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20116,19 +20116,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removePublicSymbolCount(ElementProperties  elementProperties)
+    protected Long removePublicSymbolCount(ElementProperties  elementProperties)
     {
         final String methodName = "removePublicSymbolCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.PUBLIC_SYMBOL_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.PUBLIC_SYMBOL_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20138,19 +20138,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeEntryPointCount(ElementProperties  elementProperties)
+    protected Long removeEntryPointCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeEntryPointCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.ENTRY_POINT_COUNT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.ENTRY_POINT_COUNT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20160,19 +20160,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataReadCount(ElementProperties  elementProperties)
+    protected Long removeDataReadCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataReadCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_READ_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_READ_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20182,19 +20182,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataCreateCount(ElementProperties  elementProperties)
+    protected Long removeDataCreateCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataCreateCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_CREATE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_CREATE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20204,19 +20204,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataUpdateCount(ElementProperties  elementProperties)
+    protected Long removeDataUpdateCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataUpdateCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_UPDATE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_UPDATE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20226,19 +20226,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataDeleteCount(ElementProperties  elementProperties)
+    protected Long removeDataDeleteCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataDeleteCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_DELETE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_DELETE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20248,19 +20248,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataChecksCount(ElementProperties  elementProperties)
+    protected Long removeDataChecksCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataChecksCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_CHECKS_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_CHECKS_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20270,19 +20270,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDataStoreCount(ElementProperties  elementProperties)
+    protected Long removeDataStoreCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDataStoreCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DATA_STORE_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DATA_STORE_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20292,19 +20292,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeExternalCallCount(ElementProperties  elementProperties)
+    protected Long removeExternalCallCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeExternalCallCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.EXTERNAL_CALL_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.EXTERNAL_CALL_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20314,19 +20314,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeFunctionCount(ElementProperties  elementProperties)
+    protected Long removeFunctionCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeFunctionCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.FUNCTION_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.FUNCTION_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20336,19 +20336,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeCyclomaticComplexityTotal(ElementProperties  elementProperties)
+    protected Long removeCyclomaticComplexityTotal(ElementProperties  elementProperties)
     {
         final String methodName = "removeCyclomaticComplexityTotal";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_TOTAL.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -20358,19 +20358,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeCyclomaticComplexityMax(ElementProperties  elementProperties)
+    protected Long removeCyclomaticComplexityMax(ElementProperties  elementProperties)
     {
         final String methodName = "removeCyclomaticComplexityMax";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.CYCLOMATIC_COMPLEXITY_MAX.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20380,19 +20380,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeMaxNestingDepth(ElementProperties  elementProperties)
+    protected Long removeMaxNestingDepth(ElementProperties  elementProperties)
     {
         final String methodName = "removeMaxNestingDepth";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.MAX_NESTING_DEPTH.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.MAX_NESTING_DEPTH.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20402,19 +20402,19 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return int
      */
-    protected long removeTestFileCount(ElementProperties  elementProperties)
+    protected Long removeTestFileCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeTestFileCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                    OpenMetadataProperty.TEST_FILE_COUNT.name,
-                                                    elementProperties,
-                                                    methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                            OpenMetadataProperty.TEST_FILE_COUNT.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -20424,18 +20424,18 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return long
      */
-    protected long removeDocumentedSymbolCount(ElementProperties  elementProperties)
+    protected Long removeDocumentedSymbolCount(ElementProperties  elementProperties)
     {
         final String methodName = "removeDocumentedSymbolCount";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeLongProperty(localServiceName,
-                                                     OpenMetadataProperty.DOCUMENTED_SYMBOL_COUNT.name,
-                                                     elementProperties,
-                                                     methodName);
+            return propertyHelper.removeNullableLongProperty(localServiceName,
+                                                             OpenMetadataProperty.DOCUMENTED_SYMBOL_COUNT.name,
+                                                             elementProperties,
+                                                             methodName);
         }
 
-        return 0L;
+        return null;
     }
 }

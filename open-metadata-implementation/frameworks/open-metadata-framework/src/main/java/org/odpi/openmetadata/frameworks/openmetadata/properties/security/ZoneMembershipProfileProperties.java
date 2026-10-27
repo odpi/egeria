@@ -23,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ZoneMembershipProfileProperties extends ClassificationBeanProperties
 {
-    private long              totalMembership = 0L;
+    private Long              totalMembership = null;
     private Map<String, Long> typeMembership  = null;
-    private long              anchoredTotalMembership = 0L;
+    private Long              anchoredTotalMembership = null;
     private Map<String, Long> anchoredTypeMembership  = null;
-    private long              allTotalMembership = 0L;
+    private Long              allTotalMembership = null;
     private Map<String, Long> allTypeMembership  = null;
     private Date              analysisTime    = null;
 
@@ -69,7 +69,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @return long count
      */
-    public long getTotalMembership()
+    public Long getTotalMembership()
     {
         return totalMembership;
     }
@@ -80,7 +80,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @param totalMembership long count
      */
-    public void setTotalMembership(long totalMembership)
+    public void setTotalMembership(Long totalMembership)
     {
         this.totalMembership = totalMembership;
     }
@@ -113,7 +113,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @return long count
      */
-    public long getAnchoredTotalMembership()
+    public Long getAnchoredTotalMembership()
     {
         return anchoredTotalMembership;
     }
@@ -124,7 +124,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @param anchoredTotalMembership long count
      */
-    public void setAnchoredTotalMembership(long anchoredTotalMembership)
+    public void setAnchoredTotalMembership(Long anchoredTotalMembership)
     {
         this.anchoredTotalMembership = anchoredTotalMembership;
     }
@@ -157,7 +157,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @return long count
      */
-    public long getAllTotalMembership()
+    public Long getAllTotalMembership()
     {
         return allTotalMembership;
     }
@@ -168,7 +168,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
      *
      * @param allTotalMembership long count
      */
-    public void setAllTotalMembership(long allTotalMembership)
+    public void setAllTotalMembership(Long allTotalMembership)
     {
         this.allTotalMembership = allTotalMembership;
     }
@@ -260,7 +260,7 @@ public class ZoneMembershipProfileProperties extends ClassificationBeanPropertie
             return false;
         }
         return Objects.equals(typeMembership, that.typeMembership) &&
-                totalMembership == that.totalMembership &&
+                Objects.equals(totalMembership, that.totalMembership) &&
                 Objects.equals(anchoredTotalMembership, that.anchoredTotalMembership) &&
                 Objects.equals(anchoredTypeMembership, that.anchoredTypeMembership) &&
                 Objects.equals(allTotalMembership, that.allTotalMembership) &&

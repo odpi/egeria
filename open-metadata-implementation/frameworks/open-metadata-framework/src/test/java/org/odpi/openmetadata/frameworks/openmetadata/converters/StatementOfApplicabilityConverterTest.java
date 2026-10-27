@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.Contr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StatementOfApplicabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.testng.annotations.Test;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -99,7 +101,7 @@ public class StatementOfApplicabilityConverterTest
 
         ControlApplicabilityProperties controlApplicability = (ControlApplicabilityProperties) retrieved;
 
-        assertFalse(controlApplicability.getIsApplicable());
+        assertEquals(controlApplicability.getIsApplicable(), Boolean.FALSE);
         assertEquals(controlApplicability.getJustification(), properties.getJustification());
         assertEquals(controlApplicability.getInclusionReasons(), properties.getInclusionReasons());
         assertEquals(controlApplicability.getImplementationStatus(), ControlImplementationStatus.PARTIALLY_IMPLEMENTED);
@@ -116,7 +118,8 @@ public class StatementOfApplicabilityConverterTest
         RelationshipBeanProperties retrieved = convertRelationship(null);
 
         assertTrue(retrieved instanceof ControlApplicabilityProperties, "Wrong properties class: " + retrieved);
-        assertTrue(((ControlApplicabilityProperties) retrieved).getIsApplicable());
+        assertNull(((ControlApplicabilityProperties) retrieved).getIsApplicable());
+        assertTrue(OpenMetadataProperty.IS_APPLICABLE.booleanValueOrDefault(((ControlApplicabilityProperties) retrieved).getIsApplicable()));
     }
 
 

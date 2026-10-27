@@ -30,8 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernedDataClassificationBase extends ClassificationBeanProperties
 {
-    private int    statusIdentifier    = 0;
-    private int    confidence          = 0;
+    private Integer statusIdentifier    = null;
+    private Integer confidence          = null;
     private String steward             = null;
     private String stewardTypeName     = null;
     private String stewardPropertyName = null;
@@ -75,7 +75,7 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
      *
      * @return enum
      */
-    public int getStatusIdentifier()
+    public Integer getStatusIdentifier()
     {
         return statusIdentifier;
     }
@@ -86,7 +86,7 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
      *
      * @param statusIdentifier enum
      */
-    public void setStatusIdentifier(int statusIdentifier)
+    public void setStatusIdentifier(Integer statusIdentifier)
     {
         this.statusIdentifier = statusIdentifier;
     }
@@ -97,7 +97,7 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -108,7 +108,7 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -266,8 +266,8 @@ public class GovernedDataClassificationBase extends ClassificationBeanProperties
             return false;
         }
         GovernedDataClassificationBase that = (GovernedDataClassificationBase) objectToCompare;
-        return confidence == that.confidence &&
-                       statusIdentifier == that.statusIdentifier &&
+        return Objects.equals(confidence, that.confidence) &&
+                       Objects.equals(statusIdentifier, that.statusIdentifier) &&
                        Objects.equals(steward, that.steward) &&
                        Objects.equals(stewardTypeName, that.stewardTypeName) &&
                        Objects.equals(stewardPropertyName, that.stewardPropertyName) &&

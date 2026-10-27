@@ -24,7 +24,7 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
 {
     private String fingerprint          = null;
     private String fingerprintAlgorithm = null;
-    private long   hash                 = 0L;
+    private Long   hash                 = null;
     private String hashAlgorithm        = null;
 
 
@@ -106,7 +106,7 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
      *
      * @return long
      */
-    public long getHash()
+    public Long getHash()
     {
         return hash;
     }
@@ -117,7 +117,7 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
      *
      * @param hash long
      */
-    public void setHash(long hash)
+    public void setHash(Long hash)
     {
         this.hash = hash;
     }

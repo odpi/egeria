@@ -29,8 +29,8 @@ public class ValidMetadataValue
     private String  description     = null;
     private String  preferredValue  = null;
     private String  dataType        = DataType.STRING.getDisplayName();
-    private boolean isCaseSensitive = false;
-    private int     ordinal         = 0;
+    private Boolean isCaseSensitive = null;
+    private Integer ordinal         = null;
 
     private Map<String, String> additionalProperties = null;
 
@@ -185,7 +185,7 @@ public class ValidMetadataValue
      *
      * @return boolean flag
      */
-    public boolean getIsCaseSensitive()
+    public Boolean getIsCaseSensitive()
     {
         return isCaseSensitive;
     }
@@ -196,7 +196,7 @@ public class ValidMetadataValue
      *
      * @param caseSensitive boolean flag
      */
-    public void setIsCaseSensitive(boolean caseSensitive)
+    public void setIsCaseSensitive(Boolean caseSensitive)
     {
         isCaseSensitive = caseSensitive;
     }
@@ -207,7 +207,7 @@ public class ValidMetadataValue
      *
      * @return int ordinal
      */
-    public int getOrdinal()
+    public Integer getOrdinal()
     {
         return ordinal;
     }
@@ -218,7 +218,7 @@ public class ValidMetadataValue
      *
      * @param ordinal int
      */
-    public void setOrdinal(int ordinal)
+    public void setOrdinal(Integer ordinal)
     {
         this.ordinal = ordinal;
     }
@@ -330,8 +330,8 @@ public class ValidMetadataValue
         {
             return false;
         }
-        return ordinal == that.ordinal &&
-                isCaseSensitive == that.isCaseSensitive &&
+        return Objects.equals(ordinal, that.ordinal) &&
+                Objects.equals(isCaseSensitive, that.isCaseSensitive) &&
                        Objects.equals(category, that.category) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
