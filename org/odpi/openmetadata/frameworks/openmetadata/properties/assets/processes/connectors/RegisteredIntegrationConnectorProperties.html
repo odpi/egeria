@@ -160,7 +160,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the user id for the connector - if this is null, the integration daemon's userId is used
  on requests to the Open Metadata Access Service (OMAS).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGenerateConnectorActivityReports()" class="member-name-link">getGenerateConnectorActivityReports</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a flag indicating whether the integration connector should create an integration report.</div>
@@ -180,7 +180,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the permitted direction of metadata flow (see the enum definition for more details).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the number of minutes between each call to the connector to refresh the metadata.</div>
@@ -212,7 +212,7 @@ loadScripts(document, 'script');</script>
  on requests to the Open Metadata Access Service (OMAS).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGenerateConnectorActivityReports(boolean)" class="member-name-link">setGenerateConnectorActivityReports</a><wbr>(boolean&nbsp;generateConnectorActivityReports)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGenerateConnectorActivityReports(java.lang.Boolean)" class="member-name-link">setGenerateConnectorActivityReports</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;generateConnectorActivityReports)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a flag indicating whether the integration connector should create an integration report.</div>
 </div>
@@ -232,7 +232,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the permitted direction of metadata flow (see the enum definition for more details).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRefreshTimeInterval(long)" class="member-name-link">setRefreshTimeInterval</a><wbr>(long&nbsp;refreshTimeInterval)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRefreshTimeInterval(java.lang.Long)" class="member-name-link">setRefreshTimeInterval</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;refreshTimeInterval)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the number of minutes between each call to the connector to refresh the metadata.</div>
 </div>
@@ -416,7 +416,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getRefreshTimeInterval()">
 <h3>getRefreshTimeInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getRefreshTimeInterval</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name">getRefreshTimeInterval</span>()</div>
 <div class="block">Return the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
  is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
  If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
@@ -427,9 +427,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setRefreshTimeInterval(long)">
+<section class="detail" id="setRefreshTimeInterval(java.lang.Long)">
 <h3>setRefreshTimeInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRefreshTimeInterval</span><wbr><span class="parameters">(long&nbsp;refreshTimeInterval)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRefreshTimeInterval</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;refreshTimeInterval)</span></div>
 <div class="block">Set up the number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
  is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
  If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.</div>
@@ -488,7 +488,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getGenerateConnectorActivityReports()">
 <h3>getGenerateConnectorActivityReports</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getGenerateConnectorActivityReports</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a></span>&nbsp;<span class="element-name">getGenerateConnectorActivityReports</span>()</div>
 <div class="block">Return a flag indicating whether the integration connector should create an integration report.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -497,9 +497,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setGenerateConnectorActivityReports(boolean)">
+<section class="detail" id="setGenerateConnectorActivityReports(java.lang.Boolean)">
 <h3>setGenerateConnectorActivityReports</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGenerateConnectorActivityReports</span><wbr><span class="parameters">(boolean&nbsp;generateConnectorActivityReports)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGenerateConnectorActivityReports</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&nbsp;generateConnectorActivityReports)</span></div>
 <div class="block">Set up a flag indicating whether the integration connector should create an integration report.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
