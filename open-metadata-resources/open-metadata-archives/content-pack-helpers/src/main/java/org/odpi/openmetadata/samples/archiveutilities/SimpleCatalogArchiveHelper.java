@@ -7652,6 +7652,29 @@ public class SimpleCatalogArchiveHelper
                                              String transformation,
                                              String description)
     {
+        this.addImplementedByRelationship(derivedFromGUID, implementedByGUID, designStep, role, transformation, description, null);
+    }
+
+
+    /**
+     * Link an element to its implementation as part of an information supply chain.
+     *
+     * @param derivedFromGUID guid of element that the implementation is derived from
+     * @param implementedByGUID guid of the element that described the implementation
+     * @param designStep process that created the implementation
+     * @param role role performed by the implementation
+     * @param transformation transformation used to create the implementation
+     * @param description description of the implementation
+     * @param informationSupplyChainQName qualified name of information supply chain that this relationship belongs to
+     */
+    public void addImplementedByRelationship(String derivedFromGUID,
+                                             String implementedByGUID,
+                                             String designStep,
+                                             String role,
+                                             String transformation,
+                                             String description,
+                                             String informationSupplyChainQName)
+    {
         final String methodName = "addImplementedByRelationship";
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(derivedFromGUID));
@@ -7661,6 +7684,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ROLE.name, role, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TRANSFORMATION.name, transformation, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQName, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(derivedFromGUID + "_to_" + implementedByGUID + "_implemented_by_relationship"),

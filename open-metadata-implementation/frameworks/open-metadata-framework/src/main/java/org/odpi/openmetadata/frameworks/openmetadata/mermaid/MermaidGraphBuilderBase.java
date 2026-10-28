@@ -100,7 +100,7 @@ public class MermaidGraphBuilderBase
         {
             ElementClassification classification = elementHeader.getAnchor();
 
-            if (classification.getClassificationProperties() instanceof AnchorsProperties anchorsProperties)
+            if ((classification != null) && (classification.getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
             {
                 String anchorGUID = anchorsProperties.getAnchorGUID();
 

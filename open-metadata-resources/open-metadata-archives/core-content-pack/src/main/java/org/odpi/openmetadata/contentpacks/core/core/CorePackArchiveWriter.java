@@ -1787,7 +1787,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         componentStatuses.put("Failed", DeploymentStatus.FAILED);
         componentStatuses.put("Other", DeploymentStatus.OTHER);
 
-        String previousComponentGUID = null;
+        String              previousComponentGUID = null;
+        Map<String, String> componentGUIDs        = new HashMap<>();
 
         for (String statusName : componentStatuses.keySet())
         {
@@ -1817,6 +1818,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                       isPromise ? archiveHelper.getPromiseClassification(deploymentStatus) : null);
 
             archiveHelper.addMemberToCollection(iscGUID, componentGUID, null);
+            componentGUIDs.put(statusName, componentGUID);
 
             if (previousComponentGUID != null)
             {
@@ -1878,7 +1880,71 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                               null);
 
         /*
-         * System fabric: a host and a database manager running on it.
+         * A validation process that runs after the load, and an action the load requests.  The action is anchored
+         * to the solution component that is under development, so it shows the anchor link in the data fabric.
+         */
+        String validateProcessGUID = archiveHelper.addProcessAsset(OpenMetadataType.PROCESS.typeName,
+                                                                   "SAMPLE-Process:Validate",
+                                                                   "SAMPLE Validate Process",
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   "A sample process that is only here to show a control flow in the data fabric area of an information supply chain.",
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null);
+
+        String reviewActionGUID = archiveHelper.addAnchoredAsset(OpenMetadataType.ACTION.typeName,
+                                                                 componentGUIDs.get("Under Development"),
+                                                                 OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                 OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
+                                                                 null,
+                                                                 "SAMPLE-Action:Review-Load",
+                                                                 "SAMPLE Review Load Action",
+                                                                 null,
+                                                                 "A sample action that is only here to show an action requester relationship, and a solution component anchor, in the data fabric area of an information supply chain.",
+                                                                 null,
+                                                                 null,
+                                                                 null);
+
+        /*
+         * Data mapping: a column in the source file that is copied to a column in the target data set.  Each column
+         * is anchored to its asset, which shows the anchor links in the data mapping area.
+         */
+        String sourceColumnGUID = archiveHelper.addSchemaAttribute(sourceFileGUID,
+                                                                   OpenMetadataType.DATA_FILE.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   "SAMPLE-SchemaAttribute:Source-Customer-Id",
+                                                                   "SAMPLE Source Column - Customer Id",
+                                                                   null,
+                                                                   "A sample column that is only here to show the data mapping area of an information supply chain.",
+                                                                   "string",
+                                                                   0,
+                                                                   null,
+                                                                   null);
+
+        String targetColumnGUID = archiveHelper.addSchemaAttribute(targetDataSetGUID,
+                                                                   OpenMetadataType.DATA_SET.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   "SAMPLE-SchemaAttribute:Target-Customer-Id",
+                                                                   "SAMPLE Target Column - Customer Id",
+                                                                   null,
+                                                                   "A sample column that is only here to show the data mapping area of an information supply chain.",
+                                                                   "string",
+                                                                   0,
+                                                                   null,
+                                                                   null);
+
+        /*
+         * System fabric: a host and a database manager running on it.  The database manager is anchored to the
+         * solution component whose development is complete, so it shows the anchor link in the system fabric.
          */
         String hostGUID = archiveHelper.addInfrastructureAsset(OpenMetadataType.HOST.typeName,
                                                                "SAMPLE-Host:Server",
@@ -1906,13 +1972,15 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                          null,
                                                                          null,
                                                                          (List<Classification>) null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
+                                                                         componentGUIDs.get("Development Complete"),
+                                                                         OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                         OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                          null);
 
         /*
          * Data mesh: a provider product that packages the target data set and a consumer product that depends on it.
+         * The consumer product is anchored to the proposed solution component, and anchors an extract product that
+         * also depends on the provider, so the data mesh shows both kinds of anchor link.
          */
         String providerProductGUID = archiveHelper.addCollection(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                                                                  null,
@@ -1929,9 +1997,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                  null);
 
         String consumerProductGUID = archiveHelper.addCollection(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                                                                 null,
-                                                                 OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                                                                 OpenMetadataType.COLLECTION.typeName,
+                                                                 componentGUIDs.get("Proposed"),
+                                                                 OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                 OpenMetadataType.AUTHORED_REFERENCEABLE.typeName,
                                                                  null,
                                                                  null,
                                                                  "SAMPLE-DigitalProduct:Consumer",
@@ -1953,5 +2021,31 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addLineageRelationship(processGUID, targetDataSetGUID, OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName, "sample load", iscQName);
         archiveHelper.addLineageRelationship(targetDataSetGUID, databaseManagerGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample hosted by", iscQName);
         archiveHelper.addLineageRelationship(databaseManagerGUID, hostGUID, OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName, "sample runs on", iscQName);
+
+        String extractProductGUID = archiveHelper.addCollection(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                consumerProductGUID,
+                                                                OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                OpenMetadataType.COLLECTION.typeName,
+                                                                null,
+                                                                null,
+                                                                "SAMPLE-DigitalProduct:Extract",
+                                                                "SAMPLE Digital Product - Extract",
+                                                                "A sample digital product that is anchored to the sample consumer product.  It is only here to show the data mesh area of an information supply chain.",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null);
+
+        archiveHelper.addLineageRelationship(extractProductGUID, providerProductGUID, OpenMetadataType.DIGITAL_PRODUCT_DEPENDENCY_RELATIONSHIP.typeName, "sample extracts from", iscQName);
+        archiveHelper.addLineageRelationship(processGUID, validateProcessGUID, OpenMetadataType.CONTROL_FLOW_RELATIONSHIP.typeName, "sample then validate", iscQName);
+        archiveHelper.addLineageRelationship(processGUID, reviewActionGUID, OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName, "sample requests review", iscQName);
+        archiveHelper.addLineageRelationship(sourceColumnGUID, targetColumnGUID, OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName, "sample copy", iscQName);
+
+        /*
+         * The solution components are implemented by an element in each layer.
+         */
+        archiveHelper.addImplementedByRelationship(componentGUIDs.get("Active"), processGUID, null, "sample loader", null, null, iscQName);
+        archiveHelper.addImplementedByRelationship(componentGUIDs.get("Approved For Deployment"), providerProductGUID, null, "sample product", null, null, iscQName);
+        archiveHelper.addImplementedByRelationship(componentGUIDs.get("Standby"), hostGUID, null, "sample platform", null, null, iscQName);
     }
 }
