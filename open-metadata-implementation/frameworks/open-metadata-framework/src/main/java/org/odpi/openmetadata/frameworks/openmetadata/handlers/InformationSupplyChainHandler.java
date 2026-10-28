@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainLayerMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
@@ -376,6 +377,18 @@ public class InformationSupplyChainHandler extends CollectionHandler
 
             InformationSupplyChainMermaidGraphBuilder graphBuilder = new InformationSupplyChainMermaidGraphBuilder(informationSupplyChainElement);
             informationSupplyChainElement.setISCImplementationMermaidGraph(graphBuilder.getMermaidGraph(false));
+
+            /*
+             * Each layer of the implementation has its own graph because together they are often too big for mermaid to display.
+             */
+            informationSupplyChainElement.setISCDataMeshMermaidGraph(new InformationSupplyChainLayerMermaidGraphBuilder(informationSupplyChainElement,
+                                                                                                                       InformationSupplyChainLayerMermaidGraphBuilder.Layer.DATA_MESH).getMermaidGraph(false));
+            informationSupplyChainElement.setISCSystemFabricMermaidGraph(new InformationSupplyChainLayerMermaidGraphBuilder(informationSupplyChainElement,
+                                                                                                                           InformationSupplyChainLayerMermaidGraphBuilder.Layer.SYSTEM_FABRIC).getMermaidGraph(false));
+            informationSupplyChainElement.setISCDataFabricMermaidGraph(new InformationSupplyChainLayerMermaidGraphBuilder(informationSupplyChainElement,
+                                                                                                                         InformationSupplyChainLayerMermaidGraphBuilder.Layer.DATA_FABRIC).getMermaidGraph(false));
+            informationSupplyChainElement.setISCDataMappingMermaidGraph(new InformationSupplyChainLayerMermaidGraphBuilder(informationSupplyChainElement,
+                                                                                                                          InformationSupplyChainLayerMermaidGraphBuilder.Layer.DATA_MAPPING).getMermaidGraph(false));
 
             return informationSupplyChainElement;
         }

@@ -12,14 +12,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 /**
- * Creates a mermaid graph rendering of the Open Metadata Framework's information supply chain graph.
+ * Creates a mermaid graph rendering of an information supply chain's context, the design of its solution components,
+ * and the status of their implementation.  The implementation of the information supply chain is drawn in separate
+ * graphs by InformationSupplyChainLayerMermaidGraphBuilder because together they are often too big for mermaid to display.
  */
 public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
@@ -43,14 +40,11 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             mermaidGraph.append(informationSupplyChainElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-            String iscAreaName            = "Context";
-            String designAreaName         = "Design";
-            String productAreaName        = "Data Mesh";
-            String implementationAreaName = "Data Fabric";
-            String systemAreaName         = "System Fabric";
-            String statusAreaName         = "Status";
+            String iscAreaName    = "Context";
+            String designAreaName = "Design";
+            String statusAreaName = "Status";
 
-            super.startSubgraph(iscAreaName, VisualStyle.WHITE_SUBGRAPH);
+            super.startSubgraph(iscAreaName, VisualStyle.WHITE_SUBGRAPH, "LR");
 
             appendNewMermaidNode(informationSupplyChainElement.getElementHeader().getGUID(),
                                  super.getNodeDisplayName(informationSupplyChainElement.getElementHeader(), informationSupplyChainElement.getProperties()),
@@ -89,7 +83,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
 
                 if (solutionComponentCount > 0)
                 {
-                    super.startSubgraph(designAreaName, VisualStyle.SOLUTION_SUBGRAPH);
+                    super.startSubgraph(designAreaName, VisualStyle.SOLUTION_SUBGRAPH, "LR");
 
                     /*
                      * Add the solution components that are explicit members of the information supply chains
@@ -155,7 +149,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                     {
                         if (! startedStatusArea)
                         {
-                            super.startSubgraph(statusAreaName, VisualStyle.SOLUTION_SUBGRAPH);
+                            super.startSubgraph(statusAreaName, VisualStyle.SOLUTION_SUBGRAPH, "LR");
                             startedStatusArea = true;
                         }
 
@@ -182,168 +176,6 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             }
 
             /*
-             * Two graphs are made from the implementation relationships.  One for the product dependencies and one for the implementation (typically assets).
-             */
-            if ((informationSupplyChainElement.getImplementation() != null) && (! informationSupplyChainElement.getImplementation().isEmpty()))
-            {
-                Map<String, ElementStub> productMap = new HashMap<>();
-                Map<String, ElementStub> implementationMap = new HashMap<>();
-                Map<String, ElementStub> systemMap = new HashMap<>();
-
-                /*
-                 * Work out how many nodes in each subgraph
-                 */
-                for (MetadataRelationshipSummary lineageRelationship : informationSupplyChainElement.getImplementation())
-                {
-                    if (lineageRelationship != null)
-                    {
-                        extractAnchorInfo(lineageRelationship.getEnd1());
-                        extractAnchorInfo(lineageRelationship.getEnd2());
-
-                        if (propertyHelper.isTypeOf(lineageRelationship.getEnd1(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
-                        {
-                            productMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
-                        }
-                        else if (isSystemElement(lineageRelationship.getEnd1()))
-                        {
-                            systemMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
-                        }
-                        else
-                        {
-                            implementationMap.put(lineageRelationship.getEnd1().getGUID(), lineageRelationship.getEnd1());
-                        }
-
-                        if (propertyHelper.isTypeOf(lineageRelationship.getEnd2(), OpenMetadataType.DIGITAL_PRODUCT.typeName))
-                        {
-                            productMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
-                        }
-                        else if (isSystemElement(lineageRelationship.getEnd2()))
-                        {
-                            systemMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
-                        }
-                        else
-                        {
-                            implementationMap.put(lineageRelationship.getEnd2().getGUID(), lineageRelationship.getEnd2());
-                        }
-                    }
-                }
-
-                /*
-                * If there are no products, then the product area is not needed.
-                * Otherwise populate the subgraph with the extracted nodes.
-                 */
-                if (productMap.isEmpty())
-                {
-                    productAreaName = null;
-                }
-                else
-                {
-                    super.startSubgraph(productAreaName, VisualStyle.DIGITAL_PRODUCT_GRAPH, "BT"); // BT = Bottom to Top; may want RL = Right to Left
-
-                    for (ElementStub elementStub : productMap.values())
-                    {
-                        if (elementStub != null)
-                        {
-                            if (elementStub.getUniqueName() != null)
-                            {
-                                appendNewMermaidNode(elementStub.getGUID(),
-                                                     elementStub.getUniqueName(),
-                                                     elementStub.getType().getTypeName(),
-                                                     getVisualStyleForEntity(elementStub, VisualStyle.DIGITAL_PRODUCT));
-                            }
-                            else
-                            {
-                                appendNewMermaidNode(elementStub.getGUID(),
-                                                     elementStub.getGUID(),
-                                                     elementStub.getType().getTypeName(),
-                                                     getVisualStyleForEntity(elementStub, VisualStyle.DIGITAL_PRODUCT));
-                            }
-                        }
-                    }
-
-                    super.endSubgraph(); // data mesh
-                }
-
-
-                /*
-                 * If there are no data or process implementations, then the data fabric area is not needed.
-                 * Otherwise, populate it with the extracted nodes.
-                 */
-                if (implementationMap.isEmpty())
-                {
-                    implementationAreaName = null;
-                }
-                else
-                {
-                    addFabricArea(implementationAreaName, implementationMap);
-                }
-
-                /*
-                 * The IT infrastructure and software capabilities go in the system fabric area, if there are any.
-                 */
-                if (systemMap.isEmpty())
-                {
-                    systemAreaName = null;
-                }
-                else
-                {
-                    addFabricArea(systemAreaName, systemMap);
-                }
-            }
-            else // Neither graph is needed
-            {
-                productAreaName = null;
-                implementationAreaName = null;
-                systemAreaName = null;
-            }
-
-            /*
-             * Add the relationships
-             */
-            List<MetadataRelationshipSummary> implementation = informationSupplyChainElement.getImplementation();
-
-            for (MetadataRelationshipSummary lineageRelationship : implementation == null ? new ArrayList<MetadataRelationshipSummary>() : implementation)
-            {
-                if (lineageRelationship != null)
-                {
-                    String label = null;
-
-                    if (lineageRelationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
-                    {
-                        label = labeledRelationshipProperties.getLabel();
-                    }
-                    else if (lineageRelationship.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
-                    {
-                        label = roledRelationshipProperties.getRole();
-                    }
-
-                    if (label != null)
-                    {
-                        label = label + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
-                    }
-                    else
-                    {
-                        label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
-                    }
-
-                    if (propertyHelper.isTypeOf(lineageRelationship.getRelationshipHeader(), OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                    {
-                        appendMermaidThinLine(lineageRelationship.getRelationshipHeader().getGUID(),
-                                              lineageRelationship.getEnd1().getGUID(),
-                                              label,
-                                              lineageRelationship.getEnd2().getGUID());
-                    }
-                    else
-                    {
-                        appendMermaidLine(lineageRelationship.getRelationshipHeader().getGUID(),
-                                          lineageRelationship.getEnd1().getGUID(),
-                                          label,
-                                          lineageRelationship.getEnd2().getGUID());
-                    }
-                }
-            }
-
-            /*
              * Link the subgraphs together.
              */
             String currentAreaName = iscAreaName;
@@ -357,24 +189,6 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
             if (statusAreaName != null)
             {
                 super.appendInvisibleMermaidLine(currentAreaName, statusAreaName);
-                currentAreaName = statusAreaName;
-            }
-
-            if (productAreaName != null)
-            {
-                super.appendInvisibleMermaidLine(currentAreaName, productAreaName);
-                currentAreaName = productAreaName;
-            }
-
-            if (implementationAreaName != null)
-            {
-                super.appendInvisibleMermaidLine(currentAreaName, implementationAreaName);
-                currentAreaName = implementationAreaName;
-            }
-
-            if (systemAreaName != null)
-            {
-                super.appendInvisibleMermaidLine(currentAreaName, systemAreaName);
             }
         }
     }
@@ -447,50 +261,5 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                 }
             }
         }
-    }
-
-    /**
-     * IT infrastructure and software capabilities are the systems that the data and processes run on.
-     *
-     * @param elementStub element to test
-     * @return boolean flag
-     */
-    private boolean isSystemElement(ElementStub elementStub)
-    {
-        return (propertyHelper.isTypeOf(elementStub, OpenMetadataType.IT_INFRASTRUCTURE.typeName)) ||
-                (propertyHelper.isTypeOf(elementStub, OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-    }
-
-
-    /**
-     * Add a subgraph containing the supplied implementation elements.
-     *
-     * @param areaName name of the subgraph
-     * @param elementMap elements to add
-     */
-    private void addFabricArea(String                   areaName,
-                               Map<String, ElementStub> elementMap)
-    {
-        super.startSubgraph(areaName, VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG);
-
-        for (ElementStub elementStub : elementMap.values())
-        {
-            if (elementStub != null)
-            {
-                String displayName = elementStub.getUniqueName();
-
-                if (displayName == null)
-                {
-                    displayName = elementStub.getGUID();
-                }
-
-                appendNewMermaidNode(elementStub.getGUID(),
-                                     displayName,
-                                     elementStub.getType().getTypeName(),
-                                     getVisualStyleForEntity(elementStub, VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL));
-            }
-        }
-
-        super.endSubgraph();
     }
 }

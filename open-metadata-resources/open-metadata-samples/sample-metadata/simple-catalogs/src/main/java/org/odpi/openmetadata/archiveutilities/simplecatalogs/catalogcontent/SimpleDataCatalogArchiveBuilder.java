@@ -183,7 +183,7 @@ public class SimpleDataCatalogArchiveBuilder
         classifications.add(archiveHelper.getAnchorClassification(machineGUID, OpenMetadataType.BARE_METAL_COMPUTER.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
 
 
-        String databaseGUID = archiveHelper.addDataAsset(OpenMetadataType.DATABASE.typeName,
+        String databaseGUID = archiveHelper.addDataAsset(OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                                          branchQualifiedName,
                                                          branchDisplayName,
                                                          branchResourceName,
