@@ -22,39 +22,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum LovelaceInsightAuditCode implements AuditLogMessageSet
 {
     /**
-     * LOVELACE-INSIGHTS-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}
-     */
-    UNEXPECTED_EXCEPTION("LOVELACE-INSIGHTS-0001",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The organization insight service {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot process the current request.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
-                         "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
-
-    /**
-     * LOVELACE-INSIGHTS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.
-     * The exception message is: {2}
-     */
-    UNABLE_TO_SET_COMPLETION_STATUS("LOVELACE-INSIGHTS-0016",
-                                    AuditLogRecordSeverityLevel.INFO,
-                                    "The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}",
-                                    "The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.",
-                                    "Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.",
-                                    "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
-
-    /**
-     * LOVELACE-INSIGHTS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the
-     * governance context.  The exception message is: {2}
-     */
-    UNABLE_TO_REGISTER_LISTENER("LOVELACE-INSIGHTS-0017",
-                                AuditLogRecordSeverityLevel.INFO,
-                                "The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}",
-                                "The governance action service throws a GovernanceServiceException.",
-                                "This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and " +
-                                        "and follow its instructions.",
-                                        "https://egeria-project.org/egeria-solutions/organization-insight/overview/"),
-
-    /**
      * LOVELACE-INSIGHTS-0018 - The {0} governance action service has processed the {1} governance zone ({2})
      */
     GOVERNANCE_ZONE_PROCESSED("LOVELACE-INSIGHTS-0018",
