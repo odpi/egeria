@@ -701,20 +701,22 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
         if (namedList != null)
         {
-            if (namedList.getListMembers() == null)
+            if (namedList.getUserMembers() == null)
             {
-                namedList.setListMembers(Collections.singletonList(userId));
+                namedList.setUserMembers(new ArrayList<>());
             }
-            else if (! namedList.getListMembers().contains(userId))
+
+            if (! namedList.getUserMembers().contains(userId))
             {
-                namedList.getListMembers().add(userId);
+                namedList.getUserMembers().add(userId);
             }
         }
         else
         {
             namedList = new NamedList();
             namedList.setListTypeName(listTypeName);
-            namedList.setUserMembers(Collections.singletonList(userId));
+            namedList.setUserMembers(new ArrayList<>());
+            namedList.getUserMembers().add(userId);
             secretsCollection.getNamedLists().put(listName, namedList);
         }
     }
