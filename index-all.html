@@ -1848,6 +1848,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Set up the default type name if not supplied by the caller.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/samples/archiveutilities/ArchiveVersionStabilizer.html#addDeletedVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">addDeletedVersions(OpenMetadataArchive, OpenMetadataArchive)</a> - Method in class org.odpi.openmetadata.samples.archiveutilities.<a href="org/odpi/openmetadata/samples/archiveutilities/ArchiveVersionStabilizer.html" title="class in org.odpi.openmetadata.samples.archiveutilities">ArchiveVersionStabilizer</a></dt>
+<dd>
+<div class="block">Add a deleted version of each entity and relationship of the previous edition that is not in the new archive.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/base/ContentPackBaseArchiveWriter.html#addDeployedImplementationType(org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition)" class="member-name-link">addDeployedImplementationType(DeployedImplementationTypeDefinition)</a> - Method in class org.odpi.openmetadata.contentpacks.core.base.<a href="org/odpi/openmetadata/contentpacks/core/base/ContentPackBaseArchiveWriter.html" title="class in org.odpi.openmetadata.contentpacks.core.base">ContentPackBaseArchiveWriter</a></dt>
 <dd>
 <div class="block">Add a new valid values record for a deployed implementation type.</div>
@@ -8925,14 +8929,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Copy/clone constructor.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/GovernanceActionTypeDefinition.html#AWARD_KARMA_POINTS" class="member-name-link">AWARD_KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/GovernanceActionTypeDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">GovernanceActionTypeDefinition</a></dt>
-<dd>
-<div class="block">award-karma-points</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html#AWARD_KARMA_POINTS" class="member-name-link">AWARD_KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></dt>
-<dd>
-<div class="block">award-karma-points</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/controls/DataWarehouseDeployedImplementationType.html#AWS_GLUE_TABLE" class="member-name-link">AWS_GLUE_TABLE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.controls.<a href="org/odpi/openmetadata/adapters/connectors/controls/DataWarehouseDeployedImplementationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.controls">DataWarehouseDeployedImplementationType</a></dt>
 <dd>
 <div class="block">A table defined in the AWS Glue Data Catalog.</div>
@@ -9022,9 +9018,26 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html#BABBAGE_ANALYTICAL_ENGINE" class="member-name-link">BABBAGE_ANALYTICAL_ENGINE</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_KARMA" class="member-name-link">BABBAGE_KARMA</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_MEMBER_POPULARITY_PROFILE" class="member-name-link">BABBAGE_MEMBER_POPULARITY_PROFILE</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
 <dd>
-<div class="block">Initializes the karma point awarding process.</div>
+<div class="block">Runs the popularity profiler on each refresh.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_OPEN_LINEAGE_DATA_QUALITY_SUMMARY" class="member-name-link">BABBAGE_OPEN_LINEAGE_DATA_QUALITY_SUMMARY</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
+<dd>
+<div class="block">Runs the OpenLineage data quality summary on each refresh.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_OPEN_LINEAGE_DATA_SCOPE" class="member-name-link">BABBAGE_OPEN_LINEAGE_DATA_SCOPE</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
+<dd>
+<div class="block">Runs the OpenLineage data scope analysis on each refresh.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_OPEN_LINEAGE_RUN_PROFILE" class="member-name-link">BABBAGE_OPEN_LINEAGE_RUN_PROFILE</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
+<dd>
+<div class="block">Runs the OpenLineage run profiler on each refresh.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html#BABBAGE_ZONE_MEMBERSHIP_PROFILE" class="member-name-link">BABBAGE_ZONE_MEMBERSHIP_PROFILE</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackSolutionLinkingWire.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackSolutionLinkingWire</a></dt>
+<dd>
+<div class="block">Babbage runs the Lovelace services that are registered with it as catalog targets (see
+ LovelaceServiceDefinition).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/babbage/BabbageAnalyticalEngineConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.babbage">BabbageAnalyticalEngineConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/babbage/package-summary.html">org.odpi.openmetadata.adapters.connectors.babbage</a></dt>
 <dd>
@@ -24542,6 +24555,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#dataType" class="member-name-link">dataType</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#dataType" class="member-name-link">dataType</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html#dataType" class="member-name-link">dataType</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionRequestParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/controls/FolderRequestParameter.html#dataType" class="member-name-link">dataType</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.surveyaction.controls.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/controls/FolderRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.controls">FolderRequestParameter</a></dt>
@@ -25319,6 +25334,11 @@ loadScripts(document, 'script');</script>
 <div class="block">The default number of validated peer duplicates in a cluster before they are consolidated.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/pepys/controls/PepysConfigurationProperty.html#DEFAULT_IGNORED_USER_ID_PATTERNS" class="member-name-link">DEFAULT_IGNORED_USER_ID_PATTERNS</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.pepys.controls.<a href="org/odpi/openmetadata/adapters/connectors/pepys/controls/PepysConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.pepys.controls">PepysConfigurationProperty</a></dt>
+<dd>
+<div class="block">The patterns set up by the core content pack: the non-personal accounts of the OMAG servers and integration
+ connectors (ending in npa) and the governance engines (ending in engine).</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#DEFAULT_IGNORED_USER_ID_PATTERNS" class="member-name-link">DEFAULT_IGNORED_USER_ID_PATTERNS</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
 <dd>
 <div class="block">The patterns set up by the core content pack: the non-personal accounts of the OMAG servers and integration
  connectors (ending in npa) and the governance engines (ending in engine).</div>
@@ -27734,6 +27754,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.reports.<a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.reports">ReportRequestParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionActionTarget</a></dt>
 <dd>
@@ -31422,6 +31444,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/JDBCResourceConnector.html#disconnect()" class="member-name-link">disconnect()</a> - Method in class org.odpi.openmetadata.adapters.connectors.resource.jdbc.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/JDBCResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc">JDBCResourceConnector</a></dt>
 <dd>
 <div class="block">Free up any resources held since the connector is no longer needed.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html#disconnect()" class="member-name-link">disconnect()</a> - Method in class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a></dt>
+<dd>
+<div class="block">Write any karma points that have not been recorded yet before the connector shuts down.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html#disconnect()" class="member-name-link">disconnect()</a> - Method in class org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></dt>
 <dd>
@@ -39246,6 +39272,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html#example" class="member-name-link">example</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.reports.<a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.reports">ReportRequestParameter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#example" class="member-name-link">example</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#example" class="member-name-link">example</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html#example" class="member-name-link">example</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionRequestParameter</a></dt>
 <dd>&nbsp;</dd>
@@ -51332,6 +51360,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return a summary of this enum to use in a service provider.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getConfigurationPropertyType()" class="member-name-link">getConfigurationPropertyType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return a summary of this enum to use in the connector's specification.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html#getConfigurationPropertyType()" class="member-name-link">getConfigurationPropertyType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></dt>
 <dd>
 <div class="block">Return a summary of this enum to use in a connector provider.</div>
@@ -51440,6 +51472,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#getConfigurationPropertyTypes()" class="member-name-link">getConfigurationPropertyTypes()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>
 <div class="block">Retrieve all the defined configuration properties</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getConfigurationPropertyTypes()" class="member-name-link">getConfigurationPropertyTypes()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Retrieve the defined configuration properties as a list of the type used in the connector's specification.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html#getConfigurationPropertyTypes()" class="member-name-link">getConfigurationPropertyTypes()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></dt>
 <dd>
@@ -54080,6 +54116,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the data type for the request parameter.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getDataType()" class="member-name-link">getDataType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return the data type for the configuration property.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html#getDataType()" class="member-name-link">getDataType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionRequestParameter</a></dt>
 <dd>
 <div class="block">Return the data type for the request parameter.</div>
@@ -55892,6 +55932,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>
 <div class="block">Return the description of the request parameter.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return the description of the configuration property.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionActionTarget</a></dt>
 <dd>
@@ -61201,6 +61245,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#getExample()" class="member-name-link">getExample()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>
 <div class="block">Return an example of the request parameter to help users understand how to set it up.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getExample()" class="member-name-link">getExample()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return an example of the configuration property to help users understand how to set it up.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html#getExample()" class="member-name-link">getExample()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionRequestParameter</a></dt>
 <dd>
@@ -68162,6 +68210,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Retrieve a message definition object for an exception.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#getMessageDefinition()" class="member-name-link">getMessageDefinition()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">Retrieve a message definition object for logging.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/ffdc/SurveyServiceAuditCode.html#getMessageDefinition()" class="member-name-link">getMessageDefinition()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/ffdc/SurveyServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc">SurveyServiceAuditCode</a></dt>
 <dd>
 <div class="block">Retrieve a message definition object for logging.</div>
@@ -68893,6 +68945,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html#getMessageDefinition(java.lang.String...)" class="member-name-link">getMessageDefinition(String...)</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc">YAMLErrorCode</a></dt>
 <dd>
 <div class="block">Retrieve a message definition object for an exception.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#getMessageDefinition(java.lang.String...)" class="member-name-link">getMessageDefinition(String...)</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">Retrieve a message definition object for logging.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/surveyaction/ffdc/SurveyServiceAuditCode.html#getMessageDefinition(java.lang.String...)" class="member-name-link">getMessageDefinition(String...)</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/surveyaction/ffdc/SurveyServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc">SurveyServiceAuditCode</a></dt>
 <dd>
@@ -70795,6 +70851,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>
 <div class="block">Return the name of the request parameter.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return the name of the configuration property.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionActionTarget</a></dt>
 <dd>
@@ -99381,6 +99441,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The patterns that match the userIds whose activity is not counted.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#IGNORED_USER_ID_PATTERNS" class="member-name-link">IGNORED_USER_ID_PATTERNS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">The patterns that match the userIds that are not awarded karma points.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/engineservices/surveyaction/ffdc/SurveyActionAuditCode.html#IGNORING_ASSETS" class="member-name-link">IGNORING_ASSETS</a> - Enum constant in enum class org.odpi.openmetadata.engineservices.surveyaction.ffdc.<a href="org/odpi/openmetadata/engineservices/surveyaction/ffdc/SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></dt>
 <dd>
 <div class="block">OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
@@ -102148,6 +102212,11 @@ loadScripts(document, 'script');</script>
 <div class="block">PEPYS-ACTIVITY-OBSERVER-0007 - The {0} integration connector has skipped ignored userId pattern {1} because it is not
  a valid regular expression: {2}</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#INVALID_USER_ID_PATTERN" class="member-name-link">INVALID_USER_ID_PATTERN</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0007 - The {0} integration connector has skipped ignored userId pattern {1} because it is not
+ a valid regular expression: {2}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractQualityMetric.html#INVALID_VALUES" class="member-name-link">INVALID_VALUES</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractQualityMetric.html" title="enum class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractQualityMetric</a></dt>
 <dd>
 <div class="block">The number of values that fail the validity rules.</div>
@@ -103249,6 +103318,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/controls/PostgresConfigurationProperty.html#isPlaceholder" class="member-name-link">isPlaceholder</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.postgres.controls.<a href="org/odpi/openmetadata/adapters/connectors/postgres/controls/PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#isPlaceholder" class="member-name-link">isPlaceholder</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html#isPlaceholder" class="member-name-link">isPlaceholder</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/controls/SecretsStoreConfigurationProperty.html#isPlaceholder" class="member-name-link">isPlaceholder</a> - Variable in enum class org.odpi.openmetadata.frameworks.connectors.controls.<a href="org/odpi/openmetadata/frameworks/connectors/controls/SecretsStoreConfigurationProperty.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.controls">SecretsStoreConfigurationProperty</a></dt>
@@ -103320,6 +103391,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Return whether this value is also used as a placeholder property.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/controls/PostgresConfigurationProperty.html#isPlaceholder()" class="member-name-link">isPlaceholder()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.postgres.controls.<a href="org/odpi/openmetadata/adapters/connectors/postgres/controls/PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></dt>
+<dd>
+<div class="block">Return whether this value is also used as a placeholder property.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#isPlaceholder()" class="member-name-link">isPlaceholder()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
 <dd>
 <div class="block">Return whether this value is also used as a placeholder property.</div>
 </dd>
@@ -104619,22 +104694,27 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Kansas City Site Leader</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html#KARMA_POINT_AWARDS" class="member-name-link">KARMA_POINT_AWARDS</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">GovernanceServiceDefinition</a></dt>
-<dd>
-<div class="block">Lovelace Karma Points Awards Governance Action Service</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/externalharvesters/harvestopenmetadata/schema/HarvestOpenMetadataColumn.html#KARMA_POINTS" class="member-name-link">KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.schema.<a href="org/odpi/openmetadata/adapters/connectors/externalharvesters/harvestopenmetadata/schema/HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/contentpacks/core/EngineActionDefinition.html#KARMA_POINTS" class="member-name-link">KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/EngineActionDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">EngineActionDefinition</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/contentpacks/core/LovelaceServiceDefinition.html#KARMA_POINTS" class="member-name-link">KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/LovelaceServiceDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">LovelaceServiceDefinition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html#KARMA_POINTS" class="member-name-link">KARMA_POINTS</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></dt>
 <dd>
 <div class="block">Points capturing a person's engagement with open metadata.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html#KARMA_POINTS_AWARDS_LOVELACE_SERVICE" class="member-name-link">KARMA_POINTS_AWARDS_LOVELACE_SERVICE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.<a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaOpenConnectorDefinition</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#KARMA_POINTS_DEFERRED" class="member-name-link">KARMA_POINTS_DEFERRED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0004 - The {0} integration connector is unable to update the contribution record of user
+ {1} because of exception {2} with message {3}; {4} karma points will be retried on the next refresh</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#KARMA_POINTS_DISCARDED" class="member-name-link">KARMA_POINTS_DISCARDED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0005 - The {0} integration connector has discarded {1} karma points for user {2}
+ because their contribution record can not be updated: exception {3} with message {4}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#KARMA_POINTS_RECORDED" class="member-name-link">KARMA_POINTS_RECORDED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0003 - The {0} integration connector has added {1} karma points to the contribution
+ records of {2} users</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OMFConverter.html#karmaPointPlateau" class="member-name-link">karmaPointPlateau</a> - Variable in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OMFConverter.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OMFConverter</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/samples/archiveutilities/organization/DeptDefinition.html#KC" class="member-name-link">KC</a> - Enum constant in enum class org.odpi.openmetadata.samples.archiveutilities.organization.<a href="org/odpi/openmetadata/samples/archiveutilities/organization/DeptDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.organization">DeptDefinition</a></dt>
@@ -109207,21 +109287,6 @@ loadScripts(document, 'script');</script>
 <div class="block">The LovelaceInsightErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Lovelace services.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsService</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/package-summary.html">org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints</a></dt>
-<dd>
-<div class="block">KarmaPointAwardsService fills in the contribution record for an actor profile.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html#%3Cinit%3E()" class="member-name-link">LovelaceKarmaPointAwardsService()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.<a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsService</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsServiceProvider.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsServiceProvider</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/package-summary.html">org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints</a></dt>
-<dd>
-<div class="block">KarmaPointAwardsServiceProvider is the OCF connector provider for the KarmaPointAwardsService.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsServiceProvider.html#%3Cinit%3E()" class="member-name-link">LovelaceKarmaPointAwardsServiceProvider()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.<a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsServiceProvider</a></dt>
-<dd>
-<div class="block">Constructor used to initialize the ConnectorProvider with the Java class name of the specific
- store implementation.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/LovelaceOpenLineageAnalysisServiceBase.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">LovelaceOpenLineageAnalysisServiceBase</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/package-summary.html">org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage</a></dt>
 <dd>
 <div class="block">LovelaceOpenLineageAnalysisServiceBase is the common base for the Lovelace services that analyse a historical
@@ -113091,6 +113156,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/controls/JDBCConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls">JDBCConfigurationProperty</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionGuard.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionRequestParameter</a></dt>
@@ -114223,6 +114290,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ProjectHealth.html#NO_ACTIVITY" class="member-name-link">NO_ACTIVITY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ProjectHealth.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectHealth</a></dt>
 <dd>
 <div class="block">The project is no longer being worked on either because it completed successfully, or was cancelled, or put on hold.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#NO_ACTOR_PROFILE" class="member-name-link">NO_ACTOR_PROFILE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0006 - The {0} integration connector has discarded {1} karma points for users {2}
+ because they do not have an actor profile</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html#NO_ASSET" class="member-name-link">NO_ASSET</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.connectors.ffdc.<a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFErrorCode</a></dt>
 <dd>
@@ -123407,10 +123479,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Provides utility classes used by Oracle Server Connectors.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/package-summary.html">org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints</a> - package org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints</dt>
-<dd>
-<div class="block">Provides the logic for calculating karma points that recognize contributions to the metadata ecosystem.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/pepys/package-summary.html">org.odpi.openmetadata.adapters.connectors.pepys</a> - package org.odpi.openmetadata.adapters.connectors.pepys</dt>
 <dd>
 <div class="block">The pepys connector is the activity observer for the open metadata ecosystem.</div>
@@ -123538,6 +123606,18 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/securityinsight/zoneprofile/package-summary.html">org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile</a> - package org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile</dt>
 <dd>
 <div class="block">Provides the governance zone profile logic used by the Security Insight connector.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon</a> - package org.odpi.openmetadata.adapters.connectors.simon</dt>
+<dd>
+<div class="block">The simon connector is the contribution recorder for the open metadata ecosystem.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon.controls</a> - package org.odpi.openmetadata.adapters.connectors.simon.controls</dt>
+<dd>
+<div class="block">The controls describe the configuration options for the Simon Contribution Recorder.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon.ffdc</a> - package org.odpi.openmetadata.adapters.connectors.simon.ffdc</dt>
+<dd>
+<div class="block">FFDC stands for First Failure Data Capture.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/package-summary.html">org.odpi.openmetadata.adapters.connectors.subscriptions</a> - package org.odpi.openmetadata.adapters.connectors.subscriptions</dt>
 <dd>
@@ -129398,9 +129478,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Process an event that was published by the Open Metadata Framework Manager.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.<a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsService</a></dt>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a></dt>
 <dd>
-<div class="block">This method is called each time a requested event is received from the open metadata repositories.</div>
+<div class="block">Award a karma point to the user responsible for the change reported by an open metadata event.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor</a></dt>
 <dd>
@@ -134409,6 +134489,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/catalog/PostgresServerCatalogTargetProcessor.html#refresh()" class="member-name-link">refresh()</a> - Method in class org.odpi.openmetadata.adapters.connectors.postgres.catalog.<a href="org/odpi/openmetadata/adapters/connectors/postgres/catalog/PostgresServerCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.catalog">PostgresServerCatalogTargetProcessor</a></dt>
 <dd>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html#refresh()" class="member-name-link">refresh()</a> - Method in class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a></dt>
+<dd>
+<div class="block">Write the karma points awarded since the last refresh to the users' contribution records.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor.html#refresh()" class="member-name-link">refresh()</a> - Method in class org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor</a></dt>
 <dd>
@@ -168405,6 +168489,36 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html#SILVER" class="member-name-link">SILVER</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.mermaid.<a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">Colour</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.<a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaOpenConnectorDefinition</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></dt>
+<dd>
+<div class="block">Simon listens to the open metadata events and awards a karma point to the user responsible for each change.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon.ffdc</a></dt>
+<dd>
+<div class="block">The SimonAuditCode is used to define the message content for the Audit Log.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/simon/controls/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon.controls</a></dt>
+<dd>
+<div class="block">SimonConfigurationProperty provides definitions for the configuration properties used with the
+ Simon Contribution Recorder.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/simon/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon</a></dt>
+<dd>
+<div class="block">SimonContributionRecorderConnector recognizes the contributions that people make to the open metadata ecosystem,
+ in recognition of Herbert A.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html#%3Cinit%3E()" class="member-name-link">SimonContributionRecorderConnector()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderProvider.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderProvider</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/simon/package-summary.html">org.odpi.openmetadata.adapters.connectors.simon</a></dt>
+<dd>
+<div class="block">SimonContributionRecorderProvider is the OCF connector provider for the Simon Contribution Recorder.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderProvider.html#%3Cinit%3E()" class="member-name-link">SimonContributionRecorderProvider()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderProvider</a></dt>
+<dd>
+<div class="block">Constructor used to initialize the ConnectorProvider with the Java class name of the specific connector implementation.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#SIMPLE_SCHEMA_TYPE" class="member-name-link">SIMPLE_SCHEMA_TYPE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>
 <div class="block">A single valued data item.</div>
@@ -170139,10 +170253,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.<a href="org/odpi/openmetadata/adapters/connectors/organizationinsight/karmapoints/LovelaceKarmaPointAwardsService.html" title="class in org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints">LovelaceKarmaPointAwardsService</a></dt>
-<dd>
-<div class="block">Indicates that the watchdog action service is completely configured and can begin processing.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/pepys/PepysActivityObserverConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.pepys.<a href="org/odpi/openmetadata/adapters/connectors/pepys/PepysActivityObserverConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.pepys">PepysActivityObserverConnector</a></dt>
 <dd>
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
@@ -170194,6 +170304,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/securityinsight/zoneprofile/LovelaceZoneMembershipProfilerService.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.<a href="org/odpi/openmetadata/adapters/connectors/securityinsight/zoneprofile/LovelaceZoneMembershipProfilerService.html" title="class in org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile">LovelaceZoneMembershipProfilerService</a></dt>
 <dd>
 <div class="block">Indicates that the watchdog action service is completely configured and can begin processing.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.simon.<a href="org/odpi/openmetadata/adapters/connectors/simon/SimonContributionRecorderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.simon">SimonContributionRecorderConnector</a></dt>
+<dd>
+<div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/CancelSubscriptionGovernanceActionConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/CancelSubscriptionGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.subscriptions">CancelSubscriptionGovernanceActionConnector</a></dt>
 <dd>
@@ -170482,6 +170596,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">PEPYS-ACTIVITY-OBSERVER-0002 - The {0} integration connector is starting to record the usage activity of the anchor elements
  in server {1} on platform {2}; the activity of users matching {3} is ignored</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0002 - The {0} integration connector is starting to award karma points for the changes
+ made through server {1} on platform {2}; users matching {3} are not awarded karma points</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/tabulardatasets/controls/TabularDataSetConfigurationProperty.html#STARTING_ELEMENT_GUID" class="member-name-link">STARTING_ELEMENT_GUID</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/tabulardatasets/controls/TabularDataSetConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.controls">TabularDataSetConfigurationProperty</a></dt>
 <dd>
@@ -175802,6 +175921,14 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html#toString()" class="member-name-link">toString()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc">YAMLErrorCode</a></dt>
+<dd>
+<div class="block">JSON-style toString</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#toString()" class="member-name-link">toString()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Output of this enum class and main value.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#toString()" class="member-name-link">toString()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
 <dd>
 <div class="block">JSON-style toString</div>
 </dd>
@@ -184369,15 +184496,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The {0} governance action service received a {1} exception when it registered a listener with the governance context.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></dt>
-<dd>
-<div class="block">LOVELACE-INSIGHTS-0017 - The {0} governance action service received a {1} exception when it registered a listener with the
- governance context.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightErrorCode.html#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightErrorCode</a></dt>
-<dd>
-<div class="block">The {0} governance action service received a {1} exception when it registered a listener with the governance context.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
 <dd>
 <div class="block">MENDEL-DUPLICATE-MANAGER-0010 - The {0} integration connector is unable to register a listener for open metadata events due to a {1} exception with message {2}</div>
@@ -184426,10 +184544,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#UNABLE_TO_SET_COMPLETION_STATUS" class="member-name-link">UNABLE_TO_SET_COMPLETION_STATUS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
 <dd>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html#UNABLE_TO_SET_COMPLETION_STATUS" class="member-name-link">UNABLE_TO_SET_COMPLETION_STATUS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></dt>
-<dd>
-<div class="block">LOVELACE-INSIGHTS-0016 - The {0} governance action service received a {1} exception when it registered its completion status.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/ffdc/AtlasIntegrationAuditCode.html#UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS" class="member-name-link">UNABLE_TO_SET_REFERENCE_VALUE_ASSIGNMENTS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/integration/ffdc/AtlasIntegrationAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc">AtlasIntegrationAuditCode</a></dt>
 <dd>
@@ -185103,10 +185217,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">LISKOV-DATA-HUB-MANAGER-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightAuditCode</a></dt>
-<dd>
-<div class="block">LOVELACE-INSIGHTS-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightErrorCode.html#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/lovelaceinsight/ffdc/LovelaceInsightErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc">LovelaceInsightErrorCode</a></dt>
 <dd>
 <div class="block">The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}</div>
@@ -185162,6 +185272,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLAuditCode.html#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc">YAMLAuditCode</a></dt>
 <dd>
 <div class="block">YAML-SECRETS-STORE-CONNECTOR-0001 - The secrets store connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">SIMON-CONTRIBUTION-RECORDER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/ffdc/UCAuditCode.html#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/ffdc/UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></dt>
 <dd>
@@ -192561,6 +192675,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.subscriptions.<a href="org/odpi/openmetadata/adapters/connectors/subscriptions/ManageDigitalSubscriptionActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.subscriptions">ManageDigitalSubscriptionActionTarget</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
@@ -195379,6 +195501,16 @@ the order they are declared.</div>
 the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html#values()" class="member-name-link">values()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/ffdc/YAMLErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc">YAMLErrorCode</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html#values()" class="member-name-link">values()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.simon.controls.<a href="org/odpi/openmetadata/adapters/connectors/simon/controls/SimonConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.controls">SimonConfigurationProperty</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html#values()" class="member-name-link">values()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.simon.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/simon/ffdc/SimonAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.simon.ffdc">SimonAuditCode</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>

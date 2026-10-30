@@ -126,7 +126,6 @@ org.odpi.openmetadata.adapters.connectors.oracle.ffdc
 org.odpi.openmetadata.adapters.connectors.oracle.survey
 org.odpi.openmetadata.adapters.connectors.oracle.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.oracle.utilities
-org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints
 org.odpi.openmetadata.adapters.connectors.pepys
 org.odpi.openmetadata.adapters.connectors.pepys.controls
 org.odpi.openmetadata.adapters.connectors.pepys.ffdc
@@ -157,6 +156,9 @@ org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc
 org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile
+org.odpi.openmetadata.adapters.connectors.simon
+org.odpi.openmetadata.adapters.connectors.simon.controls
+org.odpi.openmetadata.adapters.connectors.simon.ffdc
 org.odpi.openmetadata.adapters.connectors.subscriptions
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors

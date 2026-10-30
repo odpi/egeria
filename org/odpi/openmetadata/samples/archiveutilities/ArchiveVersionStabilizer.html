@@ -104,7 +104,11 @@ loadScripts(document, 'script');</script>
  previous edition.  If they are identical apart from version numbers - their own and those of the classifications,
  entity proxies and attribute types they carry - the previous edition's copy is used, so it keeps its previous
  versions.  New and changed elements keep the new version.  An entity is compared together with its
- classifications, so it keeps its previous version only if none of them has changed.</div>
+ classifications, so it keeps its previous version only if none of them has changed.
+ <br>
+ It also adds a deleted version of each entity and relationship that has been removed since the previous edition
+ (see addDeletedVersions()), so that loading the new edition soft-deletes them from a repository that loaded an
+ earlier one.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -132,15 +136,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHighestVersion(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">getHighestVersion</a><wbr>(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;archive)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDeletedVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">addDeletedVersions</a><wbr>(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;newArchive,
+ <a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;previousArchive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a deleted version of each entity and relationship of the previous edition that is not in the new archive.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHighestVersion(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">getHighestVersion</a><wbr>(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;archive)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the highest version number of any element in an archive, or zero if it has none.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stabilizeVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">stabilizeVersions</a><wbr>(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;newArchive,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stabilizeVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">stabilizeVersions</a><wbr>(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;newArchive,
  <a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;previousArchive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Give each element and type of the new archive that is unchanged from the previous edition its previous version
  numbers.</div>
 </div>
@@ -189,6 +199,36 @@ loadScripts(document, 'script');</script>
 <dd><code>previousArchive</code> - previous edition of the archive, or null if there is none</dd>
 <dt>Returns:</dt>
 <dd>number of elements and types whose previous version was kept</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addDeletedVersions(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)">
+<h3>addDeletedVersions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">addDeletedVersions</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;newArchive,
+ <a href="../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;previousArchive)</span></div>
+<div class="block">Add a deleted version of each entity and relationship of the previous edition that is not in the new archive.
+ Without it, an element removed from an archive stays in every repository that loaded an earlier edition, since
+ loading an archive only ever adds or updates elements.  The deleted version is the previous edition's copy with
+ its status set to DELETED (keeping the status it had as its statusOnDelete) and its version moved on by one, so
+ a repository holding that copy soft-deletes it, just as it would on receiving the deletion from another member
+ of its cohort.  A repository that holds a later version of the element - from a later release - ignores it.
+ <br>
+ The deleted versions are carried forward unchanged into each later edition (they are in the previous edition
+ but not in the new archive), so a repository that skips an edition still learns of the deletion.  An element
+ that is added back is simply in the new archive again, with the new archive's version, which restores it.
+ <br>
+ Nothing is added if the new archive shares no element with the previous edition.  That is not the deliberate
+ removal of the whole content of the archive: the writer has allocated new unique identifiers for everything,
+ typically because it was run from a directory where it could not find its GUID map, and deleting the previous
+ content would wipe it out.  Classification extensions are not covered - a deleted entity takes its
+ classifications with it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>newArchive</code> - archive about to be written - updated in place</dd>
+<dd><code>previousArchive</code> - previous edition of the archive, or null if there is none</dd>
+<dt>Returns:</dt>
+<dd>number of deleted versions added, including those carried forward</dd>
 </dl>
 </section>
 </li>

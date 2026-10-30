@@ -206,12 +206,16 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color"><code><a href="#SECRETS_STORE_CATALOGUER" class="member-name-link">SECRETS_STORE_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Simon listens to the open metadata events and awards a karma point to the user responsible for each change.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -487,6 +491,15 @@ the order they are declared.</div>
  counts of the assets reported there.  The OMAG Server Platform Cataloguer adds each audit log topic it
  catalogues as one of Pepys's catalog targets.  Its configuration properties hold the patterns of the userIds
  whose activity is not counted.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SIMON_CONTRIBUTION_RECORDER">
+<h3>SIMON_CONTRIBUTION_RECORDER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">SIMON_CONTRIBUTION_RECORDER</span></div>
+<div class="block">Simon listens to the open metadata events and awards a karma point to the user responsible for each change.
+ The karma points are gathered in memory and added to the ContributionRecord of each user's actor profile on
+ each refresh.  Its configuration properties hold the patterns of the userIds that are not awarded karma points.</div>
 </section>
 </li>
 <li>
