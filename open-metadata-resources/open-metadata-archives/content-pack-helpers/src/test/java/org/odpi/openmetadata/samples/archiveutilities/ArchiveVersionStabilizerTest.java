@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 /**
  * Elements that are unchanged from the previous edition of an archive keep their previous version number, so that
@@ -147,6 +148,138 @@ public class ArchiveVersionStabilizerTest
     }
 
 
+    /**
+     * An entity and relationship removed since the previous edition are written in deleted status, with the version
+     * moved on by one so that a repository holding the previous copy replaces it.
+     */
+    @Test
+    public void testRemovedElementsAreAddedInDeletedStatus() throws Exception
+    {
+        OpenMetadataArchive previous = this.readBack(this.getArchive(PREVIOUS_VERSION, "Unchanged description", 5L));
+        OpenMetadataArchive rebuilt  = this.getArchive(NEW_VERSION, "Unchanged description", 5L);
+
+        this.removeSecondEntityAndRelationship(rebuilt);
+
+        ArchiveVersionStabilizer stabilizer = new ArchiveVersionStabilizer();
+
+        stabilizer.stabilizeVersions(rebuilt, previous);
+
+        assertEquals(stabilizer.addDeletedVersions(rebuilt, previous), 2);
+
+        List<EntityDetail> entities = rebuilt.getArchiveInstanceStore().getEntities();
+
+        assertEquals(entities.size(), 2);
+        assertEquals(entities.get(0).getStatus(), InstanceStatus.ACTIVE);
+        assertEquals(entities.get(1).getGUID(), "second-guid");
+        assertEquals(entities.get(1).getStatus(), InstanceStatus.DELETED);
+        assertEquals(entities.get(1).getStatusOnDelete(), InstanceStatus.ACTIVE);
+        assertEquals(entities.get(1).getVersion(), PREVIOUS_VERSION + 1);
+        assertEquals(entities.get(1).getCreateTime(), CREATION_DATE, "The repository rejects a copy whose createTime differs");
+
+        Relationship relationship = rebuilt.getArchiveInstanceStore().getRelationships().get(0);
+
+        assertEquals(relationship.getGUID(), "relationship-guid");
+        assertEquals(relationship.getStatus(), InstanceStatus.DELETED);
+        assertEquals(relationship.getVersion(), PREVIOUS_VERSION + 1);
+
+        /*
+         * The previous edition is not changed.
+         */
+        assertEquals(previous.getArchiveInstanceStore().getEntities().get(1).getStatus(), InstanceStatus.ACTIVE);
+    }
+
+
+    /**
+     * A deleted version is carried forward unchanged into the following editions, so that rebuilding reproduces the
+     * archive and a repository that skipped an edition still learns of the deletion.
+     */
+    @Test
+    public void testDeletedVersionsAreCarriedForward() throws Exception
+    {
+        OpenMetadataArchive previous = this.readBack(this.getArchive(PREVIOUS_VERSION, "Unchanged description", 5L));
+        OpenMetadataArchive edition  = this.getArchive(NEW_VERSION, "Unchanged description", 5L);
+
+        this.removeSecondEntityAndRelationship(edition);
+
+        ArchiveVersionStabilizer stabilizer = new ArchiveVersionStabilizer();
+
+        stabilizer.stabilizeVersions(edition, previous);
+        stabilizer.addDeletedVersions(edition, previous);
+
+        OpenMetadataArchive written = this.readBack(edition);
+        OpenMetadataArchive rebuilt = this.getArchive(NEW_VERSION + 1, "Unchanged description", 5L);
+
+        this.removeSecondEntityAndRelationship(rebuilt);
+
+        stabilizer.stabilizeVersions(rebuilt, written);
+
+        assertEquals(stabilizer.addDeletedVersions(rebuilt, written), 2);
+        assertEquals(rebuilt.getArchiveInstanceStore().getEntities().get(1).getVersion(), PREVIOUS_VERSION + 1);
+        assertEquals(objectMapper.writeValueAsString(rebuilt), objectMapper.writeValueAsString(written));
+    }
+
+
+    /**
+     * An element that is added back is in the new archive again, so it is not deleted - its new version restores it.
+     */
+    @Test
+    public void testElementAddedBackIsNotDeleted() throws Exception
+    {
+        OpenMetadataArchive previous = this.getArchive(PREVIOUS_VERSION, "Unchanged description", 5L);
+
+        this.removeSecondEntityAndRelationship(previous);
+
+        ArchiveVersionStabilizer stabilizer = new ArchiveVersionStabilizer();
+        OpenMetadataArchive      original   = this.readBack(this.getArchive(PREVIOUS_VERSION - 1, "Unchanged description", 5L));
+
+        stabilizer.addDeletedVersions(previous, original);
+
+        OpenMetadataArchive withDeletion = this.readBack(previous);
+        OpenMetadataArchive rebuilt      = this.getArchive(NEW_VERSION, "Unchanged description", 5L);
+
+        stabilizer.stabilizeVersions(rebuilt, withDeletion);
+
+        assertEquals(stabilizer.addDeletedVersions(rebuilt, withDeletion), 0);
+        assertEquals(rebuilt.getArchiveInstanceStore().getEntities().get(1).getStatus(), InstanceStatus.ACTIVE);
+        assertEquals(rebuilt.getArchiveInstanceStore().getEntities().get(1).getVersion(), NEW_VERSION);
+    }
+
+
+    /**
+     * A new archive that shares no unique identifier with the previous edition has had its GUIDs reallocated, so
+     * nothing is deleted.
+     */
+    @Test
+    public void testNothingDeletedWhenNoGUIDsShared() throws Exception
+    {
+        OpenMetadataArchive previous = this.readBack(this.getArchive(PREVIOUS_VERSION, "Description", 5L));
+        OpenMetadataArchive rebuilt  = new OpenMetadataArchive();
+        OpenMetadataArchiveInstanceStore store = new OpenMetadataArchiveInstanceStore();
+
+        store.setEntities(new ArrayList<>(List.of(this.getEntity("reallocated-guid", NEW_VERSION, "Description"))));
+        rebuilt.setArchiveInstanceStore(store);
+
+        assertEquals(new ArchiveVersionStabilizer().addDeletedVersions(rebuilt, previous), 0);
+        assertEquals(rebuilt.getArchiveInstanceStore().getEntities().size(), 1);
+        assertNull(rebuilt.getArchiveInstanceStore().getRelationships());
+    }
+
+
+    /**
+     * Remove the second entity and the relationship from an archive, as if they had been taken out of the content.
+     */
+    private void removeSecondEntityAndRelationship(OpenMetadataArchive archive)
+    {
+        OpenMetadataArchiveInstanceStore store    = archive.getArchiveInstanceStore();
+        List<EntityDetail>               entities = store.getEntities();
+
+        entities.remove(1);
+        store.setEntities(entities);
+        store.setRelationships(new ArrayList<>());
+        archive.setArchiveInstanceStore(store);
+    }
+
+
     private void setRelationshipEnds(OpenMetadataArchive archive, long version)
     {
         OpenMetadataArchiveInstanceStore store         = archive.getArchiveInstanceStore();
@@ -226,6 +359,7 @@ public class ArchiveVersionStabilizerTest
 
         relationship.setGUID("relationship-guid");
         relationship.setVersion(version);
+        relationship.setStatus(InstanceStatus.ACTIVE);
         relationship.setCreateTime(CREATION_DATE);
         relationship.setType(this.getType("Linked"));
 
@@ -249,6 +383,7 @@ public class ArchiveVersionStabilizerTest
         entity.setGUID(guid);
         entity.setVersion(version);
         entity.setCreateTime(CREATION_DATE);
+        entity.setStatus(InstanceStatus.ACTIVE);
         entity.setType(this.getType("Referenceable"));
 
         InstanceProperties properties = this.getLongProperty("count", 42L);

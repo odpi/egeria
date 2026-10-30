@@ -20,7 +20,6 @@ The services are:
 
 | Service | Package | Kind | Content pack | What it does |
 |---------|---------|------|--------------|--------------|
-| Award Karma Points | `organizationinsight.karmapoints` | Watchdog action service | Organization Insight | Watches for contributions to the open metadata ecosystem and awards karma points to the users responsible. |
 | Build Zone Membership Profile | `securityinsight.zoneprofile` | Governance action service | Organization Insight | Populates the ZoneMembershipProfile classification of each governance zone. |
 | Build Member Popularity Profile | `usageinsight.popularity` | Governance action service | Core | Totals the usage activity of the members of each root collection, glossary, data sharing hub, collection folder and digital product catalog, and records it in the collection's MemberPopularityProfile classification. |
 | Profile OpenLineage Runs | `lineageinsight.openlineage` | Governance action service | Open Lineage | Analyses the runs of each job in an OpenLineage log store and records the run profile (frequency, regularity, duration, failure rate and data volume) in the RunMetrics classification of the job's process. |
@@ -30,13 +29,8 @@ The services are:
 None of the services has request parameters or action targets except the OpenLineage services, described below.
 Each governance action service produces the `service-completed` or `service-failed` guard.
 
-## Award Karma Points
-
-The karma point awards service is a watchdog action service: rather than running once and completing, it listens for
-open metadata events.  For each element that is created or updated (other than by a refresh) it awards a karma point
-to the user that made the change, recording the running total in the `ContributionRecord` linked to the user's actor
-profile.  The contribution record is created the first time a user earns a point.  Updates are synchronized so that
-two events for the same user do not lose a point.
+Karma points used to be awarded by a watchdog action service in this module.  They are now awarded by the
+[Simon Contribution Recorder](../nanny-connectors#simon-contribution-recorder) integration connector.
 
 ## Build Zone Membership Profile
 

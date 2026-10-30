@@ -1981,8 +1981,10 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
                                                                 integrationConnectorDefinition.getGUID());
 
                 /*
-                 * This IT profile allows us to collect karma points for the connector.  This is in addition to their
-                 * connector activity reports that are created automatically.
+                 * This IT profile gives the connector's userId an actor profile, so it can be awarded karma points.
+                 * The Simon Contribution Recorder ignores non-personal accounts (userIds ending in "npa") by default,
+                 * so the connector only earns karma points if Simon's ignoredUserIdPatterns are changed.  This is in
+                 * addition to their connector activity reports that are created automatically.
                  */
                 archiveHelper.addITProfile(integrationConnectorDefinition.getGUID(),
                                            integrationConnectorDefinition.getConnectorUserId(),
