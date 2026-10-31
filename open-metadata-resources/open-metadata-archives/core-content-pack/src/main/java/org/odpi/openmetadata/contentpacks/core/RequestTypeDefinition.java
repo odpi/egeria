@@ -120,24 +120,6 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
-     * award-karma-points
-     */
-    AWARD_KARMA_POINTS(GovernanceActionTypeDefinition.AWARD_KARMA_POINTS.getGovernanceRequestType(),
-                       null,
-                       null,
-                       null,
-                       GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                       GovernanceServiceDefinition.KARMA_POINT_AWARDS,
-                       GovernanceActionTypeDefinition.AWARD_KARMA_POINTS.getGovernanceActionTypeGUID(),
-                       GovernanceDomain.UNCLASSIFIED.getOrdinal(),
-                       null,
-                       "5ca5b9fb-2a38-43b6-9206-1465574129ce",
-                       "Award Karma Points",
-                       "Monitors contributions to the open metadata ecosystem and awards karma points to the users responsible.",
-                       ContentCollectionDefinition.ANALYTICAL_ACTIONS,
-                       ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
-
-    /**
      * profile-open-lineage-runs
      */
     PROFILE_OPEN_LINEAGE_RUNS(GovernanceActionTypeDefinition.PROFILE_OPEN_LINEAGE_RUNS.getGovernanceRequestType(),

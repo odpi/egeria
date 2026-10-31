@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValueMemberProperties extends RelationshipBeanProperties
 {
-    private boolean isDefaultValue = false;
-    private int     ordinal        = 0;
+    private Boolean isDefaultValue = null;
+    private Integer ordinal        = null;
 
     /**
      * Default constructor
@@ -57,7 +57,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @return flag
      */
-    public boolean getIsDefaultValue()
+    public Boolean getIsDefaultValue()
     {
         return isDefaultValue;
     }
@@ -68,7 +68,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @param defaultValue flag
      */
-    public void setIsDefaultValue(boolean defaultValue)
+    public void setIsDefaultValue(Boolean defaultValue)
     {
         this.isDefaultValue = defaultValue;
     }
@@ -79,7 +79,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @return int ordinal
      */
-    public int getOrdinal()
+    public Integer getOrdinal()
     {
         return ordinal;
     }
@@ -90,7 +90,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @param ordinal int
      */
-    public void setOrdinal(int ordinal)
+    public void setOrdinal(Integer ordinal)
     {
         this.ordinal = ordinal;
     }
@@ -133,8 +133,8 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
             return false;
         }
         ValidValueMemberProperties that = (ValidValueMemberProperties) objectToCompare;
-        return ordinal == that.ordinal &&
-                isDefaultValue == that.isDefaultValue;
+        return Objects.equals(ordinal, that.ordinal) &&
+                Objects.equals(isDefaultValue, that.isDefaultValue);
     }
 
 

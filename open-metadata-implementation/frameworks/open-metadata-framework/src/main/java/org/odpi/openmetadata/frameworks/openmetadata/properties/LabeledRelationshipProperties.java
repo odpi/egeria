@@ -78,6 +78,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ContextEventEvidenceProperties.class, name = "ContextEventEvidenceProperties"),
                 @JsonSubTypes.Type(value = ContextEventForTimelineEffectsProperties.class, name = "ContextEventForTimelineEffectsProperties"),
                 @JsonSubTypes.Type(value = ContextEventImpactProperties.class, name = "ContextEventImpactProperties"),
+                @JsonSubTypes.Type(value = ControlApplicabilityProperties.class, name = "ControlApplicabilityProperties"),
                 @JsonSubTypes.Type(value = DataValueAssignmentProperties.class, name = "DataValueAssignmentProperties"),
                 @JsonSubTypes.Type(value = DataClassCompositionProperties.class, name = "DataClassCompositionProperties"),
                 @JsonSubTypes.Type(value = DataValueDefinitionProperties.class, name = "DataValueDefinitionProperties"),

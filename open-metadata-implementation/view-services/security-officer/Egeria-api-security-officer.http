@@ -499,3 +499,202 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+
+###
+# =====================================================================================================================
+# Statements of applicability record which controls from a standard - such as the Annex A controls of ISO/IEC 27001 -
+# apply to the organization, why, and how far each one has been implemented.
+# https://egeria-project.org/types/4/0423-Security-Definitions/
+
+@statementOfApplicabilityGUID=add guid here
+@controlGUID=add guid here
+
+###
+# @name createStatementOfApplicability
+# Create a statement of applicability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "properties": {
+    "class": "StatementOfApplicabilityProperties",
+    "qualifiedName": "StatementOfApplicability::add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "versionIdentifier": "1.0",
+    "scope": "add the scope of the management system here",
+    "reviewDate": "{{$isoTimestamp}}",
+    "authors": ["add author here"],
+    "contentStatus": "DRAFT"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createStatementOfApplicabilityFromTemplate
+# Create a new statement of applicability using an existing one as a template.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "templateGUID": "add guid here",
+  "placeholderPropertyValues": {
+    "placeholder1": "propertyValue1",
+    "placeholder2": "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateStatementOfApplicability
+# Update the properties of a statement of applicability - for example, to approve it after a review.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/{{statementOfApplicabilityGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class": "StatementOfApplicabilityProperties",
+    "reviewDate": "{{$isoTimestamp}}",
+    "contentStatus": "APPROVED"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteStatementOfApplicability
+# Delete a statement of applicability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/{{statementOfApplicabilityGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadedDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getStatementsOfApplicabilityByName
+# Returns the list of statements of applicability with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name findStatementsOfApplicability
+# Retrieve the list of statements of applicability that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getStatementOfApplicabilityByGUID
+# Return the properties of a specific statement of applicability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/{{statementOfApplicabilityGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkControlApplicability
+# Link a control from a standard to a statement of applicability.  The implementationStatus is one of
+# NOT_STARTED, PLANNED, PARTIALLY_IMPLEMENTED, IMPLEMENTED or OTHER.  Run it again with new properties to
+# update the applicability of a control that is already linked - for example, as its implementation progresses.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/{{statementOfApplicabilityGUID}}/control-applicability/{{controlGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ControlApplicabilityProperties",
+    "isApplicable": true,
+    "justification": "add why the control is included or excluded here",
+    "inclusionReasons": ["Risk Treatment", "Legal or Regulatory Requirement"],
+    "implementationStatus": "PARTIALLY_IMPLEMENTED",
+    "implementationDescription": "add how the control is implemented here",
+    "reviewDate": "{{$isoTimestamp}}",
+    "label": "add label here",
+    "description": "add notes here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachControlApplicability
+# Remove a control from a statement of applicability.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/security-officer/statements-of-applicability/{{statementOfApplicabilityGUID}}/control-applicability/{{controlGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}

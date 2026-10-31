@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.designpatterns.D
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StatementOfApplicabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
@@ -50,6 +51,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
         @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
         @JsonSubTypes.Type(value = SkillProperties.class, name = "SkillProperties"),
+        @JsonSubTypes.Type(value = StatementOfApplicabilityProperties.class, name = "StatementOfApplicabilityProperties"),
         @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
 })
 public class AuthoredReferenceableProperties extends ReferenceableProperties

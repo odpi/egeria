@@ -29,7 +29,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
     private String       projectPhase          = null;
     private String       projectHealth         = null;
     private String       projectStatus         = null;
-    private int          priority              = 0;
+    private Integer      priority              = null;
     private Date         plannedStartDate      = null;
     private Date         actualStartDate       = null;
     private Date         plannedCompletionDate = null;
@@ -209,7 +209,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getPriority()
+    public Integer getPriority()
     {
         return priority;
     }
@@ -220,7 +220,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
      *
      * @param priority int
      */
-    public void setPriority(int priority)
+    public void setPriority(Integer priority)
     {
         this.priority = priority;
     }
@@ -352,7 +352,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return priority == that.priority &&
+        return Objects.equals(priority, that.priority) &&
                 Objects.equals(mission, that.mission) &&
                 Objects.equals(dataProcessingPurposes, that.dataProcessingPurposes) &&
                 Objects.equals(successCriteria, that.successCriteria) &&

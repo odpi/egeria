@@ -25,7 +25,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
     private String                 membershipRationale = null;
     private String                 membershipType      = null;
     private String                 expression          = null;
-    private int                    confidence          = 0;
+    private Integer                confidence          = null;
     private CollectionMemberStatus membershipStatus    = null;
     private String                 userDefinedStatus   = null;
     private String                 steward             = null;
@@ -142,7 +142,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -153,7 +153,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -355,7 +355,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
             return false;
         }
         CollectionMembershipProperties that = (CollectionMembershipProperties) objectToCompare;
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                 Objects.equals(membershipRationale, that.membershipRationale) &&
                 Objects.equals(membershipType, that.membershipType) &&
                 Objects.equals(expression, that.expression) &&

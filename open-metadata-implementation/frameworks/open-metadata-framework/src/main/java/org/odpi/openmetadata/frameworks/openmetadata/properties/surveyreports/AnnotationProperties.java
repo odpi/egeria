@@ -27,18 +27,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataFieldAnnotationProperties.class, name = "DataFieldAnnotationProperties"),
                 @JsonSubTypes.Type(value = ContributorAnalysisAnnotationProperties.class, name = "ContributorAnalysisAnnotationProperties"),
                 @JsonSubTypes.Type(value = CodeAnalysisAnnotationProperties.class, name = "CodeAnalysisAnnotationProperties"),
+                @JsonSubTypes.Type(value = SecurityFindingAnnotationProperties.class, name = "SecurityFindingAnnotationProperties"),
         })
 public class AnnotationProperties extends AuthoredReferenceableProperties
 {
     private String annotationType      = null;
     private String summary             = null;
-    private long   sampleSize          = 0L;
-    private int    samplePercent       = 0;
+    private Long   sampleSize          = null;
+    private Integer samplePercent       = null;
     private String samplingMethod      = null;
-    private int    confidence          = 0;
+    private Integer confidence          = null;
     private String units               = null;
-    private long   absoluteUncertainty = 0L;
-    private long   relativeUncertainty = 0L;
+    private Long   absoluteUncertainty = null;
+    private Long   relativeUncertainty = null;
     private String expression          = null;
     private String explanation         = null;
     private String analysisStep        = null;
@@ -132,7 +133,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @return long
      */
-    public long getSampleSize()
+    public Long getSampleSize()
     {
         return sampleSize;
     }
@@ -143,7 +144,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @param sampleSize long
      */
-    public void setSampleSize(long sampleSize)
+    public void setSampleSize(Long sampleSize)
     {
         this.sampleSize = sampleSize;
     }
@@ -154,7 +155,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @return int
      */
-    public int getSamplePercent()
+    public Integer getSamplePercent()
     {
         return samplePercent;
     }
@@ -165,7 +166,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @param samplePercent int
      */
-    public void setSamplePercent(int samplePercent)
+    public void setSamplePercent(Integer samplePercent)
     {
         this.samplePercent = samplePercent;
     }
@@ -198,7 +199,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @return int confidence level
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -209,7 +210,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @param confidence int confidence level
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -242,7 +243,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @return long
      */
-    public long getAbsoluteUncertainty()
+    public Long getAbsoluteUncertainty()
     {
         return absoluteUncertainty;
     }
@@ -253,7 +254,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @param absoluteUncertainty long
      */
-    public void setAbsoluteUncertainty(long absoluteUncertainty)
+    public void setAbsoluteUncertainty(Long absoluteUncertainty)
     {
         this.absoluteUncertainty = absoluteUncertainty;
     }
@@ -264,7 +265,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @return long
      */
-    public long getRelativeUncertainty()
+    public Long getRelativeUncertainty()
     {
         return relativeUncertainty;
     }
@@ -275,7 +276,7 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
      *
      * @param relativeUncertainty long
      */
-    public void setRelativeUncertainty(long relativeUncertainty)
+    public void setRelativeUncertainty(Long relativeUncertainty)
     {
         this.relativeUncertainty = relativeUncertainty;
     }
@@ -406,11 +407,11 @@ public class AnnotationProperties extends AuthoredReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AnnotationProperties that = (AnnotationProperties) objectToCompare;
-        return sampleSize == that.sampleSize &&
-                samplePercent == that.samplePercent &&
-                confidence == that.confidence &&
-                absoluteUncertainty == that.absoluteUncertainty &&
-                relativeUncertainty == that.relativeUncertainty &&
+        return Objects.equals(sampleSize, that.sampleSize) &&
+                Objects.equals(samplePercent, that.samplePercent) &&
+                Objects.equals(confidence, that.confidence) &&
+                Objects.equals(absoluteUncertainty, that.absoluteUncertainty) &&
+                Objects.equals(relativeUncertainty, that.relativeUncertainty) &&
                 Objects.equals(annotationType, that.annotationType) &&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(samplingMethod, that.samplingMethod) &&

@@ -699,10 +699,23 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
 
             if (previousEditionFile != null)
             {
-                int keptCount = new ArchiveVersionStabilizer().stabilizeVersions(openMetadataArchive,
-                                                                                 super.readOpenMetadataArchive(previousEditionFile.getPath()));
+                ArchiveVersionStabilizer stabilizer      = new ArchiveVersionStabilizer();
+                OpenMetadataArchive      previousEdition = super.readOpenMetadataArchive(previousEditionFile.getPath());
+
+                int keptCount = stabilizer.stabilizeVersions(openMetadataArchive, previousEdition);
 
                 System.out.println("Kept the previous version of " + keptCount + " unchanged elements from " + previousEditionFile.getPath());
+
+                /*
+                 * Elements removed since the previous edition are written in deleted status, so that loading this
+                 * edition soft-deletes them from the repositories that loaded an earlier one.
+                 */
+                int deletedCount = stabilizer.addDeletedVersions(openMetadataArchive, previousEdition);
+
+                if (deletedCount > 0)
+                {
+                    System.out.println("Added the deleted version of " + deletedCount + " elements removed since " + previousEditionFile.getPath());
+                }
             }
 
             System.out.println("Writing to file: " + pathName);

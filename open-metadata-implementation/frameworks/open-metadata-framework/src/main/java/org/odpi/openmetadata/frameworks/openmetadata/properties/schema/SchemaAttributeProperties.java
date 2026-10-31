@@ -47,14 +47,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SchemaAttributeProperties extends SchemaElementProperties
 {
     private String            namespacePath         = null;
-    private boolean           allowsDuplicateValues = false;
-    private boolean           orderedValues         = false;
+    private Boolean           allowsDuplicateValues = null;
+    private Boolean           orderedValues         = null;
     private String            defaultValueOverride  = null;
     private DataItemSortOrder sortOrder             = null;
-    private int               minimumLength         = 0;
-    private int               length                = 0;
-    private int               precision             = 0;
-    private boolean           isNullable            = true;
+    private Integer           minimumLength         = null;
+    private Integer           length                = null;
+    private Integer           precision             = null;
+    private Boolean           isNullable            = null;
     private String            nativeClass           = null;
     private List<String>      aliases               = null;
 
@@ -121,7 +121,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean getAllowsDuplicateValues()
+    public Boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -132,7 +132,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param allowsDuplicateValues boolean flag
      */
-    public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
+    public void setAllowsDuplicateValues(Boolean allowsDuplicateValues)
     {
         this.allowsDuplicateValues = allowsDuplicateValues;
     }
@@ -143,7 +143,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean getOrderedValues()
+    public Boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -154,7 +154,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param orderedValues boolean flag
      */
-    public void setOrderedValues(boolean orderedValues)
+    public void setOrderedValues(Boolean orderedValues)
     {
         this.orderedValues = orderedValues;
     }
@@ -187,7 +187,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return int
      */
-    public int getMinimumLength()
+    public Integer getMinimumLength()
     {
         return minimumLength;
     }
@@ -198,7 +198,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param minimumLength int
      */
-    public void setMinimumLength(int minimumLength)
+    public void setMinimumLength(Integer minimumLength)
     {
         this.minimumLength = minimumLength;
     }
@@ -209,7 +209,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return int
      */
-    public int getLength()
+    public Integer getLength()
     {
         return length;
     }
@@ -220,7 +220,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param length int
      */
-    public void setLength(int length)
+    public void setLength(Integer length)
     {
         this.length = length;
     }
@@ -231,7 +231,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return int
      */
-    public int getPrecision()
+    public Integer getPrecision()
     {
         return precision;
     }
@@ -242,7 +242,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param precision int
      */
-    public void setPrecision(int precision)
+    public void setPrecision(Integer precision)
     {
         this.precision = precision;
     }
@@ -253,7 +253,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean
      */
-    public boolean getIsNullable()
+    public Boolean getIsNullable()
     {
         return isNullable;
     }
@@ -264,7 +264,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param nullable boolean
      */
-    public void setIsNullable(boolean nullable)
+    public void setIsNullable(Boolean nullable)
     {
         isNullable = nullable;
     }
@@ -381,13 +381,13 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             return false;
         }
         SchemaAttributeProperties that = (SchemaAttributeProperties) objectToCompare;
-        return allowsDuplicateValues == that.allowsDuplicateValues &&
-                orderedValues == that.orderedValues &&
-                minimumLength == that.minimumLength &&
+        return Objects.equals(allowsDuplicateValues, that.allowsDuplicateValues) &&
+                Objects.equals(orderedValues, that.orderedValues) &&
+                Objects.equals(minimumLength, that.minimumLength) &&
                 Objects.equals(namespacePath, that.namespacePath) &&
-                length == that.length &&
-                precision == that.precision &&
-                isNullable == that.isNullable &&
+                Objects.equals(length, that.length) &&
+                Objects.equals(precision, that.precision) &&
+                Objects.equals(isNullable, that.isNullable) &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
                 Objects.equals(nativeClass, that.nativeClass) &&

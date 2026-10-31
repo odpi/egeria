@@ -24,11 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GraphEdgeLinkProperties extends RelationshipBeanProperties
 {
     private String              linkTypeName         = null;
-    private int                 relationshipEnd      = 0;
+    private Integer             relationshipEnd      = null;
     private String              relationshipEndName  = null;
     private String              description          = null;
-    private int                 minCardinality       = 0;
-    private int                 maxCardinality       = 0;
+    private Integer             minCardinality       = null;
+    private Integer             maxCardinality       = null;
     private Map<String, String> additionalProperties = null;
 
 
@@ -91,7 +91,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @return int position in schema - 0 means first
      */
-    public int getRelationshipEnd() { return relationshipEnd; }
+    public Integer getRelationshipEnd() { return relationshipEnd; }
 
 
     /**
@@ -99,7 +99,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @param relationshipEnd int position in schema - 0 means first
      */
-    public void setRelationshipEnd(int relationshipEnd)
+    public void setRelationshipEnd(Integer relationshipEnd)
     {
         this.relationshipEnd = relationshipEnd;
     }
@@ -154,7 +154,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getMinCardinality()
+    public Integer getMinCardinality()
     {
         return minCardinality;
     }
@@ -165,7 +165,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @param minCardinality int
      */
-    public void setMinCardinality(int minCardinality)
+    public void setMinCardinality(Integer minCardinality)
     {
         this.minCardinality = minCardinality;
     }
@@ -176,7 +176,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @return int (-1 means infinite)
      */
-    public int getMaxCardinality()
+    public Integer getMaxCardinality()
     {
         return maxCardinality;
     }
@@ -187,7 +187,7 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
      *
      * @param maxCardinality int (-1 means infinite)
      */
-    public void setMaxCardinality(int maxCardinality)
+    public void setMaxCardinality(Integer maxCardinality)
     {
         this.maxCardinality = maxCardinality;
     }
@@ -249,9 +249,9 @@ public class GraphEdgeLinkProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         GraphEdgeLinkProperties that = (GraphEdgeLinkProperties) objectToCompare;
-        return relationshipEnd == that.relationshipEnd &&
-                minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
+        return Objects.equals(relationshipEnd, that.relationshipEnd) &&
+                Objects.equals(minCardinality, that.minCardinality) &&
+                Objects.equals(maxCardinality, that.maxCardinality) &&
                 Objects.equals(linkTypeName, that.linkTypeName) &&
                 Objects.equals(relationshipEndName, that.relationshipEndName) &&
                 Objects.equals(description, that.description) &&

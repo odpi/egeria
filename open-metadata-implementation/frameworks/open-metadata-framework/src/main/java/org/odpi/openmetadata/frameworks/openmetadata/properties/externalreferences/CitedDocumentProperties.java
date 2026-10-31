@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CitedDocumentProperties extends ExternalReferenceProperties
 {
-    private int          numberOfPages           = 0;
+    private Integer      numberOfPages           = null;
     private String       pageRange               = null;
     private String       publicationSeries       = null;
     private String       publicationSeriesVolume = null;
@@ -194,7 +194,7 @@ public class CitedDocumentProperties extends ExternalReferenceProperties
      *
      * @return int
      */
-    public int getNumberOfPages()
+    public Integer getNumberOfPages()
     {
         return numberOfPages;
     }
@@ -205,7 +205,7 @@ public class CitedDocumentProperties extends ExternalReferenceProperties
      *
      * @param numberOfPages int
      */
-    public void setNumberOfPages(int numberOfPages)
+    public void setNumberOfPages(Integer numberOfPages)
     {
         this.numberOfPages = numberOfPages;
     }
@@ -335,7 +335,7 @@ public class CitedDocumentProperties extends ExternalReferenceProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         CitedDocumentProperties that = (CitedDocumentProperties) objectToCompare;
-        return numberOfPages == that.numberOfPages &&
+        return Objects.equals(numberOfPages, that.numberOfPages) &&
                 Objects.equals(pageRange, that.pageRange) &&
                 Objects.equals(publicationSeries, that.publicationSeries) &&
                 Objects.equals(publicationSeriesVolume, that.publicationSeriesVolume) &&

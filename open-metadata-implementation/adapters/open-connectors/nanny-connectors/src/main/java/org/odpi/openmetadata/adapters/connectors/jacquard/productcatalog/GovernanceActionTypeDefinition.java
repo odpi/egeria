@@ -12,12 +12,6 @@ package org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog;
 public enum GovernanceActionTypeDefinition
 {
     /**
-     * award-karma-points
-     */
-    AWARD_KARMA_POINTS("award-karma-points",
-                          "de681791-d978-4d5a-9828-6e19025e3a17"),
-
-    /**
      * build-zone-membership-profile
      */
     BUILD_ZONE_MEMBERSHIP_PROFILE("build-zone-membership-profile",

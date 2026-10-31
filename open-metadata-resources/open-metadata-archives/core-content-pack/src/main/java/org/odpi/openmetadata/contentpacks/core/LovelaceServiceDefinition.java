@@ -8,10 +8,6 @@ package org.odpi.openmetadata.contentpacks.core;
  */
 public enum LovelaceServiceDefinition
 {
-    KARMA_POINTS(RequestTypeDefinition.AWARD_KARMA_POINTS.getGovernanceActionTypeGUID(),
-                 "Award Karma Points",
-                 ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
-
     ZONE_MEMBERSHIP_PROFILE(RequestTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getGovernanceActionTypeGUID(),
                  "Build Zone Membership Profile",
                  ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
