@@ -21,7 +21,7 @@ javaPlatform {
 // Assign variables for any constraints
 ext {
     collections4Version = '4.6.0'
-    commonscodecVersion = '1.22.1'
+    commonscodecVersion = '1.23.0'
 
     commonsioVersion = '2.22.0'
 
