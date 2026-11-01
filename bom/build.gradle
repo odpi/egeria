@@ -29,7 +29,7 @@ ext {
     duckdbJdbcVersion = '1.5.5.1'
     findbugsVersion = '3.0.2'
     hamcrestVersion = '3.0'
-    hibernatevalidatorVersion = '8.0.5.Final'
+    hibernatevalidatorVersion = '8.0.6.Final'
     jacksonDatabindVersion = '2.22.3'
     jakartavalidationVersion = '3.1.0'
     jaxbVersion = '2.3.1'
