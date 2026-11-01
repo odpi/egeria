@@ -26,7 +26,7 @@ ext {
     commonsioVersion = '2.22.0'
 
     db2JdbcVersion = '12.1.5.0'
-    duckdbJdbcVersion = '1.5.5.1'
+    duckdbJdbcVersion = '2.0.0.0'
     findbugsVersion = '3.0.2'
     hamcrestVersion = '3.0'
     hibernatevalidatorVersion = '8.0.5.Final'
