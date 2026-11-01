@@ -42,7 +42,7 @@ ext {
     lang3Version = '3.20.0'
     logbackVersion = '1.6.5'
     openlineageVersion = '1.53.0'
-    postgresVersion = '42.7.13' // already there
+    postgresVersion = '42.7.14' // already there
     nettyVersion = '4.2.18.Final'
     prometheusVersion = '1.17.1'
     jakartaServletVersion = '6.1.0'
