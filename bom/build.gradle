@@ -41,7 +41,7 @@ ext {
     kafkaVersion = '4.3.1'
     lang3Version = '3.20.0'
     logbackVersion = '1.6.5'
-    openlineageVersion = '1.53.0'
+    openlineageVersion = '1.54.0'
     postgresVersion = '42.7.13' // already there
     nettyVersion = '4.2.18.Final'
     prometheusVersion = '1.17.1'
