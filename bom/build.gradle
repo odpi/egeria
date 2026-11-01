@@ -46,7 +46,7 @@ ext {
     nettyVersion = '4.2.18.Final'
     prometheusVersion = '1.17.1'
     jakartaServletVersion = '6.1.0'
-    snappyVersion = '1.1.10.8'
+    snappyVersion = '1.1.10.12'
 
     // This must be kept in step with the version of the springboot plugin in settings.gradle
     springbootVersion = '3.5.16'
