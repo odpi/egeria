@@ -32,12 +32,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --scan
       - name: Upload Test coverage report
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # tag=v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # tag=v7.0.2
         with:
           name: Jacoco Coverage Report
           path: build/reports/jacoco/codeCoverageReport
       - name: Upload Log of any dependency failures
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # tag=v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # tag=v7.0.2
         with:
           name: Dependency Analysis Report (on failure)
           path: build/reports/dependency-analysis/build-health-report.txt
