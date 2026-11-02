@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
@@ -19,6 +18,8 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetEl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 
 import java.util.*;
 
@@ -27,15 +28,16 @@ import java.util.*;
  */
 public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
 {
-    private String folderName = null;
-    private String folderGUID = null;
+    private String folderName  = null;
+    private String folderGUID  = null;
+    private String requestType = null;
 
     /**
-     * Indicates that the governance action service is completely configured and can begin processing.
+     * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the watchdog action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
@@ -43,50 +45,22 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     {
         final String methodName = "start";
 
-        super.validateContext(governanceContext);
+        super.start();
 
-        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
-
-        /*
-         * The folder name to listen to can come from multiple sources.  The configuration properties are set when the governance service is
-         * registered in open metadata.  They are override default values coded in the connector.
-         */
-        if (configurationProperties != null)
-        {
-            Object folderNameOption = configurationProperties.get(GenericFolderRequestParameter.FOLDER_NAME.getName());
-
-            if (folderNameOption != null)
-            {
-                folderName = folderNameOption.toString();
-            }
-        }
+        requestType = watchdogContext.getRequestType();
 
         /*
-         * Next the request parameters come either from the governance engine definition or the caller.
+         * The folder name to listen to can come from multiple sources.  The configuration properties are set when the
+         * watchdog action service is registered in open metadata.  The request parameters, which come either from the
+         * governance engine definition or the caller, override them.  The process names and interesting type name are
+         * processed in the super class start method.
          */
-        if (governanceContext.getRequestParameters() != null)
-        {
-            Map<String, String> requestParameters = governanceContext.getRequestParameters();
-
-            for (String requestParameterName : requestParameters.keySet())
-            {
-                if (requestParameterName != null)
-                {
-                    /*
-                     * The process names and interesting type name will be processed in the super class start method (see getProperty() method).
-                     */
-                    if (GenericFolderRequestParameter.FOLDER_NAME.getName().equals(requestParameterName))
-                    {
-                        folderName = requestParameters.get(requestParameterName);
-                    }
-                }
-            }
-        }
+        folderName = getProperty(GenericFolderRequestParameter.FOLDER_NAME.getName(), null);
 
         /*
          * Action targets are set up by a previous governance action running in a governance action process.
          */
-        List<ActionTargetElement> actionTargetElements = governanceContext.getActionTargetElements();
+        List<ActionTargetElement> actionTargetElements = watchdogContext.getActionTargetElements();
 
         if (actionTargetElements != null)
         {
@@ -106,7 +80,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         {
             try
             {
-                folderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, OpenMetadataProperty.PATH_NAME.name);
+                folderGUID = watchdogContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(folderName, OpenMetadataProperty.PATH_NAME.name);
 
                 if (folderGUID == null)
                 {
@@ -115,6 +89,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                                         methodName,
                                                         OpenMetadataProperty.PATH_NAME.name);
                 }
+            }
+            catch (InvalidParameterException error)
+            {
+                /*
+                 * There is nothing to watch, so the request is invalid rather than failed.
+                 */
+                completeMonitoring(WatchdogActionGuard.MONITORING_INVALID, error.getMessage());
+                return;
             }
             catch (OMFCheckedExceptionBase error)
             {
@@ -125,7 +107,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         /*
          * This registers the listener
          */
-        super.start("DataFile");
+        super.startMonitoring(OpenMetadataType.DATA_FILE.typeName);
     }
 
 
@@ -140,10 +122,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    void processEvent(OpenMetadataOutTopicEvent metadataElementEvent) throws GovernanceServiceException
+    @Override
+    public void processEvent(OpenMetadataOutTopicEvent metadataElementEvent) throws GovernanceServiceException
     {
-        final String methodName = "processEvent";
-
         if (! completed)
         {
             try
@@ -152,11 +133,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                 if ((matchFolderToFileName(metadataElementEvent.getElementProperties())) || (fileInFolder(fileGUID)))
                 {
-                    Map<String, String> requestParameters = governanceContext.getRequestParameters();
+                    /*
+                     * A copy because the parameters are added to below, and the context's map is shared by every event.
+                     */
+                    Map<String, String> requestParameters = new HashMap<>();
 
-                    if (requestParameters == null)
+                    if (watchdogContext.getRequestParameters() != null)
                     {
-                        requestParameters = new HashMap<>();
+                        requestParameters.putAll(watchdogContext.getRequestParameters());
                     }
 
                     List<NewActionTarget> actionTargets = new ArrayList<>();
@@ -177,7 +161,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     {
                         ElementProperties previousElementProperties = metadataElementEvent.getPreviousElementProperties();
 
-                        requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
+                        requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(previousElementProperties,
                                                                                        metadataElementEvent.getElementProperties()));
 
                         initiateProcess(updatedElementProcessName,
@@ -209,7 +193,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                 previousElementProperties = metadataElementEvent.getPreviousClassificationProperties();
                             }
 
-                            requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
+                            requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(previousElementProperties,
                                                                                            metadataElementEvent.getElementProperties()));
 
 
@@ -229,44 +213,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             }
             catch (Exception error)
             {
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
-
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(),
-                                                             outputGuards,
-                                                             null,
-                                                             null,
-                                                             error.getMessage());
-                }
-                catch (Exception completionError)
-                {
-                    logExceptionRecord(methodName,
-                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                completionError.getClass().getName(),
-                                                                                                                                completionError.getMessage()),
-                                       error);
-                }
-            }
-
-            if (completed)
-            {
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
-
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards);
-                }
-                catch (Exception error)
-                {
-                    logExceptionRecord(methodName,
-                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                error.getClass().getName(),
-                                                                                                                                error.getMessage()),
-                                       error);
-                }
+                completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
             }
         }
     }
@@ -290,7 +237,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             return true;
         }
 
-        String fullPathName = propertyHelper.getStringProperty(governanceServiceName,
+        String fullPathName = propertyHelper.getStringProperty(watchdogActionServiceName,
                                                                OpenMetadataProperty.PATH_NAME.name,
                                                                elementProperties,
                                                                methodName);
@@ -308,14 +255,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             return false;
         }
 
-        if (GenericFolderRequestType.NESTED_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
+        if (GenericFolderRequestType.NESTED_REQUEST_TYPE.getRequestType().equals(requestType))
         {
             /*
              * The file may be in any subdirectory under the monitored folder.
              */
             return true;
         }
-        else if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
+        else if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(requestType))
         {
             /*
              * Only looking for files directly in the requested folder. Note: this does not work with MS files.
@@ -346,7 +293,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         {
             String parentFolderGUID = getFolderGUID(fileGUID, OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName);
 
-            if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
+            if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(requestType))
             {
                 /*
                  * Only looking for files directly in the requested folder.
@@ -398,7 +345,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     {
         String folderGUID = null;
 
-        RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
+        RelatedMetadataElementList relatedMetadataElementList = watchdogContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                                                     2,
                                                                                                                                     relationshipName,
                                                                                                                                     0,
@@ -418,7 +365,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                 // ignore
             }
 
-            relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
+            relatedMetadataElementList = watchdogContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                              2,
                                                                                                              relationshipName,
                                                                                                              0,
@@ -437,23 +384,5 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
         }
 
         return folderGUID;
-    }
-
-
-    /**
-     * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
-     * If disconnect completes before the governance action service records
-     * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
-     * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
-     * be sure to call super.disconnect() in your version.
-     *
-     * @throws ConnectorCheckedException a problem within the governance action service.
-     */
-    @Override
-    public  void disconnect() throws ConnectorCheckedException
-    {
-        super.disconnect();
     }
 }

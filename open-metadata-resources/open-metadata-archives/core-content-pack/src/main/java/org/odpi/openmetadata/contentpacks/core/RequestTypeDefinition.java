@@ -42,7 +42,7 @@ public enum RequestTypeDefinition
                         "watch-nested-in-folder",
                         null,
                         null,
-                        GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
+                        GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
                         GovernanceServiceDefinition.NEW_FILES_WATCHDOG,
                         "69bead73-b5b7-4791-9293-c660990ec7bf",
                         GovernanceDomain.UNCLASSIFIED.getOrdinal(),
@@ -55,6 +55,42 @@ public enum RequestTypeDefinition
                         true,
                         ContentCollectionDefinition.WATCHDOG_ACTIONS,
                         ContentPackDefinition.FILES_CONTENT_PACK),
+
+    /**
+     * watch-for-element-change
+     */
+    WATCH_FOR_ELEMENT_CHANGE("watch-for-element-change",
+                             "process-single-event",
+                             null,
+                             null,
+                             GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                             GovernanceServiceDefinition.ELEMENT_WATCHDOG,
+                             "2199b5d6-15ac-4471-9bd1-f5fb26e7b8e3",
+                             GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                             null,
+                             "82357596-3575-4b0e-aa97-ef1ea6556711",
+                             "Watch for an Element Change",
+                             "Waits for a single change to the requested open metadata elements, initiates the governance action process configured for that type of change, and then completes.",
+                             ContentCollectionDefinition.WATCHDOG_ACTIONS,
+                             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * watch-for-element-changes
+     */
+    WATCH_FOR_ELEMENT_CHANGES("watch-for-element-changes",
+                              "process-multiple-events",
+                              null,
+                              null,
+                              GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                              GovernanceServiceDefinition.ELEMENT_WATCHDOG,
+                              "bce1ce35-966a-47e7-85f6-3abaec77fd5d",
+                              GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                              null,
+                              "405effd0-bc91-4db3-b8c2-fcaa1163566c",
+                              "Watch for Element Changes",
+                              "Continuously monitors changes to the requested open metadata elements and initiates the governance action process configured for each type of change.",
+                              ContentCollectionDefinition.WATCHDOG_ACTIONS,
+                              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * copy-file

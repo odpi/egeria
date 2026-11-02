@@ -197,6 +197,11 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
         if (watchdogContext != null)
         {
+            /*
+             * Without this, the listener stays registered with the engine's event manager after the
+             * service has finished, and goes on receiving events for a service that is no longer running.
+             */
+            watchdogContext.disconnectListener();
             watchdogContext.disconnect();
         }
 

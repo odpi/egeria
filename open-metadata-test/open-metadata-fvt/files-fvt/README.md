@@ -39,14 +39,14 @@ Four servers on one in-process platform, and — in the default mode — a real 
 | Server | What it is | What it runs |
 | --- | --- | --- |
 | `filesFvtMetadataStore` | Metadata access store | PostgreSQL local repository; `OpenMetadataTypes`, `CoreContentPack` and `FilesContentPack` loaded at start-up |
-| `filesFvtEngineHost` | Engine host | `FileSurvey`, `FileGovernance` and `Stewardship` governance engines |
+| `filesFvtEngineHost` | Engine host | `FileSurvey`, `FileGovernance` and `Stewardship` governance engines and the `EgeriaWatchdog` watchdog action engine |
 | `filesFvtIntegrationDaemon` | Integration daemon | `FilesIntegrationGroup`, where the folder cataloguers run |
 | `filesFvtViewServer` | View server | Automated Curation and Governance Engine OMVSs |
 
 Only three archives are loaded. The Core content pack is needed because the Files actions call its generic
 governance services — create an asset from a template, delete it again, add it to an integration connector as
 a catalog target — and because the survey processes end by writing their report out as markdown on the Core
-pack's **Stewardship** engine. Nothing else is loaded: the other content packs would add load time and a large
+pack's **Stewardship** engine. The new-file watchdog runs in the Core pack's **EgeriaWatchdog** engine. Nothing else is loaded: the other content packs would add load time and a large
 amount of unrelated metadata for the suite's searches to work around.
 
 ## The directory tree under test
@@ -131,7 +131,7 @@ type would not exercise that choice at all.
   `watch-for-new-files-in-folder` on a folder and checks it is running. **This is a narrower claim than the
   other tests make.** A watchdog does not complete: it starts, registers its interest, and stays running, so
   waiting for a terminal status would time out on one that is working perfectly. What is asserted is that it
-  started and stayed started — which catches the failure this connector family has shown repeatedly, a
+  was claimed by the EgeriaWatchdog engine and stayed `IN_PROGRESS` — which catches the failure this connector family has shown repeatedly, a
   service that throws on start-up and so never watches anything. It does *not* show that the watchdog reacts
   to a new file; see below.
 

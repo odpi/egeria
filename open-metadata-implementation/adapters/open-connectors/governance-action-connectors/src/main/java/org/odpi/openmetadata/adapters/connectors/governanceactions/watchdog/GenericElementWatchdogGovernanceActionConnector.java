@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
-import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
@@ -12,6 +11,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,25 +21,28 @@ import java.util.Map;
 
 
 /**
- * MonitorForNewAssetGovernanceActionConnector is a Watchdog Governance Action Service that listens for new or refreshed Assets
- * and kicks off a governance action process to validate that this Asset is correctly set up.
- * It is designed to run continuously and so does not set up completion status or guards.  This means its
- * Governance Action entity is never completed and this service is restarted each time the hosting engine is restarted.
+ * GenericElementWatchdogGovernanceActionConnector is a Watchdog Action Service that listens for changes to
+ * open metadata elements and relationships and kicks off a governance action process for each one.
+ * With the process-multiple-events request type it runs continuously and does not set up its completion status.
+ * This means its engine action is never completed and this service is restarted each time the hosting engine is restarted.
+ * With the process-single-event request type it completes once the first matching event is processed.
  */
 public class GenericElementWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
 {
     /**
-     * Indicates that the governance action service is completely configured and can begin processing.
+     * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
-     * @throws ConnectorCheckedException a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the watchdog action service.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        super.start(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
+        super.start();
+
+        super.startMonitoring(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
     }
 
 
@@ -53,10 +57,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
-    void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
+    @Override
+    public void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
     {
-        final String methodName = "processEvent";
-
         if (! completed)
         {
             try
@@ -84,7 +87,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
                         {
-                            requestParameters.put(GenericElementRequestParameter.CHANGED_PROPERTIES.getName(),
+                            requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(),
                                                   this.diffProperties(event.getPreviousElementProperties(),
                                                                       event.getElementProperties()));
 
@@ -110,7 +113,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                             }
                             else if (event.getEventType() == OpenMetadataEventType.ELEMENT_RECLASSIFIED)
                             {
-                                requestParameters.put("ChangedProperties", this.diffProperties(event.getPreviousClassificationProperties(),
+                                requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(event.getPreviousClassificationProperties(),
                                                                                                event.getClassificationProperties()));
 
                                 initiateProcess(reclassifiedElementProcessName,
@@ -126,7 +129,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                             }
                         }
 
-                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
+                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(watchdogContext.getRequestType()))
                         {
                             completed = true;
                         }
@@ -168,7 +171,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
                         {
-                            requestParameters.put("ChangedProperties", this.diffProperties(event.getPreviousElementProperties(),
+                            requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(event.getPreviousElementProperties(),
                                                                                            event.getElementProperties()));
 
                             initiateProcess(updatedRelationshipProcessName,
@@ -182,7 +185,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                             actionTargets);
                         }
 
-                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
+                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(watchdogContext.getRequestType()))
                         {
                             completed = true;
 
@@ -192,59 +195,14 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
             }
             catch (Exception error)
             {
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
-
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards, null, null, error.getMessage());
-                }
-                catch (Exception completionError)
-                {
-                    logExceptionRecord(methodName,
-                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                completionError.getClass().getName(),
-                                                                                                                                completionError.getMessage()),
-                                       error);
-                }
+                completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
+                return;
             }
 
             if (completed)
             {
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
-
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards);
-                }
-                catch (Exception error)
-                {
-                    logExceptionRecord(methodName,
-                                       GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                                error.getClass().getName(),
-                                                                                                                                error.getMessage()),
-                                       error);
-                }
+                completeMonitoring(WatchdogActionGuard.MONITORING_COMPLETED, null);
             }
         }
-    }
-
-
-    /**
-     * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
-     * If disconnect completes before the governance action service records
-     * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
-     * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
-     * be sure to call super.disconnect() in your version.
-     *
-     * @throws ConnectorCheckedException a problem within the governance action service.
-     */
-    @Override
-    public  void disconnect() throws ConnectorCheckedException
-    {
-        super.disconnect();
     }
 }

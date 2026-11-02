@@ -48,8 +48,9 @@ public class WatchdogContext extends ConnectorContextBase
     private final String                    requesterUserId;
     private final AuditLog                  auditLog;
 
-    private final NotificationHandler notificationHandler;
-    private final MessageFormatter    messageFormatter = new MessageFormatter();
+    private final NotificationHandler  notificationHandler;
+    private final OpenGovernanceClient openGovernanceClient;
+    private final MessageFormatter     messageFormatter = new MessageFormatter();
 
 
     private final WatchdogEventInterface        watchdogEventClient;
@@ -129,6 +130,7 @@ public class WatchdogContext extends ConnectorContextBase
               deleteMethod);
 
         this.notificationHandler        = new NotificationHandler(localServerName, auditLog, localServiceName, openMetadataClient, openGovernanceClient);
+        this.openGovernanceClient       = openGovernanceClient;
         this.governanceCompletionClient = governanceCompletionClient;
         this.watchdogEventClient        = watchdogEventClient;
         this.engineActionGUID           = engineActionGUID;
@@ -267,7 +269,13 @@ public class WatchdogContext extends ConnectorContextBase
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
     {
-        watchdogEventClient.registerListener(connectorName, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        /*
+         * The listener is keyed by the connector instance (the engine action) rather than the service name.
+         * Two engine actions running the same watchdog service - two folders watched by the same service,
+         * say - share the service name, and keying by it meant the second registration silently replaced
+         * the first.
+         */
+        watchdogEventClient.registerListener(connectorInstanceId, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
@@ -276,7 +284,53 @@ public class WatchdogContext extends ConnectorContextBase
      */
     public void disconnectListener()
     {
-        watchdogEventClient.disconnectListener(connectorName);
+        watchdogEventClient.disconnectListener(connectorInstanceId);
+    }
+
+
+    /**
+     * Using the named governance action process as a template, initiate a chain of governance actions.
+     * This is how a watchdog action service hands the work prompted by an event on to the governance
+     * action processes that deal with it.
+     *
+     * @param processQualifiedName unique name of the governance action process to use
+     * @param requestParameters request parameters to pass to the governance actions called in the governance action process
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
+     * @param startTime future start time or null for "as soon as possible".
+     * @param iscQualifiedName unique name of an information supply chain
+     *
+     * @return unique identifier of the governance action process instance
+     *
+     * @throws InvalidParameterException null or unrecognized qualified name of the process
+     * @throws UserNotAuthorizedException this watchdog action service is not authorized to create a governance action process
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    public String initiateGovernanceActionProcess(String                processQualifiedName,
+                                                  Map<String, String>   requestParameters,
+                                                  List<String>          actionSourceGUIDs,
+                                                  List<String>          actionCauseGUIDs,
+                                                  List<NewActionTarget> actionTargets,
+                                                  Date                  startTime,
+                                                  String                iscQualifiedName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName = "initiateGovernanceActionProcess";
+
+        validateIsActive(methodName);
+
+        return openGovernanceClient.initiateGovernanceActionProcess(connectorUserId,
+                                                                    processQualifiedName,
+                                                                    actionSourceGUIDs,
+                                                                    actionCauseGUIDs,
+                                                                    actionTargets,
+                                                                    startTime,
+                                                                    requestParameters,
+                                                                    watchdogActionServiceName,
+                                                                    null,
+                                                                    iscQualifiedName);
     }
 
 

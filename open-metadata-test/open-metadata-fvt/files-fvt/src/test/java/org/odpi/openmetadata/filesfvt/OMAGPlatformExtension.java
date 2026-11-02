@@ -47,7 +47,8 @@ import java.util.Map;
  *     the open metadata types and the Core and Files content packs loaded, and its access services
  *     publishing to a real Apache Kafka broker.</li>
  *     <li><b>{@value #ENGINE_HOST_NAME}</b> - an engine host running the two governance engines the
- *     Files content pack defines: {@code FileSurvey} and {@code FileGovernance}.</li>
+ *     Files content pack defines: {@code FileSurvey} and {@code FileGovernance}, plus the Core content pack's
+ *     {@code Stewardship} and {@code EgeriaWatchdog} engines that the Files content pack's actions rely on.</li>
  *     <li><b>{@value #INTEGRATION_DAEMON_NAME}</b> - an integration daemon running the content pack's
  *     {@code FilesIntegrationGroup}, which is where the folder cataloguers live.</li>
  *     <li><b>{@value #VIEW_SERVER_NAME}</b> - a view server running the Automated Curation OMVS, the API a
@@ -143,6 +144,10 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      * step is addressed to the Stewardship engine.  Without it the earlier steps would run, the survey report
      * would be produced, and the process would then sit at its last step for ever - which reads exactly like
      * a broken survey.
+     * <br>
+     * The EgeriaWatchdog engine, also from the Core content pack, is there because the Files content pack's
+     * watch-for-new-files-in-folder request type runs the folder watchdog in it.  Without it the watchdog's
+     * engine action waits for ever for an engine host that never claims it.
      */
     static final IntegrationGroupDefinition INTEGRATION_GROUP = IntegrationGroupDefinition.FILES;
 
@@ -161,7 +166,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
     static final List<GovernanceEngineDefinition> GOVERNANCE_ENGINES = List.of(GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                                                                                GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
-                                                                               GovernanceEngineDefinition.STEWARDSHIP_ENGINE);
+                                                                               GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                                                                               GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE);
 
     private static volatile boolean               started = false;
     private static volatile Exception             startupFailure;

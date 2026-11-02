@@ -4,13 +4,14 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
-import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceProvider;
 
 
 /**
- * GenericWatchdogGovernanceActionProvider is the OCF connector provider for the Generic WatchDog Governance Action Service.
- * This is a WatchDog Governance Action Service.
+ * GenericWatchdogGovernanceActionProvider is the base class for the OCF connector providers of the generic watchdog
+ * action services.  The WatchdogActionServiceProvider sets up the standard watchdog request parameters, guards and
+ * action targets.
  */
-public abstract class GenericWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public abstract class GenericWatchdogGovernanceActionProvider extends WatchdogActionServiceProvider
 {
 }

@@ -5,22 +5,26 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
-import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListener;
+import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarget;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 
 import java.util.*;
 
 /**
  * GenericWatchdogGovernanceActionConnector provides a base class for generic watchdog functions.
+ * It runs as a watchdog action service in a watchdog action engine, such as EgeriaWatchdog.
  */
-public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGovernanceActionService
+public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogActionServiceConnector
 {
     List<String> instancesToListenTo = new ArrayList<>();
 
@@ -39,42 +43,66 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
     volatile boolean completed = false;
 
 
+    /**
+     * Retrieve a property value from the request parameters, falling back to the configuration properties
+     * of the connection and then the default value.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue value to use if the property is not set
+     * @return property value
+     * @throws UserNotAuthorizedException the connector was disconnected
+     */
+    protected String getProperty(String propertyName, String defaultValue) throws UserNotAuthorizedException
+    {
+        Map<String, String> requestParameters       = watchdogContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            return requestParameters.get(propertyName);
+        }
+
+        if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+        {
+            return configurationProperties.get(propertyName).toString();
+        }
+
+        return defaultValue;
+    }
+
 
     /**
-     * Indicates that the governance action service is completely configured and can begin processing.
-     * This is a standard method from the Open Connector Framework (OCF) so
-     * be sure to call super.start() at the start of your overriding version.
+     * Called from the subclass's start() method, after super.start(), to register the listener.  The service
+     * then runs until it records its completion status, or it is stopped by an administrator or the
+     * hosting server shutting down.
      *
+     * @param defaultTypeName type of element to monitor if the interestingTypeName property is not set
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
-     * @throws ConnectorCheckedException a problem within the governance action service.
+     * @throws ConnectorCheckedException a problem within the watchdog action service.
      */
-    void start(String defaultTypeName) throws ConnectorCheckedException, UserNotAuthorizedException
+    void startMonitoring(String defaultTypeName) throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        super.start();
-
-        final String methodName = "start";
-
-        GenericWatchdogListener listener = new GenericWatchdogListener(this);
+        final String methodName = "startMonitoring";
 
         /*
-         * Work out what type of asset to listen for.
+         * Work out what type of element to listen for.
          */
-        String interestingTypeName = getProperty(GenericElementRequestParameter.INTERESTING_TYPE_NAME.getName(), defaultTypeName);
-        String instanceToListenTo = getProperty(GenericElementRequestParameter.INSTANCE_TO_MONITOR.getName(), null);
+        String interestingTypeName = getProperty(WatchdogRequestParameter.INTERESTING_TYPE_NAME.getName(), defaultTypeName);
+        String instanceToListenTo = getProperty(WatchdogRequestParameter.INSTANCE_TO_MONITOR.getName(), null);
 
         if (instanceToListenTo != null)
         {
             instancesToListenTo.add(instanceToListenTo);
         }
 
-        List<ActionTargetElement> actionTargetElements = governanceContext.getActionTargetElements();
+        List<ActionTargetElement> actionTargetElements = watchdogContext.getActionTargetElements();
         if (actionTargetElements != null)
         {
             for (ActionTargetElement actionTargetElement : actionTargetElements)
             {
                 if (actionTargetElement != null)
                 {
-                    if (GenericElementRequestParameter.INSTANCE_TO_MONITOR.getName().equals(actionTargetElement.getActionTargetName()))
+                    if (WatchdogActionTarget.INSTANCE_TO_MONITOR.getName().equals(actionTargetElement.getActionTargetName()))
                     {
                         instancesToListenTo.add(actionTargetElement.getActionTargetGUID());
                     }
@@ -82,17 +110,17 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
             }
         }
 
-        actionTargetName = getProperty(GenericElementRequestParameter.ACTION_TARGET_NAME.getName(), "receivedElement");
-        actionTargetTwoName = getProperty(GenericElementRequestParameter.ACTION_TARGET_TWO_NAME.getName(), "receivedElementTwo");
-        newElementProcessName = getProperty(GenericElementRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName(), null);
-        updatedElementProcessName = getProperty(GenericElementRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName(), null);
-        deletedElementProcessName = getProperty(GenericElementRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName(), null);
-        classifiedElementProcessName = getProperty(GenericElementRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
-        reclassifiedElementProcessName = getProperty(GenericElementRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
-        declassifiedElementProcessName = getProperty(GenericElementRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
-        newRelationshipProcessName = getProperty(GenericElementRequestParameter.NEW_RELATIONSHIP_PROCESS_NAME.getName(), null);
-        updatedRelationshipProcessName = getProperty(GenericElementRequestParameter.UPDATED_RELATIONSHIP_PROCESS_NAME.getName(), null);
-        deletedRelationshipProcessName = getProperty(GenericElementRequestParameter.DELETED_RELATIONSHIP_PROCESS_NAME.getName(), null);
+        actionTargetName = getProperty(WatchdogRequestParameter.ACTION_TARGET_NAME.getName(), "receivedElement");
+        actionTargetTwoName = getProperty(WatchdogRequestParameter.ACTION_TARGET_TWO_NAME.getName(), "receivedElementTwo");
+        newElementProcessName = getProperty(WatchdogRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName(), null);
+        updatedElementProcessName = getProperty(WatchdogRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName(), null);
+        deletedElementProcessName = getProperty(WatchdogRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName(), null);
+        classifiedElementProcessName = getProperty(WatchdogRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        reclassifiedElementProcessName = getProperty(WatchdogRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        declassifiedElementProcessName = getProperty(WatchdogRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        newRelationshipProcessName = getProperty(WatchdogRequestParameter.NEW_RELATIONSHIP_PROCESS_NAME.getName(), null);
+        updatedRelationshipProcessName = getProperty(WatchdogRequestParameter.UPDATED_RELATIONSHIP_PROCESS_NAME.getName(), null);
+        deletedRelationshipProcessName = getProperty(WatchdogRequestParameter.DELETED_RELATIONSHIP_PROCESS_NAME.getName(), null);
 
         try
         {
@@ -143,21 +171,23 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
 
             interestingMetadataTypes.add(interestingTypeName);
 
+            GenericWatchdogActionListener listener = new GenericWatchdogActionListener(this);
+
             if (instancesToListenTo.isEmpty())
             {
                 instancesToListenTo = null;
 
-                governanceContext.registerListener(listener,
-                                                   interestingEventTypes,
-                                                   interestingMetadataTypes,
-                                                   null);
+                watchdogContext.registerListener(listener,
+                                                 interestingEventTypes,
+                                                 interestingMetadataTypes,
+                                                 null);
             }
             else if (instancesToListenTo.size() == 1)
             {
-                governanceContext.registerListener(listener,
-                                                   interestingEventTypes,
-                                                   interestingMetadataTypes,
-                                                   instancesToListenTo.get(0));
+                watchdogContext.registerListener(listener,
+                                                 interestingEventTypes,
+                                                 interestingMetadataTypes,
+                                                 instancesToListenTo.get(0));
 
                 instancesToListenTo = null;
             }
@@ -166,37 +196,23 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
                 /*
                  * Will need to filter manually in the listener
                  */
-                governanceContext.registerListener(listener,
-                                                   interestingEventTypes,
-                                                   interestingMetadataTypes,
-                                                   null);
+                watchdogContext.registerListener(listener,
+                                                 interestingEventTypes,
+                                                 interestingMetadataTypes,
+                                                 null);
             }
         }
         catch (Exception error)
         {
-            try
-            {
-                List<String> outputGuards = new ArrayList<>();
-
-                outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
-                governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards);
-            }
-            catch (Exception nestedError)
-            {
-                logExceptionRecord(methodName,
-                                   GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(governanceServiceName,
-                                                                                                                            nestedError.getClass().getName(),
-                                                                                                                            nestedError.getMessage()),
-                                   nestedError);
-            }
-
             logExceptionRecord(methodName,
-                               GovernanceActionConnectorsAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(governanceServiceName,
+                               GovernanceActionConnectorsAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
                                                                                                                     error.getClass().getName(),
                                                                                                                     error.getMessage()),
                                error);
 
-            throw new GovernanceServiceException(GovernanceActionConnectorsErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(governanceServiceName,
+            completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
+
+            throw new GovernanceServiceException(GovernanceActionConnectorsErrorCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(watchdogActionServiceName,
                                                                                                                                       error.getClass().getName(),
                                                                                                                                       error.getMessage()),
                                                  error.getClass().getName(),
@@ -207,17 +223,38 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
 
 
     /**
-     * This method is called each time a potentially new asset is received.  It triggers a governance action process to validate and
-     * enrich the asset as required.
+     * Record that the monitoring is over and stop listening for events.  Once complete, any further
+     * events that were already queued are ignored.
      *
-     * @param event event containing details of a change to an open metadata element.
-     *
-     * @throws GovernanceServiceException reports that the event can not be processed (this is logged but
-     *                                    no other action is taken).  The listener will continue to be
-     *                                    called until the watchdog governance action service declares it is complete
-     *                                    or administrator action shuts down the service.
+     * @param guard guard that describes the outcome
+     * @param completionMessage optional message describing the outcome
      */
-    abstract void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException;
+    protected void completeMonitoring(WatchdogActionGuard guard,
+                                      String              completionMessage)
+    {
+        final String methodName = "completeMonitoring";
+
+        completed = true;
+
+        try
+        {
+            watchdogContext.recordCompletionStatus(guard.getCompletionStatus(),
+                                                   Collections.singletonList(guard.getName()),
+                                                   null,
+                                                   null,
+                                                   completionMessage);
+        }
+        catch (Exception error)
+        {
+            logExceptionRecord(methodName,
+                               GovernanceActionConnectorsAuditCode.UNABLE_TO_SET_COMPLETION_STATUS.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                        error.getClass().getName(),
+                                                                                                                        error.getMessage()),
+                               error);
+        }
+
+        watchdogContext.disconnectListener();
+    }
 
 
     /**
@@ -344,7 +381,6 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
     {
         final String methodName = "initiateProcess";
 
-
         if (processName != null)
         {
             String requestParametersString = "<null>";
@@ -362,69 +398,32 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
             try
             {
                 logRecord(methodName,
-                          GovernanceActionConnectorsAuditCode.INITIATE_PROCESS.getMessageDefinition(governanceServiceName,
+                          GovernanceActionConnectorsAuditCode.INITIATE_PROCESS.getMessageDefinition(watchdogActionServiceName,
                                                                                                     processName,
                                                                                                     requestParametersString,
                                                                                                     actionTargetsString));
 
-                governanceContext.initiateGovernanceActionProcess(processName,
-                                                                  requestParameters,
-                                                                  null,
-                                                                  null,
-                                                                  actionTargets,
-                                                                  null,
-                                                                  null);
+                watchdogContext.initiateGovernanceActionProcess(processName,
+                                                                requestParameters,
+                                                                null,
+                                                                null,
+                                                                actionTargets,
+                                                                null,
+                                                                null);
             }
-            catch (OMFCheckedExceptionBase nestedError)
+            catch (OMFCheckedExceptionBase error)
             {
                 logExceptionRecord(methodName,
-                                   GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                       nestedError.getClass().getName(),
+                                   GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                       error.getClass().getName(),
                                                                                                                        processName,
                                                                                                                        requestParametersString,
                                                                                                                        actionTargetsString,
-                                                                                                                       nestedError.getMessage()),
-                                   nestedError);
+                                                                                                                       error.getMessage()),
+                                   error);
 
-                try
-                {
-                    List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
-
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards);
-                }
-                catch (Exception contextError)
-                {
-                    logExceptionRecord(methodName,
-                                       GovernanceActionConnectorsAuditCode.INITIATE_PROCESS_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                           contextError.getClass().getName(),
-                                                                                                                           processName,
-                                                                                                                           requestParametersString,
-                                                                                                                           actionTargetsString,
-                                                                                                                           contextError.getMessage()),
-                                       contextError);
-                }
-
-                throw new GovernanceServiceException(nestedError.getMessage(), nestedError);
+                throw new GovernanceServiceException(error.getMessage(), error);
             }
         }
-    }
-
-
-    /**
-     * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
-     * If disconnect completes before the governance action service records
-     * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
-     * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
-     * be sure to call super.disconnect() in your version.
-     *
-     * @throws ConnectorCheckedException a problem within the governance action service.
-     */
-    @Override
-    public  void disconnect() throws ConnectorCheckedException
-    {
-        super.disconnect();
     }
 }

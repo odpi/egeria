@@ -10,28 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * GenericFolderRequestParameter provides some standard definitions for request parameters used to pass properties
- * to governance actions when they run.  Using standard names for request parameters wherever necessary
- * helps to simplify the integration of governance services.
+ * GenericFolderRequestParameter defines the request parameters that are specific to the generic folder watchdog.
+ * It also supports the standard watchdog request parameters defined in WatchdogRequestParameter.
  */
 public enum GenericFolderRequestParameter
 {
-    INSTANCE_TO_MONITOR                  ("instanceToMonitor", "Requests that the governance action service monitors a single metadata instance.", "", ""),
-    INTERESTING_TYPE_NAME                ("interestingTypeName", "Defines the type of element that this monitor is focused on.", "", ""),
-    ACTION_TARGET_NAME                   ("actionTargetName", "Override the action target name used for the element that has been created, updated or deleted.  Default is 'receivedElement'.", "", ""),
-    ACTION_TARGET_TWO_NAME               ("actionTargetNameTwo", "Override the action target name used for the related element to the one that has been created, updated or deleted.  Default is 'receivedElementTwo'.", "", ""),
-    NEW_ELEMENT_PROCESS_NAME             ("newElementProcessName", "Qualified name of the process to run each time a new element event is detected.", "", ""),
-    UPDATED_ELEMENT_PROCESS_NAME         ("updatedElementProcessName", "Qualified name of the process to run each time an update element event is detected.", "", ""),
-    DELETED_ELEMENT_PROCESS_NAME         ("deletedElementProcessName", "Qualified name of the process to run each time a delete element event is detected.", "", ""),
-    CLASSIFIED_ELEMENT_PROCESS_NAME      ("classifiedElementProcessName", "Qualified name of the process to run each time a classified element event is detected.", "", ""),
-    RECLASSIFIED_ELEMENT_PROCESS_NAME    ("reclassifiedElementProcessName", "Qualified name of the process to run each time a reclassified element event is detected.", "", ""),
-    DECLASSIFIED_ELEMENT_PROCESS_NAME    ("declassifiedElementProcessName", "Qualified name of the process to run each time a declassified element event is detected.", "", ""),
-    NEW_RELATIONSHIP_PROCESS_NAME        ("newRelationshipProcessName", "Qualified name of the process to run each time a new relationship event is detected.", "", ""),
-    UPDATED_RELATIONSHIP_PROCESS_NAME    ("updatedRelationshipProcessName", "Qualified name of the process to run each time an updated relationship event is detected.", "", ""),
-    DELETED_RELATIONSHIP_PROCESS_NAME    ("deletedRelationshipProcessName", "Qualified name of the process to run each time a deleted relationship event is detected.", "", ""),
-    CHANGED_NAMES                        ("ChangedProperties", "A common separated list of property names that have changed values that are added to the request properties.", "", ""),
-    FOLDER_NAME                          ("watchedFolderName","The path name of the folder asset to watch.", "", ""),
-    FOLDER_TARGET_PROPERTY               ("watchedFolder", "This action target identifies the folder asset to watch.", "", ""),
+    FOLDER_NAME("watchedFolderName", "The path name of the folder asset to watch.", "string", "/landing-area/hospitals/hampton"),
     ;
 
     public final String           name;
