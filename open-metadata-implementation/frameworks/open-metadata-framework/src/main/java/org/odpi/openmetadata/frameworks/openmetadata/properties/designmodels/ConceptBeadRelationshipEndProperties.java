@@ -25,12 +25,12 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
 {
     private String                 attributeName  = null;
     private RelationshipDecoration decoration     = null;
-    private int                    position       = 0;
-    private int                    minCardinality = 0;
-    private int                    maxCardinality = 0;
-    private boolean                uniqueValues   = false;
-    private boolean                orderedValues  = false;
-    private boolean                navigable      = true;
+    private Integer                position       = null;
+    private Integer                minCardinality = null;
+    private Integer                maxCardinality = null;
+    private Boolean                uniqueValues   = null;
+    private Boolean                orderedValues  = null;
+    private Boolean                navigable      = null;
 
 
     /**
@@ -71,7 +71,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return int position in schema - 0 means none or N/A
      */
-    public int getPosition() { return position; }
+    public Integer getPosition() { return position; }
 
 
     /**
@@ -79,7 +79,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param position int position in schema - 0 means first
      */
-    public void setPosition(int position)
+    public void setPosition(Integer position)
     {
         this.position = position;
     }
@@ -134,7 +134,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return int
      */
-    public int getMinCardinality()
+    public Integer getMinCardinality()
     {
         return minCardinality;
     }
@@ -145,7 +145,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param minCardinality int
      */
-    public void setMinCardinality(int minCardinality)
+    public void setMinCardinality(Integer minCardinality)
     {
         this.minCardinality = minCardinality;
     }
@@ -156,7 +156,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return int (-1 means infinite)
      */
-    public int getMaxCardinality()
+    public Integer getMaxCardinality()
     {
         return maxCardinality;
     }
@@ -167,7 +167,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param maxCardinality int (-1 means infinite)
      */
-    public void setMaxCardinality(int maxCardinality)
+    public void setMaxCardinality(Integer maxCardinality)
     {
         this.maxCardinality = maxCardinality;
     }
@@ -178,7 +178,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return boolean
      */
-    public boolean getUniqueValues()
+    public Boolean getUniqueValues()
     {
         return uniqueValues;
     }
@@ -189,7 +189,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param flag boolean
      */
-    public void setUniqueValues(boolean flag)
+    public void setUniqueValues(Boolean flag)
     {
         this.uniqueValues = flag;
     }
@@ -200,7 +200,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return boolean
      */
-    public boolean getOrderedValues() { return orderedValues; }
+    public Boolean getOrderedValues() { return orderedValues; }
 
 
     /**
@@ -208,7 +208,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param orderedValues boolean
      */
-    public void setOrderedValues(boolean orderedValues)
+    public void setOrderedValues(Boolean orderedValues)
     {
         this.orderedValues = orderedValues;
     }
@@ -219,7 +219,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @param navigable boolean
      */
-    public void setNavigable(boolean navigable)
+    public void setNavigable(Boolean navigable)
     {
         this.navigable = navigable;
     }
@@ -230,7 +230,7 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
      *
      * @return boolean
      */
-    public boolean getNavigable()
+    public Boolean getNavigable()
     {
         return navigable;
     }
@@ -269,12 +269,12 @@ public class ConceptBeadRelationshipEndProperties extends RelationshipBeanProper
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ConceptBeadRelationshipEndProperties that = (ConceptBeadRelationshipEndProperties) objectToCompare;
-        return position == that.position &&
-                minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
-                orderedValues == that.orderedValues &&
-                uniqueValues == that.uniqueValues &&
-                navigable == that.navigable &&
+        return Objects.equals(position, that.position) &&
+                Objects.equals(minCardinality, that.minCardinality) &&
+                Objects.equals(maxCardinality, that.maxCardinality) &&
+                Objects.equals(orderedValues, that.orderedValues) &&
+                Objects.equals(uniqueValues, that.uniqueValues) &&
+                Objects.equals(navigable, that.navigable) &&
                 Objects.equals(attributeName, that.attributeName) &&
                 Objects.equals(decoration, that.decoration);
     }

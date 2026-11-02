@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class APIParameterListProperties extends ComplexSchemaTypeProperties
 {
-    private boolean required = true;
+    private Boolean required = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class APIParameterListProperties extends ComplexSchemaTypeProperties
      *
      * @return boolean flag
      */
-    public boolean getRequired()
+    public Boolean getRequired()
     {
         return required;
     }
@@ -66,7 +66,7 @@ public class APIParameterListProperties extends ComplexSchemaTypeProperties
      *
      * @param required boolean flag
      */
-    public void setRequired(boolean required)
+    public void setRequired(Boolean required)
     {
         this.required = required;
     }

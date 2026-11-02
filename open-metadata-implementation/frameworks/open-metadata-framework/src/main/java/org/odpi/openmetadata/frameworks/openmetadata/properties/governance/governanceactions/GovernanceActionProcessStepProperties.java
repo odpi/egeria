@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessStepProperties extends GovernanceActionTypeProperties
 {
-    private boolean ignoreMultipleTriggers = false;
+    private Boolean ignoreMultipleTriggers = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class GovernanceActionProcessStepProperties extends GovernanceActionTypeP
      *
      * @return boolean flag
      */
-    public boolean getIgnoreMultipleTriggers()
+    public Boolean getIgnoreMultipleTriggers()
     {
         return ignoreMultipleTriggers;
     }
@@ -66,7 +66,7 @@ public class GovernanceActionProcessStepProperties extends GovernanceActionTypeP
      *
      * @param ignoreMultipleTriggers boolean flag
      */
-    public void setIgnoreMultipleTriggers(boolean ignoreMultipleTriggers)
+    public void setIgnoreMultipleTriggers(Boolean ignoreMultipleTriggers)
     {
         this.ignoreMultipleTriggers = ignoreMultipleTriggers;
     }
@@ -108,7 +108,7 @@ public class GovernanceActionProcessStepProperties extends GovernanceActionTypeP
             return false;
         }
         GovernanceActionProcessStepProperties that = (GovernanceActionProcessStepProperties) objectToCompare;
-        return ignoreMultipleTriggers == that.ignoreMultipleTriggers ;
+        return Objects.equals(ignoreMultipleTriggers, that.ignoreMultipleTriggers) ;
     }
 
 

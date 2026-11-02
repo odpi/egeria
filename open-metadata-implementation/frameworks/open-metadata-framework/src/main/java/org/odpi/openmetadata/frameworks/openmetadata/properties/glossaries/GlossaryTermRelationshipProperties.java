@@ -35,7 +35,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GlossaryTermRelationshipProperties extends RelationshipBeanProperties
 {
     private String                 expression  = null;
-    private int                    confidence  = 0;
+    private Integer                confidence  = null;
     private String                 description            = null;
     private TermRelationshipStatus termRelationshipStatus = null;
     private String                 steward                = null;
@@ -123,7 +123,7 @@ public class GlossaryTermRelationshipProperties extends RelationshipBeanProperti
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -135,7 +135,7 @@ public class GlossaryTermRelationshipProperties extends RelationshipBeanProperti
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -248,7 +248,7 @@ public class GlossaryTermRelationshipProperties extends RelationshipBeanProperti
             return false;
         }
         GlossaryTermRelationshipProperties that = (GlossaryTermRelationshipProperties) objectToCompare;
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                        Objects.equals(expression, that.expression) &&
                        Objects.equals(description, that.description) && termRelationshipStatus == that.termRelationshipStatus &&
                        Objects.equals(steward, that.steward) && Objects.equals(source, that.source);

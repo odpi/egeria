@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecretsCollectionProperties extends DataSetProperties
 {
-    private long refreshTimeInterval = 0;
+    private Long refreshTimeInterval = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class SecretsCollectionProperties extends DataSetProperties
      *
      * @return long (minutes)
      */
-    public long getRefreshTimeInterval()
+    public Long getRefreshTimeInterval()
     {
         return refreshTimeInterval;
     }
@@ -66,7 +66,7 @@ public class SecretsCollectionProperties extends DataSetProperties
      *
      * @param refreshTimeInterval long (minutes)
      */
-    public void setRefreshTimeInterval(long refreshTimeInterval)
+    public void setRefreshTimeInterval(Long refreshTimeInterval)
     {
         this.refreshTimeInterval = refreshTimeInterval;
     }
@@ -100,7 +100,7 @@ public class SecretsCollectionProperties extends DataSetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SecretsCollectionProperties that = (SecretsCollectionProperties) objectToCompare;
-        return refreshTimeInterval == that.refreshTimeInterval;
+        return Objects.equals(refreshTimeInterval, that.refreshTimeInterval);
     }
 
 

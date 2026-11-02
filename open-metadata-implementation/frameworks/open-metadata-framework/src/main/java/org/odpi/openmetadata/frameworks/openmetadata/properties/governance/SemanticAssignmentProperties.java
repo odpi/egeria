@@ -26,7 +26,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
     private String               expression           = null;
     private String               description          = null;
     private TermAssignmentStatus termAssignmentStatus = null;
-    private int                  confidence           = 0;
+    private Integer              confidence           = null;
     private String               createdBy            = null;
     private String               steward              = null;
     private String               stewardTypeName      = null;
@@ -142,7 +142,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -154,7 +154,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -338,7 +338,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                 Objects.equals(expression, that.expression) &&
                 Objects.equals(description, that.description) &&
                 termAssignmentStatus == that.termAssignmentStatus &&

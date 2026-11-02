@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceActionTypeProperties extends GovernanceActionProperties
 {
-    private int          waitTime = 0;
+    private Integer      waitTime = null;
     private List<String> producedGuards = null;
 
 
@@ -63,7 +63,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
      *
      * @return int (minutes)
      */
-    public int getWaitTime()
+    public Integer getWaitTime()
     {
         return waitTime;
     }
@@ -74,7 +74,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
      *
      * @param waitTime int (minutes)
      */
-    public void setWaitTime(int waitTime)
+    public void setWaitTime(Integer waitTime)
     {
         this.waitTime = waitTime;
     }
@@ -129,7 +129,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         GovernanceActionTypeProperties that = (GovernanceActionTypeProperties) objectToCompare;
-        return waitTime == that.waitTime && Objects.equals(producedGuards, that.producedGuards);
+        return Objects.equals(waitTime, that.waitTime) && Objects.equals(producedGuards, that.producedGuards);
     }
 
 

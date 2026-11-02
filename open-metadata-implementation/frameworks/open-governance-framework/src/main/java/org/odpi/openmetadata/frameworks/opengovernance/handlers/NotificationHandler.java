@@ -157,9 +157,13 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                 (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties) &&
                 (notificationPermitted(requester, notificationTypeProperties)))
         {
+            boolean multipleNotificationsPermitted = OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationTypeProperties.getMultipleNotificationsPermitted());
+            long    nextNotificationCount          = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
+            long    minimumNotificationInterval    = OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval());
+
             ActivityStatus newSubscriberStatus = ActivityStatus.COMPLETED;
 
-            if (notificationTypeProperties.getMultipleNotificationsPermitted())
+            if (multipleNotificationsPermitted)
             {
                 newSubscriberStatus = ActivityStatus.IN_PROGRESS;
             }
@@ -181,14 +185,14 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
                                              notificationSubscriberProperties,
-                                             notificationTypeProperties.getNotificationCount() + 1,
+                                             nextNotificationCount,
                                              initialClassifications,
                                              lastNotificationProperties,
                                              notificationTypeGUID,
                                              requestParameters,
                                              actionRequesterGUID,
                                              actionTargets,
-                                             notificationTypeProperties.getMinimumNotificationInterval(),
+                                             minimumNotificationInterval,
                                              newSubscriberStatus);
                         }
                         else if (notificationSubscriberProperties.getLastNotification() == null)
@@ -198,17 +202,17 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
                                              notificationSubscriberProperties,
-                                             notificationTypeProperties.getNotificationCount() + 1,
+                                             nextNotificationCount,
                                              initialClassifications,
                                              firstNotificationProperties,
                                              notificationTypeGUID,
                                              requestParameters,
                                              actionRequesterGUID,
                                              actionTargets,
-                                             notificationTypeProperties.getMinimumNotificationInterval(),
+                                             minimumNotificationInterval,
                                              newSubscriberStatus);
                         }
-                        else if (notificationTypeProperties.getMultipleNotificationsPermitted())
+                        else if (multipleNotificationsPermitted)
                         {
                             /*
                              * A subscriber that has already been notified hears again only from a notification
@@ -221,14 +225,14 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
                                              notificationSubscriberProperties,
-                                             notificationTypeProperties.getNotificationCount() + 1,
+                                             nextNotificationCount,
                                              initialClassifications,
                                              subsequentNotificationProperties,
                                              notificationTypeGUID,
                                              requestParameters,
                                              actionRequesterGUID,
                                              actionTargets,
-                                             notificationTypeProperties.getMinimumNotificationInterval(),
+                                             minimumNotificationInterval,
                                              newSubscriberStatus);
                         }
                     }
@@ -246,11 +250,11 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                 updatedNotificationTypeProperties.setContentStatus(ContentStatus.OBSOLETE);
             }
 
-            updatedNotificationTypeProperties.setNotificationCount(notificationTypeProperties.getNotificationCount() + 1);
+            updatedNotificationTypeProperties.setNotificationCount(nextNotificationCount);
             updatedNotificationTypeProperties.setLastNotification(new Date());
-            if (notificationTypeProperties.getMinimumNotificationInterval() > 0)
+            if (minimumNotificationInterval > 0)
             {
-                updatedNotificationTypeProperties.setNextScheduledNotification(new Date(System.currentTimeMillis() + toMilliseconds(notificationTypeProperties.getMinimumNotificationInterval())));
+                updatedNotificationTypeProperties.setNextScheduledNotification(new Date(System.currentTimeMillis() + toMilliseconds(minimumNotificationInterval)));
             }
 
             UpdateOptions updateOptions = new UpdateOptions();
@@ -317,12 +321,14 @@ public class NotificationHandler extends GovernanceDefinitionHandler
             return true;
         }
 
-        if (notificationTypeProperties.getMinimumNotificationInterval() <= 0)
+        long minimumNotificationInterval = OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval());
+
+        if (minimumNotificationInterval <= 0)
         {
             return true;
         }
 
-        return System.currentTimeMillis() > notificationTypeProperties.getLastNotification().getTime() + toMilliseconds(notificationTypeProperties.getMinimumNotificationInterval());
+        return System.currentTimeMillis() > notificationTypeProperties.getLastNotification().getTime() + toMilliseconds(minimumNotificationInterval);
     }
 
 

@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
@@ -886,7 +887,7 @@ public class IntegrationConnectorHandler
         stopDate = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorShutdownDate();
         metadataSourceQualifiedName = registeredIntegrationConnectorElement.getRegistrationProperties().getMetadataCollectionQualifiedName();
         permittedSynchronization = registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization();
-        minMinutesBetweenRefresh = registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval();
+        minMinutesBetweenRefresh = OpenMetadataProperty.REFRESH_TIME_INTERVAL.longValueOrDefault(registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval());
 
         if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
         {

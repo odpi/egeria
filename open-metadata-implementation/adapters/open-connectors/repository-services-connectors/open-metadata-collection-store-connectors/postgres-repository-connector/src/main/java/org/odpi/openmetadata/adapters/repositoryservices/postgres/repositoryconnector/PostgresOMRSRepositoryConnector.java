@@ -265,6 +265,7 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
             this.createTypeNameIndexes(jdbcResourceConnector, jdbcConnection, schemaName);
             this.createLookupIndexes(jdbcResourceConnector, jdbcConnection, schemaName);
+            this.createCurrentVersionIndexes(jdbcResourceConnector, jdbcConnection, schemaName);
 
             jdbcConnection.commit();
         }
@@ -334,15 +335,27 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
      *     and some property values (descriptions, for example) are longer.  A hash index has no length limit and
      *     serves the equality comparisons these searches make; it does not help "like" or regular expression
      *     searches.</li>
-     *     <li>end_1_guid and end_2_guid in the relationship table - retrieving the relationships of an entity
-     *     ("end_1_guid = ? or end_2_guid = ?") combines the two indexes.</li>
+     *     <li>(end_1_guid, version_end_time) and (end_2_guid, version_end_time) in the relationship table -
+     *     retrieving the relationships of an entity ("end_1_guid = ? or end_2_guid = ?") combines the two indexes.
+     *     The version_end_time column means a request for the current relationships ("version_end_time is null")
+     *     reads only the current versions, rather than every version of every relationship the entity has ever
+     *     had - which matters for an entity at the hub of relationships that are updated often.  A request for an
+     *     earlier point in time uses the same indexes, filtering on version_end_time within them.  These replace
+     *     the single column end_1_guid and end_2_guid indexes, which are dropped.</li>
      * </ul>
      * Measured on a copy of a quickstart repository (500,000 entities, 2.2 million entity attribute values): an
      * exact-value lookup went from 229 ms to 0.1 ms and a relationships-of-an-entity lookup from 20 ms to 0.1 ms.
+     * Adding version_end_time to the end indexes, measured on a later copy (1 million relationship rows): the
+     * current relationships of an entity with 15,812 relationship rows, 102 of them current, went from 9.9 ms
+     * (4,347 buffers) to 0.25 ms (39 buffers).  A request for an earlier point in time reads about 3% more
+     * buffers than with the single column indexes.
      * <br><br>
      * As with the type name indexes, "if not exists" makes these safe to reissue at every start, and is how they
      * reach a repository created before they existed.  Building them on an existing repository blocks writes to
-     * the table while it runs, once: about 45 seconds for 2.2 million entity attribute values.
+     * the table while it runs, once: about 45 seconds for 2.2 million entity attribute values.  "create index
+     * concurrently" would avoid that, but PostgreSQL does not allow it inside a transaction, and these statements
+     * run in one.  A database administrator can build them concurrently beforehand under the same names, and
+     * these statements then do nothing.
      *
      * @param jdbcResourceConnector connector to the database
      * @param jdbcConnection connection to use
@@ -370,10 +383,71 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
             jdbcResourceConnector.issueSQLCommand(jdbcConnection,
                                                   "create index if not exists " +
                                                           RepositoryTable.RELATIONSHIP.getTableName() + "_" +
-                                                          endColumn.getColumnName() + "_idx on " +
+                                                          endColumn.getColumnName() + "_version_end_time_idx on " +
                                                           RepositoryTable.RELATIONSHIP.getTableName(schemaName) +
-                                                          " (" + endColumn.getColumnName() + ");");
+                                                          " (" + endColumn.getColumnName() + ", " +
+                                                          RepositoryColumn.VERSION_END_TIME.getColumnName() + ");");
+
+            /*
+             * The single column index this replaces.  Indexes live in their table's schema, so the name is
+             * qualified with it.
+             */
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "drop index if exists " + schemaName + "." +
+                                                          RepositoryTable.RELATIONSHIP.getTableName() + "_" +
+                                                          endColumn.getColumnName() + "_idx;");
         }
+    }
+
+
+    /**
+     * Index the current version of each entity and classification.
+     * <br><br>
+     * Reading an instance by its unique identifier asks for "instance_guid = ? and version_end_time is null".
+     * The primary key finds the rows for the unique identifier, but finds every version, and each one has to be
+     * read from the table to check its version_end_time.  That is cheap for an element with a handful of
+     * versions, but an element that is updated on every refresh of a connector (a popularity profile,
+     * a contribution record, a catalog target) collects thousands of versions, and reading it reads them all.
+     * These partial indexes hold only the current version of each instance, so the read goes straight to it.
+     * <br><br>
+     * Measured on a copy of a quickstart repository (1.8 million entity rows, 1.8 million classification rows):
+     * reading a contribution record with 238,795 versions went from 131 ms (69,243 buffers) to 0.05 ms
+     * (4 buffers), and the classifications of an entity with 9,426 classification versions from 21 ms to 0.1 ms.
+     * Each index took under a second to build.  A read for an earlier point in time still uses the primary key,
+     * so is unchanged.
+     * <br><br>
+     * They are deliberately not unique.  Exactly one current version per instance is how the repository is meant
+     * to be, but if an existing repository breaks that rule, a unique index would fail to build, and the server
+     * would fail to start.
+     * <br><br>
+     * The relationship table needs no such index: its end indexes include version_end_time (see
+     * createLookupIndexes) and the relationships read by unique identifier are few.
+     *
+     * @param jdbcResourceConnector connector to the database
+     * @param jdbcConnection connection to use
+     * @param schemaName name of the schema holding the tables
+     * @throws PropertyServerException problem issuing the statement
+     */
+    private void createCurrentVersionIndexes(JDBCResourceConnector jdbcResourceConnector,
+                                             java.sql.Connection   jdbcConnection,
+                                             String                schemaName) throws PropertyServerException
+    {
+        jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                              "create index if not exists " +
+                                                      RepositoryTable.ENTITY.getTableName() + "_current_" +
+                                                      RepositoryColumn.INSTANCE_GUID.getColumnName() + "_idx on " +
+                                                      RepositoryTable.ENTITY.getTableName(schemaName) +
+                                                      " (" + RepositoryColumn.INSTANCE_GUID.getColumnName() + ") where " +
+                                                      RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null;");
+
+        jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                              "create index if not exists " +
+                                                      RepositoryTable.CLASSIFICATION.getTableName() + "_current_" +
+                                                      RepositoryColumn.INSTANCE_GUID.getColumnName() + "_idx on " +
+                                                      RepositoryTable.CLASSIFICATION.getTableName(schemaName) +
+                                                      " (" + RepositoryColumn.INSTANCE_GUID.getColumnName() + ", " +
+                                                      RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + ") where " +
+                                                      RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null;");
     }
 
 

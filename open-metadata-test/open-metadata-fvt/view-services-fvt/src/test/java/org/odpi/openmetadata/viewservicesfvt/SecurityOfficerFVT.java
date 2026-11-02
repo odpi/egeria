@@ -160,7 +160,7 @@ public class SecurityOfficerFVT
     {
         ZoneMembershipProfileProperties properties = new ZoneMembershipProfileProperties();
 
-        properties.setTotalMembership(42);
+        properties.setTotalMembership(42L);
         properties.setTypeMembership(Map.of("Asset", 42L));
 
         NewClassificationRequestBody classify = new NewClassificationRequestBody();
@@ -270,9 +270,9 @@ public class SecurityOfficerFVT
     {
         UserAccountProfileProperties properties = new UserAccountProfileProperties();
 
-        properties.setUserAccountCount(3);
-        properties.setActiveAccountCount(2);
-        properties.setLockedAccountCount(1);
+        properties.setUserAccountCount(3L);
+        properties.setActiveAccountCount(2L);
+        properties.setLockedAccountCount(1L);
 
         NewClassificationRequestBody classify = new NewClassificationRequestBody();
 

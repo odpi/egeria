@@ -71,11 +71,12 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:lovelace-insights')
     implementation project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    // SecurityPackArchiveWriter reads the security control catalogs from JSON resources.  The same JSON parser
+    // is used by ContentPackIntegrityTest to read the shipped archives back into the platform's own archive bean
+    // and to read the committed GUID maps.
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
-    // ContentPackIntegrityTest reads the shipped archives back into the platform's own archive bean, and
-    // reads the committed GUID maps, so it needs a JSON parser of its own.
     testImplementation 'org.testng:testng'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     // TypeReference, used to read the GUID maps, is in jackson-core rather than jackson-databind.
     testImplementation 'com.fasterxml.jackson.core:jackson-core'
 }

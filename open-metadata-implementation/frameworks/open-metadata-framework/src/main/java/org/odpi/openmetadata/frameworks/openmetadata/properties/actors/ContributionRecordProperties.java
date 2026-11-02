@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContributionRecordProperties extends ReferenceableProperties
 {
-    private long    karmaPoints       = 0;
+    private Long    karmaPoints       = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class ContributionRecordProperties extends ReferenceableProperties
      *
      * @return count
      */
-    public long getKarmaPoints()
+    public Long getKarmaPoints()
     {
         return karmaPoints;
     }
@@ -69,7 +69,7 @@ public class ContributionRecordProperties extends ReferenceableProperties
      *
      * @param karmaPoints count
      */
-    public void setKarmaPoints(long karmaPoints)
+    public void setKarmaPoints(Long karmaPoints)
     {
         this.karmaPoints = karmaPoints;
     }
@@ -111,7 +111,7 @@ public class ContributionRecordProperties extends ReferenceableProperties
             return false;
         }
         ContributionRecordProperties that = (ContributionRecordProperties) objectToCompare;
-        return karmaPoints == that.karmaPoints;
+        return Objects.equals(karmaPoints, that.karmaPoints);
     }
 
 

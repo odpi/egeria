@@ -3018,18 +3018,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     private int getToIndex(int fromIndex, int pageSize, int totalSize)
     {
-        int toIndex;
-
-        if (totalSize < fromIndex + pageSize)
-        {
-            toIndex = totalSize;
-        }
-        else
-        {
-            toIndex = fromIndex + pageSize;
-        }
-
-        return toIndex;
+        return (int) Math.min((long) fromIndex + (long) pageSize, totalSize);
     }
 
 

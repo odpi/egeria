@@ -18,6 +18,8 @@ import org.odpi.openmetadata.adapters.connectors.darwin.controls.DarwinConfigura
 import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider;
 import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.simon.SimonContributionRecorderProvider;
+import org.odpi.openmetadata.adapters.connectors.simon.controls.SimonConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.mendel.controls.MendelConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
@@ -471,6 +473,34 @@ public enum IntegrationConnectorDefinition
                             null,
                             IntegrationGroupDefinition.OPEN_METADATA_OBSERVABILITY,
                             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Simon listens to the open metadata events and awards a karma point to the user responsible for each change.
+     * The karma points are gathered in memory and added to the ContributionRecord of each user's actor profile on
+     * each refresh.  Its configuration properties hold the patterns of the userIds that are not awarded karma points.
+     */
+    SIMON_CONTRIBUTION_RECORDER("79c34d16-13c4-4ee7-af92-42cee668034d",
+                                "SimonContributionRecorderIntegrationConnector",
+                                "Maintains the karma points in the ContributionRecord of each user's actor profile from the changes they make to open metadata.",
+                                SimonContributionRecorderProvider.class.getName(),
+                                "SimonContributionRecorder",
+                                "simonnpa",
+                                null,
+                                null,
+                                null,
+                                getSimonConfigProperties(),
+                                12,
+                                null,
+                                "05c09424-c4e6-44da-866b-cf6c3218e1b3",
+                                "Contribution Recorder",
+                                "Listens to the open metadata events.  It awards a karma point to the user responsible for each change and adds them to the karma points in the ContributionRecord attached to the user's actor profile.",
+                                true,
+                                null,
+                                null,
+                                null,
+                                null,
+                                IntegrationGroupDefinition.OPEN_METADATA_OBSERVABILITY,
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
     OMAG_SERVER_PLATFORM_CATALOGUER("dee84e6e-7a96-4975-86c1-152fb3ab759b",
                                     "OMAGServerPlatformIntegrationConnector",
@@ -992,6 +1022,24 @@ public enum IntegrationConnectorDefinition
 
         configurationProperties.put(PepysConfigurationProperty.IGNORED_USER_ID_PATTERNS.getName(),
                                     PepysConfigurationProperty.DEFAULT_IGNORED_USER_ID_PATTERNS);
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Return the configuration properties for the Simon Contribution Recorder.  The non-personal accounts (userIds
+     * ending in npa) and the governance engines (userIds ending in engine) are not awarded karma points, so that
+     * only the contributions of people are recognized.  These are the same patterns as Pepys uses.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getSimonConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(SimonConfigurationProperty.IGNORED_USER_ID_PATTERNS.getName(),
+                                    SimonConfigurationProperty.DEFAULT_IGNORED_USER_ID_PATTERNS);
 
         return configurationProperties;
     }

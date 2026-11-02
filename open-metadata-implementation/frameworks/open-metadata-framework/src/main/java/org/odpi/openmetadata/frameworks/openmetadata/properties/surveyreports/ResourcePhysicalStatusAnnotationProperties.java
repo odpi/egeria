@@ -24,7 +24,7 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
     private Date   resourceCreateTime       = null;
     private Date   resourceUpdateTime       = null;
     private Date   resourceLastAccessedTime = null;
-    private long   size                     = 0L;
+    private Long   size                     = null;
     private String encodingType             = null;
 
 
@@ -129,7 +129,7 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
      *
      * @return int
      */
-    public long getSize()
+    public Long getSize()
     {
         return size;
     }
@@ -140,7 +140,7 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
      *
      * @param size int
      */
-    public void setSize(long size)
+    public void setSize(Long size)
     {
         this.size = size;
     }
@@ -208,7 +208,7 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
             return false;
         }
         ResourcePhysicalStatusAnnotationProperties that = (ResourcePhysicalStatusAnnotationProperties) objectToCompare;
-        return getSize() == that.getSize() &&
+        return Objects.equals(getSize(), that.getSize()) &&
                        Objects.equals(getResourceCreateTime(), that.getResourceCreateTime()) &&
                        Objects.equals(getResourceUpdateTime(), that.getResourceUpdateTime()) &&
                        Objects.equals(getResourceLastAccessedTime(), that.getResourceLastAccessedTime()) &&

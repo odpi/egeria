@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ReferenceValueAssignmentProperties extends RelationshipBeanProperties
 {
     private String attributeName          = null;
-    private int    confidence             = 0;
+    private Integer confidence             = null;
     private String steward                = null;
     private String stewardTypeName        = null;
     private String stewardPropertyName    = null;
@@ -90,7 +90,7 @@ public class ReferenceValueAssignmentProperties extends RelationshipBeanProperti
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -101,7 +101,7 @@ public class ReferenceValueAssignmentProperties extends RelationshipBeanProperti
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -236,7 +236,7 @@ public class ReferenceValueAssignmentProperties extends RelationshipBeanProperti
             return false;
         }
         ReferenceValueAssignmentProperties that = (ReferenceValueAssignmentProperties) objectToCompare;
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                        Objects.equals(attributeName, that.attributeName) &&
                        Objects.equals(steward, that.steward) &&
                        Objects.equals(stewardTypeName, that.stewardTypeName) &&

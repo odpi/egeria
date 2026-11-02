@@ -154,7 +154,7 @@ public class ActorManagerProfilesFVT
 
         properties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("ContributionRecord", "ada"));
         properties.setDisplayName("Ada's contributions");
-        properties.setKarmaPoints(10);
+        properties.setKarmaPoints(10L);
 
         NewAttachmentRequestBody requestBody = new NewAttachmentRequestBody();
 
@@ -177,7 +177,7 @@ public class ActorManagerProfilesFVT
 
         ContributionRecordProperties update = new ContributionRecordProperties();
 
-        update.setKarmaPoints(25);
+        update.setKarmaPoints(25L);
 
         actorManager.post("/contribution-records/" + contributionGUID, updateElement(update), BooleanResponse.class);
 

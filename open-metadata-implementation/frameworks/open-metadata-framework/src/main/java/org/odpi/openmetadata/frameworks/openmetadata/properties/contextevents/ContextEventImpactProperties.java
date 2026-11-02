@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContextEventImpactProperties extends LabeledRelationshipProperties
 {
-    private int severityLevel = 0;
+    private Integer severityLevel = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class ContextEventImpactProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getSeverityLevel()
+    public Integer getSeverityLevel()
     {
         return severityLevel;
     }
@@ -69,7 +69,7 @@ public class ContextEventImpactProperties extends LabeledRelationshipProperties
      *
      * @param severityLevel int
      */
-    public void setSeverityLevel(int severityLevel)
+    public void setSeverityLevel(Integer severityLevel)
     {
         this.severityLevel = severityLevel;
     }
@@ -101,7 +101,7 @@ public class ContextEventImpactProperties extends LabeledRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContextEventImpactProperties that = (ContextEventImpactProperties) objectToCompare;
-        return severityLevel == that.severityLevel;
+        return Objects.equals(severityLevel, that.severityLevel);
     }
 
     /**

@@ -352,7 +352,7 @@ public class LovelaceOpenLineageDataQualitySummaryService extends LovelaceOpenLi
 
         properties.setQualityDescription(description.toString());
         properties.setExplanation("Derived by " + governanceServiceName + " from the OpenLineage log store.");
-        properties.setSampleSize(passed + failed + skipped);
+        properties.setSampleSize((long) (passed + failed + skipped));
 
         /*
          * The annotation is anchored to the element the report describes - the report's own anchor - and is

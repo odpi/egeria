@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConfidentialityProperties extends GovernedDataClassificationBase
 {
-    private int confidentialityLevel = 0;
+    private Integer confidentialityLevel = null;
 
     /**
      * Default constructor
@@ -54,7 +54,7 @@ public class ConfidentialityProperties extends GovernedDataClassificationBase
      *
      * @return int
      */
-    public int getConfidentialityLevel()
+    public Integer getConfidentialityLevel()
     {
         return confidentialityLevel;
     }
@@ -65,7 +65,7 @@ public class ConfidentialityProperties extends GovernedDataClassificationBase
      *
      * @param confidentialityLevel int
      */
-    public void setConfidentialityLevel(int confidentialityLevel)
+    public void setConfidentialityLevel(Integer confidentialityLevel)
     {
         this.confidentialityLevel = confidentialityLevel;
     }
@@ -106,7 +106,7 @@ public class ConfidentialityProperties extends GovernedDataClassificationBase
             return false;
         }
         ConfidentialityProperties that = (ConfidentialityProperties) objectToCompare;
-        return confidentialityLevel == that.confidentialityLevel;
+        return Objects.equals(confidentialityLevel, that.confidentialityLevel);
     }
 
 

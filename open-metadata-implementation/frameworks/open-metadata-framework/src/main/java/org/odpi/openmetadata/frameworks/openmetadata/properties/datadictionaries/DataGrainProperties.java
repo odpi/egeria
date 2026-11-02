@@ -23,7 +23,7 @@ public class DataGrainProperties extends DataValueSpecificationProperties
 {
     private String granularityBasis    = null;
     private String grainStatement      = null;
-    private long   interval            = 0L;
+    private Long   interval            = null;
 
 
     /**
@@ -82,7 +82,7 @@ public class DataGrainProperties extends DataValueSpecificationProperties
      *
      * @return long
      */
-    public long getInterval()
+    public Long getInterval()
     {
         return interval;
     }
@@ -93,7 +93,7 @@ public class DataGrainProperties extends DataValueSpecificationProperties
      *
      * @param interval long
      */
-    public void setInterval(long interval)
+    public void setInterval(Long interval)
     {
         this.interval = interval;
     }
@@ -151,7 +151,7 @@ public class DataGrainProperties extends DataValueSpecificationProperties
         if (!super.equals(objectToCompare)) return false;
         DataGrainProperties that = (DataGrainProperties) objectToCompare;
         return
-                interval == that.interval &&
+                Objects.equals(interval, that.interval) &&
                 Objects.equals(granularityBasis, that.granularityBasis) &&
                 Objects.equals(grainStatement, that.grainStatement);
     }

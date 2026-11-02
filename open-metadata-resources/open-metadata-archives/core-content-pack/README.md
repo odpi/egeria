@@ -19,11 +19,17 @@ This module implements a utility to build the technology-specific [open metadata
 * `OracleContentPack.omarchive`
 * `OrganizationInsightContentPack.omarchive`
 * `PostgresContentPack.omarchive`
+* `SecurityContentPack.omarchive`
 * `UnityCatalogContentPack.omarchive`
 
 These archives contain the metadata descriptions for each of the connectors supplied by Egeria, along with associated templates and reference data.
 
 Full details of the contents of these archives can be found in the [Content Pack Catalog](https://egeria-project.org/content-packs/).
+
+`SecurityContentPack.omarchive` is different from the others: it holds the NIST Cybersecurity Framework (CSF) 2.0
+and NIST SP 800-53 Rev. 5 control catalogs rather than connector definitions.  They are read from JSON resources in
+[`src/main/resources/security-catalogs`](src/main/resources/security-catalogs), which are generated from NIST's
+public-domain OSCAL catalogs by [`scripts/convert_oscal_security_catalogs.py`](scripts/convert_oscal_security_catalogs.py) - see the README in that directory for how to refresh them.
 
 ## Checking what ships
 

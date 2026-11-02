@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextClientBase;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -638,47 +639,47 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         {
             if (ProductDataFieldDefinition.USER_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getUserAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.USER_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getUserAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.EMPLOYEE_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getEmployeeAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.EMPLOYEE_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getEmployeeAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.CONTRACTOR_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getContractorAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.CONTRACTOR_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getContractorAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.EXTERNAL_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getExternalAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.EXTERNAL_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getExternalAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.DIGITAL_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getDigitalAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.DIGITAL_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getDigitalAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.ACTIVE_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getActiveAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.ACTIVE_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getActiveAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.EXPIRED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getExpiredAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.EXPIRED_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getExpiredAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.LOCKED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getLockedAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.LOCKED_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getLockedAccountCount())));
                 return true;
             }
             else if (ProductDataFieldDefinition.DISABLED_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(userAccountProfileProperties.getDisabledAccountCount()));
+                recordValues.add(Long.toString(OpenMetadataProperty.DISABLED_ACCOUNT_COUNT.longValueOrDefault(userAccountProfileProperties.getDisabledAccountCount())));
                 return true;
             }
         }
@@ -686,17 +687,17 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
         {
             if (ProductDataFieldDefinition.TOTAL_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(zoneMembershipProfileProperties.getTotalMembership()));
+                recordValues.add(Long.toString(OpenMetadataProperty.TOTAL_MEMBERSHIP.longValueOrDefault(zoneMembershipProfileProperties.getTotalMembership())));
                 return true;
             }
             else if (ProductDataFieldDefinition.ANCHORED_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(zoneMembershipProfileProperties.getAnchoredTotalMembership()));
+                recordValues.add(Long.toString(OpenMetadataProperty.ANCHORED_TOTAL_MEMBERSHIP.longValueOrDefault(zoneMembershipProfileProperties.getAnchoredTotalMembership())));
                 return true;
             }
             else if (ProductDataFieldDefinition.ALL_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
             {
-                recordValues.add(Long.toString(zoneMembershipProfileProperties.getAllTotalMembership()));
+                recordValues.add(Long.toString(OpenMetadataProperty.ALL_TOTAL_MEMBERSHIP.longValueOrDefault(zoneMembershipProfileProperties.getAllTotalMembership())));
                 return true;
             }
         }
@@ -840,7 +841,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 {
                     if (ProductDataFieldDefinition.DOMAIN_IDENTIFIER.getDisplayName().equals(columnName))
                     {
-                        recordValues.add(Integer.toString(governanceDefinitionProperties.getDomainIdentifier()));
+                        recordValues.add(Integer.toString(OpenMetadataProperty.DOMAIN_IDENTIFIER.intValueOrDefault(governanceDefinitionProperties.getDomainIdentifier())));
                         return true;
                     }
                     else if (ProductDataFieldDefinition.SUMMARY.getDisplayName().equals(columnName))
@@ -902,7 +903,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                     }
                     else if (ProductDataFieldDefinition.IS_CASE_SENSITIVE.getDisplayName().equals(columnName))
                     {
-                        if (validValueDefinitionProperties.getIsCaseSensitive())
+                        if (OpenMetadataProperty.IS_CASE_SENSITIVE.booleanValueOrDefault(validValueDefinitionProperties.getIsCaseSensitive()))
                         {
                             recordValues.add("true");
                         }
@@ -975,7 +976,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                         {
                             if (ProductDataFieldDefinition.REFRESH_TIME_INTERVAL.getDisplayName().equals(columnName))
                             {
-                                recordValues.add(Long.toString(secretsCollectionProperties.getRefreshTimeInterval()));
+                                recordValues.add(Long.toString(OpenMetadataProperty.REFRESH_TIME_INTERVAL.longValueOrDefault(secretsCollectionProperties.getRefreshTimeInterval())));
                             }
                         }
                     }

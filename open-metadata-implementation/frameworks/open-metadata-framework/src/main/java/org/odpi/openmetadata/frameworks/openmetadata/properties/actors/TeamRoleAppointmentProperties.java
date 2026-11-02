@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamRoleAppointmentProperties extends RelationshipBeanProperties
 {
-    int expectedTimeAllocationPercent = 100;
+    private Integer expectedTimeAllocationPercent = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class TeamRoleAppointmentProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getExpectedTimeAllocationPercent()
+    public Integer getExpectedTimeAllocationPercent()
     {
         return expectedTimeAllocationPercent;
     }
@@ -66,7 +66,7 @@ public class TeamRoleAppointmentProperties extends RelationshipBeanProperties
      *
      * @param expectedTimeAllocationPercent int
      */
-    public void setExpectedTimeAllocationPercent(int expectedTimeAllocationPercent)
+    public void setExpectedTimeAllocationPercent(Integer expectedTimeAllocationPercent)
     {
         this.expectedTimeAllocationPercent = expectedTimeAllocationPercent;
     }

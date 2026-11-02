@@ -29,10 +29,10 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     private String                   metadataCollectionQualifiedName  = null;
     private String                   metadataSourceQualifiedName      = null;
     private Date                     startDate                        = null;
-    private long                     refreshTimeInterval              = 0L;
+    private Long                     refreshTimeInterval              = null;
     private Date                     connectorShutdownDate            = null;
     private PermittedSynchronization permittedSynchronization         = null;
-    private boolean                  generateConnectorActivityReports = true;
+    private Boolean                  generateConnectorActivityReports = null;
 
 
     /**
@@ -194,7 +194,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      *
      * @return minute count
      */
-    public long getRefreshTimeInterval()
+    public Long getRefreshTimeInterval()
     {
         return refreshTimeInterval;
     }
@@ -207,7 +207,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      *
      * @param refreshTimeInterval minute count
      */
-    public void setRefreshTimeInterval(long refreshTimeInterval)
+    public void setRefreshTimeInterval(Long refreshTimeInterval)
     {
         this.refreshTimeInterval = refreshTimeInterval;
     }
@@ -264,7 +264,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      *
      * @return boolean flag (default = true)
      */
-    public boolean getGenerateConnectorActivityReports()
+    public Boolean getGenerateConnectorActivityReports()
     {
         return generateConnectorActivityReports;
     }
@@ -275,7 +275,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      *
      * @param generateConnectorActivityReports boolean flag
      */
-    public void setGenerateConnectorActivityReports(boolean generateConnectorActivityReports)
+    public void setGenerateConnectorActivityReports(Boolean generateConnectorActivityReports)
     {
         this.generateConnectorActivityReports = generateConnectorActivityReports;
     }
@@ -316,8 +316,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         RegisteredIntegrationConnectorProperties that = (RegisteredIntegrationConnectorProperties) objectToCompare;
-        return refreshTimeInterval == that.refreshTimeInterval &&
-                generateConnectorActivityReports == that.generateConnectorActivityReports &&
+        return Objects.equals(refreshTimeInterval, that.refreshTimeInterval) &&
+                Objects.equals(generateConnectorActivityReports, that.generateConnectorActivityReports) &&
                 Objects.equals(connectorName, that.connectorName) &&
                 Objects.equals(connectorUserId, that.connectorUserId) &&
                 Objects.equals(metadataCollectionQualifiedName, that.metadataCollectionQualifiedName) &&

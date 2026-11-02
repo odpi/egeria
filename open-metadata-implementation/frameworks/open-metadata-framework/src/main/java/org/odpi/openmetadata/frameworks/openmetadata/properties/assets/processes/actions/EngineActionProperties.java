@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EngineActionProperties extends ActionProperties
 {
-    private int                 domainIdentifier         = 0;
+    private Integer             domainIdentifier         = null;
     private List<String>        mandatoryGuards          = null;
     private List<String>        receivedGuards           = null;
     private String              executorEngineGUID       = null;
@@ -100,7 +100,7 @@ public class EngineActionProperties extends ActionProperties
      *
      * @return int
      */
-    public int getDomainIdentifier()
+    public Integer getDomainIdentifier()
     {
         return domainIdentifier;
     }
@@ -111,7 +111,7 @@ public class EngineActionProperties extends ActionProperties
      *
      * @param domainIdentifier int
      */
-    public void setDomainIdentifier(int domainIdentifier)
+    public void setDomainIdentifier(Integer domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
     }
@@ -513,7 +513,7 @@ public class EngineActionProperties extends ActionProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         EngineActionProperties that = (EngineActionProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier && Objects.equals(mandatoryGuards, that.mandatoryGuards) && Objects.equals(receivedGuards, that.receivedGuards) && Objects.equals(executorEngineGUID, that.executorEngineGUID) && Objects.equals(executorEngineName, that.executorEngineName) && Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) && Objects.equals(governanceActionTypeName, that.governanceActionTypeName) && Objects.equals(processName, that.processName) && Objects.equals(iscQualifiedName, that.iscQualifiedName) && Objects.equals(processStepGUID, that.processStepGUID) && Objects.equals(processStepName, that.processStepName) && Objects.equals(requesterUserId, that.requesterUserId) && Objects.equals(requestType, that.requestType) && Objects.equals(requestParameters, that.requestParameters) && Objects.equals(processingEngineUserId, that.processingEngineUserId) && Objects.equals(completionGuards, that.completionGuards) && Objects.equals(completionMessage, that.completionMessage);
+        return Objects.equals(domainIdentifier, that.domainIdentifier) && Objects.equals(mandatoryGuards, that.mandatoryGuards) && Objects.equals(receivedGuards, that.receivedGuards) && Objects.equals(executorEngineGUID, that.executorEngineGUID) && Objects.equals(executorEngineName, that.executorEngineName) && Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) && Objects.equals(governanceActionTypeName, that.governanceActionTypeName) && Objects.equals(processName, that.processName) && Objects.equals(iscQualifiedName, that.iscQualifiedName) && Objects.equals(processStepGUID, that.processStepGUID) && Objects.equals(processStepName, that.processStepName) && Objects.equals(requesterUserId, that.requesterUserId) && Objects.equals(requestType, that.requestType) && Objects.equals(requestParameters, that.requestParameters) && Objects.equals(processingEngineUserId, that.processingEngineUserId) && Objects.equals(completionGuards, that.completionGuards) && Objects.equals(completionMessage, that.completionMessage);
     }
 
     /**

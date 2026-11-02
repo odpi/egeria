@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class AnnotationMatchProperties extends LabeledRelationshipProperties
 {
     private String method = null;
-    private int    threshold = 0;
+    private Integer threshold = null;
 
 
     /**
@@ -80,7 +80,7 @@ public class AnnotationMatchProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getThreshold()
+    public Integer getThreshold()
     {
         return threshold;
     }
@@ -91,7 +91,7 @@ public class AnnotationMatchProperties extends LabeledRelationshipProperties
      *
      * @param threshold int
      */
-    public void setThreshold(int threshold)
+    public void setThreshold(Integer threshold)
     {
         this.threshold = threshold;
     }
@@ -125,7 +125,7 @@ public class AnnotationMatchProperties extends LabeledRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AnnotationMatchProperties that = (AnnotationMatchProperties) objectToCompare;
-        return threshold == that.threshold && Objects.equals(method, that.method);
+        return Objects.equals(threshold, that.threshold) && Objects.equals(method, that.method);
     }
 
 

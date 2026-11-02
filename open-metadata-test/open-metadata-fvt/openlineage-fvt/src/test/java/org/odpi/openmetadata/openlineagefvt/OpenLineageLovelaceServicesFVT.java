@@ -95,7 +95,7 @@ public class OpenLineageLovelaceServicesFVT
         OpenLineageFvtTestSupport.waitForAsset(processQN, "the runs to be catalogued", element ->
                 (element.getElementHeader().getRunMetrics() != null) &&
                 (element.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties metrics) &&
-                (metrics.getRunCount() >= RUN_COUNT) &&
+                (OpenMetadataProperty.RUN_COUNT.longValueOrDefault(metrics.getRunCount()) >= RUN_COUNT) &&
                 ("COMPLETE".equals(metrics.getLastRunStatus())));
         OpenLineageFvtTestSupport.waitForAsset(inputQN, "the input table to be catalogued");
         OpenLineageFvtTestSupport.waitForAsset(outputQN, "the output table to be catalogued");

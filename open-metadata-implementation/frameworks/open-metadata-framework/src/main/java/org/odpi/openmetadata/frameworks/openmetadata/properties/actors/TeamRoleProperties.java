@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamRoleProperties extends ActorRoleProperties
 {
-    private boolean headCountLimitSet = false;
-    private int     headCount         = 0;
+    private Boolean headCountLimitSet = null;
+    private Integer headCount         = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class TeamRoleProperties extends ActorRoleProperties
      *
      * @return boolean flag
      */
-    public boolean getHeadCountLimitSet()
+    public Boolean getHeadCountLimitSet()
     {
         return headCountLimitSet;
     }
@@ -69,7 +69,7 @@ public class TeamRoleProperties extends ActorRoleProperties
      *
      * @param headCountLimitSet boolean flag
      */
-    public void setHeadCountLimitSet(boolean headCountLimitSet)
+    public void setHeadCountLimitSet(Boolean headCountLimitSet)
     {
         this.headCountLimitSet = headCountLimitSet;
     }
@@ -80,7 +80,7 @@ public class TeamRoleProperties extends ActorRoleProperties
      *
      * @return int
      */
-    public int getHeadCount()
+    public Integer getHeadCount()
     {
         return headCount;
     }
@@ -91,7 +91,7 @@ public class TeamRoleProperties extends ActorRoleProperties
      *
      * @param headCount int
      */
-    public void setHeadCount(int headCount)
+    public void setHeadCount(Integer headCount)
     {
         this.headCount = headCount;
     }
@@ -135,8 +135,8 @@ public class TeamRoleProperties extends ActorRoleProperties
             return false;
         }
         TeamRoleProperties that = (TeamRoleProperties) objectToCompare;
-        return getHeadCountLimitSet() == that.getHeadCountLimitSet() &&
-                getHeadCount() == that.getHeadCount();
+        return Objects.equals(getHeadCountLimitSet(), that.getHeadCountLimitSet()) &&
+                Objects.equals(getHeadCount(), that.getHeadCount());
     }
 
 

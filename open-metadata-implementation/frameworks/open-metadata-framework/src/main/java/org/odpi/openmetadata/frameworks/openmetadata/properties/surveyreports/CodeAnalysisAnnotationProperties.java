@@ -20,27 +20,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CodeAnalysisAnnotationProperties extends AnnotationProperties
 {
-    private long     fileCount                  = 0;
-    private long    lineCount                  = 0;
-    private long    codeLineCount              = 0;
-    private long    commentLineCount           = 0;
+    private Long     fileCount                  = null;
+    private Long    lineCount                  = null;
+    private Long    codeLineCount              = null;
+    private Long    commentLineCount           = null;
     private String  primaryLanguage            = null;
-    private long     languageCount              = 0;
-    private long    publicSymbolCount          = 0;
-    private long     entryPointCount            = 0;
-    private long    dataReadCount              = 0;
-    private long    dataCreateCount            = 0;
-    private long    dataUpdateCount            = 0;
-    private long    dataDeleteCount            = 0;
-    private long    dataChecksCount            = 0;
-    private long    dataStoreCount             = 0;
-    private long    externalCallCount          = 0;
-    private long    functionCount              = 0;
-    private long    cyclomaticComplexityTotal  = 0;
-    private long     cyclomaticComplexityMax    = 0;
-    private long     maxNestingDepth            = 0;
-    private long     testFileCount              = 0;
-    private long    documentedSymbolCount      = 0;
+    private Long     languageCount              = null;
+    private Long    publicSymbolCount          = null;
+    private Long     entryPointCount            = null;
+    private Long    dataReadCount              = null;
+    private Long    dataCreateCount            = null;
+    private Long    dataUpdateCount            = null;
+    private Long    dataDeleteCount            = null;
+    private Long    dataChecksCount            = null;
+    private Long    dataStoreCount             = null;
+    private Long    externalCallCount          = null;
+    private Long    functionCount              = null;
+    private Long    cyclomaticComplexityTotal  = null;
+    private Long     cyclomaticComplexityMax    = null;
+    private Long     maxNestingDepth            = null;
+    private Long     testFileCount              = null;
+    private Long    documentedSymbolCount      = null;
 
 
     /**
@@ -94,7 +94,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getFileCount()
+    public Long getFileCount()
     {
         return fileCount;
     }
@@ -105,7 +105,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param fileCount int
      */
-    public void setFileCount(long fileCount)
+    public void setFileCount(Long fileCount)
     {
         this.fileCount = fileCount;
     }
@@ -116,7 +116,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getLineCount()
+    public Long getLineCount()
     {
         return lineCount;
     }
@@ -127,7 +127,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param lineCount long
      */
-    public void setLineCount(long lineCount)
+    public void setLineCount(Long lineCount)
     {
         this.lineCount = lineCount;
     }
@@ -138,7 +138,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getCodeLineCount()
+    public Long getCodeLineCount()
     {
         return codeLineCount;
     }
@@ -149,7 +149,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param codeLineCount long
      */
-    public void setCodeLineCount(long codeLineCount)
+    public void setCodeLineCount(Long codeLineCount)
     {
         this.codeLineCount = codeLineCount;
     }
@@ -160,7 +160,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getCommentLineCount()
+    public Long getCommentLineCount()
     {
         return commentLineCount;
     }
@@ -171,7 +171,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param commentLineCount long
      */
-    public void setCommentLineCount(long commentLineCount)
+    public void setCommentLineCount(Long commentLineCount)
     {
         this.commentLineCount = commentLineCount;
     }
@@ -204,7 +204,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getLanguageCount()
+    public Long getLanguageCount()
     {
         return languageCount;
     }
@@ -215,7 +215,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param languageCount int
      */
-    public void setLanguageCount(long languageCount)
+    public void setLanguageCount(Long languageCount)
     {
         this.languageCount = languageCount;
     }
@@ -226,7 +226,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getPublicSymbolCount()
+    public Long getPublicSymbolCount()
     {
         return publicSymbolCount;
     }
@@ -237,7 +237,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param publicSymbolCount long
      */
-    public void setPublicSymbolCount(long publicSymbolCount)
+    public void setPublicSymbolCount(Long publicSymbolCount)
     {
         this.publicSymbolCount = publicSymbolCount;
     }
@@ -248,7 +248,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getEntryPointCount()
+    public Long getEntryPointCount()
     {
         return entryPointCount;
     }
@@ -259,7 +259,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param entryPointCount int
      */
-    public void setEntryPointCount(long entryPointCount)
+    public void setEntryPointCount(Long entryPointCount)
     {
         this.entryPointCount = entryPointCount;
     }
@@ -270,7 +270,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataReadCount()
+    public Long getDataReadCount()
     {
         return dataReadCount;
     }
@@ -281,7 +281,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataReadCount long
      */
-    public void setDataReadCount(long dataReadCount)
+    public void setDataReadCount(Long dataReadCount)
     {
         this.dataReadCount = dataReadCount;
     }
@@ -292,7 +292,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataCreateCount()
+    public Long getDataCreateCount()
     {
         return dataCreateCount;
     }
@@ -303,7 +303,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataCreateCount long
      */
-    public void setDataCreateCount(long dataCreateCount)
+    public void setDataCreateCount(Long dataCreateCount)
     {
         this.dataCreateCount = dataCreateCount;
     }
@@ -314,7 +314,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataUpdateCount()
+    public Long getDataUpdateCount()
     {
         return dataUpdateCount;
     }
@@ -325,7 +325,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataUpdateCount long
      */
-    public void setDataUpdateCount(long dataUpdateCount)
+    public void setDataUpdateCount(Long dataUpdateCount)
     {
         this.dataUpdateCount = dataUpdateCount;
     }
@@ -336,7 +336,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataDeleteCount()
+    public Long getDataDeleteCount()
     {
         return dataDeleteCount;
     }
@@ -347,7 +347,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataDeleteCount long
      */
-    public void setDataDeleteCount(long dataDeleteCount)
+    public void setDataDeleteCount(Long dataDeleteCount)
     {
         this.dataDeleteCount = dataDeleteCount;
     }
@@ -358,7 +358,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataChecksCount()
+    public Long getDataChecksCount()
     {
         return dataChecksCount;
     }
@@ -369,7 +369,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataChecksCount long
      */
-    public void setDataChecksCount(long dataChecksCount)
+    public void setDataChecksCount(Long dataChecksCount)
     {
         this.dataChecksCount = dataChecksCount;
     }
@@ -380,7 +380,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDataStoreCount()
+    public Long getDataStoreCount()
     {
         return dataStoreCount;
     }
@@ -391,7 +391,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param dataStoreCount long
      */
-    public void setDataStoreCount(long dataStoreCount)
+    public void setDataStoreCount(Long dataStoreCount)
     {
         this.dataStoreCount = dataStoreCount;
     }
@@ -402,7 +402,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getExternalCallCount()
+    public Long getExternalCallCount()
     {
         return externalCallCount;
     }
@@ -413,7 +413,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param externalCallCount long
      */
-    public void setExternalCallCount(long externalCallCount)
+    public void setExternalCallCount(Long externalCallCount)
     {
         this.externalCallCount = externalCallCount;
     }
@@ -424,7 +424,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getFunctionCount()
+    public Long getFunctionCount()
     {
         return functionCount;
     }
@@ -435,7 +435,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param functionCount long
      */
-    public void setFunctionCount(long functionCount)
+    public void setFunctionCount(Long functionCount)
     {
         this.functionCount = functionCount;
     }
@@ -446,7 +446,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getCyclomaticComplexityTotal()
+    public Long getCyclomaticComplexityTotal()
     {
         return cyclomaticComplexityTotal;
     }
@@ -457,7 +457,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param cyclomaticComplexityTotal long
      */
-    public void setCyclomaticComplexityTotal(long cyclomaticComplexityTotal)
+    public void setCyclomaticComplexityTotal(Long cyclomaticComplexityTotal)
     {
         this.cyclomaticComplexityTotal = cyclomaticComplexityTotal;
     }
@@ -468,7 +468,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getCyclomaticComplexityMax()
+    public Long getCyclomaticComplexityMax()
     {
         return cyclomaticComplexityMax;
     }
@@ -479,7 +479,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param cyclomaticComplexityMax int
      */
-    public void setCyclomaticComplexityMax(long cyclomaticComplexityMax)
+    public void setCyclomaticComplexityMax(Long cyclomaticComplexityMax)
     {
         this.cyclomaticComplexityMax = cyclomaticComplexityMax;
     }
@@ -490,7 +490,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getMaxNestingDepth()
+    public Long getMaxNestingDepth()
     {
         return maxNestingDepth;
     }
@@ -501,7 +501,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param maxNestingDepth int
      */
-    public void setMaxNestingDepth(long maxNestingDepth)
+    public void setMaxNestingDepth(Long maxNestingDepth)
     {
         this.maxNestingDepth = maxNestingDepth;
     }
@@ -512,7 +512,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return int
      */
-    public long getTestFileCount()
+    public Long getTestFileCount()
     {
         return testFileCount;
     }
@@ -523,7 +523,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param testFileCount int
      */
-    public void setTestFileCount(long testFileCount)
+    public void setTestFileCount(Long testFileCount)
     {
         this.testFileCount = testFileCount;
     }
@@ -534,7 +534,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @return long
      */
-    public long getDocumentedSymbolCount()
+    public Long getDocumentedSymbolCount()
     {
         return documentedSymbolCount;
     }
@@ -545,7 +545,7 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
      *
      * @param documentedSymbolCount long
      */
-    public void setDocumentedSymbolCount(long documentedSymbolCount)
+    public void setDocumentedSymbolCount(Long documentedSymbolCount)
     {
         this.documentedSymbolCount = documentedSymbolCount;
     }
@@ -607,27 +607,27 @@ public class CodeAnalysisAnnotationProperties extends AnnotationProperties
             return false;
         }
         CodeAnalysisAnnotationProperties that = (CodeAnalysisAnnotationProperties) objectToCompare;
-        return fileCount == that.fileCount &&
-               lineCount == that.lineCount &&
-               codeLineCount == that.codeLineCount &&
-               commentLineCount == that.commentLineCount &&
+        return Objects.equals(fileCount, that.fileCount) &&
+               Objects.equals(lineCount, that.lineCount) &&
+               Objects.equals(codeLineCount, that.codeLineCount) &&
+               Objects.equals(commentLineCount, that.commentLineCount) &&
                Objects.equals(primaryLanguage, that.primaryLanguage) &&
-               languageCount == that.languageCount &&
-               publicSymbolCount == that.publicSymbolCount &&
-               entryPointCount == that.entryPointCount &&
-               dataReadCount == that.dataReadCount &&
-               dataCreateCount == that.dataCreateCount &&
-               dataUpdateCount == that.dataUpdateCount &&
-               dataDeleteCount == that.dataDeleteCount &&
-               dataChecksCount == that.dataChecksCount &&
-               dataStoreCount == that.dataStoreCount &&
-               externalCallCount == that.externalCallCount &&
-               functionCount == that.functionCount &&
-               cyclomaticComplexityTotal == that.cyclomaticComplexityTotal &&
-               cyclomaticComplexityMax == that.cyclomaticComplexityMax &&
-               maxNestingDepth == that.maxNestingDepth &&
-               testFileCount == that.testFileCount &&
-               documentedSymbolCount == that.documentedSymbolCount;
+               Objects.equals(languageCount, that.languageCount) &&
+               Objects.equals(publicSymbolCount, that.publicSymbolCount) &&
+               Objects.equals(entryPointCount, that.entryPointCount) &&
+               Objects.equals(dataReadCount, that.dataReadCount) &&
+               Objects.equals(dataCreateCount, that.dataCreateCount) &&
+               Objects.equals(dataUpdateCount, that.dataUpdateCount) &&
+               Objects.equals(dataDeleteCount, that.dataDeleteCount) &&
+               Objects.equals(dataChecksCount, that.dataChecksCount) &&
+               Objects.equals(dataStoreCount, that.dataStoreCount) &&
+               Objects.equals(externalCallCount, that.externalCallCount) &&
+               Objects.equals(functionCount, that.functionCount) &&
+               Objects.equals(cyclomaticComplexityTotal, that.cyclomaticComplexityTotal) &&
+               Objects.equals(cyclomaticComplexityMax, that.cyclomaticComplexityMax) &&
+               Objects.equals(maxNestingDepth, that.maxNestingDepth) &&
+               Objects.equals(testFileCount, that.testFileCount) &&
+               Objects.equals(documentedSymbolCount, that.documentedSymbolCount);
     }
 
 

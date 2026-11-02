@@ -31,7 +31,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     private Date       externalInstanceCreationTime   = null;
     private String     externalInstanceLastUpdatedBy  = null;
     private Date       externalInstanceLastUpdateTime = null;
-    private long       externalInstanceVersion        = 0L;
+    private Long       externalInstanceVersion        = null;
 
 
     /**
@@ -226,7 +226,7 @@ public class ExternalIdProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getExternalInstanceVersion()
+    public Long getExternalInstanceVersion()
     {
         return externalInstanceVersion;
     }
@@ -237,7 +237,7 @@ public class ExternalIdProperties extends ReferenceableProperties
      *
      * @param externalInstanceVersion long
      */
-    public void setExternalInstanceVersion(long externalInstanceVersion)
+    public void setExternalInstanceVersion(Long externalInstanceVersion)
     {
         this.externalInstanceVersion = externalInstanceVersion;
     }
@@ -277,7 +277,7 @@ public class ExternalIdProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ExternalIdProperties that = (ExternalIdProperties) objectToCompare;
-        return externalInstanceVersion == that.externalInstanceVersion &&
+        return Objects.equals(externalInstanceVersion, that.externalInstanceVersion) &&
                 Objects.equals(key, that.key) &&
                 Objects.equals(externalInstanceTypeName, that.externalInstanceTypeName) &&
                 keyPattern == that.keyPattern &&

@@ -35,9 +35,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PartOfRelationshipProperties extends RelationshipBeanProperties
 {
-    private int              position         = 0;
-    private int              minCardinality   = 0;
-    private int              maxCardinality   = 0;
+    private Integer          position         = null;
+    private Integer          minCardinality   = null;
+    private Integer          maxCardinality   = null;
     private CoverageCategory coverageCategory = null;
 
 
@@ -74,7 +74,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @return int position in schema - 0 means none or not applicable
      */
-    public int getPosition() { return position; }
+    public Integer getPosition() { return position; }
 
 
     /**
@@ -82,7 +82,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @param position int position in schema - 0 means none or not applicable
      */
-    public void setPosition(int position)
+    public void setPosition(Integer position)
     {
         this.position = position;
     }
@@ -93,7 +93,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getMinCardinality()
+    public Integer getMinCardinality()
     {
         return minCardinality;
     }
@@ -104,7 +104,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @param minCardinality int
      */
-    public void setMinCardinality(int minCardinality)
+    public void setMinCardinality(Integer minCardinality)
     {
         this.minCardinality = minCardinality;
     }
@@ -115,7 +115,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @return int (-1 means infinite)
      */
-    public int getMaxCardinality()
+    public Integer getMaxCardinality()
     {
         return maxCardinality;
     }
@@ -126,7 +126,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
      *
      * @param maxCardinality int (-1 means infinite)
      */
-    public void setMaxCardinality(int maxCardinality)
+    public void setMaxCardinality(Integer maxCardinality)
     {
         this.maxCardinality = maxCardinality;
     }
@@ -183,7 +183,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         PartOfRelationshipProperties that = (PartOfRelationshipProperties) objectToCompare;
-        return position == that.position && minCardinality == that.minCardinality && maxCardinality == that.maxCardinality && coverageCategory == that.coverageCategory;
+        return Objects.equals(position, that.position) && Objects.equals(minCardinality, that.minCardinality) && Objects.equals(maxCardinality, that.maxCardinality) && coverageCategory == that.coverageCategory;
     }
 
     /**

@@ -24,12 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProperties
 {
     private List<String>         profilePropertyNames = null;
-    private int                  length               = 0;
+    private Integer              length               = null;
     private String               inferredDataType     = null;
     private String               inferredFormat       = null;
-    private int                  inferredLength       = 0;
-    private int                  inferredPrecision    = 0;
-    private int                  inferredScale        = 0;
+    private Integer              inferredLength       = null;
+    private Integer              inferredPrecision    = null;
+    private Integer              inferredScale        = null;
     private Date                 profileStartDate     = null;
     private Date                 profileEndDate       = null;
     private Map<String, String>  profileProperties    = null;
@@ -115,7 +115,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @return integer
      */
-    public int getLength()
+    public Integer getLength()
     {
         return length;
     }
@@ -126,7 +126,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @param length integer
      */
-    public void setLength(int length)
+    public void setLength(Integer length)
     {
         this.length = length;
     }
@@ -181,7 +181,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @return integer
      */
-    public int getInferredLength()
+    public Integer getInferredLength()
     {
         return inferredLength;
     }
@@ -192,7 +192,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @param inferredLength integer
      */
-    public void setInferredLength(int inferredLength)
+    public void setInferredLength(Integer inferredLength)
     {
         this.inferredLength = inferredLength;
     }
@@ -203,7 +203,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @return integer
      */
-    public int getInferredPrecision()
+    public Integer getInferredPrecision()
     {
         return inferredPrecision;
     }
@@ -214,7 +214,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @param inferredPrecision integer
      */
-    public void setInferredPrecision(int inferredPrecision)
+    public void setInferredPrecision(Integer inferredPrecision)
     {
         this.inferredPrecision = inferredPrecision;
     }
@@ -225,7 +225,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @return integer
      */
-    public int getInferredScale()
+    public Integer getInferredScale()
     {
         return inferredScale;
     }
@@ -236,7 +236,7 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
      *
      * @param inferredScale integer
      */
-    public void setInferredScale(int inferredScale)
+    public void setInferredScale(Integer inferredScale)
     {
         this.inferredScale = inferredScale;
     }
@@ -559,10 +559,10 @@ public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProp
             return false;
         }
         ResourceProfileAnnotationProperties that = (ResourceProfileAnnotationProperties) objectToCompare;
-        return length == that.length &&
-                inferredLength == that.inferredLength &&
-                inferredPrecision == that.inferredPrecision &&
-                inferredScale == that.inferredScale &&
+        return Objects.equals(length, that.length) &&
+                Objects.equals(inferredLength, that.inferredLength) &&
+                Objects.equals(inferredPrecision, that.inferredPrecision) &&
+                Objects.equals(inferredScale, that.inferredScale) &&
                 Objects.equals(profilePropertyNames, that.profilePropertyNames) &&
                 Objects.equals(inferredDataType, that.inferredDataType) &&
                 Objects.equals(inferredFormat, that.inferredFormat) &&

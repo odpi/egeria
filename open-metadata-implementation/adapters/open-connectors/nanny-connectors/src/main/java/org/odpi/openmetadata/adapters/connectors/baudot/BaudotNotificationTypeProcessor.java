@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -226,10 +227,10 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
     {
         final String methodName = "notifySubscribers";
 
-        long                   notificationCount          = notificationTypeProperties.getNotificationCount() + 1;
+        long                   notificationCount          = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
         NotificationProperties nextNotificationProperties;
 
-        if (notificationTypeProperties.getMultipleNotificationsPermitted())
+        if (OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationTypeProperties.getMultipleNotificationsPermitted()))
         {
             Date   nextRefresh     = integrationContext.getNextScheduledRefreshTime();
             String nextRefreshText = (nextRefresh == null) ? "the next refresh of this connector" : nextRefresh.toString();
@@ -238,12 +239,12 @@ public class BaudotNotificationTypeProcessor extends CatalogTargetProcessorBase
                       BaudotAuditCode.PERIODIC_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
                                                                                       notificationTypeDisplayName,
                                                                                       notificationTypeGUID,
-                                                                                      Long.toString(notificationTypeProperties.getMinimumNotificationInterval()),
+                                                                                      Long.toString(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval())),
                                                                                       nextRefreshText));
 
             nextNotificationProperties = this.getNotificationProperties(BaudotNotificationMessageSet.PERIODIC_NOTIFICATION.getMessageDefinition(notificationTypeDisplayName,
                                                                                                                                                 notificationTypeGUID,
-                                                                                                                                                Long.toString(notificationTypeProperties.getMinimumNotificationInterval())),
+                                                                                                                                                Long.toString(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval()))),
                                                                         notificationTypeGUID,
                                                                         notificationCount);
         }

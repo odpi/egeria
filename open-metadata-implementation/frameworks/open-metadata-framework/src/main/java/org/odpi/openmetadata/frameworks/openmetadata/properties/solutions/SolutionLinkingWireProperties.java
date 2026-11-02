@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
 {
     private List<String> iscQualifiedNames = null;
-    private boolean      oneWay            = true;
+    private Boolean      oneWay            = null;
     private String       integrationStyle  = null;
     private String       protocol          = null;
     private String       frequency         = null;
@@ -99,7 +99,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
      *
      * @return boolean flag
      */
-    public boolean getOneWay()
+    public Boolean getOneWay()
     {
         return oneWay;
     }
@@ -110,7 +110,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
      *
      * @param oneWay boolean flag
      */
-    public void setOneWay(boolean oneWay)
+    public void setOneWay(Boolean oneWay)
     {
         this.oneWay = oneWay;
     }
@@ -235,7 +235,7 @@ public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SolutionLinkingWireProperties that = (SolutionLinkingWireProperties) objectToCompare;
-        return oneWay == that.oneWay && Objects.equals(iscQualifiedNames, that.iscQualifiedNames) && Objects.equals(integrationStyle, that.integrationStyle) && Objects.equals(protocol, that.protocol) && Objects.equals(frequency, that.frequency) && Objects.equals(dataExchanged, that.dataExchanged);
+        return Objects.equals(oneWay, that.oneWay) && Objects.equals(iscQualifiedNames, that.iscQualifiedNames) && Objects.equals(integrationStyle, that.integrationStyle) && Objects.equals(protocol, that.protocol) && Objects.equals(frequency, that.frequency) && Objects.equals(dataExchanged, that.dataExchanged);
     }
 
     /**

@@ -1234,6 +1234,24 @@ public class PropertyHelper
 
 
     /**
+     * Add the supplied property to an element properties object.  If the element property object
+     * supplied is null, a new element properties object is created.  If the property value is null,
+     * the property is not added, so that an update leaves any stored value unchanged.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property, may be null
+     * @return resulting element properties object
+     */
+    public ElementProperties addIntProperty(ElementProperties properties,
+                                            String            propertyName,
+                                            Integer           propertyValue)
+    {
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
+    }
+
+
+    /**
      * Add an int property to a set of search conditions.
      *
      * @param existingSearchConditions search conditions
@@ -1269,6 +1287,24 @@ public class PropertyHelper
 
 
     /**
+     * Add the supplied property to an element properties object.  If the element property object
+     * supplied is null, a new element properties object is created.  If the property value is null,
+     * the property is not added, so that an update leaves any stored value unchanged.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property, may be null
+     * @return resulting element properties object
+     */
+    public ElementProperties addLongProperty(ElementProperties properties,
+                                             String            propertyName,
+                                             Long              propertyValue)
+    {
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG);
+    }
+
+
+    /**
      * Add a long property to a set of search conditions.
      *
      * @param existingSearchConditions search conditions
@@ -1298,6 +1334,24 @@ public class PropertyHelper
     public ElementProperties addFloatProperty(ElementProperties properties,
                                               String            propertyName,
                                               float             propertyValue)
+    {
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
+    }
+
+
+    /**
+     * Add the supplied property to an element properties object.  If the element property object
+     * supplied is null, a new element properties object is created.  If the property value is null,
+     * the property is not added, so that an update leaves any stored value unchanged.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property, may be null
+     * @return resulting element properties object
+     */
+    public ElementProperties addFloatProperty(ElementProperties properties,
+                                              String            propertyName,
+                                              Float             propertyValue)
     {
         return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT);
     }
@@ -1375,6 +1429,24 @@ public class PropertyHelper
     public ElementProperties addBooleanProperty(ElementProperties properties,
                                                 String            propertyName,
                                                 boolean           propertyValue)
+    {
+        return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+    }
+
+
+    /**
+     * Add the supplied property to an element properties object.  If the element property object
+     * supplied is null, a new element properties object is created.  If the property value is null,
+     * the property is not added, so that an update leaves any stored value unchanged.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property, may be null
+     * @return resulting element properties object
+     */
+    public ElementProperties addBooleanProperty(ElementProperties properties,
+                                                String            propertyName,
+                                                Boolean           propertyValue)
     {
         return addPrimitivePropertyToInstance(properties, propertyName, propertyValue, PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
     }
@@ -3116,6 +3188,35 @@ public class PropertyHelper
     }
 
 
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the properties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    public Integer removeNullableIntProperty(String            sourceName,
+                                             String            propertyName,
+                                             ElementProperties properties,
+                                             String            methodName)
+    {
+        Integer retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getNullableIntProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
 
     /**
      * Return the requested property or null if property is not found.
@@ -3177,6 +3278,35 @@ public class PropertyHelper
 
 
     /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the properties structure.
+     * If the property is not a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    public Boolean removeNullableBooleanProperty(String            sourceName,
+                                                 String            propertyName,
+                                                 ElementProperties properties,
+                                                 String            methodName)
+    {
+        Boolean retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getNullableBooleanProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Return the requested property or 0 if property is not found.
      * If the property is found, it is removed from the InstanceProperties structure.
      * If the property is not a long property then a logic exception is thrown.
@@ -3206,6 +3336,35 @@ public class PropertyHelper
 
 
     /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the properties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    public Long removeNullableLongProperty(String            sourceName,
+                                           String            propertyName,
+                                           ElementProperties properties,
+                                           String            methodName)
+    {
+        Long retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getNullableLongProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Return the requested property or 0 if property is not found.
      * If the property is found, it is removed from the InstanceProperties structure.
      * If the property is not a long property then a logic exception is thrown.
@@ -3226,6 +3385,35 @@ public class PropertyHelper
         if (properties != null)
         {
             retrievedProperty = this.getFloatProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the properties structure.
+     * If the property is not a float property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    public Float removeNullableFloatProperty(String            sourceName,
+                                             String            propertyName,
+                                             ElementProperties properties,
+                                             String            methodName)
+    {
+        Float retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getNullableFloatProperty(sourceName, propertyName, properties, methodName);
 
             this.removeProperty(propertyName, properties);
         }
@@ -4341,21 +4529,21 @@ public class PropertyHelper
 
 
     /**
-     * Return the requested property or 0 if property is not found.  If the property is not
+     * Return the requested property or null if the property is not found.  If the property is not
      * an int property then a logic exception is thrown.
      *
      * @param sourceName source of call
      * @param propertyName name of requested property
      * @param properties properties from the instance.
      * @param methodName method of caller
-     * @return string property value or null
+     * @return property value or null
      */
-    public int    getIntProperty(String             sourceName,
-                                 String             propertyName,
-                                 ElementProperties properties,
-                                 String             methodName)
+    public Integer getNullableIntProperty(String             sourceName,
+                                          String             propertyName,
+                                          ElementProperties properties,
+                                          String             methodName)
     {
-        final String  thisMethodName = "getIntProperty";
+        final String  thisMethodName = "getNullableIntProperty";
 
         if (properties != null)
         {
@@ -4383,14 +4571,13 @@ public class PropertyHelper
             }
         }
         
-        return 0;
+        return null;
     }
-
 
 
     /**
      * Return the requested property or 0 if property is not found.  If the property is not
-     * a long property then a logic exception is thrown.
+     * an int property then a logic exception is thrown.
      *
      * @param sourceName source of call
      * @param propertyName name of requested property
@@ -4398,12 +4585,39 @@ public class PropertyHelper
      * @param methodName method of caller
      * @return string property value or null
      */
-    public long  getLongProperty(String             sourceName,
+    public int    getIntProperty(String             sourceName,
                                  String             propertyName,
                                  ElementProperties properties,
                                  String             methodName)
     {
-        final String  thisMethodName = "getLongProperty";
+        Integer propertyValue = this.getNullableIntProperty(sourceName, propertyName, properties, methodName);
+
+        if (propertyValue != null)
+        {
+            return propertyValue;
+        }
+
+        return 0;
+    }
+
+
+
+    /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return property value or null
+     */
+    public Long getNullableLongProperty(String             sourceName,
+                                        String             propertyName,
+                                        ElementProperties properties,
+                                        String             methodName)
+    {
+        final String  thisMethodName = "getNullableLongProperty";
 
         if (properties != null)
         {
@@ -4431,7 +4645,7 @@ public class PropertyHelper
             }
         }
 
-        return 0L;
+        return null;
     }
 
 
@@ -4445,12 +4659,38 @@ public class PropertyHelper
      * @param methodName method of caller
      * @return string property value or null
      */
-    public float getFloatProperty(String             sourceName,
-                                  String             propertyName,
-                                  ElementProperties properties,
-                                  String             methodName)
+    public long  getLongProperty(String             sourceName,
+                                 String             propertyName,
+                                 ElementProperties properties,
+                                 String             methodName)
     {
-        final String  thisMethodName = "getFloatProperty";
+        Long propertyValue = this.getNullableLongProperty(sourceName, propertyName, properties, methodName);
+
+        if (propertyValue != null)
+        {
+            return propertyValue;
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a float property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return property value or null
+     */
+    public Float getNullableFloatProperty(String             sourceName,
+                                          String             propertyName,
+                                          ElementProperties properties,
+                                          String             methodName)
+    {
+        final String  thisMethodName = "getNullableFloatProperty";
 
         if (properties != null)
         {
@@ -4476,6 +4716,32 @@ public class PropertyHelper
                     throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public float getFloatProperty(String             sourceName,
+                                  String             propertyName,
+                                  ElementProperties properties,
+                                  String             methodName)
+    {
+        Float propertyValue = this.getNullableFloatProperty(sourceName, propertyName, properties, methodName);
+
+        if (propertyValue != null)
+        {
+            return propertyValue;
         }
 
         return 0F;
@@ -4534,21 +4800,21 @@ public class PropertyHelper
 
 
     /**
-     * Return the requested property or false if property is not found.  If the property is not
-     * a boolean property then a logic exception is thrown
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a boolean property then a logic exception is thrown.
      *
      * @param sourceName source of call
      * @param propertyName name of requested property
      * @param properties properties from the instance.
      * @param methodName method of caller
-     * @return string property value or null
+     * @return property value or null
      */
-    public boolean getBooleanProperty(String             sourceName,
-                                      String             propertyName,
-                                      ElementProperties properties,
-                                      String             methodName)
+    public Boolean getNullableBooleanProperty(String             sourceName,
+                                              String             propertyName,
+                                              ElementProperties properties,
+                                              String             methodName)
     {
-        final String  thisMethodName = "getBooleanProperty";
+        final String  thisMethodName = "getNullableBooleanProperty";
 
         if (properties != null)
         {
@@ -4576,6 +4842,32 @@ public class PropertyHelper
             }
         }
         
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or false if property is not found.  If the property is not
+     * a boolean property then a logic exception is thrown
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public boolean getBooleanProperty(String             sourceName,
+                                      String             propertyName,
+                                      ElementProperties properties,
+                                      String             methodName)
+    {
+        Boolean propertyValue = this.getNullableBooleanProperty(sourceName, propertyName, properties, methodName);
+
+        if (propertyValue != null)
+        {
+            return propertyValue;
+        }
+
         return false;
     }
 

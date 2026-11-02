@@ -9,7 +9,7 @@ The LovelaceInsightErrorCode is used to define first failure data capture (FFDC)
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 2 |
+| **Number of messages** | 1 |
 | **Message identifiers begin** | `LOVELACE-INSIGHTS-500-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.LovelaceInsightErrorCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/lovelace-insights](../../../open-metadata-implementation/adapters/open-connectors/lovelace-insights) |
@@ -21,29 +21,7 @@ The LovelaceInsightErrorCode is used to define first failure data capture (FFDC)
 
 | Message Id | HTTP Code | Message |
 |---|---|---|
-| [LOVELACE-INSIGHTS-500-003](#lovelace-insights-500-003) | 500 | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2} |
 | [LOVELACE-INSIGHTS-500-004](#lovelace-insights-500-004) | 500 | The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2} |
-
-----
-
-### LOVELACE-INSIGHTS-500-003
-
-> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
-
-|  |  |
-|---|---|
-| **Java constant** | `LovelaceInsightErrorCode.UNABLE_TO_REGISTER_LISTENER` |
-| **HTTP error code** | 500 - Internal Server Error - an unexpected error occurred inside Egeria |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
-
-**System action**
-
-The governance action throws a GovernanceServiceException in the hope that the .
-
-**User action**
-
-This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and and follow its instructions.
-
 
 ----
 

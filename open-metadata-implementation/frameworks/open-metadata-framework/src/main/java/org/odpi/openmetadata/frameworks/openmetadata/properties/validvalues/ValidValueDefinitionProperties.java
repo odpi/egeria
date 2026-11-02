@@ -33,8 +33,8 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
     private String  scope           = null;
     private String  preferredValue  = null;
     private String  dataType        = null;
-    private boolean isCaseSensitive = false;
-    private int     ordinal         = 0;
+    private Boolean isCaseSensitive = null;
+    private Integer ordinal         = null;
 
 
     /**
@@ -185,7 +185,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @return boolean flag
      */
-    public boolean getIsCaseSensitive()
+    public Boolean getIsCaseSensitive()
     {
         return isCaseSensitive;
     }
@@ -196,7 +196,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @param caseSensitive boolean flag
      */
-    public void setIsCaseSensitive(boolean caseSensitive)
+    public void setIsCaseSensitive(Boolean caseSensitive)
     {
         isCaseSensitive = caseSensitive;
     }
@@ -207,7 +207,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @return int ordinal
      */
-    public int getOrdinal()
+    public Integer getOrdinal()
     {
         return ordinal;
     }
@@ -218,7 +218,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
      *
      * @param ordinal int
      */
-    public void setOrdinal(int ordinal)
+    public void setOrdinal(Integer ordinal)
     {
         this.ordinal = ordinal;
     }
@@ -266,7 +266,7 @@ public class ValidValueDefinitionProperties extends AuthoredReferenceablePropert
             return false;
         }
         ValidValueDefinitionProperties that = (ValidValueDefinitionProperties) objectToCompare;
-        return ordinal == that.ordinal &&
+        return Objects.equals(ordinal, that.ordinal) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(isCaseSensitive, that.isCaseSensitive) &&

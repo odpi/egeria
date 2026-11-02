@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 70 | 644 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 109 | 1059 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 70 | 643 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 110 | 1063 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -100,8 +100,8 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 49 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 19 | 125 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
-| [Lovelace Insights](connectors/lovelace-insights) | 2 | 17 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
+| [Nanny Connectors](connectors/nanny-connectors) | 20 | 132 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Lovelace Insights](connectors/lovelace-insights) | 2 | 13 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
 | [Metadata Security Connectors](connectors/metadata-security-connectors) | 1 | 1 | These connectors implement an organization's authorization rules for the OMAG Server Platform and its servers. |
@@ -178,8 +178,8 @@ Every message identifier begins with a prefix that names the component that rais
 | `JDBC-RESOURCE-CONNECTOR-` | Exception messages | 7 | [JDBCErrorCode](connectors/data-store-connectors/JDBCErrorCode.md) |
 | `LISKOV-DATA-HUB-MANAGER-` | Audit log messages | 13 | [LiskovAuditCode](connectors/nanny-connectors/LiskovAuditCode.md) |
 | `LISKOV-DATA-HUB-MANAGER-500-` | Exception messages | 1 | [LiskovErrorCode](connectors/nanny-connectors/LiskovErrorCode.md) |
-| `LOVELACE-INSIGHTS-` | Audit log messages | 15 | [LovelaceInsightAuditCode](connectors/lovelace-insights/LovelaceInsightAuditCode.md) |
-| `LOVELACE-INSIGHTS-500-` | Exception messages | 2 | [LovelaceInsightErrorCode](connectors/lovelace-insights/LovelaceInsightErrorCode.md) |
+| `LOVELACE-INSIGHTS-` | Audit log messages | 12 | [LovelaceInsightAuditCode](connectors/lovelace-insights/LovelaceInsightAuditCode.md) |
+| `LOVELACE-INSIGHTS-500-` | Exception messages | 1 | [LovelaceInsightErrorCode](connectors/lovelace-insights/LovelaceInsightErrorCode.md) |
 | `MENDEL-DUPLICATE-MANAGER-` | Audit log messages | 18 | [MendelAuditCode](connectors/nanny-connectors/MendelAuditCode.md) |
 | `MENDEL-DUPLICATE-MANAGER-500-` | Exception messages | 1 | [MendelErrorCode](connectors/nanny-connectors/MendelErrorCode.md) |
 | `METADATA-OBSERVABILITY-` | Audit log messages | 11 | [OpenMetadataObservabilityAuditCode](common-services/OpenMetadataObservabilityAuditCode.md) |
@@ -286,6 +286,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `REPORT-GENERATORS-` | Audit log messages | 2 | [ReportsAuditCode](connectors/report-generating-connectors/ReportsAuditCode.md) |
 | `SERVER-OPS-` | Audit log messages | 24 | [ServerOpsAuditCode](server-operations/ServerOpsAuditCode.md) |
 | `SERVER-OPS-` | Exception messages | 7 | [ServerOpsErrorCode](server-operations/ServerOpsErrorCode.md) |
+| `SIMON-CONTRIBUTION-RECORDER-` | Audit log messages | 7 | [SimonAuditCode](connectors/nanny-connectors/SimonAuditCode.md) |
 | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | Audit log messages | 4 | [SmartCollectionsAuditCode](connectors/integration-connectors/SmartCollectionsAuditCode.md) |
 | `SMART-COLLECTIONS-INTEGRATION-CONNECTOR-` | Exception messages | 2 | [SmartCollectionsErrorCode](connectors/integration-connectors/SmartCollectionsErrorCode.md) |
 | `SURVEY-ACTION-SERVICE-` | Audit log messages | 5 | [SurveyServiceAuditCode](connectors/file-survey-connectors/SurveyServiceAuditCode.md) |

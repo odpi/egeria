@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SourcedFromProperties extends RelationshipBeanProperties
 {
-    private long sourceVersionNumber = 0L;
+    private Long sourceVersionNumber = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class SourcedFromProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public long getSourceVersionNumber() { return sourceVersionNumber; }
+    public Long getSourceVersionNumber() { return sourceVersionNumber; }
 
 
     /**
@@ -63,7 +63,7 @@ public class SourcedFromProperties extends RelationshipBeanProperties
      *
      * @param sourceVersionNumber long
      */
-    public void setSourceVersionNumber(long sourceVersionNumber)
+    public void setSourceVersionNumber(Long sourceVersionNumber)
     {
         this.sourceVersionNumber = sourceVersionNumber;
     }
@@ -96,7 +96,7 @@ public class SourcedFromProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SourcedFromProperties that = (SourcedFromProperties) objectToCompare;
-        return (sourceVersionNumber == that.sourceVersionNumber);
+        return (Objects.equals(sourceVersionNumber, that.sourceVersionNumber));
     }
 
     /**

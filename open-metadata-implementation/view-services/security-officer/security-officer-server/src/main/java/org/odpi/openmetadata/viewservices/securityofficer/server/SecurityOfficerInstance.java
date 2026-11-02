@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.StatementOfApplicabilityHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
@@ -26,7 +27,8 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
     private final ConnectedAssetClient        connectedAssetClient;
     private final AssetHandler                softwarePlatformHandler;
     private final AssetHandler                secretsCollectionHandler;
-    private final GovernanceDefinitionHandler governanceDefinitionHandler;
+    private final GovernanceDefinitionHandler     governanceDefinitionHandler;
+    private final StatementOfApplicabilityHandler statementOfApplicabilityHandler;
 
 
     /**
@@ -74,6 +76,11 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
                                                                       myDescription.getViewServiceFullName(),
                                                                       openMetadataClient);
 
+        statementOfApplicabilityHandler = new StatementOfApplicabilityHandler(serverName,
+                                                                              auditLog,
+                                                                              myDescription.getViewServiceFullName(),
+                                                                              openMetadataClient);
+
         connectedAssetClient = new EgeriaConnectedAssetClient(remoteServerName,
                                                               remoteServerURL,
                                                               localServerSecretsStoreProvider,
@@ -105,6 +112,17 @@ public class SecurityOfficerInstance extends OMVSServiceInstance
     public GovernanceDefinitionHandler getGovernanceDefinitionHandler()
     {
         return governanceDefinitionHandler;
+    }
+
+
+    /**
+     * Return the handler for statements of applicability.
+     *
+     * @return handler
+     */
+    public StatementOfApplicabilityHandler getStatementOfApplicabilityHandler()
+    {
+        return statementOfApplicabilityHandler;
     }
 
 

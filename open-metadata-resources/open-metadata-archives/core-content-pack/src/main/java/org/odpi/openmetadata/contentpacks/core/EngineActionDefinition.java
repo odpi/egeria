@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.contentpacks.core;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 
@@ -13,18 +12,6 @@ import java.util.Map;
  */
 public enum EngineActionDefinition
 {
-    /*
-     * Not in use - registered as a lovelace service
-     */
-    KARMA_POINTS("2d23a09b-0cbf-44d3-b2ad-d818d070561f",
-                 "Egeria:" + OpenMetadataType.ENGINE_ACTION.typeName + ":AwardKarmaPoints",
-                 "Award Karma Points Action",
-                 RequestTypeDefinition.AWARD_KARMA_POINTS,
-                 null,
-                 "egeria",
-                 ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
-
-
     ;
 
     private final String                guid;

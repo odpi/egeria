@@ -26,9 +26,9 @@ public class ContextEventProperties extends ReferenceableProperties
     private String eventEffect            = null;
     private Date   plannedStartDate       = null;
     private Date   actualStartDate        = null;
-    private long   plannedDuration        = 0L;
-    private long   actualDuration         = 0L;
-    private long   repeatInterval         = 0L;
+    private Long   plannedDuration        = null;
+    private Long   actualDuration         = null;
+    private Long   repeatInterval         = null;
     private Date   plannedCompletionDate  = null;
     private Date   actualCompletionDate   = null;
     private Date   referenceEffectiveFrom = null;
@@ -141,7 +141,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getPlannedDuration()
+    public Long getPlannedDuration()
     {
         return plannedDuration;
     }
@@ -152,7 +152,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @param plannedDuration long
      */
-    public void setPlannedDuration(long plannedDuration)
+    public void setPlannedDuration(Long plannedDuration)
     {
         this.plannedDuration = plannedDuration;
     }
@@ -163,7 +163,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getActualDuration()
+    public Long getActualDuration()
     {
         return actualDuration;
     }
@@ -174,7 +174,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @param actualDuration long
      */
-    public void setActualDuration(long actualDuration)
+    public void setActualDuration(Long actualDuration)
     {
         this.actualDuration = actualDuration;
     }
@@ -185,7 +185,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @return long
      */
-    public long getRepeatInterval()
+    public Long getRepeatInterval()
     {
         return repeatInterval;
     }
@@ -196,7 +196,7 @@ public class ContextEventProperties extends ReferenceableProperties
      *
      * @param repeatInterval long
      */
-    public void setRepeatInterval(long repeatInterval)
+    public void setRepeatInterval(Long repeatInterval)
     {
         this.repeatInterval = repeatInterval;
     }
@@ -326,9 +326,9 @@ public class ContextEventProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContextEventProperties that = (ContextEventProperties) objectToCompare;
-        return plannedDuration == that.plannedDuration
-                && actualDuration == that.actualDuration
-                && repeatInterval == that.repeatInterval
+        return Objects.equals(plannedDuration, that.plannedDuration)
+                && Objects.equals(actualDuration, that.actualDuration)
+                && Objects.equals(repeatInterval, that.repeatInterval)
                 && Objects.equals(eventEffect, that.eventEffect)
                 && Objects.equals(plannedStartDate, that.plannedStartDate)
                 && Objects.equals(actualStartDate, that.actualStartDate)

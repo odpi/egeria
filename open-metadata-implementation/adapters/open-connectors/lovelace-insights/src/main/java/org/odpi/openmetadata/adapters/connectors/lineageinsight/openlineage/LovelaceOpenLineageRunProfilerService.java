@@ -284,8 +284,8 @@ public class LovelaceOpenLineageRunProfilerService extends LovelaceOpenLineageAn
                 OpenLineageRunHistory.RunRecord first = runs.get(0);
                 OpenLineageRunHistory.RunRecord last  = runs.get(runs.size() - 1);
 
-                runMetrics.setRunCount(runs.size());
-                runMetrics.setFailedRunCount(failed);
+                runMetrics.setRunCount((long) runs.size());
+                runMetrics.setFailedRunCount((long) failed);
                 runMetrics.setFirstRunStartTime(first.effectiveStartTime());
                 runMetrics.setLastRunId(last.runId);
                 runMetrics.setLastRunStartTime(last.effectiveStartTime());

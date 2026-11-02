@@ -439,6 +439,39 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Integer getNullableIntProperty(String             sourceName,
+                               String             propertyName,
+                               InstanceProperties properties,
+                               String             methodName);
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Integer removeNullableIntProperty(String             sourceName,
+                                  String             propertyName,
+                                  InstanceProperties properties,
+                                  String             methodName);
+
+
+    /**
      * Return the requested property or 0 if property is not found.  If the property is not
      * an int property then a logic exception is thrown.
      *
@@ -469,6 +502,39 @@ public interface OMRSRepositoryPropertiesHelper
                               String             propertyName,
                               InstanceProperties properties,
                               String             methodName);
+
+
+    /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Long getNullableLongProperty(String             sourceName,
+                             String             propertyName,
+                             InstanceProperties properties,
+                             String             methodName);
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Long removeNullableLongProperty(String             sourceName,
+                                String             propertyName,
+                                InstanceProperties properties,
+                                String             methodName);
 
 
     /**
@@ -538,6 +604,39 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the requested property or null if the property is not found.  If the property is not
+     * a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Boolean getNullableBooleanProperty(String             sourceName,
+                                   String             propertyName,
+                                   InstanceProperties properties,
+                                   String             methodName);
+
+
+    /**
+     * Return the requested property or null if the property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return property value or null
+     */
+    Boolean removeNullableBooleanProperty(String             sourceName,
+                                      String             propertyName,
+                                      InstanceProperties properties,
+                                      String             methodName);
+
+
+    /**
      * If the supplied property is not null, add it to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -593,6 +692,25 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addIntPropertyToInstance(String             sourceName,
+                                            InstanceProperties properties,
+                                            String             propertyName,
+                                            Integer            propertyValue,
+                                            String             methodName);
+
+
+    /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -608,6 +726,25 @@ public interface OMRSRepositoryPropertiesHelper
                                                  String             propertyName,
                                                  long               propertyValue,
                                                  String             methodName);
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addLongPropertyToInstance(String             sourceName,
+                                             InstanceProperties properties,
+                                             String             propertyName,
+                                             Long               propertyValue,
+                                             String             methodName);
 
 
     /**
@@ -629,6 +766,25 @@ public interface OMRSRepositoryPropertiesHelper
 
 
     /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addDoublePropertyToInstance(String             sourceName,
+                                               InstanceProperties properties,
+                                               String             propertyName,
+                                               Double             propertyValue,
+                                               String             methodName);
+
+
+    /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
@@ -644,6 +800,25 @@ public interface OMRSRepositoryPropertiesHelper
                                                   String             propertyName,
                                                   float              propertyValue,
                                                   String             methodName);
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addFloatPropertyToInstance(String             sourceName,
+                                              InstanceProperties properties,
+                                              String             propertyName,
+                                              Float              propertyValue,
+                                              String             methodName);
 
 
     /**
@@ -680,6 +855,25 @@ public interface OMRSRepositoryPropertiesHelper
                                                     String             propertyName,
                                                     boolean            propertyValue,
                                                     String             methodName);
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.  A null value is not added, so that an update
+     * leaves any stored value unchanged.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property, may be null
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addBooleanPropertyToInstance(String             sourceName,
+                                                InstanceProperties properties,
+                                                String             propertyName,
+                                                Boolean            propertyValue,
+                                                String             methodName);
 
 
     /**

@@ -23,19 +23,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MemberPopularityProfileProperties extends ClassificationBeanProperties
 {
-    private long              explicitGetCountTotal = 0L;
+    private Long              explicitGetCountTotal = null;
     private Map<String, Long> explicitGetCountProfile = null;
-    private long              findCountTotal = 0L;
+    private Long              findCountTotal = null;
     private Map<String, Long> findCountProfile = null;
-    private long              updatePropertyCountTotal = 0L;
+    private Long              updatePropertyCountTotal = null;
     private Map<String, Long> updatePropertyCountProfile = null;
-    private long              updateAttachmentCountTotal = 0L;
+    private Long              updateAttachmentCountTotal = null;
     private Map<String, Long> updateAttachmentCountProfile = null;
-    private long              updateFeedbackCountTotal = 0L;
+    private Long              updateFeedbackCountTotal = null;
     private Map<String, Long> updateFeedbackCountProfile = null;
-    private long              deleteAttachmentCountTotal = 0L;
+    private Long              deleteAttachmentCountTotal = null;
     private Map<String, Long> deleteAttachmentCountProfile = null;
-    private long              deleteFeedbackCountTotal = 0L;
+    private Long              deleteFeedbackCountTotal = null;
     private Map<String, Long> deleteFeedbackCountProfile = null;
 
 
@@ -83,7 +83,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getExplicitGetCountTotal()
+    public Long getExplicitGetCountTotal()
     {
         return explicitGetCountTotal;
     }
@@ -94,7 +94,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param explicitGetCountTotal long
      */
-    public void setExplicitGetCountTotal(long explicitGetCountTotal)
+    public void setExplicitGetCountTotal(Long explicitGetCountTotal)
     {
         this.explicitGetCountTotal = explicitGetCountTotal;
     }
@@ -127,7 +127,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getFindCountTotal()
+    public Long getFindCountTotal()
     {
         return findCountTotal;
     }
@@ -138,7 +138,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param findCountTotal long
      */
-    public void setFindCountTotal(long findCountTotal)
+    public void setFindCountTotal(Long findCountTotal)
     {
         this.findCountTotal = findCountTotal;
     }
@@ -171,7 +171,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getUpdatePropertyCountTotal()
+    public Long getUpdatePropertyCountTotal()
     {
         return updatePropertyCountTotal;
     }
@@ -182,7 +182,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param updatePropertyCountTotal long
      */
-    public void setUpdatePropertyCountTotal(long updatePropertyCountTotal)
+    public void setUpdatePropertyCountTotal(Long updatePropertyCountTotal)
     {
         this.updatePropertyCountTotal = updatePropertyCountTotal;
     }
@@ -215,7 +215,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getUpdateAttachmentCountTotal()
+    public Long getUpdateAttachmentCountTotal()
     {
         return updateAttachmentCountTotal;
     }
@@ -226,7 +226,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param updateAttachmentCountTotal long
      */
-    public void setUpdateAttachmentCountTotal(long updateAttachmentCountTotal)
+    public void setUpdateAttachmentCountTotal(Long updateAttachmentCountTotal)
     {
         this.updateAttachmentCountTotal = updateAttachmentCountTotal;
     }
@@ -259,7 +259,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getUpdateFeedbackCountTotal()
+    public Long getUpdateFeedbackCountTotal()
     {
         return updateFeedbackCountTotal;
     }
@@ -270,7 +270,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param updateFeedbackCountTotal long
      */
-    public void setUpdateFeedbackCountTotal(long updateFeedbackCountTotal)
+    public void setUpdateFeedbackCountTotal(Long updateFeedbackCountTotal)
     {
         this.updateFeedbackCountTotal = updateFeedbackCountTotal;
     }
@@ -303,7 +303,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getDeleteAttachmentCountTotal()
+    public Long getDeleteAttachmentCountTotal()
     {
         return deleteAttachmentCountTotal;
     }
@@ -314,7 +314,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param deleteAttachmentCountTotal long
      */
-    public void setDeleteAttachmentCountTotal(long deleteAttachmentCountTotal)
+    public void setDeleteAttachmentCountTotal(Long deleteAttachmentCountTotal)
     {
         this.deleteAttachmentCountTotal = deleteAttachmentCountTotal;
     }
@@ -347,7 +347,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @return long
      */
-    public long getDeleteFeedbackCountTotal()
+    public Long getDeleteFeedbackCountTotal()
     {
         return deleteFeedbackCountTotal;
     }
@@ -358,7 +358,7 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
      *
      * @param deleteFeedbackCountTotal long
      */
-    public void setDeleteFeedbackCountTotal(long deleteFeedbackCountTotal)
+    public void setDeleteFeedbackCountTotal(Long deleteFeedbackCountTotal)
     {
         this.deleteFeedbackCountTotal = deleteFeedbackCountTotal;
     }
@@ -435,19 +435,19 @@ public class MemberPopularityProfileProperties extends ClassificationBeanPropert
             return false;
         }
         MemberPopularityProfileProperties that = (MemberPopularityProfileProperties) objectToCompare;
-        return explicitGetCountTotal == that.explicitGetCountTotal &&
+        return Objects.equals(explicitGetCountTotal, that.explicitGetCountTotal) &&
                Objects.equals(explicitGetCountProfile, that.explicitGetCountProfile) &&
-               findCountTotal == that.findCountTotal &&
+               Objects.equals(findCountTotal, that.findCountTotal) &&
                Objects.equals(findCountProfile, that.findCountProfile) &&
-               updatePropertyCountTotal == that.updatePropertyCountTotal &&
+               Objects.equals(updatePropertyCountTotal, that.updatePropertyCountTotal) &&
                Objects.equals(updatePropertyCountProfile, that.updatePropertyCountProfile) &&
-               updateAttachmentCountTotal == that.updateAttachmentCountTotal &&
+               Objects.equals(updateAttachmentCountTotal, that.updateAttachmentCountTotal) &&
                Objects.equals(updateAttachmentCountProfile, that.updateAttachmentCountProfile) &&
-               updateFeedbackCountTotal == that.updateFeedbackCountTotal &&
+               Objects.equals(updateFeedbackCountTotal, that.updateFeedbackCountTotal) &&
                Objects.equals(updateFeedbackCountProfile, that.updateFeedbackCountProfile) &&
-               deleteAttachmentCountTotal == that.deleteAttachmentCountTotal &&
+               Objects.equals(deleteAttachmentCountTotal, that.deleteAttachmentCountTotal) &&
                Objects.equals(deleteAttachmentCountProfile, that.deleteAttachmentCountProfile) &&
-               deleteFeedbackCountTotal == that.deleteFeedbackCountTotal &&
+               Objects.equals(deleteFeedbackCountTotal, that.deleteFeedbackCountTotal) &&
                Objects.equals(deleteFeedbackCountProfile, that.deleteFeedbackCountProfile);
     }
 

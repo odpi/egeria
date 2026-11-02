@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.time.Instant;
@@ -169,7 +170,7 @@ public class OpenLineageCataloguerFVT
         assertEquals(31, runMetrics.getTotalRowsWritten(), "The total rows written should include the first run");
         assertNotNull(runMetrics.getLastRunStartTime(), "The START event should set the last run start time");
         assertNotNull(runMetrics.getLastRunEndTime(), "The COMPLETE event should set the last run end time");
-        assertTrue(runMetrics.getLastRunDuration() > 0, "The run duration should be derived from the START and COMPLETE events");
+        assertTrue(OpenMetadataProperty.LAST_RUN_DURATION.longValueOrDefault(runMetrics.getLastRunDuration()) > 0, "The run duration should be derived from the START and COMPLETE events");
 
         /*
          * Data scope on the output.

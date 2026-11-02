@@ -27,7 +27,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
 {
     private String qualityDescription = null;
     private String qualityDimension = null;
-    private int    qualityScore = 0;
+    private Integer qualityScore = null;
 
 
     /**
@@ -107,7 +107,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
      *
      * @return int
      */
-    public int getQualityScore()
+    public Integer getQualityScore()
     {
         return qualityScore;
     }
@@ -118,7 +118,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
      *
      * @param qualityScore int
      */
-    public void setQualityScore(int qualityScore)
+    public void setQualityScore(Integer qualityScore)
     {
         this.qualityScore = qualityScore;
     }
@@ -162,7 +162,7 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
             return false;
         }
         QualityAnnotationProperties that = (QualityAnnotationProperties) objectToCompare;
-        return qualityScore == that.qualityScore &&
+        return Objects.equals(qualityScore, that.qualityScore) &&
                 Objects.equals(qualityDimension, that.qualityDimension) &&
                 Objects.equals(qualityDescription, that.qualityDescription);
     }

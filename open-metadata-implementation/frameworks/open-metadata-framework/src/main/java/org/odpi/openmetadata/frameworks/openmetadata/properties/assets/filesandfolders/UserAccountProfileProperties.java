@@ -20,15 +20,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UserAccountProfileProperties extends ClassificationBeanProperties
 {
-    private long                userAccountCount       = 0;
-    private long                employeeAccountCount   = 0;
-    private long                contractorAccountCount = 0;
-    private long                externalAccountCount   = 0;
-    private long                digitalAccountCount    = 0;
-    private long                activeAccountCount     = 0;
-    private long                expiredAccountCount    = 0;
-    private long                lockedAccountCount     = 0;
-    private long                disabledAccountCount   = 0;
+    private Long                userAccountCount       = null;
+    private Long                employeeAccountCount   = null;
+    private Long                contractorAccountCount = null;
+    private Long                externalAccountCount   = null;
+    private Long                digitalAccountCount    = null;
+    private Long                activeAccountCount     = null;
+    private Long                expiredAccountCount    = null;
+    private Long                lockedAccountCount     = null;
+    private Long                disabledAccountCount   = null;
     private Map<String,Long>    userAccountTypes       = null;
     private Map<String,Long>    userAccountStatuses    = null;
     private Map<String, String> additionalProperties   = null;
@@ -75,7 +75,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getUserAccountCount()
+    public Long getUserAccountCount()
     {
         return userAccountCount;
     }
@@ -86,7 +86,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param userAccountCount long
      */
-    public void setUserAccountCount(long userAccountCount)
+    public void setUserAccountCount(Long userAccountCount)
     {
         this.userAccountCount = userAccountCount;
     }
@@ -97,7 +97,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getEmployeeAccountCount()
+    public Long getEmployeeAccountCount()
     {
         return employeeAccountCount;
     }
@@ -108,7 +108,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param employeeAccountCount long
      */
-    public void setEmployeeAccountCount(long employeeAccountCount)
+    public void setEmployeeAccountCount(Long employeeAccountCount)
     {
         this.employeeAccountCount = employeeAccountCount;
     }
@@ -119,7 +119,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getContractorAccountCount()
+    public Long getContractorAccountCount()
     {
         return contractorAccountCount;
     }
@@ -130,7 +130,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param contractorAccountCount long
      */
-    public void setContractorAccountCount(long contractorAccountCount)
+    public void setContractorAccountCount(Long contractorAccountCount)
     {
         this.contractorAccountCount = contractorAccountCount;
     }
@@ -141,7 +141,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getExternalAccountCount()
+    public Long getExternalAccountCount()
     {
         return externalAccountCount;
     }
@@ -152,7 +152,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param externalAccountCount long
      */
-    public void setExternalAccountCount(long externalAccountCount)
+    public void setExternalAccountCount(Long externalAccountCount)
     {
         this.externalAccountCount = externalAccountCount;
     }
@@ -163,7 +163,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getDigitalAccountCount()
+    public Long getDigitalAccountCount()
     {
         return digitalAccountCount;
     }
@@ -174,7 +174,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param digitalAccountCount long
      */
-    public void setDigitalAccountCount(long digitalAccountCount)
+    public void setDigitalAccountCount(Long digitalAccountCount)
     {
         this.digitalAccountCount = digitalAccountCount;
     }
@@ -185,7 +185,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getActiveAccountCount()
+    public Long getActiveAccountCount()
     {
         return activeAccountCount;
     }
@@ -196,7 +196,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param activeAccountCount long
      */
-    public void setActiveAccountCount(long activeAccountCount)
+    public void setActiveAccountCount(Long activeAccountCount)
     {
         this.activeAccountCount = activeAccountCount;
     }
@@ -207,7 +207,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getExpiredAccountCount()
+    public Long getExpiredAccountCount()
     {
         return expiredAccountCount;
     }
@@ -218,7 +218,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param expiredAccountCount long
      */
-    public void setExpiredAccountCount(long expiredAccountCount)
+    public void setExpiredAccountCount(Long expiredAccountCount)
     {
         this.expiredAccountCount = expiredAccountCount;
     }
@@ -229,7 +229,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getLockedAccountCount()
+    public Long getLockedAccountCount()
     {
         return lockedAccountCount;
     }
@@ -240,7 +240,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param lockedAccountCount long
      */
-    public void setLockedAccountCount(long lockedAccountCount)
+    public void setLockedAccountCount(Long lockedAccountCount)
     {
         this.lockedAccountCount = lockedAccountCount;
     }
@@ -251,7 +251,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @return long
      */
-    public long getDisabledAccountCount()
+    public Long getDisabledAccountCount()
     {
         return disabledAccountCount;
     }
@@ -306,7 +306,7 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
      *
      * @param disabledAccountCount long
      */
-    public void setDisabledAccountCount(long disabledAccountCount)
+    public void setDisabledAccountCount(Long disabledAccountCount)
     {
         this.disabledAccountCount = disabledAccountCount;
     }
@@ -371,15 +371,15 @@ public class UserAccountProfileProperties extends ClassificationBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         UserAccountProfileProperties that = (UserAccountProfileProperties) objectToCompare;
-        return userAccountCount == that.userAccountCount &&
-                employeeAccountCount == that.employeeAccountCount &&
-                contractorAccountCount == that.contractorAccountCount &&
-                externalAccountCount == that.externalAccountCount &&
-                digitalAccountCount == that.digitalAccountCount &&
-                activeAccountCount == that.activeAccountCount &&
-                expiredAccountCount == that.expiredAccountCount &&
-                lockedAccountCount == that.lockedAccountCount &&
-                disabledAccountCount == that.disabledAccountCount &&
+        return Objects.equals(userAccountCount, that.userAccountCount) &&
+                Objects.equals(employeeAccountCount, that.employeeAccountCount) &&
+                Objects.equals(contractorAccountCount, that.contractorAccountCount) &&
+                Objects.equals(externalAccountCount, that.externalAccountCount) &&
+                Objects.equals(digitalAccountCount, that.digitalAccountCount) &&
+                Objects.equals(activeAccountCount, that.activeAccountCount) &&
+                Objects.equals(expiredAccountCount, that.expiredAccountCount) &&
+                Objects.equals(lockedAccountCount, that.lockedAccountCount) &&
+                Objects.equals(disabledAccountCount, that.disabledAccountCount) &&
                 Objects.equals(userAccountTypes, that.userAccountTypes) &&
                 Objects.equals(userAccountStatuses, that.userAccountStatuses) &&
                 Objects.equals(additionalProperties, that.additionalProperties);

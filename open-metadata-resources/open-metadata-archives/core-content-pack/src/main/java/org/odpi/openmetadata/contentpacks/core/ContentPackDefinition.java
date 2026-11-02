@@ -135,6 +135,14 @@ public enum ContentPackDefinition
                         "DuckDBContentPack",
                         "Reference data, templates, connectors, and governance services for working with a DuckDB database. Egeria's content pack for DuckDB provides a template for DuckDB databases along with function to survey the contents of a DuckDB database - including its attached and federated data sources - and catalog its schemas.",
                         "DuckDBContentPack.omarchive"),
+
+    /**
+     * Standard security control catalogs - the NIST Cybersecurity Framework (CSF) 2.0 and NIST SP 800-53 Rev. 5 - for use in statements of applicability, threat models and security programs.
+     */
+    SECURITY_CONTENT_PACK("e0eabb0c-d3ce-411e-8218-d1de75c354a6",
+                          "SecurityContentPack",
+                          "Standard security control catalogs - the NIST Cybersecurity Framework (CSF) 2.0 and NIST SP 800-53 Rev. 5 - for use in statements of applicability, threat models and security programs.  The catalogs are works of the U.S. Government and in the public domain.",
+                          "SecurityContentPack.omarchive"),
     ;
 
     private final String   archiveGUID;

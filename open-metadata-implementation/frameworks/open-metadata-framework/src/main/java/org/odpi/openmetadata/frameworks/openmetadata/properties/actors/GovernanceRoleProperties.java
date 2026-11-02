@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceRoleProperties extends PersonRoleProperties
 {
-    private int domainIdentifier = 0; /* Zero means not specific to a governance domain */
+    private Integer domainIdentifier = null; /* Zero means not specific to a governance domain */
 
 
     /**
@@ -54,7 +54,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
      *
      * @return int
      */
-    public int getDomainIdentifier()
+    public Integer getDomainIdentifier()
     {
         return domainIdentifier;
     }
@@ -66,7 +66,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
      *
      * @param domainIdentifier int
      */
-    public void setDomainIdentifier(int domainIdentifier)
+    public void setDomainIdentifier(Integer domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
     }
@@ -108,7 +108,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
             return false;
         }
         GovernanceRoleProperties that = (GovernanceRoleProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier;
+        return Objects.equals(domainIdentifier, that.domainIdentifier);
     }
 
 

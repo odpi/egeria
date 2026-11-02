@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedContextEventProperties extends LabeledRelationshipProperties
 {
-    private int    statusIdentifier       = 0;
+    private Integer statusIdentifier       = null;
     private String source                 = null;
-    private int    confidence             = 0;
+    private Integer confidence             = null;
     private String steward                = null;
     private String stewardTypeName        = null;
     private String stewardPropertyName    = null;
@@ -69,7 +69,7 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getStatusIdentifier()
+    public Integer getStatusIdentifier()
     {
         return statusIdentifier;
     }
@@ -80,7 +80,7 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
      *
      * @param statusIdentifier int
      */
-    public void setStatusIdentifier(int statusIdentifier)
+    public void setStatusIdentifier(Integer statusIdentifier)
     {
         this.statusIdentifier = statusIdentifier;
     }
@@ -113,7 +113,7 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -124,7 +124,7 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -251,8 +251,8 @@ public class RelatedContextEventProperties extends LabeledRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         RelatedContextEventProperties that = (RelatedContextEventProperties) objectToCompare;
-        return statusIdentifier == that.statusIdentifier
-                && confidence == that.confidence
+        return Objects.equals(statusIdentifier, that.statusIdentifier)
+                && Objects.equals(confidence, that.confidence)
                 && Objects.equals(source, that.source)
                 && Objects.equals(steward, that.steward)
                 && Objects.equals(stewardTypeName, that.stewardTypeName)

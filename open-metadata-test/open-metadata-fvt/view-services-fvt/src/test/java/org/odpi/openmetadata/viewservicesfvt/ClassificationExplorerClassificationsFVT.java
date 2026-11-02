@@ -312,8 +312,8 @@ public class ClassificationExplorerClassificationsFVT
         assertEquals(Map.of("region", "south-east"), storedDataScope.getScopeElements());
 
         UsageActivityProperties usageActivity = new UsageActivityProperties();
-        usageActivity.setExplicitGetCount(5);
-        usageActivity.setFindCount(7);
+        usageActivity.setExplicitGetCount(5L);
+        usageActivity.setFindCount(7L);
 
         classify(elementGUID, "/usage-activity", usageActivity);
 
@@ -321,8 +321,8 @@ public class ClassificationExplorerClassificationsFVT
                                           classificationProperties(OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName)).getExplicitGetCount());
 
         UsageActivityProperties newUsageActivity = new UsageActivityProperties();
-        newUsageActivity.setExplicitGetCount(6);
-        newUsageActivity.setFindCount(7);
+        newUsageActivity.setExplicitGetCount(6L);
+        newUsageActivity.setFindCount(7L);
 
         update(elementGUID, "/usage-activity", newUsageActivity);
 
@@ -330,13 +330,13 @@ public class ClassificationExplorerClassificationsFVT
                                           classificationProperties(OpenMetadataType.USAGE_ACTIVITY_CLASSIFICATION.typeName)).getExplicitGetCount());
 
         MemberPopularityProfileProperties popularity = new MemberPopularityProfileProperties();
-        popularity.setExplicitGetCountTotal(10);
+        popularity.setExplicitGetCountTotal(10L);
         popularity.setExplicitGetCountProfile(Map.of("DataSet", 10L));
 
         classify(elementGUID, "/member-popularity-profile", popularity);
 
         MemberPopularityProfileProperties newPopularity = new MemberPopularityProfileProperties();
-        newPopularity.setExplicitGetCountTotal(12);
+        newPopularity.setExplicitGetCountTotal(12L);
         newPopularity.setExplicitGetCountProfile(Map.of("DataSet", 12L));
 
         update(elementGUID, "/member-popularity-profile", newPopularity);

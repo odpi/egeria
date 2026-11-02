@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConsolidatedDuplicateProperties extends ClassificationBeanProperties
 {
-    private int    statusIdentifier    = 0;
+    private Integer statusIdentifier    = null;
     private String steward             = null;
     private String stewardTypeName     = null;
     private String stewardPropertyName = null;
@@ -67,7 +67,7 @@ public class ConsolidatedDuplicateProperties extends ClassificationBeanPropertie
      *
      * @return int
      */
-    public int getStatusIdentifier()
+    public Integer getStatusIdentifier()
     {
         return statusIdentifier;
     }
@@ -78,7 +78,7 @@ public class ConsolidatedDuplicateProperties extends ClassificationBeanPropertie
      *
      * @param statusIdentifier int
      */
-    public void setStatusIdentifier(int statusIdentifier)
+    public void setStatusIdentifier(Integer statusIdentifier)
     {
         this.statusIdentifier = statusIdentifier;
     }
@@ -226,7 +226,7 @@ public class ConsolidatedDuplicateProperties extends ClassificationBeanPropertie
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ConsolidatedDuplicateProperties that = (ConsolidatedDuplicateProperties) objectToCompare;
-        return statusIdentifier == that.statusIdentifier && Objects.equals(steward, that.steward) && Objects.equals(stewardTypeName, that.stewardTypeName) && Objects.equals(stewardPropertyName, that.stewardPropertyName) && Objects.equals(source, that.source) && Objects.equals(notes, that.notes);
+        return Objects.equals(statusIdentifier, that.statusIdentifier) && Objects.equals(steward, that.steward) && Objects.equals(stewardTypeName, that.stewardTypeName) && Objects.equals(stewardPropertyName, that.stewardPropertyName) && Objects.equals(source, that.source) && Objects.equals(notes, that.notes);
     }
 
     /**

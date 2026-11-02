@@ -23,17 +23,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class NotificationTypeProperties extends GovernanceControlProperties
 {
     private Date    plannedStartDate               = null;
-    private boolean multipleNotificationsPermitted = true;
-    private long    minimumNotificationInterval    = 0L;
+    private Boolean multipleNotificationsPermitted = null;
+    private Long    minimumNotificationInterval    = null;
 
     /**
      * @deprecated the schedule no longer belongs to the notification type - see the getter.
      */
     @Deprecated
-    private long    notificationInterval           = 0L;
+    private Long    notificationInterval           = null;
     private Date    lastNotification               = null;
     private Date    nextScheduledNotification      = null;
-    private long    notificationCount              = 0L;
+    private Long    notificationCount              = null;
     private Date    plannedCompletionDate          = null;
 
 
@@ -98,7 +98,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @return boolean flag
      */
-    public boolean getMultipleNotificationsPermitted()
+    public Boolean getMultipleNotificationsPermitted()
     {
         return multipleNotificationsPermitted;
     }
@@ -110,7 +110,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @param multipleNotificationsPermitted boolean flag
      */
-    public void setMultipleNotificationsPermitted(boolean multipleNotificationsPermitted)
+    public void setMultipleNotificationsPermitted(Boolean multipleNotificationsPermitted)
     {
         this.multipleNotificationsPermitted = multipleNotificationsPermitted;
     }
@@ -122,7 +122,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @return minute count
      */
-    public long getMinimumNotificationInterval()
+    public Long getMinimumNotificationInterval()
     {
         return minimumNotificationInterval;
     }
@@ -134,7 +134,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @param minimumNotificationInterval minute count
      */
-    public void setMinimumNotificationInterval(long minimumNotificationInterval)
+    public void setMinimumNotificationInterval(Long minimumNotificationInterval)
     {
         this.minimumNotificationInterval = minimumNotificationInterval;
     }
@@ -152,7 +152,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      * NotificationType entity in OpenMetadataTypesArchive.
      */
     @Deprecated
-    public long getNotificationInterval()
+    public Long getNotificationInterval()
     {
         return notificationInterval;
     }
@@ -166,7 +166,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      * @deprecated see {@link #getNotificationInterval()}.
      */
     @Deprecated
-    public void setNotificationInterval(long notificationInterval)
+    public void setNotificationInterval(Long notificationInterval)
     {
         this.notificationInterval = notificationInterval;
     }
@@ -223,7 +223,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @return long
      */
-    public long getNotificationCount()
+    public Long getNotificationCount()
     {
         return notificationCount;
     }
@@ -234,7 +234,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
      *
      * @param notificationCount long
      */
-    public void setNotificationCount(long notificationCount)
+    public void setNotificationCount(Long notificationCount)
     {
         this.notificationCount = notificationCount;
     }
@@ -296,10 +296,10 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         NotificationTypeProperties that = (NotificationTypeProperties) objectToCompare;
-        return minimumNotificationInterval == that.minimumNotificationInterval &&
-                notificationInterval == that.notificationInterval &&
-                multipleNotificationsPermitted == that.multipleNotificationsPermitted &&
-                notificationCount == that.notificationCount &&
+        return Objects.equals(minimumNotificationInterval, that.minimumNotificationInterval) &&
+                Objects.equals(notificationInterval, that.notificationInterval) &&
+                Objects.equals(multipleNotificationsPermitted, that.multipleNotificationsPermitted) &&
+                Objects.equals(notificationCount, that.notificationCount) &&
                 Objects.equals(plannedStartDate, that.plannedStartDate) &&
                 Objects.equals(lastNotification, that.lastNotification) &&
                 Objects.equals(nextScheduledNotification, that.nextScheduledNotification) &&

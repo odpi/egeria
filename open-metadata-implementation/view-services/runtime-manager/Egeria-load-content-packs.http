@@ -151,6 +151,17 @@ Content-Type: text/plain
 
 content-packs/APIsContentPack.omarchive
 
+###
+# =====================================================================================================================
+# @name Add SecurityContentPack (into active-metadata-store)
+# SecurityContentPack adds the NIST Cybersecurity Framework (CSF) 2.0 and NIST SP 800-53 Rev. 5 control catalogs,
+# for use in statements of applicability and security programs.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/SecurityContentPack.omarchive
+
 
 ###
 # =====================================================================================================================

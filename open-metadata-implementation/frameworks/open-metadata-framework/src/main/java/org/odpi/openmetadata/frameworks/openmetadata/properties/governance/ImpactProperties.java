@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ImpactProperties extends GovernedDataClassificationBase
 {
-    private int severityLevel = 0;
+    private Integer severityLevel = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class ImpactProperties extends GovernedDataClassificationBase
      *
      * @return int
      */
-    public int getSeverityLevel()
+    public Integer getSeverityLevel()
     {
         return severityLevel;
     }
@@ -66,7 +66,7 @@ public class ImpactProperties extends GovernedDataClassificationBase
      *
      * @param severityLevel int
      */
-    public void setSeverityLevel(int severityLevel)
+    public void setSeverityLevel(Integer severityLevel)
     {
         this.severityLevel = severityLevel;
     }
@@ -107,7 +107,7 @@ public class ImpactProperties extends GovernedDataClassificationBase
             return false;
         }
         ImpactProperties that = (ImpactProperties) objectToCompare;
-        return severityLevel == that.severityLevel;
+        return Objects.equals(severityLevel, that.severityLevel);
     }
 
 

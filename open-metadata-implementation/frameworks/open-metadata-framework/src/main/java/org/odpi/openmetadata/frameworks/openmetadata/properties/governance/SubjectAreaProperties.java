@@ -24,7 +24,7 @@ public class SubjectAreaProperties extends CollectionProperties
 {
     private String scope            = null;
     private String usage            = null;
-    private int    domainIdentifier = 0;
+    private Integer domainIdentifier = null;
 
     /**
      * Default constructor
@@ -103,7 +103,7 @@ public class SubjectAreaProperties extends CollectionProperties
      *
      * @return int
      */
-    public int getDomainIdentifier()
+    public Integer getDomainIdentifier()
     {
         return domainIdentifier;
     }
@@ -114,7 +114,7 @@ public class SubjectAreaProperties extends CollectionProperties
      *
      * @param domainIdentifier int
      */
-    public void setDomainIdentifier(int domainIdentifier)
+    public void setDomainIdentifier(Integer domainIdentifier)
     {
         this.domainIdentifier = domainIdentifier;
     }
@@ -150,7 +150,7 @@ public class SubjectAreaProperties extends CollectionProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SubjectAreaProperties that = (SubjectAreaProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
+        return Objects.equals(domainIdentifier, that.domainIdentifier) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(usage, that.usage);
     }

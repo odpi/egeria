@@ -27,7 +27,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
 {
     private String displayName = null;
     private String description = null;
-    private int    confidence  = 0;
+    private Integer confidence  = null;
     private String steward     = null;
     private String source      = null;
 
@@ -111,7 +111,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -122,7 +122,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -212,7 +212,7 @@ public class ForeignKeyProperties extends RelationshipBeanProperties
             return false;
         }
         ForeignKeyProperties that = (ForeignKeyProperties) objectToCompare;
-        return confidence == that.confidence && Objects.equals(displayName, that.displayName) && Objects.equals(description,
+        return Objects.equals(confidence, that.confidence) && Objects.equals(displayName, that.displayName) && Objects.equals(description,
                                                                                                                 that.description) && Objects.equals(
                 steward, that.steward) && Objects.equals(source, that.source);
     }

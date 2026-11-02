@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CriticalityProperties extends GovernedDataClassificationBase
 {
-    private int criticalityLevel = 0;
+    private Integer criticalityLevel = null;
 
     /**
      * Default constructor
@@ -54,7 +54,7 @@ public class CriticalityProperties extends GovernedDataClassificationBase
      *
      * @return int
      */
-    public int getCriticalityLevel()
+    public Integer getCriticalityLevel()
     {
         return criticalityLevel;
     }
@@ -65,7 +65,7 @@ public class CriticalityProperties extends GovernedDataClassificationBase
      *
      * @param criticalityLevel int
      */
-    public void setCriticalityLevel(int criticalityLevel)
+    public void setCriticalityLevel(Integer criticalityLevel)
     {
         this.criticalityLevel = criticalityLevel;
     }
@@ -107,7 +107,7 @@ public class CriticalityProperties extends GovernedDataClassificationBase
             return false;
         }
         CriticalityProperties that = (CriticalityProperties) objectToCompare;
-        return criticalityLevel == that.criticalityLevel;
+        return Objects.equals(criticalityLevel, that.criticalityLevel);
     }
 
 

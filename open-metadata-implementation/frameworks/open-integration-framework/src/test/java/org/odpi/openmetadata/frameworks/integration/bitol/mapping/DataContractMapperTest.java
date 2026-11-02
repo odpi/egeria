@@ -66,10 +66,10 @@ public class DataContractMapperTest
         assertEquals(field.getDisplayName(), "transaction reference date", "business name preferred");
         assertEquals(field.getDataType(), "date", "logical type preferred");
         assertEquals(field.getNamePatterns(), List.of("transaction_reference_date", "txn_ref_dt"));
-        assertTrue(field.getIsNullable(), "required=false means nullable");
-        assertTrue(field.getAllowsDuplicateValues());
-        assertTrue(field.getIsPartitionKey());
-        assertEquals(field.getPartitionKeyPosition(), 1);
+        assertEquals(field.getIsNullable(), Boolean.TRUE, "required=false means nullable");
+        assertEquals(field.getAllowsDuplicateValues(), Boolean.TRUE);
+        assertEquals(field.getIsPartitionKey(), Boolean.TRUE);
+        assertEquals(field.getPartitionKeyPosition(), Integer.valueOf(1));
         assertEquals(field.getVersionIdentifier(), "1.1.0");
         assertEquals(field.getAdditionalProperties().get("bitol.physicalType"), "date");
         assertEquals(field.getAdditionalProperties().get("bitol.transformSourceObjects"), "table_name_1, table_name_2, table_name_3");
@@ -83,8 +83,8 @@ public class DataContractMapperTest
 
         DataContractSchemaProperty rcvrId = contract.getSchema().get(0).getProperties().get(1);
         field = mapper.getDataFieldProperties(rcvrId, "qn", "1.1.0");
-        assertFalse(field.getIsPartitionKey());
-        assertEquals(field.getPartitionKeyPosition(), 0, "-1 in the document means not set");
+        assertEquals(field.getIsPartitionKey(), Boolean.FALSE);
+        assertNull(field.getPartitionKeyPosition(), "-1 in the document means not set");
         assertEquals(field.getAdditionalProperties().get("bitol.primaryKeyPosition"), "1");
 
         classifications = mapper.getFieldClassifications(rcvrId);
@@ -94,8 +94,8 @@ public class DataContractMapperTest
 
         DataContractSchemaProperty receiverId = contract.getSchema().get(1).getProperties().get(0);
         field = mapper.getDataFieldProperties(receiverId, "qn", "1.1.0");
-        assertFalse(field.getIsNullable(), "required=true");
-        assertFalse(field.getAllowsDuplicateValues(), "unique=true");
+        assertEquals(field.getIsNullable(), Boolean.FALSE, "required=true");
+        assertEquals(field.getAllowsDuplicateValues(), Boolean.FALSE, "unique=true");
     }
 
 

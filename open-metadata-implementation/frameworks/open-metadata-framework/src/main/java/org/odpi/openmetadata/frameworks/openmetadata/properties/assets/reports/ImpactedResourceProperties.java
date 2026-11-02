@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ImpactedResourceProperties extends RelationshipBeanProperties
 {
-    private int severityLevel = 0;
+    private Integer severityLevel = null;
 
     /**
      * Typical Constructor
@@ -56,7 +56,7 @@ public class ImpactedResourceProperties extends RelationshipBeanProperties
      *
      * @return integer
      */
-    public int getSeverityLevel()
+    public Integer getSeverityLevel()
     {
         return severityLevel;
     }
@@ -68,7 +68,7 @@ public class ImpactedResourceProperties extends RelationshipBeanProperties
      *
      * @param severityLevel integer
      */
-    public void setSeverityLevel(int severityLevel)
+    public void setSeverityLevel(Integer severityLevel)
     {
         this.severityLevel = severityLevel;
     }
@@ -101,7 +101,7 @@ public class ImpactedResourceProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ImpactedResourceProperties that = (ImpactedResourceProperties) objectToCompare;
-        return severityLevel == that.severityLevel;
+        return Objects.equals(severityLevel, that.severityLevel);
     }
 
 

@@ -12,16 +12,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Carries the version numbers of unchanged elements over from the previous edition of an archive.
@@ -37,6 +42,10 @@ import java.util.function.Function;
  * entity proxies and attribute types they carry - the previous edition's copy is used, so it keeps its previous
  * versions.  New and changed elements keep the new version.  An entity is compared together with its
  * classifications, so it keeps its previous version only if none of them has changed.
+ * <br>
+ * It also adds a deleted version of each entity and relationship that has been removed since the previous edition
+ * (see addDeletedVersions()), so that loading the new edition soft-deletes them from a repository that loaded an
+ * earlier one.
  */
 public class ArchiveVersionStabilizer
 {
@@ -106,6 +115,170 @@ public class ArchiveVersionStabilizer
         }
 
         return keptCount;
+    }
+
+
+    /**
+     * Add a deleted version of each entity and relationship of the previous edition that is not in the new archive.
+     * Without it, an element removed from an archive stays in every repository that loaded an earlier edition, since
+     * loading an archive only ever adds or updates elements.  The deleted version is the previous edition's copy with
+     * its status set to DELETED (keeping the status it had as its statusOnDelete) and its version moved on by one, so
+     * a repository holding that copy soft-deletes it, just as it would on receiving the deletion from another member
+     * of its cohort.  A repository that holds a later version of the element - from a later release - ignores it.
+     * <br>
+     * The deleted versions are carried forward unchanged into each later edition (they are in the previous edition
+     * but not in the new archive), so a repository that skips an edition still learns of the deletion.  An element
+     * that is added back is simply in the new archive again, with the new archive's version, which restores it.
+     * <br>
+     * Nothing is added if the new archive shares no element with the previous edition.  That is not the deliberate
+     * removal of the whole content of the archive: the writer has allocated new unique identifiers for everything,
+     * typically because it was run from a directory where it could not find its GUID map, and deleting the previous
+     * content would wipe it out.  Classification extensions are not covered - a deleted entity takes its
+     * classifications with it.
+     *
+     * @param newArchive archive about to be written - updated in place
+     * @param previousArchive previous edition of the archive, or null if there is none
+     * @return number of deleted versions added, including those carried forward
+     */
+    public int addDeletedVersions(OpenMetadataArchive newArchive,
+                                  OpenMetadataArchive previousArchive)
+    {
+        if ((newArchive == null) || (previousArchive == null))
+        {
+            return 0;
+        }
+
+        OpenMetadataArchiveInstanceStore newStore      = newArchive.getArchiveInstanceStore();
+        OpenMetadataArchiveInstanceStore previousStore = previousArchive.getArchiveInstanceStore();
+
+        if ((newStore == null) || (previousStore == null))
+        {
+            return 0;
+        }
+
+        /*
+         * The getters return copies, so the lists are updated and then set back.
+         */
+        List<EntityDetail> entities         = this.getList(newStore.getEntities());
+        List<EntityDetail> previousEntities = this.getList(previousStore.getEntities());
+
+        if (this.noSharedGUIDs(entities, previousEntities))
+        {
+            return 0;
+        }
+
+        List<Relationship> relationships = this.getList(newStore.getRelationships());
+
+        int deletedCount = this.addDeletedVersions(entities, previousEntities, EntityDetail::new);
+        deletedCount += this.addDeletedVersions(relationships, this.getList(previousStore.getRelationships()), Relationship::new);
+
+        newStore.setEntities(entities);
+        newStore.setRelationships(relationships);
+        newArchive.setArchiveInstanceStore(newStore);
+
+        return deletedCount;
+    }
+
+
+    /**
+     * Return the list, or an empty list if it is null.
+     *
+     * @param list list from an archive store (may be null)
+     * @param <T> type of item
+     * @return list that can be updated
+     */
+    private <T> List<T> getList(List<T> list)
+    {
+        if (list == null)
+        {
+            return new ArrayList<>();
+        }
+
+        return list;
+    }
+
+
+    /**
+     * Return whether two lists of entities have no unique identifier in common, when the previous one has entities.
+     *
+     * @param newEntities entities in the new archive
+     * @param previousEntities entities in the previous edition
+     * @return boolean
+     */
+    private boolean noSharedGUIDs(List<EntityDetail> newEntities,
+                                  List<EntityDetail> previousEntities)
+    {
+        if (previousEntities.isEmpty())
+        {
+            return false;
+        }
+
+        Set<String> newGUIDs = new HashSet<>();
+
+        for (EntityDetail entity : newEntities)
+        {
+            newGUIDs.add(entity.getGUID());
+        }
+
+        for (EntityDetail previousEntity : previousEntities)
+        {
+            if (newGUIDs.contains(previousEntity.getGUID()))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Add to the new list a deleted version of each item of the previous list whose unique identifier is not in it.
+     * An item that is already deleted in the previous edition is carried forward as it is.
+     *
+     * @param newItems items about to be written - updated in place
+     * @param previousItems items from the previous edition
+     * @param copier makes a copy of an item
+     * @param <T> type of item
+     * @return number of deleted versions added
+     */
+    private <T extends InstanceHeader> int addDeletedVersions(List<T>          newItems,
+                                                              List<T>          previousItems,
+                                                              UnaryOperator<T> copier)
+    {
+        Set<String> newGUIDs = new HashSet<>();
+
+        for (T newItem : newItems)
+        {
+            newGUIDs.add(newItem.getGUID());
+        }
+
+        int deletedCount = 0;
+
+        for (T previousItem : previousItems)
+        {
+            if (! newGUIDs.contains(previousItem.getGUID()))
+            {
+                if (previousItem.getStatus() == InstanceStatus.DELETED)
+                {
+                    newItems.add(previousItem);
+                }
+                else
+                {
+                    T deletedItem = copier.apply(previousItem);
+
+                    deletedItem.setStatusOnDelete(previousItem.getStatus());
+                    deletedItem.setStatus(InstanceStatus.DELETED);
+                    deletedItem.setVersion(previousItem.getVersion() + 1);
+
+                    newItems.add(deletedItem);
+                }
+
+                deletedCount++;
+            }
+        }
+
+        return deletedCount;
     }
 
 

@@ -17,6 +17,7 @@ import org.odpi.openmetadata.contentpacks.core.oracle.OraclePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.openlineage.OpenLineageArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.organizationinsight.OrganizationInsightArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.security.SecurityPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.unitycatalog.UnityCatalogPackArchiveWriter;
 
 /**
@@ -84,6 +85,9 @@ public class CorePacksArchivesWriter
 
             APIPackArchiveWriter apiPackArchiveWriter = new APIPackArchiveWriter();
             apiPackArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            SecurityPackArchiveWriter securityPackArchiveWriter = new SecurityPackArchiveWriter();
+            securityPackArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ValidValuesMappingProperties extends RelationshipBeanProperties
 {
     private String associationDescription = null;
-    private int    confidence             = 0;
+    private Integer confidence             = null;
     private String steward                = null;
     private String stewardTypeName        = null;
     private String stewardPropertyName    = null;
@@ -87,7 +87,7 @@ public class ValidValuesMappingProperties extends RelationshipBeanProperties
      *
      * @return int
      */
-    public int getConfidence()
+    public Integer getConfidence()
     {
         return confidence;
     }
@@ -98,7 +98,7 @@ public class ValidValuesMappingProperties extends RelationshipBeanProperties
      *
      * @param confidence int
      */
-    public void setConfidence(int confidence)
+    public void setConfidence(Integer confidence)
     {
         this.confidence = confidence;
     }
@@ -231,7 +231,7 @@ public class ValidValuesMappingProperties extends RelationshipBeanProperties
             return false;
         }
         ValidValuesMappingProperties that = (ValidValuesMappingProperties) objectToCompare;
-        return confidence == that.confidence &&
+        return Objects.equals(confidence, that.confidence) &&
                 Objects.equals(associationDescription, that.associationDescription) &&
                        Objects.equals(steward, that.steward) &&
                        Objects.equals(stewardTypeName, that.stewardTypeName) &&

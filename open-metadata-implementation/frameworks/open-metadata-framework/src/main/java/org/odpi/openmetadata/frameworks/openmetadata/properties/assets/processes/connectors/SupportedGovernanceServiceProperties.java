@@ -27,7 +27,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
     private String              requestType                      = null;
     private String              serviceRequestType               = null;
     private Map<String, String> requestParameters                = null;
-    private boolean             generateConnectorActivityReports = true;
+    private Boolean             generateConnectorActivityReports = null;
     private DeleteMethod        deleteMethod                     = null;
 
     /**
@@ -132,7 +132,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
      *
      * @return boolean
      */
-    public boolean getGenerateConnectorActivityReports()
+    public Boolean getGenerateConnectorActivityReports()
     {
         return generateConnectorActivityReports;
     }
@@ -143,7 +143,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
      *
      * @param generateConnectorActivityReports boolean
      */
-    public void setGenerateConnectorActivityReports(boolean generateConnectorActivityReports)
+    public void setGenerateConnectorActivityReports(Boolean generateConnectorActivityReports)
     {
         this.generateConnectorActivityReports = generateConnectorActivityReports;
     }
@@ -200,7 +200,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SupportedGovernanceServiceProperties that = (SupportedGovernanceServiceProperties) objectToCompare;
-        return generateConnectorActivityReports == that.generateConnectorActivityReports &&
+        return Objects.equals(generateConnectorActivityReports, that.generateConnectorActivityReports) &&
                 Objects.equals(requestType, that.requestType) &&
                 Objects.equals(serviceRequestType, that.serviceRequestType) &&
                 Objects.equals(deleteMethod, that.deleteMethod) &&

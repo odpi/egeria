@@ -30,7 +30,6 @@ import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLDatabaseSurve
 import org.odpi.openmetadata.adapters.connectors.mssql.survey.MSSQLServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.oracle.survey.OracleDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.oracle.survey.OracleServerSurveyActionProvider;
-import org.odpi.openmetadata.adapters.connectors.organizationinsight.karmapoints.LovelaceKarmaPointAwardsServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.reports.surveyreport.SurveyReportProvider;
@@ -466,17 +465,6 @@ public enum GovernanceServiceDefinition
                              ResourceUse.PROVISION_RESOURCE,
                              DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                              ContentPackDefinition.PRODUCTS_CONTENT_PACK),
-
-    /**
-     * Lovelace Karma Points Awards Governance Action Service
-     */
-    KARMA_POINT_AWARDS("1263739c-2c47-429b-be0d-4dec8e2765cbf",
-                          "karma-points-awards-governance-service",
-                          "Lovelace Karma Points Awards Governance Action Service",
-                          new LovelaceKarmaPointAwardsServiceProvider(),
-                          ResourceUse.GENERATE_INSIGHT,
-                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                          ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
 
     /**
      * Lovelace Zone Membership Profiler Governance Action Service

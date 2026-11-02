@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataClassProperties extends DataValueSpecificationProperties
 {
-    private boolean             allowsDuplicateValues = true;
-    private boolean             isCaseSensitive       = false;
-    private boolean             isNullable            = true;
+    private Boolean             allowsDuplicateValues = null;
+    private Boolean             isCaseSensitive       = null;
+    private Boolean             isNullable            = null;
     private String              defaultValue          = null;
     private String              averageValue          = null;
     private List<String>        valueList             = null;
@@ -75,7 +75,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @return boolean flag
      */
-    public boolean getAllowsDuplicateValues()
+    public Boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -86,7 +86,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @param allowsDuplicateValues boolean flag
      */
-    public void setAllowsDuplicateValues(boolean allowsDuplicateValues)
+    public void setAllowsDuplicateValues(Boolean allowsDuplicateValues)
     {
         this.allowsDuplicateValues = allowsDuplicateValues;
     }
@@ -97,7 +97,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @return boolean flag
      */
-    public boolean getIsCaseSensitive()
+    public Boolean getIsCaseSensitive()
     {
         return isCaseSensitive;
     }
@@ -108,7 +108,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @param caseSensitive boolean flag
      */
-    public void setIsCaseSensitive(boolean caseSensitive)
+    public void setIsCaseSensitive(Boolean caseSensitive)
     {
         isCaseSensitive = caseSensitive;
     }
@@ -119,7 +119,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @return boolean
      */
-    public boolean getIsNullable()
+    public Boolean getIsNullable()
     {
         return isNullable;
     }
@@ -130,7 +130,7 @@ public class DataClassProperties extends DataValueSpecificationProperties
      *
      * @param nullable boolean
      */
-    public void setIsNullable(boolean nullable)
+    public void setIsNullable(Boolean nullable)
     {
         isNullable = nullable;
     }
@@ -326,9 +326,9 @@ public class DataClassProperties extends DataValueSpecificationProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataClassProperties that = (DataClassProperties) objectToCompare;
-        return allowsDuplicateValues == that.allowsDuplicateValues &&
-                isNullable == that.isNullable &&
-                isCaseSensitive == that.isCaseSensitive &&
+        return Objects.equals(allowsDuplicateValues, that.allowsDuplicateValues) &&
+                Objects.equals(isNullable, that.isNullable) &&
+                Objects.equals(isCaseSensitive, that.isCaseSensitive) &&
                 Objects.equals(defaultValue, that.defaultValue) &&
                 Objects.equals(averageValue, that.averageValue) &&
                 Objects.equals(valueList, that.valueList) &&

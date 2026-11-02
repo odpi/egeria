@@ -9,7 +9,7 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 15 |
+| **Number of messages** | 12 |
 | **Message identifiers begin** | `LOVELACE-INSIGHTS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.LovelaceInsightAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/lovelace-insights](../../../open-metadata-implementation/adapters/open-connectors/lovelace-insights) |
@@ -20,9 +20,6 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 
 | Message Id | Severity | Message |
 |---|---|---|
-| [LOVELACE-INSIGHTS-0001](#lovelace-insights-0001) | EXCEPTION | The organization insight service {0} received an unexpected exception {1} during method {2}; the error message was: {3} |
-| [LOVELACE-INSIGHTS-0016](#lovelace-insights-0016) | INFO | The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2} |
-| [LOVELACE-INSIGHTS-0017](#lovelace-insights-0017) | INFO | The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2} |
 | [LOVELACE-INSIGHTS-0018](#lovelace-insights-0018) | INFO | The {0} governance service has processed the {1} governance zone ({2}) |
 | [LOVELACE-INSIGHTS-0038](#lovelace-insights-0038) | INFO | The {0} governance action service has completed successfully |
 | [LOVELACE-INSIGHTS-0039](#lovelace-insights-0039) | INFO | The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3} |
@@ -35,72 +32,6 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 | [LOVELACE-INSIGHTS-0046](#lovelace-insights-0046) | ERROR | The {0} governance action service cannot find an OpenLineage log store to analyse (directory: {1}) |
 | [LOVELACE-INSIGHTS-0047](#lovelace-insights-0047) | INFO | The {0} governance action service has profiled the member popularity of {1} collections, creating or updating the MemberPopularityProfile of {2} of them; {3} could not be stored |
 | [LOVELACE-INSIGHTS-0048](#lovelace-insights-0048) | ERROR | The {0} governance action service is unable to store the MemberPopularityProfile of {1} {2} because of exception {3} with message {4} |
-
-----
-
-### LOVELACE-INSIGHTS-0001
-
-> The organization insight service {0} received an unexpected exception {1} during method {2}; the error message was: {3}
-
-|  |  |
-|---|---|
-| **Java constant** | `LovelaceInsightAuditCode.UNEXPECTED_EXCEPTION` |
-| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
-| **Further reading** | <https://egeria-project.org/egeria-solutions/organization-insight/overview/> |
-
-**System action**
-
-The connector cannot process the current request.
-
-**User action**
-
-Use the details from the error message to determine the cause of the error and retry the request once it is resolved.
-
-
-----
-
-### LOVELACE-INSIGHTS-0016
-
-> The {0} governance action service received a {1} exception when it registered its completion status.  The exception message is: {2}
-
-|  |  |
-|---|---|
-| **Java constant** | `LovelaceInsightAuditCode.UNABLE_TO_SET_COMPLETION_STATUS` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
-| **Further reading** | <https://egeria-project.org/egeria-solutions/organization-insight/overview/> |
-
-**System action**
-
-The governance action throws a GovernanceServiceException in the hope that the hosting server is able to clean up.
-
-**User action**
-
-Review the exception messages that are logged about the same time as one of them will point to the root cause of the error.
-
-
-----
-
-### LOVELACE-INSIGHTS-0017
-
-> The {0} governance action service received a {1} exception when it registered a listener with the governance context.  The exception message is: {2}
-
-|  |  |
-|---|---|
-| **Java constant** | `LovelaceInsightAuditCode.UNABLE_TO_REGISTER_LISTENER` |
-| **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
-| **Further reading** | <https://egeria-project.org/egeria-solutions/organization-insight/overview/> |
-
-**System action**
-
-The governance action service throws a GovernanceServiceException.
-
-**User action**
-
-This is likely to be a configuration error.  Review the description of the exception's message to understand what is not set up correctly and and follow its instructions.
-
 
 ----
 

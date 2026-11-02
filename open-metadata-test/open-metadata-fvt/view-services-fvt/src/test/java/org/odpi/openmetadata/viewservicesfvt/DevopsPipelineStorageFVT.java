@@ -56,7 +56,7 @@ public class DevopsPipelineStorageFVT
     {
         StorageVolumeProperties properties = named(new StorageVolumeProperties(), "StorageVolume", "volume-1");
 
-        properties.setStorageCapacity(500);
+        properties.setStorageCapacity(500L);
         properties.setUnits("GB");
 
         storageVolumeGUID = devops.create("/storage-volumes", newElement(properties));
@@ -84,7 +84,7 @@ public class DevopsPipelineStorageFVT
         StorageVolumeProperties properties = new StorageVolumeProperties();
 
         properties.setDescription("Updated by the Devops Pipeline FVT");
-        properties.setStorageCapacity(750);
+        properties.setStorageCapacity(750L);
 
         UpdateElementRequestBody requestBody = new UpdateElementRequestBody();
 

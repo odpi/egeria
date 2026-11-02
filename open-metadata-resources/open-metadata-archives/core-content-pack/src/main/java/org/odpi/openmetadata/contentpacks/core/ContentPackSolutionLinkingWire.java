@@ -31,13 +31,50 @@ public enum ContentPackSolutionLinkingWire
                              ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
-     * Initializes the karma point awarding process.
+     * Babbage runs the Lovelace services that are registered with it as catalog targets (see
+     * LovelaceServiceDefinition).  Each wire is in the content pack that supplies the Lovelace service.
      */
-    BABBAGE_KARMA(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
-                  RequestTypeDefinition.AWARD_KARMA_POINTS.getSolutionComponentGUID(),
-                  "schedules",
-                  "Initializes the karma point awarding process.",
-                  ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+    BABBAGE_ZONE_MEMBERSHIP_PROFILE(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
+                                    RequestTypeDefinition.BUILD_ZONE_MEMBERSHIP_PROFILE.getSolutionComponentGUID(),
+                                    "schedules",
+                                    "Runs the zone membership profiler on each refresh.",
+                                    ContentPackDefinition.ORGANIZATION_INSIGHT_CONTENT_PACK),
+
+    /**
+     * Runs the popularity profiler on each refresh.
+     */
+    BABBAGE_MEMBER_POPULARITY_PROFILE(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
+                                      RequestTypeDefinition.BUILD_MEMBER_POPULARITY_PROFILE.getSolutionComponentGUID(),
+                                      "schedules",
+                                      "Runs the popularity profiler on each refresh.",
+                                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Runs the OpenLineage run profiler on each refresh.
+     */
+    BABBAGE_OPEN_LINEAGE_RUN_PROFILE(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
+                                     RequestTypeDefinition.PROFILE_OPEN_LINEAGE_RUNS.getSolutionComponentGUID(),
+                                     "schedules",
+                                     "Runs the OpenLineage run profiler on each refresh.",
+                                     ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * Runs the OpenLineage data scope analysis on each refresh.
+     */
+    BABBAGE_OPEN_LINEAGE_DATA_SCOPE(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
+                                    RequestTypeDefinition.REFINE_OPEN_LINEAGE_DATA_SCOPE.getSolutionComponentGUID(),
+                                    "schedules",
+                                    "Runs the OpenLineage data scope analysis on each refresh.",
+                                    ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
+     * Runs the OpenLineage data quality summary on each refresh.
+     */
+    BABBAGE_OPEN_LINEAGE_DATA_QUALITY_SUMMARY(IntegrationConnectorDefinition.BABBAGE_ANALYTICAL_ENGINE.getSolutionComponentGUID(),
+                                              RequestTypeDefinition.SUMMARISE_OPEN_LINEAGE_DATA_QUALITY.getSolutionComponentGUID(),
+                                              "schedules",
+                                              "Runs the OpenLineage data quality summary on each refresh.",
+                                              ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
      * Passes the data product documents found in the files to the data product cataloguer.
