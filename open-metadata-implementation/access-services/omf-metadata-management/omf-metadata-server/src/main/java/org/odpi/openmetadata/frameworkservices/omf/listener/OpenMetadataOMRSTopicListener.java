@@ -155,13 +155,13 @@ public class OpenMetadataOMRSTopicListener extends OMRSTopicListenerBase
 
         if (eventEntity != null)
         {
-            log.debug("Publishing declassified Entity event from: " + sourceName);
+            log.debug("Publishing classified Entity event from: " + sourceName);
 
-            eventPublisher.publishEntityEvent(OpenMetadataEventType.ELEMENT_DECLASSIFIED,
+            eventPublisher.publishEntityEvent(OpenMetadataEventType.ELEMENT_CLASSIFIED,
                                               eventEntity,
                                               null,
-                                              null,
-                                              classification);
+                                              classification,
+                                              null);
         }
     }
 

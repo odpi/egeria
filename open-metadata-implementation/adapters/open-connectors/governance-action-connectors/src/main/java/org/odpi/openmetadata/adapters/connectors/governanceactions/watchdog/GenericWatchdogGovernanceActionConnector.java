@@ -326,18 +326,19 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogA
 
                 newPropertyNames.add(newPropertyName);
 
-                if (oldPropertyNames.contains(newPropertyName))
+                /*
+                 * A property that is new, or whose value has changed.
+                 */
+                if ((! oldPropertyNames.contains(newPropertyName)) ||
+                        (! Objects.equals(oldProperties.getPropertyValue(newPropertyName), newProperties.getPropertyValue(newPropertyName))))
                 {
-                    if (! oldProperties.getPropertyValue(newPropertyName).equals(newProperties.getPropertyValue(newPropertyName)))
+                    if (propertyList == null)
                     {
-                        if (propertyList == null)
-                        {
-                            propertyList = new StringBuilder(newPropertyName);
-                        }
-                        else
-                        {
-                            propertyList.append(", ").append(newPropertyName);
-                        }
+                        propertyList = new StringBuilder(newPropertyName);
+                    }
+                    else
+                    {
+                        propertyList.append(", ").append(newPropertyName);
                     }
                 }
             }
@@ -373,9 +374,10 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogA
      * @param processName name of the process to start
      * @param requestParameters parameters to pass to the process
      * @param actionTargets the elements that this process should work on
+     * @return true if a process was started; false if no process is configured for this kind of event
      * @throws GovernanceServiceException unable to start the process
      */
-    protected void initiateProcess(String                processName,
+    protected boolean initiateProcess(String                processName,
                                    Map<String, String>   requestParameters,
                                    List<NewActionTarget> actionTargets) throws GovernanceServiceException
     {
@@ -424,6 +426,10 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogA
 
                 throw new GovernanceServiceException(error.getMessage(), error);
             }
+
+            return true;
         }
+
+        return false;
     }
 }

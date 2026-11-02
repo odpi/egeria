@@ -39,7 +39,7 @@ Four servers on one in-process platform, and — in the default mode — a real 
 | Server | What it is | What it runs |
 | --- | --- | --- |
 | `filesFvtMetadataStore` | Metadata access store | PostgreSQL local repository; `OpenMetadataTypes`, `CoreContentPack` and `FilesContentPack` loaded at start-up |
-| `filesFvtEngineHost` | Engine host | `FileSurvey`, `FileGovernance` and `Stewardship` governance engines and the `EgeriaWatchdog` watchdog action engine |
+| `filesFvtEngineHost` | Engine host | `FileSurvey`, `FileGovernance` and `Stewardship` governance engines and the `EgeriaWatchdog` watchdog action engine (new-file and element watchdogs) |
 | `filesFvtIntegrationDaemon` | Integration daemon | `FilesIntegrationGroup`, where the folder cataloguers run |
 | `filesFvtViewServer` | View server | Automated Curation and Governance Engine OMVSs |
 
@@ -135,6 +135,28 @@ type would not exercise that choice at all.
   service that throws on start-up and so never watches anything. It does *not* show that the watchdog reacts
   to a new file; see below.
 
+* **[ElementWatchdogFVT](src/test/java/org/odpi/openmetadata/filesfvt/ElementWatchdogFVT.java)** — the generic
+  element watchdog, and this time the *reaction* is tested, not just the start. The test defines its own
+  single-step governance action processes on an engine that no engine host runs, so every process the watchdog
+  starts leaves an engine action waiting at `APPROVED`. The test reads those through the Governance Engine OMVS:
+  the request type says which process started, `receivedElement` says which element it was about, and the request
+  parameters carry what the watchdog passed on. `watch-for-element-change` watches one element. It must ignore a
+  change to another element, start the update process (with `ChangedProperties`) for the first change to its own
+  element, complete with `monitoring-completed`, and ignore a second change. `watch-for-element-changes` watches
+  every glossary term. It must start a process for each new term, an update, a classification and a delete; it
+  must ignore an element of another type; and it must still be running at the end. A deleted element cannot be an
+  action target, so the delete process gets its GUID and type name as request parameters instead. The watchdog
+  hears about changes through the out topic, so this test is skipped by the `-PrunFilesFvtNoKafka` run.
+
+  Writing it turned up six defects that the watchdog's own unit tests could not see:
+  * the watchdog engine gave its services the governance request type instead of the service request type, so a
+    single-event watchdog never completed and the folder watchdog never told nested watching from direct;
+  * a watch on one instance was OR'd with the type filter rather than narrowing it, so it fired for every element;
+  * `ChangedProperties` left out properties that had just been added;
+  * one process that could not be started stopped a long-running watchdog;
+  * delete processes were given the deleted element as an action target, which can never succeed;
+  * OMF published a classification of an entity proxy as *Element Declassified*.
+
 * **[ExternalGovernanceEngineFVT](src/test/java/org/odpi/openmetadata/filesfvt/ExternalGovernanceEngineFVT.java)**
   — stands in for a governance engine that runs outside Egeria. It defines its own governance engine, which no
   engine host runs, and a two-step governance action process on it. Through the **Governance Engine OMVS** it
@@ -146,7 +168,8 @@ type would not exercise that choice at all.
 
 ## Still to add
 
-* **The watchdog's reaction.** `NewFileWatchdogFVT` shows the watchdog runs, not that it acts. Showing that
+* **The new-file watchdog's reaction.** `NewFileWatchdogFVT` shows the folder watchdog runs, not that it acts
+  (`ElementWatchdogFVT` shows how to observe the processes a watchdog starts). Showing that
   means cataloguing a new file inside the watched folder and waiting for the action the watchdog initiates in
   response — a second engine action the test never requested and cannot name in advance. Worth having, and a
   larger test than the one that is here.
