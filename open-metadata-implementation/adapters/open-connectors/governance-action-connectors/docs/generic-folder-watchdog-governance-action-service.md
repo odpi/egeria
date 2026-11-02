@@ -32,7 +32,7 @@ The rest of the properties are the governance action processes to call for speci
 |---|---|
 | `newElementProcessName` | listen for new or refreshed elements |
 | `updatedElementProcessName` | listen for changes to the properties in the element |
-| `deletedElementProcessName` | listen for elements that have been deleted |
+| `deletedElementProcessName` | listen for elements that have been deleted - the deleted file is not an action target; its GUID and type name are passed in the `ElementGUID` and `ElementTypeName` request parameters |
 | `classifiedElementProcessName` | listen for elements that have had a new classification attached |
 | `reclassifiedElementProcessName` | listen for elements that have had the properties in one of their classifications changed |
 | `declassifiedElementProcessName` | listen for elements that have had a classification removed |
@@ -83,12 +83,12 @@ The folder to watch can be supplied as an action target named `watchedFolder`.  
 
 ### Completion status and guards
 
-This service will only complete and produce a guard if it cannot start monitoring or encounters an unrecoverable error.
+This service will only complete and produce a guard if it cannot start monitoring.  Once it is running, an event whose process cannot be started is logged and the monitoring continues.
 
 In which case, this watchdog action service uses:
 
 - `CompletionStatus.INVALID` with guard `monitoring-invalid` - no folder element has the path name in `watchedFolderName`, or
-- `CompletionStatus.FAILED` with guard `monitoring-failed` - the monitoring failed.
+- `CompletionStatus.FAILED` with guard `monitoring-failed` - the monitoring could not be started.
 
 The service can be stopped by cancelling its engine action.
 

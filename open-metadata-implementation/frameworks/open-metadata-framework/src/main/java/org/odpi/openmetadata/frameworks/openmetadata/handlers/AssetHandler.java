@@ -3850,11 +3850,13 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the asset and its lineage relationships.
+     * Retrieve the asset and its lineage relationships.  Only the starting element (direction 0) must be an asset.
+     * The elements linked to it by lineage relationships may be any type of element, such as processes,
+     * governance action processes, software capabilities and schema elements.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     * @param allAnchors
+     * @param assetGUID unique identifier of the asset (or other type of element if this is not the starting element)
+     * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
      * @param limitToInformationSupplyChain qualified name to control retrieval
@@ -3878,7 +3880,22 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        OpenMetadataRootElement asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
+        final String methodName = "getAssetLineageGraphNode";
+
+        OpenMetadataRootElement asset;
+
+        if (direction == 0)
+        {
+            asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
+        }
+        else
+        {
+            GetOptions getOptions = new GetOptions(queryOptions);
+
+            getOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
+
+            asset = super.getRootElementByGUID(userId, assetGUID, getOptions, methodName);
+        }
 
         if (asset != null)
         {

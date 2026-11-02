@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
@@ -29,6 +30,8 @@ import java.util.Map;
  */
 public class GenericElementWatchdogGovernanceActionConnector extends GenericWatchdogGovernanceActionConnector
 {
+    private String requestType = null;
+
     /**
      * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
@@ -42,13 +45,16 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
     {
         super.start();
 
+        requestType = watchdogContext.getRequestType();
+
         super.startMonitoring(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
     }
 
 
     /**
      * This method is called each time a potentially new asset is received.  It triggers a governance action process to validate and
-     * enrich the asset as required.
+     * enrich the asset as required.  Events are handled one at a time so that, for process-single-event, only
+     * one of several events arriving together starts a process.
      *
      * @param event event containing details of a change to an open metadata element.
      *
@@ -58,10 +64,18 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
      *                                    or administrator action shuts down the service.
      */
     @Override
-    public void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
+    public synchronized void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
     {
+        final String methodName = "processEvent";
+
         if (! completed)
         {
+            /*
+             * Only an event that starts a process counts as the single event.  Others, such as refresh events
+             * or classifications with no process configured, leave the watchdog waiting.
+             */
+            boolean processStarted = false;
+
             try
             {
                 if (event.getElementHeader().getType().getTypeCategory() == OpenMetadataTypeDefCategory.ENTITY_DEF)
@@ -81,9 +95,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                     {
                         if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
                         {
-                            initiateProcess(newElementProcessName,
-                                            null,
-                                            actionTargets);
+                            processStarted = initiateProcess(newElementProcessName,
+                                                             null,
+                                                             actionTargets);
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
                         {
@@ -91,15 +105,22 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                                   this.diffProperties(event.getPreviousElementProperties(),
                                                                       event.getElementProperties()));
 
-                            initiateProcess(updatedElementProcessName,
-                                            requestParameters,
-                                            actionTargets);
+                            processStarted = initiateProcess(updatedElementProcessName,
+                                                             requestParameters,
+                                                             actionTargets);
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
                         {
-                            initiateProcess(deletedElementProcessName,
-                                            null,
-                                            actionTargets);
+                            /*
+                             * A deleted element cannot be an action target, so it is identified through the
+                             * request parameters instead.
+                             */
+                            requestParameters.put("ElementGUID", elementGUID);
+                            requestParameters.put("ElementTypeName", event.getElementHeader().getType().getTypeName());
+
+                            processStarted = initiateProcess(deletedElementProcessName,
+                                                             requestParameters,
+                                                             null);
                         }
                         else
                         {
@@ -107,31 +128,26 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                             if (event.getEventType() == OpenMetadataEventType.ELEMENT_CLASSIFIED)
                             {
-                                initiateProcess(classifiedElementProcessName,
-                                                requestParameters,
-                                                actionTargets);
+                                processStarted = initiateProcess(classifiedElementProcessName,
+                                                                 requestParameters,
+                                                                 actionTargets);
                             }
                             else if (event.getEventType() == OpenMetadataEventType.ELEMENT_RECLASSIFIED)
                             {
                                 requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(event.getPreviousClassificationProperties(),
                                                                                                event.getClassificationProperties()));
 
-                                initiateProcess(reclassifiedElementProcessName,
-                                                requestParameters,
-                                                actionTargets);
+                                processStarted = initiateProcess(reclassifiedElementProcessName,
+                                                                 requestParameters,
+                                                                 actionTargets);
 
                             }
                             else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DECLASSIFIED)
                             {
-                                initiateProcess(declassifiedElementProcessName,
-                                                requestParameters,
-                                                actionTargets);
+                                processStarted = initiateProcess(declassifiedElementProcessName,
+                                                                 requestParameters,
+                                                                 actionTargets);
                             }
-                        }
-
-                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(watchdogContext.getRequestType()))
-                        {
-                            completed = true;
                         }
                     }
                 }
@@ -165,41 +181,52 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
                         if (event.getEventType() == OpenMetadataEventType.NEW_ELEMENT_CREATED)
                         {
-                            initiateProcess(newRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
+                            processStarted = initiateProcess(newRelationshipProcessName,
+                                                             requestParameters,
+                                                             actionTargets);
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_UPDATED)
                         {
                             requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(event.getPreviousElementProperties(),
                                                                                            event.getElementProperties()));
 
-                            initiateProcess(updatedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
+                            processStarted = initiateProcess(updatedRelationshipProcessName,
+                                                             requestParameters,
+                                                             actionTargets);
                         }
                         else if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
                         {
-                            initiateProcess(deletedRelationshipProcessName,
-                                            requestParameters,
-                                            actionTargets);
-                        }
-
-                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(watchdogContext.getRequestType()))
-                        {
-                            completed = true;
-
+                            processStarted = initiateProcess(deletedRelationshipProcessName,
+                                                             requestParameters,
+                                                             actionTargets);
                         }
                     }
                 }
             }
             catch (Exception error)
             {
-                completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
+                /*
+                 * A watchdog waiting for a single event has failed.  One that processes multiple events logs
+                 * the error and carries on with the next event.
+                 */
+                if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(requestType))
+                {
+                    completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
+                }
+                else
+                {
+                    logExceptionRecord(methodName,
+                                       GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                       error);
+                }
+
                 return;
             }
 
-            if (completed)
+            if (processStarted && (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(requestType)))
             {
                 completeMonitoring(WatchdogActionGuard.MONITORING_COMPLETED, null);
             }

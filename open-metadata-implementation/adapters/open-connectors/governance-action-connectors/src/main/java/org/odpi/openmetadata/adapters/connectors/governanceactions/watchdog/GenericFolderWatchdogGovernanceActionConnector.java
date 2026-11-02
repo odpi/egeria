@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
@@ -125,6 +126,8 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     @Override
     public void processEvent(OpenMetadataOutTopicEvent metadataElementEvent) throws GovernanceServiceException
     {
+        final String methodName = "processEvent";
+
         if (! completed)
         {
             try
@@ -170,9 +173,16 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     }
                     else if (metadataElementEvent.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
                     {
+                        /*
+                         * A deleted file cannot be an action target, so it is identified through the request
+                         * parameters instead.
+                         */
+                        requestParameters.put("ElementGUID", fileGUID);
+                        requestParameters.put("ElementTypeName", metadataElementEvent.getElementHeader().getType().getTypeName());
+
                         initiateProcess(deletedElementProcessName,
                                         requestParameters,
-                                        actionTargets);
+                                        null);
                     }
                     else if (metadataElementEvent.getClassificationName() != null)
                     {
@@ -186,15 +196,8 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         }
                         else if (metadataElementEvent.getEventType() == OpenMetadataEventType.ELEMENT_RECLASSIFIED)
                         {
-                            ElementProperties previousElementProperties = null;
-
-                            if (metadataElementEvent.getPreviousClassificationProperties() != null)
-                            {
-                                previousElementProperties = metadataElementEvent.getPreviousClassificationProperties();
-                            }
-
-                            requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(previousElementProperties,
-                                                                                           metadataElementEvent.getElementProperties()));
+                            requestParameters.put(WatchdogRequestParameter.CHANGED_PROPERTIES.getName(), this.diffProperties(metadataElementEvent.getPreviousClassificationProperties(),
+                                                                                                            metadataElementEvent.getClassificationProperties()));
 
 
                             initiateProcess(reclassifiedElementProcessName,
@@ -213,7 +216,16 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             }
             catch (Exception error)
             {
-                completeMonitoring(WatchdogActionGuard.MONITORING_FAILED, error.getMessage());
+                /*
+                 * The watchdog runs until it is cancelled, so a problem with one event is logged and the
+                 * monitoring carries on with the next.
+                 */
+                logExceptionRecord(methodName,
+                                   GovernanceActionConnectorsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 methodName,
+                                                                                                                 error.getMessage()),
+                                   error);
             }
         }
     }

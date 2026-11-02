@@ -107,7 +107,8 @@ public class GovernanceListenerManager
      * The types of events passed to the listener are controlled by the combination of the interesting event types and
      * the interesting metadata types.  That is an event is only passed to the listener if it matches both
      * the interesting event types and the interesting metadata types.
-     * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If a specific instance is supplied, only events about that instance (or relationships attached to it) are passed on.
      * If the listener parameter is null, no more events are passed to the listener.
      *
      * @param connectorId unique identifier of this instance of the connector - used on each call.
@@ -196,9 +197,7 @@ public class GovernanceListenerManager
             {
                 if ((interestingEventTypes == null) || (interestingEventTypes.contains(event.getEventType())))
                 {
-                    if (this.elementIsInteresting(event.getElementHeader().getGUID(),
-                                                  event.getElementHeader().getType().getTypeName(),
-                                                  event.getElementHeader().getType().getSuperTypeNames()))
+                    if (this.eventIsInteresting(event))
                     {
                         this.callListener(event);
                     }
@@ -208,22 +207,49 @@ public class GovernanceListenerManager
 
 
         /**
-         * Determine if the element(s) passed in the event is interesting to this listener.
+         * Determine if the subject of the event is interesting to this listener.  A specific instance narrows the
+         * metadata types rather than replacing them: the event must be about that instance, either as the
+         * element itself (when its type must also match), or as one end of a relationship.
          *
-         * @param elementGUID unique identifier of principle metadata element
+         * @param event event to test
+         * @return boolean flag
+         */
+        private boolean eventIsInteresting(OpenMetadataOutTopicEvent event)
+        {
+            String elementGUID = event.getElementHeader().getGUID();
+
+            if (specificInstance == null)
+            {
+                return this.elementIsInteresting(event.getElementHeader().getType().getTypeName(),
+                                                 event.getElementHeader().getType().getSuperTypeNames());
+            }
+            else if (specificInstance.equals(elementGUID))
+            {
+                return this.elementIsInteresting(event.getElementHeader().getType().getTypeName(),
+                                                 event.getElementHeader().getType().getSuperTypeNames());
+            }
+            else if ((event.getEndOneElementHeader() != null) && (specificInstance.equals(event.getEndOneElementHeader().getGUID())))
+            {
+                return true;
+            }
+            else
+            {
+                return (event.getEndTwoElementHeader() != null) && (specificInstance.equals(event.getEndTwoElementHeader().getGUID()));
+            }
+        }
+
+
+        /**
+         * Determine if the type of the element passed in the event is interesting to this listener.
+         *
          * @param elementTypeName type name of event subject
          * @param elementSuperTypeNames super type names of event subject (or null)
          * @return boolean flag
          */
-        private boolean elementIsInteresting(String       elementGUID,
-                                             String       elementTypeName,
+        private boolean elementIsInteresting(String       elementTypeName,
                                              List<String> elementSuperTypeNames)
         {
-            if ((specificInstance != null) && (specificInstance.equals(elementGUID)))
-            {
-                return true;
-            }
-            else if ((interestingMetadataTypes == null) || (interestingMetadataTypes.contains(elementTypeName)))
+            if ((interestingMetadataTypes == null) || (interestingMetadataTypes.contains(elementTypeName)))
             {
                 return true;
             }

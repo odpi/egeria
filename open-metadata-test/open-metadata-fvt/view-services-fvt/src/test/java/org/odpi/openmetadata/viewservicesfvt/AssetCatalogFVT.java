@@ -16,8 +16,11 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody
 import org.odpi.openmetadata.commonservices.ffdc.rest.OpenMetadataRootElementResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.ProvisioningActionProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.springframework.web.client.RestTemplate;
@@ -26,13 +29,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * AssetCatalogFVT covers every request of the Asset Catalog OMVS against two data sets joined by a DataFlow:
  * the supported asset types, the asset graph and lineage graph, the search within the asset domain and the
- * assets from the local metadata collection.
+ * assets from the local metadata collection.  The destination's data flows on through a provisioning process,
+ * which is a governance definition rather than an asset, to a third data set, so the lineage graph has to
+ * walk through an element that is not an asset.
  */
 @ExtendWith(OMAGPlatformExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -44,6 +50,10 @@ public class AssetCatalogFVT
     private static String sourceGUID      = null;
     private static String destinationGUID = null;
     private static String dataFlowGUID    = null;
+    private static String processGUID     = null;
+    private static String provisionedGUID = null;
+    private static String toProcessGUID   = null;
+    private static String fromProcessGUID = null;
 
 
     @Test
@@ -53,15 +63,17 @@ public class AssetCatalogFVT
         sourceGUID      = ClassificationExplorerFvtFixtures.createDataSet("catalog-source", "Catalog source");
         destinationGUID = ClassificationExplorerFvtFixtures.createDataSet("catalog-destination", "Catalog destination");
 
-        DataFlowProperties properties = new DataFlowProperties();
-        properties.setLabel("copy");
+        dataFlowGUID = createDataFlow(sourceGUID, destinationGUID, "copy");
 
-        NewRelationshipRequestBody requestBody = new NewRelationshipRequestBody();
-        requestBody.setProperties(properties);
+        ProvisioningActionProcessProperties processProperties = new ProvisioningActionProcessProperties();
 
-        dataFlowGUID = lineageLinker.create("/from-elements/" + sourceGUID + "/via/" + OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName +
-                                                    "/to-elements/" + destinationGUID + "/attach",
-                                            requestBody);
+        processProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("ProvisioningActionProcess", "catalog-provision"));
+        processProperties.setDisplayName("Catalog provisioning process");
+
+        processGUID     = ClassificationExplorerFvtFixtures.createGovernanceDefinition(processProperties);
+        provisionedGUID = ClassificationExplorerFvtFixtures.createDataSet("catalog-provisioned", "Catalog provisioned");
+        toProcessGUID   = createDataFlow(destinationGUID, processGUID, "provision-in");
+        fromProcessGUID = createDataFlow(processGUID, provisionedGUID, "provision-out");
     }
 
 
@@ -111,7 +123,9 @@ public class AssetCatalogFVT
 
 
     /**
-     * getAssetLineageGraph from the destination shows the source upstream.
+     * getAssetLineageGraph from the destination shows the source upstream, and downstream the provisioning
+     * process and the data set it provisions.  The process is not an asset, which used to stop the whole graph
+     * with a wrong-type error.
      */
     @Test
     @Order(4)
@@ -127,6 +141,21 @@ public class AssetCatalogFVT
         assertEquals(destinationGUID, graph.getElementHeader().getGUID());
         assertTrue(lineageLinkGUIDs(graph).contains(sourceGUID), "the lineage graph does not show the source");
         assertNotNull(graph.getMermaidGraph(), "getAssetLineageGraph returned no mermaid graph");
+
+        AssetLineageGraph lineageGraph = assertInstanceOf(AssetLineageGraph.class, graph);
+        List<String>      linkedGUIDs  = new ArrayList<>();
+
+        assertNotNull(lineageGraph.getLinkedAssets(), "the lineage graph has no linked elements");
+
+        for (AssetLineageGraphNode node : lineageGraph.getLinkedAssets())
+        {
+            linkedGUIDs.add(node.getElementHeader().getGUID());
+        }
+
+        assertTrue(linkedGUIDs.contains(sourceGUID), "the lineage graph does not include the source: " + linkedGUIDs);
+        assertTrue(linkedGUIDs.contains(processGUID), "the lineage graph does not include the provisioning process: " + linkedGUIDs);
+        assertTrue(linkedGUIDs.contains(provisionedGUID), "the lineage graph stops at the provisioning process: " + linkedGUIDs);
+        assertTrue(lineageGraph.getFullLineageMermaidGraph().contains("Catalog provisioning process"), "the mermaid graph does not show the provisioning process");
     }
 
 
@@ -173,13 +202,42 @@ public class AssetCatalogFVT
     @AfterAll
     static void cleanUp()
     {
-        if (dataFlowGUID != null)
+        for (String relationshipGUID : new String[]{dataFlowGUID, toProcessGUID, fromProcessGUID})
         {
-            lineageLinker.call("/relationships/" + dataFlowGUID + "/detach", new DeleteRelationshipRequestBody());
+            if (relationshipGUID != null)
+            {
+                lineageLinker.call("/relationships/" + relationshipGUID + "/detach", new DeleteRelationshipRequestBody());
+            }
         }
 
         ClassificationExplorerFvtFixtures.deleteAsset(sourceGUID);
         ClassificationExplorerFvtFixtures.deleteAsset(destinationGUID);
+        ClassificationExplorerFvtFixtures.deleteAsset(provisionedGUID);
+        ClassificationExplorerFvtFixtures.deleteGovernanceDefinition(processGUID);
+    }
+
+
+    /**
+     * Link two elements with a DataFlow through the Lineage Linker.
+     *
+     * @param fromGUID element the data flows from
+     * @param toGUID element the data flows to
+     * @param label label for the data flow
+     * @return relationship GUID
+     */
+    private static String createDataFlow(String fromGUID,
+                                         String toGUID,
+                                         String label)
+    {
+        DataFlowProperties properties = new DataFlowProperties();
+        properties.setLabel(label);
+
+        NewRelationshipRequestBody requestBody = new NewRelationshipRequestBody();
+        requestBody.setProperties(properties);
+
+        return lineageLinker.create("/from-elements/" + fromGUID + "/via/" + OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName +
+                                            "/to-elements/" + toGUID + "/attach",
+                                    requestBody);
     }
 
 

@@ -4,11 +4,14 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset field level lineage graph.
@@ -22,7 +25,7 @@ public class AssetFieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuild
      */
     public AssetFieldLevelLineageMermaidGraphBuilder(AssetGraph assetGraph)
     {
-        String currentDisplayName = super.getNodeDisplayName(assetGraph);;
+        String currentDisplayName = super.getNodeDisplayName(assetGraph);
 
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: Field-Level Lineage Analysis Graph for Asset - ");
@@ -54,8 +57,32 @@ public class AssetFieldLevelLineageMermaidGraphBuilder extends MermaidGraphBuild
 
             if (! dataMappingRelationships.isEmpty())
             {
+                Map<String, MetadataElementSummary> anchoredElements = new HashMap<>();
+
+                if (assetGraph.getAnchoredElements() != null)
+                {
+                    for (MetadataElementSummary anchoredElement : assetGraph.getAnchoredElements())
+                    {
+                        if (anchoredElement != null)
+                        {
+                            anchoredElements.put(anchoredElement.getElementHeader().getGUID(), anchoredElement);
+                        }
+                    }
+                }
+
                 for (RelatedMetadataNodeSummary line : dataMappingRelationships)
                 {
+                    /*
+                     * Data mappings usually start from one of the asset's schema elements rather than the
+                     * asset.  Without a node for it, mermaid draws a box showing only its number.
+                     */
+                    MetadataElementSummary startingElement = anchoredElements.get(line.getStartingElementGUID());
+
+                    if (startingElement != null)
+                    {
+                        appendNewMermaidNode(startingElement, VisualStyle.SCHEMA_ELEMENT);
+                    }
+
                     super.addRelatedNodeSummary(line, getVisualStyleForEntity(line.getRelatedElement().getElementHeader(), VisualStyle.SCHEMA_ELEMENT), LineStyle.ANIMATED_LONG);
                 }
             }

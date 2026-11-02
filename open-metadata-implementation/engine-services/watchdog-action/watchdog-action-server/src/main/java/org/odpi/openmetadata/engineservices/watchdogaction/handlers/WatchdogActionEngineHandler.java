@@ -129,8 +129,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
 
         if (governanceServiceCache != null)
         {
-            WatchdogActionServiceHandler watchdogActionServiceHandler = this.getWatchdogActionServiceHandler(governanceRequestType,
-                                                                                                             requestParameters,
+            WatchdogActionServiceHandler watchdogActionServiceHandler = this.getWatchdogActionServiceHandler(requestParameters,
                                                                                                              actionTargetElements,
                                                                                                              engineActionGUID,
                                                                                                              requesterUserId,
@@ -154,7 +153,6 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
     /**
      * Create an instance of a watchdog action service handler.
      *
-     * @param requestType type of monitor request from caller
      * @param requestParameters parameters for the watchdog
      * @param actionTargetElements the elements for the service to work on
      * @param engineActionGUID unique identifier of the associated engine action entity
@@ -168,8 +166,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
      * @throws UserNotAuthorizedException the caller is not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the watchdog action engine.
      */
-    private WatchdogActionServiceHandler getWatchdogActionServiceHandler(String                    requestType,
-                                                                         Map<String, String>       requestParameters,
+    private WatchdogActionServiceHandler getWatchdogActionServiceHandler(Map<String, String>       requestParameters,
                                                                          List<ActionTargetElement> actionTargetElements,
                                                                          String                    engineActionGUID,
                                                                          String                    requesterUserId,
@@ -195,7 +192,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler impleme
                                                               maxPageSize,
                                                               governanceServiceCache.getDeleteMethod(),
                                                               engineActionGUID,
-                                                              requestType,
+                                                              governanceServiceCache.getServiceRequestType(),
                                                               governanceServiceCache.getRequestParameters(requestParameters),
                                                               actionTargetElements,
                                                               governanceServiceCache.getGovernanceServiceName(),

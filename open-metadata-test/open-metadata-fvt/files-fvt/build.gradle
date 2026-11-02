@@ -79,6 +79,7 @@ dependencies {
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-watchdog-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
 
     // The connectors under test.  These are on the *compile* classpath as well as the runtime one because the

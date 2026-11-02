@@ -66,6 +66,17 @@ public class AssetLocalLineageGraphMermaidGraphBuilder extends MermaidGraphBuild
                 {
                     VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());
 
+                    /*
+                     * The line may start from one of the asset's anchored elements (such as a column) rather
+                     * than the asset.  Without a node for it, mermaid draws a box showing only its number.
+                     */
+                    MetadataElementSummary startingElement = nodeMap.get(line.getStartingElementGUID());
+
+                    if (startingElement != null)
+                    {
+                        appendNewMermaidNode(startingElement, visualStyle);
+                    }
+
                     super.addRelatedNodeSummary(line, visualStyle, LineStyle.ANIMATED_LONG);
                 }
             }
