@@ -234,7 +234,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span>
                   throws <span class="exceptions"><a href="../../../../frameworks/opengovernance/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.ffdc">GovernanceServiceException</a></span></div>
 <div class="block">This method is called each time a potentially new asset is received.  It triggers a governance action process to validate and
- enrich the asset as required.</div>
+ enrich the asset as required.  Events are handled one at a time so that, for process-single-event, only
+ one of several events arriving together starts a process.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/openwatchdog/WatchdogActionServiceConnector.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/openwatchdog/WatchdogActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogActionServiceConnector</a></code></dd>
