@@ -1151,7 +1151,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                        UserNotAuthorizedException
     {
         final String actionTargetName = "watchedFolder";
-        final String governanceActionTypeName = "AssetOnboarding:watch-for-new-files-in-folder";
+        final String governanceActionTypeName = "EgeriaWatchdog::watch-for-new-files-in-folder";
         final String governanceEngineName = "ClinicalTrials@CocoPharmaceuticals";
 
         Map<String, String> requestParameters = governanceContext.getRequestParameters();

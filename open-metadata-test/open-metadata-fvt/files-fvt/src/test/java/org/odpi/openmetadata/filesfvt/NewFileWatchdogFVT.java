@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
@@ -17,6 +16,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -87,10 +87,15 @@ public class NewFileWatchdogFVT
 
             String actionName = FilesFvtTestSupport.governanceActionTypeQualifiedName(WATCH_FOR_NEW_FILES);
 
+            /*
+             * The folder watchdog looks for its folder under the "watchedFolder" action target name
+             * (GenericFolderWatchdogGovernanceActionProvider.FOLDER_TARGET_PROPERTY).  Under any other name it
+             * ignores the folder and watches every file in the repository instead.
+             */
             watchdogGUID = new AutomatedCurationClient().initiateGovernanceActionType(
                     actionName,
                     new HashMap<>(),
-                    List.of(FilesFvtTestSupport.newActionTarget(ActionTarget.NEW_ASSET.getName(), folderAssetGUID)));
+                    List.of(FilesFvtTestSupport.newActionTarget("watchedFolder", folderAssetGUID)));
 
             assertNotNull(watchdogGUID,
                           "The Automated Curation service accepted the request to run " + actionName
@@ -112,9 +117,32 @@ public class NewFileWatchdogFVT
             assertNotEquals(ActivityStatus.INVALID, watchdog.getActionStatus(),
                             actionName + " was rejected as invalid rather than started.  It said: "
                                     + watchdog.getCompletionMessage());
+
+            /*
+             * A watchdog that no engine host claims stays WAITING, which is neither of the statuses above.
+             * Running means IN_PROGRESS.
+             */
+            assertEquals(ActivityStatus.IN_PROGRESS, watchdog.getActionStatus(),
+                         actionName + " is not running - no engine host has claimed it.");
         }
         finally
         {
+            /*
+             * The watchdog never finishes on its own.  Left running, it would go on listening for the rest
+             * of the suite.
+             */
+            if (watchdogGUID != null)
+            {
+                try
+                {
+                    new AutomatedCurationClient().cancelEngineAction(watchdogGUID);
+                }
+                catch (Exception error)
+                {
+                    System.out.println("files-fvt: unable to cancel the watchdog engine action " + watchdogGUID + ": " + error.getMessage());
+                }
+            }
+
             if (folderAssetGUID != null)
             {
                 FilesFvtTestSupport.purgeElement(openMetadataStore, folderAssetGUID);

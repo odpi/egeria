@@ -22,6 +22,7 @@ import org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.Lovelac
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.db2luw.survey.DB2LUWDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.db2luw.survey.DB2LUWServerSurveyActionProvider;
@@ -74,15 +75,26 @@ public enum GovernanceServiceDefinition
                              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * New Files Watchdog Governance Action Service
+     * New Files Watchdog Action Service
      */
     NEW_FILES_WATCHDOG("16ba9235-ae9f-4754-8430-5ffbce7da6a0",
                        "new-files-watchdog-governance-action-service",
-                       "New Files Watchdog Governance Action Service",
+                       "New Files Watchdog Action Service",
                        new GenericFolderWatchdogGovernanceActionProvider(),
                        ResourceUse.WATCH_DOG,
-                       DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                       DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
                        ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Generic Element Watchdog Action Service
+     */
+    ELEMENT_WATCHDOG("4c56c690-84b5-4ac6-b9b1-d16e0f7157b9",
+                     "generic-element-watchdog-action-service",
+                     "Generic Element Watchdog Action Service",
+                     new GenericElementWatchdogGovernanceActionProvider(),
+                     ResourceUse.WATCH_DOG,
+                     DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Locate and Set Origin Governance Action Service -

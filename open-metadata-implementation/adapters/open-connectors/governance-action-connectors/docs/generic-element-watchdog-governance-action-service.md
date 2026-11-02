@@ -2,10 +2,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Generic Element Watchdog Governance Action Service
+# Generic Element Watchdog Action Service
 
 
-The *Generic Element Watchdog* governance action service detects changes to requested elements and initiates a governance action process when they occur. It has two modes of operation: 
+The *Generic Element Watchdog* [watchdog action service](https://egeria-project.org/concepts/watchdog-action-service) detects changes to requested elements and initiates a governance action process when they occur. It has two modes of operation: 
 
 - listening for a single event and then terminating when it occurs, or
 - continuously listening for multiple events.
@@ -16,11 +16,11 @@ It is possible to listen for:
 - specific instances
 - specific types of events
 
-![Operation of generic element watchdog governance action service](generic-element-watchdog-governance-action-service.svg)
+![Operation of generic element watchdog action service](generic-element-watchdog-governance-action-service.svg)
 
 ## Configuration
 
-This connector uses the [Governance Action OMES](https://egeria-project.org/omes/governance-action) running in the [engine host](https://egeria-project.org/concepts/engine-host).
+This connector uses the [Watchdog Action OMES](https://egeria-project.org/services/omes/watchdog-action) running in the [engine host](https://egeria-project.org/concepts/engine-host).  It is registered in the *EgeriaWatchdog* [watchdog action engine](https://egeria-project.org/concepts/watchdog-action-engine) that is defined in the Core Content Pack.
 
 The following properties can be set up in its connection's configuration properties and overridden by the request parameters:
 
@@ -71,11 +71,11 @@ The rest of the properties are the governance action processes to call for speci
 }
 ```
 
-This is its connection definition to use when creating the definition of the governance action service using the [Governance Configuration Services](https://egeria-project.org/services/governance-configuration-services). Remove the configuration properties that are not required. Replace `{{typeName}}`, `{{guid}}` and `{{processQualifiedName}}` as required.
+This is its connection definition to use when creating the definition of the watchdog action service using the [Governance Configuration Services](https://egeria-project.org/services/governance-configuration-services). Remove the configuration properties that are not required. Replace `{{typeName}}`, `{{guid}}` and `{{processQualifiedName}}` as required.
 
-## Governance action settings
+## Watchdog action settings
 
-When this governance action service is called through an [engine action](https://egeria-project.org/concepts/engine-action) it supports the following options:
+When this watchdog action service is called through an [engine action](https://egeria-project.org/concepts/engine-action) it supports the following options:
 
 ### Request types and parameters
 
@@ -84,22 +84,24 @@ There are two request types that control its modes of operation:
 - `process-single-event` to request it monitors for a single specific event and then completes.
 - `process-multiple-events` to request it continuously monitors for events until it fails.
 
-If the engine host server where it is running is restarted, this governance action service is also restarted.
+The EgeriaWatchdog engine maps the `watch-for-element-change` governance request type to `process-single-event` and `watch-for-element-changes` to `process-multiple-events`.
+
+If the engine host server where it is running is restarted, this watchdog action service is also restarted.
 
 Any of the configuration properties can be overridden by request parameters of the same name.
 
 ### Action targets
 
-The `instanceToMonitor` property can be supplied as a name action target. Using action targets allows the instance to be dynamically controlled and for multiple instances to be monitored.
+The `instanceToMonitor` property can be supplied as a named action target. Using action targets allows the instance to be dynamically controlled and for multiple instances to be monitored.
 
 ### Completion status and guards
 
 This service will only complete and produce a guard if it encounters an unrecoverable error or it is set up to listen for a single event and that event occurs.
 
-On completion, this governance action service uses:
+On completion, this watchdog action service uses:
 
-- `CompletionStatus.ACTIONED` with guard `monitoring-complete` - requested single event occurred, or
-- `CompletionStatus.FAILED` with guard `monitoring-failed` - monitor not configured correctly or failed 
+- `CompletionStatus.ACTIONED` with guard `monitoring-completed` - requested single event occurred, or
+- `CompletionStatus.FAILED` with guard `monitoring-failed` - monitor not configured correctly or failed
 
 
 

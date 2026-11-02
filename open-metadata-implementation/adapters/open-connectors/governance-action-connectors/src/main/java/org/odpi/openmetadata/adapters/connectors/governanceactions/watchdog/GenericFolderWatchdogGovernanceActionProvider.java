@@ -6,30 +6,30 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImplementationTypeDefinition;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * GenericFolderWatchdogGovernanceActionProvider is the OCF connector provider for the Generic Folder Watchdog Governance Action Service.
- * This is a Watchdog Governance Action Service.
+ * GenericFolderWatchdogGovernanceActionProvider is the OCF connector provider for the Generic Folder Watchdog Action Service.
+ * This is a Watchdog Action Service.
  */
-public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
 {
     private static final String  connectorTypeGUID = "b4629f05-710c-492b-bc9c-6e3f89e002df";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericFolder";
-    private static final String  connectorTypeDisplayName = "Generic Folder Watchdog Governance Action Service";
-    private static final String  connectorTypeDescription = "Watchdog Governance Action Service that listens for events relating to file assets located in a particular folder.";
+    private static final String  connectorTypeDisplayName = "Generic Folder Watchdog Action Service";
+    private static final String  connectorTypeDescription = "Watchdog Action Service that listens for events relating to file assets located in a particular folder.";
 
     /*
      * The folder to monitor can be passed as a GUID in the configuration properties or
      * request parameters.  Alternatively as an action target.
      */
-    static final String FOLDER_TARGET_PROPERTY = "watchedFolder";
+    public static final String FOLDER_TARGET_PROPERTY = "watchedFolder";
     static final String FOLDER_TARGET_PROPERTY_DESCRIPTION = "This action target identifies the folder asset to watch.";
 
 
@@ -47,7 +47,8 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
 
         supportedRequestTypes = GenericFolderRequestType.getRequestTypeTypes();
 
-        supportedRequestParameters = GenericFolderRequestParameter.getRequestParameterTypes();
+        supportedRequestParameters = WatchdogRequestParameter.getRequestParameterTypes();
+        supportedRequestParameters.addAll(GenericFolderRequestParameter.getRequestParameterTypes());
 
         supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();
@@ -60,9 +61,6 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
         super.supportedActionTargetTypes.add(actionTargetType);
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.FILE_SYSTEM_DIRECTORY, DeployedImplementationType.DATA_FOLDER});
 
-        producedGuards = GenericWatchdogGuard.getGuardTypes();
-
-        super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setGUID(connectorTypeGUID);
@@ -70,19 +68,20 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
         connectorType.setDisplayName(connectorTypeDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(GenericFolderRequestParameter.FOLDER_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.ACTION_TARGET_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.ACTION_TARGET_TWO_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(GenericFolderRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.INTERESTING_TYPE_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.ACTION_TARGET_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.ACTION_TARGET_TWO_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(WatchdogRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;

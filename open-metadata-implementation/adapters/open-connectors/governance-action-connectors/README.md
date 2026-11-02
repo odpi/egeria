@@ -9,10 +9,14 @@ This module contains the implementation of the [governance action services](http
 [Governance Action Open Metadata Engine Service (OMES)](../../../engine-services/governance-action)
 hosted by the [Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
 
+It also contains two [watchdog action services](https://egeria-project.org/concepts/watchdog-action-service/) that run in the
+[Watchdog Action OMES](../../../engine-services/watchdog-action) and are registered in the EgeriaWatchdog engine:
+
+* [Generic Element Watchdog Action Service](docs/generic-element-watchdog-governance-action-service.md)
+* [Generic Folder Watchdog Action Service](docs/generic-folder-watchdog-governance-action-service.md)
+
 The governance action services with detailed documentation are:
 
-* [Generic Element Watchdog Governance Action Service](docs/generic-element-watchdog-governance-action-service.md)
-* [Generic Folder Watchdog Governance Action Service](docs/generic-folder-watchdog-governance-action-service.md)
 * [Move Copy File Provisioning Governance Action Service](docs/move-copy-file-provisioning-governance-action-service.md)
 * [Origin Seeker Remediation Governance Action Service](docs/origin-seeker-remediation-governance-action-service.md)
 * [Zone Publisher Governance Action Service](docs/zone-publisher-governance-action-service.md)

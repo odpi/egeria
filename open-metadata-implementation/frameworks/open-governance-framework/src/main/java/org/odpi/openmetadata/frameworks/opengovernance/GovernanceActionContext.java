@@ -1159,7 +1159,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
     {
-        watchdogEventClient.registerListener(connectorName, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        watchdogEventClient.registerListener(connectorInstanceId, listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
@@ -1169,7 +1169,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     @Override
     public void disconnectListener()
     {
-        watchdogEventClient.disconnectListener(connectorName);
+        watchdogEventClient.disconnectListener(connectorInstanceId);
     }
 
 
