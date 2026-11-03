@@ -3572,6 +3572,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * This supply chain has to be connected to the starting asset to show.
      * @param highlightISCQualifiedName Return whether a particular information supply chain should be highlighted.
      * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
+     * @param maxHops maximum number of lineage relationships to follow away from the asset in each direction - zero means no limit
      * @param suppliedQueryOptions various other options to control the query
      *
      * @return graph of elements or
@@ -3584,6 +3585,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                   String       limitToISCQualifiedName,
                                                   String       highlightISCQualifiedName,
                                                   boolean      allAnchors,
+                                                  int          maxHops,
                                                   QueryOptions suppliedQueryOptions) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -3594,10 +3596,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(assetGUID, guidParameter, methodName);
 
-        List<AssetLineageGraphNode>         linkedAssets              = new ArrayList<>();
-        List<AssetLineageGraphRelationship> lineageRelationships      = new ArrayList<>();
-        Set<String>                         upstreamProcessedAssets   = new HashSet<>();
-        Set<String>                         downstreamProcessedAssets = new HashSet<>();
+        List<AssetLineageGraphNode>         linkedAssets         = new ArrayList<>();
+        List<AssetLineageGraphRelationship> lineageRelationships = new ArrayList<>();
 
         QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
 
@@ -3606,14 +3606,13 @@ public class AssetHandler extends OpenMetadataHandlerBase
         this.getAssetLineageGraphNodes(userId,
                                        assetGUID,
                                        allAnchors,
-                                       0,
+                                       maxHops,
                                        queryOptions.getIncludeOnlyRelationships(),
+                                       this.getLineageRelationshipQueryTypeName(userId, queryOptions.getIncludeOnlyRelationships()),
                                        limitToISCQualifiedName,
                                        queryOptions,
                                        linkedAssets,
-                                       lineageRelationships,
-                                       upstreamProcessedAssets,
-                                       downstreamProcessedAssets);
+                                       lineageRelationships);
 
         if (! linkedAssets.isEmpty())
         {
@@ -3659,7 +3658,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Construct the list of the lineage relationship types to search for.
+     * Construct the list of the lineage relationship types to search for.  The caller's list replaces the
+     * defaults.  A supertype name includes its subtypes, and skipRelationships is applied afterwards (see
+     * isRequestedLineageRelationship).
      *
      * @param relationshipTypes relationship type names supplied by the user.
      * @return list of relationship type names
@@ -3681,14 +3682,90 @@ public class AssetHandler extends OpenMetadataHandlerBase
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName);
 
             /*
-             * Pick up requests for actions and ToDos
+             * Pick up the actions requested by elements in the lineage.
              */
-            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName);
-            lineageRelationshipTypeNames.add(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
 
         return lineageRelationshipTypeNames;
+    }
+
+
+    /**
+     * Decide whether a relationship is one the lineage walk follows.  It must be one of the requested types, or a
+     * subtype of one (so LineageRelationship means every lineage relationship), and not one of the types, or a
+     * subtype of one, that the caller asked to skip.
+     *
+     * @param relationshipHeader header of the relationship
+     * @param lineageRelationshipTypeNames requested relationship type names
+     * @param queryOptions options from the caller, holding any relationship types to skip
+     * @return true if the walk follows this relationship
+     */
+    private boolean isRequestedLineageRelationship(ElementControlHeader relationshipHeader,
+                                                   List<String>         lineageRelationshipTypeNames,
+                                                   QueryOptions         queryOptions)
+    {
+        if (! propertyHelper.isTypeOf(relationshipHeader, lineageRelationshipTypeNames))
+        {
+            return false;
+        }
+
+        return (queryOptions.getSkipRelationships() == null) ||
+               (! propertyHelper.isTypeOf(relationshipHeader, queryOptions.getSkipRelationships()));
+    }
+
+
+    /**
+     * Work out which relationship type to retrieve each element's lineage relationships with.  The repository
+     * returns a type's subtypes with it, so when every requested type is a LineageRelationship, a single query
+     * for LineageRelationship retrieves just the lineage relationships, and the far-end elements of the other
+     * relationships are never read.  A single requested type is queried directly.  Otherwise, all relationships
+     * are retrieved in one query and filtered afterwards: a query for each type costs a round trip each, which
+     * measured two to four times slower than the single unfiltered query for a typical element.
+     *
+     * @param userId calling user
+     * @param lineageRelationshipTypeNames requested relationship type names
+     * @return relationship type name to query with, or null for all relationships
+     * @throws InvalidParameterException invalid parameter - not expected
+     * @throws PropertyServerException problem accessing the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    private String getLineageRelationshipQueryTypeName(String       userId,
+                                                       List<String> lineageRelationshipTypeNames) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        if (lineageRelationshipTypeNames.size() == 1)
+        {
+            return lineageRelationshipTypeNames.get(0);
+        }
+
+        Set<String> lineageTypeNames = new HashSet<>();
+
+        lineageTypeNames.add(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName);
+
+        TypeDefList lineageSubTypes = openMetadataClient.getSubTypes(userId,
+                                                                     false,
+                                                                     false,
+                                                                     OpenMetadataType.LINEAGE_RELATIONSHIP.typeName);
+
+        if ((lineageSubTypes != null) && (lineageSubTypes.getTypeDefs() != null))
+        {
+            for (OpenMetadataTypeDef lineageSubType : lineageSubTypes.getTypeDefs())
+            {
+                if (lineageSubType != null)
+                {
+                    lineageTypeNames.add(lineageSubType.getName());
+                }
+            }
+        }
+
+        if (lineageTypeNames.containsAll(lineageRelationshipTypeNames))
+        {
+            return OpenMetadataType.LINEAGE_RELATIONSHIP.typeName;
+        }
+
+        return null;
     }
 
 
@@ -3704,102 +3781,117 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the asset and its lineage relationships.
+     * An element waiting to be visited by the lineage walk.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param direction is this element upstream (2) or downstream (1) of the starting asset (or 0 for the starting asset)
+     * @param hops number of lineage relationships between the starting asset and this element
+     */
+    record LineageWalkStep(String elementGUID,
+                           int    direction,
+                           int    hops)
+    {}
+
+
+    /**
+     * Walk the lineage relationships out from the starting asset, upstream and downstream.  The walk is breadth
+     * first, so each element is reached by its shortest path and its hop count is its distance from the asset.
+     * An element that is both upstream and downstream of the asset appears once in the graph, with the
+     * relationships from both directions.  When maxHops is set, the walk stops at elements that many hops away;
+     * if the lineage continues beyond such an element to one not already in the graph, the element is
+     * flagged as having reached the hop limit.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the asset
+     * @param assetGUID unique identifier of the starting asset
      * @param allAnchors should anchored elements be included
-     * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
+     * @param maxHops maximum number of lineage relationships to follow in each direction - zero means no limit
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param relationshipQueryTypeName relationship type to retrieve the lineage relationships with - null means all types
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param queryOptions options for the query
-     * @param linkedAssets set of assets that are upstream of this asset
-     * @param lineageRelationships relationships that link the assets together in the lineage graph
-     * @param upstreamProcessedAssets list of assets covered so far upstream of the asset
-     * @param downstreamProcessedAssets list of assets covered so far downstream of the asset
+     * @param linkedAssets elements in the lineage graph - the starting asset is first
+     * @param lineageRelationships relationships that link the elements together in the lineage graph
      * @throws InvalidParameterException invalid parameter - not expected
      * @throws PropertyServerException problem accessing the repository
      * @throws UserNotAuthorizedException security problem
      */
-    void getAssetLineageGraphNodes(String                                                userId,
-                                   String                                                elementGUID,
-                                   boolean                                               allAnchors,
-                                   int                                                   direction,
-                                   List<String>                                          lineageRelationshipTypeNames,
-                                   String                                                limitToInformationSupplyChain,
-                                   QueryOptions                                          queryOptions,
-                                   List<AssetLineageGraphNode>                           linkedAssets,
-                                   List<AssetLineageGraphRelationship>                   lineageRelationships,
-                                   Set<String>                                           upstreamProcessedAssets,
-                                   Set<String>                                           downstreamProcessedAssets) throws InvalidParameterException,
-                                                                                                                           PropertyServerException,
-                                                                                                                           UserNotAuthorizedException
+    void getAssetLineageGraphNodes(String                              userId,
+                                   String                              assetGUID,
+                                   boolean                             allAnchors,
+                                   int                                 maxHops,
+                                   List<String>                        lineageRelationshipTypeNames,
+                                   String                              relationshipQueryTypeName,
+                                   String                              limitToInformationSupplyChain,
+                                   QueryOptions                        queryOptions,
+                                   List<AssetLineageGraphNode>         linkedAssets,
+                                   List<AssetLineageGraphRelationship> lineageRelationships) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
-        Map<String, LineageLink> upstreamAssets   = new HashMap<>();
-        Map<String, LineageLink> downstreamAssets = new HashMap<>();
+        Map<String, AssetLineageGraphNode> graphNodes       = new HashMap<>();
+        Set<String>                        graphNodeGUIDs   = new HashSet<>();
+        Set<String>                        upstreamQueued   = new HashSet<>();
+        Set<String>                        downstreamQueued = new HashSet<>();
+        Deque<LineageWalkStep>             walkSteps        = new ArrayDeque<>();
 
-        AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
-                                                                    elementGUID,
-                                                                    allAnchors,
-                                                                    direction,
-                                                                    lineageRelationshipTypeNames,
-                                                                    limitToInformationSupplyChain,
-                                                                    queryOptions,
-                                                                    upstreamAssets,
-                                                                    downstreamAssets);
+        walkSteps.add(new LineageWalkStep(assetGUID, 0, 0));
+        graphNodeGUIDs.add(assetGUID);
+        upstreamQueued.add(assetGUID);
+        downstreamQueued.add(assetGUID);
 
-        if (asset != null)
+        while (! walkSteps.isEmpty())
         {
-            if ((direction == 0) || (direction == 1))
+            LineageWalkStep walkStep = walkSteps.removeFirst();
+
+            Map<String, LineageLink> upstreamAssets   = new HashMap<>();
+            Map<String, LineageLink> downstreamAssets = new HashMap<>();
+
+            AssetLineageGraphNode existingNode = graphNodes.get(walkStep.elementGUID());
+            AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
+                                                                        walkStep.elementGUID(),
+                                                                        existingNode,
+                                                                        allAnchors,
+                                                                        walkStep.direction(),
+                                                                        lineageRelationshipTypeNames,
+                                                                        relationshipQueryTypeName,
+                                                                        limitToInformationSupplyChain,
+                                                                        queryOptions,
+                                                                        upstreamAssets,
+                                                                        downstreamAssets);
+
+            if (asset == null)
             {
-                downstreamProcessedAssets.add(asset.getElementHeader().getGUID());
-            }
-            if ((direction == 0) || (direction == 2))
-            {
-                upstreamProcessedAssets.add(asset.getElementHeader().getGUID());
+                continue;
             }
 
-            linkedAssets.add(asset);
+            if (existingNode == null)
+            {
+                asset.setHopsFromStart(walkStep.hops());
+                graphNodes.put(walkStep.elementGUID(), asset);
+                linkedAssets.add(asset);
+            }
+
+            boolean atHopLimit = (maxHops > 0) && (walkStep.hops() >= maxHops);
 
             /*
              * Process upstream assets
              */
             for (String linkedAssetGUID : upstreamAssets.keySet())
             {
-                AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
-
-                LineageLink lineageLink = upstreamAssets.get(linkedAssetGUID);
-
-                if (lineageLink != null)
+                if ((atHopLimit) && (! graphNodeGUIDs.contains(linkedAssetGUID)))
                 {
-                    if (lineageLink.relationshipTypes != null)
-                    {
-                        assetLineageGraphRelationship.setRelationshipTypes(new ArrayList<>(lineageLink.relationshipTypes));
-                    }
-                    if (lineageLink.informationSupplyChains != null)
-                    {
-                        assetLineageGraphRelationship.setInformationSupplyChains(new ArrayList<>(lineageLink.informationSupplyChains));
-                    }
+                    asset.setHopLimitReached(true);
+                    continue;
                 }
 
-                assetLineageGraphRelationship.setEnd1AssetGUID(linkedAssetGUID);
-                assetLineageGraphRelationship.setEnd2AssetGUID(asset.getElementHeader().getGUID());
+                lineageRelationships.add(this.getLineageGraphRelationship(upstreamAssets.get(linkedAssetGUID),
+                                                                          linkedAssetGUID,
+                                                                          walkStep.elementGUID()));
 
-                lineageRelationships.add(assetLineageGraphRelationship);
-
-                if (! upstreamProcessedAssets.contains(linkedAssetGUID))
+                if ((! atHopLimit) && (upstreamQueued.add(linkedAssetGUID)))
                 {
-                    this.getAssetLineageGraphNodes(userId,
-                                                   linkedAssetGUID,
-                                                   allAnchors,
-                                                   2,
-                                                   lineageRelationshipTypeNames,
-                                                   limitToInformationSupplyChain,
-                                                   queryOptions,
-                                                   linkedAssets,
-                                                   lineageRelationships,
-                                                   upstreamProcessedAssets,
-                                                   downstreamProcessedAssets);
+                    graphNodeGUIDs.add(linkedAssetGUID);
+                    walkSteps.add(new LineageWalkStep(linkedAssetGUID, 2, walkStep.hops() + 1));
                 }
             }
 
@@ -3808,43 +3900,56 @@ public class AssetHandler extends OpenMetadataHandlerBase
              */
             for (String linkedAssetGUID : downstreamAssets.keySet())
             {
-                AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
-
-                LineageLink lineageLink = downstreamAssets.get(linkedAssetGUID);
-
-                if (lineageLink != null)
+                if ((atHopLimit) && (! graphNodeGUIDs.contains(linkedAssetGUID)))
                 {
-                    if (lineageLink.relationshipTypes != null)
-                    {
-                        assetLineageGraphRelationship.setRelationshipTypes(new ArrayList<>(lineageLink.relationshipTypes));
-                    }
-                    if (lineageLink.informationSupplyChains != null)
-                    {
-                        assetLineageGraphRelationship.setInformationSupplyChains(new ArrayList<>(lineageLink.informationSupplyChains));
-                    }
+                    asset.setHopLimitReached(true);
+                    continue;
                 }
 
-                assetLineageGraphRelationship.setEnd1AssetGUID(asset.getElementHeader().getGUID());
-                assetLineageGraphRelationship.setEnd2AssetGUID(linkedAssetGUID);
+                lineageRelationships.add(this.getLineageGraphRelationship(downstreamAssets.get(linkedAssetGUID),
+                                                                          walkStep.elementGUID(),
+                                                                          linkedAssetGUID));
 
-                lineageRelationships.add(assetLineageGraphRelationship);
-
-                if (! downstreamProcessedAssets.contains(linkedAssetGUID))
+                if ((! atHopLimit) && (downstreamQueued.add(linkedAssetGUID)))
                 {
-                    this.getAssetLineageGraphNodes(userId,
-                                                   linkedAssetGUID,
-                                                   allAnchors,
-                                                   1,
-                                                   lineageRelationshipTypeNames,
-                                                   limitToInformationSupplyChain,
-                                                   queryOptions,
-                                                   linkedAssets,
-                                                   lineageRelationships,
-                                                   upstreamProcessedAssets,
-                                                   downstreamProcessedAssets);
+                    graphNodeGUIDs.add(linkedAssetGUID);
+                    walkSteps.add(new LineageWalkStep(linkedAssetGUID, 1, walkStep.hops() + 1));
                 }
             }
         }
+    }
+
+
+    /**
+     * Build the relationship between two elements in the lineage graph.
+     *
+     * @param lineageLink relationship types and information supply chains linking the two elements
+     * @param end1GUID upstream element
+     * @param end2GUID downstream element
+     * @return lineage graph relationship
+     */
+    private AssetLineageGraphRelationship getLineageGraphRelationship(LineageLink lineageLink,
+                                                                      String      end1GUID,
+                                                                      String      end2GUID)
+    {
+        AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
+
+        if (lineageLink != null)
+        {
+            if (lineageLink.relationshipTypes != null)
+            {
+                assetLineageGraphRelationship.setRelationshipTypes(new ArrayList<>(lineageLink.relationshipTypes));
+            }
+            if (lineageLink.informationSupplyChains != null)
+            {
+                assetLineageGraphRelationship.setInformationSupplyChains(new ArrayList<>(lineageLink.informationSupplyChains));
+            }
+        }
+
+        assetLineageGraphRelationship.setEnd1AssetGUID(end1GUID);
+        assetLineageGraphRelationship.setEnd2AssetGUID(end2GUID);
+
+        return assetLineageGraphRelationship;
     }
 
 
@@ -3852,13 +3957,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
     /**
      * Retrieve the asset and its lineage relationships.  Only the starting element (direction 0) must be an asset.
      * The elements linked to it by lineage relationships may be any type of element, such as processes,
-     * governance action processes, software capabilities and schema elements.
+     * governance action processes, software capabilities and schema elements.  These linked elements are read
+     * without their relationships (graphQueryDepth 0): the walk retrieves their lineage relationships itself,
+     * and a full read of every element in a large lineage graph is slow and makes the response very large.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset (or other type of element if this is not the starting element)
+     * @param existingNode node already in the graph for this element, if it was reached in the other direction - its
+     *                     relationships are added to rather than reading the element again
      * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param relationshipQueryTypeName relationship type to retrieve the lineage relationships with - null means all types
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param queryOptions options for query
      * @param upstreamAssets set of assets that are upstream of this asset
@@ -3870,9 +3980,11 @@ public class AssetHandler extends OpenMetadataHandlerBase
      */
     AssetLineageGraphNode getAssetLineageGraphNode(String                    userId,
                                                    String                    assetGUID,
+                                                   AssetLineageGraphNode     existingNode,
                                                    boolean                   allAnchors,
                                                    int                       direction,
                                                    List<String>              lineageRelationshipTypeNames,
+                                                   String                    relationshipQueryTypeName,
                                                    String                    limitToInformationSupplyChain,
                                                    QueryOptions              queryOptions,
                                                    Map<String, LineageLink>  upstreamAssets,
@@ -3882,75 +3994,118 @@ public class AssetHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "getAssetLineageGraphNode";
 
-        OpenMetadataRootElement asset;
+        AssetLineageGraphNode assetLineageGraphNode = existingNode;
 
-        if (direction == 0)
+        if (assetLineageGraphNode == null)
         {
-            asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
-        }
-        else
-        {
-            GetOptions getOptions = new GetOptions(queryOptions);
+            OpenMetadataRootElement asset;
 
-            getOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
-
-            asset = super.getRootElementByGUID(userId, assetGUID, getOptions, methodName);
-        }
-
-        if (asset != null)
-        {
-            AssetLineageGraphNode assetLineageGraphNode = new AssetLineageGraphNode(asset);
-
-            /*
-             * Retrieve all the lineage relationships for the asset.
-             */
-            List<RelatedMetadataNodeSummary> relationships = this.getAssetLineageRelationships(userId,
-                                                                                               asset.getElementHeader().getGUID(),
-                                                                                               allAnchors,
-                                                                                               direction,
-                                                                                               lineageRelationshipTypeNames,
-                                                                                               limitToInformationSupplyChain,
-                                                                                               queryOptions);
-
-            if (relationships != null)
+            if (direction == 0)
             {
-                List<RelatedMetadataNodeSummary> upstreamRelationships   = new ArrayList<>();
-                List<RelatedMetadataNodeSummary> downstreamRelationships = new ArrayList<>();
-                List<RelatedMetadataNodeSummary> internalRelationship    = new ArrayList<>();
+                asset = this.getAssetByGUID(userId, assetGUID, queryOptions);
+            }
+            else
+            {
+                GetOptions getOptions = new GetOptions(queryOptions);
 
-                for (RelatedMetadataNodeSummary relationship : relationships)
+                getOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
+                getOptions.setGraphQueryDepth(0);
+
+                asset = super.getRootElementByGUID(userId, assetGUID, getOptions, methodName);
+            }
+
+            if (asset == null)
+            {
+                return null;
+            }
+
+            assetLineageGraphNode = new AssetLineageGraphNode(asset);
+        }
+
+        /*
+         * Retrieve all the lineage relationships for the asset.
+         */
+        List<RelatedMetadataNodeSummary> relationships = this.getAssetLineageRelationships(userId,
+                                                                                           assetGUID,
+                                                                                           allAnchors,
+                                                                                           direction,
+                                                                                           lineageRelationshipTypeNames,
+                                                                                           relationshipQueryTypeName,
+                                                                                           limitToInformationSupplyChain,
+                                                                                           queryOptions);
+
+        if (relationships != null)
+        {
+            List<RelatedMetadataNodeSummary> upstreamRelationships   = new ArrayList<>();
+            List<RelatedMetadataNodeSummary> downstreamRelationships = new ArrayList<>();
+            List<RelatedMetadataNodeSummary> internalRelationship    = new ArrayList<>();
+
+            for (RelatedMetadataNodeSummary relationship : relationships)
+            {
+                if (relationship != null)
                 {
-                    if (relationship != null)
+                    if (this.isRequestedLineageRelationship(relationship.getRelationshipHeader(), lineageRelationshipTypeNames, queryOptions))
                     {
-                        if (lineageRelationshipTypeNames.contains(relationship.getRelationshipHeader().getType().getTypeName()))
+                        if (! assetGUID.equals(relationship.getStartingElementGUID()))
                         {
-                            if (! assetGUID.equals(relationship.getStartingElementGUID()))
-                            {
-                                internalRelationship.add(relationship);
-                            }
-                            else if (relationship.getRelatedElementAtEnd1())
-                            {
-                                // Upstream asset
-                                setupLineageAsset(relationship, upstreamAssets, upstreamRelationships);
-                            }
-                            else
-                            {
-                                // Downstream asset
-                                setupLineageAsset(relationship, downstreamAssets, downstreamRelationships);
-                            }
+                            internalRelationship.add(relationship);
+                        }
+                        else if (relationship.getRelatedElementAtEnd1())
+                        {
+                            // Upstream asset
+                            setupLineageAsset(relationship, upstreamAssets, upstreamRelationships);
+                        }
+                        else
+                        {
+                            // Downstream asset
+                            setupLineageAsset(relationship, downstreamAssets, downstreamRelationships);
                         }
                     }
                 }
-
-                assetLineageGraphNode.setUpstreamRelationships(upstreamRelationships);
-                assetLineageGraphNode.setDownstreamRelationships(downstreamRelationships);
-                assetLineageGraphNode.setInternalRelationships(internalRelationship);
             }
 
-            return assetLineageGraphNode;
+            assetLineageGraphNode.setUpstreamRelationships(this.addRelationships(assetLineageGraphNode.getUpstreamRelationships(), upstreamRelationships));
+            assetLineageGraphNode.setDownstreamRelationships(this.addRelationships(assetLineageGraphNode.getDownstreamRelationships(), downstreamRelationships));
+            assetLineageGraphNode.setInternalRelationships(this.addRelationships(assetLineageGraphNode.getInternalRelationships(), internalRelationship));
         }
 
-        return null;
+        return assetLineageGraphNode;
+    }
+
+
+    /**
+     * Add newly retrieved relationships to those a node already has, skipping any it already holds.  A node reached
+     * both upstream and downstream is visited once in each direction.
+     *
+     * @param currentRelationships relationships already in the node (may be null)
+     * @param newRelationships newly retrieved relationships
+     * @return combined list
+     */
+    private List<RelatedMetadataNodeSummary> addRelationships(List<RelatedMetadataNodeSummary> currentRelationships,
+                                                              List<RelatedMetadataNodeSummary> newRelationships)
+    {
+        if (currentRelationships == null)
+        {
+            return newRelationships;
+        }
+
+        List<RelatedMetadataNodeSummary> combinedRelationships = new ArrayList<>(currentRelationships);
+        Set<String>                      relationshipGUIDs     = new HashSet<>();
+
+        for (RelatedMetadataNodeSummary relationship : currentRelationships)
+        {
+            relationshipGUIDs.add(relationship.getRelationshipHeader().getGUID());
+        }
+
+        for (RelatedMetadataNodeSummary relationship : newRelationships)
+        {
+            if (relationshipGUIDs.add(relationship.getRelationshipHeader().getGUID()))
+            {
+                combinedRelationships.add(relationship);
+            }
+        }
+
+        return combinedRelationships;
     }
 
 
@@ -4047,6 +4202,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param allAnchors Return whether all anchored elements should be returned, or just the ones that are connected to the asset.
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param relationshipQueryTypeName relationship type to retrieve the lineage relationships with - null means all types
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param queryOptions options for the query
      * @return list for relationships - may be empty
@@ -4059,6 +4215,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                           boolean      allAnchors,
                                                                           int          direction,
                                                                           List<String> lineageRelationshipTypeNames,
+                                                                          String       relationshipQueryTypeName,
                                                                           String       limitToInformationSupplyChain,
                                                                           QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                             PropertyServerException,
@@ -4073,6 +4230,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                                                  assetGUID,
                                                                                                  direction,
                                                                                                  lineageRelationshipTypeNames,
+                                                                                                 relationshipQueryTypeName,
                                                                                                  limitToInformationSupplyChain,
                                                                                                  queryOptions);
 
@@ -4131,6 +4289,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                                                               anchoredElement.getElementGUID(),
                                                                                                               direction,
                                                                                                               lineageRelationshipTypeNames,
+                                                                                                              relationshipQueryTypeName,
                                                                                                               limitToInformationSupplyChain,
                                                                                                               queryOptions);
 
@@ -4158,6 +4317,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param elementGUID starting element
      * @param direction is this asset upstream or downstream of the asset (or either direction, 0, to start)
      * @param lineageRelationshipTypeNames list of requested type names
+     * @param relationshipQueryTypeName relationship type to retrieve the lineage relationships with - null means all types
      * @param limitToInformationSupplyChain qualified name to control retrieval
      * @param queryOptions options for the query
      * @return list for relationships - may be empty
@@ -4169,6 +4329,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                    String       elementGUID,
                                                                    int          direction,
                                                                    List<String> lineageRelationshipTypeNames,
+                                                                   String       relationshipQueryTypeName,
                                                                    String       limitToInformationSupplyChain,
                                                                    QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                          PropertyServerException,
@@ -4179,12 +4340,13 @@ public class AssetHandler extends OpenMetadataHandlerBase
         List<RelatedMetadataElement> lineageRelationships = new ArrayList<>();
 
         /*
-         * Begin by retrieving all the relationships for the asset and filtering out the lineage relationships.
+         * Retrieve the relationships of the query type (all types if it is null) and keep the requested
+         * lineage relationships.
          */
         RelatedMetadataElementList relationships = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  direction,
-                                                                                                 null,
+                                                                                                 relationshipQueryTypeName,
                                                                                                  queryOptions);
 
         if ((relationships != null) && (relationships.getElementList() != null))
@@ -4192,7 +4354,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             for (RelatedMetadataElement relationship : relationships.getElementList())
             {
                 if ((relationship != null) &&
-                        (lineageRelationshipTypeNames.contains(relationship.getType().getTypeName())))
+                        (this.isRequestedLineageRelationship(relationship, lineageRelationshipTypeNames, queryOptions)))
                 {
                     if (limitToInformationSupplyChain != null)
                     {

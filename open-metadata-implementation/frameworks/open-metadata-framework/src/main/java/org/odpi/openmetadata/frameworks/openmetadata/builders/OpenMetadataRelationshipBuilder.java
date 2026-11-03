@@ -211,6 +211,30 @@ public class OpenMetadataRelationshipBuilder
                                                                              OpenMetadataProperty.QUERY_TYPE.name,
                                                                              dataMappingProperties.getQueryType());
                     }
+                    else if (properties instanceof DataSetContentProperties dataSetContentProperties)
+                    {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY_ID.name,
+                                                                             dataSetContentProperties.getQueryId());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY.name,
+                                                                             dataSetContentProperties.getQuery());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY_TYPE.name,
+                                                                             dataSetContentProperties.getQueryType());
+                    }
+                    else if (properties instanceof DerivedSchemaTypeQueryTargetProperties derivedSchemaTypeQueryTargetProperties)
+                    {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY_ID.name,
+                                                                             derivedSchemaTypeQueryTargetProperties.getQueryId());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY.name,
+                                                                             derivedSchemaTypeQueryTargetProperties.getQuery());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.QUERY_TYPE.name,
+                                                                             derivedSchemaTypeQueryTargetProperties.getQueryType());
+                    }
                 }
                 else if (properties instanceof AnnotationMatchProperties annotationMatchProperties)
                 {
@@ -823,24 +847,6 @@ public class OpenMetadataRelationshipBuilder
                                                                        crowdSourcingContributionProperties.getRoleType().name());
                 }
             }
-            else if (properties instanceof DataSetContentProperties dataSetContentProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY_ID.name,
-                                                                     dataSetContentProperties.getQueryId());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY.name,
-                                                                     dataSetContentProperties.getQuery());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY_TYPE.name,
-                                                                     dataSetContentProperties.getQueryType());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
-                                                                     dataSetContentProperties.getISCQualifiedName());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DERIVATION.name,
-                                                                     dataSetContentProperties.getDerivation());
-            }
             else if (properties instanceof DeployedOnProperties deployedOnProperties)
             {
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
@@ -855,21 +861,6 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name,
                                                                      deployedOnProperties.getDeployerPropertyName());
-            }
-            else if (properties instanceof DerivedSchemaTypeQueryTargetProperties derivedSchemaTypeQueryTargetProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY_ID.name,
-                                                                     derivedSchemaTypeQueryTargetProperties.getQueryId());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY.name,
-                                                                     derivedSchemaTypeQueryTargetProperties.getQuery());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.QUERY_TYPE.name,
-                                                                     derivedSchemaTypeQueryTargetProperties.getQueryType());
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
-                                                                     derivedSchemaTypeQueryTargetProperties.getISCQualifiedName());
             }
             else if (properties instanceof DigitalSubscriberProperties digitalSubscriberProperties)
             {

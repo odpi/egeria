@@ -26,6 +26,8 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
     private List<RelatedMetadataNodeSummary> upstreamRelationships   = null;
     private List<RelatedMetadataNodeSummary> downstreamRelationships = null;
     private List<RelatedMetadataNodeSummary> internalRelationships   = null;
+    private int                              hopsFromStart           = 0;
+    private boolean                          hopLimitReached         = false;
 
     /**
      * Default constructor
@@ -60,6 +62,8 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
             upstreamRelationships = template.getUpstreamRelationships();
             downstreamRelationships = template.getDownstreamRelationships();
             internalRelationships = template.getInternalRelationships();
+            hopsFromStart = template.getHopsFromStart();
+            hopLimitReached = template.getHopLimitReached();
         }
     }
 
@@ -137,6 +141,54 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
 
 
     /**
+     * Return the number of lineage relationships between the starting asset and this element.  The starting
+     * asset is zero.
+     *
+     * @return number of hops
+     */
+    public int getHopsFromStart()
+    {
+        return hopsFromStart;
+    }
+
+
+    /**
+     * Set up the number of lineage relationships between the starting asset and this element.  The starting
+     * asset is zero.
+     *
+     * @param hopsFromStart number of hops
+     */
+    public void setHopsFromStart(int hopsFromStart)
+    {
+        this.hopsFromStart = hopsFromStart;
+    }
+
+
+    /**
+     * Return whether the lineage continues beyond this element but was not followed because the request's
+     * maximum number of hops was reached.
+     *
+     * @return flag
+     */
+    public boolean getHopLimitReached()
+    {
+        return hopLimitReached;
+    }
+
+
+    /**
+     * Set up whether the lineage continues beyond this element but was not followed because the request's
+     * maximum number of hops was reached.
+     *
+     * @param hopLimitReached flag
+     */
+    public void setHopLimitReached(boolean hopLimitReached)
+    {
+        this.hopLimitReached = hopLimitReached;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -148,6 +200,8 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
                 "upstreamRelationships=" + upstreamRelationships +
                 ", downstreamRelationships=" + downstreamRelationships +
                 ", internalRelationships=" + internalRelationships +
+                ", hopsFromStart=" + hopsFromStart +
+                ", hopLimitReached=" + hopLimitReached +
                 "} " + super.toString();
     }
 
@@ -165,7 +219,9 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AssetLineageGraphNode that = (AssetLineageGraphNode) objectToCompare;
-        return Objects.equals(upstreamRelationships, that.upstreamRelationships) &&
+        return hopsFromStart == that.hopsFromStart &&
+                hopLimitReached == that.hopLimitReached &&
+                Objects.equals(upstreamRelationships, that.upstreamRelationships) &&
                 Objects.equals(downstreamRelationships, that.downstreamRelationships) &&
                 Objects.equals(internalRelationships, that.internalRelationships);
     }
@@ -179,6 +235,6 @@ public class AssetLineageGraphNode extends OpenMetadataRootElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), upstreamRelationships, downstreamRelationships, internalRelationships);
+        return Objects.hash(super.hashCode(), upstreamRelationships, downstreamRelationships, internalRelationships, hopsFromStart, hopLimitReached);
     }
 }

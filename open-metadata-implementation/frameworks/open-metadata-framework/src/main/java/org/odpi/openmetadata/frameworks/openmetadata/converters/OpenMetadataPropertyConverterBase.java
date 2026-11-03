@@ -16162,8 +16162,10 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DataSetContentProperties();
 
-                ((DataSetContentProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
-                ((DataSetContentProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQuery(this.removeQuery(elementProperties));
                 ((DataSetContentProperties)relationshipBeanProperties).setQueryId(this.removeQueryId(elementProperties));
@@ -16195,10 +16197,13 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new DerivedSchemaTypeQueryTargetProperties();
 
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((LabeledRelationshipProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
+                ((LineageRelationshipProperties)relationshipBeanProperties).setDerivation(this.removeDerivation(elementProperties));
                 ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setQueryId(this.removeQueryId(elementProperties));
                 ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setQuery(this.removeQuery(elementProperties));
                 ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setQueryType(this.removeQueryType(elementProperties));
-                ((DerivedSchemaTypeQueryTargetProperties)relationshipBeanProperties).setISCQualifiedName(this.removeISCQualifiedName(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DETAILED_PROCESSING_ACTION_RELATIONSHIP.typeName))
             {
@@ -18536,6 +18541,7 @@ public class OpenMetadataPropertyConverterBase
                                 beanProperties = new SchemaAttributeProperties();
                             }
 
+                            ((SchemaAttributeProperties) beanProperties).setNamespacePath(this.removeNamespacePath(elementProperties));
                             ((SchemaAttributeProperties) beanProperties).setAllowsDuplicateValues(this.removeAllowsDuplicateValues(elementProperties));
                             ((SchemaAttributeProperties) beanProperties).setOrderedValues(this.removeOrderedValues(elementProperties));
                             ((SchemaAttributeProperties) beanProperties).setDefaultValueOverride(this.removeDefaultValueOverride(elementProperties));

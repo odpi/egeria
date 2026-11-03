@@ -961,10 +961,13 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "DerivedSchemaTypeQueryTargetProperties",
+    "label": "add label",
+    "description": "add description",
     "queryId": "add id that is used on the overall formula",
     "query": "add query",
     "queryType": "add query type",
     "iscQualifiedName": "add information supply chain qualified name",
+    "derivation": "add the rule that derived this relationship, if a tool derived it",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },

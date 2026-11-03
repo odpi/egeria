@@ -59,7 +59,12 @@ Content-Type: application/json
 ###
 # @name=getAssetLineageGraph - all of the parameters
 # Return all the elements that are linked to an asset using lineage relationships.  The relationships are
-# retrieved both from the asset, and the anchored schema elements.
+# retrieved both from the asset, and the anchored schema elements.  maxHops limits how many lineage
+# relationships are followed away from the asset in each direction (default 8; 0 means no limit).  Elements where
+# the walk stopped with more lineage beyond them have hopLimitReached set.
+# includeOnlyRelationships replaces the default lineage relationship types; a supertype name, such as
+# LineageRelationship or DataLineageRelationship, includes all of its subtypes.  skipRelationships removes types
+# (and their subtypes) from the default or requested list, for example ["DataSetContent"].
 #
 # Lineage: https://egeria-project.org/features/lineage-management/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-lineage-graph
@@ -70,10 +75,12 @@ Content-Type: application/json
   "class" : "AssetLineageGraphRequestBody",
   "effectiveTime" : "{{$isoTimestamp}}",
   "asOfTime": "{{$isoTimestamp}}",
-  "includeOnlyRelationships" : ["DataSetContent"],
+  "includeOnlyRelationships" : ["LineageRelationship"],
+  "skipRelationships" : ["DataSetContent"],
   "limitToISCQualifiedName": "",
   "highlightISCQualifiedName": "",
-  "allAnchors" : true
+  "allAnchors" : true,
+  "maxHops" : 8
 }
 
 

@@ -62,17 +62,20 @@ public class OpenMetadataTypeTest
 
         if (typeStore.getTypeDefPatches() != null)
         {
+            /*
+             * Every patch is applied, in archive order, as a repository would apply them.  Each patch names the
+             * version it applies to, so skipping one (for example an attribute patch) makes a later patch for the
+             * same type fail as being for a future version.
+             */
+            OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
+
             for (TypeDefPatch typeDefPatch : typeStore.getTypeDefPatches())
             {
-                if (typeDefPatch.getSuperType() != null)
-                {
-                    OMRSRepositoryPropertiesUtilities utilities = new OMRSRepositoryPropertiesUtilities();
-                    TypeDef newTypeDef = utilities.applyPatch("OpenMetadataTypeTest",
-                                                              typeMap.get(typeDefPatch.getTypeDefName()),
-                                                                          typeDefPatch,
-                                                                          methodName);
-                    setUpType(newTypeDef);
-                }
+                TypeDef newTypeDef = utilities.applyPatch("OpenMetadataTypeTest",
+                                                          typeMap.get(typeDefPatch.getTypeDefName()),
+                                                          typeDefPatch,
+                                                          methodName);
+                setUpType(newTypeDef);
             }
         }
     }
@@ -384,6 +387,16 @@ public class OpenMetadataTypeTest
 
                     for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
                     {
+                        /*
+                         * Deprecated and renamed attributes are kept in the type so old values can be read, but
+                         * the beans only carry the current attributes.
+                         */
+                        if ((typeDefAttribute.getAttributeStatus() == TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE) ||
+                            (typeDefAttribute.getAttributeStatus() == TypeDefAttributeStatus.RENAMED_ATTRIBUTE))
+                        {
+                            continue;
+                        }
+
                         addProperty(elementProperties,
                                     typeDefAttribute.getAttributeName(),
                                     typeDefAttribute.getAttributeType());

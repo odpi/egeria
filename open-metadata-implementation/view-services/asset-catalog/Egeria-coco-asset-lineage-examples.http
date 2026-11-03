@@ -142,6 +142,23 @@ Content-Type: application/json
 
 
 ###
+# @name=getAssetLineageGraph coco-sus - nearby lineage only
+# Return the elements within two lineage relationships of the asset, upstream and downstream.  Elements where
+# the lineage continues beyond the limit have hopLimitReached set.  Use maxHops when the full lineage graph
+# reaches across much of the estate and is too slow to retrieve.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{cocoSusGUID}}/as-lineage-graph
+Authorization: Bearer {{garyToken}}
+Content-Type: application/json
+
+{
+  "class" : "AssetLineageGraphRequestBody",
+  "maxHops" : 2
+}
+
+
+###
 # @name=getAssetLineageGraph coco-sus - local supply chain
 # Return all the elements that are linked to an asset using lineage relationships.  The relationships are
 # retrieved both from the asset, and the anchored schema elements.

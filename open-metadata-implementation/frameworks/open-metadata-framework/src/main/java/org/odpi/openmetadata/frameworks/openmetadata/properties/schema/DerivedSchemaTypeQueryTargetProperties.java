@@ -5,9 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -17,17 +16,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * DerivedSchemaTypeQueryTargetProperties defines a query on a schema element that returns all or part of the value for a
- * derived schema type.
+ * derived schema type.  DerivedSchemaTypeQueryTarget is a lineage relationship: the derived value comes from the
+ * query target.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProperties
+public class DerivedSchemaTypeQueryTargetProperties extends LineageRelationshipProperties
 {
-    private String queryId          = null;
-    private String query            = null;
-    private String queryType        = null;
-    private String iscQualifiedName = null;
+    private String queryId   = null;
+    private String query     = null;
+    private String queryType = null;
 
 
     /**
@@ -54,7 +53,6 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
             queryId = template.getQueryId();
             query = template.getQuery();
             queryType = template.getQueryType();
-            iscQualifiedName = template.getISCQualifiedName();
         }
     }
 
@@ -122,30 +120,6 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
 
 
     /**
-     * Set up the fully qualified name of the associated information supply chain.
-     *
-     * @param iscQualifiedName String name
-     */
-    @JsonProperty("iscQualifiedName")
-    public void setISCQualifiedName(String iscQualifiedName)
-    {
-        this.iscQualifiedName = iscQualifiedName;
-    }
-
-
-    /**
-     * Returns the stored qualified name of the associated information supply chain.
-     *
-     * @return qualifiedName
-     */
-    @JsonProperty("iscQualifiedName")
-    public String getISCQualifiedName()
-    {
-        return iscQualifiedName;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -157,7 +131,6 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
                 "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
-                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 "} " + super.toString();
     }
 
@@ -177,8 +150,7 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
         DerivedSchemaTypeQueryTargetProperties that = (DerivedSchemaTypeQueryTargetProperties) objectToCompare;
         return Objects.equals(queryId, that.queryId) &&
                 Objects.equals(query, that.query) &&
-                Objects.equals(queryType, that.queryType) &&
-                Objects.equals(iscQualifiedName, that.iscQualifiedName);
+                Objects.equals(queryType, that.queryType);
     }
 
 
@@ -190,6 +162,6 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName);
+        return Objects.hash(super.hashCode(), queryId, query, queryType);
     }
 }

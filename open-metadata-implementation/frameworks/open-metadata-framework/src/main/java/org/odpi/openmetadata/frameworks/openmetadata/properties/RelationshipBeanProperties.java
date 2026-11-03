@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopm
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.DependentSoftwareComponentProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SampleDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.SourcedFromProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
@@ -119,9 +118,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ContractLinkProperties.class, name = "ContractLinkProperties"),
                 @JsonSubTypes.Type(value = ContributionProperties.class, name = "ContributionProperties"),
                 @JsonSubTypes.Type(value = CrowdSourcingContributionProperties.class, name = "CrowdSourcingContributionProperties"),
-                @JsonSubTypes.Type(value = DataSetContentProperties.class, name = "DataSetContentProperties"),
                 @JsonSubTypes.Type(value = DeployedOnProperties.class, name = "DeployedOnProperties"),
-                @JsonSubTypes.Type(value = DerivedSchemaTypeQueryTargetProperties.class, name = "DerivedSchemaTypeQueryTargetProperties"),
                 @JsonSubTypes.Type(value = DigitalSubscriberProperties.class, name = "DigitalSubscriberProperties"),
                 @JsonSubTypes.Type(value = PeerDuplicateLinkProperties.class, name = "PeerDuplicateLinkProperties"),
                 @JsonSubTypes.Type(value = EmbeddedConnectionProperties.class, name = "EmbeddedConnectionProperties"),
