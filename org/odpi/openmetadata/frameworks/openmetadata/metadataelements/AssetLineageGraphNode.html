@@ -154,6 +154,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the downstream relationships that provide the evidence that this asset is part of the resulting
  lineage graph.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHopLimitReached()" class="member-name-link">getHopLimitReached</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHopsFromStart()" class="member-name-link">getHopsFromStart</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the number of lineage relationships between the starting asset and this element.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="RelatedMetadataNodeSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataNodeSummary</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInternalRelationships()" class="member-name-link">getInternalRelationships</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -176,6 +187,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the downstream relationships that provide the evidence that this asset is part of the resulting
  lineage graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHopLimitReached(boolean)" class="member-name-link">setHopLimitReached</a><wbr>(boolean&nbsp;hopLimitReached)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHopsFromStart(int)" class="member-name-link">setHopsFromStart</a><wbr>(int&nbsp;hopsFromStart)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the number of lineage relationships between the starting asset and this element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInternalRelationships(java.util.List)" class="member-name-link">setInternalRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataNodeSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataNodeSummary</a>&gt;&nbsp;internalRelationships)</code></div>
@@ -323,6 +345,54 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>internalRelationships</code> - relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHopsFromStart()">
+<h3>getHopsFromStart</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getHopsFromStart</span>()</div>
+<div class="block">Return the number of lineage relationships between the starting asset and this element.  The starting
+ asset is zero.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>number of hops</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setHopsFromStart(int)">
+<h3>setHopsFromStart</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHopsFromStart</span><wbr><span class="parameters">(int&nbsp;hopsFromStart)</span></div>
+<div class="block">Set up the number of lineage relationships between the starting asset and this element.  The starting
+ asset is zero.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hopsFromStart</code> - number of hops</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHopLimitReached()">
+<h3>getHopLimitReached</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getHopLimitReached</span>()</div>
+<div class="block">Return whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setHopLimitReached(boolean)">
+<h3>setHopLimitReached</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setHopLimitReached</span><wbr><span class="parameters">(boolean&nbsp;hopLimitReached)</span></div>
+<div class="block">Set up whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hopLimitReached</code> - flag</dd>
 </dl>
 </section>
 </li>

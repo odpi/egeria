@@ -25323,6 +25323,11 @@ loadScripts(document, 'script');</script>
 <div class="block">The patterns set up by the core content pack: the non-personal accounts of the OMAG servers and integration
  connectors (ending in npa) and the governance engines (ending in engine).</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html#DEFAULT_MAX_HOPS" class="member-name-link">DEFAULT_MAX_HOPS</a> - Static variable in class org.odpi.openmetadata.commonservices.ffdc.rest.<a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a></dt>
+<dd>
+<div class="block">The number of lineage relationships followed away from the starting asset, in each direction, when the
+ request does not say.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/darwin/controls/DarwinConfigurationProperty.html#DEFAULT_MAX_LINEAGE_DEPTH" class="member-name-link">DEFAULT_MAX_LINEAGE_DEPTH</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.darwin.controls.<a href="org/odpi/openmetadata/adapters/connectors/darwin/controls/DarwinConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.darwin.controls">DarwinConfigurationProperty</a></dt>
 <dd>
 <div class="block">The default maximum number of lineage relationships followed downstream from a product's asset.</div>
@@ -47283,7 +47288,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the identifier to use for the asset.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/AssetHandler.html#getAssetLineageGraph(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getAssetLineageGraph(String, String, String, String, boolean, QueryOptions)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></dt>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/AssetHandler.html#getAssetLineageGraph(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">getAssetLineageGraph(String, String, String, String, boolean, int, QueryOptions)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="org/odpi/openmetadata/frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></dt>
 <dd>
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.</div>
 </dd>
@@ -55349,11 +55354,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasLineageOnDemandConstraints.html#getDepth()" class="member-name-link">getDepth()</a> - Method in class org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasLineageOnDemandConstraints.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasLineageOnDemandConstraints</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html#getDerivation()" class="member-name-link">getDerivation()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></dt>
-<dd>
-<div class="block">Return how the tool that created this relationship decided that the data set is a view over the content - for
- example by matching the data set's endpoint and name with the content's.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html#getDerivation()" class="member-name-link">getDerivation()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></dt>
 <dd>
 <div class="block">Return the rule or process that derived this relationship from other lineage.</div>
@@ -64222,9 +64222,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the name of the metadata collection that this asset belongs to.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html#getHopLimitReached()" class="member-name-link">getHopLimitReached()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></dt>
+<dd>
+<div class="block">Return whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageBoundaryProperties.html#getHops()" class="member-name-link">getHops()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a></dt>
 <dd>
 <div class="block">Returns the details of how many hops the ultimate source/destination is.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html#getHopsFromStart()" class="member-name-link">getHopsFromStart()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></dt>
+<dd>
+<div class="block">Return the number of lineage relationships between the starting asset and this element.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialActionTarget.html#getHospitalOnboardingActionTargetTypes()" class="member-name-link">getHospitalOnboardingActionTargetTypes()</a> - Static method in enum class org.odpi.openmetadata.samples.governanceactions.clinicaltrials.<a href="org/odpi/openmetadata/samples/governanceactions/clinicaltrials/CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></dt>
 <dd>
@@ -65792,10 +65801,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the qualified name of the information supply chain that the run is part of.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html#getISCQualifiedName()" class="member-name-link">getISCQualifiedName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></dt>
-<dd>
-<div class="block">Return associated information supply chain unique name (if relevant).</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html#getISCQualifiedName()" class="member-name-link">getISCQualifiedName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">EngineActionProperties</a></dt>
 <dd>
 <div class="block">Return the qualified name of the information supply chain that this that originated this request (if any).</div>
@@ -65807,10 +65812,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/implementations/ImplementedByProperties.html#getISCQualifiedName()" class="member-name-link">getISCQualifiedName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/implementations/ImplementedByProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.implementations">ImplementedByProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html#getISCQualifiedName()" class="member-name-link">getISCQualifiedName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></dt>
-<dd>
-<div class="block">Returns the stored qualified name of the associated information supply chain.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/DerivedSchemaTypeQueryTargetProperties.html#getISCQualifiedName()" class="member-name-link">getISCQualifiedName()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.schema.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DerivedSchemaTypeQueryTargetProperties</a></dt>
 <dd>
 <div class="block">Returns the stored qualified name of the associated information supply chain.</div>
 </dd>
@@ -67482,6 +67483,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/DataLensProperties.html#getMaxHeight()" class="member-name-link">getMaxHeight()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/DataLensProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">DataLensProperties</a></dt>
 <dd>
 <div class="block">Return the maximum height that data is collected from.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html#getMaxHops()" class="member-name-link">getMaxHops()</a> - Method in class org.odpi.openmetadata.commonservices.ffdc.rest.<a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a></dt>
+<dd>
+<div class="block">Return the maximum number of lineage relationships to follow away from the starting asset, upstream and
+ downstream.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractLogicalTypeOptions.html#getMaximum()" class="member-name-link">getMaximum()</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractLogicalTypeOptions.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractLogicalTypeOptions</a></dt>
 <dd>
@@ -152185,10 +152191,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasLineageOnDemandConstraints.html#setDepth(int)" class="member-name-link">setDepth(int)</a> - Method in class org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasLineageOnDemandConstraints.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasLineageOnDemandConstraints</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html#setDerivation(java.lang.String)" class="member-name-link">setDerivation(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></dt>
-<dd>
-<div class="block">Set up how the tool that created this relationship decided that the data set is a view over the content.</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html#setDerivation(java.lang.String)" class="member-name-link">setDerivation(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></dt>
 <dd>
 <div class="block">Set up the rule or process that derived this relationship from other lineage.</div>
@@ -155734,9 +155736,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Set up the name of the metadata collection that this asset belongs to.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html#setHopLimitReached(boolean)" class="member-name-link">setHopLimitReached(boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></dt>
+<dd>
+<div class="block">Set up whether the lineage continues beyond this element but was not followed because the request's
+ maximum number of hops was reached.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageBoundaryProperties.html#setHops(java.util.Map)" class="member-name-link">setHops(Map&lt;String, Integer&gt;)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a></dt>
 <dd>
 <div class="block">Set up the details of how many hops the ultimate source/destination is.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html#setHopsFromStart(int)" class="member-name-link">setHopsFromStart(int)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></dt>
+<dd>
+<div class="block">Set up the number of lineage relationships between the starting asset and this element.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html#setHost(java.lang.String)" class="member-name-link">setHost(String)</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractServer</a></dt>
 <dd>
@@ -156550,10 +156561,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Set up the qualified name of the information supply chain that the run is part of.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/DataSetContentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetContentProperties</a></dt>
-<dd>
-<div class="block">Set up associated information supply chain unique name (if relevant).</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/assets/processes/actions/EngineActionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">EngineActionProperties</a></dt>
 <dd>
 <div class="block">Set up the qualified name of the information supply chain that this that originated this request (if any).</div>
@@ -156565,10 +156572,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/implementations/ImplementedByProperties.html#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/implementations/ImplementedByProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.implementations">ImplementedByProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></dt>
-<dd>
-<div class="block">Set up the fully qualified name of the associated information supply chain.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/DerivedSchemaTypeQueryTargetProperties.html#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName(String)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.schema.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/schema/DerivedSchemaTypeQueryTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DerivedSchemaTypeQueryTargetProperties</a></dt>
 <dd>
 <div class="block">Set up the fully qualified name of the associated information supply chain.</div>
 </dd>
@@ -157713,6 +157716,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/DataLensProperties.html#setMaxHeight(java.lang.Float)" class="member-name-link">setMaxHeight(Float)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.governance.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/governance/DataLensProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.governance">DataLensProperties</a></dt>
 <dd>
 <div class="block">Set up the maximum height that data is collected from.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html#setMaxHops(int)" class="member-name-link">setMaxHops(int)</a> - Method in class org.odpi.openmetadata.commonservices.ffdc.rest.<a href="org/odpi/openmetadata/commonservices/ffdc/rest/AssetLineageGraphRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetLineageGraphRequestBody</a></dt>
+<dd>
+<div class="block">Set up the maximum number of lineage relationships to follow away from the starting asset, upstream and
+ downstream.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractLogicalTypeOptions.html#setMaximum(java.lang.Object)" class="member-name-link">setMaximum(Object)</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractLogicalTypeOptions.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractLogicalTypeOptions</a></dt>
 <dd>

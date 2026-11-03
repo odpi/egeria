@@ -88,15 +88,20 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties</a>
 <div class="inheritance"><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties</a>
+<div class="inheritance"><a href="../LabeledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties</a>
+<div class="inheritance"><a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataSetContentProperties</span>
-<span class="extends-implements">extends <a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span></div>
-<div class="block">DataSetContentProperties defines a query on an asset that returns all or part of the values for a dataset.</div>
+<span class="extends-implements">extends <a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></span></div>
+<div class="block">DataSetContentProperties defines a query on an asset that returns all or part of the values for a dataset.
+ DataSetContent is a lineage relationship: the data set's values come from its content.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -145,17 +150,6 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDerivation()" class="member-name-link">getDerivation</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return how the tool that created this relationship decided that the data set is a view over the content - for
- example by matching the data set's endpoint and name with the content's.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getISCQualifiedName()" class="member-name-link">getISCQualifiedName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return associated information supply chain unique name (if relevant).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQuery()" class="member-name-link">getQuery</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the query string for this element.</div>
@@ -175,16 +169,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a hash code for this element type.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDerivation(java.lang.String)" class="member-name-link">setDerivation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;derivation)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up how the tool that created this relationship decided that the data set is a view over the content.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setISCQualifiedName(java.lang.String)" class="member-name-link">setISCQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;iscQualifiedName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up associated information supply chain unique name (if relevant).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setQuery(java.lang.String)" class="member-name-link">setQuery</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;query)</code></div>
@@ -210,6 +194,12 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></h3>
+<code><a href="../lineage/LineageRelationshipProperties.html#getDerivation()">getDerivation</a>, <a href="../lineage/LineageRelationshipProperties.html#getISCQualifiedName()">getISCQualifiedName</a>, <a href="../lineage/LineageRelationshipProperties.html#setDerivation(java.lang.String)">setDerivation</a>, <a href="../lineage/LineageRelationshipProperties.html#setISCQualifiedName(java.lang.String)">setISCQualifiedName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../LabeledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">LabeledRelationshipProperties</a></h3>
+<code><a href="../LabeledRelationshipProperties.html#getDescription()">getDescription</a>, <a href="../LabeledRelationshipProperties.html#getLabel()">getLabel</a>, <a href="../LabeledRelationshipProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../LabeledRelationshipProperties.html#setLabel(java.lang.String)">setLabel</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></h3>
 <code><a href="../RelationshipBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../RelationshipBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -327,58 +317,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getISCQualifiedName()">
-<h3>getISCQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getISCQualifiedName</span>()</div>
-<div class="block">Return associated information supply chain unique name (if relevant).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setISCQualifiedName(java.lang.String)">
-<h3>setISCQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setISCQualifiedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;iscQualifiedName)</span></div>
-<div class="block">Set up associated information supply chain unique name (if relevant).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>iscQualifiedName</code> - string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDerivation()">
-<h3>getDerivation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDerivation</span>()</div>
-<div class="block">Return how the tool that created this relationship decided that the data set is a view over the content - for
- example by matching the data set's endpoint and name with the content's.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDerivation(java.lang.String)">
-<h3>setDerivation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDerivation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;derivation)</span></div>
-<div class="block">Set up how the tool that created this relationship decided that the data set is a view over the content.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>derivation</code> - string</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../lineage/LineageRelationshipProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -391,7 +336,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../lineage/LineageRelationshipProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -406,7 +351,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a hash code for this element type.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../lineage/LineageRelationshipProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../lineage/LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>
