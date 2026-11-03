@@ -162,6 +162,7 @@ public class OpenMetadataTypesArchive
         update0540DataValueAssignment();
         update0750LineageRelationship();
         update0210DataSetContent();
+        update0512DerivedSchemaTypeQueryTarget();
         add0482StatementsOfApplicability();
         add0665SecurityAnnotations();
     }
@@ -437,13 +438,13 @@ public class OpenMetadataTypesArchive
     private void update0210DataSetContent()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSetContentRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateDataSetContentSuperType());
     }
 
 
     /**
      * DataSetContent gains the derivation attribute, which records how a tool decided that the data set is a view over
-     * the content - for example by matching the data set's endpoint and name with the content's.  DataSetContent is
-     * not a lineage relationship, so it does not inherit the attribute from LineageRelationship.
+     * the content - for example by matching the data set's endpoint and name with the content's.
      *
      * @return patch
      */
@@ -459,6 +460,56 @@ public class OpenMetadataTypesArchive
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DERIVATION));
 
         typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * DataSetContent becomes a LineageRelationship: a data set's values come from its content, so the relationship
+     * is part of the lineage graph, and a single query for LineageRelationship retrieves it along with the other
+     * lineage relationships.  It inherits label and description.  It already defines iscQualifiedName and derivation
+     * itself, which LineageRelationship also defines.  This is a separate patch from the derivation patch above
+     * because repositories running earlier 6.3 snapshots have already applied that one.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDataSetContentSuperType()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName));
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0512DerivedSchemaTypeQueryTarget()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDerivedSchemaTypeQueryTargetRelationship());
+    }
+
+
+    /**
+     * DerivedSchemaTypeQueryTarget becomes a LineageRelationship: a derived schema element's value comes from the
+     * elements it queries, so the relationship is part of the lineage graph.  It inherits label, description and
+     * derivation.  It already defines iscQualifiedName itself, which LineageRelationship also defines.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDerivedSchemaTypeQueryTargetRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(OpenMetadataType.LINEAGE_RELATIONSHIP.typeName));
 
         return typeDefPatch;
     }

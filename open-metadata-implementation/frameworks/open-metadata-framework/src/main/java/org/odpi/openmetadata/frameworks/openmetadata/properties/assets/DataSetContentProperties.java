@@ -4,9 +4,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -16,17 +15,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * DataSetContentProperties defines a query on an asset that returns all or part of the values for a dataset.
+ * DataSetContent is a lineage relationship: the data set's values come from its content.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataSetContentProperties extends RelationshipBeanProperties
+public class DataSetContentProperties extends LineageRelationshipProperties
 {
-    private String queryId          = null;
-    private String query            = null;
-    private String queryType        = null;
-    private String iscQualifiedName = null;
-    private String derivation       = null;
+    private String queryId   = null;
+    private String query     = null;
+    private String queryType = null;
 
 
     /**
@@ -50,11 +48,9 @@ public class DataSetContentProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            queryId          = template.getQueryId();
-            query            = template.getQuery();
-            queryType        = template.getQueryType();
-            iscQualifiedName = template.getISCQualifiedName();
-            derivation       = template.getDerivation();
+            queryId   = template.getQueryId();
+            query     = template.getQuery();
+            queryType = template.getQueryType();
         }
     }
 
@@ -119,51 +115,6 @@ public class DataSetContentProperties extends RelationshipBeanProperties
         this.queryType = queryType;
     }
 
-    /**
-     * Return associated information supply chain unique name (if relevant).
-     *
-     * @return string
-     */
-    @JsonProperty("iscQualifiedName")
-    public String getISCQualifiedName()
-    {
-        return iscQualifiedName;
-    }
-
-
-    /**
-     * Set up associated information supply chain unique name (if relevant).
-     *
-     * @param iscQualifiedName string
-     */
-    @JsonProperty("iscQualifiedName")
-    public void setISCQualifiedName(String iscQualifiedName)
-    {
-        this.iscQualifiedName = iscQualifiedName;
-    }
-
-
-    /**
-     * Return how the tool that created this relationship decided that the data set is a view over the content - for
-     * example by matching the data set's endpoint and name with the content's.
-     *
-     * @return string
-     */
-    public String getDerivation()
-    {
-        return derivation;
-    }
-
-
-    /**
-     * Set up how the tool that created this relationship decided that the data set is a view over the content.
-     *
-     * @param derivation string
-     */
-    public void setDerivation(String derivation)
-    {
-        this.derivation = derivation;
-    }
 
     /**
      * Standard toString method.
@@ -177,8 +128,6 @@ public class DataSetContentProperties extends RelationshipBeanProperties
                 "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
-                ", iscQualifiedName='" + iscQualifiedName + '\'' +
-                ", derivation='" + derivation + '\'' +
                 "} " + super.toString();
     }
 
@@ -196,7 +145,7 @@ public class DataSetContentProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataSetContentProperties that = (DataSetContentProperties) objectToCompare;
-        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType) && Objects.equals(iscQualifiedName, that.iscQualifiedName) && Objects.equals(derivation, that.derivation);
+        return Objects.equals(queryId, that.queryId) && Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType);
     }
 
     /**
@@ -207,6 +156,6 @@ public class DataSetContentProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName, derivation);
+        return Objects.hash(super.hashCode(), queryId, query, queryType);
     }
 }

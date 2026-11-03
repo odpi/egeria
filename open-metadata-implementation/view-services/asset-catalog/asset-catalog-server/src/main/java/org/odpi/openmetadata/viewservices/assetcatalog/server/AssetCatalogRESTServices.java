@@ -125,6 +125,7 @@ public class AssetCatalogRESTServices extends TokenController
                                                                  requestBody.getLimitToISCQualifiedName(),
                                                                  requestBody.getHighlightISCQualifiedName(),
                                                                  requestBody.getAllAnchors(),
+                                                                 requestBody.getMaxHops(),
                                                                  requestBody));
             }
             else
@@ -134,6 +135,7 @@ public class AssetCatalogRESTServices extends TokenController
                                                                  null,
                                                                  null,
                                                                  false,
+                                                                 AssetLineageGraphRequestBody.DEFAULT_MAX_HOPS,
                                                                  null));
             }
         }

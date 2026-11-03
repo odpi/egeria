@@ -2162,6 +2162,9 @@ public class OpenMetadataElementBuilder
                             }
                             else if (properties instanceof SchemaAttributeProperties schemaAttributeProperties)
                             {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.NAMESPACE_PATH.name,
+                                                                                     schemaAttributeProperties.getNamespacePath());
                                 elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                                       OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.name,
                                                                                       schemaAttributeProperties.getAllowsDuplicateValues());

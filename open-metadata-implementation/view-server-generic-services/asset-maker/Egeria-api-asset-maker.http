@@ -1378,6 +1378,8 @@ Content-Type: application/json
   "class" : "NewRelationshipRequestBody",
   "properties": {
     "class": "DataSetContentProperties",
+    "label": "add label",
+    "description": "add description",
     "queryId": "add id that is used on overall formula",
     "query": "add query",
     "queryType": "add query type",
@@ -1439,6 +1441,8 @@ Content-Type: application/json
   "mergeUpdate": true,
   "properties": {
     "class": "DataSetContentProperties",
+    "label": "add label",
+    "description": "add description",
     "queryId": "add id that is used on overall formula",
     "query": "add query",
     "queryType": "add query type",

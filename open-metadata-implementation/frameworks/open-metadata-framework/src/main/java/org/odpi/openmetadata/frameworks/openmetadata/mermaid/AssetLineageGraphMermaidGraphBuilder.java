@@ -101,7 +101,11 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
             {
                 for (AssetLineageGraphNode node : assetLineageGraph.getLinkedAssets())
                 {
-                    if (node != null)
+                    /*
+                     * The lineage continues beyond a node where the walk stopped at the hop limit, so it is not
+                     * an ultimate source or destination.
+                     */
+                    if ((node != null) && (! node.getHopLimitReached()))
                     {
                         if (!end1Elements.contains(node.getElementHeader().getGUID()))
                         {

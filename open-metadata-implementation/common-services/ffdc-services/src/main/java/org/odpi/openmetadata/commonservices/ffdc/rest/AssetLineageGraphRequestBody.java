@@ -20,9 +20,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetLineageGraphRequestBody extends QueryOptions
 {
+    /**
+     * The number of lineage relationships followed away from the starting asset, in each direction, when the
+     * request does not say.  A complete lineage graph can reach across much of an estate and take minutes to
+     * retrieve.
+     */
+    public static final int DEFAULT_MAX_HOPS = 8;
+
     private String       limitToISCQualifiedName   = null;
     private String       highlightISCQualifiedName = null;
     private boolean      allAnchors                = false;
+    private int          maxHops                   = DEFAULT_MAX_HOPS;
 
 
     /**
@@ -47,6 +55,7 @@ public class AssetLineageGraphRequestBody extends QueryOptions
             this.limitToISCQualifiedName   = template.getLimitToISCQualifiedName();
             this.highlightISCQualifiedName = template.getHighlightISCQualifiedName();
             this.allAnchors                = template.getAllAnchors();
+            this.maxHops                   = template.getMaxHops();
         }
     }
 
@@ -120,6 +129,30 @@ public class AssetLineageGraphRequestBody extends QueryOptions
 
 
     /**
+     * Return the maximum number of lineage relationships to follow away from the starting asset, upstream and
+     * downstream.  The default is {@link #DEFAULT_MAX_HOPS}.  Zero means there is no limit.
+     *
+     * @return number of hops
+     */
+    public int getMaxHops()
+    {
+        return maxHops;
+    }
+
+
+    /**
+     * Set up the maximum number of lineage relationships to follow away from the starting asset, upstream and
+     * downstream.  The default is {@link #DEFAULT_MAX_HOPS}.  Zero means there is no limit.
+     *
+     * @param maxHops number of hops
+     */
+    public void setMaxHops(int maxHops)
+    {
+        this.maxHops = maxHops;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -131,6 +164,7 @@ public class AssetLineageGraphRequestBody extends QueryOptions
                 "limitToISCQualifiedName='" + limitToISCQualifiedName + '\'' +
                 ", highlightISCQualifiedName='" + highlightISCQualifiedName + '\'' +
                 ", allAnchors=" + allAnchors +
+                ", maxHops=" + maxHops +
                 "} " + super.toString();
     }
 
@@ -158,6 +192,7 @@ public class AssetLineageGraphRequestBody extends QueryOptions
         }
         AssetLineageGraphRequestBody that = (AssetLineageGraphRequestBody) objectToCompare;
         return  allAnchors == that.allAnchors &&
+                maxHops == that.maxHops &&
                 Objects.equals(limitToISCQualifiedName, that.limitToISCQualifiedName) &&
                 Objects.equals(highlightISCQualifiedName, that.highlightISCQualifiedName);
     }
@@ -171,6 +206,6 @@ public class AssetLineageGraphRequestBody extends QueryOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), allAnchors, limitToISCQualifiedName, highlightISCQualifiedName);
+        return Objects.hash(super.hashCode(), allAnchors, maxHops, limitToISCQualifiedName, highlightISCQualifiedName);
     }
 }
