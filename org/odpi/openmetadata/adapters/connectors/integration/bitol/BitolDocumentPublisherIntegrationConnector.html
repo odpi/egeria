@@ -112,9 +112,12 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
  <br><br>
  Documents are generated when the connector receives an event describing a change to a digital product or agreement,
  and on each refresh for every product that is a member of a DigitalProductCatalog catalog target (together with the
- agreements referenced by the product's ports).  A document is only published when its content differs from the last
- document generated for the same element, so a cataloguer running in the same daemon does not cause an endless
- exchange of identical documents.</div>
+ agreements referenced by the product's ports).  Each process that the lineage shows assembling a product's data
+ becomes an input port of the product; a process with no data contract gets a sparsely populated draft one, catalogued
+ and published with the product so that it can be filled out later.
+ <br><br>
+ A document is only published when its content differs from the last document generated for the same element, so a
+ cataloguer running in the same daemon does not cause an endless exchange of identical documents.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
