@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQuali
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractComparisonOperator;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSynonym;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDescription;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalTypeOptions;
@@ -28,6 +29,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
@@ -206,6 +209,120 @@ public class DataContractMapper extends BitolMapperBase
         linkTeam(dataContract.getTeam(), agreementGUID, qualifiedName, result);
 
         return result;
+    }
+
+
+    /**
+     * Make sure that a process that assembles a digital product's data has a data contract describing the data it
+     * reads, so that the input port named after it in the product's ODPS document has a contract identifier.  If the
+     * process is not already an item of an agreement, and has no bitol.contractId additional property, a sparsely
+     * populated draft contract is catalogued for it - an identifier ({process qualified name}::input), a name, a
+     * description listing the elements the process reads, and a status of draft - with the process and its sources as
+     * the agreement's items.  The draft is published with the product, so it can be filled out in the Bitol store
+     * and catalogued again; a new version of it shares the draft's ExternalId.
+     *
+     * @param processGUID unique identifier of the process
+     * @param productName name of the product it assembles, for the description
+     * @return unique identifiers of the agreements the process is an item of, including any draft created here
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the metadata store
+     * @throws UserNotAuthorizedException security problem
+     */
+    public List<String> ensureInputContract(String processGUID,
+                                            String productName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        List<String>            agreementGUIDs = new ArrayList<>();
+        OpenMetadataRootElement process        = context.getAssetClient().getAssetByGUID(processGUID, context.getAssetClient().getGetOptions());
+
+        if ((process == null) || (! (process.getProperties() instanceof ReferenceableProperties processProperties)))
+        {
+            return agreementGUIDs;
+        }
+
+        if (process.getAgreementContents() != null)
+        {
+            for (RelatedMetadataElementSummary agreement : process.getAgreementContents())
+            {
+                if ((agreement != null) && (agreement.getRelatedElement() != null))
+                {
+                    agreementGUIDs.add(agreement.getRelatedElement().getElementHeader().getGUID());
+                }
+            }
+        }
+
+        if ((! agreementGUIDs.isEmpty()) ||
+            ((processProperties.getAdditionalProperties() != null) &&
+             (processProperties.getAdditionalProperties().containsKey(ADDITIONAL_PROPERTY_PREFIX + "contractId"))))
+        {
+            return agreementGUIDs;
+        }
+
+        /*
+         * The elements the process reads are the subject of the contract.
+         */
+        Map<String, String> sources = new LinkedHashMap<>();
+
+        if (process.getLineageLinkage() != null)
+        {
+            for (RelatedMetadataElementSummary lineage : process.getLineageLinkage())
+            {
+                if ((lineage != null) && (lineage.getRelatedElement() != null) && (lineage.getRelatedElementAtEnd1()) &&
+                    (lineage.getRelationshipHeader() != null) &&
+                    (DATA_LINEAGE_TYPE_NAMES.contains(lineage.getRelationshipHeader().getType().getTypeName())))
+                {
+                    String sourceName = (lineage.getRelatedElement().getProperties() instanceof ReferenceableProperties sourceProperties) ?
+                            sourceProperties.getQualifiedName() : lineage.getRelatedElement().getElementHeader().getGUID();
+
+                    sources.putIfAbsent(lineage.getRelatedElement().getElementHeader().getGUID(), sourceName);
+                }
+            }
+        }
+
+        String processName = (processProperties.getDisplayName() != null) ? processProperties.getDisplayName() : processProperties.getQualifiedName();
+
+        DataContract     draft       = new DataContract();
+        BitolDescription description = new BitolDescription();
+
+        draft.setId(processProperties.getQualifiedName() + INPUT_CONTRACT_SUFFIX);
+        draft.setName("Input to " + processName);
+        draft.setVersion(DRAFT_CONTRACT_VERSION);
+        draft.setStatus("draft");
+
+        if (sources.isEmpty())
+        {
+            description.setPurpose("Describes the data that " + processName + " reads to assemble the " + productName + " digital product.");
+        }
+        else
+        {
+            description.setPurpose("Describes the data that " + processName + " reads to assemble the " + productName +
+                                           " digital product: " + String.join(", ", sources.values()) + ".");
+        }
+        description.setLimitations("Drafted by Egeria from the lineage of the process.  The schema, quality rules, service " +
+                                           "levels and team have not been filled in yet.");
+        draft.setDescription(description);
+
+        BitolMappingResult result = this.catalogueDataContract(draft, "Drafted by Egeria for the input to " + processProperties.getQualifiedName());
+
+        if (result.getElementGUID() != null)
+        {
+            CollectionClient        agreementClient = context.getCollectionClient(OpenMetadataType.AGREEMENT.typeName);
+            AgreementItemProperties itemProperties  = new AgreementItemProperties();
+
+            itemProperties.setAgreementItemId("assembling process");
+            agreementClient.linkAgreementItem(result.getElementGUID(), processGUID, agreementClient.getMakeAnchorOptions(false), itemProperties);
+
+            for (String sourceGUID : sources.keySet())
+            {
+                itemProperties.setAgreementItemId("source");
+                agreementClient.linkAgreementItem(result.getElementGUID(), sourceGUID, agreementClient.getMakeAnchorOptions(false), itemProperties);
+            }
+
+            agreementGUIDs.add(result.getElementGUID());
+        }
+
+        return agreementGUIDs;
     }
 
 

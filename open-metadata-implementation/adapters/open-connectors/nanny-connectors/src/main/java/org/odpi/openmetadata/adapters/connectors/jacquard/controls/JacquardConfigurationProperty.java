@@ -23,6 +23,15 @@ public enum JacquardConfigurationProperty
                               DataType.STRING.getDisplayName(),
                               "fed3e17d-6aa0-4959-8af4-a2cbfde1717b",
                               false),
+
+    /**
+     * Name of the view server, on the same platform as the metadata access server, that runs the Product Manager OMVS.
+     */
+    VIEW_SERVER_NAME("viewServerName",
+                     "Name of the view server, on the same platform as the metadata access server, that runs the Product Manager OMVS.  When it is set, each product is given a management port whose address returns the product's Open Data Product Standard (ODPS) document.",
+                     DataType.STRING.getDisplayName(),
+                     "qs-view-server",
+                     false),
     ;
 
     public final String  name;

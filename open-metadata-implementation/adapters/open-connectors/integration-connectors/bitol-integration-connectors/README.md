@@ -220,6 +220,44 @@ ready to be committed to git.  The generators reverse the mappings used by the c
 catalogued can be regenerated, and products and agreements created through Egeria's own APIs (for example the Product Manager OMVS)
 can be exported in the Bitol formats.
 
+For a product created in Egeria, the product manager and other roles assigned to the product (`AssignmentScope`) join the team,
+a `Community` that scopes the product becomes a support channel, the domain is taken from the catalog that the product's family
+belongs to when the product is not a direct member of a catalog, `introductionDate` becomes `productCreatedTs`, and a `category`
+that is one of the ODPS product types becomes `type`.  The license types governing an agreement describe its usage when the
+contract has none.
+
+Each process that assembles a product's data also becomes an input port.  The publisher follows the lineage (`DataFlow`,
+`DataMapping` or `LineageMapping`) into the product's member assets and into the content of its member data sets - through
+`DataSetContent`, so that the lineage that OpenLineage events attach to the tables beneath a `TabularDataSetCollection` is
+found - and names a port after each process it reaches.  The port's `contractId` comes from an agreement the process is an
+item of, or from a `bitol.contractId` additional property on the process.  The process's qualified name and type, and the
+elements it supplies, are written as `vendor: egeria` custom properties on the port.
+
+ODPS requires a `contractId` on every input port, but the systems a pipeline reads from rarely have a data contract.  So
+before generating a product's document, the publisher catalogues a sparsely populated **draft contract** for each
+assembling process that has neither: its `id` is `{process qualified name}::input`, its version `0.1.0` and its status
+`draft`, and its description names the elements the process reads (from the lineage into the process) and says that the
+schema, quality rules, service levels and team have still to be filled in.  The draft is catalogued in the same way as a
+contract read from a Bitol store - an Agreement classified as a DataSharingAgreement, with the shared ExternalId - and the
+process and its sources are linked to it as agreement items.  It is published with the product, so it can be filled out
+in the store; a new version catalogued from there shares the draft's ExternalId and keeps the same `id`, so the port's
+`contractId` stays valid.
+
+Properties that the standards have no place for are written as `customProperties` entries with `vendor: egeria` - the
+standards' own extension mechanism.  For a product these are its category, deployment status, maturity, service life,
+introduction, next version and withdraw dates, product families, guiding questions and license types; for a contract, its
+license types and service level objectives.  When a document is catalogued, the `vendor: egeria` entries are not kept as
+additional properties: the product's lifecycle properties are restored from them, and the others (which describe
+relationships that already exist in open metadata) are ignored.
+
+```yaml
+customProperties:
+  - property: deploymentStatus
+    value: ACTIVE
+    vendor: egeria
+    description: Status of the product's implementation, separate from the status of its description.
+```
+
 Documents are generated when the connector receives an event describing a change to a `DigitalProduct` or to an `Agreement`
 classified as a `DataSharingAgreement`, and on each refresh for every product that is a member of a `DigitalProductCatalog`
 attached as a catalog target (together with the contracts referenced by the product's ports).  A document is only published

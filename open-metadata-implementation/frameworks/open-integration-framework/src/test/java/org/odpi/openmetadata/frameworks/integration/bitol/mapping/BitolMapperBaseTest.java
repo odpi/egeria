@@ -2,12 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.bitol.mapping;
 
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -142,5 +149,53 @@ public class BitolMapperBaseTest
         mapper.fillFundamentals(product, properties, "DataProduct::fbe8d147::2.1.0");
         assertEquals(properties.getDisplayName(), "fbe8d147", "the id is used when there is no name");
         assertFalse(mapper.isRetired(product));
+    }
+
+
+    /**
+     * Custom properties attributed to Egeria are written by the generators, recognised by the mappers, and
+     * kept out of the element's additional properties; other vendors' custom properties are kept as before.
+     */
+    @Test public void testEgeriaCustomProperties()
+    {
+        Date introductionDate = new Date(1700000000000L);
+
+        List<BitolCustomProperty> customProperties = BitolGeneratorBase.addEgeriaProperty(null, BitolMapperBase.EGERIA_MATURITY, "Mature", "Level of maturity");
+
+        customProperties = BitolGeneratorBase.addEgeriaProperty(customProperties, BitolMapperBase.EGERIA_INTRODUCTION_DATE, introductionDate, "Introduced");
+        customProperties = BitolGeneratorBase.addEgeriaProperty(customProperties, BitolMapperBase.EGERIA_QUESTIONS, new ArrayList<String>(), "Nothing to add");
+        customProperties = BitolGeneratorBase.addEgeriaProperty(customProperties, BitolMapperBase.EGERIA_CATEGORY, null, "Nothing to add");
+
+        assertEquals(customProperties.size(), 2, "null values and empty lists are not written");
+        assertEquals(customProperties.get(0).getVendor(), BitolMapperBase.EGERIA_VENDOR);
+        assertEquals(customProperties.get(1).getValue(), introductionDate.toInstant().toString(), "dates are written as ISO-8601 instants");
+
+        BitolCustomProperty otherVendor = new BitolCustomProperty();
+
+        otherVendor.setProperty("owner");
+        otherVendor.setValue("sales");
+        otherVendor.setVendor("acme");
+        customProperties.add(otherVendor);
+
+        Map<String, Object> egeriaValues = BitolMapperBase.getEgeriaValues(customProperties);
+
+        assertEquals(egeriaValues.size(), 2);
+        assertEquals(BitolMapperBase.getEgeriaString(egeriaValues, BitolMapperBase.EGERIA_MATURITY), "Mature");
+        assertEquals(BitolMapperBase.getEgeriaDate(egeriaValues, BitolMapperBase.EGERIA_INTRODUCTION_DATE), introductionDate);
+        assertNull(BitolMapperBase.getEgeriaDate(egeriaValues, BitolMapperBase.EGERIA_WITHDRAW_DATE));
+
+        TestMapper          mapper               = new TestMapper();
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        mapper.addCustomProperties(customProperties, additionalProperties);
+
+        assertEquals(additionalProperties.get("owner"), "sales");
+        assertFalse(additionalProperties.containsKey(BitolMapperBase.EGERIA_MATURITY), "Egeria's properties are restored, not kept");
+        assertFalse(additionalProperties.get(BitolMapperBase.ADDITIONAL_PROPERTY_PREFIX + BitolMapperBase.CUSTOM_PROPERTIES_JSON).contains(BitolMapperBase.EGERIA_VENDOR));
+
+        List<BitolCustomProperty> regenerated = BitolGeneratorBase.getCustomProperties(additionalProperties);
+
+        assertEquals(regenerated.size(), 1);
+        assertEquals(regenerated.get(0).getVendor(), "acme");
     }
 }

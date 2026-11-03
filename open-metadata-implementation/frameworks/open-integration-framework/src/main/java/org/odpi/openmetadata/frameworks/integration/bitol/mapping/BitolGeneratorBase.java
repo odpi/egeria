@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDescriptio
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolStatus;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportChannel;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportScope;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportTool;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolTeam;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolTeamMember;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
@@ -32,6 +34,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -192,7 +195,13 @@ public abstract class BitolGeneratorBase
 
         if (detailed != null)
         {
-            return detailed;
+            /*
+             * Egeria's own entries are regenerated from the open metadata properties, so any that were kept are
+             * dropped to avoid writing them twice.
+             */
+            detailed.removeIf(BitolMapperBase::isEgeriaProperty);
+
+            return detailed.isEmpty() ? null : detailed;
         }
 
         List<BitolCustomProperty> customProperties = new ArrayList<>();
@@ -211,6 +220,75 @@ public abstract class BitolGeneratorBase
         }
 
         return customProperties.isEmpty() ? null : customProperties;
+    }
+
+
+    /**
+     * Add a custom property attributed to Egeria to a list of custom properties.  This is how the properties of an
+     * element that the Bitol standards have no place for are carried in a document; the vendor attribution lets the
+     * mapper recognise them when the document is catalogued again.
+     *
+     * @param customProperties existing list (may be null)
+     * @param name property name
+     * @param value value - nothing is added if it is null or an empty list
+     * @param description description of the property
+     * @return list including the new entry (null if the list was null and nothing was added)
+     */
+    protected static List<BitolCustomProperty> addEgeriaProperty(List<BitolCustomProperty> customProperties,
+                                                                 String                    name,
+                                                                 Object                    value,
+                                                                 String                    description)
+    {
+        if ((value == null) || ((value instanceof List<?> list) && (list.isEmpty())))
+        {
+            return customProperties;
+        }
+
+        List<BitolCustomProperty> results = (customProperties == null) ? new ArrayList<>() : customProperties;
+
+        BitolCustomProperty customProperty = new BitolCustomProperty();
+
+        customProperty.setProperty(name);
+        customProperty.setValue((value instanceof Date date) ? date.toInstant().toString() : value);
+        customProperty.setDescription(description);
+        customProperty.setVendor(BitolMapperBase.EGERIA_VENDOR);
+
+        results.add(customProperty);
+
+        return results;
+    }
+
+
+    /**
+     * Return the display names of the related elements of a particular type.
+     *
+     * @param relatedElements related elements (may be null)
+     * @param typeName type to select
+     * @return list of names (empty if none)
+     */
+    protected List<String> getRelatedNames(List<RelatedMetadataElementSummary> relatedElements,
+                                           String                              typeName)
+    {
+        List<String> names = new ArrayList<>();
+
+        if (relatedElements != null)
+        {
+            for (RelatedMetadataElementSummary related : relatedElements)
+            {
+                if ((related != null) && (related.getRelatedElement() != null) &&
+                    (propertyHelper.isTypeOf(related.getRelatedElement().getElementHeader(), typeName)))
+                {
+                    String name = getDisplayName(related.getRelatedElement());
+
+                    if ((name != null) && (! names.contains(name)))
+                    {
+                        names.add(name);
+                    }
+                }
+            }
+        }
+
+        return names;
     }
 
 
@@ -310,12 +388,36 @@ public abstract class BitolGeneratorBase
      */
     protected List<BitolSupportChannel> getSupportChannels(AttributedMetadataElement element)
     {
-        if (element.getContactDetails() == null)
+        List<BitolSupportChannel> channels = new ArrayList<>();
+
+        /*
+         * A community that the element is scoped by is the forum where its users discuss it.
+         */
+        if (element.getRelevantToScopes() != null)
         {
-            return null;
+            for (RelatedMetadataElementSummary scope : element.getRelevantToScopes())
+            {
+                if ((scope != null) && (scope.getRelatedElement() != null) &&
+                    (propertyHelper.isTypeOf(scope.getRelatedElement().getElementHeader(), OpenMetadataType.COMMUNITY.typeName)) &&
+                    (scope.getRelatedElement().getProperties() instanceof ReferenceableProperties properties))
+                {
+                    BitolSupportChannel channel = new BitolSupportChannel();
+
+                    channel.setChannel(getDisplayName(scope.getRelatedElement()));
+                    channel.setDescription(properties.getDescription());
+                    channel.setTool(BitolSupportTool.OTHER.getValue());
+                    channel.setScope(BitolSupportScope.INTERACTIVE.getValue());
+                    channel.setId(properties.getIdentifier());
+
+                    channels.add(channel);
+                }
+            }
         }
 
-        List<BitolSupportChannel> channels = new ArrayList<>();
+        if (element.getContactDetails() == null)
+        {
+            return channels.isEmpty() ? null : channels;
+        }
 
         for (RelatedMetadataElementSummary contact : element.getContactDetails())
         {
@@ -332,7 +434,12 @@ public abstract class BitolGeneratorBase
                 channel.setInvitationUrl(getBitolValue(properties.getAdditionalProperties(), "invitationUrl"));
                 channel.setCustomProperties(getCustomProperties(properties.getAdditionalProperties()));
 
-                if (channel.getChannel() != null)
+                /*
+                 * A community channel that was catalogued back from a document is also held as contact details,
+                 * so a channel already written for the community is not repeated.
+                 */
+                if ((channel.getChannel() != null) &&
+                    (channels.stream().noneMatch(existing -> channel.getChannel().equals(existing.getChannel()))))
                 {
                     channels.add(channel);
                 }
@@ -376,16 +483,44 @@ public abstract class BitolGeneratorBase
      */
     protected BitolTeam getTeam(AttributedMetadataElement element)
     {
-        if (element.getScopedElements() == null)
+        /*
+         * Roles are scoped to the element (ScopedBy) by the cataloguers, and assigned to it (AssignmentScope) by
+         * Egeria's own services - for example a product manager.
+         */
+        List<RelatedMetadataElementSummary> teamElements = new ArrayList<>();
+
+        if (element.getScopedElements() != null)
+        {
+            teamElements.addAll(element.getScopedElements());
+        }
+        if (element.getAssignedActors() != null)
+        {
+            teamElements.addAll(element.getAssignedActors());
+        }
+
+        if (teamElements.isEmpty())
         {
             return null;
         }
 
-        BitolTeam             team    = new BitolTeam();
-        List<BitolTeamMember> members = new ArrayList<>();
+        BitolTeam             team      = new BitolTeam();
+        List<BitolTeamMember> members   = new ArrayList<>();
+        List<String>          roleGUIDs = new ArrayList<>();
 
-        for (RelatedMetadataElementSummary scoped : element.getScopedElements())
+        for (RelatedMetadataElementSummary scoped : teamElements)
         {
+            if ((scoped != null) && (scoped.getRelatedElement() != null))
+            {
+                String guid = scoped.getRelatedElement().getElementHeader().getGUID();
+
+                if (roleGUIDs.contains(guid))
+                {
+                    continue;
+                }
+
+                roleGUIDs.add(guid);
+            }
+
             if ((scoped != null) && (scoped.getRelatedElement() != null))
             {
                 MetadataElementSummary scopedElement = scoped.getRelatedElement();
@@ -403,7 +538,17 @@ public abstract class BitolGeneratorBase
                     BitolTeamMember     member               = new BitolTeamMember();
                     Map<String, String> additionalProperties = roleProperties.getAdditionalProperties();
 
-                    member.setUsername((getBitolValue(additionalProperties, "username") != null) ? getBitolValue(additionalProperties, "username") : roleProperties.getIdentifier());
+                    /*
+                     * A role defined in Egeria may have no identifier; its qualified name still identifies it uniquely.
+                     */
+                    String username = getBitolValue(additionalProperties, "username");
+
+                    if (username == null)
+                    {
+                        username = (roleProperties.getIdentifier() != null) ? roleProperties.getIdentifier() : roleProperties.getQualifiedName();
+                    }
+
+                    member.setUsername(username);
                     member.setName(getBitolValue(additionalProperties, "name"));
                     member.setRole(roleProperties.getDisplayName());
                     member.setDescription(roleProperties.getDescription());

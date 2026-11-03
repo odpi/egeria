@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractCompa
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSchemaMap;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractEnumValue;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalTypeOptions;
@@ -35,6 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ConfidentialityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CriticalityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DataQualityRuleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ServiceLevelObjectiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListProperties;
@@ -156,8 +158,59 @@ public class DataContractGenerator extends BitolGeneratorBase
         dataContract.setSchema(getSchema(agreement));
 
         fillGovernance(agreement, dataContract);
+        fillLicenses(agreement, dataContract);
 
         return dataContract;
+    }
+
+
+    /**
+     * ODCS has no license object, so the license types governing the agreement are described in the usage section
+     * of the description (when it is not already set) and listed as a custom property attributed to Egeria, along
+     * with the service level objectives.
+     *
+     * @param agreement agreement element
+     * @param dataContract document to fill
+     */
+    private void fillLicenses(OpenMetadataRootElement agreement,
+                              DataContract            dataContract)
+    {
+        List<String> licenseTypes = getRelatedNames(agreement.getGovernedBy(), OpenMetadataType.LICENSE_TYPE.typeName);
+
+        if ((! licenseTypes.isEmpty()) && (dataContract.getDescription() != null) && (dataContract.getDescription().getUsage() == null))
+        {
+            List<String> licenseDescriptions = new ArrayList<>();
+
+            for (RelatedMetadataElementSummary governedBy : agreement.getGovernedBy())
+            {
+                if ((governedBy != null) && (governedBy.getRelatedElement() != null) &&
+                    (propertyHelper.isTypeOf(governedBy.getRelatedElement().getElementHeader(), OpenMetadataType.LICENSE_TYPE.typeName)) &&
+                    (governedBy.getRelatedElement().getProperties() instanceof GovernanceDefinitionProperties licenseProperties))
+                {
+                    String summary = (licenseProperties.getSummary() != null) ? licenseProperties.getSummary() : licenseProperties.getDescription();
+
+                    licenseDescriptions.add((summary == null) ? getDisplayName(governedBy.getRelatedElement()) : getDisplayName(governedBy.getRelatedElement()) + ": " + summary);
+                }
+            }
+
+            if (! licenseDescriptions.isEmpty())
+            {
+                dataContract.getDescription().setUsage(String.join("  ", licenseDescriptions));
+            }
+        }
+
+        List<BitolCustomProperty> customProperties = dataContract.getCustomProperties();
+
+        customProperties = addEgeriaProperty(customProperties,
+                                             BitolMapperBase.EGERIA_LICENSE_TYPES,
+                                             licenseTypes,
+                                             "License types granted to the subscribers' copies of the data.");
+        customProperties = addEgeriaProperty(customProperties,
+                                             BitolMapperBase.EGERIA_SERVICE_LEVELS,
+                                             getRelatedNames(agreement.getGovernedBy(), OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName),
+                                             "Service level objectives that the provider commits to under this contract.");
+
+        dataContract.setCustomProperties(customProperties);
     }
 
 

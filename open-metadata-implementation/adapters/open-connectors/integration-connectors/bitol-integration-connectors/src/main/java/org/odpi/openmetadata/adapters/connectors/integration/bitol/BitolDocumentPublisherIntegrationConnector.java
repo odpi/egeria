@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.mapping.DataContractGenerator;
+import org.odpi.openmetadata.frameworks.integration.bitol.mapping.DataContractMapper;
 import org.odpi.openmetadata.frameworks.integration.bitol.mapping.DataProductGenerator;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
@@ -24,9 +25,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementCla
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +42,18 @@ import java.util.Map;
  * <br><br>
  * Documents are generated when the connector receives an event describing a change to a digital product or agreement,
  * and on each refresh for every product that is a member of a DigitalProductCatalog catalog target (together with the
- * agreements referenced by the product's ports).  A document is only published when its content differs from the last
- * document generated for the same element, so a cataloguer running in the same daemon does not cause an endless
- * exchange of identical documents.
+ * agreements referenced by the product's ports).  Each process that the lineage shows assembling a product's data
+ * becomes an input port of the product; a process with no data contract gets a sparsely populated draft one, catalogued
+ * and published with the product so that it can be filled out later.
+ * <br><br>
+ * A document is only published when its content differs from the last document generated for the same element, so a
+ * cataloguer running in the same daemon does not cause an endless exchange of identical documents.
  */
 public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrationConnectorBase implements OpenMetadataEventListener
 {
     private DataProductGenerator  productGenerator  = null;
     private DataContractGenerator contractGenerator = null;
+    private DataContractMapper    contractMapper    = null;
 
     private final Map<String, String> lastPublishedDocuments = new HashMap<>();
 
@@ -74,6 +81,7 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         {
             productGenerator  = new DataProductGenerator(integrationContext);
             contractGenerator = new DataContractGenerator(integrationContext);
+            contractMapper    = new DataContractMapper(integrationContext);
         }
     }
 
@@ -149,6 +157,30 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
             return;
         }
 
+        /*
+         * The input port for each process that assembles the product's data needs a data contract.  A sparsely
+         * populated draft is catalogued for any process that has none, so that it can be filled out later.
+         */
+        List<String> inputContractGUIDs = new ArrayList<>();
+        String       productName        = getProductName(product);
+
+        for (String processGUID : productGenerator.getAssemblingProcessGUIDs(product))
+        {
+            try
+            {
+                inputContractGUIDs.addAll(contractMapper.ensureInputContract(processGUID, productName));
+            }
+            catch (Exception error)
+            {
+                logExceptionRecord(methodName,
+                                   BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                   error);
+            }
+        }
+
         DataProduct dataProduct = productGenerator.generateDataProduct(product);
         String      yaml        = BitolDocumentFormatter.toYAML(dataProduct);
 
@@ -165,6 +197,11 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         /*
          * The contracts referenced by the product's ports are published with it so that a store receives a complete set.
          */
+        for (String agreementGUID : inputContractGUIDs)
+        {
+            publishDataContract(agreementGUID, context);
+        }
+
         if (product.getCollectionMembers() != null)
         {
             for (RelatedMetadataElementSummary member : product.getCollectionMembers())
@@ -216,6 +253,32 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
                 }
             }
         }
+    }
+
+
+    /**
+     * Return the name of a product for the description of its draft input contracts.
+     *
+     * @param product product element
+     * @return name
+     */
+    private String getProductName(OpenMetadataRootElement product)
+    {
+        if (product.getProperties() instanceof DigitalProductProperties properties)
+        {
+            if (properties.getProductName() != null)
+            {
+                return properties.getProductName();
+            }
+            if (properties.getDisplayName() != null)
+            {
+                return properties.getDisplayName();
+            }
+
+            return properties.getQualifiedName();
+        }
+
+        return product.getElementHeader().getGUID();
     }
 
 

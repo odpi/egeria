@@ -43,6 +43,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +69,51 @@ public abstract class BitolMapperBase
      * Prefix used in additionalProperties for values that have no home in the open metadata types.
      */
     public static final String ADDITIONAL_PROPERTY_PREFIX = "bitol.";
+
+    /**
+     * Vendor attribution given to the custom properties that carry Egeria's own properties in a Bitol document.
+     * These entries are restored to their open metadata properties when the document is catalogued, rather than
+     * being kept as additional properties.
+     */
+    public static final String EGERIA_VENDOR = "egeria";
+
+    /*
+     * Names of the custom properties attributed to Egeria.  The product lifecycle properties are restored when the
+     * document is catalogued; the others describe relationships in open metadata and are written for information.
+     */
+    public static final String EGERIA_CATEGORY              = "category";
+    public static final String EGERIA_DEPLOYMENT_STATUS     = "deploymentStatus";
+    public static final String EGERIA_USER_DEPLOYMENT_STATUS = "userDefinedDeploymentStatus";
+    public static final String EGERIA_MATURITY              = "maturity";
+    public static final String EGERIA_SERVICE_LIFE          = "serviceLife";
+    public static final String EGERIA_INTRODUCTION_DATE     = "introductionDate";
+    public static final String EGERIA_NEXT_VERSION_DATE     = "nextVersionDate";
+    public static final String EGERIA_WITHDRAW_DATE         = "withdrawDate";
+    public static final String EGERIA_PRODUCT_FAMILIES      = "productFamilies";
+    public static final String EGERIA_QUESTIONS             = "questions";
+    public static final String EGERIA_LICENSE_TYPES         = "licenseTypes";
+    public static final String EGERIA_SERVICE_LEVELS        = "serviceLevelObjectives";
+    public static final String EGERIA_PROCESS_QUALIFIED_NAME = "processQualifiedName";
+    public static final String EGERIA_PROCESS_TYPE          = "processType";
+    public static final String EGERIA_ASSEMBLES             = "assembles";
+
+    /**
+     * The lineage relationships that carry data from a process into the data it assembles, and into a process from the
+     * data it reads.  The data flows from end 1 to end 2 of each of them.
+     */
+    public static final List<String> DATA_LINEAGE_TYPE_NAMES = List.of(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
+
+    /**
+     * Suffix of the identifier of the draft data contract created for the data that a process reads.
+     */
+    public static final String INPUT_CONTRACT_SUFFIX = "::input";
+
+    /**
+     * Version of a draft data contract.
+     */
+    public static final String DRAFT_CONTRACT_VERSION = "0.1.0";
 
     /**
      * Separator used in qualified names.
@@ -435,14 +483,21 @@ public abstract class BitolMapperBase
     {
         if (customProperties != null)
         {
-            boolean detailed = false;
+            boolean                   detailed = false;
+            List<BitolCustomProperty> retained = new ArrayList<>();
 
             for (BitolCustomProperty customProperty : customProperties)
             {
-                if ((customProperty != null) && (customProperty.getProperty() != null))
+                /*
+                 * Egeria's own properties are restored by the mapper for the element, and are regenerated from
+                 * those properties, so they are not kept here.
+                 */
+                if ((customProperty != null) && (customProperty.getProperty() != null) && (! isEgeriaProperty(customProperty)))
                 {
                     additionalProperties.put(customProperty.getProperty(),
                                              (customProperty.getValue() == null) ? "" : customProperty.getValue().toString());
+
+                    retained.add(customProperty);
 
                     if ((customProperty.getVendor() != null) || (customProperty.getDescription() != null) || (customProperty.getId() != null))
                     {
@@ -457,9 +512,90 @@ public abstract class BitolMapperBase
              */
             if (detailed)
             {
-                putIfPresent(additionalProperties, CUSTOM_PROPERTIES_JSON, toJSON(customProperties));
+                putIfPresent(additionalProperties, CUSTOM_PROPERTIES_JSON, toJSON(retained));
             }
         }
+    }
+
+
+    /**
+     * Return whether a custom property carries one of Egeria's own properties.
+     *
+     * @param customProperty custom property from a document
+     * @return boolean
+     */
+    protected static boolean isEgeriaProperty(BitolCustomProperty customProperty)
+    {
+        return (customProperty != null) && (EGERIA_VENDOR.equals(customProperty.getVendor()));
+    }
+
+
+    /**
+     * Return the values of the custom properties attributed to Egeria, keyed by property name.
+     *
+     * @param customProperties custom properties from a document (may be null)
+     * @return map of property name to value (empty if there are none)
+     */
+    protected static Map<String, Object> getEgeriaValues(List<BitolCustomProperty> customProperties)
+    {
+        Map<String, Object> values = new HashMap<>();
+
+        if (customProperties != null)
+        {
+            for (BitolCustomProperty customProperty : customProperties)
+            {
+                if ((isEgeriaProperty(customProperty)) && (customProperty.getProperty() != null) && (customProperty.getValue() != null))
+                {
+                    values.put(customProperty.getProperty(), customProperty.getValue());
+                }
+            }
+        }
+
+        return values;
+    }
+
+
+    /**
+     * Return a string value from the Egeria custom properties.
+     *
+     * @param egeriaValues values from getEgeriaValues
+     * @param name property name
+     * @return value or null
+     */
+    protected static String getEgeriaString(Map<String, Object> egeriaValues,
+                                            String              name)
+    {
+        Object value = egeriaValues.get(name);
+
+        return (value == null) ? null : value.toString();
+    }
+
+
+    /**
+     * Return a date value from the Egeria custom properties.  Dates are written as ISO-8601 instants.
+     *
+     * @param egeriaValues values from getEgeriaValues
+     * @param name property name
+     * @return date or null if absent or unreadable
+     */
+    protected static Date getEgeriaDate(Map<String, Object> egeriaValues,
+                                        String              name)
+    {
+        String value = getEgeriaString(egeriaValues, name);
+
+        if (value != null)
+        {
+            try
+            {
+                return Date.from(Instant.parse(value));
+            }
+            catch (DateTimeParseException error)
+            {
+                return null;
+            }
+        }
+
+        return null;
     }
 
 

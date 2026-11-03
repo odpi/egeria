@@ -518,6 +518,25 @@ public enum ProductGovernanceDefinition
 
 
     /**
+     * Return the Open Data Contract Standard (ODCS) SLA properties that express a service level objective, as a
+     * JSON list.  They are stored on the objective in the form the Bitol cataloguers use, so that the data
+     * contracts governed by the objective carry its service levels.
+     *
+     * @return JSON list, or null if the definition is not a service level objective with measurable levels
+     */
+    public String getSLAProperties()
+    {
+        return switch (this)
+        {
+            case MONITORED_RESOURCE_SLO -> "[{\"property\":\"latency\",\"value\":1,\"unit\":\"h\",\"description\":\"" + summary + "\"}]";
+            case DAILY_REFRESH_SLO -> "[{\"property\":\"frequency\",\"value\":1,\"unit\":\"d\",\"description\":\"" + summary + "\"}]";
+            case WEEKLY_REFRESH_SLO -> "[{\"property\":\"frequency\",\"value\":7,\"unit\":\"d\",\"description\":\"" + summary + "\"}]";
+            default -> null;
+        };
+    }
+
+
+    /**
      * Output of this enum class and main value.
      *
      * @return string showing enum value
