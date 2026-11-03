@@ -118,6 +118,18 @@ if [ ! -z $CA_CLEAN ]; then
   keytool -importcert -noprompt -keystore ${rootCA}.p12 -storepass ${STOREPASS} -alias ${rootCA} \
     -file ${rootCA}/certs/${rootCA}.cert.pem
 fi
+
+# ---
+# CA chain
+#
+# PEM bundle holding the root and intermediate CA certificates (public certificates only - no keys).
+# It is used as the CA file when building the .p12 archives below, and it is checked in so that tools
+# that need a PEM trust store rather than a .p12 (eg Python clients, Jupyter, curl) can trust the
+# certificates issued here.
+# ---
+printf "\n\n---- Generating CA chain (%s.cert.pem)  ----\n\n" ${CA_CHAIN}
+cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem >${CA_CHAIN}.cert.pem
+
 # Now we use the intermediate CA from now on for signing
 export CA=${iCA}
 export CA_POLICY=policy_loose
@@ -137,8 +149,7 @@ for cert in ${SERVERCERTS}; do
   openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions server_cert -notext -days ${CERT_DAYS} \
     -config ./openssl.cnf -batch -passin pass:${KEYPASS}
   # We include the full chain in the .p12 archive
-  cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem >tmp.pem
-  openssl pkcs12 -export -chain -in ${FNAME}.cert.pem -CAfile tmp.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
+  openssl pkcs12 -export -chain -in ${FNAME}.cert.pem -CAfile ${CA_CHAIN}.cert.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
     -passin pass:${KEYPASS} -passout pass:${KEYPASS}
 done
 
@@ -155,8 +166,7 @@ for cert in ${CLIENTCERTS}; do
     -config ./openssl.cnf
   openssl ca -in ${FNAME}.csr.pem -out ${FNAME}.cert.pem -extensions client_cert -notext -days ${CERT_DAYS} \
     -config ./openssl.cnf -batch -passin pass:${KEYPASS}
-  cat ${rootCA}/certs/${rootCA}.cert.pem ${iCA}/certs/${iCA}.cert.pem >tmp.pem
-  openssl pkcs12 -export -in ${FNAME}.cert.pem -CAfile tmp.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
+  openssl pkcs12 -export -in ${FNAME}.cert.pem -CAfile ${CA_CHAIN}.cert.pem -inkey ${FNAME}.key.pem -name $FNAME -out ${FNAME}.p12 \
     -passin pass:${KEYPASS} -passout pass:${KEYPASS}
 done
 
