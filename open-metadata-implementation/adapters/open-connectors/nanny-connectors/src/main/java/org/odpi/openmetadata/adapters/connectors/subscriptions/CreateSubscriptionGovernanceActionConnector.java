@@ -17,6 +17,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -316,6 +318,9 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
             addServiceLevelObjectives(subscriptionGUID,
                                       serviceLevelObjectives);
 
+            linkDataContract(subscriptionGUID,
+                             notificationTypeGUID);
+
             /*
              * A product's assets are members of the product.  A family's members are its products and its own
              * collection asset; the products are not subscribed to one by one - the collection asset covers
@@ -428,6 +433,84 @@ public class CreateSubscriptionGovernanceActionConnector extends GeneralGovernan
         }
 
         return subscriptionGUID;
+    }
+
+
+    /**
+     * Link the subscription to the data contract it is taken out under.  The data contract is the agreement,
+     * classified as a DataSharingAgreement, that has the subscription type's notification type as one of its items.
+     * It describes the data and the service levels on offer to every subscriber, while the subscription records
+     * the arrangement with this subscriber, so the subscription is in effect an instance of the contract.
+     * Nothing is linked if the product has no data contracts.
+     *
+     * @param subscriptionGUID unique identifier of the subscription
+     * @param notificationTypeGUID unique identifier of the subscription type's notification type (may be null)
+     * @throws InvalidParameterException bad parameter
+     * @throws UserNotAuthorizedException this governance service is not authorized to perform this operation
+     * @throws PropertyServerException a problem with the metadata store
+     */
+    private void linkDataContract(String subscriptionGUID,
+                                  String notificationTypeGUID) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        if (notificationTypeGUID == null)
+        {
+            return;
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = governanceContext.getClassificationExplorerClient();
+
+        GetOptions getOptions = classificationExplorerClient.getGetOptions();
+
+        getOptions.setGraphQueryDepth(1);
+        getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName));
+
+        OpenMetadataRootElement notificationType = classificationExplorerClient.getRootElementByGUID(notificationTypeGUID, getOptions);
+
+        if ((notificationType != null) && (notificationType.getAgreementContents() != null))
+        {
+            for (RelatedMetadataElementSummary agreement : notificationType.getAgreementContents())
+            {
+                if ((agreement != null) && (agreement.getRelatedElement() != null) &&
+                        (this.isDataSharingAgreement(agreement.getRelatedElement().getElementHeader())))
+                {
+                    CollectionClient        collectionClient        = governanceContext.getCollectionClient(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName);
+                    AgreementItemProperties agreementItemProperties = new AgreementItemProperties();
+
+                    agreementItemProperties.setAgreementItemId("data contract");
+                    agreementItemProperties.setAgreementStart(new Date());
+
+                    collectionClient.linkAgreementItem(subscriptionGUID,
+                                                       agreement.getRelatedElement().getElementHeader().getGUID(),
+                                                       new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                                       agreementItemProperties);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Return whether an agreement is classified as a data sharing agreement.
+     *
+     * @param elementHeader header of the agreement
+     * @return boolean
+     */
+    private boolean isDataSharingAgreement(ElementHeader elementHeader)
+    {
+        if (elementHeader.getCollectionKinds() != null)
+        {
+            for (ElementClassification classification : elementHeader.getCollectionKinds())
+            {
+                if ((classification != null) && (OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 

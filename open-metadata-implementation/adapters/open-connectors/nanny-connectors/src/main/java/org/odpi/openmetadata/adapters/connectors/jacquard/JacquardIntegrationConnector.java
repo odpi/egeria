@@ -18,6 +18,8 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
+import org.odpi.openmetadata.frameworks.integration.bitol.mapping.BitolMapperBase;
 import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
@@ -34,6 +36,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryPropertiesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -46,7 +49,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingAgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
@@ -830,6 +841,13 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         this.addSubscriptionTypes(productDefinition, productElement.getElementHeader(), productAssetGUID, licenseTypeGUID, subscriptionManagerGUID);
 
         /*
+         * Fill out the description of the product in the terms used by the Bitol standards so that it can be
+         * published as an ODPS document with an ODCS data contract for each of its subscription types.
+         */
+        this.addProductDiscoveryDetails(productDefinition, productElement.getElementHeader().getGUID());
+        this.addProductPortsAndContracts(productDefinition, productElement.getElementHeader().getGUID(), productAssetGUID, licenseTypeGUID);
+
+        /*
          * The product's asset is one of this connector's own catalog targets, so that its data is watched for
          * changes.  It is added once: a catalog target relationship persists with the asset, and adding one on
          * every refresh - as this used to - gave each product a new relationship per run, and the connector a
@@ -1453,6 +1471,439 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                              glossaryTermGUID,
                                                              null,
                                                              classificationExplorerClient.getMakeAnchorOptions(false));
+    }
+
+
+    /**
+     * Add the details that help a consumer find and understand the product: search keywords for its category and
+     * the perspectives of the questions it answers, an external reference to the documentation of each question,
+     * and (when the view server is configured) a management port that returns the product's ODPS document.
+     * These become the tags, authoritative definitions and management ports of the product's ODPS document.
+     * Each is only added if it is not already present, so the method can run on every refresh.
+     *
+     * @param productDefinition description of the product
+     * @param productGUID unique identifier of the product
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addProductDiscoveryDetails(ProductDefinition productDefinition,
+                                            String            productGUID) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        OpenMetadataRootElement product = classificationExplorerClient.getRootElementByGUID(productGUID,
+                                                                                            this.withRelationships(classificationExplorerClient,
+                                                                                                                   OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
+                                                                                                                   OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                                                                                   OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName));
+        if (product == null)
+        {
+            return;
+        }
+
+        /*
+         * Search keywords - the category and the perspectives of the guiding questions.
+         */
+        Set<String> keywords = new LinkedHashSet<>();
+
+        if (productDefinition.getCategory() != null)
+        {
+            keywords.add(productDefinition.getCategory());
+        }
+
+        if (productDefinition.getQuestions() != null)
+        {
+            for (ProductQuestionDefinition question : productDefinition.getQuestions())
+            {
+                if (question.getPerspectives() != null)
+                {
+                    for (ProductPerspectiveDefinition perspective : question.getPerspectives())
+                    {
+                        keywords.add(perspective.getDisplayName());
+                    }
+                }
+            }
+        }
+
+        if (product.getSearchKeywords() != null)
+        {
+            for (RelatedMetadataElementSummary existingKeyword : product.getSearchKeywords())
+            {
+                if ((existingKeyword != null) && (existingKeyword.getRelatedElement() != null) &&
+                        (existingKeyword.getRelatedElement().getProperties() instanceof SearchKeywordProperties keywordProperties))
+                {
+                    keywords.remove(keywordProperties.getDisplayName());
+                }
+            }
+        }
+
+        SearchKeywordClient searchKeywordClient = integrationContext.getSearchKeywordClient();
+
+        for (String keyword : keywords)
+        {
+            SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
+
+            searchKeywordProperties.setDisplayName(keyword);
+
+            searchKeywordClient.addSearchKeywordToElement(productGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);
+        }
+
+        /*
+         * External references - the documentation page for each guiding question.
+         */
+        if (productDefinition.getQuestions() != null)
+        {
+            ExternalReferenceClient externalReferenceClient = integrationContext.getExternalReferenceClient();
+
+            for (ProductQuestionDefinition question : productDefinition.getQuestions())
+            {
+                if ((question.getURL() != null) && (! this.containsQualifiedName(product.getExternalReferences(), productDefinition.getQualifiedName() + "_reference_" + question.getURL())))
+                {
+                    ExternalReferenceProperties externalReferenceProperties = new ExternalReferenceProperties();
+
+                    externalReferenceProperties.setQualifiedName(productDefinition.getQualifiedName() + "_reference_" + question.getURL());
+                    externalReferenceProperties.setDisplayName(question.getDisplayName());
+                    externalReferenceProperties.setDescription(question.getSummary());
+                    externalReferenceProperties.setURL(question.getURL());
+
+                    NewElementOptions newElementOptions = new NewElementOptions(externalReferenceClient.getMetadataSourceOptions());
+
+                    newElementOptions.setIsOwnAnchor(false);
+                    newElementOptions.setAnchorGUID(productGUID);
+                    newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+                    newElementOptions.setParentGUID(productGUID);
+                    newElementOptions.setParentAtEnd1(true);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
+
+                    ExternalReferenceLinkProperties linkProperties = new ExternalReferenceLinkProperties();
+
+                    linkProperties.setLabel("businessDefinition");
+                    linkProperties.setDescription("Explains the question that " + productDefinition.getProductName() + " is designed to answer.");
+
+                    externalReferenceClient.createExternalReference(newElementOptions, null, externalReferenceProperties, linkProperties);
+                }
+            }
+        }
+
+        /*
+         * Management port - the Product Manager OMVS returns the product's ODPS document.  The view server is not
+         * known to an integration connector, so the port is only added when it is configured.
+         */
+        String viewServerName = this.getViewServerName();
+
+        if (viewServerName != null)
+        {
+            String endpointQualifiedName = productDefinition.getQualifiedName() + "_dataProductDocumentEndpoint";
+
+            if (! this.containsQualifiedName(product.getResourceList(), endpointQualifiedName))
+            {
+                EndpointClient     endpointClient     = integrationContext.getEndpointClient();
+                EndpointProperties endpointProperties = new EndpointProperties();
+
+                endpointProperties.setQualifiedName(endpointQualifiedName);
+                endpointProperties.setDisplayName("ODPS document for " + productDefinition.getProductName());
+                endpointProperties.setDescription("Returns the Open Data Product Standard (ODPS) document that describes this product.");
+                endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot() +
+                                                             "/servers/" + viewServerName +
+                                                             "/api/open-metadata/product-manager/digital-products/" + productGUID +
+                                                             "/data-product-document");
+                endpointProperties.setProtocol("rest");
+                endpointProperties.setCategory("discoverability");
+
+                NewElementOptions newElementOptions = new NewElementOptions(endpointClient.getMetadataSourceOptions());
+
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorGUID(productGUID);
+                newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+                newElementOptions.setParentGUID(productGUID);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
+
+                ResourceListProperties resourceListProperties = new ResourceListProperties();
+
+                resourceListProperties.setDescription("Management port returning the product's ODPS document.");
+
+                endpointClient.createEndpoint(newElementOptions, null, endpointProperties, resourceListProperties);
+            }
+        }
+    }
+
+
+    /**
+     * Describe how the product's data is delivered in the terms of the Bitol standards.  Each subscription type
+     * offers the same data at a different level of service, and ODCS allows a contract one set of service levels,
+     * so each subscription type becomes an output port of the product with its own data contract.
+     * <ul>
+     *     <li>A solution component that is a member of the product owns the ports.</li>
+     *     <li>Each contract is an Agreement classified as a DataSharingAgreement.  Its items are the product's data
+     *     structure (the contract's schema), the output port, and the subscription type's notification type (so
+     *     that a subscription can find the contract it is taken out under).  It is governed by the product's
+     *     license type and the subscription type's service level objective.</li>
+     * </ul>
+     * The elements are created the first time the product is catalogued; their properties are updated afterwards.
+     *
+     * @param productDefinition description of the product
+     * @param productGUID unique identifier of the product
+     * @param productAssetGUID the product's data set - no ports are added if the product has no data of its own
+     * @param licenseTypeGUID the license type granted to subscribers (may be null)
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addProductPortsAndContracts(ProductDefinition productDefinition,
+                                             String            productGUID,
+                                             String            productAssetGUID,
+                                             String            licenseTypeGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        if ((productAssetGUID == null) || (productDefinition.getSubscriptionTypes() == null))
+        {
+            return;
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+        SolutionComponentClient      solutionComponentClient      = integrationContext.getSolutionComponentClient();
+        SolutionPortClient           solutionPortClient           = integrationContext.getSolutionPortClient();
+        CollectionClient             agreementClient              = integrationContext.getCollectionClient(OpenMetadataType.AGREEMENT.typeName);
+        GovernanceDefinitionClient   governanceDefinitionClient   = integrationContext.getGovernanceDefinitionClient();
+
+        /*
+         * The solution component that owns the ports.
+         */
+        SolutionComponentProperties componentProperties = new SolutionComponentProperties();
+
+        componentProperties.setQualifiedName(productDefinition.getQualifiedName() + "_solutionComponent");
+        componentProperties.setDisplayName(productDefinition.getProductName());
+        componentProperties.setDescription("Design of the " + productDefinition.getProductName() + " product showing how its data is delivered (output ports).");
+        componentProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        componentProperties.setSolutionComponentType("Data Product");
+
+        String componentGUID = this.getGUIDByQualifiedName(componentProperties.getQualifiedName());
+
+        if (componentGUID == null)
+        {
+            NewElementOptions newElementOptions = new NewElementOptions(solutionComponentClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(productGUID);
+            newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+            newElementOptions.setParentGUID(productGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+            CollectionMembershipProperties membershipProperties = new CollectionMembershipProperties();
+
+            membershipProperties.setMembershipType("product design");
+
+            componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions, null, componentProperties, membershipProperties);
+        }
+        else
+        {
+            solutionComponentClient.updateSolutionComponent(componentGUID, solutionComponentClient.getUpdateOptions(true), componentProperties);
+        }
+
+        String dataStructureGUID = this.getGUIDByQualifiedName(productDefinition.getQualifiedName() + "_dataSpec.dataStructure");
+
+        for (ProductSubscriptionDefinition subscriptionType : productDefinition.getSubscriptionTypes())
+        {
+            /*
+             * The output port.
+             */
+            SolutionPortProperties portProperties = new SolutionPortProperties();
+
+            portProperties.setQualifiedName(productDefinition.getQualifiedName() + "_outputPort_" + subscriptionType.getIdentifier());
+            portProperties.setIdentifier(subscriptionType.getIdentifier());
+            portProperties.setDisplayName(subscriptionType.getDisplayName());
+            portProperties.setDescription(subscriptionType.getDescription());
+            portProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            portProperties.setDirection(SolutionPortDirection.OUTPUT);
+
+            String portGUID = this.getGUIDByQualifiedName(portProperties.getQualifiedName());
+
+            if (portGUID == null)
+            {
+                NewElementOptions newElementOptions = new NewElementOptions(solutionPortClient.getMetadataSourceOptions());
+
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorGUID(productGUID);
+                newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+                newElementOptions.setParentGUID(componentGUID);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName);
+
+                portGUID = solutionPortClient.createSolutionPort(newElementOptions, null, portProperties, new SolutionComponentPortProperties());
+            }
+            else
+            {
+                solutionPortClient.updateSolutionPort(portGUID, solutionPortClient.getUpdateOptions(true), portProperties);
+            }
+
+            /*
+             * The data contract.  Its qualified name follows the convention of the Bitol cataloguers so that a
+             * contract published back from git updates this element rather than creating another.
+             */
+            String contractIdentifier = productDefinition.getIdentifier() + "::" + subscriptionType.getIdentifier();
+
+            AgreementProperties agreementProperties = new AgreementProperties();
+
+            agreementProperties.setQualifiedName(BitolMapperBase.getDocumentQualifiedName(BitolDocument.DATA_CONTRACT_KIND,
+                                                                                         contractIdentifier,
+                                                                                         productDefinition.getVersionIdentifier()));
+            agreementProperties.setIdentifier(contractIdentifier);
+            agreementProperties.setDisplayName(subscriptionType.getDisplayName() + " contract for " + productDefinition.getProductName());
+            agreementProperties.setDescription("The data delivered by the " + productDefinition.getProductName() + " product through the " +
+                                                       subscriptionType.getDisplayName() + ".  " + subscriptionType.getDescription());
+            agreementProperties.setPurpose("Data contract");
+            agreementProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            agreementProperties.setContentStatus(ContentStatus.ACTIVE);
+
+            String agreementGUID = this.getGUIDByQualifiedName(agreementProperties.getQualifiedName());
+
+            if (agreementGUID == null)
+            {
+                NewElementOptions newElementOptions = new NewElementOptions(agreementClient.getMetadataSourceOptions());
+
+                newElementOptions.setIsOwnAnchor(false);
+                newElementOptions.setAnchorGUID(productGUID);
+                newElementOptions.setAnchorScopeGUIDs(this.anchorScopeGUIDs);
+
+                agreementGUID = agreementClient.createCollection(newElementOptions, null, agreementProperties, null);
+
+                agreementClient.setAgreementAsDataSharingAgreement(agreementGUID, new DataSharingAgreementProperties(), agreementClient.getMetadataSourceOptions());
+
+                /*
+                 * The items of the agreement.
+                 */
+                AgreementItemProperties itemProperties = new AgreementItemProperties();
+
+                if (dataStructureGUID != null)
+                {
+                    itemProperties.setAgreementItemId("schema");
+                    agreementClient.linkAgreementItem(agreementGUID, dataStructureGUID, agreementClient.getMakeAnchorOptions(false), itemProperties);
+                }
+
+                itemProperties.setAgreementItemId("output port");
+                agreementClient.linkAgreementItem(agreementGUID, portGUID, agreementClient.getMakeAnchorOptions(false), itemProperties);
+
+                String notificationTypeGUID = this.getGUIDByQualifiedName(OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productGUID + "::" +
+                                                                                  productDefinition.getProductName() + "::" + subscriptionType.getIdentifier());
+
+                if (notificationTypeGUID != null)
+                {
+                    itemProperties.setAgreementItemId("subscription type");
+                    agreementClient.linkAgreementItem(agreementGUID, notificationTypeGUID, agreementClient.getMakeAnchorOptions(false), itemProperties);
+                }
+
+                /*
+                 * The terms of the agreement.
+                 */
+                if (licenseTypeGUID != null)
+                {
+                    GovernedByProperties governedByProperties = new GovernedByProperties();
+
+                    governedByProperties.setLabel("subscriber's license");
+                    governanceDefinitionClient.addGovernanceDefinitionToElement(agreementGUID, licenseTypeGUID, governanceDefinitionClient.getMakeAnchorOptions(false), governedByProperties);
+                }
+
+                if (subscriptionType.getServiceLevelObjective() != null)
+                {
+                    String serviceLevelObjectiveGUID = governanceDefinitions.get(subscriptionType.getServiceLevelObjective().getQualifiedName());
+
+                    if (serviceLevelObjectiveGUID != null)
+                    {
+                        GovernedByProperties governedByProperties = new GovernedByProperties();
+
+                        governedByProperties.setLabel("service level objective");
+                        governanceDefinitionClient.addGovernanceDefinitionToElement(agreementGUID, serviceLevelObjectiveGUID, governanceDefinitionClient.getMakeAnchorOptions(false), governedByProperties);
+                    }
+                }
+            }
+            else
+            {
+                agreementClient.updateCollection(agreementGUID, agreementClient.getUpdateOptions(true), agreementProperties);
+            }
+        }
+    }
+
+
+    /**
+     * Return the unique identifier of the element with the supplied qualified name.
+     *
+     * @param qualifiedName unique name
+     * @return guid or null if there is no such element
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getGUIDByQualifiedName(String qualifiedName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        OpenMetadataRootElement element = classificationExplorerClient.getRootElementByUniqueName(qualifiedName,
+                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                  this.headerAndProperties(classificationExplorerClient));
+
+        if ((element != null) && (element.getElementHeader() != null))
+        {
+            return element.getElementHeader().getGUID();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return whether one of the related elements has the supplied qualified name.
+     *
+     * @param relatedElements related elements (may be null)
+     * @param qualifiedName qualified name to look for
+     * @return boolean
+     */
+    private boolean containsQualifiedName(List<RelatedMetadataElementSummary> relatedElements,
+                                          String                              qualifiedName)
+    {
+        if (relatedElements != null)
+        {
+            for (RelatedMetadataElementSummary relatedElement : relatedElements)
+            {
+                if ((relatedElement != null) && (relatedElement.getRelatedElement() != null) &&
+                        (relatedElement.getRelatedElement().getProperties() instanceof ReferenceableProperties properties) &&
+                        (qualifiedName.equals(properties.getQualifiedName())))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return the name of the view server that runs the Product Manager OMVS, from the configuration properties.
+     *
+     * @return server name or null if it is not configured
+     */
+    private String getViewServerName()
+    {
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        if ((configurationProperties != null) &&
+                (configurationProperties.get(JacquardConfigurationProperty.VIEW_SERVER_NAME.getName()) != null))
+        {
+            return configurationProperties.get(JacquardConfigurationProperty.VIEW_SERVER_NAME.getName()).toString();
+        }
+
+        return null;
     }
 
 
@@ -3452,6 +3903,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         if (! extendedProperties.isEmpty())
         {
             governanceDefinitionProperties.setExtendedProperties(extendedProperties);
+        }
+
+        /*
+         * Service level objectives also carry their levels as ODCS SLA properties for the data contracts.
+         */
+        if (governanceDefinition.getSLAProperties() != null)
+        {
+            Map<String, String> additionalProperties = new HashMap<>();
+
+            additionalProperties.put(BitolMapperBase.ADDITIONAL_PROPERTY_PREFIX + "slaProperties", governanceDefinition.getSLAProperties());
+            governanceDefinitionProperties.setAdditionalProperties(additionalProperties);
         }
 
         return governanceDefinitionProperties;
