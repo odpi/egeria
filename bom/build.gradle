@@ -44,7 +44,7 @@ ext {
     openlineageVersion = '1.53.0'
     postgresVersion = '42.7.13' // already there
     nettyVersion = '4.2.18.Final'
-    prometheusVersion = '1.17.1'
+    prometheusVersion = '1.17.2'
     jakartaServletVersion = '6.1.0'
     snappyVersion = '1.1.10.8'
 
