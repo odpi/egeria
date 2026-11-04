@@ -28,6 +28,16 @@ public enum RequestParameter
     BASIS_IDENTIFIER ("basisIdentifier", "Identifier for the basis under which the retention date(s) are set.", "int", "2"),
     RETENTION_TIME_TO_ARCHIVE ("timeToArchive", "Number of milliseconds before the data should be archived.", "long", "31556952000"),
     RETENTION_TIME_TO_DELETE ("timeToDelete", "Number of milliseconds before the data should be deleted.", "long", "31556952000"),
+
+    OWNER ("owner", "Identifier of the person or process who is accountable for the proper management of the element or related resource.", "string", "erinoverview"),
+    OWNER_TYPE_NAME ("ownerTypeName", "Type of element that describes the owner.", "string", "UserIdentity"),
+    OWNER_PROPERTY_NAME ("ownerPropertyName", "Name of the property from the element used to identify the owner.", "string", "userId"),
+    USER_IDS ("userIds", "The list of userIds of the people who own the element or related resource.", "array<string>", "erinoverview,peterprofile"),
+
+    ORGANIZATION ("organization", "Identifier of the organization that this resource is from.", "string", "Coco Pharmaceuticals"),
+    ORGANIZATION_PROPERTY_NAME ("organizationPropertyName", "Name of the property from the element used to identify the organization property.", "string", "name"),
+    BUSINESS_CAPABILITY ("businessCapability", "Identifier of the business capability where this resource originated from.", "string", "Clinical Trials"),
+    BUSINESS_CAPABILITY_PROPERTY_NAME ("businessCapabilityPropertyName", "Name of the property from the element used to identify the businessCapability property.", "string", "name"),
     ;
 
     public final String           name;

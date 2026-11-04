@@ -10,6 +10,8 @@ import org.odpi.openmetadata.adapters.connectors.baudot.BaudotSubscriptionManage
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.ProvisionTabularDataSetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSetterGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OwnerSetterGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
@@ -107,6 +109,28 @@ public enum GovernanceServiceDefinition
                   ResourceUse.IMPROVE_METADATA,
                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Set the origin of an element from the supplied values.
+     */
+    ORIGIN_SETTER("51315096-a2fc-40a3-aa5c-1b75dae261aa",
+                  "origin-setter-governance-action-service",
+                  "Set Origin Governance Action Service",
+                  new OriginSetterGovernanceActionProvider(),
+                  ResourceUse.IMPROVE_METADATA,
+                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                  ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Set the owner of an element from the supplied values.
+     */
+    OWNER_SETTER("fecd44d5-6a07-4060-b3d2-a71a4410e78a",
+                 "owner-setter-governance-action-service",
+                 "Set Owner Governance Action Service",
+                 new OwnerSetterGovernanceActionProvider(),
+                 ResourceUse.IMPROVE_METADATA,
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Add a Retention classification to an Asset Governance Action Service
