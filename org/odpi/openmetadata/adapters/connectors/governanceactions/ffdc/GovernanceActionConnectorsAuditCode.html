@@ -227,6 +227,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0015 - The {0} governance action service detected that the endpoint {1} linked to connection {2}
  for asset {3} has no networkAddressProperty</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#NO_ORIGIN" class="member-name-link">NO_ORIGIN</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0049 - The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_OWNER" class="member-name-link">NO_OWNER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0047 - The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#NO_RELATED_ASSET" class="member-name-link">NO_RELATED_ASSET</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0012 - The context for {0} governance action service returned a RelatedMetadataElement with a
@@ -279,6 +287,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first odd-row-color"><code><a href="#SERVICE_COMPLETED_SUCCESSFULLY" class="member-name-link">SERVICE_COMPLETED_SUCCESSFULLY</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SETTING_ORIGIN" class="member-name-link">SETTING_ORIGIN</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0050 - The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SETTING_OWNER" class="member-name-link">SETTING_OWNER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0048 - The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5})</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SETTING_RETENTION" class="member-name-link">SETTING_RETENTION</a></code></div>
 <div class="col-last even-row-color">
@@ -709,6 +725,34 @@ the order they are declared.</div>
 <h3>PROVISIONING_LINEAGE_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_LINEAGE_FAILED</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0046 - The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_OWNER">
+<h3>NO_OWNER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_OWNER</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0047 - The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SETTING_OWNER">
+<h3>SETTING_OWNER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">SETTING_OWNER</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0048 - The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_ORIGIN">
+<h3>NO_ORIGIN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_ORIGIN</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0049 - The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SETTING_ORIGIN">
+<h3>SETTING_ORIGIN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">SETTING_ORIGIN</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0050 - The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5})</div>
 </section>
 </li>
 </ul>
