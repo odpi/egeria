@@ -350,6 +350,42 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * set-origin
+     */
+    SET_ORIGIN("set-origin",
+               null,
+               null,
+               null,
+               GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+               GovernanceServiceDefinition.ORIGIN_SETTER,
+               "617f47eb-4dc9-4700-aff2-bd3bbc9d702a",
+               GovernanceDomain.DATA.getOrdinal(),
+               DeployedImplementationType.ASSET.getQualifiedName(),
+               "c94d0ae5-0f01-4811-9c23-be39a8fd67fd",
+               "Set Origin",
+               "Set up the DigitalResourceOrigin classification on the requested element(s) using the organization and/or business capability supplied in the request parameters.",
+               ContentCollectionDefinition.STEWARDSHIP,
+               ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * set-owner
+     */
+    SET_OWNER("set-owner",
+              null,
+              null,
+              null,
+              GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+              GovernanceServiceDefinition.OWNER_SETTER,
+              "fccf5c75-fa63-423b-b0d1-c4ca4ada9539",
+              GovernanceDomain.DATA.getOrdinal(),
+              DeployedImplementationType.ASSET.getQualifiedName(),
+              "c2237da7-9cc8-433b-ae6a-3b3c7e3b07ce",
+              "Set Owner",
+              "Set up the Ownership classification on the requested element(s) using the owner supplied in the request parameters.",
+              ContentCollectionDefinition.STEWARDSHIP,
+              ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * set-zone-membership
      */
     ZONE_MEMBER("set-zone-membership",
