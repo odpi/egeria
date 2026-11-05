@@ -26,6 +26,11 @@ The remaining governance action services, grouped by category, are:
 * **Provisioning**
   * **ProvisionTabularDataSetGovernanceActionConnector** - copies data from one tabular data set to another.
 * **Remediation**
+  * **OriginSetterGovernanceActionConnector** - sets a DigitalResourceOrigin classification on the elements supplied
+    as action targets, using the organization and/or business capability from its configuration properties and
+    request parameters.
+  * **OwnerSetterGovernanceActionConnector** - sets an Ownership classification on the elements supplied
+    as action targets, using the owner from its configuration properties and request parameters.
   * **QualifiedNamePeerDuplicateGovernanceActionConnector** - checks the qualified name of the entity passed as
     an action target to determine its duplicates.
   * **RetentionClassifierGovernanceActionConnector** - sets a Retention classification on the elements supplied

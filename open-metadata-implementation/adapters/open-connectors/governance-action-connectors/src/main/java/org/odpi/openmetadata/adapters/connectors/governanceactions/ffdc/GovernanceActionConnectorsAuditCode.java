@@ -527,6 +527,48 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                 "Use the details from the error message to determine why the lineage could not be recorded and correct the problem.  The next delivery records the lineage again.",
                                 "https://egeria-project.org/features/lineage-management/overview/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0047 - The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters
+     */
+    NO_OWNER("GOVERNANCE-ACTION-CONNECTORS-0047",
+             AuditLogRecordSeverityLevel.ERROR,
+             "The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters",
+             "The governance action service returns an INVALID completion status without setting the Ownership classification on any of its action targets.",
+             "Set the owner property in the configuration properties of the governance action service's connection, or pass it as a " +
+                     "request parameter, and then rerun the request.",
+             "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0048 - The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5})
+     */
+    SETTING_OWNER("GOVERNANCE-ACTION-CONNECTORS-0048",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5})",
+                  "The governance action service replaces any existing Ownership classification on the element with one holding these values.",
+                  "Validate that this is the intended owner.",
+                  "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0049 - The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters
+     */
+    NO_ORIGIN("GOVERNANCE-ACTION-CONNECTORS-0049",
+              AuditLogRecordSeverityLevel.ERROR,
+              "The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters",
+              "The governance action service returns an INVALID completion status without setting the DigitalResourceOrigin classification on any of its action targets.",
+              "Set the organization and/or businessCapability property in the configuration properties of the governance action service's " +
+                      "connection, or pass them as request parameters, and then rerun the request.",
+              "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0050 - The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5})
+     */
+    SETTING_ORIGIN("GOVERNANCE-ACTION-CONNECTORS-0050",
+                   AuditLogRecordSeverityLevel.INFO,
+                   "The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5})",
+                   "The governance action service replaces any existing DigitalResourceOrigin classification on the element with one holding these values.",
+                   "Validate that this is the intended origin.",
+                   "https://egeria-project.org/concepts/governance-action-service/"),
+
     ;
 
     private final String                      logMessageId;
