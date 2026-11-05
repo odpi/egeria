@@ -18,7 +18,10 @@
 # Pinned by digest for a reproducible build; Dependabot's docker ecosystem is configured
 # for this directory and raises the digest bump monthly.  This is the multi-arch manifest
 # list digest, so the linux/amd64 + linux/arm64 build in merge-v6.yml still resolves both.
-FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:c1ace6c4a54563bc2912d753b898fcacb9b1c30010cd153419ddd3aa5bbf3b56
+# Tag 1.24-3.1793588567 (2 Nov 2026): ca-certificates 2026.2.92_v9.0.319-90.3.el9_8 from
+# RHSA-2026:88459, which distrusts the compromised eMudhra CAs (CVE-2026-114406).  RHEL's
+# OpenJDK reads its trust store from ca-certificates, so don't pin anything older than this.
+FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:c8fcb7571677a9f6f1f2f3325c9765103ecc2834ff13ce20eb5ee6d1088f7e12
 
 ARG version=6.3-SNAPSHOT
 ARG VCS_REF=unknown
