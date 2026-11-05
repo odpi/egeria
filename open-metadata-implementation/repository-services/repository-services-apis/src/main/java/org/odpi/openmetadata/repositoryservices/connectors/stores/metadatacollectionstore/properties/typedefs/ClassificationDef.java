@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * ClassificationDef stores the properties for the definition of a type of classification.  Many of the properties
  * are inherited from TypeDef.  ClassificationDef adds a list of Entity Types that this Classification can be
- * connected to and a boolean to indicate if this classification is propagatable.
+ * connected to, a boolean to indicate if this classification is propagatable and the purpose of the classification.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,6 +26,7 @@ public class ClassificationDef extends TypeDef
 {
     private   List<TypeDefLink>     validEntityDefs = null;
     private   boolean               propagatable = false;
+    private   String                classificationPurpose = null;
 
 
     /**
@@ -70,6 +71,7 @@ public class ClassificationDef extends TypeDef
             this.setValidEntityDefs(template.getValidEntityDefs());
 
             propagatable = template.isPropagatable();
+            classificationPurpose = template.getClassificationPurpose();
         }
     }
 
@@ -174,6 +176,29 @@ public class ClassificationDef extends TypeDef
 
 
     /**
+     * Return the purpose of the classification type.  This is informational for the repository.
+     * Open metadata uses the names from the OpenMetadataClassificationPurpose enum.
+     *
+     * @return string name of the purpose
+     */
+    public String getClassificationPurpose()
+    {
+        return classificationPurpose;
+    }
+
+
+    /**
+     * Set up the purpose of the classification type.  This is informational for the repository.
+     *
+     * @param classificationPurpose string name of the purpose
+     */
+    public void setClassificationPurpose(String classificationPurpose)
+    {
+        this.classificationPurpose = classificationPurpose;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -184,6 +209,7 @@ public class ClassificationDef extends TypeDef
         return "ClassificationDef{" +
                 "validEntityDefs=" + validEntityDefs +
                 ", propagatable=" + propagatable +
+                ", classificationPurpose='" + classificationPurpose + '\'' +
                 "} " + super.toString();
     }
 
@@ -211,7 +237,8 @@ public class ClassificationDef extends TypeDef
         }
         ClassificationDef that = (ClassificationDef) objectToCompare;
         return propagatable == that.propagatable &&
-                       Objects.equals(validEntityDefs, that.validEntityDefs);
+                       Objects.equals(validEntityDefs, that.validEntityDefs) &&
+                       Objects.equals(classificationPurpose, that.classificationPurpose);
     }
 
 
@@ -223,6 +250,6 @@ public class ClassificationDef extends TypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), validEntityDefs, propagatable);
+        return Objects.hash(super.hashCode(), validEntityDefs, propagatable, classificationPurpose);
     }
 }

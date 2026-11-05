@@ -96,6 +96,10 @@ public class OMRSTypeDefConverter
                                                                       parameterName + ".validEntityDefs",
                                                                       methodName));
             classificationDef.setPropagatable(openMetadataClassificationDef.isPropagatable());
+            if (openMetadataClassificationDef.getClassificationPurpose() != null)
+            {
+                classificationDef.setClassificationPurpose(openMetadataClassificationDef.getClassificationPurpose().name());
+            }
 
             typeDef = classificationDef;
         }

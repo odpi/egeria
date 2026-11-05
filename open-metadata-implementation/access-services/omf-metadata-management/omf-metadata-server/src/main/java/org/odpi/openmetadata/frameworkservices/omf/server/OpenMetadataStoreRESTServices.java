@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.omf.server;
 
+import org.odpi.openmetadata.commonservices.generichandlers.ClassificationPurposeResolver;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationshipPurposeResolver;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataClassificationPurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -5335,6 +5337,7 @@ public class OpenMetadataStoreRESTServices
 
                 openMetadataClassificationDef.setValidEntityDefs(this.getTypeDefLinks(classificationDef.getValidEntityDefs()));
                 openMetadataClassificationDef.setPropagatable(classificationDef.isPropagatable());
+                openMetadataClassificationDef.setClassificationPurpose(this.getClassificationPurpose(classificationDef, repositoryHelper));
 
                 openMetadataTypeDef = openMetadataClassificationDef;
                 openMetadataTypeDef.setCategory(OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
@@ -5815,6 +5818,22 @@ public class OpenMetadataStoreRESTServices
         final String methodName = "getRelationshipPurpose";
 
         return RelationshipPurposeResolver.getRelationshipPurpose(methodName, relationshipDef, repositoryHelper);
+    }
+
+
+    /**
+     * Return the purpose of the classification type, inheriting it from a super type if needed.
+     *
+     * @param classificationDef omrs type
+     * @param repositoryHelper repository helper
+     * @return open metadata enum
+     */
+    private OpenMetadataClassificationPurpose getClassificationPurpose(ClassificationDef    classificationDef,
+                                                                       OMRSRepositoryHelper repositoryHelper)
+    {
+        final String methodName = "getClassificationPurpose";
+
+        return ClassificationPurposeResolver.getClassificationPurpose(methodName, classificationDef, repositoryHelper);
     }
 
 
