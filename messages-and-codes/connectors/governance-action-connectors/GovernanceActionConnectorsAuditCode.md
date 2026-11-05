@@ -9,7 +9,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 45 |
+| **Number of messages** | 49 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
@@ -65,6 +65,10 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0044](#governance-action-connectors-0044) | ERROR | The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5} |
 | [GOVERNANCE-ACTION-CONNECTORS-0045](#governance-action-connectors-0045) | INFO | The {0} governance action service has recorded the lineage of its delivery from {1} through process {2} to {3}, with {4} column mapping(s) |
 | [GOVERNANCE-ACTION-CONNECTORS-0046](#governance-action-connectors-0046) | EXCEPTION | The {0} governance action service delivered the data from {1} to {2} but was unable to record its lineage: {3} exception with message {4} |
+| [GOVERNANCE-ACTION-CONNECTORS-0047](#governance-action-connectors-0047) | ERROR | The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters |
+| [GOVERNANCE-ACTION-CONNECTORS-0048](#governance-action-connectors-0048) | INFO | The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5}) |
+| [GOVERNANCE-ACTION-CONNECTORS-0049](#governance-action-connectors-0049) | ERROR | The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters |
+| [GOVERNANCE-ACTION-CONNECTORS-0050](#governance-action-connectors-0050) | INFO | The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5}) |
 
 ----
 
@@ -1054,6 +1058,94 @@ The delivery stands and the service completes with the status of the delivery.  
 **User action**
 
 Use the details from the error message to determine why the lineage could not be recorded and correct the problem.  The next delivery records the lineage again.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0047
+
+> The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.NO_OWNER` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service returns an INVALID completion status without setting the Ownership classification on any of its action targets.
+
+**User action**
+
+Set the owner property in the configuration properties of the governance action service's connection, or pass it as a request parameter, and then rerun the request.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0048
+
+> The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5})
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.SETTING_OWNER` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service replaces any existing Ownership classification on the element with one holding these values.
+
+**User action**
+
+Validate that this is the intended owner.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0049
+
+> The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.NO_ORIGIN` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service returns an INVALID completion status without setting the DigitalResourceOrigin classification on any of its action targets.
+
+**User action**
+
+Set the organization and/or businessCapability property in the configuration properties of the governance action service's connection, or pass them as request parameters, and then rerun the request.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0050
+
+> The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5})
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.SETTING_ORIGIN` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service replaces any existing DigitalResourceOrigin classification on the element with one holding these values.
+
+**User action**
+
+Validate that this is the intended origin.
 
 
 ----
