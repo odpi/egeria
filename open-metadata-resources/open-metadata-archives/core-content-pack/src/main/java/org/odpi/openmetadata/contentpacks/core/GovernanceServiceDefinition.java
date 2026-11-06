@@ -188,6 +188,17 @@ public enum GovernanceServiceDefinition
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Create an incident report from a template.
+     */
+    INCIDENT_REPORTER("cfe3234b-2d38-4a80-8427-fc48c8bec4cb",
+                      "incident-reporter-governance-action-service",
+                      "Report an Incident Governance Action Service",
+                      new IncidentReporterGovernanceActionProvider(),
+                      ResourceUse.INFORM_STEWARD,
+                      DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Write an Audit Log Message
      */
     WRITE_AUDIT_LOG("6898b138-9ab0-4465-9ee8-ed9607dcc4f8",
