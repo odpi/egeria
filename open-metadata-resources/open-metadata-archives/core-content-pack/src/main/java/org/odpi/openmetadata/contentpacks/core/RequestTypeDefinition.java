@@ -501,6 +501,24 @@ public enum RequestTypeDefinition
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * report-incident
+     */
+    REPORT_INCIDENT("report-incident",
+                    null,
+                    null,
+                    null,
+                    GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                    GovernanceServiceDefinition.INCIDENT_REPORTER,
+                    "5408ab18-d03e-43c5-9580-b18120db71ec",
+                    GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                    null,
+                    "824ca037-0b09-432e-962c-88776d1a9a11",
+                    "Report Incident",
+                    "Create an incident report using the template identified by the templateGUID request parameter.  The action targets are linked to the report as impacted resources.",
+                    ContentCollectionDefinition.COMMUNICATION_ACTIONS,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * get-day-of-week
      */
     GET_DAY_OF_WEEK("get-day-of-week",
