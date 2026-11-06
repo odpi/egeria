@@ -61,6 +61,23 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
 
     private JDBCResourceConnector jdbcResourceConnector = null;
 
+    /**
+     * The number of records that {@link #readRecord} fetches in one query.  A copy reads a table one record
+     * at a time from record 0 upwards, and fetching each record on its own means one query per record whose
+     * offset the database has to step through - so the work of a copy grows with the square of the table's
+     * size.  Fetching them a window at a time divides that work by the size of the window.
+     */
+    private static final int READ_AHEAD_RECORDS = 1000;
+
+    /**
+     * The window of records most recently fetched by {@link #readRecord}, starting at record
+     * {@link #readAheadStart}; null when there is none.  It is dropped whenever the table might have changed
+     * through this connector, and whenever the records are counted, which is how every copy begins - so a copy
+     * never starts from records that an earlier copy fetched.
+     */
+    private List<List<String>> readAheadRecords = null;
+    private long               readAheadStart   = 0;
+
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
 
@@ -129,6 +146,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
      * The record's identity is the table's primary key, built from the columns marked as identifying the
      * record.  Where a table has no such columns there is nothing to match an existing record on, so the
      * record can only be added.
+     * <br>
+     * A record that is already there with the same values is left alone.  A refresh writes every record of
+     * the source each time it runs, and most of them have not changed since the last one; updating them anyway
+     * gives each one a new row version to write, index and vacuum, for no change to the data.  The values are
+     * compared as text, which is the form they arrive in and which every column type can be cast to.
      *
      * @param dataValues values of the record, in column order
      * @return SQL statement
@@ -143,9 +165,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
             return this.buildSQLInsertIntoStatement(dataValues);
         }
 
-        List<String>  columnNames   = new ArrayList<>();
-        List<String>  literals      = new ArrayList<>();
-        List<String>  updateClauses = new ArrayList<>();
+        List<String>  columnNames     = new ArrayList<>();
+        List<String>  literals        = new ArrayList<>();
+        List<String>  updateClauses   = new ArrayList<>();
+        List<String>  existingValues  = new ArrayList<>();
+        List<String>  suppliedValues  = new ArrayList<>();
 
         for (int columnNumber = 0; columnNumber < databaseColumnDescriptions.size(); columnNumber ++)
         {
@@ -157,10 +181,12 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
             if (! identifierColumns.contains(columnName))
             {
                 updateClauses.add(columnName + " = excluded." + columnName);
+                existingValues.add("existing." + columnName + "::text");
+                suppliedValues.add("excluded." + columnName + "::text");
             }
         }
 
-        String statement = "INSERT INTO " + tableName + " (" + String.join(", ", columnNames) + ") VALUES ("
+        String statement = "INSERT INTO " + tableName + " AS existing (" + String.join(", ", columnNames) + ") VALUES ("
                                    + String.join(", ", literals) + ") ON CONFLICT (" + String.join(", ", identifierColumns) + ")";
 
         if (updateClauses.isEmpty())
@@ -172,7 +198,19 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
             return statement + " DO NOTHING;";
         }
 
-        return statement + " DO UPDATE SET " + String.join(", ", updateClauses) + ";";
+        return statement + " DO UPDATE SET " + String.join(", ", updateClauses)
+                       + " WHERE (" + String.join(", ", existingValues) + ") IS DISTINCT FROM ("
+                       + String.join(", ", suppliedValues) + ");";
+    }
+
+
+    /**
+     * Forget the records read ahead by {@link #readRecord}, so that the next read fetches them afresh.
+     */
+    private synchronized void discardReadAhead()
+    {
+        readAheadRecords = null;
+        readAheadStart   = 0;
     }
 
 
@@ -308,6 +346,11 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     {
         final String  methodName = "getRecordCount";
 
+        /*
+         * Counting the records is how a copy begins, so the records it goes on to read are fetched afresh.
+         */
+        this.discardReadAhead();
+
         try
         {
             propertyHelper.validateMandatoryName(tableName, PostgresConfigurationProperty.TABLE_NAME.name, methodName);
@@ -438,13 +481,17 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
      * record where the table has them, and by physical position where it does not.  The values are returned in
      * the table's column order, as text: PostgreSQL renders each value in its own type's text form, which is
      * what a destination casts back on the way in.
+     * <br>
+     * The records are fetched a window of {@link #READ_AHEAD_RECORDS} at a time, starting at the one requested,
+     * and the records that follow it are returned from that window - see {@link #READ_AHEAD_RECORDS} for why.
+     * A record outside the window starts a new one.
      *
      * @param rowNumber long
      * @return List of strings, each string is the value from the column; a null value stays null.
      * @throws ConnectorCheckedException a problem occurred accessing the data, or there is no such record.
      */
     @Override
-    public List<String> readRecord(long rowNumber) throws ConnectorCheckedException
+    public synchronized List<String> readRecord(long rowNumber) throws ConnectorCheckedException
     {
         final String methodName = "readRecord";
 
@@ -452,36 +499,24 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
         {
             propertyHelper.validateMandatoryName(tableName, PostgresConfigurationProperty.TABLE_NAME.name, methodName);
 
-            /*
-             * The column descriptions are loaded first so that the record order is known.
-             */
-            this.getDatabaseColumnDescriptions();
-
-            String sqlQuery = "SELECT * FROM " + tableName + " ORDER BY " + this.getRecordOrder() + " OFFSET " + rowNumber + " LIMIT 1";
-
-            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
-                 Statement           statement          = databaseConnection.createStatement();
-                 ResultSet           resultSet          = statement.executeQuery(sqlQuery))
+            if ((readAheadRecords == null) || (rowNumber < readAheadStart) || (rowNumber >= readAheadStart + readAheadRecords.size()))
             {
-                if (! resultSet.next())
-                {
-                    throw new ConnectorCheckedException(PostgresErrorCode.NO_SUCH_RECORD.getMessageDefinition(Long.toString(rowNumber),
-                                                                                                              tableName,
-                                                                                                              connectionBean.getDisplayName()),
-                                                        this.getClass().getName(),
-                                                        methodName);
-                }
-
-                int          columnCount = resultSet.getMetaData().getColumnCount();
-                List<String> dataValues  = new ArrayList<>();
-
-                for (int columnNumber = 1; columnNumber <= columnCount; columnNumber++)
-                {
-                    dataValues.add(resultSet.getString(columnNumber));
-                }
-
-                return dataValues;
+                readAheadRecords = this.fetchRecords(rowNumber);
+                readAheadStart   = rowNumber;
             }
+
+            int position = (int)(rowNumber - readAheadStart);
+
+            if (position >= readAheadRecords.size())
+            {
+                throw new ConnectorCheckedException(PostgresErrorCode.NO_SUCH_RECORD.getMessageDefinition(Long.toString(rowNumber),
+                                                                                                          tableName,
+                                                                                                          connectionBean.getDisplayName()),
+                                                    this.getClass().getName(),
+                                                    methodName);
+            }
+
+            return new ArrayList<>(readAheadRecords.get(position));
         }
         catch (ConnectorCheckedException error)
         {
@@ -504,6 +539,50 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
                                                 methodName,
                                                 exception);
         }
+    }
+
+
+    /**
+     * Fetch the window of records that starts at the requested record, in the order that gives each record its
+     * position.  The window is shorter than {@link #READ_AHEAD_RECORDS} at the end of the table, and empty when
+     * the requested record is beyond it.
+     *
+     * @param firstRowNumber position of the first record in the window
+     * @return records, each as its values in column order
+     * @throws Exception problem accessing the database
+     */
+    private List<List<String>> fetchRecords(long firstRowNumber) throws Exception
+    {
+        /*
+         * The column descriptions are loaded first so that the record order is known.
+         */
+        this.getDatabaseColumnDescriptions();
+
+        String sqlQuery = "SELECT * FROM " + tableName + " ORDER BY " + this.getRecordOrder()
+                                  + " OFFSET " + firstRowNumber + " LIMIT " + READ_AHEAD_RECORDS;
+
+        List<List<String>> records = new ArrayList<>();
+
+        try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
+             Statement           statement          = databaseConnection.createStatement();
+             ResultSet           resultSet          = statement.executeQuery(sqlQuery))
+        {
+            int columnCount = resultSet.getMetaData().getColumnCount();
+
+            while (resultSet.next())
+            {
+                List<String> dataValues = new ArrayList<>(columnCount);
+
+                for (int columnNumber = 1; columnNumber <= columnCount; columnNumber++)
+                {
+                    dataValues.add(resultSet.getString(columnNumber));
+                }
+
+                records.add(dataValues);
+            }
+        }
+
+        return records;
     }
 
 
@@ -645,6 +724,8 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
         this.tableName                  = tableName;
         this.tableDescription           = tableDescription;
         this.databaseColumnDescriptions = null;
+        this.readAheadRecords           = null;
+        this.readAheadStart             = 0;
     }
 
 
@@ -743,6 +824,8 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     {
         final String methodName = "setColumnDescriptions";
 
+        this.discardReadAhead();
+
         try
         {
             if (columnDescriptions != null)
@@ -801,6 +884,8 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     public void writeRecord(long requestedRowNumber, List<String> dataValues) throws ConnectorCheckedException
     {
         final String methodName = "writeRecord";
+
+        this.discardReadAhead();
 
         try
         {
@@ -874,6 +959,8 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     {
         final String methodName = "appendRecord";
 
+        this.discardReadAhead();
+
         try
         {
             try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
@@ -917,6 +1004,8 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     public void deleteRecord(long rowNumber) throws ConnectorCheckedException
     {
         final String methodName = "deleteRecord";
+
+        this.discardReadAhead();
 
         try
         {
