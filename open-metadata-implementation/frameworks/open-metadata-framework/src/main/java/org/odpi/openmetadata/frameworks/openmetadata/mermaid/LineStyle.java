@@ -14,5 +14,6 @@ public enum LineStyle
     THIN,
     DOTTED,
     INVISIBLE,
-    ANIMATED_LONG
+    ANIMATED_LONG,
+    THICK
 }

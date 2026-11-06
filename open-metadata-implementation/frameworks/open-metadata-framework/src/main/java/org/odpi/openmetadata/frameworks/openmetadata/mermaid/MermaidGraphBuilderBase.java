@@ -42,6 +42,14 @@ public class MermaidGraphBuilderBase
     private final   Set<String>              usedNodeNames     = new HashSet<>();
     private final   Set<String>              usedLinkNames     = new HashSet<>();
     private final   Set<String>              animatedLinkNames = new HashSet<>();
+    private final   List<Integer>            thickLinkIndexes  = new ArrayList<>();
+
+    /**
+     * Number of links (of any style, including invisible ones) added to the graph so far.  Mermaid numbers
+     * links in the order they are defined, and linkStyle statements use this number to identify a link.
+     * Every method that writes a link must increment it.
+     */
+    private         int                      linkCount         = 0;
     protected final Map<String, VisualStyle> nodeColours       = new HashMap<>();
     protected final Map<String, String>      nodeClicks        = new HashMap<>();
     protected final PropertyHelper           propertyHelper    = new PropertyHelper();
@@ -1513,6 +1521,7 @@ public class MermaidGraphBuilderBase
                 case DOTTED -> appendMermaidDottedLine(lineName, end1Id, label, end2Id);
                 case INVISIBLE -> appendInvisibleMermaidLine(end1Id, end2Id);
                 case ANIMATED_LONG -> appendMermaidLongAnimatedLine(lineName, end1Id, label, end2Id);
+                case THICK -> appendMermaidThickLine(lineName, end1Id, label, end2Id);
                 default -> appendMermaidLine(lineName, end1Id, label, end2Id);
             }
         }
@@ -1558,6 +1567,7 @@ public class MermaidGraphBuilderBase
 
             mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
+            linkCount++;
         }
     }
 
@@ -1608,6 +1618,7 @@ public class MermaidGraphBuilderBase
 
             mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
+            linkCount++;
         }
     }
 
@@ -1648,6 +1659,7 @@ public class MermaidGraphBuilderBase
 
             mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
+            linkCount++;
         }
     }
 
@@ -1687,6 +1699,7 @@ public class MermaidGraphBuilderBase
 
             mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
+            linkCount++;
         }
     }
 
@@ -1725,6 +1738,35 @@ public class MermaidGraphBuilderBase
 
             mermaidGraph.append(this.lookupNodeName(end2Id));
             mermaidGraph.append("\n");
+            linkCount++;
+        }
+    }
+
+
+    /**
+     * Append a line to the graph that is drawn wider than a normal line so that it stands out.
+     * This is used, for example, to highlight the lineage relationships that belong to an information supply chain.
+     *
+     * @param lineName unique identifier of the line - may be null
+     * @param end1Id identifier of the starting end
+     * @param label label for the line
+     * @param end2Id identifier of the ending end
+     */
+    public void appendMermaidThickLine(String lineName,
+                                       String end1Id,
+                                       String label,
+                                       String end2Id)
+    {
+        int linkIndex = linkCount;
+
+        appendMermaidLine(lineName, end1Id, label, end2Id);
+
+        /*
+         * The line is not written if its name has already been used.
+         */
+        if (linkCount > linkIndex)
+        {
+            thickLinkIndexes.add(linkIndex);
         }
     }
 
@@ -1742,6 +1784,7 @@ public class MermaidGraphBuilderBase
         mermaidGraph.append("~~~");
         mermaidGraph.append(this.lookupNodeName(end2Id));
         mermaidGraph.append("\n");
+        linkCount++;
     }
 
 
@@ -2667,6 +2710,28 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Widen the links that should stand out.  The links are identified by their position in the graph
+     * (rather than by edge ids) so that the graph still renders with mermaid versions that do not support edge ids.
+     */
+    private void addThickLinkStyles()
+    {
+        if (! thickLinkIndexes.isEmpty())
+        {
+            StringJoiner linkIndexes = new StringJoiner(",");
+
+            for (Integer linkIndex : thickLinkIndexes)
+            {
+                linkIndexes.add(linkIndex.toString());
+            }
+
+            mermaidGraph.append("linkStyle ");
+            mermaidGraph.append(linkIndexes);
+            mermaidGraph.append(" stroke-width:6px\n");
+        }
+    }
+
+
+    /**
      * Add the names of links that should be animated
      */
     private void addAnimation()
@@ -2737,6 +2802,7 @@ public class MermaidGraphBuilderBase
         addStyles(nodeColours);
         addClicks(nodeClicks);
         addAnimation();
+        addThickLinkStyles();
 
         return mermaidGraph.toString();
     }
