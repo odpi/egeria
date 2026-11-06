@@ -43,6 +43,8 @@ The remaining governance action services, grouped by category, are:
   * **DaysOfWeekGovernanceActionConnector** - uses the current time to output the day of the week as a guard.
   * **DeleteAssetGovernanceActionConnector** - deletes an asset and passes its GUID as an action target for
     follow-on work.
+  * **IncidentReporterGovernanceActionConnector** - creates an incident report using the configured template.  The request
+    parameters fill out the template and the action targets are linked to the report as impacted resources.
   * **EvaluateAnnotationsGovernanceActionConnector** - a placeholder for a service that will look through the
     annotations from a survey report and set up guards to drive actions that process the different types.
   * **WaitForStewardGovernanceActionConnector** - a placeholder for a service that will wait for a steward to
