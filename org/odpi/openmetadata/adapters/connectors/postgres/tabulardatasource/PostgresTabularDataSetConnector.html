@@ -424,7 +424,11 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTa
  rows are put in the same repeatable order that <a href="#deleteRecord(long)"><code>deleteRecord(long)</code></a> uses - by the columns that identify a
  record where the table has them, and by physical position where it does not.  The values are returned in
  the table's column order, as text: PostgreSQL renders each value in its own type's text form, which is
- what a destination casts back on the way in.</div>
+ what a destination casts back on the way in.
+ <br>
+ The records are fetched a window of <code>READ_AHEAD_RECORDS</code> at a time, starting at the one requested,
+ and the records that follow it are returned from that window - see <code>READ_AHEAD_RECORDS</code> for why.
+ A record outside the window starts a new one.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
