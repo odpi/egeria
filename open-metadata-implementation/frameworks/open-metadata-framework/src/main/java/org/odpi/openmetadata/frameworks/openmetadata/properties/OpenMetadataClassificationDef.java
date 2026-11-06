@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataClassificationPurpose;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * OpenMetadataClassificationDef stores the properties for the definition of a type of classification.  Many of the properties
  * are inherited from OpenMetadataTypeDef.  OpenMetadataClassificationDef adds a list of Entity Types that this Classification can be
- * connected to and a boolean to indicate if this classification is propagatable.
+ * connected to, a boolean to indicate if this classification is propagatable and the purpose of the classification.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,7 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
 {
     private   List<OpenMetadataTypeDefLink> validEntityDefs = null;
-    private   boolean                       propagatable    = false;
+    private   boolean                           propagatable          = false;
+    private   OpenMetadataClassificationPurpose classificationPurpose = null;
 
 
     /**
@@ -68,7 +70,8 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
         {
             this.setValidEntityDefs(template.getValidEntityDefs());
 
-            propagatable = template.isPropagatable();
+            propagatable          = template.isPropagatable();
+            classificationPurpose = template.getClassificationPurpose();
         }
     }
 
@@ -131,6 +134,28 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
 
 
     /**
+     * Return the purpose of the classification type.
+     *
+     * @return enum
+     */
+    public OpenMetadataClassificationPurpose getClassificationPurpose()
+    {
+        return classificationPurpose;
+    }
+
+
+    /**
+     * Set up the purpose of the classification type.
+     *
+     * @param classificationPurpose enum
+     */
+    public void setClassificationPurpose(OpenMetadataClassificationPurpose classificationPurpose)
+    {
+        this.classificationPurpose = classificationPurpose;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -141,6 +166,7 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
         return "OpenMetadataClassificationDef{" +
                 "validEntityDefs=" + validEntityDefs +
                 ", propagatable=" + propagatable +
+                ", classificationPurpose=" + classificationPurpose +
                 "} " + super.toString();
     }
 
@@ -168,7 +194,8 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
         }
         OpenMetadataClassificationDef that = (OpenMetadataClassificationDef) objectToCompare;
         return propagatable == that.propagatable &&
-                       Objects.equals(validEntityDefs, that.validEntityDefs);
+                       Objects.equals(validEntityDefs, that.validEntityDefs) &&
+                       classificationPurpose == that.classificationPurpose;
     }
 
 
@@ -180,6 +207,6 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), validEntityDefs, propagatable);
+        return Objects.hash(super.hashCode(), validEntityDefs, propagatable, classificationPurpose);
     }
 }

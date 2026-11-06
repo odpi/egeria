@@ -180,6 +180,52 @@ public class OpenMetadataTypeTest
    }
 
     /**
+     * Every relationship type declares a relationship purpose and every classification type declares a
+     * classification purpose.  The purposes are only set on the right kind of type, and the types archive
+     * copies them into the type definitions.
+     */
+    @Test public void testAllPurposes() throws InvalidParameterException
+    {
+        setUpTypeMaps();
+
+        SoftAssert softAssert = new SoftAssert();
+
+        for (OpenMetadataType openMetadataType : OpenMetadataType.values())
+        {
+            TypeDef typeDef = typeMap.get(openMetadataType.typeName);
+
+            if (typeDef instanceof RelationshipDef relationshipDef)
+            {
+                softAssert.assertNotNull(openMetadataType.relationshipPurpose, "No relationship purpose for " + openMetadataType.typeName);
+                softAssert.assertNull(openMetadataType.classificationPurpose, "Classification purpose on relationship " + openMetadataType.typeName);
+
+                if (openMetadataType.relationshipPurpose != null)
+                {
+                    softAssert.assertEquals(relationshipDef.getRelationshipPurpose(), openMetadataType.relationshipPurpose.name(), "Archive has wrong relationship purpose for " + openMetadataType.typeName);
+                }
+            }
+            else if (typeDef instanceof ClassificationDef classificationDef)
+            {
+                softAssert.assertNotNull(openMetadataType.classificationPurpose, "No classification purpose for " + openMetadataType.typeName);
+                softAssert.assertNull(openMetadataType.relationshipPurpose, "Relationship purpose on classification " + openMetadataType.typeName);
+
+                if (openMetadataType.classificationPurpose != null)
+                {
+                    softAssert.assertEquals(classificationDef.getClassificationPurpose(), openMetadataType.classificationPurpose.name(), "Archive has wrong classification purpose for " + openMetadataType.typeName);
+                }
+            }
+            else
+            {
+                softAssert.assertNull(openMetadataType.relationshipPurpose, "Relationship purpose on non-relationship " + openMetadataType.typeName);
+                softAssert.assertNull(openMetadataType.classificationPurpose, "Classification purpose on non-classification " + openMetadataType.typeName);
+            }
+        }
+
+        softAssert.assertAll();
+    }
+
+
+    /**
      * Validated the values of the enum.
      */
     @Test public void testAllTypes() throws InvalidParameterException

@@ -1501,14 +1501,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         ArrayList<TypeDefLink>   validEntityDefs = new ArrayList<>();
         validEntityDefs.add(validEntityDef);
 
-        return this.getClassificationDef(type.typeGUID,
-                                         type.typeName,
-                                         superType,
-                                         type.description,
-                                         type.descriptionGUID,
-                                         type.wikiURL,
-                                         validEntityDefs,
-                                         propagatable);
+        return this.getClassificationDef(type, superType, validEntityDefs, propagatable);
     }
 
 
@@ -1527,14 +1520,21 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                                   List<TypeDefLink>             validEntityDefs,
                                                   boolean                       propagatable)
     {
-        return this.getClassificationDef(type.typeGUID,
-                                         type.typeName,
-                                         superType,
-                                         type.description,
-                                         type.descriptionGUID,
-                                         type.wikiURL,
-                                         validEntityDefs,
-                                         propagatable);
+        ClassificationDef classificationDef = this.getClassificationDef(type.typeGUID,
+                                                                        type.typeName,
+                                                                        superType,
+                                                                        type.description,
+                                                                        type.descriptionGUID,
+                                                                        type.wikiURL,
+                                                                        validEntityDefs,
+                                                                        propagatable);
+
+        if (type.classificationPurpose != null)
+        {
+            classificationDef.setClassificationPurpose(type.classificationPurpose.name());
+        }
+
+        return classificationDef;
     }
 
 
