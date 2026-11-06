@@ -38,6 +38,8 @@ public enum RequestParameter
     ORGANIZATION_PROPERTY_NAME ("organizationPropertyName", "Name of the property from the element used to identify the organization property.", "string", "name"),
     BUSINESS_CAPABILITY ("businessCapability", "Identifier of the business capability where this resource originated from.", "string", "Clinical Trials"),
     BUSINESS_CAPABILITY_PROPERTY_NAME ("businessCapabilityPropertyName", "Name of the property from the element used to identify the businessCapability property.", "string", "name"),
+
+    ACCEPTABLE_TYPE_NAMES ("acceptableTypeNames", "The list of names of the open metadata types that an element is allowed to be.  An element is acceptable if its type, or one of its super types, is in the list.", "array<string>", "Asset,GlossaryTerm"),
     ;
 
     public final String           name;

@@ -49,6 +49,8 @@ The remaining governance action services, grouped by category, are:
     complete a to do.
   * **WriteAuditLogMessageGovernanceActionConnector** - writes requested messages to the audit log.
 * **Verification**
+  * **TypeDetectorGovernanceActionConnector** - checks that the elements supplied as action targets are of an
+    acceptable type, and outputs a guard so that a governance action process can filter out the wrong types.
   * **VerifyAssetGovernanceActionConnector** - evaluates an asset to be sure it has zones, an origin and an owner.
 
 

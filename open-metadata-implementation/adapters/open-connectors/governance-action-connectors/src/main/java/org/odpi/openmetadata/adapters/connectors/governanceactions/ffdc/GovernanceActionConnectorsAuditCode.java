@@ -569,6 +569,27 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                    "Validate that this is the intended origin.",
                    "https://egeria-project.org/concepts/governance-action-service/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0051 - The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters
+     */
+    NO_ACCEPTABLE_TYPE_NAMES("GOVERNANCE-ACTION-CONNECTORS-0051",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters",
+                             "The governance action service returns an INVALID completion status without checking the type of its action targets.",
+                             "Set the acceptableTypeNames property in the configuration properties of the governance action service's connection, or pass it as a " +
+                                     "request parameter, and then rerun the request.",
+                             "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0052 - The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2}
+     */
+    UNACCEPTABLE_TYPE("GOVERNANCE-ACTION-CONNECTORS-0052",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2}",
+                      "The governance action service returns an ACTIONED completion status with the type-not-detected guard.",
+                      "Validate that the governance action process is responding to the guard as expected.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
+
     ;
 
     private final String                      logMessageId;
