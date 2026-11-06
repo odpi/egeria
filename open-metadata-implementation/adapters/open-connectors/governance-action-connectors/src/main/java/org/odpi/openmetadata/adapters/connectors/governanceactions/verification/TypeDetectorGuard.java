@@ -1,0 +1,131 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.adapters.connectors.governanceactions.verification;
+
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * TypeDetectorGuard describes the guards produced by the Type Detector Governance Action Service.
+ */
+public enum TypeDetectorGuard
+{
+    TYPE_DETECTED("type-detected", CompletionStatus.ACTIONED, "All of the action target elements are of an acceptable type."),
+    TYPE_NOT_DETECTED("type-not-detected", CompletionStatus.ACTIONED, "At least one of the action target elements is not of an acceptable type."),
+    MISSING_ACCEPTABLE_TYPE_NAMES("missing-acceptable-type-names", CompletionStatus.INVALID, "No acceptable type names have been supplied in either the configuration properties or the request parameters."),
+    NO_TARGETS(Guard.NO_TARGETS_DETECTED.getName(),
+               Guard.NO_TARGETS_DETECTED.getCompletionStatus(),
+               Guard.NO_TARGETS_DETECTED.getDescription()),
+    ;
+
+
+    public final String           name;
+    public final CompletionStatus completionStatus;
+    public final String           description;
+
+
+    /**
+     * Create a specific Enum constant.
+     *
+     * @param name name of the guard
+     * @param completionStatus associated completion status
+     * @param description description of the guard
+     */
+    TypeDetectorGuard(String name, CompletionStatus completionStatus, String description)
+    {
+        this.name             = name;
+        this.completionStatus = completionStatus;
+        this.description      = description;
+    }
+
+
+    /**
+     * Return the name of the guard.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Return the typical completion status used with this guard.
+     *
+     * @return completion status
+     */
+    public CompletionStatus getCompletionStatus()
+    {
+        return completionStatus;
+    }
+
+
+    /**
+     * Return the description of the guard.
+     *
+     * @return text
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Return details of all defined guards.
+     *
+     * @return guard types
+     */
+    public static List<GuardType> getGuardTypes()
+    {
+        List<GuardType> guardTypes = new ArrayList<>();
+
+        for (TypeDetectorGuard guard : TypeDetectorGuard.values())
+        {
+            GuardType guardType = new GuardType();
+
+            guardType.setName(guard.getName());
+            guardType.setDescription(guard.getDescription());
+            guardType.setCompletionStatus(guard.getCompletionStatus());
+
+            guardTypes.add(guardType);
+        }
+
+        return guardTypes;
+    }
+
+
+    /**
+     * Return details of a specific guard.
+     *
+     * @return guard type
+     */
+    public GuardType getGuardType()
+    {
+        GuardType guardType = new GuardType();
+
+        guardType.setName(name);
+        guardType.setDescription(description);
+        guardType.setCompletionStatus(completionStatus);
+
+        return guardType;
+    }
+
+
+    /**
+     * Output of this enum class and main value.
+     *
+     * @return string showing enum value
+     */
+    @Override
+    public String toString()
+    {
+        return "TypeDetectorGuard{ name='" + name + "}";
+    }
+}

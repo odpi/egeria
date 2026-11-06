@@ -575,6 +575,24 @@ public enum RequestTypeDefinition
                 ContentCollectionDefinition.STEWARDSHIP,
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
+    /**
+     * detect-element-type
+     */
+    DETECT_ELEMENT_TYPE("detect-element-type",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                        GovernanceServiceDefinition.TYPE_DETECTOR,
+                        "b3d975bc-5380-4efd-a9ad-239f0a5f6ea2",
+                        GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                        null,
+                        "e032b297-4b62-41e8-b6fd-650c6b8a1c76",
+                        "Detect Element Type",
+                        "Check that the requested element(s) are of one of the types listed in the acceptableTypeNames request parameter and output the result as a guard.",
+                        ContentCollectionDefinition.STEWARDSHIP,
+                        ContentPackDefinition.CORE_CONTENT_PACK),
+
 
     /**
      * survey-csv-file
