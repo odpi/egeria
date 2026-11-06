@@ -102,7 +102,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></span></div>
 <div class="block">OpenMetadataClassificationDef stores the properties for the definition of a type of classification.  Many of the properties
  are inherited from OpenMetadataTypeDef.  OpenMetadataClassificationDef adds a list of Entity Types that this Classification can be
- connected to and a boolean to indicate if this classification is propagatable.</div>
+ connected to, a boolean to indicate if this classification is propagatable and the purpose of the classification.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -172,21 +172,31 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Validate that an object is equal depending on their stored values.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenMetadataTypeDefLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefLink</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidEntityDefs()" class="member-name-link">getValidEntityDefs</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enums/OpenMetadataClassificationPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataClassificationPurpose</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationPurpose()" class="member-name-link">getClassificationPurpose</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the purpose of the classification type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenMetadataTypeDefLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefLink</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidEntityDefs()" class="member-name-link">getValidEntityDefs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of identifiers for the types of entities that this type of Classification can be connected to.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a hash code based on the values of this object.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPropagatable()" class="member-name-link">isPropagatable</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPropagatable()" class="member-name-link">isPropagatable</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return whether this classification should propagate to other entities if the relationship linking them
  allows classification propagation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setClassificationPurpose(org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataClassificationPurpose)" class="member-name-link">setClassificationPurpose</a><wbr>(<a href="../enums/OpenMetadataClassificationPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataClassificationPurpose</a>&nbsp;classificationPurpose)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the purpose of the classification type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropagatable(boolean)" class="member-name-link">setPropagatable</a><wbr>(boolean&nbsp;propagatable)</code></div>
@@ -331,6 +341,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>propagatable</code> - boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClassificationPurpose()">
+<h3>getClassificationPurpose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../enums/OpenMetadataClassificationPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataClassificationPurpose</a></span>&nbsp;<span class="element-name">getClassificationPurpose</span>()</div>
+<div class="block">Return the purpose of the classification type.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setClassificationPurpose(org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataClassificationPurpose)">
+<h3>setClassificationPurpose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setClassificationPurpose</span><wbr><span class="parameters">(<a href="../enums/OpenMetadataClassificationPurpose.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataClassificationPurpose</a>&nbsp;classificationPurpose)</span></div>
+<div class="block">Set up the purpose of the classification type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>classificationPurpose</code> - enum</dd>
 </dl>
 </section>
 </li>
