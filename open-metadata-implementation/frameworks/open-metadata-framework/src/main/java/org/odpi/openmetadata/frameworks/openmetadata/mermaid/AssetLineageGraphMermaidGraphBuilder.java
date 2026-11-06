@@ -76,19 +76,29 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
                         end1Elements.add(line.getEnd1AssetGUID());
                         end2Elements.add(line.getEnd2AssetGUID());
 
-                        if ((highlightInformationSupplyChain != null) && (line.getInformationSupplyChains() != null) && (! line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
-                        {
-                            super.appendMermaidThinLine(null,
-                                                        line.getEnd1AssetGUID(),
-                                                        this.getListLabel(line.getRelationshipTypes()),
-                                                        line.getEnd2AssetGUID());
-                        }
-                        else
+                        if (highlightInformationSupplyChain == null)
                         {
                             super.appendMermaidLine(null,
                                                     line.getEnd1AssetGUID(),
                                                     this.getListLabel(line.getRelationshipTypes()),
                                                     line.getEnd2AssetGUID());
+                        }
+                        else if ((line.getInformationSupplyChains() != null) && (line.getInformationSupplyChains().contains(highlightInformationSupplyChain)))
+                        {
+                            /*
+                             * Part of the highlighted information supply chain
+                             */
+                            super.appendMermaidThickLine(null,
+                                                         line.getEnd1AssetGUID(),
+                                                         this.getListLabel(line.getRelationshipTypes()),
+                                                         line.getEnd2AssetGUID());
+                        }
+                        else
+                        {
+                            super.appendMermaidThinLine(null,
+                                                        line.getEnd1AssetGUID(),
+                                                        this.getListLabel(line.getRelationshipTypes()),
+                                                        line.getEnd2AssetGUID());
                         }
                     }
                 }
