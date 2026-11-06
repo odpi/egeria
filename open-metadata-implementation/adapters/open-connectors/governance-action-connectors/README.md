@@ -45,6 +45,8 @@ The remaining governance action services, grouped by category, are:
     follow-on work.
   * **EvaluateAnnotationsGovernanceActionConnector** - a placeholder for a service that will look through the
     annotations from a survey report and set up guards to drive actions that process the different types.
+  * **StewardInformerGovernanceActionConnector** - creates a to do for the steward supplied as an action target using
+    the configured template.  The request parameters fill out the template and the other action targets are attached to the to do.
   * **WaitForStewardGovernanceActionConnector** - a placeholder for a service that will wait for a steward to
     complete a to do.
   * **WriteAuditLogMessageGovernanceActionConnector** - writes requested messages to the audit log.

@@ -199,6 +199,17 @@ public enum GovernanceServiceDefinition
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Create a to do for a steward from a template.
+     */
+    STEWARD_INFORMER("a09e529c-103a-4ad5-ba6c-84180275ce6f",
+                     "steward-informer-governance-action-service",
+                     "Inform a Steward Governance Action Service",
+                     new StewardInformerGovernanceActionProvider(),
+                     ResourceUse.INFORM_STEWARD,
+                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Detect the day of the week
      */
     DAY_OF_WEEK("a4837c75-aa3f-49c6-a903-ef0da0017546",
