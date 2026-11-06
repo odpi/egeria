@@ -480,6 +480,24 @@ public enum RequestTypeDefinition
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * inform-steward
+     */
+    INFORM_STEWARD("inform-steward",
+                   null,
+                   null,
+                   null,
+                   GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                   GovernanceServiceDefinition.STEWARD_INFORMER,
+                   "e43ee3cd-ef03-4ad2-81e3-e9c22bc41316",
+                   GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                   null,
+                   "e964fa32-a318-4498-931a-7bf91ac524dc",
+                   "Inform Steward",
+                   "Create a to do for the steward using the template identified by the templateGUID request parameter.  The other action targets are attached to the to do.",
+                   ContentCollectionDefinition.COMMUNICATION_ACTIONS,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * write-to-audit-log
      */
     WRITE_AUDIT_LOG("write-to-audit-log",
