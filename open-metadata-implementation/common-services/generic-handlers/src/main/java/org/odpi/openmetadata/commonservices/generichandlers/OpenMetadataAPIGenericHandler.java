@@ -555,9 +555,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                             methodName);
 
             /*
-             * Validate the anchors.
+             * Validate the anchors.  Each member is checked against its anchor, even when another member of the
+             * same anchor has already passed: the security connector decides on the member's own zones if it has
+             * any, and on its anchor's zones otherwise, so one member passing says nothing about the next.  The
+             * anchor's activity is reported once per anchor however many of its members the query found.
              */
-            List<String>       validatedAnchors  = new ArrayList<>();
+            Set<String>        reportedAnchors   = new HashSet<>();
             List<EntityDetail> validatedEntities = new ArrayList<>();
 
             for (EntityDetail connectToEntity : visibleEntities.values())
@@ -590,24 +593,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                        anchorIdentifiers,
                                                        false,
                                                        false,
+                                                       ! reportedAnchors.contains(anchorIdentifiers.anchorGUID),
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
 
-                                    validatedAnchors.add(anchorIdentifiers.anchorGUID);
+                                    reportedAnchors.add(anchorIdentifiers.anchorGUID);
                                 }
-                                else if (! validatedAnchors.contains(anchorEntity.getGUID()))
+                                else
                                 {
                                     validateAnchorEntity(userId,
                                                          connectToEntity,
                                                          anchorEntity,
                                                          false,
                                                          false,
-                                                         true,
+                                                         ! reportedAnchors.contains(anchorEntity.getGUID()),
                                                          methodName);
 
-                                    validatedAnchors.add(anchorEntity.getGUID());
+                                    reportedAnchors.add(anchorEntity.getGUID());
                                 }
                             }
                         }
@@ -1106,6 +1110,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                    effectiveTime,
                                                    methodName);
             }
+
+            if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationTypeName))
+            {
+                super.synchronizeAnchorsZoneMembership(beanEntity.getGUID(),
+                                                       beanGUIDParameterName,
+                                                       beanGUIDTypeName,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       methodName);
+            }
         }
     }
 
@@ -1247,6 +1262,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                    forDuplicateProcessing,
                                                    effectiveTime,
                                                    methodName);
+            }
+
+            if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classificationTypeName))
+            {
+                super.synchronizeAnchorsZoneMembership(beanEntity.getGUID(),
+                                                       beanGUIDParameterName,
+                                                       beanGUIDTypeName,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       methodName);
             }
         }
     }
@@ -2877,17 +2903,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                effectiveTime,
                                                methodName);
 
-            super.refreshAnchorsClassification(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               originalEntity.getGUID(),
-                                               entityGUIDParameterName,
-                                               originalEntity.getType().getTypeDefName(),
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
-
+            /*
+             * Setting the ZoneMembership classification also brings the zones in the Anchors classifications
+             * of the element and its members up to date.
+             */
         }
     }
 
@@ -2965,17 +2984,98 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                effectiveTime,
                                                methodName);
 
-            super.refreshAnchorsClassification(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               originalEntity.getGUID(),
-                                               entityGUIDParameterName,
-                                               originalEntity.getType().getTypeDefName(),
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
+            /*
+             * Setting the ZoneMembership classification also brings the zones in the Anchors classifications
+             * of the element and its members up to date.
+             */
         }
+    }
+
+
+    /**
+     * Check, and correct, the governance zones held in Anchors classifications.  These record the zones that govern
+     * each element - its own if it has a ZoneMembership classification, otherwise its anchor's - so that a search
+     * can leave out the elements in zones the caller can not read.  They are maintained as zones change, but can be
+     * out of date in a repository that was populated before they were, or for elements that arrived from an open
+     * metadata archive.  Each correction is sent to the repository named in the classification header (its home
+     * metadata collection, or the replicating member for external metadata), so reference copies are corrected
+     * through the cohort member that owns them.
+     * <br><br>
+     * With an element's unique identifier, the element is checked, and if it is an anchor, so are its members.  The
+     * caller must be able to read the element.  Without one, every element with an Anchors classification is checked.
+     * Only the number of corrections is returned, so the caller learns nothing about the elements it can not read.
+     * The corrections are made by the server.  Because a full check reads the whole repository, access to it is
+     * best controlled through the server security connector's checks on the service operation.
+     * <br><br>
+     * An element that can not be checked or corrected is logged and the check moves on.  If there are any, the
+     * request fails once every element has been checked, so a successful result means every Anchors
+     * classification checked is now correct.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element to check, or null to check the whole repository
+     * @param elementGUIDParameterName name of the parameter supplying elementGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return number of Anchors classifications that were corrected
+     *
+     * @throws InvalidParameterException the element is not known, or not visible to the caller
+     * @throws PropertyServerException a problem searching the repositories, or some elements could not be corrected
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request
+     */
+    public long resynchronizeAnchorsZoneMembership(String  userId,
+                                                   String  elementGUID,
+                                                   String  elementGUIDParameterName,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        AnchorsZoneCorrections corrections;
+
+        if (elementGUID == null)
+        {
+            corrections = super.synchronizeAllAnchorsZoneMembership(forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+        else
+        {
+            EntityDetail entity = this.getEntityFromRepository(userId,
+                                                               elementGUID,
+                                                               elementGUIDParameterName,
+                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                               null,
+                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               null,
+                                                               effectiveTime,
+                                                               false,
+                                                               methodName);
+
+            corrections = super.synchronizeAnchorsZoneMembership(entity.getGUID(),
+                                                                 elementGUIDParameterName,
+                                                                 entity.getType().getTypeDefName(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+        }
+
+        if (corrections.getFailed() > 0)
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.ANCHORS_ZONES_NOT_CORRECTED.getMessageDefinition(methodName,
+                                                                                                                        Long.toString(corrections.getCorrected()),
+                                                                                                                        Long.toString(corrections.getFailed())),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        return corrections.getCorrected();
     }
 
 
@@ -3037,9 +3137,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if (recoveredEntity == null)
             {
                 /*
-                 * There was no earlier version to go back to, so nothing has changed.
+                 * There was no earlier version to go back to, so nothing has changed.  The caller asked for a
+                 * change, so it is told rather than left to believe the undo happened.
                  */
-                return null;
+                throw new InvalidParameterException(GenericHandlersErrorCode.NOTHING_TO_UNDO.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                                                                                                  originalEntity.getGUID(),
+                                                                                                                  methodName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    entityGUIDParameterName);
             }
 
             /*
@@ -10819,13 +10925,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             }
         }
 
+        /*
+         * Where the security connector can say which zones the user may read, the elements in no readable zone
+         * are left out by the query itself.  Each element returned is still checked below.
+         */
         List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
                                                                               typeGUID,
                                                                               subTypeGUIDs,
                                                                               skipSubtypes,
                                                                               searchProperties,
                                                                               limitResultsByStatus,
-                                                                              searchClassifications,
+                                                                              super.addReadableZonesFilter(userId, searchClassifications, methodName),
                                                                               asOfTime,
                                                                               sequencingProperty,
                                                                               sequencingOrder,
@@ -11101,13 +11211,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             }
         }
 
+        /*
+         * The count leaves out the elements in no zone the user may read, where the security connector can list
+         * those zones.
+         */
         return repositoryHandler.countEntities(userId,
                                                typeGUID,
                                                subTypeGUIDs,
                                                skipSubtypes,
                                                searchProperties,
                                                limitResultsByStatus,
-                                               searchClassifications,
+                                               super.addReadableZonesFilter(userId, searchClassifications, methodName),
                                                asOfTime,
                                                null,
                                                null,

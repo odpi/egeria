@@ -58,6 +58,8 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
     private String serverOperatorsControl     = OpenMetadataSecurityConfigurationProperty.SERVER_OPERATORS_CONTROL.getDefaultValue();
     private String serverInvestigatorsControl = OpenMetadataSecurityConfigurationProperty.SERVER_INVESTIGATORS_CONTROL.getDefaultValue();
 
+    private boolean pushDownZoneFilter = Boolean.parseBoolean(OpenMetadataSecurityConfigurationProperty.PUSH_DOWN_ZONE_FILTER.getDefaultValue());
+
 
 
 
@@ -117,6 +119,27 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         externalUsersGroup = super.getStringConfigurationProperty(OpenMetadataSecurityConfigurationProperty.EXTERNAL_USERS_GROUP.getName(),
                                                                            connectionBean.getConfigurationProperties(),
                                                                            OpenMetadataSecurityConfigurationProperty.EXTERNAL_USERS_GROUP.getDefaultValue());
+        pushDownZoneFilter = this.getPushDownZoneFilter(connectionBean.getConfigurationProperties());
+    }
+
+
+    /**
+     * Return whether searches are to be filtered by the governance zones the user may read.  The filter is on
+     * unless the configuration properties turn it off.
+     *
+     * @param configurationProperties the connection's configuration properties
+     * @return flag
+     */
+    boolean getPushDownZoneFilter(Map<String, Object> configurationProperties)
+    {
+        if ((configurationProperties != null) &&
+                (configurationProperties.containsKey(OpenMetadataSecurityConfigurationProperty.PUSH_DOWN_ZONE_FILTER.getName())))
+        {
+            return super.getBooleanConfigurationProperty(OpenMetadataSecurityConfigurationProperty.PUSH_DOWN_ZONE_FILTER.getName(),
+                                                         configurationProperties);
+        }
+
+        return Boolean.parseBoolean(OpenMetadataSecurityConfigurationProperty.PUSH_DOWN_ZONE_FILTER.getDefaultValue());
     }
 
 
@@ -1140,45 +1163,9 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
 
                         if (associatedSecurityList != null)
                         {
-                            /*
-                             * Does the security list permit any user to access this service?
-                             */
-                            if (associatedSecurityList.contains(allUsersGroup))
+                            if (this.isAccountInSecurityList(userAccount, associatedSecurityList))
                             {
                                 return true;
-                            }
-
-                            /*
-                             * Does the account type match one of the listed groups?
-                             */
-                            if (((userAccount.getUserAccountType() == UserAccountType.EMPLOYEE) && (associatedSecurityList.contains(employeeUsersGroup))) ||
-                                    ((userAccount.getUserAccountType() == UserAccountType.CONTRACTOR) && (associatedSecurityList.contains(contractorUsersGroup))) ||
-                                    ((userAccount.getUserAccountType() == UserAccountType.EXTERNAL) && (associatedSecurityList.contains(externalUsersGroup))) ||
-                                    ((userAccount.getUserAccountType() == UserAccountType.DIGITAL) && (associatedSecurityList.contains(digitalUsersGroup))))
-                            {
-                                return true;
-                            }
-
-                            if (userAccount.getSecurityGroups() != null)
-                            {
-                                for (String securityGroupName : userAccount.getSecurityGroups())
-                                {
-                                    if (associatedSecurityList.contains(securityGroupName))
-                                    {
-                                        return true;
-                                    }
-                                }
-                            }
-
-                            if (userAccount.getSecurityRoles() != null)
-                            {
-                                for (String securityRoleName : userAccount.getSecurityRoles())
-                                {
-                                    if (associatedSecurityList.contains(securityRoleName))
-                                    {
-                                        return true;
-                                    }
-                                }
                             }
 
                             List<String> instanceBasedLists = this.getInstanceBasedGroups(userId, classifications, maintainers, repositoryHelper);
@@ -1208,6 +1195,174 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
          * If this point is reached, the user has access.
          */
         return true;
+    }
+
+
+    /**
+     * Does a zone's security list name the user's account through a group that does not depend on the element:
+     * every user, the account's type, or one of its security groups or roles?
+     *
+     * @param userAccount user's account
+     * @param associatedSecurityList security list for the zone and operation
+     * @return boolean
+     */
+    private boolean isAccountInSecurityList(OpenMetadataUserAccount userAccount,
+                                            List<String>            associatedSecurityList)
+    {
+        /*
+         * Does the security list permit any user to access this service?
+         */
+        if (associatedSecurityList.contains(allUsersGroup))
+        {
+            return true;
+        }
+
+        /*
+         * Does the account type match one of the listed groups?
+         */
+        if (((userAccount.getUserAccountType() == UserAccountType.EMPLOYEE) && (associatedSecurityList.contains(employeeUsersGroup))) ||
+                ((userAccount.getUserAccountType() == UserAccountType.CONTRACTOR) && (associatedSecurityList.contains(contractorUsersGroup))) ||
+                ((userAccount.getUserAccountType() == UserAccountType.EXTERNAL) && (associatedSecurityList.contains(externalUsersGroup))) ||
+                ((userAccount.getUserAccountType() == UserAccountType.DIGITAL) && (associatedSecurityList.contains(digitalUsersGroup))))
+        {
+            return true;
+        }
+
+        if (userAccount.getSecurityGroups() != null)
+        {
+            for (String securityGroupName : userAccount.getSecurityGroups())
+            {
+                if (associatedSecurityList.contains(securityGroupName))
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (userAccount.getSecurityRoles() != null)
+        {
+            for (String securityRoleName : userAccount.getSecurityRoles())
+            {
+                if (associatedSecurityList.contains(securityRoleName))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return the governance zones whose elements this user could be permitted to read.  This mirrors
+     * validateZoneAccess() for the READ operation.  A zone is included if its security list names the user's
+     * account (see isAccountInSecurityList()), or names a group whose membership depends on the element - the
+     * user's own private group, instance owners, or existing or new maintainers - since the user may be in it for
+     * some elements.  The zone named after the user is always included.  Zones without a control grant no-one
+     * access, so only the zones with a control need to be considered - which is why every secrets store must be
+     * able to list its controls.
+     * <br><br>
+     * The list is returned unless the pushDownZoneFilter configuration property is set to false.  The filter relies
+     * on the zones held in the Anchors classifications being up to date.
+     *
+     * @param userId calling user
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @return list of zone names, or null to leave the query unfiltered
+     */
+    @Override
+    public List<String> getReadableZonesForUser(String userId,
+                                                String serviceName,
+                                                String methodName)
+    {
+        if ((! pushDownZoneFilter) || (userId == null) || (secretsStoreConnectorMap == null))
+        {
+            return null;
+        }
+
+        OpenMetadataUserAccount userAccount;
+
+        try
+        {
+            userAccount = this.getActiveUserAccount(userId, methodName);
+        }
+        catch (Exception notActive)
+        {
+            /*
+             * The request will be refused by the element checks.
+             */
+            return null;
+        }
+
+        if (userAccount == null)
+        {
+            return null;
+        }
+
+        Set<String> controlNames = new HashSet<>();
+
+        for (SecretsStoreConnector secretsStoreConnector : secretsStoreConnectorMap.values())
+        {
+            if (secretsStoreConnector != null)
+            {
+                try
+                {
+                    Map<String, SecurityAccessControl> controls = secretsStoreConnector.getSecurityAccessControls();
+
+                    if (controls == null)
+                    {
+                        /*
+                         * This secrets store cannot list its controls, so the readable zones are not known.
+                         */
+                        return null;
+                    }
+
+                    controlNames.addAll(controls.keySet());
+                }
+                catch (Exception secretsStoreError)
+                {
+                    super.logRecord(methodName,
+                                    MetadataSecurityAuditCode.SECRETS_STORE_EXCEPTION.getMessageDefinition(serverName,
+                                                                                                           secretsStoreError.getClass().getName(),
+                                                                                                           "*",
+                                                                                                           AccessOperation.READ.name(),
+                                                                                                           secretsStoreError.getMessage()));
+                    return null;
+                }
+            }
+        }
+
+        List<String> instanceBasedGroups = List.of(userId, instanceOwnersGroup, existingMaintainersGroup, newMaintainersGroup);
+        Set<String>  readableZones       = new HashSet<>();
+
+        readableZones.add(userId);
+
+        for (String zoneName : controlNames)
+        {
+            List<String> associatedSecurityList = this.getAssociatedSecurityListForZone(zoneName, AccessOperation.READ);
+
+            if (associatedSecurityList != null)
+            {
+                if (this.isAccountInSecurityList(userAccount, associatedSecurityList))
+                {
+                    readableZones.add(zoneName);
+                }
+                else
+                {
+                    for (String groupName : instanceBasedGroups)
+                    {
+                        if (associatedSecurityList.contains(groupName))
+                        {
+                            readableZones.add(zoneName);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(readableZones);
     }
 
 

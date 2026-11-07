@@ -1912,6 +1912,36 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Check, and correct, the governance zones held in Anchors classifications.  These record the zones that
+     * govern each element - its own if it has a ZoneMembership classification, otherwise its anchor's - and are
+     * used to filter searches by the zones the caller can read.  They can be out of date in a repository populated
+     * before the server maintained them, or for elements loaded from an open metadata archive.  With a unique
+     * identifier, the element is checked, and if it is an anchor, so are its members.  With null, every element in
+     * the repository is checked.  Each correction is sent to the repository that owns the classification, as
+     * recorded in its header: its home metadata collection, or for metadata from an external source, the cohort
+     * member that replicates it.  Reference copies are therefore corrected through the cohort member that owns
+     * them, which then sends the change to the other members.  An element that can not be checked or corrected,
+     * for example because that member is not connected, is logged by the server and the check moves on; once
+     * every element has been checked, the request fails with PropertyServerException if there were any.
+     *
+     * @param userId                 caller's userId
+     * @param metadataElementGUID    unique identifier of the element to check, or null for the whole repository
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @return number of Anchors classifications that were corrected
+     *
+     * @throws InvalidParameterException  the element is not known or not visible to the caller
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store, or some elements could not be corrected
+     */
+    @Override
+    public abstract long resynchronizeAnchorsZoneMembership(String                userId,
+                                                            String                metadataElementGUID,
+                                                            MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException;
+
+
+    /**
      * Undo the last update to a relationship, restoring its previous properties.
      *
      * @param userId                 caller's userId

@@ -135,7 +135,19 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                        "https://egeria-project.org/services/generic-handlers/"),
 
     /**
-     * OMAG-GENERIC-HANDLERS-400-017 - The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}
+     * OMAG-GENERIC-HANDLERS-400-018 - The {0} element {1} has no earlier version, so the {2} request has nothing to undo
+     */
+    NOTHING_TO_UNDO(400, "OMAG-GENERIC-HANDLERS-400-018",
+                    "The {0} element {1} has no earlier version, so the {2} request has nothing to undo",
+                    "The system cannot undo the latest update to this element because the repository holds no earlier " +
+                            "version of it.  Either it has not been updated since it was created, or the repository does not keep " +
+                            "the history of its elements.",
+                    "Check that the unique identifier is for the element that was updated.  To remove an element that has " +
+                            "never been updated, delete it.",
+                    "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-400-017 -The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}
      */
     PLACEHOLDER_NOT_A_NUMBER(400, "OMAG-GENERIC-HANDLERS-400-017",
                              "The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}",
@@ -336,6 +348,18 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                      "Use knowledge of the request and the contents of the repositories to track down and correct the invalid relationship.  " +
                              "There is probably an error in the implementation of the repository that originated the relationship.",
                              "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-500-014 - The {0} request corrected {1} Anchors classifications but could not check or correct the governance zones of {2} elements
+     */
+    ANCHORS_ZONES_NOT_CORRECTED(500, "OMAG-GENERIC-HANDLERS-500-014",
+                     "The {0} request corrected {1} Anchors classifications but could not check or correct the governance zones of {2} elements",
+                     "The system checked every requested element and saved the corrections it could.  The elements it could not " +
+                             "correct still have out-of-date zones in their Anchors classification, so a search filtered by governance zone " +
+                             "may leave them out.  An OMAG-GENERIC-HANDLERS-0001 message in the audit log names each element and the cause.",
+                     "Correct the cause of each failure, for example by connecting the cohort member that owns the classification, " +
+                             "then run the request again until it completes without failures.",
+                     "https://egeria-project.org/services/generic-handlers/"),
 
     ;
 

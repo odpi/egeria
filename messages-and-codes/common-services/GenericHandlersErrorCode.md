@@ -9,7 +9,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 29 |
+| **Number of messages** | 31 |
 | **Message identifiers begin** | `OMAG-GENERIC-HANDLERS-` |
 | **Java class** | `org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/generic-handlers](../../open-metadata-implementation/common-services/generic-handlers) |
@@ -31,6 +31,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 | [OMAG-GENERIC-HANDLERS-400-014](#omag-generic-handlers-400-014) | 400 | The {0} element carries the TemplateSubstitute classification but has no SourcedFrom relationship to the template it stands in for, so the {1} request has no template to work from |
 | [OMAG-GENERIC-HANDLERS-400-016](#omag-generic-handlers-400-016) | 400 | Template {0} is a {1}, so it cannot be used to create a {2} with the {3} request |
 | [OMAG-GENERIC-HANDLERS-400-015](#omag-generic-handlers-400-015) | 400 | The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore |
+| [OMAG-GENERIC-HANDLERS-400-018](#omag-generic-handlers-400-018) | 400 | The {0} element {1} has no earlier version, so the {2} request has nothing to undo |
 | [OMAG-GENERIC-HANDLERS-400-017](#omag-generic-handlers-400-017) | 400 | The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1} |
 | [OMAG-GENERIC-HANDLERS-403-001](#omag-generic-handlers-403-001) | 403 | The {0} method cannot delete the requested relationship between {1} {2} and {3} {4} because it was not created by the requesting user {5} |
 | [OMAG-GENERIC-HANDLERS-403-002](#omag-generic-handlers-403-002) | 403 | Engine Host OMAG Server with a userId of {0} is not allowed to issue request {1} for engine action {2} because it is already being processed by Engine Host OMAG Server with a userId of {3} |
@@ -50,6 +51,7 @@ The GenericHandlersErrorCode is used to define first failure data capture (FFDC)
 | [OMAG-GENERIC-HANDLERS-500-009](#omag-generic-handlers-500-009) | 500 | An anchor GUID of &lt;unknown&gt; has been passed to local method {0} by the {1} service through method {2} |
 | [OMAG-GENERIC-HANDLERS-500-011](#omag-generic-handlers-500-011) | 500 | An entity has been retrieved by method {0} from service {1} that has an invalid header: {2} |
 | [OMAG-GENERIC-HANDLERS-500-013](#omag-generic-handlers-500-013) | 500 | A relationship has been retrieved by method {0} from service {1} that has an invalid header: {2} |
+| [OMAG-GENERIC-HANDLERS-500-014](#omag-generic-handlers-500-014) | 500 | The {0} request corrected {1} Anchors classifications but could not check or correct the governance zones of {2} elements |
 
 ----
 
@@ -259,6 +261,27 @@ The system cannot restore this element because it is active.  Restore reverses a
 **User action**
 
 Check that the unique identifier is for the element that was deleted or archived.  An element that was purged can not be restored: it is no longer in the repository.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-400-018
+
+> The {0} element {1} has no earlier version, so the {2} request has nothing to undo
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersErrorCode.NOTHING_TO_UNDO` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system cannot undo the latest update to this element because the repository holds no earlier version of it.  Either it has not been updated since it was created, or the repository does not keep the history of its elements.
+
+**User action**
+
+Check that the unique identifier is for the element that was updated.  To remove an element that has never been updated, delete it.
 
 
 ----
@@ -658,6 +681,27 @@ The system cannot format all or part of the response because the repositories ha
 **User action**
 
 Use knowledge of the request and the contents of the repositories to track down and correct the invalid relationship.  There is probably an error in the implementation of the repository that originated the relationship.
+
+
+----
+
+### OMAG-GENERIC-HANDLERS-500-014
+
+> The {0} request corrected {1} Anchors classifications but could not check or correct the governance zones of {2} elements
+
+|  |  |
+|---|---|
+| **Java constant** | `GenericHandlersErrorCode.ANCHORS_ZONES_NOT_CORRECTED` |
+| **HTTP error code** | 500 - Internal Server Error - an unexpected error occurred inside Egeria |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The system checked every requested element and saved the corrections it could.  The elements it could not correct still have out-of-date zones in their Anchors classification, so a search filtered by governance zone may leave them out.  An OMAG-GENERIC-HANDLERS-0001 message in the audit log names each element and the cause.
+
+**User action**
+
+Correct the cause of each failure, for example by connecting the cohort member that owns the classification, then run the request again until it completes without failures.
 
 
 ----

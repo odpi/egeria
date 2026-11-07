@@ -682,6 +682,15 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "https://egeria-project.org/services/omrs/"),
 
     /**
+     * OMRS-REPOSITORY-400-076 - An invalid list was provided for the value of an IN operator
+     */
+    INVALID_LIST_CONDITION(400, "OMRS-REPOSITORY-400-076",
+            "An invalid list was provided for the value of an IN operator",
+            "The system cannot process the requested search because an ArrayPropertyValue of primitive values is required as the value for the IN operator.",
+            "Review the request payload and ensure that an ArrayPropertyValue listing the values to match is provided when using the IN operator.",
+            "https://egeria-project.org/services/omrs/"),
+
+    /**
      * OMRS-REPOSITORY-400-077 - An invalid string was provided for the value of a LIKE operator
      */
     INVALID_LIKE_CONDITION(400, "OMRS-REPOSITORY-400-077",

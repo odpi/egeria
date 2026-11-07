@@ -579,4 +579,33 @@ public interface OpenMetadataElementSecurity
                                   String               methodName) throws UserNotAuthorizedException,
                                                                           InvalidParameterException,
                                                                           PropertyServerException;
+
+
+    /**
+     * Return the governance zones whose elements this user could be permitted to read.  The server uses the list
+     * to limit a search, in the repository query itself, to elements governed by one of these zones or by no zones
+     * at all.  Every element the query returns is still checked with validateUserForElementRead (or
+     * validateUserForAnchorMemberRead), so the list may include zones the user can read only for some elements -
+     * for example, those they own - but it must never leave out a zone through which the user could read an element.
+     * <br><br>
+     * The security connector alone decides what a zone name means, so the list must reflect every rule it applies
+     * in its read checks.  The server adds nothing to the list and does not interpret it.  For example, a connector
+     * that treats a zone named after a user as that user's personal zone must include the userId in the list;
+     * if it does not, the query leaves out the elements in the user's personal zone even though the read check would
+     * allow them.
+     * <br><br>
+     * The default returns null, which means the security connector cannot list the zones, and searches are not
+     * limited in this way.  An empty list means that the user can read no element that is in a governance zone.
+     *
+     * @param userId calling user
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @return list of zone names, or null to leave the query unfiltered
+     */
+    default List<String> getReadableZonesForUser(String userId,
+                                                 String serviceName,
+                                                 String methodName)
+    {
+        return null;
+    }
 }

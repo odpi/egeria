@@ -2054,6 +2054,16 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     // If these are all present, ensure that the types are as expected:
                     switch(operator)
                     {
+                        case IN:
+                            // For the IN operator, only an ArrayPropertyValue listing the values to match is allowed
+                            if (!(value instanceof ArrayPropertyValue))
+                            {
+                                throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    parameterName);
+                            }
+                            break;
                         case LIKE:
                         case NOT_LIKE:
                         case CASE_INSENSITIVE_LIKE:
@@ -4167,6 +4177,54 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Test whether a property value is in a list of values.  For a property that is itself an array, it is
+     * enough that one of its elements is in the list.
+     *
+     * @param actualValue value of the property in the instance
+     * @param testValue list of values to match (an ArrayPropertyValue)
+     * @return boolean
+     */
+    private boolean propertyValueInList(InstancePropertyValue actualValue,
+                                        InstancePropertyValue testValue)
+    {
+        if ((actualValue == null) ||
+                (! (testValue instanceof ArrayPropertyValue testList)) ||
+                (testList.getArrayValues() == null) ||
+                (testList.getArrayValues().getInstanceProperties() == null))
+        {
+            return false;
+        }
+
+        List<InstancePropertyValue> actualValues = new ArrayList<>();
+
+        if (actualValue instanceof ArrayPropertyValue actualArray)
+        {
+            if ((actualArray.getArrayValues() != null) && (actualArray.getArrayValues().getInstanceProperties() != null))
+            {
+                actualValues.addAll(actualArray.getArrayValues().getInstanceProperties().values());
+            }
+        }
+        else
+        {
+            actualValues.add(actualValue);
+        }
+
+        for (InstancePropertyValue oneActualValue : actualValues)
+        {
+            for (InstancePropertyValue oneTestValue : testList.getArrayValues().getInstanceProperties().values())
+            {
+                if (this.propertyValuesMatch(oneActualValue, oneTestValue))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Compare the value a caller is searching for with the value an instance actually holds.
      * <br>
      * The two are compared on their values, not as whole objects.  A caller builds a search value from
@@ -4534,7 +4592,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
-                    primitivePropertyValue.setPrimitiveValue(instanceHeader.getUpdateTime());
+                    primitivePropertyValue.setPrimitiveValue(instanceHeader.getVersion());
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
 
@@ -4577,6 +4635,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     {
                         case EQ:
                             matchesProperties = this.propertyValuesMatch(actualValue, testValue);
+                            break;
+                        case IN:
+                            matchesProperties = this.propertyValueInList(actualValue, testValue);
                             break;
                         case NEQ:
                             matchesProperties = ! this.propertyValuesMatch(actualValue, testValue);

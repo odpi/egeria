@@ -497,6 +497,29 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
+     * Return the governance zones whose elements this user could be permitted to read, or null if the security
+     * connector cannot list them (or there is no element security), in which case searches are not limited by zone.
+     *
+     * @param userId calling user
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @return list of zone names, or null to leave the query unfiltered
+     */
+    @Override
+    public List<String> getReadableZonesForUser(String userId,
+                                                String serviceName,
+                                                String methodName)
+    {
+        if (elementSecurityConnector != null)
+        {
+            return elementSecurityConnector.getReadableZonesForUser(userId, serviceName, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Tests for whether a specific user should have read access to a specific element and its contents.
      *
      * @param userId calling user

@@ -112,6 +112,19 @@ public enum OpenMetadataSecurityConfigurationProperty
                          "externalUsers",
                          false),
 
+
+    /**
+     * Should searches be limited in the repository query to the elements in governance zones the user may read?  On by default.
+     */
+    PUSH_DOWN_ZONE_FILTER("pushDownZoneFilter",
+                          "When true (the default), searches are limited, in the repository query itself, to the elements whose governance zones the user may read.  " +
+                                  "Every element returned is still checked individually.  This relies on the zones held in each element's Anchors classification, " +
+                                  "so run the resynchronize-anchors-zones governance action to bring existing ones up to date.  " +
+                                  "Set it to false to search without this filter.",
+                          "boolean",
+                          "true",
+                          false),
+
     ;
 
     public final String  name;
