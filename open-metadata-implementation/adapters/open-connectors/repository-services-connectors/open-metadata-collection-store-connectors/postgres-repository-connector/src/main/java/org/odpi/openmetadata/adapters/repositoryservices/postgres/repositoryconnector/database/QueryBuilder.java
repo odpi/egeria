@@ -1572,6 +1572,24 @@ public class QueryBuilder
      * one in total, and NONE inverts the membership instead of the condition.  Getting any of those wrong
      * does not fail: the query simply stops filtering, or filters on the wrong thing, and returns a
      * plausible answer.
+     * <br><br>
+     * A NONE search tests each candidate entity's own classifications: "not exists (select 1 from classification
+     * where classification.instance_guid = entity.instance_guid and ... offset 0)".  It used to be "entity guid
+     * not in (select the guids of the classifications that match)", which does not refer to the candidate
+     * entities, and which PostgreSQL can not plan as an anti-join, so every query built the whole set of matching
+     * classifications - with their attribute rows - first.  The governance zone filter is a NONE search on the
+     * Anchors classification, which nearly every element has, so every filtered search, even the lookup of one
+     * element by its qualified name, read every Anchors classification in the repository: 17 to 55 seconds on a
+     * repository with 740,000 of them, against 0.1 milliseconds for the same lookup unfiltered.
+     * <br><br>
+     * "offset 0" keeps the sub-select as a test made on each candidate entity.  Without it, PostgreSQL turns the
+     * "not exists" into an anti-join and chooses how to run it from its row estimates, and these are poor here:
+     * it overestimates both the candidates of a lookup and the cost of each test, and so picks a sequential scan
+     * of the entity table (0.9 seconds for that lookup) or a hash anti-join over every Anchors classification.
+     * With "offset 0" the lookup takes 0.25 milliseconds, and a search matching 3,849 entities 3.2 seconds
+     * (13 to 34 seconds before, 1.6 seconds unfiltered).
+     * <br><br>
+     * The positive membership keeps "in": PostgreSQL plans it as a semi-join, which it can run either way round.
      *
      * @param entityGUIDColumn the qualified entity guid column the membership applies to
      * @return SQL fragment, beginning with "and", or empty if there is no classification search
@@ -1581,20 +1599,34 @@ public class QueryBuilder
     {
         StringBuilder membershipBuilder = new StringBuilder();
 
-        String membershipOperand = this.isNegatedClassificationMatch() ? " not in (" : " in (";
+        boolean negated = this.isNegatedClassificationMatch();
 
         for (String subSelectWhereClause : this.getClassificationSubSelectWhereClauses())
         {
-            membershipBuilder.append(" and ")
-                             .append(entityGUIDColumn)
-                             .append(membershipOperand)
-                             .append("select ")
-                             .append(RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()))
-                             .append(" from ")
-                             .append(RepositoryTable.CLASSIFICATION.getTableName())
-                             .append(" where ")
-                             .append(subSelectWhereClause)
-                             .append(")");
+            if (negated)
+            {
+                membershipBuilder.append(" and not exists (select 1 from ")
+                                 .append(RepositoryTable.CLASSIFICATION.getTableName())
+                                 .append(" where ")
+                                 .append(RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()))
+                                 .append(" = ")
+                                 .append(entityGUIDColumn)
+                                 .append(" and ")
+                                 .append(subSelectWhereClause)
+                                 .append(" offset 0)");
+            }
+            else
+            {
+                membershipBuilder.append(" and ")
+                                 .append(entityGUIDColumn)
+                                 .append(" in (select ")
+                                 .append(RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()))
+                                 .append(" from ")
+                                 .append(RepositoryTable.CLASSIFICATION.getTableName())
+                                 .append(" where ")
+                                 .append(subSelectWhereClause)
+                                 .append(")");
+            }
         }
 
         return membershipBuilder.toString();
