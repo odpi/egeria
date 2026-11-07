@@ -171,7 +171,47 @@ public class QueryBuilderPropertyConditionsTest
     }
 
 
+    /**
+     * A NONE classification search - the governance zone filter is one - must test each candidate entity's own
+     * classifications.  It used to be "entity guid not in (select ... from classification where ...)", which
+     * does not refer to the candidates, so every search built the set of all matching classifications first:
+     * a lookup by qualified name went from 0.1 milliseconds to 17 seconds and more on a repository with 740,000
+     * Anchors classifications.  "offset 0" stops PostgreSQL turning the test into an anti-join planned from
+     * poor row estimates.  The positive search keeps "in", which PostgreSQL plans as a semi-join.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testNoneClassificationSearchTestsEachCandidate() throws Exception
+    {
+        PropertyCondition hasZones = this.getCondition("zoneMembership", PropertyComparisonOperator.NOT_NULL, null);
+
+        String none = this.getClassificationMembershipClause(MatchCriteria.NONE, MatchCriteria.ALL, hasZones);
+
+        assertTrue(none.startsWith(" and not exists (select 1 from classification where classification.instance_guid = entity.instance_guid and "), none);
+        assertTrue(none.endsWith(" offset 0)"), none);
+        assertFalse(none.contains(" not in ("), none);
+
+        String any = this.getClassificationMembershipClause(MatchCriteria.ANY, MatchCriteria.ALL, hasZones);
+
+        assertTrue(any.startsWith(" and entity.instance_guid in (select classification.instance_guid from classification where "), any);
+        assertFalse(any.contains("offset 0"), any);
+
+        String all = this.getClassificationMembershipClause(MatchCriteria.ALL, MatchCriteria.ALL, hasZones);
+
+        assertTrue(all.startsWith(" and entity.instance_guid in (select classification.instance_guid from classification where "), all);
+    }
+
+
     private String getClassificationMembershipClause(MatchCriteria propertyMatchCriteria, PropertyCondition... conditions) throws Exception
+    {
+        return this.getClassificationMembershipClause(MatchCriteria.NONE, propertyMatchCriteria, conditions);
+    }
+
+
+    private String getClassificationMembershipClause(MatchCriteria     classificationMatchCriteria,
+                                                     MatchCriteria     propertyMatchCriteria,
+                                                     PropertyCondition... conditions) throws Exception
     {
         SearchProperties matchProperties = new SearchProperties();
 
@@ -185,7 +225,7 @@ public class QueryBuilderPropertyConditionsTest
 
         SearchClassifications searchClassifications = new SearchClassifications();
 
-        searchClassifications.setMatchCriteria(MatchCriteria.NONE);
+        searchClassifications.setMatchCriteria(classificationMatchCriteria);
         searchClassifications.setConditions(new ArrayList<>(List.of(classificationCondition)));
 
         QueryBuilder queryBuilder = new QueryBuilder("classification", "classification_attribute_value", null, "TestRepository");
