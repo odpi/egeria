@@ -3910,6 +3910,101 @@ public enum OpenMetadataProperty
      */
     PARTITION_KEY_POSITION("partitionKeyPosition", DataType.INT, DataType.INT.getDisplayName(), "Position of the data field in the partition key, starting from 1.", "1", "961d1524-321b-462c-91ee-6f138e059c21", "0"),
 
+    /**
+     * The type of renderer used to display this container.
+     */
+    RENDERER("renderer", DataType.STRING, DataType.STRING.getDisplayName(), "The type of renderer used to display this container.", "table", "4783b100-a880-46da-9407-be235d4ee43f"),
+
+    /**
+     * How the element is placed in the display.
+     */
+    PLACEMENT_KIND("placementKind", DataType.STRING, DataType.STRING.getDisplayName(), "How the element is placed in the display.", "inline", "4e8f73e7-1f1f-44ca-808c-79cd875fc2e5"),
+
+    /**
+     * The number of columns/cells the element spans.
+     */
+    SPAN("span", DataType.STRING, DataType.STRING.getDisplayName(), "The number of columns/cells the element spans.", "2", "ef0ebf0e-1fbe-46bc-90a3-01d76bb3a03b"),
+
+    /**
+     * The style of presentation used to display this element.
+     */
+    PRESENTATION_STYLE("presentationStyle", DataType.STRING, DataType.STRING.getDisplayName(), "The style of presentation used to display this element.", "card", "a3dc975c-2adb-4bdb-9c39-d34e5a8b1139"),
+
+    /**
+     * The Markdown content of the element.
+     */
+    MARKDOWN_CONTENT("markdownContent", DataType.STRING, DataType.STRING.getDisplayName(), "The Markdown content of the element.", "# Summary", "73704b12-6a8c-4f7c-a80a-3f0b510b338b"),
+
+    /**
+     * The format used for the content of the report.
+     */
+    OUTPUT_FORMAT("outputFormat", DataType.STRING, DataType.STRING.getDisplayName(), "The format used for the content of the report.", "MD", "cb6db49f-b992-4299-808f-ffb5116a8577"),
+
+    /**
+     * Parameters used to create the report - typically a JSON String.
+     */
+    REPORT_PARAMETERS("reportParameters", DataType.STRING, DataType.STRING.getDisplayName(), "Parameters used to create the report - typically a JSON String.", "{\"searchString\": \"Clinical\"}", "cb2a0e60-afb5-4d2c-90ba-04deac56909e"),
+
+    /**
+     * The style of layout used to arrange the reports in a dashboard.
+     */
+    LAYOUT_STYLE("layoutStyle", DataType.STRING, DataType.STRING.getDisplayName(), "The style of layout used to arrange the reports in a dashboard.", "grid", "c94887e1-353c-43d3-9956-c7a6441396dd"),
+
+    /**
+     * The ordered list of stages to run, with their parameters (in JSON).
+     */
+    MICROFLOW("microflow", DataType.STRING, DataType.STRING.getDisplayName(), "The ordered list of stages to run, with their parameters (in JSON).", null, "20506786-d5f9-4354-ba0a-bcd574bc1142"),
+
+    /**
+     * The type of element that is being reported on.
+     */
+    TARGET_TYPE_NAME("targetTypeName", DataType.STRING, DataType.STRING.getDisplayName(), "The type of element that is being reported on.", "Collection", "23c5d0eb-7f1c-4668-8c76-e272ac9073af"),
+
+    /**
+     * The output types that can be generated from this specification.
+     */
+    OUTPUT_TYPES("outputTypes", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The output types that can be generated from this specification.", "[\"MD\", \"JSON\"]", "79118cf1-1eef-48b4-b664-84fd6bc47c9f"),
+
+    /**
+     * Should the preamble be included in the report?
+     */
+    INCLUDE_PREAMBLE("includePreamble", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Should the preamble be included in the report?", null, "6da1bb02-4513-4ff5-a993-4d8d0a0a0962", "false"),
+
+    /**
+     * Whether a measured value counts everything or may undercount.
+     */
+    COMPLETENESS_DECLARED("completenessDeclared", DataType.STRING, DataType.STRING.getDisplayName(), "Whether a measured value should count everything or may undercount, for example because a page limit was hit.  Lets a renderer say \"at least N\" rather than \"N\".  Valid values are complete, lower_bound and unknown.", "complete", "be802c54-f5de-47a7-92ff-6f7441d3dca0"),
+
+    /**
+     * How the value is produced - confidence in the method, not in the value itself.
+     */
+    CONFIDENCE_FORM("confidenceForm", DataType.STRING, DataType.STRING.getDisplayName(), "How the value is produced, which is confidence in the method, not in the value itself.  A renderer uses it to qualify the figure.  Valid values are measured, estimated, inferred, judged and generated.", "measured", "ca3971e7-605c-4ad5-a819-93c368522968"),
+
+    /**
+     * How to read the absoluteUncertainty / relativeUncertainty values.
+     */
+    UNCERTAINTY_FORM("uncertaintyForm", DataType.STRING, DataType.STRING.getDisplayName(), "How to read the absoluteUncertainty / relativeUncertainty values: as plus/minus a spread, as a low-high range, or as a named band.  Valid values are plus_minus, low_high and band.", "plus_minus", "5656d44b-77f2-47fc-ad7b-8e7753c601cd"),
+
+    /**
+     * A map from an absence state to the sentence to show in place of a value when there isn't one.
+     */
+    ABSENCE_SENTENCES("absenceSentences", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "A map from an absence state (nothing_found, not_measured, not_permitted, not_applicable) to the sentence to show in place of a value when there isn't one, so \"measured and found nothing\" never looks like \"never measured\".", null, "009a4c3e-b954-4b54-adf4-b7b9af7909f7"),
+
+    /**
+     * Status of the results.
+     */
+    RESULT_STATE("resultState", DataType.STRING, DataType.STRING.getDisplayName(), "Status of the results.", "complete", "ff878977-e7aa-4b7b-8749-6ba60f6fe68f"),
+
+    /**
+     * Reason for the result state.
+     */
+    RESULT_STATE_REASON("resultStateReason", DataType.STRING, DataType.STRING.getDisplayName(), "Reason for the result state.", null, "08cdee44-0d84-4ab0-8e71-953d7e81db5b"),
+
+    /**
+     * Where the results are stored.
+     */
+    RESULT_LOCATION("resultLocation", DataType.STRING, DataType.STRING.getDisplayName(), "Where the results are stored.", null, "1cfdc46a-23c6-413d-9d04-5b763ac63c0a"),
+
     ;
 
 

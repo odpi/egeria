@@ -194,6 +194,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setResultsStoredIn(super.getRelatedElements(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SMART_QUERY_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setUsedInReports(super.getRelatedElements(OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setUsesResultsSets(super.getRelatedElements(OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName);
+
             attributedMetadataElement.setCapabilityConsumedAssets(super.getRelatedElements(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setConsumedByCapabilities(super.getRelatedElements(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
@@ -601,12 +605,22 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setNestedDataFields(super.getRelatedElements(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setParentDataFields(super.getRelatedElements(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName);
-            attributedMetadataElement.setEquivalentSchemaType(super.getRelatedElement(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setEquivalentSchemaTypes(super.getRelatedElements(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDerivedFromDataStructure(super.getRelatedElement(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName);
-            attributedMetadataElement.setEquivalentSchemaAttribute(super.getRelatedElement(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setEquivalentSchemaAttributes(super.getRelatedElements(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDerivedFromDataField(super.getRelatedElement(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setReportTypeInstances(super.getRelatedElements(OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDerivedFromReportType(super.getRelatedElement(OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP.typeName);
+            attributedMetadataElement.setBasisDataField(super.getRelatedElement(OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setProvidesBasisForMeasurements(super.getRelatedElements(OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName);
+            attributedMetadataElement.setAsOfDataField(super.getRelatedElement(OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setProvidesAsOfTimeForMeasurements(super.getRelatedElements(OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setRelatedDesignPatterns(super.getRelatedElements(OpenMetadataType.RELATED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements));
             attributedMetadataElement.setConsumedDesignPatterns(super.getRelatedElements(OpenMetadataType.NESTED_DESIGN_PATTERN_RELATIONSHIP.typeName, relatedMetadataElements, false));

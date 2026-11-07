@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DataClassProperties.class, name = "DataClassProperties"),
                 @JsonSubTypes.Type(value = DataGrainProperties.class, name = "DataGrainProperties"),
+                @JsonSubTypes.Type(value = MeasurementSpecificationProperties.class, name = "MeasurementSpecificationProperties"),
         })
 public class DataValueSpecificationProperties extends AuthoredReferenceableProperties
 {
