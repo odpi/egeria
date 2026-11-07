@@ -570,9 +570,30 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                    "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0051 - The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}
+     * GOVERNANCE-ACTION-CONNECTORS-0051 - The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters
      */
-    CHECKING_ANCHORS_ZONES("GOVERNANCE-ACTION-CONNECTORS-0051",
+    NO_ACCEPTABLE_TYPE_NAMES("GOVERNANCE-ACTION-CONNECTORS-0051",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters",
+                             "The governance action service returns an INVALID completion status without checking the type of its action targets.",
+                             "Set the acceptableTypeNames property in the configuration properties of the governance action service's connection, or pass it as a " +
+                                     "request parameter, and then rerun the request.",
+                             "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0052 - The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2}
+     */
+    UNACCEPTABLE_TYPE("GOVERNANCE-ACTION-CONNECTORS-0052",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2}",
+                      "The governance action service returns an ACTIONED completion status with the type-not-detected guard.",
+                      "Validate that the governance action process is responding to the guard as expected.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0053 - The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}
+     */
+    CHECKING_ANCHORS_ZONES("GOVERNANCE-ACTION-CONNECTORS-0053",
                            AuditLogRecordSeverityLevel.INFO,
                            "The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}",
                            "The governance action service asks the metadata access server to compare the zones held in each Anchors classification with the zones that govern its element, and to correct those that differ.",
@@ -580,9 +601,9 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                            "https://egeria-project.org/features/governance-zoning/overview/"),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0052 - The {0} governance action service has corrected the governance zones in {1} Anchors classifications
+     * GOVERNANCE-ACTION-CONNECTORS-0054 - The {0} governance action service has corrected the governance zones in {1} Anchors classifications
      */
-    ANCHORS_ZONES_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0052",
+    ANCHORS_ZONES_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0054",
                             AuditLogRecordSeverityLevel.INFO,
                             "The {0} governance action service has corrected the governance zones in {1} Anchors classifications",
                             "The Anchors classifications that were checked now hold the zones that govern their elements.",
@@ -590,9 +611,9 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                             "https://egeria-project.org/features/governance-zoning/overview/"),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0053 - The {0} governance action service could not check or correct every Anchors classification of {1}: {2}
+     * GOVERNANCE-ACTION-CONNECTORS-0055 - The {0} governance action service could not check or correct every Anchors classification of {1}: {2}
      */
-    ANCHORS_ZONES_NOT_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0053",
+    ANCHORS_ZONES_NOT_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0055",
                                 AuditLogRecordSeverityLevel.ERROR,
                                 "The {0} governance action service could not check or correct every Anchors classification of {1}: {2}",
                                 "The service carries on with any remaining action targets, and completes with the anchors-zones-resync-failed guard.  The corrections that could be made have been saved.  Elements that were not corrected still have out-of-date zones, so a search filtered by governance zone may leave them out.",

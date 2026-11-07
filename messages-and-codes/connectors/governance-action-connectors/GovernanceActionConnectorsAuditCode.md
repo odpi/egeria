@@ -9,7 +9,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 52 |
+| **Number of messages** | 54 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
@@ -69,9 +69,11 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0048](#governance-action-connectors-0048) | INFO | The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5}) |
 | [GOVERNANCE-ACTION-CONNECTORS-0049](#governance-action-connectors-0049) | ERROR | The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters |
 | [GOVERNANCE-ACTION-CONNECTORS-0050](#governance-action-connectors-0050) | INFO | The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5}) |
-| [GOVERNANCE-ACTION-CONNECTORS-0051](#governance-action-connectors-0051) | INFO | The {0} governance action service is checking the governance zones held in the Anchors classifications of {1} |
-| [GOVERNANCE-ACTION-CONNECTORS-0052](#governance-action-connectors-0052) | INFO | The {0} governance action service has corrected the governance zones in {1} Anchors classifications |
-| [GOVERNANCE-ACTION-CONNECTORS-0053](#governance-action-connectors-0053) | ERROR | The {0} governance action service could not check or correct every Anchors classification of {1}: {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0051](#governance-action-connectors-0051) | ERROR | The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters |
+| [GOVERNANCE-ACTION-CONNECTORS-0052](#governance-action-connectors-0052) | INFO | The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0053](#governance-action-connectors-0053) | INFO | The {0} governance action service is checking the governance zones held in the Anchors classifications of {1} |
+| [GOVERNANCE-ACTION-CONNECTORS-0054](#governance-action-connectors-0054) | INFO | The {0} governance action service has corrected the governance zones in {1} Anchors classifications |
+| [GOVERNANCE-ACTION-CONNECTORS-0055](#governance-action-connectors-0055) | ERROR | The {0} governance action service could not check or correct every Anchors classification of {1}: {2} |
 
 ----
 
@@ -1155,6 +1157,50 @@ Validate that this is the intended origin.
 
 ### GOVERNANCE-ACTION-CONNECTORS-0051
 
+> The {0} governance action service has not been supplied with any acceptable type names in either its configuration properties or its request parameters
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.NO_ACCEPTABLE_TYPE_NAMES` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service returns an INVALID completion status without checking the type of its action targets.
+
+**User action**
+
+Set the acceptableTypeNames property in the configuration properties of the governance action service's connection, or pass it as a request parameter, and then rerun the request.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0052
+
+> The {0} governance action service has detected action targets that are not of an acceptable type: {1}.  The acceptable types are {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.UNACCEPTABLE_TYPE` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service returns an ACTIONED completion status with the type-not-detected guard.
+
+**User action**
+
+Validate that the governance action process is responding to the guard as expected.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0053
+
 > The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}
 
 |  |  |
@@ -1175,7 +1221,7 @@ No action is required.  Checking the whole repository reads every anchored eleme
 
 ----
 
-### GOVERNANCE-ACTION-CONNECTORS-0052
+### GOVERNANCE-ACTION-CONNECTORS-0054
 
 > The {0} governance action service has corrected the governance zones in {1} Anchors classifications
 
@@ -1197,7 +1243,7 @@ Run the service again until it corrects none, so that searches filtered by gover
 
 ----
 
-### GOVERNANCE-ACTION-CONNECTORS-0053
+### GOVERNANCE-ACTION-CONNECTORS-0055
 
 > The {0} governance action service could not check or correct every Anchors classification of {1}: {2}
 

@@ -24,6 +24,7 @@ import org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.Lov
 import org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.LovelacePopularityProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.TypeDetectorGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
@@ -200,6 +201,17 @@ public enum GovernanceServiceDefinition
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Create an incident report from a template.
+     */
+    INCIDENT_REPORTER("cfe3234b-2d38-4a80-8427-fc48c8bec4cb",
+                      "incident-reporter-governance-action-service",
+                      "Report an Incident Governance Action Service",
+                      new IncidentReporterGovernanceActionProvider(),
+                      ResourceUse.INFORM_STEWARD,
+                      DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Write an Audit Log Message
      */
     WRITE_AUDIT_LOG("6898b138-9ab0-4465-9ee8-ed9607dcc4f8",
@@ -209,6 +221,17 @@ public enum GovernanceServiceDefinition
                     ResourceUse.INFORM_STEWARD,
                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Create a to do for a steward from a template.
+     */
+    STEWARD_INFORMER("a09e529c-103a-4ad5-ba6c-84180275ce6f",
+                     "steward-informer-governance-action-service",
+                     "Inform a Steward Governance Action Service",
+                     new StewardInformerGovernanceActionProvider(),
+                     ResourceUse.INFORM_STEWARD,
+                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Detect the day of the week
@@ -232,6 +255,17 @@ public enum GovernanceServiceDefinition
                  ResourceUse.IMPROVE_METADATA,
                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                  ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Check that the action targets are of an acceptable type.
+     */
+    TYPE_DETECTOR("68d75125-d2e7-4ebe-ba92-f6c85706abf5",
+                  "type-detector-governance-action-service",
+                  "Detect the Type of an Element Governance Action Service",
+                  new TypeDetectorGovernanceActionProvider(),
+                  ResourceUse.CHOOSE_PATH,
+                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers columns within a CSV File.

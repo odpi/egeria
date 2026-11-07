@@ -480,6 +480,24 @@ public enum RequestTypeDefinition
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * inform-steward
+     */
+    INFORM_STEWARD("inform-steward",
+                   null,
+                   null,
+                   null,
+                   GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                   GovernanceServiceDefinition.STEWARD_INFORMER,
+                   "e43ee3cd-ef03-4ad2-81e3-e9c22bc41316",
+                   GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                   null,
+                   "e964fa32-a318-4498-931a-7bf91ac524dc",
+                   "Inform Steward",
+                   "Create a to do for the steward using the template identified by the templateGUID request parameter.  The other action targets are attached to the to do.",
+                   ContentCollectionDefinition.COMMUNICATION_ACTIONS,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * write-to-audit-log
      */
     WRITE_AUDIT_LOG("write-to-audit-log",
@@ -497,6 +515,24 @@ public enum RequestTypeDefinition
                     DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR,
                     null,
                     false,
+                    ContentCollectionDefinition.COMMUNICATION_ACTIONS,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * report-incident
+     */
+    REPORT_INCIDENT("report-incident",
+                    null,
+                    null,
+                    null,
+                    GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                    GovernanceServiceDefinition.INCIDENT_REPORTER,
+                    "5408ab18-d03e-43c5-9580-b18120db71ec",
+                    GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                    null,
+                    "824ca037-0b09-432e-962c-88776d1a9a11",
+                    "Report Incident",
+                    "Create an incident report using the template identified by the templateGUID request parameter.  The action targets are linked to the report as impacted resources.",
                     ContentCollectionDefinition.COMMUNICATION_ACTIONS,
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -556,6 +592,24 @@ public enum RequestTypeDefinition
                                 "Correct the governance zones held in Anchors classifications so that they match the zones that govern each element.  With action targets, each target (and the members of any target that is an anchor) is checked; without them, every element in the repository is checked.  Searches are filtered on these zones, so run it after upgrading and after loading an open metadata archive.  Reference copies are corrected through the cohort member that owns them.",
                                 ContentCollectionDefinition.STEWARDSHIP,
                                 ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * detect-element-type
+     */
+    DETECT_ELEMENT_TYPE("detect-element-type",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                        GovernanceServiceDefinition.TYPE_DETECTOR,
+                        "b3d975bc-5380-4efd-a9ad-239f0a5f6ea2",
+                        GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                        null,
+                        "e032b297-4b62-41e8-b6fd-650c6b8a1c76",
+                        "Detect Element Type",
+                        "Check that the requested element(s) are of one of the types listed in the acceptableTypeNames request parameter and output the result as a guard.",
+                        ContentCollectionDefinition.STEWARDSHIP,
+                        ContentPackDefinition.CORE_CONTENT_PACK),
 
 
     /**
