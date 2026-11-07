@@ -9,7 +9,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 192 |
+| **Number of messages** | 193 |
 | **Message identifiers begin** | `OMRS-` |
 | **Java class** | `org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode` |
 | **Module** | [open-metadata-implementation/repository-services/repository-services-apis](../../open-metadata-implementation/repository-services/repository-services-apis) |
@@ -90,6 +90,7 @@ The OMRSErrorCode is used to define first failure data capture (FFDC) for errors
 | [OMRS-REPOSITORY-400-073](#omrs-repository-400-073) | 400 | An invalid instance was found in a batch of reference instances send by a remote member of the cohort. The exception was {0} with message {1} |
 | [OMRS-REPOSITORY-400-074](#omrs-repository-400-074) | 400 | An invalid list of property-based search conditions was provided: nestedConditions is mutually exclusive with property, operator, value |
 | [OMRS-REPOSITORY-400-075](#omrs-repository-400-075) | 400 | An invalid list of classification-based search conditions was provided: name of the classification is mandatory |
+| [OMRS-REPOSITORY-400-076](#omrs-repository-400-076) | 400 | An invalid list was provided for the value of an IN operator |
 | [OMRS-REPOSITORY-400-077](#omrs-repository-400-077) | 400 | An invalid string was provided for the value of a LIKE operator |
 | [OMRS-REPOSITORY-400-078](#omrs-repository-400-078) | 400 | An invalid string was provided for the value of the {0} operator |
 | [OMRS-REPOSITORY-400-079](#omrs-repository-400-079) | 400 | The provided subtype {0} is not a subtype of typedef {1} |
@@ -1661,6 +1662,27 @@ The system cannot process the requested search because a classification name was
 **User action**
 
 Review the request payload and provide at least a classification name for each classification-based condition object in the list of conditions.
+
+
+----
+
+### OMRS-REPOSITORY-400-076
+
+> An invalid list was provided for the value of an IN operator
+
+|  |  |
+|---|---|
+| **Java constant** | `OMRSErrorCode.INVALID_LIST_CONDITION` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | none |
+
+**System action**
+
+The system cannot process the requested search because an ArrayPropertyValue of primitive values is required as the value for the IN operator.
+
+**User action**
+
+Review the request payload and ensure that an ArrayPropertyValue listing the values to match is provided when using the IN operator.
 
 
 ----

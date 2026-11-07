@@ -376,4 +376,19 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
     {
         return null;
     }
+
+
+    /**
+     * Return all the security access controls in the collection, with their named lists resolved.  A security
+     * connector uses this to work out in advance which governance zones a user may access, so that a query can
+     * be limited to the elements in those zones.  A secrets store that cannot list its controls returns null,
+     * and the caller must then look up each control by name.
+     *
+     * @return map of control name to control, or null if the controls cannot be listed
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    public Map<String, SecurityAccessControl> getSecurityAccessControls() throws ConnectorCheckedException
+    {
+        return null;
+    }
 }

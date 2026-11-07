@@ -1586,6 +1586,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GT;
                                case GTE ->
                                        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.GTE;
+                               case IN ->
+                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IN;
                                case IS_NULL ->
                                        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator.IS_NULL;
                                case NOT_NULL ->
@@ -3025,9 +3027,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @throws InvalidParameterException the unique identifier is invalid in some way
+     * @throws InvalidParameterException the unique identifier is invalid in some way, or the element has no previous version
      * @throws UserNotAuthorizedException the user is not authorized to update this element
-     * @throws PropertyServerException a problem with the metadata store, including an element with no previous version
+     * @throws PropertyServerException a problem with the metadata store
      */
     public void undoMetadataElementUpdate(String  userId,
                                           String  externalSourceGUID,

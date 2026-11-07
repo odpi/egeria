@@ -56,6 +56,7 @@ final class SecurityFvtTestSupport
 {
     static final String SECRETS_STORE_PROVIDER      = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
     static final String SECURITY_CONNECTOR_PROVIDER = "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider";
+
     static final String PLATFORM_NAME               = "security-fvt Platform";
     static final int    MAX_PAGE_SIZE               = 100;
 
@@ -228,6 +229,11 @@ final class SecurityFvtTestSupport
         ConnectorType securityConnectorType = new ConnectorType();
         securityConnectorType.setConnectorProviderClassName(SECURITY_CONNECTOR_PROVIDER);
 
+        /*
+         * No configuration properties are set, so searches are filtered in the repository by the zones the caller
+         * can read - the connector's default.  Every search assertion in the suite therefore also checks that the
+         * filter never hides an element the caller may see.
+         */
         VirtualConnection securityConnection = new VirtualConnection();
         securityConnection.setDisplayName(displayName);
         securityConnection.setConnectorType(securityConnectorType);

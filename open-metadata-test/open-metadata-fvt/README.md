@@ -265,6 +265,13 @@ suites that use them.
   ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvt
   ```
 
+  The same tests run against the PostgreSQL repository with `-PrunSecurityFvtPostgres`, which checks the
+  governance zone filter that searches push down into SQL.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvtPostgres
+  ```
+
 
 
 ----

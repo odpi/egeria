@@ -563,7 +563,13 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
 
             if (!newClassificationMap.isEmpty())
             {
-                newClassifications = new ArrayList<>(newClassificationMap.values());
+                /*
+                 * The zones copied from the template, or supplied by the caller, govern the new element ahead of
+                 * its anchor's zones.
+                 */
+                newClassifications = AnchorsZoneMembership.alignNewClassifications(new ArrayList<>(newClassificationMap.values()),
+                                                                                   repositoryHelper,
+                                                                                   serviceName);
             }
 
             /*

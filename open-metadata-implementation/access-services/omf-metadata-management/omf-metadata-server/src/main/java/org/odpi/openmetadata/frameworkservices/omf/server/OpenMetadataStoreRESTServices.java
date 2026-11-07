@@ -3896,6 +3896,61 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Check, and correct, the governance zones held in Anchors classifications.  These record the zones that
+     * govern each element - its own if it has a ZoneMembership classification, otherwise its anchor's - and are
+     * used to filter searches by the zones the caller can read.  With a unique identifier, the element is checked, and if it is an anchor, so are its members.
+     * With null, every element in the repository is checked.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the element to check, or null for the whole repository
+     * @param requestBody external source and query options - may be null
+     *
+     * @return number of Anchors classifications that were corrected or
+     *  InvalidParameterException the element is not known or not visible to the caller
+     *  UserNotAuthorizedException the user is not authorized to make this request
+     *  PropertyServerException a problem with the metadata store
+     */
+    public CountResponse resynchronizeAnchorsZoneMembership(String                    serverName,
+                                                            String                    userId,
+                                                            String                    metadataElementGUID,
+                                                            MetadataSourceRequestBody requestBody)
+    {
+        final String methodName        = "resynchronizeAnchorsZoneMembership";
+        final String guidParameterName = "metadataElementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName, requestBody);
+
+        AuditLog      auditLog = null;
+        CountResponse response = new CountResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            MetadataSourceRequestBody options = (requestBody == null) ? new MetadataSourceRequestBody() : requestBody;
+
+            response.setCount(handler.resynchronizeAnchorsZoneMembership(userId,
+                                                                         metadataElementGUID,
+                                                                         guidParameterName,
+                                                                         options.getForLineage(),
+                                                                         options.getForDuplicateProcessing(),
+                                                                         options.getEffectiveTime(),
+                                                                         methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Undo the last update to a relationship, restoring its previous properties.
      *
      * @param serverName     name of server instance to route request to

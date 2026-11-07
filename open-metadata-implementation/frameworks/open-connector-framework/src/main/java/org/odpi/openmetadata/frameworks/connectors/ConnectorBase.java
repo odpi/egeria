@@ -519,7 +519,8 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
     /**
      * Retrieve a configuration property that is a boolean.  If any non-null value is set it returns true unless
-     * the value is set to FALSE, False or false.
+     * the value is set to FALSE, False or false - either as a string or, as a JSON false in the connection is
+     * read, as a Boolean.
      *
      * @param propertyName name of property
      * @param configurationProperties configuration properties
@@ -533,6 +534,11 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             if (configurationProperties.containsKey(propertyName))
             {
                 Object booleanOption = configurationProperties.get(propertyName);
+
+                if (booleanOption instanceof Boolean booleanValue)
+                {
+                    return booleanValue;
+                }
 
                 return ((! "FALSE".equals(booleanOption)) && (! "false".equals(booleanOption)) && (! "False".equals(booleanOption)));
             }

@@ -1686,6 +1686,34 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
+     * Check, and correct, the governance zones held in Anchors classifications.  These record the zones that
+     * govern each element - its own if it has a ZoneMembership classification, otherwise its anchor's - and are
+     * used to filter searches by the zones the caller can read.  They can be out of date in a repository populated
+     * before the server maintained them, or for elements loaded from an open metadata archive.  With a unique
+     * identifier, the element is checked, and if it is an anchor, so are its members.  With null, every element in
+     * the repository is checked.  Each correction is sent to the repository that owns the classification, so
+     * reference copies are corrected through the cohort member that owns them.  If any element can not be checked
+     * or corrected, the request fails with PropertyServerException once every element has been checked; the
+     * corrections that could be made are kept.
+     *
+     * @param metadataElementGUID    unique identifier of the element to check, or null for the whole repository
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @return number of Anchors classifications that were corrected
+     *
+     * @throws InvalidParameterException  the element is not known or not visible to the caller
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    a problem with the metadata store, or some elements could not be checked or corrected
+     */
+    public long resynchronizeAnchorsZoneMembership(String                metadataElementGUID,
+                                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        return openMetadataClient.resynchronizeAnchorsZoneMembership(connectorUserId, metadataElementGUID, metadataSourceOptions);
+    }
+
+
+    /**
      * Undo the last update to a relationship, restoring its previous properties.
      *
      * @param relationshipGUID       unique identifier of the relationship

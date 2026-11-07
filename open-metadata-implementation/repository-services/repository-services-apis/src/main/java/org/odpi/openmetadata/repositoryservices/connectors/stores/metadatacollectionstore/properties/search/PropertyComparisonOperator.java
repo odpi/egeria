@@ -33,7 +33,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         GTE: when the property has a value that is greater than, or equal to, the provided value.
  *     </li>
  *     <li>
- *         IN: when the property has a value that matches at least one element of the provided list of values.
+ *         IN: when the property has a value that equals at least one element of the provided list of values (an
+ *         ArrayPropertyValue).  For a property that is itself an array, it is enough that any one of its elements
+ *         equals one of the listed values - so IN tests whether the two lists share a value.
  *     </li>
  *     <li>
  *         IS_NULL: when the property has no value.
@@ -104,6 +106,12 @@ public enum PropertyComparisonOperator
      * Greater than or equal
      */
     GTE(5, "Greater than or equal", "Greater than or equal to."),
+
+    /**
+     * In list - has a value equal to at least one in the provided list of values.  An array property matches if
+     * any of its elements does.
+     */
+    IN(6, "In list", "Has a value equal to at least one in the provided list of values.  An array property matches if any of its elements does."),
 
     /**
      * Is null

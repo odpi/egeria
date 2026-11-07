@@ -28,6 +28,14 @@
 // generated user directory.  It runs in about a minute.  It is opt-in, like every other FVT suite:
 //
 //   ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvt
+//
+// The same tests can run against the PostgreSQL repository instead.  Searches are filtered by governance
+// zone inside the repository query, and PostgreSQL evaluates that query in SQL rather than in Java, so this
+// is the run that shows the filter works there too.  It needs the shared PostgreSQL server (by default
+// localhost:5442/egeria, with the credentials in egeria-servers.omsecrets), and drops and recreates its own
+// schema, repository_secfvtmetadatastore, on every run:
+//
+//   ./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvtPostgres
 
 dependencies {
     // The platform itself, run in-process.  user-authn is NOT excluded: the platform runs with real
@@ -40,6 +48,10 @@ dependencies {
     // Metadata Access Security Connector that reads them.
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    // The repository for -PrunSecurityFvtPostgres, and the driver the suite uses to drop its schema first.
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    testRuntimeOnly 'org.postgresql:postgresql'
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:jdk-rest-client-connector')
@@ -59,6 +71,10 @@ dependencies {
 
     // Frameworks: the connection beans the security connection is built from, the user account and
     // access control beans exchanged with the platform, and the element beans the store returns.
+    // The stale Anchors zone archive (AnchorsZoneResyncFVT) is built with the archive utilities.
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    testImplementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
@@ -87,7 +103,17 @@ description = 'Open Metadata Security Functional Verification Tests (security-fv
 // The property is read here, at configuration time, rather than inside the onlyIf closure.  onlyIf is
 // evaluated during execution, and reaching for `project` then is unsupported with the configuration
 // cache.
-def runThisSuite = project.hasProperty('runSecurityFvt')
+def runAgainstInMemory   = project.hasProperty('runSecurityFvt')
+def runAgainstPostgreSQL = project.hasProperty('runSecurityFvtPostgres')
+def runThisSuite         = runAgainstInMemory || runAgainstPostgreSQL
+
+// Asking for both at once is refused rather than resolved to one of them: the report would not say which
+// repository it describes.
+if (runAgainstInMemory && runAgainstPostgreSQL)
+{
+    throw new GradleException('Specify either -PrunSecurityFvt or -PrunSecurityFvtPostgres, not both - one run ' +
+                                      'uses the in-memory repository, the other PostgreSQL.')
+}
 
 test {
     useJUnitPlatform()
@@ -100,6 +126,12 @@ test {
     maxParallelForks = 1
     timeout = java.time.Duration.ofMinutes(10)
     testLogging.showStandardStreams = true
+
+    systemProperty 'security.fvt.repository', runAgainstPostgreSQL ? 'postgres' : 'inmemory'
+
+    // Any security.fvt.* setting, such as security.fvt.database.url, can be given on the command line with -D.
+    // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
+    systemProperties System.properties.findAll { it.key.toString().startsWith('security.fvt.') && it.key.toString() != 'security.fvt.repository' }
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis
