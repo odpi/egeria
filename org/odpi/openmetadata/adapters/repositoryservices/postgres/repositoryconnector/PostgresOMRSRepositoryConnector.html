@@ -209,14 +209,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setMetadataCollectionId(java.lang.String)">
 <h3>setMetadataCollectionId</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataCollectionId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId)</span></div>
-<div class="block">Set up the unique id for this metadata collection.</div>
+<div class="block">Set up the unique id for this metadata collection.  If it is null, the id recorded in the repository's
+ control table is used, or for a new repository, a new one is created.  The repository services rely on
+ this: a server whose configuration does not name a metadata collection id leaves it to the repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html#setMetadataCollectionId(java.lang.String)">setMetadataCollectionId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html#setMetadataCollectionId(java.lang.String)">setMetadataCollectionId</a></code>&nbsp;in class&nbsp;<code><a href="../../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>metadataCollectionId</code> - - String unique Id</dd>
+<dd><code>metadataCollectionId</code> - - String unique Id, or null to use the repository's own</dd>
 </dl>
 </section>
 </li>

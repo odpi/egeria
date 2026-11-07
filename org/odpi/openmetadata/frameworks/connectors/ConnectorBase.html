@@ -849,7 +849,8 @@ implements <a href="SecureConnectorExtension.html" title="interface in org.odpi.
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getBooleanConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
 <div class="block">Retrieve a configuration property that is a boolean.  If any non-null value is set it returns true unless
- the value is set to FALSE, False or false.</div>
+ the value is set to FALSE, False or false - either as a string or, as a JSON false in the connection is
+ read, as a Boolean.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>propertyName</code> - name of property</dd>

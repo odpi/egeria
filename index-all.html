@@ -5052,6 +5052,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Identifies the anchor entity for an element that is part of a large composite object such as an asset.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html#ANCHORS_ZONE_RESYNCHRONIZER" class="member-name-link">ANCHORS_ZONE_RESYNCHRONIZER</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">GovernanceServiceDefinition</a></dt>
+<dd>
+<div class="block">Correct the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#ANCHORS_ZONES_CORRECTED" class="member-name-link">ANCHORS_ZONES_CORRECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0054 - The {0} governance action service has corrected the governance zones in {1} Anchors classifications</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#ANCHORS_ZONES_NOT_CORRECTED" class="member-name-link">ANCHORS_ZONES_NOT_CORRECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0055 - The {0} governance action service could not check or correct every Anchors classification of {1}: {2}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#ANCHORS_ZONES_NOT_CORRECTED" class="member-name-link">ANCHORS_ZONES_NOT_CORRECTED</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
+<dd>
+<div class="block">OMAG-GENERIC-HANDLERS-500-014 - The {0} request corrected {1} Anchors classifications but could not check or correct the governance zones of {2} elements</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/AnchorSearchMatches.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AnchorSearchMatches</a> - Class in <a href="org/odpi/openmetadata/frameworks/openmetadata/properties/package-summary.html">org.odpi.openmetadata.frameworks.openmetadata.properties</a></dt>
 <dd>
 <div class="block">Captures the anchor open metadata element and corresponding matches retrieved during an
@@ -5108,6 +5124,26 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/AnchorsProperties.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties)" class="member-name-link">AnchorsProperties(AnchorsProperties)</a> - Constructor for class org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/AnchorsProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">AnchorsProperties</a></dt>
 <dd>
 <div class="block">Copy/clone constructor</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGovernanceActionConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
+<dd>
+<div class="block">AnchorsZoneResynchronizerGovernanceActionConnector corrects the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionConnector.html#%3Cinit%3E()" class="member-name-link">AnchorsZoneResynchronizerGovernanceActionConnector()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGovernanceActionConnector</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionProvider.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGovernanceActionProvider</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
+<dd>
+<div class="block">AnchorsZoneResynchronizerGovernanceActionProvider is the OCF connector provider for the Anchors Zone
+ Resynchronizer Governance Action Service.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionProvider.html#%3Cinit%3E()" class="member-name-link">AnchorsZoneResynchronizerGovernanceActionProvider()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGovernanceActionProvider</a></dt>
+<dd>
+<div class="block">Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
+ connector implementation.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
+<dd>
+<div class="block">The guards produced by the AnchorsZoneResynchronizer governance action service.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasCondition.html#AND" class="member-name-link">AND</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/properties/AtlasCondition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasCondition</a></dt>
 <dd>&nbsp;</dd>
@@ -12355,6 +12391,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Look to see if there is one of more new events to process.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#CHECKING_ANCHORS_ZONES" class="member-name-link">CHECKING_ANCHORS_ZONES</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0053 - The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetailDifferences.html#checkInstanceProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)" class="member-name-link">checkInstanceProperties(InstanceProperties, InstanceProperties)</a> - Method in class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetailDifferences.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetailDifferences</a></dt>
 <dd>
 <div class="block">Determine if there is a difference between the provided instance properties, and capture either each of those
@@ -16598,6 +16638,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/MoveCopyFileGuard.html#completionStatus" class="member-name-link">completionStatus</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/MoveCopyFileGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">MoveCopyFileGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html#completionStatus" class="member-name-link">completionStatus</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetGuard</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#completionStatus" class="member-name-link">completionStatus</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#completionStatus" class="member-name-link">completionStatus</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>&nbsp;</dd>
@@ -27698,6 +27740,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetRequestParameter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#description" class="member-name-link">description</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>&nbsp;</dd>
@@ -50802,6 +50846,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the typical completion status used with this guard.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#getCompletionStatus()" class="member-name-link">getCompletionStatus()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Return the typical completion status used with this guard.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#getCompletionStatus()" class="member-name-link">getCompletionStatus()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
 <div class="block">Return the typical completion status used with this guard.</div>
@@ -55811,6 +55859,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetRequestParameter</a></dt>
 <dd>
 <div class="block">Return the description of the request parameter.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Return the description of the guard.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#getDescription()" class="member-name-link">getDescription()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
@@ -63849,6 +63901,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return details of a specific guard.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#getGuardType()" class="member-name-link">getGuardType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Return details of a specific guard.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#getGuardType()" class="member-name-link">getGuardType()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
 <div class="block">Return details of a specific guard.</div>
@@ -63954,6 +64010,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Return details of all defined guards.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html#getGuardTypes()" class="member-name-link">getGuardTypes()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetGuard</a></dt>
+<dd>
+<div class="block">Return details of all defined guards.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#getGuardTypes()" class="member-name-link">getGuardTypes()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
 <dd>
 <div class="block">Return details of all defined guards.</div>
 </dd>
@@ -70910,6 +70970,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetRequestParameter</a></dt>
 <dd>
 <div class="block">Return the name of the request parameter.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Return the name of the guard.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#getName()" class="member-name-link">getName()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
@@ -78867,6 +78931,19 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opensurvey/measurements/FileDirectoryMeasurement.html#getReadableFileCount()" class="member-name-link">getReadableFileCount()</a> - Method in class org.odpi.openmetadata.frameworks.opensurvey.measurements.<a href="org/odpi/openmetadata/frameworks/opensurvey/measurements/FileDirectoryMeasurement.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.measurements">FileDirectoryMeasurement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html#getReadableZonesForUser(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getReadableZonesForUser(String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.accessconnector.<a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.accessconnector">OpenMetadataAccessSecurityConnector</a></dt>
+<dd>
+<div class="block">Return the governance zones whose elements this user could be permitted to read.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataElementSecurity.html#getReadableZonesForUser(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getReadableZonesForUser(String, String, String)</a> - Method in interface org.odpi.openmetadata.metadatasecurity.<a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataElementSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataElementSecurity</a></dt>
+<dd>
+<div class="block">Return the governance zones whose elements this user could be permitted to read.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/server/OpenMetadataServerSecurityVerifier.html#getReadableZonesForUser(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getReadableZonesForUser(String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.server.<a href="org/odpi/openmetadata/metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a></dt>
+<dd>
+<div class="block">Return the governance zones whose elements this user could be permitted to read, or null if the security
+ connector cannot list them (or there is no element security), in which case searches are not limited by zone.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/admin/OMRSConfigurationFactory.html#getReadOnlyLocalRepositoryConfig(java.lang.String,java.lang.String)" class="member-name-link">getReadOnlyLocalRepositoryConfig(String, String)</a> - Method in class org.odpi.openmetadata.repositoryservices.admin.<a href="org/odpi/openmetadata/repositoryservices/admin/OMRSConfigurationFactory.html" title="class in org.odpi.openmetadata.repositoryservices.admin">OMRSConfigurationFactory</a></dt>
 <dd>
 <div class="block">Return the configuration for an in-memory local repository.</div>
@@ -83526,9 +83603,17 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the security access control object from the platform metadata security connector.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/YAMLSecretsStoreConnector.html#getSecurityAccessControls()" class="member-name-link">getSecurityAccessControls()</a> - Method in class org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.<a href="org/odpi/openmetadata/adapters/connectors/secretsstore/yaml/YAMLSecretsStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.secretsstore.yaml">YAMLSecretsStoreConnector</a></dt>
+<dd>
+<div class="block">Return all the security access controls in the collection, with their named lists resolved.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/properties/users/SecretsCollection.html#getSecurityAccessControls()" class="member-name-link">getSecurityAccessControls()</a> - Method in class org.odpi.openmetadata.frameworks.connectors.properties.users.<a href="org/odpi/openmetadata/frameworks/connectors/properties/users/SecretsCollection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.users">SecretsCollection</a></dt>
 <dd>
 <div class="block">Return the security access controls in this collection.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/SecretsStoreConnector.html#getSecurityAccessControls()" class="member-name-link">getSecurityAccessControls()</a> - Method in class org.odpi.openmetadata.frameworks.connectors.<a href="org/odpi/openmetadata/frameworks/connectors/SecretsStoreConnector.html" title="class in org.odpi.openmetadata.frameworks.connectors">SecretsStoreConnector</a></dt>
+<dd>
+<div class="block">Return all the security access controls in the collection, with their named lists resolved.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html#getSecurityAccessControls()" class="member-name-link">getSecurityAccessControls()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></dt>
 <dd>
@@ -100049,6 +100134,14 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/FunctionParameterMode.html#IN" class="member-name-link">IN</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/FunctionParameterMode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">FunctionParameterMode</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/PropertyComparisonOperator.html#IN" class="member-name-link">IN</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyComparisonOperator</a></dt>
+<dd>
+<div class="block">Has a value equal to at least one in the provided list of values.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/search/PropertyComparisonOperator.html#IN" class="member-name-link">IN</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.<a href="org/odpi/openmetadata/repositoryservices/connectors/stores/metadatacollectionstore/properties/search/PropertyComparisonOperator.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search">PropertyComparisonOperator</a></dt>
+<dd>
+<div class="block">In list - has a value equal to at least one in the provided list of values.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/auditlog/ComponentDevelopmentStatus.html#IN_DEVELOPMENT" class="member-name-link">IN_DEVELOPMENT</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.auditlog.<a href="org/odpi/openmetadata/frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a></dt>
 <dd>
 <div class="block">In Development - This component is still being built.</div>
@@ -102450,6 +102543,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html#INVALID_LIKE_CONDITION" class="member-name-link">INVALID_LIKE_CONDITION</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.ffdc.<a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSErrorCode</a></dt>
 <dd>
 <div class="block">OMRS-REPOSITORY-400-077 - An invalid string was provided for the value of a LIKE operator</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html#INVALID_LIST_CONDITION" class="member-name-link">INVALID_LIST_CONDITION</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.ffdc.<a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSErrorCode</a></dt>
+<dd>
+<div class="block">OMRS-REPOSITORY-400-076 - An invalid list was provided for the value of an IN operator</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html#INVALID_LOCAL_METADATA_COLLECTION_ID" class="member-name-link">INVALID_LOCAL_METADATA_COLLECTION_ID</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.ffdc.<a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSErrorCode</a></dt>
 <dd>
@@ -113494,6 +113591,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetRequestParameter</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSetterGuard.html#name" class="member-name-link">name</a> - Variable in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSetterGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSetterGuard</a></dt>
@@ -115471,6 +115570,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#NOTHING_TO_RESTORE" class="member-name-link">NOTHING_TO_RESTORE</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
 <dd>
 <div class="block">OMAG-GENERIC-HANDLERS-400-015 - The {0} element {1} is neither deleted nor archived, so the {2} request has nothing to restore</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#NOTHING_TO_UNDO" class="member-name-link">NOTHING_TO_UNDO</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
+<dd>
+<div class="block">OMAG-GENERIC-HANDLERS-400-018 - The {0} element {1} has no earlier version, so the {2} request has nothing to undo</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/FileName.html#NOTICE_FILE" class="member-name-link">NOTICE_FILE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/FileName.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileName</a></dt>
 <dd>
@@ -128115,7 +128218,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#PLACEHOLDER_NOT_A_NUMBER" class="member-name-link">PLACEHOLDER_NOT_A_NUMBER</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
 <dd>
-<div class="block">OMAG-GENERIC-HANDLERS-400-017 - The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}</div>
+<div class="block">OMAG-GENERIC-HANDLERS-400-017 -The {0} property from the template is a {1}, but its placeholders resolve to {2}, which is not a {1}</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/SpecificationPropertyType.html#PLACEHOLDER_PROPERTY" class="member-name-link">PLACEHOLDER_PROPERTY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a></dt>
 <dd>
@@ -133544,6 +133647,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html#PURPOSE" class="member-name-link">PURPOSE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></dt>
 <dd>
 <div class="block">Provides additional reasons, or expectations from the results.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/accessconnector/controls/OpenMetadataSecurityConfigurationProperty.html#PUSH_DOWN_ZONE_FILTER" class="member-name-link">PUSH_DOWN_ZONE_FILTER</a> - Enum constant in enum class org.odpi.openmetadata.metadatasecurity.accessconnector.controls.<a href="org/odpi/openmetadata/metadatasecurity/accessconnector/controls/OpenMetadataSecurityConfigurationProperty.html" title="enum class in org.odpi.openmetadata.metadatasecurity.accessconnector.controls">OpenMetadataSecurityConfigurationProperty</a></dt>
+<dd>
+<div class="block">Should searches be limited in the repository query to the elements in governance zones the user may read?  On by default.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/LovelaceOpenLineageAnalysisServiceBase.html#put(java.util.Map,java.lang.String,double)" class="member-name-link">put(Map&lt;String, String&gt;, String, double)</a> - Method in class org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.<a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/LovelaceOpenLineageAnalysisServiceBase.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">LovelaceOpenLineageAnalysisServiceBase</a></dt>
 <dd>
@@ -143483,6 +143590,44 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/ResultsSetProperties.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ResultsSetProperties)" class="member-name-link">ResultsSetProperties(ResultsSetProperties)</a> - Constructor for class org.odpi.openmetadata.frameworks.openmetadata.properties.collections.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/collections/ResultsSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.collections">ResultsSetProperties</a></dt>
 <dd>
 <div class="block">Copy/clone constructor.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#RESYNC_FAILED" class="member-name-link">RESYNC_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html#RESYNCHRONIZE_ANCHORS_ZONES" class="member-name-link">RESYNCHRONIZE_ANCHORS_ZONES</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></dt>
+<dd>
+<div class="block">resynchronize-anchors-zones</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericHandler.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, String, boolean, boolean, Date, String)</a> - Method in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericHandler</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworkservices/omf/server/OpenMetadataStoreRESTServices.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, String, MetadataSourceRequestBody)</a> - Method in class org.odpi.openmetadata.frameworkservices.omf.server.<a href="org/odpi/openmetadata/frameworkservices/omf/server/OpenMetadataStoreRESTServices.html" title="class in org.odpi.openmetadata.frameworkservices.omf.server">OpenMetadataStoreRESTServices</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworkservices/omf/server/spring/OpenMetadataStoreResource.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, MetadataSourceRequestBody)</a> - Method in class org.odpi.openmetadata.frameworkservices.omf.server.spring.<a href="org/odpi/openmetadata/frameworkservices/omf/server/spring/OpenMetadataStoreResource.html" title="class in org.odpi.openmetadata.frameworkservices.omf.server.spring">OpenMetadataStoreResource</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/api/MetadataElementInterface.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, MetadataSourceOptions)</a> - Method in interface org.odpi.openmetadata.frameworks.openmetadata.api.<a href="org/odpi/openmetadata/frameworks/openmetadata/api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/client/OpenMetadataClient.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, MetadataSourceOptions)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.client.<a href="org/odpi/openmetadata/frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworkservices/omf/client/OpenMetadataClientBase.html#resynchronizeAnchorsZoneMembership(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, String, MetadataSourceOptions)</a> - Method in class org.odpi.openmetadata.frameworkservices.omf.client.<a href="org/odpi/openmetadata/frameworkservices/omf/client/OpenMetadataClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">OpenMetadataClientBase</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/OpenMetadataStore.html#resynchronizeAnchorsZoneMembership(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)" class="member-name-link">resynchronizeAnchorsZoneMembership(String, MetadataSourceOptions)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.<a href="org/odpi/openmetadata/frameworks/openmetadata/connectorcontext/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">OpenMetadataStore</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworkservices/omf/server/spring/OpenMetadataStoreResource.html#resynchronizeElementAnchorsZoneMembership(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)" class="member-name-link">resynchronizeElementAnchorsZoneMembership(String, String, String, MetadataSourceRequestBody)</a> - Method in class org.odpi.openmetadata.frameworkservices.omf.server.spring.<a href="org/odpi/openmetadata/frameworkservices/omf/server/spring/OpenMetadataStoreResource.html" title="class in org.odpi.openmetadata.frameworkservices.omf.server.spring">OpenMetadataStoreResource</a></dt>
+<dd>
+<div class="block">Check, and correct, the governance zones held in Anchors classifications.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/repositoryservices/archiveconnector/directory/DirectoryBasedOpenMetadataArchiveStoreList.html#retainAll(java.util.Collection)" class="member-name-link">retainAll(Collection&lt;?&gt;)</a> - Method in class org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.<a href="org/odpi/openmetadata/adapters/repositoryservices/archiveconnector/directory/DirectoryBasedOpenMetadataArchiveStoreList.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory">DirectoryBasedOpenMetadataArchiveStoreList</a></dt>
 <dd>&nbsp;</dd>
@@ -170608,6 +170753,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGovernanceActionConnector</a></dt>
+<dd>
+<div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionConnector</a></dt>
 <dd>
 <div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
@@ -176031,6 +176180,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/TabularDataSetProvisioningLineage.LineageSummary.html#toString()" class="member-name-link">toString()</a> - Method in record class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/TabularDataSetProvisioningLineage.LineageSummary.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">TabularDataSetProvisioningLineage.LineageSummary</a></dt>
 <dd>
 <div class="block">Returns a string representation of this record class.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#toString()" class="member-name-link">toString()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Output of this enum class and main value.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#toString()" class="member-name-link">toString()</a> - Method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
@@ -192928,6 +193081,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
@@ -195683,6 +195840,11 @@ the order they are declared.</div>
 the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html#values()" class="member-name-link">values()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/provisioning/ProvisionTabularDataSetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning">ProvisionTabularDataSetRequestParameter</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#values()" class="member-name-link">values()</a> - Static method in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
@@ -200682,6 +200844,10 @@ the order they are declared.</div>
  to governance actions when they run.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html#ZONES_ASSIGNED" class="member-name-link">ZONES_ASSIGNED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.verification.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyAssetGuard</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#ZONES_CORRECTED" class="member-name-link">ZONES_CORRECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html#ZONES_UP_TO_DATE" class="member-name-link">ZONES_UP_TO_DATE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/AnchorsZoneResynchronizerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">AnchorsZoneResynchronizerGuard</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<a href="#I:Z">Z</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
