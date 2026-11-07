@@ -252,6 +252,55 @@ public class QueryBuilder
 
 
     /**
+     * Return the condition that joins a header row to its attribute rows.  An entity or relationship row is
+     * identified by its guid and version.  A classification row also needs its name: an entity's classifications
+     * share its guid, and two of them at the same version would otherwise be tested against each other's
+     * properties - an Anchors condition on zoneMembership, for example, matched against the zones in the entity's
+     * ZoneMembership classification.
+     *
+     * @param principleTableName name of header table
+     * @param propertyTableName name of attribute table
+     * @return SQL fragment
+     */
+    private String getAttributeRowJoin(String principleTableName,
+                                       String propertyTableName)
+    {
+        String join = RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) +
+                " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertyTableName);
+
+        if (RepositoryTable.CLASSIFICATION.getTableName().equals(principleTableName))
+        {
+            join = join + " and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName(principleTableName) +
+                    " = " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName(propertyTableName);
+        }
+
+        return join;
+    }
+
+
+    /**
+     * Return the columns that identify a header row, qualified by the supplied table, for use in a tuple
+     * comparison between a header table and its attribute table (see getAttributeRowJoin()).
+     *
+     * @param principleTableName name of header table, which decides the columns
+     * @param tableName table to qualify the columns with
+     * @return comma-separated column list
+     */
+    private String getAttributeRowKey(String principleTableName,
+                                      String tableName)
+    {
+        String key = RepositoryColumn.INSTANCE_GUID.getColumnName(tableName) + ", " + RepositoryColumn.VERSION.getColumnName(tableName);
+
+        if (RepositoryTable.CLASSIFICATION.getTableName().equals(principleTableName))
+        {
+            key = key + ", " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName(tableName);
+        }
+
+        return key;
+    }
+
+
+    /**
      * Return a value in the form the target column needs.
      * <br>
      * Dates are the reason this exists, and the column matters.  A date is carried as epoch milliseconds:
@@ -732,8 +781,7 @@ public class QueryBuilder
                                                                              topLevelPropertyName,
                                                                              leafPropertyName);
             String rowMatchClause = "select 1 from " + propertyTableName +
-                    " where " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) +
-                    " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertyTableName);
+                    " where " + this.getAttributeRowJoin(principleTableName, propertyTableName);
 
             if (operator == PropertyComparisonOperator.IS_NULL)
             {
@@ -1127,7 +1175,13 @@ public class QueryBuilder
     {
         if ((searchProperties != null) && (searchProperties.getConditions() != null) && (! searchProperties.getConditions().isEmpty()))
         {
-            boolean matchAny     = (searchProperties.getMatchCriteria() == MatchCriteria.ANY);
+            /*
+             * NONE is the negation of ANY: "none of the conditions match" is "not (condition 1 or condition 2 ...)".
+             * It used to fall through to the "and" of ALL, so a NONE search returned the instances matching every
+             * condition - the opposite of what was asked whenever there was a single condition.
+             */
+            boolean matchNone    = (searchProperties.getMatchCriteria() == MatchCriteria.NONE);
+            boolean matchAny     = (searchProperties.getMatchCriteria() == MatchCriteria.ANY) || matchNone;
             String  matchOperand = matchAny ? " or " : " and ";
 
             /*
@@ -1155,7 +1209,16 @@ public class QueryBuilder
                     String                leafPropertyName      = propertyCondition.getProperty();
                     InstancePropertyValue instancePropertyValue = propertyCondition.getValue();
 
-                    if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
+                    if ((propertyCondition.getOperator() == PropertyComparisonOperator.IN) &&
+                            (instancePropertyValue instanceof ArrayPropertyValue listValue))
+                    {
+                        clauses.add(this.getInListClause(topLevelPropertyName,
+                                                         leafPropertyName,
+                                                         listValue,
+                                                         principleTableName,
+                                                         propertyTableName));
+                    }
+                    else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                     {
                         clauses.add(getPropertyComparisonFromInstanceProperties(mapPropertyValue.getMapValues(),
                                                                                 leafPropertyName,
@@ -1236,17 +1299,84 @@ public class QueryBuilder
             }
             else if (rowConditions.size() > 1)
             {
-                clauses.add(" (" + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + ", " +
-                                    RepositoryColumn.VERSION.getColumnName(principleTableName) + ") in (select " +
-                                    RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) + ", " +
-                                    RepositoryColumn.VERSION.getColumnName(propertyTableName) + " from " + propertyTableName +
+                clauses.add(" (" + this.getAttributeRowKey(principleTableName, principleTableName) + ") in (select " +
+                                    this.getAttributeRowKey(principleTableName, propertyTableName) + " from " + propertyTableName +
                                     " where (" + String.join(") or (", rowConditions) + ")) ");
+            }
+
+            if (matchNone)
+            {
+                return " not (" + String.join(matchOperand, clauses) + ") ";
             }
 
             return " (" + String.join(matchOperand, clauses) + ") ";
         }
 
         return " ";
+    }
+
+
+    /**
+     * Return the SQL for an IN condition: the property has a value equal to one of the listed values.  Each element
+     * of an array property is stored in a row of its own under the array's attribute name, so the same test also
+     * matches an array property that has any of the listed values among its elements.
+     *
+     * @param topLevelPropertyName parent attribute name - not null when dealing with nested properties
+     * @param leafPropertyName name of the property tested
+     * @param listValue the values to match
+     * @param principleTableName name of table holding the header
+     * @param propertyTableName name of table holding the properties
+     * @return sql fragment wrapped in parentheses; false if the list is empty
+     * @throws RepositoryErrorException problem building the SQL
+     */
+    private String getInListClause(String             topLevelPropertyName,
+                                   String             leafPropertyName,
+                                   ArrayPropertyValue listValue,
+                                   String             principleTableName,
+                                   String             propertyTableName) throws RepositoryErrorException
+    {
+        List<String> clauses = new ArrayList<>();
+
+        if ((listValue.getArrayValues() != null) && (listValue.getArrayValues().getInstanceProperties() != null))
+        {
+            for (InstancePropertyValue listElement : listValue.getArrayValues().getInstanceProperties().values())
+            {
+                Object comparisonValue = null;
+
+                if (listElement instanceof PrimitivePropertyValue primitivePropertyValue)
+                {
+                    if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                    {
+                        comparisonValue = this.escapePropertyValue(primitivePropertyValue.getPrimitiveValue());
+                    }
+                    else
+                    {
+                        comparisonValue = primitivePropertyValue.getPrimitiveValue();
+                    }
+                }
+                else if (listElement instanceof EnumPropertyValue enumPropertyValue)
+                {
+                    comparisonValue = this.escapePropertyValue(enumPropertyValue.getSymbolicName());
+                }
+
+                if (comparisonValue != null)
+                {
+                    clauses.add(this.getNestedPropertyComparisonClause(topLevelPropertyName,
+                                                                       leafPropertyName,
+                                                                       PropertyComparisonOperator.EQ,
+                                                                       comparisonValue,
+                                                                       principleTableName,
+                                                                       propertyTableName));
+                }
+            }
+        }
+
+        if (clauses.isEmpty())
+        {
+            return " (false) ";
+        }
+
+        return " (" + String.join(" or ", clauses) + ") ";
     }
 
 
@@ -1973,8 +2103,7 @@ public class QueryBuilder
         if (RepositoryColumn.ATTRIBUTE_NAME.getColumnName().equals(propertyColumn))
         {
             String subSelect = "(select " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " from " + propertyTableName +
-                    " where " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertyTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) +
-                    " and " + RepositoryColumn.VERSION.getColumnName(propertyTableName) + " = " + RepositoryColumn.VERSION.getColumnName(principleTableName) +
+                    " where " + this.getAttributeRowJoin(principleTableName, propertyTableName) +
                     " and " + RepositoryColumn.ATTRIBUTE_NAME.getColumnName(propertyTableName) + " = '" + escapePropertyValue(sequencingProperty) + "'" +
                     " limit 1)";
 
@@ -2279,8 +2408,7 @@ public class QueryBuilder
     {
         return "select " + columnSelection + " from " + principleTableName +
                     " left outer join " + propertiesTableName +
-                    " on " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName) +
-                    " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertiesTableName);
+                    " on " + this.getAttributeRowJoin(principleTableName, propertiesTableName);
     }
 
 

@@ -539,6 +539,24 @@ public enum RequestTypeDefinition
                 ContentCollectionDefinition.STEWARDSHIP,
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
+    /**
+     * resynchronize-anchors-zones
+     */
+    RESYNCHRONIZE_ANCHORS_ZONES("resynchronize-anchors-zones",
+                                null,
+                                null,
+                                null,
+                                GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                GovernanceServiceDefinition.ANCHORS_ZONE_RESYNCHRONIZER,
+                                "094138e8-c96a-4668-8390-1ba2bfdfde39",
+                                GovernanceDomain.SECURITY.getOrdinal(),
+                                null,
+                                "1b57f914-3459-46ec-9c32-b91bd93c49ec",
+                                "Resynchronize Anchors Zones",
+                                "Correct the governance zones held in Anchors classifications so that they match the zones that govern each element.  With action targets, each target (and the members of any target that is an anchor) is checked; without them, every element in the repository is checked.  Searches are filtered on these zones, so run it after upgrading and after loading an open metadata archive.  Reference copies are corrected through the cohort member that owns them.",
+                                ContentCollectionDefinition.STEWARDSHIP,
+                                ContentPackDefinition.CORE_CONTENT_PACK),
+
 
     /**
      * survey-csv-file

@@ -1173,7 +1173,10 @@ public class OpenMetadataAPIGenericBuilder
             return null;
         }
 
-        return entityClassifications;
+        /*
+         * An element with zones of its own is governed by them rather than by its anchor's zones.
+         */
+        return AnchorsZoneMembership.alignNewClassifications(entityClassifications, repositoryHelper, serviceName);
     }
 
 

@@ -9,7 +9,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 49 |
+| **Number of messages** | 52 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
@@ -69,6 +69,9 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0048](#governance-action-connectors-0048) | INFO | The {0} governance action service is setting the owner of element {1} to {2} (ownerTypeName={3}, ownerPropertyName={4}, userIds={5}) |
 | [GOVERNANCE-ACTION-CONNECTORS-0049](#governance-action-connectors-0049) | ERROR | The {0} governance action service has not been supplied with an organization or a business capability in either its configuration properties or its request parameters |
 | [GOVERNANCE-ACTION-CONNECTORS-0050](#governance-action-connectors-0050) | INFO | The {0} governance action service is setting the origin of element {1} to organization {2} (organizationPropertyName={3}) and business capability {4} (businessCapabilityPropertyName={5}) |
+| [GOVERNANCE-ACTION-CONNECTORS-0051](#governance-action-connectors-0051) | INFO | The {0} governance action service is checking the governance zones held in the Anchors classifications of {1} |
+| [GOVERNANCE-ACTION-CONNECTORS-0052](#governance-action-connectors-0052) | INFO | The {0} governance action service has corrected the governance zones in {1} Anchors classifications |
+| [GOVERNANCE-ACTION-CONNECTORS-0053](#governance-action-connectors-0053) | ERROR | The {0} governance action service could not check or correct every Anchors classification of {1}: {2} |
 
 ----
 
@@ -1146,6 +1149,72 @@ The governance action service replaces any existing DigitalResourceOrigin classi
 **User action**
 
 Validate that this is the intended origin.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0051
+
+> The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.CHECKING_ANCHORS_ZONES` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/governance-zoning/overview/> |
+
+**System action**
+
+The governance action service asks the metadata access server to compare the zones held in each Anchors classification with the zones that govern its element, and to correct those that differ.
+
+**User action**
+
+No action is required.  Checking the whole repository reads every anchored element, so it may take some time.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0052
+
+> The {0} governance action service has corrected the governance zones in {1} Anchors classifications
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.ANCHORS_ZONES_CORRECTED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/governance-zoning/overview/> |
+
+**System action**
+
+The Anchors classifications that were checked now hold the zones that govern their elements.
+
+**User action**
+
+Run the service again until it corrects none, so that searches filtered by governance zone return every element each user may read.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0053
+
+> The {0} governance action service could not check or correct every Anchors classification of {1}: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.ANCHORS_ZONES_NOT_CORRECTED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/governance-zoning/overview/> |
+
+**System action**
+
+The service carries on with any remaining action targets, and completes with the anchors-zones-resync-failed guard.  The corrections that could be made have been saved.  Elements that were not corrected still have out-of-date zones, so a search filtered by governance zone may leave them out.
+
+**User action**
+
+The metadata access server's audit log has an OMAG-GENERIC-HANDLERS-0001 message for each element it could not correct, with the cause.  Correct each cause, for example by connecting the cohort member that owns the classification, then run the service again.
 
 
 ----

@@ -239,6 +239,41 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
 
     /**
+     * Return all the security access controls in the collection, with their named lists resolved.
+     *
+     * @return map of control name to control (empty if there are none)
+     * @throws ConnectorCheckedException a problem with the connector
+     */
+    @Override
+    public Map<String, SecurityAccessControl> getSecurityAccessControls() throws ConnectorCheckedException
+    {
+        super.checkSecretsStillValid();
+
+        Map<String, SecurityAccessControl> results = new HashMap<>();
+
+        if (secretsStore != null)
+        {
+            SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+            if ((secretsCollection != null) && (secretsCollection.getSecurityAccessControls() != null))
+            {
+                for (String controlName : secretsCollection.getSecurityAccessControls().keySet())
+                {
+                    SecurityAccessControl securityAccessControl = this.getSecurityAccessControl(controlName);
+
+                    if (securityAccessControl != null)
+                    {
+                        results.put(controlName, securityAccessControl);
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
      * Save the requested security access control in the secrets collection.
      *
      * @param controlName           controlName for the lookup

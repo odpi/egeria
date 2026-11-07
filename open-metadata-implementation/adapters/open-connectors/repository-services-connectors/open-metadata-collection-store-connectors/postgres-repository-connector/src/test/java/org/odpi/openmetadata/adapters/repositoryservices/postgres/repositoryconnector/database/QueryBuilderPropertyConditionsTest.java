@@ -4,10 +4,14 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.testng.annotations.Test;
@@ -81,6 +85,141 @@ public class QueryBuilderPropertyConditionsTest
         assertTrue(sql.contains("not exists (select 1 from entity_attribute_value"), sql);
         assertTrue(sql.contains("(entity.created_by = 'garygeeke')"), sql);
         assertFalse(sql.contains("attribute_name = 'description' and"), sql);
+    }
+
+
+    /**
+     * IN tests the attribute rows against each listed value.  The elements of an array property are rows of their
+     * own under the array's attribute name, so the same SQL matches an array sharing any value with the list.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testInListMatchesAnyListedValue() throws Exception
+    {
+        String sql = this.getWhereClause(MatchCriteria.ALL,
+                                         this.getListCondition("zoneMembership", "quarantine", "it's"));
+
+        assertTrue(sql.contains("entity_attribute_value.attribute_name = 'zoneMembership' and property_value = 'quarantine')"), sql);
+        assertTrue(sql.contains(" or "), sql);
+        assertTrue(sql.contains("entity_attribute_value.attribute_name = 'zoneMembership' and property_value = 'it''s')"), sql);
+    }
+
+
+    /**
+     * An empty list matches nothing.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testEmptyInListMatchesNothing() throws Exception
+    {
+        String sql = this.getWhereClause(MatchCriteria.ALL,
+                                         this.getListCondition("zoneMembership"));
+
+        assertTrue(sql.contains("(false)"), sql);
+    }
+
+
+    /**
+     * NONE is the negation of ANY.  It used to be treated as ALL.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testNoneNegatesTheConditions() throws Exception
+    {
+        String sql = this.getWhereClause(MatchCriteria.NONE,
+                                         this.getCondition("qualifiedName", PropertyComparisonOperator.EQ, "A::B"),
+                                         this.getCondition("displayName", PropertyComparisonOperator.EQ, "B"));
+
+        assertTrue(sql.contains(" not ( " + IN_SUB_SELECT), sql);
+        assertFalse(sql.contains("exists"), sql);
+    }
+
+
+    /**
+     * An entity's classifications share its guid, so a classification's attribute rows have to be matched on
+     * its name as well as its guid and version.  Without it, a condition on one classification is tested against
+     * the properties of another at the same version - the zone filter's Anchors condition on zoneMembership was
+     * satisfied by the entity's ZoneMembership classification, so stale Anchors zones did not hide anything.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testClassificationPropertiesAreMatchedOnTheirOwnClassification() throws Exception
+    {
+        final String nameJoin = "classification.classification_name = classification_attribute_value.classification_name";
+
+        String single = this.getClassificationMembershipClause(MatchCriteria.ALL,
+                                                               this.getCondition("zoneMembership", PropertyComparisonOperator.NOT_NULL, null));
+
+        assertTrue(single.contains("exists (select 1 from classification_attribute_value where classification.instance_guid = classification_attribute_value.instance_guid " +
+                                   "and classification.version = classification_attribute_value.version and " + nameJoin), single);
+
+        String several = this.getClassificationMembershipClause(MatchCriteria.ANY,
+                                                                this.getCondition("anchorGUID", PropertyComparisonOperator.EQ, "a"),
+                                                                this.getCondition("anchorTypeName", PropertyComparisonOperator.EQ, "b"));
+
+        assertTrue(several.contains("(classification.instance_guid, classification.version, classification.classification_name) in (select " +
+                                    "classification_attribute_value.instance_guid, classification_attribute_value.version, " +
+                                    "classification_attribute_value.classification_name from classification_attribute_value"), several);
+
+        String entity = this.getWhereClause(MatchCriteria.ALL, this.getCondition("qualifiedName", PropertyComparisonOperator.NOT_NULL, null));
+
+        assertFalse(entity.contains("classification_name"), entity);
+    }
+
+
+    private String getClassificationMembershipClause(MatchCriteria propertyMatchCriteria, PropertyCondition... conditions) throws Exception
+    {
+        SearchProperties matchProperties = new SearchProperties();
+
+        matchProperties.setMatchCriteria(propertyMatchCriteria);
+        matchProperties.setConditions(new ArrayList<>(List.of(conditions)));
+
+        ClassificationCondition classificationCondition = new ClassificationCondition();
+
+        classificationCondition.setName("Anchors");
+        classificationCondition.setMatchProperties(matchProperties);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        searchClassifications.setMatchCriteria(MatchCriteria.NONE);
+        searchClassifications.setConditions(new ArrayList<>(List.of(classificationCondition)));
+
+        QueryBuilder queryBuilder = new QueryBuilder("classification", "classification_attribute_value", null, "TestRepository");
+
+        queryBuilder.setSearchClassifications(searchClassifications);
+
+        return queryBuilder.getClassificationMembershipClause("entity.instance_guid").replaceAll("\\s+", " ");
+    }
+
+
+    private PropertyCondition getListCondition(String name, String... values)
+    {
+        PropertyCondition  condition  = new PropertyCondition();
+        ArrayPropertyValue listValue  = new ArrayPropertyValue();
+        InstanceProperties listValues = new InstanceProperties();
+
+        for (int i = 0; i < values.length; i++)
+        {
+            PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+
+            propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            propertyValue.setTypeName("string");
+            propertyValue.setPrimitiveValue(values[i]);
+            listValues.setProperty(Integer.toString(i), propertyValue);
+        }
+
+        listValue.setArrayCount(values.length);
+        listValue.setArrayValues(listValues);
+
+        condition.setProperty(name);
+        condition.setOperator(PropertyComparisonOperator.IN);
+        condition.setValue(listValue);
+
+        return condition;
     }
 
 

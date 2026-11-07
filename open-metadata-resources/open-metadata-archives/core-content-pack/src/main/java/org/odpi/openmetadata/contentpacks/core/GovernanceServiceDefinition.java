@@ -14,6 +14,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.O
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OwnerSetterGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.AnchorsZoneResynchronizerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
 import org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.LovelaceOpenLineageDataQualitySummaryServiceProvider;
@@ -164,6 +165,17 @@ public enum GovernanceServiceDefinition
                          ResourceUse.IMPROVE_METADATA,
                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                          ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Correct the governance zones held in Anchors classifications.
+     */
+    ANCHORS_ZONE_RESYNCHRONIZER("b0ac511c-ac37-41df-9c3d-5572ce1b4de7",
+                                "anchors-zone-resynchronizer-governance-action-service",
+                                "Anchors Zone Resynchronizer Governance Action Service",
+                                new AnchorsZoneResynchronizerGovernanceActionProvider(),
+                                ResourceUse.IMPROVE_METADATA,
+                                DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Verify annotations in a Survey Report.

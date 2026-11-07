@@ -40,6 +40,7 @@ fi
 SUITES=(auth-fvt:runAuthFvt
         server-fvt:runServerFvt
         security-fvt:runSecurityFvt
+        security-fvt:runSecurityFvtPostgres
         query-fvt:runQueryFvt
         anchor-fvt:runAnchorFvt
         view-services-fvt:runViewServicesFvt
@@ -71,9 +72,13 @@ for entry in ${SUITES[@]}
 do
     suite=${entry%%:*}
     flag=${entry##*:}
+    # A suite run twice (security-fvt, on each repository) logs its second run under the flag's name.
+    # Its test-results XML and coverage data replace those of the first run.
+    log=${suite}
+    [[ -e ${L}/${log}.log ]] && log=${suite}-${flag}
     t0=$(date +%s)
-    ${R}/gradlew ":open-metadata-test:open-metadata-fvt:${suite}:test" "-P${flag}" --no-build-cache --continue < /dev/null > ${L}/${suite}.log 2>&1
-    echo "${suite} EXIT $? $(( $(date +%s) - t0 ))s $(date '+%H:%M:%S')" | tee -a ${L}/summary.txt
+    ${R}/gradlew ":open-metadata-test:open-metadata-fvt:${suite}:test" "-P${flag}" --no-build-cache --continue < /dev/null > ${L}/${log}.log 2>&1
+    echo "${log} EXIT $? $(( $(date +%s) - t0 ))s $(date '+%H:%M:%S')" | tee -a ${L}/summary.txt
 done
 
 t0=$(date +%s)

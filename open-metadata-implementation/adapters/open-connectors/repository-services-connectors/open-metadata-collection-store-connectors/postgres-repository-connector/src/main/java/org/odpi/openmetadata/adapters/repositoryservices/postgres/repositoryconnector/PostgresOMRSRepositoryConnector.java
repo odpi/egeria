@@ -45,9 +45,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
 
     /**
-     * Set up the unique id for this metadata collection.
+     * Set up the unique id for this metadata collection.  If it is null, the id recorded in the repository's
+     * control table is used, or for a new repository, a new one is created.  The repository services rely on
+     * this: a server whose configuration does not name a metadata collection id leaves it to the repository.
      *
-     * @param metadataCollectionId - String unique Id
+     * @param metadataCollectionId - String unique Id, or null to use the repository's own
      */
     @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
@@ -57,65 +59,62 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         super.metadataCollectionId = metadataCollectionId;
         super.repositoryName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_SCHEMA.getName(), connectionBean.getConfigurationProperties());
 
-        if (metadataCollectionId != null)
+        if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
         {
-            if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
+            for (Connector embeddedConnector : embeddedConnectors)
             {
-                for (Connector embeddedConnector : embeddedConnectors)
+                if (embeddedConnector instanceof JDBCResourceConnector embeddedJDBCResourceConnector)
                 {
-                    if (embeddedConnector instanceof JDBCResourceConnector embeddedJDBCResourceConnector)
+                    this.jdbcResourceConnector = embeddedJDBCResourceConnector;
+
+                    try
                     {
-                        this.jdbcResourceConnector = embeddedJDBCResourceConnector;
+                        /*
+                         * Pass any pool sizing supplied on this repository's own configuration down to the
+                         * embedded connector.  This must happen before it is started, since that is when the
+                         * pool is built.
+                         */
+                        this.passThroughConfigurationProperty(PostgresConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName());
 
-                        try
+                        if (! jdbcResourceConnector.isActive())
                         {
-                            /*
-                             * Pass any pool sizing supplied on this repository's own configuration down to the
-                             * embedded connector.  This must happen before it is started, since that is when the
-                             * pool is built.
-                             */
-                            this.passThroughConfigurationProperty(PostgresConfigurationProperty.JDBC_MAXIMUM_POOL_SIZE.getName());
-
-                            if (! jdbcResourceConnector.isActive())
-                            {
-                                jdbcResourceConnector.start();
-                            }
-
-                            validateRepositoryControlTable(jdbcResourceConnector);
-
-                            boolean isReadOnly = this.getRepositoryMode();
-                            Date    defaultAsOfTime = this.getDefaultAsOfTime();
-
-                            /*
-                             * Initialize the metadata collection only once the connector is properly set up.
-                             */
-                            super.metadataCollection = new PostgresOMRSMetadataCollection(this,
-                                                                                          super.serverName,
-                                                                                          repositoryHelper,
-                                                                                          repositoryValidator,
-                                                                                          isReadOnly,
-                                                                                          defaultAsOfTime,
-                                                                                          jdbcResourceConnector,
-                                                                                          metadataCollectionId);
-                            break;
+                            jdbcResourceConnector.start();
                         }
-                        catch (Exception exception)
-                        {
-                            logExceptionRecord(methodName,
-                                               PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           exception.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           exception.getMessage()),
-                                               exception);
 
-                            throw new OMRSRuntimeException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                                       exception.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                                       exception.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           exception);
-                        }
+                        validateRepositoryControlTable(jdbcResourceConnector);
+
+                        boolean isReadOnly = this.getRepositoryMode();
+                        Date    defaultAsOfTime = this.getDefaultAsOfTime();
+
+                        /*
+                         * Initialize the metadata collection only once the connector is properly set up.
+                         */
+                        super.metadataCollection = new PostgresOMRSMetadataCollection(this,
+                                                                                      super.serverName,
+                                                                                      repositoryHelper,
+                                                                                      repositoryValidator,
+                                                                                      isReadOnly,
+                                                                                      defaultAsOfTime,
+                                                                                      jdbcResourceConnector,
+                                                                                      super.metadataCollectionId);
+                        break;
+                    }
+                    catch (Exception exception)
+                    {
+                        logExceptionRecord(methodName,
+                                           PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                       exception.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       exception.getMessage()),
+                                           exception);
+
+                        throw new OMRSRuntimeException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                                   exception.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   exception.getMessage()),
+                                                       this.getClass().getName(),
+                                                       methodName,
+                                                       exception);
                     }
                 }
             }

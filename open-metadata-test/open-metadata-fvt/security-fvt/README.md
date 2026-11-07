@@ -39,6 +39,18 @@ It needs no database, no broker and no content packs: an in-memory repository an
 directory. It runs in about a minute. Like the other FVT suites it is opt-in and does not run as part of a
 normal build.
 
+The same tests can be run against a PostgreSQL repository, which applies the zone filter that searches add
+in SQL rather than in memory:
+
+```
+./gradlew :open-metadata-test:open-metadata-fvt:security-fvt:test -PrunSecurityFvtPostgres
+```
+
+This uses the shared PostgreSQL server on `jdbc:postgresql://localhost:5442/egeria` (override it with
+`-Dsecurity.fvt.database.url=...`) and the credentials in the `PostgreSQLRepository` collection of
+`egeria-servers.omsecrets`. The suite drops and recreates its own schema, `repository_secfvtmetadatastore`,
+at the start of each run. The two flags can not be given together.
+
 ## How it is set up
 
 [OMAGPlatformExtension](src/test/java/org/odpi/openmetadata/securityfvt/OMAGPlatformExtension.java) starts
@@ -174,6 +186,22 @@ all, naming the service and the server, and `403-006` for a user who may use the
 requested operation, naming the operation as well. The audit log records were split the same way
 (`0007` and `0010`). The server administrator, operator and investigator checks that a server's own
 connector makes report through the second message, naming the administration service.
+
+### Fixed: the PostgreSQL repository could not start without a metadata collection id
+
+The PostgreSQL repository connector creates or reads the metadata collection id in its control table, but
+only did so if one had been supplied in the server's configuration, so a server configured without one
+failed to start with `OMRS-METADATA-COLLECTION-500-006`. It now uses the id in the control table, or
+creates one for a new repository.
+
+### Fixed: the zone filter had no effect on PostgreSQL
+
+A search condition on the properties of one classification was matched against the properties of every
+classification of the element. The zone filter asks for elements whose *Anchors* classification lists
+zones the user may not read, and it also matched the zones in the element's *ZoneMembership*
+classification, so on PostgreSQL elements the user could not read were still returned by the repository
+(and only removed later by the per-element check). The classification attribute rows are now joined on
+the classification name as well.
 
 ### Correct, but worth knowing
 * **A search never reports a refusal.** An element the user may not see is left out of the results, and

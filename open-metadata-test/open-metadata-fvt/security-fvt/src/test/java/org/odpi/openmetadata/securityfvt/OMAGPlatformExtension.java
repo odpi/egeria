@@ -15,11 +15,19 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,8 +37,9 @@ import java.util.Map;
 /**
  * OMAGPlatformExtension stands up the environment the security-fvt suite runs against: one OMAG Server
  * Platform, in this JVM, with the Open Metadata Access Security Connector installed both as the platform
- * security connector and as the server security connector of one in-memory metadata access store.  It is
- * started once for the whole run and shut down when the run finishes.
+ * security connector and as the server security connector of one metadata access store.  The store runs on the
+ * in-memory repository, or with -PrunSecurityFvtPostgres on the PostgreSQL repository.  It is started once for
+ * the whole run and shut down when the run finishes.
  * <br><br>
  * <b>The user directory is generated, and it is the test fixture.</b>  Every decision the security
  * connector makes comes from that one YAML file: which account a user has and of what type, which security
@@ -131,6 +140,25 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     static final String NEW_MAINTAINER_GROUP = "newMaintainer";
 
     static final String USER_DIRECTORY_COLLECTION = "secFvtUserDirectory";
+
+    /*
+     * The repository the metadata access store runs on.  By default it is the in-memory repository, which needs
+     * nothing outside this JVM.  -PrunSecurityFvtPostgres sets security.fvt.repository to postgres, and the same
+     * tests then run against the PostgreSQL repository.  The two repositories evaluate a search in different
+     * ways - PostgreSQL translates it into SQL, the in-memory repository filters in Java - so the search filter on
+     * governance zones, which leaves elements out inside the repository query, has to be shown to work on both.
+     */
+    private static final String REPOSITORY_PROPERTY = "security.fvt.repository";
+    private static final String POSTGRES_REPOSITORY = "postgres";
+
+    /** PostgreSQL server holding the repository; override with -Dsecurity.fvt.database.url. */
+    private static final String DATABASE_URL = System.getProperty("security.fvt.database.url", "jdbc:postgresql://localhost:5442/egeria");
+    /** Secrets store holding the repository's database credentials; override with -Dsecurity.fvt.database.secrets. */
+    private static final String DATABASE_SECRETS_STORE = System.getProperty("security.fvt.database.secrets",
+                                                                            "../../../open-metadata-resources/open-metadata-deployment/secrets/egeria-servers.omsecrets");
+    private static final String DATABASE_SECRETS_COLLECTION = "PostgreSQLRepository";
+    /** This suite's own schema, dropped at the start of each run so the repository starts empty. */
+    private static final String REPOSITORY_SCHEMA = "repository_secfvtmetadatastore";
     static final String DATA_DIRECTORY            = "build/security-fvt-data";
     private static final String USER_DIRECTORY_FILE = DATA_DIRECTORY + "/security-fvt-user-directory.omsecrets";
 
@@ -201,6 +229,12 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
                 startPlatform(port);
                 confirmPlatformIsAnswering();
+
+                if (usingPostgreSQLRepository())
+                {
+                    dropRepositorySchema();
+                }
+
                 configureMetadataStore();
                 startServer(METADATA_STORE_NAME);
 
@@ -653,7 +687,22 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                                                      SecurityFvtTestSupport.tokenCollection(SERVER_USER_ID),
                                                      platformURLRoot,
                                                      SecurityFvtTestSupport.MAX_PAGE_SIZE);
-        configurationClient.setInMemLocalRepository();
+        if (usingPostgreSQLRepository())
+        {
+            Map<String, Object> storageProperties = new HashMap<>();
+
+            storageProperties.put("databaseURL", DATABASE_URL + "?currentSchema=" + REPOSITORY_SCHEMA);
+            storageProperties.put("databaseSchema", REPOSITORY_SCHEMA);
+            storageProperties.put("secretsStore", new File(DATABASE_SECRETS_STORE).getAbsolutePath());
+            storageProperties.put("secretsCollectionName", DATABASE_SECRETS_COLLECTION);
+
+            configurationClient.setPostgreSQLLocalRepository(storageProperties);
+        }
+        else
+        {
+            configurationClient.setInMemLocalRepository();
+        }
+
         configurationClient.setLocalMetadataCollectionName(METADATA_STORE_NAME + " repository");
         configurationClient.addConsoleAuditLogDestination(new ArrayList<>());
         configurationClient.configureAccessServiceNoTopics(AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceURLMarker());
@@ -663,6 +712,44 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          * every change to this server's configuration is also checked by the server security connector.
          */
         configurationClient.setServerSecurityConnection(SecurityFvtTestSupport.securityConnection("security-fvt server security connection"));
+    }
+
+
+    /**
+     * Is the metadata access store running on the PostgreSQL repository rather than the in-memory one?
+     *
+     * @return flag
+     */
+    static boolean usingPostgreSQLRepository()
+    {
+        return POSTGRES_REPOSITORY.equals(System.getProperty(REPOSITORY_PROPERTY));
+    }
+
+
+    /**
+     * Drop this suite's repository schema so that the metadata access store starts empty, as it does with the
+     * in-memory repository.  The tests expect that: the archive of stale Anchors zones, for example, is ignored
+     * if a previous run has already corrected the elements in it.  The credentials come from the same secrets
+     * store the server is configured with.
+     *
+     * @throws Exception the schema could not be dropped - the run would not be trustworthy, so it does not go ahead
+     */
+    private void dropRepositorySchema() throws Exception
+    {
+        JsonNode secrets = new ObjectMapper(new YAMLFactory()).readTree(new File(DATABASE_SECRETS_STORE))
+                                                              .path("secretsCollections")
+                                                              .path(DATABASE_SECRETS_COLLECTION)
+                                                              .path("secrets");
+
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL,
+                                                                 secrets.path("userId").asText(null),
+                                                                 secrets.path("clearPassword").asText(null));
+             Statement  statement  = connection.createStatement())
+        {
+            statement.execute("drop schema if exists " + REPOSITORY_SCHEMA + " cascade");
+        }
+
+        System.out.println("security-fvt: running on the PostgreSQL repository; dropped schema " + REPOSITORY_SCHEMA + " so it starts empty");
     }
 
 

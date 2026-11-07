@@ -569,6 +569,36 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                    "Validate that this is the intended origin.",
                    "https://egeria-project.org/concepts/governance-action-service/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0051 - The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}
+     */
+    CHECKING_ANCHORS_ZONES("GOVERNANCE-ACTION-CONNECTORS-0051",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} governance action service is checking the governance zones held in the Anchors classifications of {1}",
+                           "The governance action service asks the metadata access server to compare the zones held in each Anchors classification with the zones that govern its element, and to correct those that differ.",
+                           "No action is required.  Checking the whole repository reads every anchored element, so it may take some time.",
+                           "https://egeria-project.org/features/governance-zoning/overview/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0052 - The {0} governance action service has corrected the governance zones in {1} Anchors classifications
+     */
+    ANCHORS_ZONES_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0052",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} governance action service has corrected the governance zones in {1} Anchors classifications",
+                            "The Anchors classifications that were checked now hold the zones that govern their elements.",
+                            "Run the service again until it corrects none, so that searches filtered by governance zone return every element each user may read.",
+                            "https://egeria-project.org/features/governance-zoning/overview/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0053 - The {0} governance action service could not check or correct every Anchors classification of {1}: {2}
+     */
+    ANCHORS_ZONES_NOT_CORRECTED("GOVERNANCE-ACTION-CONNECTORS-0053",
+                                AuditLogRecordSeverityLevel.ERROR,
+                                "The {0} governance action service could not check or correct every Anchors classification of {1}: {2}",
+                                "The service carries on with any remaining action targets, and completes with the anchors-zones-resync-failed guard.  The corrections that could be made have been saved.  Elements that were not corrected still have out-of-date zones, so a search filtered by governance zone may leave them out.",
+                                "The metadata access server's audit log has an OMAG-GENERIC-HANDLERS-0001 message for each element it could not correct, with the cause.  Correct each cause, for example by connecting the cohort member that owns the classification, then run the service again.",
+                                "https://egeria-project.org/features/governance-zoning/overview/"),
+
     ;
 
     private final String                      logMessageId;

@@ -346,4 +346,91 @@ public class OMRSRepositoryContentValidatorTest
     }
 
 
+    /**
+     * IN matches a single-valued property equal to one of the listed values, and an array property sharing any
+     * value with the list.  NONE of an IN is the "shares no value" test used to filter elements by zone.
+     *
+     * @throws InvalidParameterException unexpected
+     */
+    @Test
+    public void testInMatchesValuesAndArrays() throws InvalidParameterException
+    {
+        OMRSRepositoryContentValidator validator = createValidator();
+        Relationship                   instance  = new Relationship();
+        InstanceProperties             properties = new InstanceProperties();
+
+        properties.setProperty("name", this.getString("b"));
+        properties.setProperty("zones", this.getStringArray("x", "y"));
+
+        assertTrue(validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "name", "a", "b"), testGUID, instance, properties));
+        assertTrue(! validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "name", "a", "c"), testGUID, instance, properties));
+        assertTrue(validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "zones", "q", "y"), testGUID, instance, properties));
+        assertTrue(! validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "zones", "q", "r"), testGUID, instance, properties));
+        assertTrue(validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.NONE, "zones", "q", "r"), testGUID, instance, properties));
+        assertTrue(! validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "zones"), testGUID, instance, properties));
+        assertTrue(! validator.verifyMatchingInstancePropertyValues(this.getInSearch(MatchCriteria.ALL, "missing", "x"), testGUID, instance, properties));
+    }
+
+
+    /**
+     * IN needs a list of values.
+     */
+    @Test
+    public void testInRequiresList()
+    {
+        OMRSRepositoryContentValidator validator = createValidator();
+        SearchProperties               search    = new SearchProperties();
+        PropertyCondition              condition = new PropertyCondition();
+
+        condition.setProperty("name");
+        condition.setOperator(PropertyComparisonOperator.IN);
+        condition.setValue(this.getString("a"));
+        search.setConditions(List.of(condition));
+        search.setMatchCriteria(MatchCriteria.ALL);
+
+        expectThrows(InvalidParameterException.class, () -> validator.validateSearchProperties("test", "search", search, "test"));
+    }
+
+
+    private SearchProperties getInSearch(MatchCriteria matchCriteria, String propertyName, String... values)
+    {
+        SearchProperties  search    = new SearchProperties();
+        PropertyCondition condition = new PropertyCondition();
+
+        condition.setProperty(propertyName);
+        condition.setOperator(PropertyComparisonOperator.IN);
+        condition.setValue(this.getStringArray(values));
+        search.setConditions(List.of(condition));
+        search.setMatchCriteria(matchCriteria);
+
+        return search;
+    }
+
+
+    private PrimitivePropertyValue getString(String value)
+    {
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+
+        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        propertyValue.setPrimitiveValue(value);
+
+        return propertyValue;
+    }
+
+
+    private ArrayPropertyValue getStringArray(String... values)
+    {
+        ArrayPropertyValue arrayValue = new ArrayPropertyValue();
+        InstanceProperties elements   = new InstanceProperties();
+
+        for (int i = 0; i < values.length; i++)
+        {
+            elements.setProperty(Integer.toString(i), this.getString(values[i]));
+        }
+
+        arrayValue.setArrayCount(values.length);
+        arrayValue.setArrayValues(elements);
+
+        return arrayValue;
+    }
 }

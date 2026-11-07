@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -25,7 +26,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErr
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OpenMetadataAPIRootHandler provides the common properties for the generic handlers.
@@ -34,6 +37,42 @@ import java.util.List;
  */
 public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<B>
 {
+    /**
+     * The number of anchors whose zones are remembered while the zones in every Anchors classification are checked.
+     */
+    private static final int ANCHOR_ZONE_CACHE_SIZE = 1000;
+
+
+    /**
+     * The outcome of checking the zones in Anchors classifications: how many were corrected, and how many
+     * could not be checked or corrected.  Each failure is also logged.
+     */
+    static final class AnchorsZoneCorrections
+    {
+        private long corrected = 0;
+        private long failed    = 0;
+
+        /**
+         * Return the number of Anchors classifications that were corrected.
+         *
+         * @return count
+         */
+        long getCorrected()
+        {
+            return corrected;
+        }
+
+        /**
+         * Return the number of elements whose Anchors classification could not be checked or corrected.
+         *
+         * @return count
+         */
+        long getFailed()
+        {
+            return failed;
+        }
+    }
+
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -292,6 +331,17 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
                 if (anchors != null)
                 {
+                    /*
+                     * The parent's Anchors classification carries the parent's own zones if it has any, whereas the
+                     * new element (until it is given zones of its own) is governed by the anchor's zones.
+                     */
+                    anchors.zoneMembership = this.getAnchorZones(anchors.anchorGUID,
+                                                                 parentEntity,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+
                     builder.setAnchors(userId, anchors, methodName);
                 }
                 else
@@ -509,10 +559,46 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         }
 
         /*
-         * If the anchor guid has changed then update the value in the classification
+         * The zones that govern the target: its own if it has a ZoneMembership classification, otherwise its
+         * anchor's.
+         */
+        List<String>   effectiveZones    = null;
+        Classification ownZoneMembership = AnchorsZoneMembership.getClassification(targetEntity, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+        if (((ownZoneMembership != null) && (ownZoneMembership.getProperties() != null)) || (targetGUID.equals(newAnchorGUID)))
+        {
+            effectiveZones = AnchorsZoneMembership.getZones(ownZoneMembership, repositoryHelper, serviceName);
+        }
+        else if (newAnchorGUID != null)
+        {
+            /*
+             * The anchor's zones are read from the anchor itself: most of the ways of deriving an anchor do not
+             * look them up, and those that do may have read them from an intermediate element with zones of its own.
+             */
+            try
+            {
+                effectiveZones = this.getAnchorZones(newAnchorGUID, null, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            }
+            catch (Exception error)
+            {
+                /*
+                 * The anchor is maintained regardless; the zones are left as they were.
+                 */
+                this.logAnchorsZoneFailure(targetGUID, targetTypeName, error, methodName);
+                effectiveZones = AnchorsZoneMembership.getZones(anchorsClassification, repositoryHelper, serviceName);
+            }
+        }
+
+        boolean zonesChanged = (newAnchorGUID != null) && (anchorsClassification != null) &&
+                               (! AnchorsZoneMembership.sameZones(effectiveZones,
+                                                                  AnchorsZoneMembership.getZones(anchorsClassification, repositoryHelper, serviceName)));
+
+        /*
+         * If the anchor guid, or the zones that govern the target, have changed then update the classification
          */
         if (((currentAnchorGUID == null) && (newAnchorGUID != null)) ||
-                ((currentAnchorGUID != null) && (! currentAnchorGUID.equals(newAnchorGUID))))
+                ((currentAnchorGUID != null) && (! currentAnchorGUID.equals(newAnchorGUID))) ||
+                (zonesChanged))
         {
             try
             {
@@ -541,6 +627,8 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                                           OpenMetadataProperty.ANCHOR_SCOPE_GUIDS.name,
                                                                                           anchorIdentifiers.anchorScopeGUIDs,
                                                                                           methodName);
+
+                    anchorsProperties = AnchorsZoneMembership.setZones(anchorsProperties, effectiveZones, repositoryHelper, serviceName);
                 }
 
                 if (anchorsClassification == null)
@@ -1816,9 +1904,576 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
 
     /**
+     * Bring the zoneMembership property of the Anchors classifications up to date after the ZoneMembership
+     * classification of an entity has been added, changed or removed.  The property holds the zones that govern
+     * each element (see AnchorsZoneMembership): the element's own zones if it has a ZoneMembership classification,
+     * otherwise its anchor's zones.  So the entity's own Anchors classification is updated, and when the entity
+     * is an anchor, so are the Anchors classifications of its members that have no zones of their own.
+     * <br><br>
+     * The Anchors classification is maintained by the server, so the updates are made with the server's userId.
+     * A failure is logged and counted rather than failing the caller's request, which has already completed.
+     *
+     * @param entityGUID unique identifier of the entity whose zones changed
+     * @param entityGUIDParameterName parameter supplying entityGUID
+     * @param entityTypeName type of the entity
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return the number of Anchors classifications corrected, and the number of elements that could not be
+     *         checked or corrected
+     */
+    AnchorsZoneCorrections synchronizeAnchorsZoneMembership(String  entityGUID,
+                                         String  entityGUIDParameterName,
+                                         String  entityTypeName,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName)
+    {
+        EntityDetail           entity;
+        AnchorsZoneCorrections corrections = new AnchorsZoneCorrections();
+
+        try
+        {
+            entity = repositoryHandler.getEntityByGUID(localServerUserId,
+                                                       entityGUID,
+                                                       entityGUIDParameterName,
+                                                       entityTypeName,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       effectiveTime,
+                                                       methodName);
+        }
+        catch (Exception error)
+        {
+            this.logAnchorsZoneFailure(entityGUID, entityTypeName, error, methodName);
+            corrections.failed++;
+            return corrections;
+        }
+
+        if (entity == null)
+        {
+            return corrections;
+        }
+
+        Classification ownZoneMembership = AnchorsZoneMembership.getClassification(entity, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+        boolean        hasOwnZones       = (ownZoneMembership != null) && (ownZoneMembership.getProperties() != null);
+        List<String>   ownZones          = AnchorsZoneMembership.getZones(ownZoneMembership, repositoryHelper, serviceName);
+        Classification anchors           = AnchorsZoneMembership.getClassification(entity, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        String         anchorGUID        = entity.getGUID();
+
+        if ((anchors != null) && (anchors.getProperties() != null))
+        {
+            String classifiedAnchorGUID = repositoryHelper.getStringProperty(serviceName,
+                                                                             OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                             anchors.getProperties(),
+                                                                             methodName);
+            if (classifiedAnchorGUID != null)
+            {
+                anchorGUID = classifiedAnchorGUID;
+            }
+        }
+
+        boolean isAnchor = anchorGUID.equals(entity.getGUID());
+
+        if (anchors != null)
+        {
+            List<String> effectiveZones = ownZones;
+
+            if ((! isAnchor) && (! hasOwnZones))
+            {
+                /*
+                 * The entity no longer has zones of its own, so it is governed by its anchor's zones again.
+                 */
+                try
+                {
+                    EntityDetail anchorEntity = repositoryHandler.getEntityByGUID(localServerUserId,
+                                                                                  anchorGUID,
+                                                                                  OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
+                                                                                  methodName);
+
+                    effectiveZones = AnchorsZoneMembership.getZones(AnchorsZoneMembership.getClassification(anchorEntity,
+                                                                                                            OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName),
+                                                                    repositoryHelper,
+                                                                    serviceName);
+                }
+                catch (Exception error)
+                {
+                    this.logAnchorsZoneFailure(entity.getGUID(), entity.getType().getTypeDefName(), error, methodName);
+                    corrections.failed++;
+                    return corrections;
+                }
+            }
+
+            this.setAnchorsZones(entity, anchors, effectiveZones, corrections, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+
+        if (isAnchor)
+        {
+            /*
+             * The members of this anchor that have no zones of their own take the anchor's zones.
+             */
+            final int pageSize  = invalidParameterHandler.getMaxPagingSize();
+            int       startFrom = 0;
+
+            try
+            {
+                List<EntityDetail> members = this.getAnchoredEntities(localServerUserId, entity.getGUID(), startFrom, pageSize, methodName);
+
+                while (members != null)
+                {
+                    for (EntityDetail member : members)
+                    {
+                        if ((member != null) && (! entity.getGUID().equals(member.getGUID())))
+                        {
+                            Classification memberZoneMembership = AnchorsZoneMembership.getClassification(member, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+                            if ((memberZoneMembership == null) || (memberZoneMembership.getProperties() == null))
+                            {
+                                this.setAnchorsZones(member,
+                                                     AnchorsZoneMembership.getClassification(member, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName),
+                                                     ownZones,
+                                                     corrections,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+                            }
+                        }
+                    }
+
+                    if (members.size() < pageSize)
+                    {
+                        break;
+                    }
+
+                    startFrom += pageSize;
+                    members = this.getAnchoredEntities(localServerUserId, entity.getGUID(), startFrom, pageSize, methodName);
+                }
+            }
+            catch (Exception error)
+            {
+                /*
+                 * The members that were not reached are unknown, so the failure is counted once.
+                 */
+                this.logAnchorsZoneFailure(entity.getGUID(), entity.getType().getTypeDefName(), error, methodName);
+                corrections.failed++;
+            }
+        }
+
+        return corrections;
+    }
+
+
+    /**
+     * Check the zoneMembership property of every Anchors classification in the repository against the zones that
+     * govern its element (see AnchorsZoneMembership), and correct the ones that differ.  This repairs the values
+     * written before the server maintained them, and those of elements that reach the repository without passing
+     * through the handlers, such as those loaded from an open metadata archive.  Each correction is sent to the
+     * repository named in the classification header, so reference copies are corrected through the cohort member
+     * that owns them.
+     * <br><br>
+     * The elements are retrieved a page at a time in GUID order, which the corrections do not change.  The zones
+     * of recently seen anchors are remembered for the length of the sweep, up to ANCHOR_ZONE_CACHE_SIZE of them, so
+     * an anchor with many members is usually retrieved once.  As with synchronizeAnchorsZoneMembership(), the
+     * updates are made with the server's userId, and a failure on one element is logged and counted and the sweep
+     * moves on.
+     *
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return the number of Anchors classifications corrected, and the number of elements that could not be
+     *         checked or corrected
+     * @throws PropertyServerException the repository could not be searched
+     * @throws UserNotAuthorizedException the server's userId is not authorized to search the repository
+     */
+    AnchorsZoneCorrections synchronizeAllAnchorsZoneMembership(boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final int              pageSize    = invalidParameterHandler.getMaxPagingSize();
+        int                    startFrom   = 0;
+        AnchorsZoneCorrections corrections = new AnchorsZoneCorrections();
+
+        Map<String, List<String>> anchorZoneCache = new LinkedHashMap<>(16, 0.75f, true)
+        {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, List<String>> eldest)
+            {
+                return size() > ANCHOR_ZONE_CACHE_SIZE;
+            }
+        };
+
+        SearchClassifications hasAnchors = AnchorsZoneMembership.getHasAnchorsSearch();
+
+        List<EntityDetail> entities = this.findAnchoredEntities(hasAnchors, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
+        while (entities != null)
+        {
+            for (EntityDetail entity : entities)
+            {
+                if ((entity != null) && (entity.getType() != null))
+                {
+                    Classification anchors = AnchorsZoneMembership.getClassification(entity, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+
+                    try
+                    {
+                        List<String> effectiveZones = this.getCachedEffectiveZones(entity,
+                                                                                   anchors,
+                                                                                   anchorZoneCache,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+                        this.setAnchorsZones(entity, anchors, effectiveZones, corrections, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                    }
+                    catch (Exception error)
+                    {
+                        this.logAnchorsZoneFailure(entity.getGUID(), entity.getType().getTypeDefName(), error, methodName);
+                        corrections.failed++;
+                    }
+                }
+            }
+
+            if (entities.size() < pageSize)
+            {
+                break;
+            }
+
+            startFrom += pageSize;
+            entities = this.findAnchoredEntities(hasAnchors, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+
+        return corrections;
+    }
+
+
+    /**
+     * Retrieve a page of the entities that have an Anchors classification, in GUID order, using the server's userId.
+     *
+     * @param hasAnchors search for the Anchors classification
+     * @param startFrom starting element
+     * @param pageSize maximum number of elements
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return page of entities, or null if there are no more
+     * @throws PropertyServerException the repository could not be searched
+     * @throws UserNotAuthorizedException the server's userId is not authorized to search the repository
+     */
+    private List<EntityDetail> findAnchoredEntities(SearchClassifications hasAnchors,
+                                                    int                   startFrom,
+                                                    int                   pageSize,
+                                                    boolean               forLineage,
+                                                    boolean               forDuplicateProcessing,
+                                                    Date                  effectiveTime,
+                                                    String                methodName) throws PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        return repositoryHandler.findEntities(localServerUserId,
+                                              OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                              null,
+                                              null,
+                                              null,
+                                              hasAnchors,
+                                              null,
+                                              null,
+                                              SequencingOrder.GUID,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              startFrom,
+                                              pageSize,
+                                              effectiveTime,
+                                              methodName);
+    }
+
+
+    /**
+     * Return the zones that govern an element with an Anchors classification: its own zones if it has a
+     * ZoneMembership classification or is its own anchor, otherwise its anchor's, which are remembered in the
+     * supplied cache.
+     *
+     * @param entity the element
+     * @param anchors its Anchors classification
+     * @param anchorZoneCache zones of recently retrieved anchors (an anchor with no zones is held as null)
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return zones or null
+     * @throws InvalidParameterException the anchor GUID is invalid
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<String> getCachedEffectiveZones(EntityDetail              entity,
+                                                 Classification            anchors,
+                                                 Map<String, List<String>> anchorZoneCache,
+                                                 boolean                   forLineage,
+                                                 boolean                   forDuplicateProcessing,
+                                                 Date                      effectiveTime,
+                                                 String                    methodName) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        Classification ownZoneMembership = AnchorsZoneMembership.getClassification(entity, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+        String         anchorGUID        = null;
+
+        if ((anchors != null) && (anchors.getProperties() != null))
+        {
+            anchorGUID = repositoryHelper.getStringProperty(serviceName,
+                                                            OpenMetadataProperty.ANCHOR_GUID.name,
+                                                            anchors.getProperties(),
+                                                            methodName);
+        }
+
+        if (((ownZoneMembership != null) && (ownZoneMembership.getProperties() != null)) ||
+                (anchorGUID == null) || (anchorGUID.equals(entity.getGUID())))
+        {
+            return AnchorsZoneMembership.getZones(ownZoneMembership, repositoryHelper, serviceName);
+        }
+
+        if (anchorZoneCache.containsKey(anchorGUID))
+        {
+            return anchorZoneCache.get(anchorGUID);
+        }
+
+        List<String> anchorZones = this.getAnchorZones(anchorGUID, null, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
+        anchorZoneCache.put(anchorGUID, anchorZones);
+
+        return anchorZones;
+    }
+
+
+    /**
+     * Add to a search the condition that leaves out the elements whose zones the user cannot read, when the
+     * security connector can list the zones the user may read.  See AnchorsZoneMembership.addReadableZonesFilter().
+     *
+     * @param userId calling user
+     * @param searchClassifications the caller's classification conditions (may be null)
+     * @param methodName calling method
+     * @return classification conditions to use
+     */
+    SearchClassifications addReadableZonesFilter(String                userId,
+                                                 SearchClassifications searchClassifications,
+                                                 String                methodName)
+    {
+        if (securityVerifier == null)
+        {
+            return searchClassifications;
+        }
+
+        return AnchorsZoneMembership.addReadableZonesFilter(searchClassifications,
+                                                            securityVerifier.getReadableZonesForUser(userId, serviceName, methodName));
+    }
+
+
+    /**
+     * Return the zones of an anchor: those of its own ZoneMembership classification.
+     *
+     * @param anchorGUID unique identifier of the anchor
+     * @param knownEntity an entity already retrieved, used if it is the anchor (may be null)
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return zones or null
+     * @throws InvalidParameterException the anchor GUID is invalid
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<String> getAnchorZones(String        anchorGUID,
+                                        EntitySummary knownEntity,
+                                        boolean       forLineage,
+                                        boolean       forDuplicateProcessing,
+                                        Date          effectiveTime,
+                                        String        methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        if (anchorGUID == null)
+        {
+            return null;
+        }
+
+        EntitySummary anchorEntity = knownEntity;
+
+        if ((anchorEntity == null) || (! anchorGUID.equals(anchorEntity.getGUID())))
+        {
+            anchorEntity = repositoryHandler.getEntityByGUID(localServerUserId,
+                                                             anchorGUID,
+                                                             OpenMetadataProperty.ANCHOR_GUID.name,
+                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
+                                                             methodName);
+        }
+
+        return AnchorsZoneMembership.getZones(AnchorsZoneMembership.getClassification(anchorEntity, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName),
+                                              repositoryHelper,
+                                              serviceName);
+    }
+
+
+    /**
+     * Return the zones that govern an element anchored to the supplied anchor: its own zones if it has a
+     * ZoneMembership classification, otherwise its anchor's zones.
+     *
+     * @param element the anchored element
+     * @param anchorGUID unique identifier of its anchor (null or its own GUID if it is its own anchor)
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return zones or null
+     * @throws InvalidParameterException the anchor GUID is invalid
+     * @throws PropertyServerException repository problem
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<String> getEffectiveZones(EntitySummary element,
+                                           String        anchorGUID,
+                                           boolean       forLineage,
+                                           boolean       forDuplicateProcessing,
+                                           Date          effectiveTime,
+                                           String        methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        Classification ownZoneMembership = AnchorsZoneMembership.getClassification(element, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName);
+
+        if (((ownZoneMembership != null) && (ownZoneMembership.getProperties() != null)) ||
+                (anchorGUID == null) || (anchorGUID.equals(element.getGUID())))
+        {
+            return AnchorsZoneMembership.getZones(ownZoneMembership, repositoryHelper, serviceName);
+        }
+
+        return this.getAnchorZones(anchorGUID, null, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Update the zoneMembership property of one entity's Anchors classification if it differs from the supplied zones.
+     *
+     * @param entity entity to update
+     * @param anchors its Anchors classification
+     * @param zones zones that govern the entity
+     * @param corrections counts to add the outcome to
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     */
+    private void setAnchorsZones(EntityDetail           entity,
+                                 Classification         anchors,
+                                 List<String>           zones,
+                                 AnchorsZoneCorrections corrections,
+                                 boolean                forLineage,
+                                 boolean                forDuplicateProcessing,
+                                 Date                   effectiveTime,
+                                 String                 methodName)
+    {
+        final String entityGUIDParameterName = "entity.getGUID()";
+
+        if (anchors == null)
+        {
+            return;
+        }
+
+        /*
+         * An empty list is rewritten as no zones, even though they mean the same, because the search filter
+         * would otherwise hide the element from everyone.
+         */
+        if ((AnchorsZoneMembership.sameZones(zones, AnchorsZoneMembership.getZones(anchors, repositoryHelper, serviceName))) &&
+                (! AnchorsZoneMembership.holdsEmptyZoneList(anchors)))
+        {
+            return;
+        }
+
+        /*
+         * The Anchors classification is derived by the server, so a classification that is owned elsewhere - for
+         * example, loaded from an open metadata archive - is corrected on behalf of its owner.  The enterprise
+         * repository connector sends the update to the repository named in the classification header, so a
+         * reference copy is corrected by the cohort member that owns it.
+         */
+        String externalSourceGUID = null;
+        String externalSourceName = null;
+
+        if ((anchors.getInstanceProvenanceType() != null) && (anchors.getInstanceProvenanceType() != InstanceProvenanceType.LOCAL_COHORT))
+        {
+            externalSourceGUID = anchors.getMetadataCollectionId();
+            externalSourceName = anchors.getMetadataCollectionName();
+        }
+
+        try
+        {
+            repositoryHandler.reclassifyEntity(localServerUserId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               entity.getGUID(),
+                                               entityGUIDParameterName,
+                                               entity.getType().getTypeDefName(),
+                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                               OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                               anchors,
+                                               AnchorsZoneMembership.setZones(anchors.getProperties(), zones, repositoryHelper, serviceName),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
+
+            corrections.corrected++;
+        }
+        catch (Exception error)
+        {
+            this.logAnchorsZoneFailure(entity.getGUID(), entity.getType().getTypeDefName(), error, methodName);
+
+            corrections.failed++;
+        }
+    }
+
+
+    /**
+     * Log a failure to maintain the zones in an Anchors classification.
+     *
+     * @param entityGUID entity being updated
+     * @param entityTypeName its type
+     * @param error exception
+     * @param methodName calling method
+     */
+    private void logAnchorsZoneFailure(String    entityGUID,
+                                       String    entityTypeName,
+                                       Exception error,
+                                       String    methodName)
+    {
+        auditLog.logException(methodName,
+                              GenericHandlersAuditCode.UNABLE_TO_SET_ANCHORS.getMessageDefinition(serviceName,
+                                                                                                  entityGUID,
+                                                                                                  entityTypeName,
+                                                                                                  repositoryHelper.getTypeDefByName(serviceName, entityTypeName) == null ? null :
+                                                                                                          repositoryHelper.getTypeDefByName(serviceName, entityTypeName).getGUID(),
+                                                                                                  methodName,
+                                                                                                  error.getClass().getName(),
+                                                                                                  error.getMessage()),
+                              error);
+    }
+
+
+    /**
      * Locate all of the elements that are anchored to this entity and update their Anchors classification
-     * to match this entity and their anchor.  This is used when something like the anchorScopeGUID or zoneMembership
-     * changes.  The assumption is that changes to the anchor element have already occurred.
+     * to match this entity and their anchor.  This is used when something like the anchorScopeGUID
+     * changes.  The assumption is that changes to the anchor element have already occurred.  A member's
+     * zoneMembership is kept: it holds the zones that govern the member, which are its own if it has any.
      *
      * @param userId calling user
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
@@ -1879,6 +2534,11 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
                     if (anchoredEntity != null)
                     {
+                        List<String> memberZones = AnchorsZoneMembership.getZones(AnchorsZoneMembership.getClassification(anchoredEntity,
+                                                                                                                         OpenMetadataType.ANCHORS_CLASSIFICATION.typeName),
+                                                                                  repositoryHelper,
+                                                                                  serviceName);
+
                         repositoryHandler.reclassifyEntity(userId,
                                                            externalSourceGUID,
                                                            externalSourceName,
@@ -1888,7 +2548,10 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
                                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                            null,
-                                                           anchorsClassification.getProperties(),
+                                                           AnchorsZoneMembership.setZones(anchorsClassification.getProperties(),
+                                                                                          memberZones,
+                                                                                          repositoryHelper,
+                                                                                          serviceName),
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime,
@@ -2381,6 +3044,11 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
     {
         AnchorIdentifiers anchorIdentifiers = getAnchorsFromAnchorsClassification(anchoredElement, methodName);
 
+        /*
+         * The element is governed by its own zones if it has any, and by its new anchor's zones otherwise.
+         */
+        List<String> effectiveZones = this.getEffectiveZones(anchoredElement, anchorGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+
         ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                 OpenMetadataType.REFERENCEABLE.typeName,
                                                                 repositoryHelper,
@@ -2400,7 +3068,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                              OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                              ClassificationOrigin.ASSIGNED,
                                              null,
-                                             builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUIDs, this.getZoneMembershipFromClassification(anchoredElement, methodName), methodName),
+                                             builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, anchorScopeGUIDs, effectiveZones, methodName),
                                              forLineage,
                                              forDuplicateProcessing,
                                              effectiveTime,
@@ -2421,7 +3089,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
                                                                             anchorTypeName,
                                                                             anchorDomainName,
                                                                             (anchorScopeGUIDs == null) ? anchorIdentifiers.anchorScopeGUIDs : anchorScopeGUIDs,
-                                                                            anchorIdentifiers.zoneMembership,
+                                                                            effectiveZones,
                                                                             methodName),
                                                forLineage,
                                                forDuplicateProcessing,
