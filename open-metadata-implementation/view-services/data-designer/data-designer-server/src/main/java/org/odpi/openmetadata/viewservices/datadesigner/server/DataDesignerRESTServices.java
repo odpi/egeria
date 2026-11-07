@@ -8,9 +8,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataValueSpecificationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataFieldHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataStructureHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportTypeInstanceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ReportRunOfProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -2495,6 +2498,442 @@ public class DataDesignerRESTServices extends TokenController
             DataStructureHandler handler = instanceHandler.getDataStructureHandler(userId, serverName, methodName);
 
             handler.detachSchemaTypeDefinition(userId, dataStructureGUID, schemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkBasisDataField(String                     serverName,
+                                String                     measurementSpecificationGUID,
+                                String                     dataFieldGUID,
+                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkBasisDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataValueSpecificationHandler handler = instanceHandler.getDataValueSpecificationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkBasisDataField(userId, measurementSpecificationGUID, dataFieldGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof BasisDataFieldProperties properties)
+            {
+                handler.linkBasisDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkBasisDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(BasisDataFieldProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the basis for the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachBasisDataField(String                        serverName,
+                                  String                        measurementSpecificationGUID,
+                                  String                        dataFieldGUID,
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachBasisDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataValueSpecificationHandler handler = instanceHandler.getDataValueSpecificationHandler(userId, serverName, methodName);
+
+            handler.detachBasisDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the time of the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkAsOfDataField(String                     serverName,
+                                String                     measurementSpecificationGUID,
+                                String                     dataFieldGUID,
+                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAsOfDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataValueSpecificationHandler handler = instanceHandler.getDataValueSpecificationHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkAsOfDataField(userId, measurementSpecificationGUID, dataFieldGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof AsOfDataFieldProperties properties)
+            {
+                handler.linkAsOfDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkAsOfDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AsOfDataFieldProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the time of the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachAsOfDataField(String                        serverName,
+                                  String                        measurementSpecificationGUID,
+                                  String                        dataFieldGUID,
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAsOfDataField";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataValueSpecificationHandler handler = instanceHandler.getDataValueSpecificationHandler(userId, serverName, methodName);
+
+            handler.detachAsOfDataField(userId, measurementSpecificationGUID, dataFieldGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a report type to a report that was generated using this type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkReportTypeInstance(String                     serverName,
+                                String                     reportTypeGUID,
+                                String                     reportGUID,
+                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkReportTypeInstance";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkReportTypeInstance(userId, reportTypeGUID, reportGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ReportTypeInstanceProperties properties)
+            {
+                handler.linkReportTypeInstance(userId, reportTypeGUID, reportGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkReportTypeInstance(userId, reportTypeGUID, reportGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ReportTypeInstanceProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a report type from a report that was generated using this type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachReportTypeInstance(String                        serverName,
+                                  String                        reportTypeGUID,
+                                  String                        reportGUID,
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachReportTypeInstance";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.detachReportTypeInstance(userId, reportTypeGUID, reportGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a results set to a report that was generated from it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse linkReportRunOf(String                     serverName,
+                                String                     resultsSetGUID,
+                                String                     reportGUID,
+                                NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkReportRunOf";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkReportRunOf(userId, resultsSetGUID, reportGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof ReportRunOfProperties properties)
+            {
+                handler.linkReportRunOf(userId, resultsSetGUID, reportGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkReportRunOf(userId, resultsSetGUID, reportGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(ReportRunOfProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a results set from a report that was generated from it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param requestBody delete options
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public VoidResponse detachReportRunOf(String                        serverName,
+                                  String                        resultsSetGUID,
+                                  String                        reportGUID,
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachReportRunOf";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.detachReportRunOf(userId, resultsSetGUID, reportGUID, requestBody);
         }
         catch (Throwable error)
         {

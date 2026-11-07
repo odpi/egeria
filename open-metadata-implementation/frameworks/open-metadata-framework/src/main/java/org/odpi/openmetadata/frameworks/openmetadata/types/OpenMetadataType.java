@@ -2932,24 +2932,55 @@ public enum OpenMetadataType
                              VirtualRelationalTableProperties.class),
 
     /**
-     * A template for generating report.
+     * A template for generating a report.
      */
     REPORT_TYPE("ed53a480-e6d4-44f1-aac7-3fac60bbb00e",
                 "ReportType",
-                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
                 "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
-                "A template for generating report.",
+                "A template for generating a report.",
                 ReportTypeProperties.class),
 
     /**
-     * A collection if data items that describe a situation.  This is an instance of a report.
+     * A collection of data items that describe a situation.  This is an instance of a report.
      */
     REPORT("e9077f4f-955b-4d7b-b1f7-12ee769ff0c3",
            "Report",
            OpenMetadataWikiPages.MODEL_0239_REPORTS,
            "c01207de-0f57-491a-9377-84b80317c81e",
-           "A collection if data items that describe a situation.  This is an instance of a report.",
+           "A collection of data items that describe a situation.  This is an instance of a report.",
            ReportProperties.class),
+
+    /**
+     * A report type for reports about open lineage and related data.
+     */
+    REPORT_SPEC("6181f932-3606-4486-9c3f-51a3d75ca3c8",
+                "ReportSpec",
+                OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
+                "4bc9e8e6-c0e5-4b31-8136-ee995c199939",
+                "A report type for reports about open lineage and related data.",
+                ReportSpecProperties.class),
+
+    /**
+     * Links a report type to a report that was generated using this type.
+     */
+    REPORT_TYPE_INSTANCE_RELATIONSHIP("e2c1f80e-4093-4993-824d-24b5d10c27cc",
+                                      "ReportTypeInstance",
+                                      OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
+                                      "9700165d-8dc9-4645-b474-21918a6067ec",
+                                      "Links a report type to a report that was generated using this type.",
+                                      ReportTypeInstanceProperties.class,
+                                      OpenMetadataRelationshipPurpose.DEFINITION),
+
+    /**
+     * A collection of reports with the layout information needed to display them together.
+     */
+    DASHBOARD("2cfdc8f6-4ca6-4609-a4f9-af78012b71c4",
+              "Dashboard",
+              OpenMetadataWikiPages.MODEL_0239_REPORTS,
+              "4ac9627f-5d5a-46eb-80f6-791d779b8108",
+              "A collection of reports with the layout information needed to display them together.",
+              DashboardProperties.class),
 
     /**
      * Links a report to the element (typically a process) that created the report.
@@ -5742,6 +5773,38 @@ public enum OpenMetadataType
                              DataValueSpecificationProperties.class),
 
     /**
+     * The description of a measurement that is part of a report.
+     */
+    MEASUREMENT_SPECIFICATION("633dc34e-27da-406d-8cd9-145224c7dea3",
+                              "MeasurementSpecification",
+                              OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
+                              "be819891-dec3-4cb4-b7ad-5783c0459fc5",
+                              "The description of a measurement that is part of a report.",
+                              MeasurementSpecificationProperties.class),
+
+    /**
+     * Links a measurement specification to the data field that describes the basis for the measurement.
+     */
+    BASIS_DATA_FIELD_RELATIONSHIP("8e12a8b9-014f-4072-a593-75e1493d2f47",
+                                  "BasisDataField",
+                                  OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
+                                  "830095b1-4070-4af8-bc6d-380bd4c594fa",
+                                  "Links a measurement specification to the data field that describes the basis for the measurement.  For example, the denominator for a percentage or the total a share is taken from.",
+                                  BasisDataFieldProperties.class,
+                                  OpenMetadataRelationshipPurpose.DEFINITION),
+
+    /**
+     * Links a measurement specification to the data field that describes the time of the measurement.
+     */
+    AS_OF_DATA_FIELD_RELATIONSHIP("111165e5-b8e2-49fa-aa17-98a83eecf2e5",
+                                  "AsOfDataField",
+                                  OpenMetadataWikiPages.MODEL_0582_REPORT_SPECIFICATIONS,
+                                  "44f49651-4cf1-4ae0-a67c-78d464df1690",
+                                  "Links a measurement specification to the data field that describes the time of the measurement.",
+                                  AsOfDataFieldProperties.class,
+                                  OpenMetadataRelationshipPurpose.DEFINITION),
+
+    /**
      * Links a data class to an asset or schema element to define its logical data type.
      */
     DATA_VALUE_ASSIGNMENT_RELATIONSHIP("4df37335-7f0c-4ced-82df-3b2fd07be1bd",
@@ -6242,7 +6305,7 @@ public enum OpenMetadataType
                                              "SchemaAttributeDefinition",
                                              OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
                                              "d21adefa-7721-4820-8f40-228647e6cbe8",
-                                             "Link between a data field and the identified schema attribute definition.",
+                                             "Link between a data field and the identified schema attributes that it describes.",
                                              SchemaAttributeDefinitionProperties.class,
                                              OpenMetadataRelationshipPurpose.DEFINITION),
 
@@ -6253,7 +6316,7 @@ public enum OpenMetadataType
                                         "SchemaTypeDefinition",
                                         OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
                                         "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
-                                        "Link between a data structure and an equivalent schema type.",
+                                        "Link between a data structure and equivalent schema types.",
                                         SchemaTypeDefinitionProperties.class,
                                         OpenMetadataRelationshipPurpose.DEFINITION),
 
@@ -6857,6 +6920,17 @@ public enum OpenMetadataType
                 "Connects a SavedQuery entity to a ResultSet entity. This indicates that the result set is populated by the saved query.",
                 SmartQueryProperties.class,
                              OpenMetadataRelationshipPurpose.DEFINITION),
+
+    /**
+     * Links a results set to a report that was generated from it.
+     */
+    REPORT_RUN_OF_RELATIONSHIP("5476bed9-c39c-4979-bdfe-62346790273a",
+                               "ReportRunOf",
+                               OpenMetadataWikiPages.MODEL_0725_SMART_COLLECTIONS,
+                               "993a426a-04d3-484e-8bec-72d059c3fef9",
+                               "Links a results set to a report that was generated from it.",
+                               ReportRunOfProperties.class,
+                               OpenMetadataRelationshipPurpose.ACTIVITY),
 
     /**
      * Description of a well-defined capability within a solution.

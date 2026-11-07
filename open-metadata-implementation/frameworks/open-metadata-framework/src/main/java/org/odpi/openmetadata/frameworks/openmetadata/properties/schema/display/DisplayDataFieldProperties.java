@@ -22,7 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DisplayDataFieldProperties extends SchemaAttributeProperties
 {
-    private Boolean inputField = null;
+    private Boolean inputField        = null;
+    private String  placementKind     = null;
+    private String  span              = null;
+    private String  presentationStyle = null;
+    private String  markdownContent   = null;
 
 
     /**
@@ -38,7 +42,7 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
     /**
      * Copy/clone constructor.
      *
-     * @param template template object to copy.
+     * @param template object to copy
      */
     public DisplayDataFieldProperties(DisplayDataFieldProperties template)
     {
@@ -46,15 +50,19 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
 
         if (template != null)
         {
-            inputField = template.getInputField();
+            inputField        = template.getInputField();
+            placementKind     = template.getPlacementKind();
+            span              = template.getSpan();
+            presentationStyle = template.getPresentationStyle();
+            markdownContent   = template.getMarkdownContent();
         }
     }
 
 
     /**
-     * Return whether this data field is accepting new data from the end user or not.
+     * Return whether this data field is accepting new data from the end user.
      *
-     * @return boolean flag
+     * @return boolean
      */
     public Boolean getInputField()
     {
@@ -63,13 +71,101 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
 
 
     /**
-     * Set up whether this data field is accepting new data from the end user or not.
+     * Set up whether this data field is accepting new data from the end user.
      *
-     * @param inputField boolean flag
+     * @param inputField boolean
      */
     public void setInputField(Boolean inputField)
     {
         this.inputField = inputField;
+    }
+
+
+    /**
+     * Return how the element is placed in the display.
+     *
+     * @return string
+     */
+    public String getPlacementKind()
+    {
+        return placementKind;
+    }
+
+
+    /**
+     * Set up how the element is placed in the display.
+     *
+     * @param placementKind string
+     */
+    public void setPlacementKind(String placementKind)
+    {
+        this.placementKind = placementKind;
+    }
+
+
+    /**
+     * Return the number of columns/cells the element spans.
+     *
+     * @return string
+     */
+    public String getSpan()
+    {
+        return span;
+    }
+
+
+    /**
+     * Set up the number of columns/cells the element spans.
+     *
+     * @param span string
+     */
+    public void setSpan(String span)
+    {
+        this.span = span;
+    }
+
+
+    /**
+     * Return the style of presentation used to display this element.
+     *
+     * @return string
+     */
+    public String getPresentationStyle()
+    {
+        return presentationStyle;
+    }
+
+
+    /**
+     * Set up the style of presentation used to display this element.
+     *
+     * @param presentationStyle string
+     */
+    public void setPresentationStyle(String presentationStyle)
+    {
+        this.presentationStyle = presentationStyle;
+    }
+
+
+    /**
+     * Return the Markdown content of the element.
+     *
+     * @return string
+     */
+    public String getMarkdownContent()
+    {
+        return markdownContent;
+    }
+
+
+    /**
+     * Set up the Markdown content of the element.
+     *
+     * @param markdownContent string
+     */
+    public void setMarkdownContent(String markdownContent)
+    {
+        this.markdownContent = markdownContent;
     }
 
 
@@ -83,6 +179,10 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
     {
         return "DisplayDataFieldProperties{" +
                 "inputField=" + inputField +
+                ", placementKind='" + placementKind + '\'' +
+                ", span='" + span + '\'' +
+                ", presentationStyle='" + presentationStyle + '\'' +
+                ", markdownContent='" + markdownContent + '\'' +
                 "} " + super.toString();
     }
 
@@ -96,20 +196,15 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DisplayDataFieldProperties that = (DisplayDataFieldProperties) objectToCompare;
-        return Objects.equals(inputField, that.inputField);
+        return Objects.equals(inputField, that.inputField) &&
+                Objects.equals(placementKind, that.placementKind) &&
+                Objects.equals(span, that.span) &&
+                Objects.equals(presentationStyle, that.presentationStyle) &&
+                Objects.equals(markdownContent, that.markdownContent);
     }
 
 
@@ -121,6 +216,6 @@ public class DisplayDataFieldProperties extends SchemaAttributeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), inputField);
+        return Objects.hash(super.hashCode(), inputField, placementKind, span, presentationStyle, markdownContent);
     }
 }

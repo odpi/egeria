@@ -1385,4 +1385,252 @@ public class DataDesignerResource
     {
         return restAPI.detachSchemaTypeDefinition(serverName, dataStructureGUID, schemaTypeGUID, requestBody);
     }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-value-specifications/{measurementSpecificationGUID}/basis-data-fields/{dataFieldGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkBasisDataField",
+            description="Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse linkBasisDataField(@PathVariable String serverName,
+                                  @PathVariable String measurementSpecificationGUID,
+                                  @PathVariable String dataFieldGUID,
+                                  @RequestBody (required = false)
+                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkBasisDataField(serverName, measurementSpecificationGUID, dataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the basis for the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-value-specifications/{measurementSpecificationGUID}/basis-data-fields/{dataFieldGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachBasisDataField",
+            description="Detach a measurement specification from the data field that describes the basis for the measurement.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse detachBasisDataField(@PathVariable String serverName,
+                                  @PathVariable String measurementSpecificationGUID,
+                                  @PathVariable String dataFieldGUID,
+                                  @RequestBody (required = false)
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachBasisDataField(serverName, measurementSpecificationGUID, dataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the time of the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-value-specifications/{measurementSpecificationGUID}/as-of-data-fields/{dataFieldGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAsOfDataField",
+            description="Attach a measurement specification to the data field that describes the time of the measurement.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse linkAsOfDataField(@PathVariable String serverName,
+                                  @PathVariable String measurementSpecificationGUID,
+                                  @PathVariable String dataFieldGUID,
+                                  @RequestBody (required = false)
+                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAsOfDataField(serverName, measurementSpecificationGUID, dataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the time of the measurement.
+     *
+     * @param serverName name of the server to route the request to
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-value-specifications/{measurementSpecificationGUID}/as-of-data-fields/{dataFieldGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAsOfDataField",
+            description="Detach a measurement specification from the data field that describes the time of the measurement.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse detachAsOfDataField(@PathVariable String serverName,
+                                  @PathVariable String measurementSpecificationGUID,
+                                  @PathVariable String dataFieldGUID,
+                                  @RequestBody (required = false)
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAsOfDataField(serverName, measurementSpecificationGUID, dataFieldGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a report type to a report that was generated using this type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/report-types/{reportTypeGUID}/report-type-instances/{reportGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkReportTypeInstance",
+            description="Attach a report type to a report that was generated using this type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse linkReportTypeInstance(@PathVariable String serverName,
+                                  @PathVariable String reportTypeGUID,
+                                  @PathVariable String reportGUID,
+                                  @RequestBody (required = false)
+                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkReportTypeInstance(serverName, reportTypeGUID, reportGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a report type from a report that was generated using this type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/report-types/{reportTypeGUID}/report-type-instances/{reportGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachReportTypeInstance",
+            description="Detach a report type from a report that was generated using this type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0582-Report-Specifications/"))
+
+    public VoidResponse detachReportTypeInstance(@PathVariable String serverName,
+                                  @PathVariable String reportTypeGUID,
+                                  @PathVariable String reportGUID,
+                                  @RequestBody (required = false)
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachReportTypeInstance(serverName, reportTypeGUID, reportGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a results set to a report that was generated from it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/results-sets/{resultsSetGUID}/report-runs/{reportGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkReportRunOf",
+            description="Attach a results set to a report that was generated from it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0725-Smart-Collections/"))
+
+    public VoidResponse linkReportRunOf(@PathVariable String serverName,
+                                  @PathVariable String resultsSetGUID,
+                                  @PathVariable String reportGUID,
+                                  @RequestBody (required = false)
+                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkReportRunOf(serverName, resultsSetGUID, reportGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a results set from a report that was generated from it.
+     *
+     * @param serverName name of the server to route the request to
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param requestBody properties for the request
+     *
+     * @return response object
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/results-sets/{resultsSetGUID}/report-runs/{reportGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachReportRunOf",
+            description="Detach a results set from a report that was generated from it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/7/0725-Smart-Collections/"))
+
+    public VoidResponse detachReportRunOf(@PathVariable String serverName,
+                                  @PathVariable String resultsSetGUID,
+                                  @PathVariable String reportGUID,
+                                  @RequestBody (required = false)
+                                  DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachReportRunOf(serverName, resultsSetGUID, reportGUID, requestBody);
+    }
 }

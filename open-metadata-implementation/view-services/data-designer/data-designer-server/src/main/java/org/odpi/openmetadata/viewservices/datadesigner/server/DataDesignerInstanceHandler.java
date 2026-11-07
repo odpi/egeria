@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataValueSpecificationHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataFieldHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataStructureHandler;
 
@@ -109,6 +110,34 @@ public class DataDesignerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getDataStructureHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the handler for working with reports, report types and results sets.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public AssetHandler getAssetHandler(String userId,
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        DataDesignerInstance instance = (DataDesignerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getAssetHandler();
         }
 
         return null;

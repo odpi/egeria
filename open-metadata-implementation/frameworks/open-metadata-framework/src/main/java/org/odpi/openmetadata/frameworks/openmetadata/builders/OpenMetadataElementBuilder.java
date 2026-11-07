@@ -53,6 +53,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataContainerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DisplayDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
@@ -549,6 +550,18 @@ public class OpenMetadataElementBuilder
                                                                                          OpenMetadataProperty.MANAGED_METADATA_COLLECTION_ID.name,
                                                                                          metadataCollectionProperties.getManagedMetadataCollectionId());
                                 }
+                                else if (properties instanceof DashboardProperties dashboardProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                              OpenMetadataProperty.ALIASES.name,
+                                                                                              dashboardProperties.getAliases());
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                       OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
+                                                                                       dashboardProperties.getRefreshTimeInterval());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.LAYOUT_STYLE.name,
+                                                                                         dashboardProperties.getLayoutStyle());
+                                }
                                 else if (properties instanceof ReportProperties reportProperties)
                                 {
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -572,6 +585,12 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.LAST_MODIFIER.name,
                                                                                          reportProperties.getLastModifier());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.OUTPUT_FORMAT.name,
+                                                                                         reportProperties.getOutputFormat());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.REPORT_PARAMETERS.name,
+                                                                                         reportProperties.getReportParameters());
 
                                     if (properties instanceof ConnectorActivityReportProperties connectorActivityReportProperties)
                                     {
@@ -1435,6 +1454,25 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                      OpenMetadataProperty.LAST_MODIFIER.name,
                                                                                      reportTypeProperties.getLastModifier());
+
+                                if (properties instanceof ReportSpecProperties reportSpecProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.MICROFLOW.name,
+                                                                                         reportSpecProperties.getMicroflow());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.TARGET_TYPE_NAME.name,
+                                                                                         reportSpecProperties.getTargetTypeName());
+                                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                              OpenMetadataProperty.ALIASES.name,
+                                                                                              reportSpecProperties.getAliases());
+                                    elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                              OpenMetadataProperty.OUTPUT_TYPES.name,
+                                                                                              reportSpecProperties.getOutputTypes());
+                                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                                          OpenMetadataProperty.INCLUDE_PREAMBLE.name,
+                                                                                          reportSpecProperties.getIncludePreamble());
+                                }
                             }
                             else if (collectionProperties instanceof SecurityListProperties securityListProperties)
                             {
@@ -1554,6 +1592,21 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                    OpenMetadataProperty.INTERVAL.name,
                                                                                    dataGrainProperties.getInterval());
+                            }
+                            else if (properties instanceof MeasurementSpecificationProperties measurementSpecificationProperties)
+                            {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.COMPLETENESS_DECLARED.name,
+                                                                                     measurementSpecificationProperties.getCompletenessDeclared());
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.CONFIDENCE_FORM.name,
+                                                                                     measurementSpecificationProperties.getConfidenceForm());
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.UNCERTAINTY_FORM.name,
+                                                                                     measurementSpecificationProperties.getUncertaintyForm());
+                                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                        OpenMetadataProperty.ABSENCE_SENTENCES.name,
+                                                                                        measurementSpecificationProperties.getAbsenceSentences());
                             }
                         }
                         else if (properties instanceof DataFieldProperties dataFieldProperties)
@@ -2212,6 +2265,36 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                                           OpenMetadataProperty.INPUT_FIELD.name,
                                                                                           displayDataFieldProperties.getInputField());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PLACEMENT_KIND.name,
+                                                                                         displayDataFieldProperties.getPlacementKind());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.SPAN.name,
+                                                                                         displayDataFieldProperties.getSpan());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PRESENTATION_STYLE.name,
+                                                                                         displayDataFieldProperties.getPresentationStyle());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.MARKDOWN_CONTENT.name,
+                                                                                         displayDataFieldProperties.getMarkdownContent());
+                                }
+                                else if (properties instanceof DisplayDataContainerProperties displayDataContainerProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.RENDERER.name,
+                                                                                         displayDataContainerProperties.getRenderer());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PLACEMENT_KIND.name,
+                                                                                         displayDataContainerProperties.getPlacementKind());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.SPAN.name,
+                                                                                         displayDataContainerProperties.getSpan());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.PRESENTATION_STYLE.name,
+                                                                                         displayDataContainerProperties.getPresentationStyle());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.MARKDOWN_CONTENT.name,
+                                                                                         displayDataContainerProperties.getMarkdownContent());
                                 }
                             }
                         }

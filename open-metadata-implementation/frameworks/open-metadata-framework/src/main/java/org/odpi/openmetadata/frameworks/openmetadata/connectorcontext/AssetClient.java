@@ -14,6 +14,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.I
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportOriginatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSubjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportTypeInstanceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ReportRunOfProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -2681,5 +2683,89 @@ public class AssetClient extends ConnectorContextClientBase
                                                                               UserNotAuthorizedException
     {
         assetHandler.detachPortDelegation(connectorUserId, delegatingFromPortGUID, delegatingToPortGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a report type to a report that was generated using this type.
+     *
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkReportTypeInstance(String            reportTypeGUID,
+                        String            reportGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        ReportTypeInstanceProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        assetHandler.linkReportTypeInstance(connectorUserId, reportTypeGUID, reportGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a report type from a report that was generated using this type.
+     *
+     * @param reportTypeGUID unique identifier of the report type
+     * @param reportGUID unique identifier of the report
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachReportTypeInstance(String        reportTypeGUID,
+                          String        reportGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        assetHandler.detachReportTypeInstance(connectorUserId, reportTypeGUID, reportGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a results set to a report that was generated from it.
+     *
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkReportRunOf(String            resultsSetGUID,
+                        String            reportGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        ReportRunOfProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        assetHandler.linkReportRunOf(connectorUserId, resultsSetGUID, reportGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a results set from a report that was generated from it.
+     *
+     * @param resultsSetGUID unique identifier of the results set
+     * @param reportGUID unique identifier of the report
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachReportRunOf(String        resultsSetGUID,
+                          String        reportGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        assetHandler.detachReportRunOf(connectorUserId, resultsSetGUID, reportGUID, deleteOptions);
     }
 }

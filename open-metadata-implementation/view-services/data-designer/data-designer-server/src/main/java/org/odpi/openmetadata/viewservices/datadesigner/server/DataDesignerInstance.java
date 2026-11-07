@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataValueSpecificationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataFieldHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataStructureHandler;
@@ -24,6 +25,7 @@ public class DataDesignerInstance extends OMVSServiceInstance
     private final DataValueSpecificationHandler dataValueSpecificationHandler;
     private final DataFieldHandler              dataFieldHandler;
     private final DataStructureHandler dataStructureHandler;
+    private final AssetHandler         assetHandler;
 
 
 
@@ -81,6 +83,11 @@ public class DataDesignerInstance extends OMVSServiceInstance
                                                 auditLog,
                                                 myDescription.getViewServiceFullName(),
                                                 openMetadataClient);
+
+        assetHandler = new AssetHandler(serverName,
+                                        auditLog,
+                                        myDescription.getViewServiceFullName(),
+                                        openMetadataClient);
     }
 
 
@@ -117,5 +124,16 @@ public class DataDesignerInstance extends OMVSServiceInstance
     public DataStructureHandler getDataStructureHandler()
     {
         return dataStructureHandler;
+    }
+
+
+    /**
+     * Return the handler for working with reports, report types and results sets.
+     *
+     * @return handler
+     */
+    public AssetHandler getAssetHandler()
+    {
+        return assetHandler;
     }
 }

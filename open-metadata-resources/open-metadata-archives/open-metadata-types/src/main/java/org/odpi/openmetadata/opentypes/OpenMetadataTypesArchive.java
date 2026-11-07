@@ -165,6 +165,483 @@ public class OpenMetadataTypesArchive
         update0512DerivedSchemaTypeQueryTarget();
         add0482StatementsOfApplicability();
         add0665SecurityAnnotations();
+        update0239Reports();
+        update0537DisplaySchemas();
+        update0581DataFieldImplementation();
+        add0582ReportSpecifications();
+        update0725SmartCollections();
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0239Reports()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateReportEntity());
+        this.archiveBuilder.addEntityDef(getDashboardEntity());
+    }
+
+
+    /**
+     * Report gains the parameters used to create it and the format of its content.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateReportEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REPORT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REPORT_PARAMETERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OUTPUT_FORMAT));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * A Dashboard is a DataSet that is a collection of reports.  It provides the layout information so that the
+     * display of the embedded reports is logical and easy to follow.
+     *
+     * @return entity definition
+     */
+    private EntityDef getDashboardEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DASHBOARD,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REFRESH_TIME_INTERVAL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAYOUT_STYLE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0537DisplaySchemas()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDisplayDataContainerEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDisplayDataFieldEntity());
+    }
+
+
+    /**
+     * DisplayDataContainer gains the attributes that describe how it is rendered and placed in the display.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDisplayDataContainerEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DISPLAY_DATA_CONTAINER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RENDERER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLACEMENT_KIND));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SPAN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRESENTATION_STYLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MARKDOWN_CONTENT));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * DisplayDataField gains the attributes that describe how it is placed in the display.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateDisplayDataFieldEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DISPLAY_DATA_FIELD.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLACEMENT_KIND));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SPAN));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRESENTATION_STYLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MARKDOWN_CONTENT));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0581DataFieldImplementation()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeDefinitionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateSchemaTypeDefinitionRelationship());
+    }
+
+
+    /**
+     * A data field may describe many schema attributes (for example, the same column in different databases),
+     * so end 2 of SchemaAttributeDefinition becomes many and its attribute name becomes plural.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSchemaAttributeDefinitionRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setDescription(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.description);
+        typeDefPatch.setDescriptionGUID(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.descriptionGUID);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "equivalentSchemaAttributes";
+        final String                     end2AttributeDescription     = "Schema attributes that implement the data field.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /**
+     * A data structure may describe many schema types (for example, the same table in different databases),
+     * so end 2 of SchemaTypeDefinition becomes many and its attribute name becomes plural.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSchemaTypeDefinitionRelationship()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setDescription(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.description);
+        typeDefPatch.setDescriptionGUID(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.descriptionGUID);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "equivalentSchemaTypes";
+        final String                     end2AttributeDescription     = "Schema types that implement the data structure.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0582ReportSpecifications()
+    {
+        this.archiveBuilder.addEntityDef(getReportSpecEntity());
+        this.archiveBuilder.addEntityDef(getMeasurementSpecificationEntity());
+        this.archiveBuilder.addRelationshipDef(getReportTypeInstanceRelationship());
+        this.archiveBuilder.addRelationshipDef(getBasisDataFieldRelationship());
+        this.archiveBuilder.addRelationshipDef(getAsOfDataFieldRelationship());
+    }
+
+
+    /**
+     * A ReportSpec is a specialized ReportType for reports about open lineage and related data.
+     *
+     * @return entity definition
+     */
+    private EntityDef getReportSpecEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.REPORT_SPEC,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT_TYPE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MICROFLOW));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OUTPUT_TYPES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INCLUDE_PREAMBLE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * A MeasurementSpecification is a type of DataValueSpecification that describes a measurement that is part of a report.
+     *
+     * @return entity definition
+     */
+    private EntityDef getMeasurementSpecificationEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.MEASUREMENT_SPECIFICATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_VALUE_SPECIFICATION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMPLETENESS_DECLARED));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE_FORM));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.UNCERTAINTY_FORM));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ABSENCE_SENTENCES));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * ReportTypeInstance links a report type to a report that was generated using this type.
+     *
+     * @return relationship definition
+     */
+    private RelationshipDef getReportTypeInstanceRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "derivedFromReportType";
+        final String                     end1AttributeDescription     = "The report type used to generate the report.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT_TYPE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "reportTypeInstances";
+        final String                     end2AttributeDescription     = "The reports that were generated using this report type.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * BasisDataField links a measurement specification to the data field that describes the basis for the measurement.
+     * For example, the denominator for a percentage or the total a share is taken from.
+     *
+     * @return relationship definition
+     */
+    private RelationshipDef getBasisDataFieldRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "providesBasisForMeasurements";
+        final String                     end1AttributeDescription     = "The measurements that this data field provides the basis for.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.MEASUREMENT_SPECIFICATION.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "basisDataField";
+        final String                     end2AttributeDescription     = "The data field that describes the basis for the measurement.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * AsOfDataField links a measurement specification to the data field that describes the time of the measurement.
+     *
+     * @return relationship definition
+     */
+    private RelationshipDef getAsOfDataFieldRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "providesAsOfTimeForMeasurements";
+        final String                     end1AttributeDescription     = "The measurements that this data field provides the time of measurement for.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.MEASUREMENT_SPECIFICATION.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "asOfDataField";
+        final String                     end2AttributeDescription     = "The data field that describes the time of the measurement.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0725SmartCollections()
+    {
+        this.archiveBuilder.addRelationshipDef(getReportRunOfRelationship());
+    }
+
+
+    /**
+     * ReportRunOf links a results set to a report that was generated from it.
+     *
+     * @return relationship definition
+     */
+    private RelationshipDef getReportRunOfRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP,
+                                                                                this.archiveBuilder.getRelationshipDef(OpenMetadataType.LABELED_RELATIONSHIP.typeName),
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "usesResultsSets";
+        final String                     end1AttributeDescription     = "The results sets used to generate the report.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.RESULTS_SET.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "usedInReports";
+        final String                     end2AttributeDescription     = "The reports that were generated from the results set.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REPORT.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESULT_STATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESULT_STATE_REASON));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESULT_LOCATION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
     }
 
     /*

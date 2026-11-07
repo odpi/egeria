@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.MediaCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.DashboardProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.FormProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.InformationViewProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportProperties;
@@ -32,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DataFileCollectionProperties.class, name = "DataFileCollectionProperties"),
                 @JsonSubTypes.Type(value = DeployedDatabaseSchemaProperties.class, name = "DeployedDatabaseSchemaProperties"),
+                @JsonSubTypes.Type(value = DashboardProperties.class, name = "DashboardProperties"),
                 @JsonSubTypes.Type(value = FormProperties.class, name = "FormProperties"),
                 @JsonSubTypes.Type(value = InformationViewProperties.class, name = "InformationViewProperties"),
                 @JsonSubTypes.Type(value = MediaCollectionProperties.class, name = "MediaCollectionProperties"),

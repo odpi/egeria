@@ -236,6 +236,8 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
 
             super.addRelatedElementSummaries(openMetadataRootElement.getResultsStoredIn(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getPopulatedUsingQuery(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getUsesResultsSets(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getUsedInReports(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
             super.addRelatedElementSummaries(openMetadataRootElement.getCapabilityConsumedAssets(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getConsumedByCapabilities(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
@@ -498,9 +500,15 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedElementSummaries(openMetadataRootElement.getLinkedToDataFields(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getLinkedFromDataFields(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummary(openMetadataRootElement.getDerivedFromDataStructure(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
-            super.addRelatedElementSummary(openMetadataRootElement.getEquivalentSchemaType(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getEquivalentSchemaTypes(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummary(openMetadataRootElement.getDerivedFromDataField(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
-            super.addRelatedElementSummary(openMetadataRootElement.getEquivalentSchemaAttribute(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getEquivalentSchemaAttributes(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummary(openMetadataRootElement.getDerivedFromReportType(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getReportTypeInstances(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummary(openMetadataRootElement.getBasisDataField(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProvidesBasisForMeasurements(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummary(openMetadataRootElement.getAsOfDataField(), null, VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProvidesAsOfTimeForMeasurements(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
             super.addRelatedElementSummaries(openMetadataRootElement.getRelatedDesignPatterns(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getConsumedDesignPatterns(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);

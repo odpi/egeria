@@ -666,6 +666,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0581_DATA_FIELD_IMPLEMENTATION    = "https://egeria-project.org/types/5/0581-Data-Field-Implementation/";
 
     /**
+     * <a href="https://egeria-project.org/types/5/0582-Report-Specifications/">...</a>
+     */
+    public static final String MODEL_0582_REPORT_SPECIFICATIONS    = "https://egeria-project.org/types/5/0582-Report-Specifications/";
+
+    /**
      * <a href="https://egeria-project.org/types/5/0595-Design-Patterns/">...</a>
      */
     public static final String MODEL_0595_DESIGN_PATTERNS              = "https://egeria-project.org/types/5/0595-Design-Patterns/";

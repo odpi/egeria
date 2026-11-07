@@ -37,6 +37,8 @@ public class ReportProperties extends DataSetProperties
     private Date   createdTime       = null;
     private Date   lastModifiedTime  = null;
     private String lastModifier      = null;
+    private String outputFormat      = null;
+    private String reportParameters  = null;
 
     /**
      * Default constructor
@@ -66,6 +68,8 @@ public class ReportProperties extends DataSetProperties
             createdTime       = template.getCreatedTime();
             lastModifiedTime  = template.getLastModifiedTime();
             lastModifier      = template.getLastModifier();
+            outputFormat      = template.getOutputFormat();
+            reportParameters  = template.getReportParameters();
         }
     }
 
@@ -228,6 +232,50 @@ public class ReportProperties extends DataSetProperties
 
 
     /**
+     * Return the format used for the content of the report.
+     *
+     * @return string
+     */
+    public String getOutputFormat()
+    {
+        return outputFormat;
+    }
+
+
+    /**
+     * Set up the format used for the content of the report.
+     *
+     * @param outputFormat string
+     */
+    public void setOutputFormat(String outputFormat)
+    {
+        this.outputFormat = outputFormat;
+    }
+
+
+    /**
+     * Return the parameters used to create the report - typically a JSON String.
+     *
+     * @return string
+     */
+    public String getReportParameters()
+    {
+        return reportParameters;
+    }
+
+
+    /**
+     * Set up the parameters used to create the report - typically a JSON String.
+     *
+     * @param reportParameters string
+     */
+    public void setReportParameters(String reportParameters)
+    {
+        this.reportParameters = reportParameters;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -266,7 +314,9 @@ public class ReportProperties extends DataSetProperties
                 Objects.equals(completionMessage, that.completionMessage) &&
                 Objects.equals(createdTime, that.createdTime) &&
                 Objects.equals(lastModifiedTime, that.lastModifiedTime) &&
-                Objects.equals(lastModifier, that.lastModifier);
+                Objects.equals(lastModifier, that.lastModifier) &&
+                Objects.equals(outputFormat, that.outputFormat) &&
+                Objects.equals(reportParameters, that.reportParameters);
     }
 
     /**
@@ -277,6 +327,6 @@ public class ReportProperties extends DataSetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), purpose, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier);
+        return Objects.hash(super.hashCode(), purpose, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier, outputFormat, reportParameters);
     }
 }

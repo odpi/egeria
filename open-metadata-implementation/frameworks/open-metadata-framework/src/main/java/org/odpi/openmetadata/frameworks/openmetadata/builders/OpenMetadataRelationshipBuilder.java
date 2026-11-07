@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ReportRunOfProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
@@ -361,6 +362,18 @@ public class OpenMetadataRelationshipBuilder
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DESCRIPTION.name,
                                                                          referenceableFacetProperties.getDescription());
+                }
+                else if (properties instanceof ReportRunOfProperties reportRunOfProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.RESULT_STATE.name,
+                                                                         reportRunOfProperties.getResultState());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.RESULT_STATE_REASON.name,
+                                                                         reportRunOfProperties.getResultStateReason());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.RESULT_LOCATION.name,
+                                                                         reportRunOfProperties.getResultLocation());
                 }
                 else if (properties instanceof ControlApplicabilityProperties controlApplicabilityProperties)
                 {

@@ -527,4 +527,146 @@ public class DataValueSpecificationHandler extends OpenMetadataHandlerBase
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.
+     *
+     * @param userId                 userId of the user making the request
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkBasisDataField(String            userId,
+                        String            measurementSpecificationGUID,
+                        String            dataFieldGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        BasisDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String methodName            = "linkBasisDataField";
+        final String end1GUIDParameterName = "measurementSpecificationGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(measurementSpecificationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        measurementSpecificationGUID,
+                                                        dataFieldGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the basis for the measurement.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachBasisDataField(String        userId,
+                          String        measurementSpecificationGUID,
+                          String        dataFieldGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "detachBasisDataField";
+        final String end1GUIDParameterName = "measurementSpecificationGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(measurementSpecificationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        measurementSpecificationGUID,
+                                                        dataFieldGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the time of the measurement.
+     *
+     * @param userId                 userId of the user making the request
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAsOfDataField(String            userId,
+                        String            measurementSpecificationGUID,
+                        String            dataFieldGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        AsOfDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String methodName            = "linkAsOfDataField";
+        final String end1GUIDParameterName = "measurementSpecificationGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(measurementSpecificationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        measurementSpecificationGUID,
+                                                        dataFieldGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the time of the measurement.
+     *
+     * @param userId                 userId of the user making the request.
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAsOfDataField(String        userId,
+                          String        measurementSpecificationGUID,
+                          String        dataFieldGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        final String methodName            = "detachAsOfDataField";
+        final String end1GUIDParameterName = "measurementSpecificationGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(measurementSpecificationGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataFieldGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName,
+                                                        measurementSpecificationGUID,
+                                                        dataFieldGUID,
+                                                        deleteOptions);
+    }
 }

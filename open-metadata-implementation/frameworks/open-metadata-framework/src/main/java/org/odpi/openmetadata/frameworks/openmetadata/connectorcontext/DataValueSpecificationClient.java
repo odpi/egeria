@@ -399,4 +399,88 @@ public class DataValueSpecificationClient extends ConnectorContextClientBase
     {
         return dataValueSpecificationHandler.findDataValueSpecifications(connectorUserId, searchString, searchOptions);
     }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.
+     *
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkBasisDataField(String            measurementSpecificationGUID,
+                        String            dataFieldGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        BasisDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        dataValueSpecificationHandler.linkBasisDataField(connectorUserId, measurementSpecificationGUID, dataFieldGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the basis for the measurement.
+     *
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachBasisDataField(String        measurementSpecificationGUID,
+                          String        dataFieldGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        dataValueSpecificationHandler.detachBasisDataField(connectorUserId, measurementSpecificationGUID, dataFieldGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach a measurement specification to the data field that describes the time of the measurement.
+     *
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param makeAnchorOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkAsOfDataField(String            measurementSpecificationGUID,
+                        String            dataFieldGUID,
+                        MakeAnchorOptions makeAnchorOptions,
+                        AsOfDataFieldProperties relationshipProperties) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        dataValueSpecificationHandler.linkAsOfDataField(connectorUserId, measurementSpecificationGUID, dataFieldGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a measurement specification from the data field that describes the time of the measurement.
+     *
+     * @param measurementSpecificationGUID unique identifier of the measurement specification
+     * @param dataFieldGUID unique identifier of the data field
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAsOfDataField(String        measurementSpecificationGUID,
+                          String        dataFieldGUID,
+                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        dataValueSpecificationHandler.detachAsOfDataField(connectorUserId, measurementSpecificationGUID, dataFieldGUID, deleteOptions);
+    }
 }

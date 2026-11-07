@@ -9,10 +9,19 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportSpecProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportTypeInstanceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ReportRunOfProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ResultsSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.AsOfDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.BasisDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
@@ -23,6 +32,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataValueHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataValueSpecificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.LinkedDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MeasurementSpecificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.SchemaAttributeDefinitionProperties;
@@ -36,10 +46,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -63,6 +75,9 @@ public class DataDesignerFVT
     private static final ViewServiceClient glossaryManager   = new ViewServiceClient(ViewServiceDescription.GLOSSARY_MANAGER);
     private static final ViewServiceClient governanceOfficer = new ViewServiceClient(ViewServiceDescription.GOVERNANCE_OFFICER);
     private static final ViewServiceClient schemaMaker       = new ViewServiceClient(ViewServiceDescription.SCHEMA_MAKER);
+    private static final ViewServiceClient collectionManager = new ViewServiceClient(ViewServiceDescription.COLLECTION_MANAGER);
+    private static final ViewServiceClient assetMaker        = new ViewServiceClient(ViewServiceDescription.ASSET_MAKER);
+    private static final ViewServiceClient explorer          = new ViewServiceClient(ViewServiceDescription.CLASSIFICATION_EXPLORER);
 
     private static final String DATA_STRUCTURES = "/data-structures/";
     private static final String DATA_FIELDS     = "/data-fields/";
@@ -450,6 +465,274 @@ public class DataDesignerFVT
         {
             DesignFvtSupport.deleteAndCheck(schemaMaker, "/schema-attributes/" + schemaAttributeGUID, "/schema-attributes/" + schemaAttributeGUID + "/retrieve");
             DesignFvtSupport.deleteAndCheck(schemaMaker, "/schema-types/" + schemaTypeGUID, "/schema-types/" + schemaTypeGUID + "/retrieve");
+        }
+    }
+
+
+    /**
+     * SchemaAttributeDefinition and SchemaTypeDefinition are one-to-many: a data field may be implemented by many
+     * schema attributes and a data structure by many schema types (for example, the same table in two databases).
+     * Both links are returned in the plural lists of the root element.
+     */
+    @Test
+    @Order(11)
+    void schemaDefinitionsAreMany()
+    {
+        List<String> schemaAttributeGUIDs = new ArrayList<>();
+        List<String> schemaTypeGUIDs      = new ArrayList<>();
+
+        for (String database : List.of("sales", "warehouse"))
+        {
+            SchemaAttributeProperties schemaAttributeProperties = new SchemaAttributeProperties();
+
+            schemaAttributeProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("SchemaAttribute", database + "-customer-name-column"));
+            schemaAttributeProperties.setDisplayName("CUSTNAME");
+
+            schemaAttributeGUIDs.add(schemaMaker.create("/schema-attributes", DesignFvtSupport.newElement(schemaAttributeProperties)));
+
+            StructSchemaTypeProperties schemaTypeProperties = new StructSchemaTypeProperties();
+
+            schemaTypeProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("StructSchemaType", database + "-customer-table"));
+            schemaTypeProperties.setDisplayName("CUSTOMER");
+
+            schemaTypeGUIDs.add(schemaMaker.create("/schema-types", DesignFvtSupport.newElement(schemaTypeProperties)));
+        }
+
+        try
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                dataDesigner.call(DATA_FIELDS + dataFieldGUID + "/schema-attribute-definitions/" + schemaAttributeGUIDs.get(i) + "/attach",
+                                  DesignFvtSupport.relationship(DesignFvtSupport.labeled(new SchemaAttributeDefinitionProperties(), "implemented by " + i)));
+                dataDesigner.call(DATA_STRUCTURES + dataStructureGUID + "/schema-type-definitions/" + schemaTypeGUIDs.get(i) + "/attach",
+                                  DesignFvtSupport.relationship(DesignFvtSupport.labeled(new SchemaTypeDefinitionProperties(), "implemented by " + i)));
+            }
+
+            OpenMetadataRootElement dataField = read(DATA_FIELDS, dataFieldGUID);
+
+            assertNotNull(dataField.getEquivalentSchemaAttributes(), "no equivalentSchemaAttributes: " + DesignFvtSupport.describe(dataField));
+            assertEquals(2, dataField.getEquivalentSchemaAttributes().size(), "equivalentSchemaAttributes: " + DesignFvtSupport.describe(dataField));
+
+            OpenMetadataRootElement dataStructure = read(DATA_STRUCTURES, dataStructureGUID);
+
+            assertNotNull(dataStructure.getEquivalentSchemaTypes(), "no equivalentSchemaTypes: " + DesignFvtSupport.describe(dataStructure));
+            assertEquals(2, dataStructure.getEquivalentSchemaTypes().size(), "equivalentSchemaTypes: " + DesignFvtSupport.describe(dataStructure));
+
+            OpenMetadataRootElement schemaType = explorer.element("/elements/" + schemaTypeGUIDs.get(0), new GetRequestBody());
+
+            assertNotNull(schemaType.getDerivedFromDataStructure(), "schema type does not show derivedFromDataStructure: " + DesignFvtSupport.describe(schemaType));
+            assertEquals(dataStructureGUID, schemaType.getDerivedFromDataStructure().getRelatedElement().getElementHeader().getGUID());
+
+            for (int i = 0; i < 2; i++)
+            {
+                dataDesigner.call(DATA_FIELDS + dataFieldGUID + "/schema-attribute-definitions/" + schemaAttributeGUIDs.get(i) + "/detach",
+                                  new DeleteRelationshipRequestBody());
+                dataDesigner.call(DATA_STRUCTURES + dataStructureGUID + "/schema-type-definitions/" + schemaTypeGUIDs.get(i) + "/detach",
+                                  new DeleteRelationshipRequestBody());
+            }
+
+            assertTrue(read(DATA_FIELDS, dataFieldGUID).getEquivalentSchemaAttributes() == null, "equivalentSchemaAttributes remain after detach");
+            assertTrue(read(DATA_STRUCTURES, dataStructureGUID).getEquivalentSchemaTypes() == null, "equivalentSchemaTypes remain after detach");
+        }
+        finally
+        {
+            for (String guid : schemaAttributeGUIDs)
+            {
+                DesignFvtSupport.deleteAndCheck(schemaMaker, "/schema-attributes/" + guid, "/schema-attributes/" + guid + "/retrieve");
+            }
+
+            for (String guid : schemaTypeGUIDs)
+            {
+                DesignFvtSupport.deleteAndCheck(schemaMaker, "/schema-types/" + guid, "/schema-types/" + guid + "/retrieve");
+            }
+        }
+    }
+
+
+    /**
+     * A MeasurementSpecification is a data value specification whose basis and as-of time are described by data
+     * fields.  It is created through Data Designer, its own attributes come back, and BasisDataField and
+     * AsOfDataField link it to the data field.
+     */
+    @Test
+    @Order(12)
+    void measurementSpecifications()
+    {
+        MeasurementSpecificationProperties properties = new MeasurementSpecificationProperties();
+
+        properties.setUnits("percent");
+        properties.setCompletenessDeclared("lower_bound");
+        properties.setConfidenceForm("measured");
+        properties.setUncertaintyForm("plus_minus");
+        properties.setAbsenceSentences(Map.of("nothing_found", "No customers were found.",
+                                              "not_measured", "Customers have not been counted."));
+
+        String measurementGUID = createSpecification(properties, "customer-share");
+
+        MeasurementSpecificationProperties readBack = assertInstanceOf(MeasurementSpecificationProperties.class,
+                                                                       read(DVS, measurementGUID).getProperties());
+
+        assertEquals("lower_bound", readBack.getCompletenessDeclared());
+        assertEquals("measured", readBack.getConfidenceForm());
+        assertEquals("plus_minus", readBack.getUncertaintyForm());
+        assertEquals(properties.getAbsenceSentences(), readBack.getAbsenceSentences());
+        assertEquals("percent", readBack.getUnits());
+
+        DesignFvtSupport.linkCheckAndDetach(dataDesigner,
+                                            DVS + measurementGUID + "/basis-data-fields/" + dataFieldGUID,
+                                            retrieve(DVS, measurementGUID),
+                                            OpenMetadataType.BASIS_DATA_FIELD_RELATIONSHIP.typeName,
+                                            dataFieldGUID,
+                                            DesignFvtSupport.labeled(new BasisDataFieldProperties(), "denominator"));
+
+        DesignFvtSupport.linkCheckAndDetach(dataDesigner,
+                                            DVS + measurementGUID + "/as-of-data-fields/" + dataFieldGUID,
+                                            retrieve(DVS, measurementGUID),
+                                            OpenMetadataType.AS_OF_DATA_FIELD_RELATIONSHIP.typeName,
+                                            dataFieldGUID,
+                                            DesignFvtSupport.labeled(new AsOfDataFieldProperties(), "measured at"));
+
+        /*
+         * Check the root element puts each end in its named field.
+         */
+        dataDesigner.call(DVS + measurementGUID + "/basis-data-fields/" + dataFieldGUID + "/attach",
+                          DesignFvtSupport.relationship(DesignFvtSupport.labeled(new BasisDataFieldProperties(), "denominator")));
+        dataDesigner.call(DVS + measurementGUID + "/as-of-data-fields/" + dataFieldGUID + "/attach",
+                          DesignFvtSupport.relationship(DesignFvtSupport.labeled(new AsOfDataFieldProperties(), "measured at")));
+
+        OpenMetadataRootElement measurement = read(DVS, measurementGUID);
+
+        assertNotNull(measurement.getBasisDataField(), "no basisDataField: " + DesignFvtSupport.describe(measurement));
+        assertEquals(dataFieldGUID, measurement.getBasisDataField().getRelatedElement().getElementHeader().getGUID());
+        assertNotNull(measurement.getAsOfDataField(), "no asOfDataField: " + DesignFvtSupport.describe(measurement));
+        assertEquals(dataFieldGUID, measurement.getAsOfDataField().getRelatedElement().getElementHeader().getGUID());
+
+        OpenMetadataRootElement dataField = read(DATA_FIELDS, dataFieldGUID);
+
+        assertNotNull(dataField.getProvidesBasisForMeasurements(), "no providesBasisForMeasurements: " + DesignFvtSupport.describe(dataField));
+        assertEquals(measurementGUID, dataField.getProvidesBasisForMeasurements().get(0).getRelatedElement().getElementHeader().getGUID());
+        assertNotNull(dataField.getProvidesAsOfTimeForMeasurements(), "no providesAsOfTimeForMeasurements: " + DesignFvtSupport.describe(dataField));
+        assertEquals(measurementGUID, dataField.getProvidesAsOfTimeForMeasurements().get(0).getRelatedElement().getElementHeader().getGUID());
+
+        dataDesigner.call(DVS + measurementGUID + "/basis-data-fields/" + dataFieldGUID + "/detach", new DeleteRelationshipRequestBody());
+        dataDesigner.call(DVS + measurementGUID + "/as-of-data-fields/" + dataFieldGUID + "/detach", new DeleteRelationshipRequestBody());
+    }
+
+
+    /**
+     * ReportTypeInstance links a report type (here a ReportSpec, created with Collection Manager) to a report
+     * generated from it, and ReportRunOf links the results set used for the run to the report.  The report and
+     * results set belong to Asset Maker and Collection Manager; the links are made through Data Designer.
+     */
+    @Test
+    @Order(13)
+    void reportSpecifications()
+    {
+        ReportSpecProperties reportSpecProperties = new ReportSpecProperties();
+
+        reportSpecProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("ReportSpec", "customer-lineage"));
+        reportSpecProperties.setDisplayName("Customer lineage");
+        reportSpecProperties.setTargetTypeName("Asset");
+        reportSpecProperties.setMicroflow("[{\"stage\": \"find\"}]");
+        reportSpecProperties.setAliases(List.of("Lineage of customers"));
+        reportSpecProperties.setOutputTypes(List.of("MD", "JSON"));
+        reportSpecProperties.setIncludePreamble(true);
+
+        String reportSpecGUID = collectionManager.create("/collections", DesignFvtSupport.newElement(reportSpecProperties));
+
+        ReportProperties reportProperties = new ReportProperties();
+
+        reportProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("Report", "customer-lineage-run"));
+        reportProperties.setDisplayName("Customer lineage report");
+        reportProperties.setOutputFormat("MD");
+        reportProperties.setReportParameters("{\"searchString\": \"customer\"}");
+
+        String reportGUID = assetMaker.create("/assets", DesignFvtSupport.newElement(reportProperties));
+
+        ResultsSetProperties resultsSetProperties = new ResultsSetProperties();
+
+        resultsSetProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("ResultsSet", "customer-lineage-results"));
+        resultsSetProperties.setDisplayName("Customer lineage results");
+
+        String resultsSetGUID = collectionManager.create("/collections", DesignFvtSupport.newElement(resultsSetProperties));
+
+        try
+        {
+            ReportSpecProperties specReadBack = assertInstanceOf(ReportSpecProperties.class,
+                                                                 explorer.element("/elements/" + reportSpecGUID, new GetRequestBody()).getProperties());
+
+            assertEquals("Asset", specReadBack.getTargetTypeName());
+            assertEquals(List.of("MD", "JSON"), specReadBack.getOutputTypes());
+            assertEquals(Boolean.TRUE, specReadBack.getIncludePreamble());
+
+            ReportProperties reportReadBack = assertInstanceOf(ReportProperties.class,
+                                                               explorer.element("/elements/" + reportGUID, new GetRequestBody()).getProperties());
+
+            assertEquals("MD", reportReadBack.getOutputFormat());
+            assertEquals(reportProperties.getReportParameters(), reportReadBack.getReportParameters());
+
+            /*
+             * ReportTypeInstance
+             */
+            String reportTypeInstancePath = "/report-types/" + reportSpecGUID + "/report-type-instances/" + reportGUID;
+
+            dataDesigner.call(reportTypeInstancePath + "/attach",
+                              DesignFvtSupport.relationship(DesignFvtSupport.labeled(new ReportTypeInstanceProperties(), "generated from")));
+
+            RelatedMetadataElementSummary instance = DesignFvtSupport.assertLinked(explorer, "/elements/" + reportSpecGUID,
+                                                                                   OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP.typeName, reportGUID);
+
+            DesignFvtSupport.assertRelationshipProperties(reportTypeInstancePath, DesignFvtSupport.labeled(new ReportTypeInstanceProperties(), "generated from"), instance);
+
+            OpenMetadataRootElement report = explorer.element("/elements/" + reportGUID, new GetRequestBody());
+
+            assertNotNull(report.getDerivedFromReportType(), "no derivedFromReportType: " + DesignFvtSupport.describe(report));
+            assertEquals(reportSpecGUID, report.getDerivedFromReportType().getRelatedElement().getElementHeader().getGUID());
+            assertNotNull(explorer.element("/elements/" + reportSpecGUID, new GetRequestBody()).getReportTypeInstances(), "no reportTypeInstances");
+
+            dataDesigner.call(reportTypeInstancePath + "/detach", new DeleteRelationshipRequestBody());
+
+            DesignFvtSupport.assertNotLinked(explorer, "/elements/" + reportSpecGUID, OpenMetadataType.REPORT_TYPE_INSTANCE_RELATIONSHIP.typeName, reportGUID);
+
+            /*
+             * ReportRunOf
+             */
+            String reportRunPath = "/results-sets/" + resultsSetGUID + "/report-runs/" + reportGUID;
+
+            ReportRunOfProperties reportRunOfProperties = DesignFvtSupport.labeled(new ReportRunOfProperties(), "run");
+
+            reportRunOfProperties.setResultState("complete");
+            reportRunOfProperties.setResultStateReason("all stages ran");
+            reportRunOfProperties.setResultLocation("file://reports/customer-lineage.md");
+
+            NewRelationshipRequestBody reportRunRequestBody = DesignFvtSupport.relationship(reportRunOfProperties);
+
+            dataDesigner.call(reportRunPath + "/attach", reportRunRequestBody);
+
+            RelatedMetadataElementSummary run = DesignFvtSupport.assertLinked(explorer, "/elements/" + reportGUID,
+                                                                              OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName, resultsSetGUID);
+
+            ReportRunOfProperties runReadBack = assertInstanceOf(ReportRunOfProperties.class, run.getRelationshipProperties());
+
+            assertEquals("complete", runReadBack.getResultState());
+            assertEquals("all stages ran", runReadBack.getResultStateReason());
+            assertEquals("file://reports/customer-lineage.md", runReadBack.getResultLocation());
+
+            report = explorer.element("/elements/" + reportGUID, new GetRequestBody());
+
+            assertNotNull(report.getUsesResultsSets(), "no usesResultsSets: " + DesignFvtSupport.describe(report));
+            assertNotNull(explorer.element("/elements/" + resultsSetGUID, new GetRequestBody()).getUsedInReports(), "no usedInReports");
+
+            dataDesigner.call(reportRunPath + "/detach", new DeleteRelationshipRequestBody());
+
+            DesignFvtSupport.assertNotLinked(explorer, "/elements/" + reportGUID, OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName, resultsSetGUID);
+        }
+        finally
+        {
+            assetMaker.call("/assets/" + reportGUID + "/delete", new DeleteElementRequestBody());
+            ViewServicesFvtTestSupport.assertGone(explorer, "/elements/" + reportGUID);
+            DesignFvtSupport.deleteAndCheck(collectionManager, "/collections/" + reportSpecGUID, "/collections/" + reportSpecGUID + "/retrieve");
+            DesignFvtSupport.deleteAndCheck(collectionManager, "/collections/" + resultsSetGUID, "/collections/" + resultsSetGUID + "/retrieve");
         }
     }
 

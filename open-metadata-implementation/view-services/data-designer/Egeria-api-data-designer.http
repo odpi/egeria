@@ -1490,3 +1490,204 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+###
+# =====================================================================================================================
+# Work with Report Specifications and Measurements
+# https://egeria-project.org/types/5/0582-Report-Specifications/
+
+@measurementSpecificationGUID=add guid here
+@reportTypeGUID=add guid here
+@reportGUID=add guid here
+@resultsSetGUID=add guid here
+
+###
+# @name createDataValueSpecification (MeasurementSpecification)
+# Create a measurement specification - the description of a measurement that is part of a report.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-value-specifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "properties": {
+    "class" : "MeasurementSpecificationProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "units" : "add units here",
+    "completenessDeclared": "complete",
+    "confidenceForm": "measured",
+    "uncertaintyForm": "plus_minus",
+    "absenceSentences": {
+      "nothing_found": "No matching elements were found.",
+      "not_measured": "This value has not been measured.",
+      "not_permitted": "You are not permitted to see this value.",
+      "not_applicable": "This measurement does not apply."
+    }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkBasisDataField
+# Attach a measurement specification to the data field that describes the basis for the measurement - for example, the denominator for a percentage.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-value-specifications/{{measurementSpecificationGUID}}/basis-data-fields/{{dataFieldGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "BasisDataFieldProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachBasisDataField
+# Detach a measurement specification from the data field that describes the basis for the measurement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-value-specifications/{{measurementSpecificationGUID}}/basis-data-fields/{{dataFieldGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAsOfDataField
+# Attach a measurement specification to the data field that describes the time of the measurement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-value-specifications/{{measurementSpecificationGUID}}/as-of-data-fields/{{dataFieldGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "AsOfDataFieldProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAsOfDataField
+# Detach a measurement specification from the data field that describes the time of the measurement.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-value-specifications/{{measurementSpecificationGUID}}/as-of-data-fields/{{dataFieldGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkReportTypeInstance
+# Attach a report type to a report that was generated using this type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/report-types/{{reportTypeGUID}}/report-type-instances/{{reportGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ReportTypeInstanceProperties",
+    "label": "add label",
+    "description": "add description",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachReportTypeInstance
+# Detach a report type from a report that was generated using this type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/report-types/{{reportTypeGUID}}/report-type-instances/{{reportGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkReportRunOf
+# Attach a results set to a report that was generated from it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/results-sets/{{resultsSetGUID}}/report-runs/{{reportGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "ReportRunOfProperties",
+    "label": "add label",
+    "description": "add description",
+    "resultState": "add state of results here",
+    "resultStateReason": "add reason for the result state here",
+    "resultLocation": "add location of the results here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachReportRunOf
+# Detach a results set from a report that was generated from it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/results-sets/{{resultsSetGUID}}/report-runs/{{reportGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
