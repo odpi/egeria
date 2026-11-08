@@ -354,7 +354,8 @@ public class ProductManagerFVT
     {
         ProductManagerClient productManagerClient = connectorContext.getProductManagerClient();
 
-        String notificationTypeBefore = notificationType(oneTimeProcessGUID);
+        String       notificationTypeBefore = notificationType(oneTimeProcessGUID);
+        List<String> offeringsBefore        = subscriptionOfferings();
 
         String processGUID = productManagerClient.createOneTimeSubscription(productGUID,
                                                                             productManagerClient.getMetadataSourceOptions(),
@@ -372,8 +373,122 @@ public class ProductManagerFVT
 
         List<String> offerings = subscriptionOfferings();
 
-        assertEquals(3, offerings.size(),
-                     "The product offers " + offerings.size() + " subscription options rather than the three subscription types it has: " + offerings);
+        assertEquals(offeringsBefore.size(), offerings.size(),
+                     "Asking for the one-time subscription type a second time changed the number of subscription options"
+                             + " the product offers from " + offeringsBefore.size() + " to " + offerings.size() + ": " + offerings);
+    }
+
+
+    /**
+     * An ongoing update subscription type notifies when a monitored resource changes.  With nothing to monitor,
+     * the subscription manager cannot tell it from a periodic one, and would notify its subscribers every time
+     * its minimum interval passed - which is what happened to Jacquard's product families whose members have no
+     * product asset.  So it is kept away from the subscription manager until it has something to watch: it is
+     * not registered when it is created, an earlier registration is removed when it is set up again, and it is
+     * registered once a monitored resource is supplied.
+     *
+     * @throws Exception problem creating or reading the subscription type
+     */
+    @Test
+    @DisplayName("An ongoing update subscription type is only registered with the subscription manager once it has something to watch")
+    void ongoingUpdateSubscriptionTypeAwaitsMonitoredResources() throws Exception
+    {
+        final String identifier = "ONGOING-UPDATE-AWAITING-DATA";
+
+        ProductManagerClient productManagerClient = connectorContext.getProductManagerClient();
+        String               baudotGUID           = IntegrationConnectorDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGUID();
+
+        String processGUID = productManagerClient.createOngoingUpdateSubscription(productGUID,
+                                                                                  productManagerClient.getMetadataSourceOptions(),
+                                                                                  null,
+                                                                                  identifier,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  serviceLevelObjectiveGUID,
+                                                                                  List.of(),
+                                                                                  ONGOING_INTERVAL_MINUTES);
+
+        String notificationTypeGUID = notificationType(processGUID);
+
+        assertTrue(relatedGUIDs(notificationTypeGUID, OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName, 1).isEmpty(),
+                   "The notification type monitors resources although none were supplied.");
+        assertFalse(relatedGUIDs(notificationTypeGUID, OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, 2).contains(baudotGUID),
+                    "An ongoing update notification type with nothing to monitor was registered with the Baudot subscription"
+                            + " manager, which would notify its subscribers every time its minimum interval passed.");
+        assertTrue(subscriptionOfferings().contains(processGUID),
+                   "The subscription option is not offered from the product while it waits for something to watch.");
+
+        /*
+         * A notification type registered before this rule - as Jacquard's product families were - is removed
+         * from the subscription manager when the subscription type is next set up.
+         */
+        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                       baudotGUID,
+                                                       notificationTypeGUID,
+                                                       null,
+                                                       null,
+                                                       null);
+
+        assertTrue(relatedGUIDs(notificationTypeGUID, OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, 2).contains(baudotGUID),
+                   "The test could not register the notification type with the Baudot subscription manager.");
+
+        assertEquals(processGUID,
+                     productManagerClient.createOngoingUpdateSubscription(productGUID,
+                                                                          productManagerClient.getMetadataSourceOptions(),
+                                                                          null,
+                                                                          identifier,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          serviceLevelObjectiveGUID,
+                                                                          List.of(),
+                                                                          ONGOING_INTERVAL_MINUTES),
+                     "Setting up the subscription type again created a second subscription option.");
+
+        assertFalse(relatedGUIDs(notificationTypeGUID, OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, 2).contains(baudotGUID),
+                    "Setting up the ongoing update subscription type again with nothing to monitor left its earlier"
+                            + " registration with the Baudot subscription manager in place.");
+
+        /*
+         * Once there is something to watch, it is registered.
+         */
+        productManagerClient.createOngoingUpdateSubscription(productGUID,
+                                                             productManagerClient.getMetadataSourceOptions(),
+                                                             null,
+                                                             identifier,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             serviceLevelObjectiveGUID,
+                                                             List.of(sourceAssetGUID),
+                                                             ONGOING_INTERVAL_MINUTES);
+
+        assertEquals(List.of(sourceAssetGUID),
+                     relatedGUIDs(notificationTypeGUID, OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName, 1),
+                     "The notification type does not monitor exactly the resource it was given.");
+        assertTrue(relatedGUIDs(notificationTypeGUID, OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, 2).contains(baudotGUID),
+                   "The ongoing update notification type was not registered with the Baudot subscription manager once it"
+                           + " had something to watch, so its subscribers would never be notified.");
+
+        /*
+         * Supplying the same resource again neither links it twice nor registers the notification type twice.
+         */
+        productManagerClient.createOngoingUpdateSubscription(productGUID,
+                                                             productManagerClient.getMetadataSourceOptions(),
+                                                             null,
+                                                             identifier,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             serviceLevelObjectiveGUID,
+                                                             List.of(sourceAssetGUID),
+                                                             ONGOING_INTERVAL_MINUTES);
+
+        assertEquals(1, relatedGUIDs(notificationTypeGUID, OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName, 1).size(),
+                     "Supplying the same monitored resource again linked it twice.");
+        assertEquals(1, relatedGUIDs(notificationTypeGUID, OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName, 2).stream().filter(baudotGUID::equals).count(),
+                     "Setting up the subscription type again registered it with the Baudot subscription manager twice.");
     }
 
 

@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * NewSubscriptionTypeRequestBody describes a new subscription type for a digital product.  A subscription type is
  * the notification type that drives the subscribers' notifications, registered with the subscription manager, and
  * the governance action process that a subscriber runs to take out a subscription of that type.
- * Every field is optional; the meaning of notificationInterval and monitoredResourceGUIDs depends on the kind of
+ * Every field is optional; the meaning of minimumNotificationInterval and monitoredResourceGUIDs depends on the kind of
  * subscription type being created.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -31,7 +31,7 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
     private String       description               = null;
     private String       licenseTypeGUID           = null;
     private String       serviceLevelObjectiveGUID = null;
-    private long         notificationInterval      = 0L;
+    private long         minimumNotificationInterval = 0L;
     private List<String> monitoredResourceGUIDs    = null;
 
 
@@ -60,7 +60,7 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
             this.description               = template.getDescription();
             this.licenseTypeGUID           = template.getLicenseTypeGUID();
             this.serviceLevelObjectiveGUID = template.getServiceLevelObjectiveGUID();
-            this.notificationInterval      = template.getNotificationInterval();
+            this.minimumNotificationInterval = template.getMinimumNotificationInterval();
             this.monitoredResourceGUIDs    = template.getMonitoredResourceGUIDs();
         }
     }
@@ -204,26 +204,28 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
 
 
     /**
-     * Return the notification interval in minutes.  For a periodic subscription type this is the time between
-     * notifications; for an ongoing update subscription type it is the minimum time between notifications.  It is
+     * Return the minimum notification interval in minutes - stored as the notification type's
+     * minimumNotificationInterval.  For a periodic subscription type it is the time between notifications: the
+     * subscription manager notifies the subscribers each time it has passed.  For an ongoing update subscription
+     * type it is the minimum time between notifications triggered by changes to the monitored resources.  It is
      * not used by a one-time subscription type.
      *
      * @return minutes
      */
-    public long getNotificationInterval()
+    public long getMinimumNotificationInterval()
     {
-        return notificationInterval;
+        return minimumNotificationInterval;
     }
 
 
     /**
-     * Set up the notification interval in minutes.
+     * Set up the minimum notification interval in minutes.
      *
-     * @param notificationInterval minutes
+     * @param minimumNotificationInterval minutes
      */
-    public void setNotificationInterval(long notificationInterval)
+    public void setMinimumNotificationInterval(long minimumNotificationInterval)
     {
-        this.notificationInterval = notificationInterval;
+        this.minimumNotificationInterval = minimumNotificationInterval;
     }
 
 
@@ -265,7 +267,7 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
                 ", description='" + description + '\'' +
                 ", licenseTypeGUID='" + licenseTypeGUID + '\'' +
                 ", serviceLevelObjectiveGUID='" + serviceLevelObjectiveGUID + '\'' +
-                ", notificationInterval=" + notificationInterval +
+                ", minimumNotificationInterval=" + minimumNotificationInterval +
                 ", monitoredResourceGUIDs=" + monitoredResourceGUIDs +
                 "} " + super.toString();
     }
@@ -292,7 +294,7 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        return notificationInterval == that.notificationInterval &&
+        return minimumNotificationInterval == that.minimumNotificationInterval &&
                 Objects.equals(subscriptionManagerGUID, that.subscriptionManagerGUID) &&
                 Objects.equals(identifier, that.identifier) &&
                 Objects.equals(displayName, that.displayName) &&
@@ -312,6 +314,6 @@ public class NewSubscriptionTypeRequestBody extends MetadataSourceRequestBody
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), subscriptionManagerGUID, identifier, displayName, description,
-                            licenseTypeGUID, serviceLevelObjectiveGUID, notificationInterval, monitoredResourceGUIDs);
+                            licenseTypeGUID, serviceLevelObjectiveGUID, minimumNotificationInterval, monitoredResourceGUIDs);
     }
 }

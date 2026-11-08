@@ -560,11 +560,11 @@ public class ProductManagerRESTServices extends TokenController
     /**
      * Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
      * delivery of the product's data, at regular intervals.  The time between notifications is the request body's
-     * notificationInterval, in minutes.
+     * minimumNotificationInterval, in minutes.
      *
      * @param serverName name of called server
      * @param digitalProductGUID unique identifier of the product
-     * @param requestBody description of the subscription type, including the notification interval
+     * @param requestBody description of the subscription type, including the minimum notification interval
      * @return unique identifier of the governance action process that creates a subscription of this type or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
@@ -602,7 +602,7 @@ public class ProductManagerRESTServices extends TokenController
                                                                     requestBody.getDescription(),
                                                                     requestBody.getLicenseTypeGUID(),
                                                                     requestBody.getServiceLevelObjectiveGUID(),
-                                                                    requestBody.getNotificationInterval()));
+                                                                    requestBody.getMinimumNotificationInterval()));
             }
             else
             {
@@ -622,7 +622,7 @@ public class ProductManagerRESTServices extends TokenController
     /**
      * Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
      * so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
-     * more often than the request body's notificationInterval, in minutes.
+     * more often than the request body's minimumNotificationInterval, in minutes.
      *
      * @param serverName name of called server
      * @param digitalProductGUID unique identifier of the product
@@ -666,7 +666,7 @@ public class ProductManagerRESTServices extends TokenController
                                                                          requestBody.getLicenseTypeGUID(),
                                                                          requestBody.getServiceLevelObjectiveGUID(),
                                                                          requestBody.getMonitoredResourceGUIDs(),
-                                                                         requestBody.getNotificationInterval()));
+                                                                         requestBody.getMinimumNotificationInterval()));
             }
             else
             {

@@ -432,7 +432,14 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         for (OpenMetadataProperty openMetadataProperty : OpenMetadataProperty.values())
         {
-            this.addOpenMetadataProperty(openMetadataProperty);
+            /*
+             * A property whose constant ends in _DEPRECATED is kept only so that the type archives can still
+             * declare an attribute that existing repositories hold.  It is not offered as a valid property name.
+             */
+            if (! openMetadataProperty.name().endsWith("_DEPRECATED"))
+            {
+                this.addOpenMetadataProperty(openMetadataProperty);
+            }
         }
 
         /*===========================================

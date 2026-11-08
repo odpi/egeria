@@ -7227,7 +7227,6 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_START_DATE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_INTERVAL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_COUNT));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEXT_SCHEDULED_NOTIFICATION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_COMPLETION_DATE));

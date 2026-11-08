@@ -1320,6 +1320,13 @@ public class QueryBuilder
      * Return the SQL for an IN condition: the property has a value equal to one of the listed values.  Each element
      * of an array property is stored in a row of its own under the array's attribute name, so the same test also
      * matches an array property that has any of the listed values among its elements.
+     * <br>
+     * A property held in the attribute table is tested with a single sub-select whose value test is
+     * "property_value in (...)".  It used to be one exists sub-select per listed value, joined with "or".  The
+     * results are the same, but the zone filter lists every zone the caller can read, so each candidate row carried
+     * one sub-plan per zone.  That multiplied PostgreSQL's cost estimate past its JIT threshold even for a lookup by
+     * qualified name: on a quickstart repository with 29 readable zones, such a lookup spent 1.4 s compiling 454
+     * functions for a query that runs in under 1 ms.
      *
      * @param topLevelPropertyName parent attribute name - not null when dealing with nested properties
      * @param leafPropertyName name of the property tested
@@ -1335,7 +1342,12 @@ public class QueryBuilder
                                    String             principleTableName,
                                    String             propertyTableName) throws RepositoryErrorException
     {
+        String  propertyColumn  = this.mapPropertyNameToColumn(leafPropertyName, RepositoryColumn.ATTRIBUTE_NAME.getColumnName());
+        boolean inAttributeRows = (propertyTableName != null) &&
+                (propertyColumn.equals(RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) || propertyColumn.equals(RepositoryColumn.PROPERTY_NAME.getColumnName()));
+
         List<String> clauses = new ArrayList<>();
+        List<String> values  = new ArrayList<>();
 
         if ((listValue.getArrayValues() != null) && (listValue.getArrayValues().getInstanceProperties() != null))
         {
@@ -1359,7 +1371,11 @@ public class QueryBuilder
                     comparisonValue = this.escapePropertyValue(enumPropertyValue.getSymbolicName());
                 }
 
-                if (comparisonValue != null)
+                if ((comparisonValue != null) && (inAttributeRows))
+                {
+                    values.add("'" + this.getSQLValue(propertyColumn, comparisonValue) + "'");
+                }
+                else if (comparisonValue != null)
                 {
                     clauses.add(this.getNestedPropertyComparisonClause(topLevelPropertyName,
                                                                        leafPropertyName,
@@ -1369,6 +1385,23 @@ public class QueryBuilder
                                                                        propertyTableName));
                 }
             }
+        }
+
+        if (! values.isEmpty())
+        {
+            String propertyNameMatchClause = this.getPropertyNameMatchClause(propertyTableName,
+                                                                             topLevelPropertyName,
+                                                                             leafPropertyName);
+            String rowMatchClause = "select 1 from " + propertyTableName +
+                    " where " + this.getAttributeRowJoin(principleTableName, propertyTableName);
+
+            if (propertyNameMatchClause != null)
+            {
+                rowMatchClause = rowMatchClause + " and " + propertyNameMatchClause;
+            }
+
+            clauses.add(" exists (" + rowMatchClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() +
+                                " in (" + String.join(", ", values) + ")) ");
         }
 
         if (clauses.isEmpty())

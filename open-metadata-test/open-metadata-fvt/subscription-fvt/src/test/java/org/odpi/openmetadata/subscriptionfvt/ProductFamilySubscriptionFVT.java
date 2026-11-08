@@ -110,11 +110,32 @@ public class ProductFamilySubscriptionFVT
             agreementItems.add(SubscriptionFvtTestSupport.getStringProperty(item.getElement(), OpenMetadataProperty.QUALIFIED_NAME.name));
         }
 
-        assertEquals(List.of(family.getQualifiedName()),
-                     agreementItems,
-                     "The " + subscriptionType.getIdentifier() + " subscription to family " + family.getProductName()
-                             + " should be an agreement covering the family and nothing else; its agreement items are "
-                             + agreementItems);
+        /*
+         * The subscription covers the family, and is taken out under the data contract of its subscription type
+         * (Bitol: the subscription is an instance of the contract) - and nothing else.
+         */
+        List<String> unexpectedItems = new ArrayList<>();
+
+        for (String agreementItem : agreementItems)
+        {
+            boolean isTheFamily         = family.getQualifiedName().equals(agreementItem);
+            boolean isTheDataContract   = (agreementItem != null) &&
+                                          agreementItem.startsWith("DataContract::") &&
+                                          agreementItem.contains("::" + subscriptionType.getIdentifier() + "::");
+
+            if ((! isTheFamily) && (! isTheDataContract))
+            {
+                unexpectedItems.add(agreementItem);
+            }
+        }
+
+        assertTrue(agreementItems.contains(family.getQualifiedName()),
+                   "The " + subscriptionType.getIdentifier() + " subscription to family " + family.getProductName()
+                           + " does not cover the family; its agreement items are " + agreementItems);
+        assertTrue(unexpectedItems.isEmpty(),
+                   "The " + subscriptionType.getIdentifier() + " subscription to family " + family.getProductName()
+                           + " should cover the family under its subscription type's data contract and nothing else;"
+                           + " it also covers " + unexpectedItems);
 
         List<String> nestedSubscriptions = new ArrayList<>();
 

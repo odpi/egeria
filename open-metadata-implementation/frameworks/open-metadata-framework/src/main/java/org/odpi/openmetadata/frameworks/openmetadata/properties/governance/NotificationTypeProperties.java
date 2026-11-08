@@ -25,12 +25,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     private Date    plannedStartDate               = null;
     private Boolean multipleNotificationsPermitted = null;
     private Long    minimumNotificationInterval    = null;
-
-    /**
-     * @deprecated the schedule no longer belongs to the notification type - see the getter.
-     */
-    @Deprecated
-    private Long    notificationInterval           = null;
     private Date    lastNotification               = null;
     private Date    nextScheduledNotification      = null;
     private Long    notificationCount              = null;
@@ -61,7 +55,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
             plannedStartDate               = template.getPlannedStartDate();
             multipleNotificationsPermitted = template.getMultipleNotificationsPermitted();
             minimumNotificationInterval    = template.getMinimumNotificationInterval();
-            notificationInterval           = template.getNotificationInterval();
             lastNotification               = template.getLastNotification();
             nextScheduledNotification      = template.getNextScheduledNotification();
             notificationCount              = template.getNotificationCount();
@@ -137,38 +130,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     public void setMinimumNotificationInterval(Long minimumNotificationInterval)
     {
         this.minimumNotificationInterval = minimumNotificationInterval;
-    }
-
-
-    /**
-     * Return how frequently a notification should be sent, in minutes.
-     *
-     * @return minute count
-     *
-     * @deprecated whether a notification may fire is assessed by the notification manager, from
-     * minimumNotificationInterval and nextScheduledNotification together with each subscriber's own state.
-     * The notification type no longer carries a schedule of its own.  The property is retained so that a
-     * repository holding a value for it can still read its instances - see the deprecated attribute on the
-     * NotificationType entity in OpenMetadataTypesArchive.
-     */
-    @Deprecated
-    public Long getNotificationInterval()
-    {
-        return notificationInterval;
-    }
-
-
-    /**
-     * Set up how frequently a notification should be sent, in minutes.
-     *
-     * @param notificationInterval minute count
-     *
-     * @deprecated see {@link #getNotificationInterval()}.
-     */
-    @Deprecated
-    public void setNotificationInterval(Long notificationInterval)
-    {
-        this.notificationInterval = notificationInterval;
     }
 
 
@@ -274,7 +235,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
                 "plannedStartDate=" + plannedStartDate +
                 ", multipleNotificationsPermitted=" + multipleNotificationsPermitted +
                 ", minimumNotificationInterval=" + minimumNotificationInterval +
-                ", notificationInterval=" + notificationInterval +
                 ", lastNotification=" + lastNotification +
                 ", nextScheduledNotification=" + nextScheduledNotification +
                 ", notificationCount=" + notificationCount +
@@ -297,7 +257,6 @@ public class NotificationTypeProperties extends GovernanceControlProperties
         if (!super.equals(objectToCompare)) return false;
         NotificationTypeProperties that = (NotificationTypeProperties) objectToCompare;
         return Objects.equals(minimumNotificationInterval, that.minimumNotificationInterval) &&
-                Objects.equals(notificationInterval, that.notificationInterval) &&
                 Objects.equals(multipleNotificationsPermitted, that.multipleNotificationsPermitted) &&
                 Objects.equals(notificationCount, that.notificationCount) &&
                 Objects.equals(plannedStartDate, that.plannedStartDate) &&
@@ -316,7 +275,7 @@ public class NotificationTypeProperties extends GovernanceControlProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), plannedStartDate, multipleNotificationsPermitted,
-                            minimumNotificationInterval, notificationInterval, notificationCount,
+                            minimumNotificationInterval, notificationCount,
                             lastNotification, nextScheduledNotification, plannedCompletionDate);
     }
 }

@@ -138,6 +138,8 @@ In tribute to [Emile Baudot](https://en.wikipedia.org/wiki/%C3%89mile_Baudot)
 
 The Baudot Subscription Manager is a dynamic integration connector that manages the subscriptions to the Jacquard digital products in the digital product catalog.  Each product's notification types are handed to it by Jacquard as catalog targets.  On every refresh - on the interval configured for it in the integration daemon, or when a refresh is requested through the daemon's REST API - it sends the welcome, one-time and periodic notifications that each notification type's subscribers are due; changes to a notification type's monitored resources are notified as the change events arrive.
 
+A notification type with no monitored resources is periodic: its subscribers are notified each time its `minimumNotificationInterval` (in minutes) has passed.  So an ongoing update subscription type is only handed to Baudot once it has a monitored resource.  A product family's ongoing update subscription types monitor the product assets of its members, and Jacquard registers them as each member with a product asset is catalogued.  A family whose members have no product asset is not registered, and a product added to a family is picked up the next time Jacquard starts.
+
 ## Wedgwood Data Provisioner
 
 In tribute to [Thomas Wedgwood](https://en.wikipedia.org/wiki/Thomas_Wedgwood_(photographer))

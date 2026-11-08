@@ -2007,9 +2007,6 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addLongProperty(elementProperties,
                                                                                        OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.name,
                                                                                        notificationTypeProperties.getMinimumNotificationInterval());
-                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
-                                                                                       OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
-                                                                                       notificationTypeProperties.getNotificationInterval());
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                                        OpenMetadataProperty.LAST_NOTIFICATION.name,
                                                                                        notificationTypeProperties.getLastNotification());

@@ -208,7 +208,7 @@ Content-Type: application/json
 ###
 # @name createPeriodicSubscription
 # Add a periodic subscription type to the product: subscribers receive a notification, and so a delivery of the
-# product's data, every notificationInterval minutes.  A product offering more than one periodic subscription type
+# product's data, every minimumNotificationInterval minutes.  A product offering more than one periodic subscription type
 # (daily and weekly, say) needs a distinct identifier for each.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/subscription-types/periodic
 Authorization: Bearer {{token}}
@@ -219,14 +219,15 @@ Content-Type: application/json
   "identifier" : "DAILY-REFRESH-SUBSCRIPTION",
   "displayName" : "Daily refresh subscription",
   "description" : "This subscription delivers the data to the target destination once a day.",
-  "notificationInterval" : 1440
+  "minimumNotificationInterval" : 1440
 }
 
 ###
 # @name createOngoingUpdateSubscription
 # Add an ongoing update subscription type to the product: subscribers receive a notification, and so a delivery of
 # the product's data, whenever one of the monitoredResourceGUIDs changes - but no more often than
-# notificationInterval minutes.  The monitored resource is typically the product's asset.
+# minimumNotificationInterval minutes.  The monitored resource is typically the product's asset.  The subscription
+# type is only registered with the subscription manager once it has at least one monitored resource.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/product-manager/digital-products/{{digitalProductGUID}}/subscription-types/ongoing-update
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -237,7 +238,7 @@ Content-Type: application/json
   "displayName" : "Ongoing update subscription",
   "description" : "This subscription delivers data updates to the target destination within an hour of receiving the new data.",
   "monitoredResourceGUIDs" : [ "{{productAssetGUID}}" ],
-  "notificationInterval" : 10
+  "minimumNotificationInterval" : 10
 }
 
 ###

@@ -196,7 +196,8 @@ public class ProductManagerClient extends ConnectorContextClientBase
      *                                  null means the first license type that the product is governed by
      * @param serviceLevelObjectiveGUID unique identifier of the service level objective offered by the subscription;
      *                                  null means the first service level objective that the product is governed by
-     * @param notificationInterval      time between notifications in minutes
+     * @param minimumNotificationInterval time between notifications in minutes - the subscription manager
+     *                                    notifies the subscribers each time it has passed
      * @return unique identifier of the governance action process that creates a subscription of this type
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -210,9 +211,9 @@ public class ProductManagerClient extends ConnectorContextClientBase
                                              String                description,
                                              String                licenseTypeGUID,
                                              String                serviceLevelObjectiveGUID,
-                                             long                  notificationInterval) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+                                             long                  minimumNotificationInterval) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         String elementGUID = productManagerHandler.createPeriodicSubscription(connectorUserId,
                                                                               digitalProductGUID,
@@ -223,7 +224,7 @@ public class ProductManagerClient extends ConnectorContextClientBase
                                                                               description,
                                                                               licenseTypeGUID,
                                                                               serviceLevelObjectiveGUID,
-                                                                              notificationInterval);
+                                                                              minimumNotificationInterval);
 
         if (parentContext.getActivityReportWriter() != null)
         {

@@ -100,9 +100,13 @@ public class QueryBuilderPropertyConditionsTest
         String sql = this.getWhereClause(MatchCriteria.ALL,
                                          this.getListCondition("zoneMembership", "quarantine", "it's"));
 
-        assertTrue(sql.contains("entity_attribute_value.attribute_name = 'zoneMembership' and property_value = 'quarantine')"), sql);
-        assertTrue(sql.contains(" or "), sql);
-        assertTrue(sql.contains("entity_attribute_value.attribute_name = 'zoneMembership' and property_value = 'it''s')"), sql);
+        /*
+         * One sub-select for the whole list, not one per value: a sub-plan per value pushed PostgreSQL's cost
+         * estimate for the zone filter past its JIT threshold.
+         */
+        assertTrue(sql.contains("entity_attribute_value.attribute_name = 'zoneMembership' and property_value in ('quarantine', 'it''s'))"), sql);
+        assertEquals(1, sql.split("exists \\(", -1).length - 1, sql);
+        assertFalse(sql.contains(" or "), sql);
     }
 
 

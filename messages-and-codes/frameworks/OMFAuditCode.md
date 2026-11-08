@@ -9,7 +9,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 16 |
+| **Number of messages** | 17 |
 | **Message identifiers begin** | `OPEN-METADATA-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-metadata-framework](../../open-metadata-implementation/frameworks/open-metadata-framework) |
@@ -35,6 +35,7 @@ The OMFAuditCode is used to define the message content for the Audit Log.
 | [OPEN-METADATA-0018](#open-metadata-0018) | INFO | The {0} service is not yet monitoring notification type {1} because it is planned to start at {2} |
 | [OPEN-METADATA-0019](#open-metadata-0019) | INFO | The {0} service has stopped monitoring notification type {1} because it has passed its completion date of {2} |
 | [OPEN-METADATA-0020](#open-metadata-0020) | ERROR | The {0} service has not registered notification type {1} with the default subscription manager because no integration connector with unique identifier {2} is defined in open metadata |
+| [OPEN-METADATA-0021](#open-metadata-0021) | INFO | The {0} service has not registered ongoing update notification type {1} with subscription manager {2} because it has no monitored resources |
 | [OPEN-METADATA-0025](#open-metadata-0025) | EXCEPTION | The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1} for service {2}.  The message was: {3} |
 
 ----
@@ -365,6 +366,28 @@ The notification type is created, but no subscription manager is looking after i
 **User action**
 
 Load the Open Metadata Digital Products content pack, which defines the Baudot Subscription Manager, or name a subscription manager when creating the subscription type.
+
+
+----
+
+### OPEN-METADATA-0021
+
+> The {0} service has not registered ongoing update notification type {1} with subscription manager {2} because it has no monitored resources
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFAuditCode.NOTIFICATION_TYPE_NOT_MONITORING` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/notification-type/> |
+
+**System action**
+
+An ongoing update notification type notifies its subscribers when one of its monitored resources changes.  With none, the subscription manager would treat it as a periodic notification type and notify its subscribers every time its minimum notification interval passed.  It is left out of the subscription manager's catalog targets (and removed if it was registered before) until a monitored resource is linked to it.
+
+**User action**
+
+No action is required if the product's data is still to be catalogued - for example, a product family whose members have no product asset yet.  The notification type is registered when the subscription type is next set up with a monitored resource.
 
 
 ----

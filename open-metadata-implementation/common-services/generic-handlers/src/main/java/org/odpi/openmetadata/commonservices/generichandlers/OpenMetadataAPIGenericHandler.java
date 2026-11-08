@@ -1067,7 +1067,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             {
                 InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                       classificationProperties,
-                                                                      existingClassification.getProperties());
+                                                                      existingClassification.getProperties(),
+                                                                      existingClassification.getName(),
+                                                                      methodName);
 
                 /*
                  * If there are no properties to change then nothing more to do
@@ -1502,19 +1504,86 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Remove the properties that the named type (and its supertypes) no longer define.  The properties are
+     * returned unchanged if the type is not known, or none are undefined.  Package-private for unit testing.
+     *
+     * @param existingProperties properties from the repository (may be null)
+     * @param instanceTypeName name of the instance's type (may be null)
+     * @param methodName calling method
+     * @return properties holding only the attributes the type defines
+     */
+    InstanceProperties removeUndefinedProperties(InstanceProperties existingProperties,
+                                                 String             instanceTypeName,
+                                                 String             methodName)
+    {
+        if ((existingProperties == null) || (existingProperties.getInstanceProperties() == null) || (instanceTypeName == null))
+        {
+            return existingProperties;
+        }
+
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, instanceTypeName);
+
+        if (typeDef == null)
+        {
+            return existingProperties;
+        }
+
+        Set<String>            definedPropertyNames = new HashSet<>();
+        List<TypeDefAttribute> typeDefAttributes    = repositoryHelper.getAllPropertiesForTypeDef(serviceName, typeDef, methodName);
+
+        if (typeDefAttributes != null)
+        {
+            for (TypeDefAttribute typeDefAttribute : typeDefAttributes)
+            {
+                if (typeDefAttribute != null)
+                {
+                    definedPropertyNames.add(typeDefAttribute.getAttributeName());
+                }
+            }
+        }
+
+        /*
+         * getInstanceProperties returns a copy, so the properties are removed through setProperty.
+         */
+        for (String propertyName : existingProperties.getInstanceProperties().keySet())
+        {
+            if ((propertyName != null) && (! definedPropertyNames.contains(propertyName)))
+            {
+                existingProperties.setProperty(propertyName, null);
+            }
+        }
+
+        return existingProperties;
+    }
+
+
+    /**
      * Create the new properties to hand to the repository helper based on the supplied properties,
      * existing properties and whether this is a merge update or not.
      * The effectivity dates are always preserved unless they are over-written by the caller.  If they need clearing then use the separate call.
      *
      * @param isMergeUpdate should the supplied updateProperties be merged with existing properties (true) by replacing just the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
+     * <br>
+     * On a merge update, an existing property that the instance's type no longer defines is dropped.  An attribute
+     * can be removed from an open metadata type (for example, NotificationType's notificationInterval in release
+     * 6.3) while instances stored earlier still hold a value for it; carried forward, that value would fail the
+     * repository's validation and make the instance impossible to update.  Supplied properties are not filtered,
+     * so a caller that names an unknown property is still told.
+     *
+     * @param isMergeUpdate should the supplied updateProperties be merged with existing properties (true) by replacing just the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
      * @param suppliedProperties properties from the caller
      * @param existingProperties properties from the repository
+     * @param instanceTypeName name of the instance's type - used to drop existing properties it no longer defines
+     * @param methodName calling method
      * @return properties to store
      */
     private InstanceProperties setUpNewProperties(boolean            isMergeUpdate,
                                                   InstanceProperties suppliedProperties,
-                                                  InstanceProperties existingProperties)
+                                                  InstanceProperties existingProperties,
+                                                  String             instanceTypeName,
+                                                  String             methodName)
     {
         /*
          * Sort out the properties
@@ -1523,7 +1592,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if (isMergeUpdate)
         {
-            newProperties = existingProperties;
+            newProperties = this.removeUndefinedProperties(existingProperties, instanceTypeName, methodName);
 
             if (newProperties == null)
             {
@@ -2309,7 +2378,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              */
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   updateProperties,
-                                                                  originalEntity.getProperties());
+                                                                  originalEntity.getProperties(),
+                                                                  (originalEntity.getType() == null) ? null : originalEntity.getType().getTypeDefName(),
+                                                                  methodName);
 
             /*
              * If there are no properties to change then nothing more to do
@@ -7589,7 +7660,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
              */
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   relationshipProperties,
-                                                                  relationship.getProperties());
+                                                                  relationship.getProperties(),
+                                                                  (relationship.getType() == null) ? null : relationship.getType().getTypeDefName(),
+                                                                  methodName);
 
             this.validateRelationshipChange(userId,
                                             relationship,
@@ -12307,7 +12380,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   relationshipProperties,
-                                                                  relationship.getProperties());
+                                                                  relationship.getProperties(),
+                                                                  (relationship.getType() == null) ? null : relationship.getType().getTypeDefName(),
+                                                                  methodName);
 
             repositoryHandler.updateRelationshipProperties(userId,
                                                            externalSourceGUID,

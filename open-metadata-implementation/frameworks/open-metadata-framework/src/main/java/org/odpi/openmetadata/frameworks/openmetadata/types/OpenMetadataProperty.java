@@ -2846,11 +2846,6 @@ public enum OpenMetadataProperty
     MULTIPLE_NOTIFICATIONS_PERMITTED("multipleNotificationsPermitted", DataType.BOOLEAN, DataType.BOOLEAN.getDisplayName(), "Defines whether multiple notifications may be sent to a subscriber.  The default is true.", "true", "b8e84c95-73b4-4bbc-9da6-26fc2b4f72c6", "true"),
 
     /**
-     * Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).
-     */
-    NOTIFICATION_INTERVAL("notificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Describes how frequently a notification should be sent - in minutes.  If this is set to zero or not specified, then notifications are triggered by an event (such as a change to a monitored resource).", "60", "e4fed721-659f-4367-9c88-d70534cd8801", "0"),
-
-    /**
      * Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.
      */
     MINIMUM_NOTIFICATION_INTERVAL("minimumNotificationInterval", DataType.LONG, DataType.LONG.getDisplayName(), "Limits notifications to a minimum frequency - in minutes.  If this is set to zero or not specified, then notifications may be sent whenever the notification conditions are satisfied.", "60", "c04eb336-14ba-4b35-b751-618265b32e1c", "0"),
