@@ -514,12 +514,12 @@ loadScripts(document, 'script');</script>
  <a href="../../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
  delivery of the product's data, at regular intervals.  The time between notifications is the request body's
- notificationInterval, in minutes.</div>
+ minimumNotificationInterval, in minutes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>digitalProductGUID</code> - unique identifier of the product</dd>
-<dd><code>requestBody</code> - description of the subscription type, including the notification interval</dd>
+<dd><code>requestBody</code> - description of the subscription type, including the minimum notification interval</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the governance action process that creates a subscription of this type or
   InvalidParameterException  one of the parameters is null or invalid.
@@ -540,7 +540,7 @@ loadScripts(document, 'script');</script>
  <a href="../../rest/NewSubscriptionTypeRequestBody.html" title="class in org.odpi.openmetadata.viewservices.productmanager.rest">NewSubscriptionTypeRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
  so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
- more often than the request body's notificationInterval, in minutes.</div>
+ more often than the request body's minimumNotificationInterval, in minutes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>

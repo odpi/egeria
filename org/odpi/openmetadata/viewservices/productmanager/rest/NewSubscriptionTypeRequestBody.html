@@ -105,7 +105,7 @@ loadScripts(document, 'script');</script>
 <div class="block">NewSubscriptionTypeRequestBody describes a new subscription type for a digital product.  A subscription type is
  the notification type that drives the subscribers' notifications, registered with the subscription manager, and
  the governance action process that a subscriber runs to take out a subscription of that type.
- Every field is optional; the meaning of notificationInterval and monitoredResourceGUIDs depends on the kind of
+ Every field is optional; the meaning of minimumNotificationInterval and monitoredResourceGUIDs depends on the kind of
  subscription type being created.</div>
 </section>
 <section class="summary">
@@ -165,15 +165,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the license type granted to the subscriber's asset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMonitoredResourceGUIDs()" class="member-name-link">getMonitoredResourceGUIDs</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinimumNotificationInterval()" class="member-name-link">getMinimumNotificationInterval</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifiers of the metadata elements whose changes trigger a notification.</div>
+<div class="block">Return the minimum notification interval in minutes - stored as the notification type's
+ minimumNotificationInterval.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationInterval()" class="member-name-link">getNotificationInterval</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMonitoredResourceGUIDs()" class="member-name-link">getMonitoredResourceGUIDs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the notification interval in minutes.</div>
+<div class="block">Return the unique identifiers of the metadata elements whose changes trigger a notification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceLevelObjectiveGUID()" class="member-name-link">getServiceLevelObjectiveGUID</a>()</code></div>
@@ -211,14 +212,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the unique identifier of the license type granted to the subscriber's asset.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMonitoredResourceGUIDs(java.util.List)" class="member-name-link">setMonitoredResourceGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;monitoredResourceGUIDs)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinimumNotificationInterval(long)" class="member-name-link">setMinimumNotificationInterval</a><wbr>(long&nbsp;minimumNotificationInterval)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifiers of the metadata elements whose changes trigger a notification.</div>
+<div class="block">Set up the minimum notification interval in minutes.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNotificationInterval(long)" class="member-name-link">setNotificationInterval</a><wbr>(long&nbsp;notificationInterval)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMonitoredResourceGUIDs(java.util.List)" class="member-name-link">setMonitoredResourceGUIDs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;monitoredResourceGUIDs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the notification interval in minutes.</div>
+<div class="block">Set up the unique identifiers of the metadata elements whose changes trigger a notification.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServiceLevelObjectiveGUID(java.lang.String)" class="member-name-link">setServiceLevelObjectiveGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceLevelObjectiveGUID)</code></div>
@@ -422,11 +423,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNotificationInterval()">
-<h3>getNotificationInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getNotificationInterval</span>()</div>
-<div class="block">Return the notification interval in minutes.  For a periodic subscription type this is the time between
- notifications; for an ongoing update subscription type it is the minimum time between notifications.  It is
+<section class="detail" id="getMinimumNotificationInterval()">
+<h3>getMinimumNotificationInterval</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getMinimumNotificationInterval</span>()</div>
+<div class="block">Return the minimum notification interval in minutes - stored as the notification type's
+ minimumNotificationInterval.  For a periodic subscription type it is the time between notifications: the
+ subscription manager notifies the subscribers each time it has passed.  For an ongoing update subscription
+ type it is the minimum time between notifications triggered by changes to the monitored resources.  It is
  not used by a one-time subscription type.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -435,13 +438,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setNotificationInterval(long)">
-<h3>setNotificationInterval</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNotificationInterval</span><wbr><span class="parameters">(long&nbsp;notificationInterval)</span></div>
-<div class="block">Set up the notification interval in minutes.</div>
+<section class="detail" id="setMinimumNotificationInterval(long)">
+<h3>setMinimumNotificationInterval</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMinimumNotificationInterval</span><wbr><span class="parameters">(long&nbsp;minimumNotificationInterval)</span></div>
+<div class="block">Set up the minimum notification interval in minutes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>notificationInterval</code> - minutes</dd>
+<dd><code>minimumNotificationInterval</code> - minutes</dd>
 </dl>
 </section>
 </li>

@@ -256,7 +256,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceLevelObjectiveGUID,
- long&nbsp;notificationInterval)</code></div>
+ long&nbsp;minimumNotificationInterval)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a periodic subscription type to a product.</div>
 </div>
@@ -548,7 +548,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceLevelObjectiveGUID,
- long&nbsp;notificationInterval)</span>
+ long&nbsp;minimumNotificationInterval)</span>
                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
@@ -571,7 +571,8 @@ loadScripts(document, 'script');</script>
                                   null means the first license type that the product is governed by</dd>
 <dd><code>serviceLevelObjectiveGUID</code> - unique identifier of the service level objective offered by the subscription;
                                   null means the first service level objective that the product is governed by</dd>
-<dd><code>notificationInterval</code> - time between notifications in minutes</dd>
+<dd><code>minimumNotificationInterval</code> - time between notifications in minutes - the subscription manager
+                                    notifies the subscribers each time it has passed</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the governance action process that creates a subscription of this type</dd>
 <dt>Throws:</dt>
@@ -600,7 +601,12 @@ loadScripts(document, 'script');</script>
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
  so a delivery of the product's data, whenever one of the monitored resources changes - but no more often than
- the minimum notification interval.</div>
+ the minimum notification interval.
+ <br>
+ The notification type is only registered with the subscription manager once it has at least one monitored
+ resource.  The monitored resources can be added over several calls - for example, a product family's
+ notification type is set up with an empty list and then called again with each member's asset as the
+ member is catalogued.  A call that leaves it with no monitored resources removes an earlier registration.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request</dd>

@@ -196,7 +196,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceLevelObjectiveGUID,
- long&nbsp;notificationInterval)</code></div>
+ long&nbsp;minimumNotificationInterval)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a periodic subscription type to a product.</div>
 </div>
@@ -358,7 +358,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;licenseTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceLevelObjectiveGUID,
- long&nbsp;notificationInterval)</span>
+ long&nbsp;minimumNotificationInterval)</span>
                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
@@ -380,7 +380,8 @@ loadScripts(document, 'script');</script>
                                   null means the first license type that the product is governed by</dd>
 <dd><code>serviceLevelObjectiveGUID</code> - unique identifier of the service level objective offered by the subscription;
                                   null means the first service level objective that the product is governed by</dd>
-<dd><code>notificationInterval</code> - time between notifications in minutes</dd>
+<dd><code>minimumNotificationInterval</code> - time between notifications in minutes - the subscription manager
+                                    notifies the subscribers each time it has passed</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the governance action process that creates a subscription of this type</dd>
 <dt>Throws:</dt>
