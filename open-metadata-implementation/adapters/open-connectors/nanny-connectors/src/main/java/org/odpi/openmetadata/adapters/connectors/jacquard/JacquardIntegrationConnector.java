@@ -1559,13 +1559,27 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         {
             ExternalReferenceClient externalReferenceClient = integrationContext.getExternalReferenceClient();
 
+            /*
+             * Several questions can share a documentation page (USER_ACCOUNT_STATUS and USER_ACCOUNT_PROFILE both
+             * point to the user identity page), and the reference is named after the page.  The product's
+             * references were read before this loop, so the ones created here are remembered too - otherwise the
+             * second question tries to create the reference the first one just made, and Jacquard fails to start.
+             */
+            Set<String> referencesCreatedHere = new HashSet<>();
+
             for (ProductQuestionDefinition question : productDefinition.getQuestions())
             {
-                if ((question.getURL() != null) && (! this.containsQualifiedName(product.getExternalReferences(), productDefinition.getQualifiedName() + "_reference_" + question.getURL())))
+                String referenceQualifiedName = productDefinition.getQualifiedName() + "_reference_" + question.getURL();
+
+                if ((question.getURL() != null) &&
+                        (! referencesCreatedHere.contains(referenceQualifiedName)) &&
+                        (! this.containsQualifiedName(product.getExternalReferences(), referenceQualifiedName)))
                 {
+                    referencesCreatedHere.add(referenceQualifiedName);
+
                     ExternalReferenceProperties externalReferenceProperties = new ExternalReferenceProperties();
 
-                    externalReferenceProperties.setQualifiedName(productDefinition.getQualifiedName() + "_reference_" + question.getURL());
+                    externalReferenceProperties.setQualifiedName(referenceQualifiedName);
                     externalReferenceProperties.setDisplayName(question.getDisplayName());
                     externalReferenceProperties.setDescription(question.getSummary());
                     externalReferenceProperties.setURL(question.getURL());
@@ -1911,10 +1925,16 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Link one product's asset to the notification types of every family it belongs to, so that a family's
      * subscribers hear about a change to any product in the family.
      * <br>
-     * A family has no asset of its own, so this is the only way its notification types acquire anything to
-     * watch.  It is done as each member is catalogued rather than when the family is built, because a family
-     * is built before the products that belong to it - which is the same ordering the membership above
-     * already relies on.
+     * A family's asset is a view over its members' assets and never changes itself, so this is the only way its
+     * notification types acquire anything to watch.  It is done as each member is catalogued rather than when the
+     * family is built, because a family is built before the products that belong to it - which is the same
+     * ordering the membership above already relies on.
+     * <br>
+     * The member's asset is passed to the product manager as a monitored resource of the family's ongoing update
+     * subscription type.  The product manager skips a resource that is already linked, and registers the
+     * notification type with the subscription manager once it has something to watch.  Until then a family's
+     * ongoing update notification type is kept away from the subscription manager, which would otherwise
+     * treat it as periodic and notify its subscribers every time its minimum notification interval passed.
      * <br>
      * Only the notification types that decide when to notify by watching a resource are linked.  The ones that
      * notify on a fixed interval do not look at a resource at all, so giving them one would say something
@@ -1938,8 +1958,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             return;
         }
 
-        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
-        GovernanceDefinitionClient   notificationTypeClient       = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
+        ProductManagerClient  productManagerClient  = integrationContext.getProductManagerClient();
+        MetadataSourceOptions metadataSourceOptions = productManagerClient.getMetadataSourceOptions();
 
         for (ProductDefinition productFamily : productDefinition.getProductFamilies())
         {
@@ -1950,35 +1970,38 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                 continue;
             }
 
+            String licenseTypeGUID = null;
+
+            if (productFamily.getLicense() != null)
+            {
+                licenseTypeGUID = governanceDefinitions.get(productFamily.getLicense().getQualifiedName());
+            }
+
             for (ProductSubscriptionDefinition productSubscriptionDefinition : productFamily.getSubscriptionTypes())
             {
-                if (! productSubscriptionDefinition.getMultipleNotificationsPermitted())
+                if ((! productSubscriptionDefinition.getMultipleNotificationsPermitted()) ||
+                    (! productSubscriptionDefinition.isAddMonitoredResource()))
                 {
                     continue;
                 }
 
-                String notificationTypeQualifiedName = OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + productFamilyGUID
-                                                             + "::" + productFamily.getProductName() + "::"
-                                                             + productSubscriptionDefinition.getIdentifier();
+                String serviceLevelObjectiveGUID = null;
 
-                OpenMetadataRootElement notificationTypeElement = classificationExplorerClient.getRootElementByUniqueName(notificationTypeQualifiedName,
-                                                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                          this.headerAndProperties(classificationExplorerClient));
-
-                if ((notificationTypeElement != null) && (productSubscriptionDefinition.isAddMonitoredResource()))
+                if (productSubscriptionDefinition.getServiceLevelObjective() != null)
                 {
-                    MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
-
-                    monitoredResourceProperties.setLabel("product asset");
-                    monitoredResourceProperties.setDescription("This is the product asset that represents the data for the "
-                                                                       + productDefinition.getProductName() + " product, which is part of the "
-                                                                       + productFamily.getProductName() + " product family.");
-
-                    notificationTypeClient.linkMonitoredResource(notificationTypeElement.getElementHeader().getGUID(),
-                                                                  productAssetGUID,
-                                                                  new MakeAnchorOptions(notificationTypeClient.getMetadataSourceOptions()),
-                                                                  monitoredResourceProperties);
+                    serviceLevelObjectiveGUID = governanceDefinitions.get(productSubscriptionDefinition.getServiceLevelObjective().getQualifiedName());
                 }
+
+                productManagerClient.createOngoingUpdateSubscription(productFamilyGUID,
+                                                                     metadataSourceOptions,
+                                                                     subscriptionManagerGUID,
+                                                                     productSubscriptionDefinition.getIdentifier(),
+                                                                     productSubscriptionDefinition.getDisplayName(),
+                                                                     productSubscriptionDefinition.getDescription(),
+                                                                     licenseTypeGUID,
+                                                                     serviceLevelObjectiveGUID,
+                                                                     Collections.singletonList(productAssetGUID),
+                                                                     productSubscriptionDefinition.getMinimumNotificationInterval());
             }
         }
     }

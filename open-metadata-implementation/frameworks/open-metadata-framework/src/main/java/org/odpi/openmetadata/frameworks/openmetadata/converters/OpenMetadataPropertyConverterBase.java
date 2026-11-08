@@ -10734,24 +10734,24 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the property from the supplied element properties.
+     * Delete the notificationInterval property from the supplied element properties.  It was removed from the
+     * NotificationType open metadata type in release 6.3, but instances stored earlier may still hold a value for
+     * it.  Left in place, it would fall into the bean's extendedProperties.
      *
      * @param elementProperties properties from element
-     * @return long
      */
-    protected Long removeNotificationInterval(ElementProperties elementProperties)
+    protected void discardNotificationInterval(ElementProperties elementProperties)
     {
-        final String methodName = "removeNotificationInterval";
+        final String methodName                   = "discardNotificationInterval";
+        final String removedNotificationInterval  = "notificationInterval";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeNullableLongProperty(localServiceName,
-                                                             OpenMetadataProperty.NOTIFICATION_INTERVAL.name,
-                                                             elementProperties,
-                                                             methodName);
+            propertyHelper.removeNullableLongProperty(localServiceName,
+                                                      removedNotificationInterval,
+                                                      elementProperties,
+                                                      methodName);
         }
-
-        return null;
     }
 
 
@@ -18216,12 +18216,12 @@ public class OpenMetadataPropertyConverterBase
                                 ((NotificationTypeProperties) beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setMinimumNotificationInterval(this.removeMinimumNotificationInterval(elementProperties));
                                 /*
-                                 * notificationInterval is deprecated, but it is still consumed here.  Left
-                                 * unmapped it falls into extendedProperties, where a long does not survive a
-                                 * JSON round trip - it comes back as an Integer, so the bean no longer equals
-                                 * itself.  Mapping it keeps existing instances readable.
+                                 * notificationInterval was removed from the type in release 6.3, but existing
+                                 * instances may still hold it.  Left unmapped it falls into extendedProperties,
+                                 * where a long does not survive a JSON round trip - it comes back as an Integer,
+                                 * so the bean no longer equals itself.  So it is discarded.
                                  */
-                                ((NotificationTypeProperties) beanProperties).setNotificationInterval(this.removeNotificationInterval(elementProperties));
+                                this.discardNotificationInterval(elementProperties);
                                 ((NotificationTypeProperties) beanProperties).setMultipleNotificationsPermitted(this.removeMultipleNotificationsPermitted(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setLastNotification(this.removeLastNotification(elementProperties));
                                 ((NotificationTypeProperties) beanProperties).setNextScheduledNotification(this.removeNextScheduledNotification(elementProperties));

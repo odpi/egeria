@@ -178,6 +178,16 @@ public enum OMFAuditCode implements AuditLogMessageSet
                                            "https://egeria-project.org/concepts/notification-type/"),
 
     /**
+     * OPEN-METADATA-0021 - The {0} service has not registered ongoing update notification type {1} with subscription manager {2} because it has no monitored resources
+     */
+    NOTIFICATION_TYPE_NOT_MONITORING("OPEN-METADATA-0021",
+                                     AuditLogRecordSeverityLevel.INFO,
+                                     "The {0} service has not registered ongoing update notification type {1} with subscription manager {2} because it has no monitored resources",
+                                     "An ongoing update notification type notifies its subscribers when one of its monitored resources changes.  With none, the subscription manager would treat it as a periodic notification type and notify its subscribers every time its minimum notification interval passed.  It is left out of the subscription manager's catalog targets (and removed if it was registered before) until a monitored resource is linked to it.",
+                                     "No action is required if the product's data is still to be catalogued - for example, a product family whose members have no product asset yet.  The notification type is registered when the subscription type is next set up with a monitored resource.",
+                                     "https://egeria-project.org/concepts/notification-type/"),
+
+    /**
      * OPEN-METADATA-0025 - The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
      */
     UNEXPECTED_CONVERTER_EXCEPTION("OPEN-METADATA-0025",

@@ -10,6 +10,8 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinitionEnum;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductPerspectiveDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductQuestionDefinition;
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition;
+import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -219,6 +221,139 @@ public class ProductCatalogFVT
         assertTrue(expectedButMissing.isEmpty(),
                    "Product family " + family.getProductName() + " does not hold the products whose definitions name it as"
                            + " their family: " + expectedButMissing + ".  A subscription to the family would not cover them.");
+    }
+
+
+    /**
+     * Jacquard builds its products in declaration order every time it starts.  A family's ongoing update
+     * subscription types are registered with Baudot only once they monitor something, and they acquire their
+     * monitored resources as each member is built - which is only possible if the family was built earlier in
+     * the same pass.  A member declared before its family would never get the family registered, on any start.
+     * This needs no server, but it lives here because loading the product definitions needs the connector
+     * providers they name.
+     */
+    @Test
+    @DisplayName("Product families are declared before their members")
+    void productFamiliesAreDeclaredBeforeTheirMembers()
+    {
+        List<String> misordered = new ArrayList<>();
+
+        for (ProductDefinitionEnum member : ProductDefinitionEnum.values())
+        {
+            if (member.getProductFamilies() != null)
+            {
+                for (ProductDefinition family : member.getProductFamilies())
+                {
+                    if ((! (family instanceof ProductDefinitionEnum familyEnum)) || (familyEnum.ordinal() >= member.ordinal()))
+                    {
+                        misordered.add(member.name() + " is declared before its family " + family.getQualifiedName());
+                    }
+                }
+            }
+        }
+
+        assertTrue(misordered.isEmpty(), "Product families must be declared before their members: " + misordered);
+    }
+
+
+    /**
+     * A family's ongoing update subscription types notify when one of its members' data changes, so they watch
+     * the members' product assets.  A family none of whose members has a product asset has nothing to watch:
+     * Baudot would treat its ongoing update subscription types as periodic and notify their subscribers every
+     * time the minimum interval passed.  So each one is registered with Baudot exactly when it monitors
+     * something, and it monitors something whenever one of the family's members has a product asset.
+     *
+     * @throws Exception problem reading the repository
+     */
+    @Test
+    @DisplayName("A family's ongoing update subscription types are registered with Baudot only when a member has data")
+    void familyOngoingUpdateSubscriptionTypesWatchTheirMembers() throws Exception
+    {
+        String       baudotGUID = IntegrationConnectorDefinition.BAUDOT_SUBSCRIPTION_MANAGER.getGUID();
+        List<String> problems   = new ArrayList<>();
+        int          checked    = 0;
+
+        for (ProductDefinitionEnum family : ProductDefinitionEnum.values())
+        {
+            if ((! OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(family.getTypeName())) || (family.getSubscriptionTypes() == null))
+            {
+                continue;
+            }
+
+            boolean aMemberHasData = false;
+
+            for (ProductDefinitionEnum member : ProductDefinitionEnum.values())
+            {
+                if ((member.getProductFamilies() != null) && (member.getProductFamilies().contains(family)) && (member.getConnectorProvider() != null))
+                {
+                    aMemberHasData = true;
+                }
+            }
+
+            OpenMetadataElement familyElement = openMetadataStore.getMetadataElementByUniqueName(family.getQualifiedName(),
+                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name);
+
+            assertNotNull(familyElement, "Product family " + family.getQualifiedName() + " was not found");
+
+            for (ProductSubscriptionDefinition subscriptionType : family.getSubscriptionTypes())
+            {
+                if ((! subscriptionType.getMultipleNotificationsPermitted()) || (! subscriptionType.isAddMonitoredResource()))
+                {
+                    continue;
+                }
+
+                String notificationTypeQualifiedName = OpenMetadataType.NOTIFICATION_TYPE.typeName + "::" + familyElement.getElementGUID()
+                                                               + "::" + family.getProductName() + "::" + subscriptionType.getIdentifier();
+
+                OpenMetadataElement notificationType = openMetadataStore.getMetadataElementByUniqueName(notificationTypeQualifiedName,
+                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                if (notificationType == null)
+                {
+                    problems.add(notificationTypeQualifiedName + " was not found");
+                    continue;
+                }
+
+                checked++;
+
+                boolean monitorsSomething = ! SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                            notificationType.getElementGUID(),
+                                                                                            OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                                                                            1).isEmpty();
+                boolean registered = false;
+
+                for (RelatedMetadataElement catalogTarget : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                                          notificationType.getElementGUID(),
+                                                                                                          OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                                                                          2))
+                {
+                    if (baudotGUID.equals(catalogTarget.getElement().getElementGUID()))
+                    {
+                        registered = true;
+                    }
+                }
+
+                /*
+                 * Only one direction can be checked from the definitions: products created at run time (valid
+                 * value and reference data sets) can also join a family and bring an asset with them.
+                 */
+                if ((aMemberHasData) && (! monitorsSomething))
+                {
+                    problems.add(family.getProductName() + " " + subscriptionType.getIdentifier()
+                                         + " monitors nothing although a member has a product asset");
+                }
+
+                if (registered != monitorsSomething)
+                {
+                    problems.add(family.getProductName() + " " + subscriptionType.getIdentifier() + (registered ?
+                                         " is registered with Baudot with nothing to monitor, so it would notify on every interval" :
+                                         " monitors its members' data but is not registered with Baudot, so nobody is notified"));
+                }
+            }
+        }
+
+        assertTrue(checked > 0, "No product family offers an ongoing update subscription type, so there was nothing to check.");
+        assertTrue(problems.isEmpty(), "Product family subscription types are wrongly registered: " + problems);
     }
 
 

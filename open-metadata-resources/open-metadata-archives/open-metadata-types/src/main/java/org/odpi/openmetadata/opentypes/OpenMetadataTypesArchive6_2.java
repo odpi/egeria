@@ -734,18 +734,6 @@ public class OpenMetadataTypesArchive6_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LAST_NOTIFICATION));
 
-        /*
-         * notificationInterval is deprecated.  It described how often a notification type should fire, which
-         * put the schedule on the notification type itself.  Whether a notification may fire is now assessed
-         * by the notification manager, from minimumNotificationInterval and nextScheduledNotification
-         * together with each subscriber's own state - so the notification type no longer carries a schedule
-         * of its own.  The attribute is deprecated rather than removed so that repositories holding a value
-         * for it can still read their instances.
-         */
-        TypeDefAttribute deprecatedAttribute = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTIFICATION_INTERVAL);
-        deprecatedAttribute.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        properties.add(deprecatedAttribute);
-
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;

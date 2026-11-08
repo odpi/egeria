@@ -306,11 +306,11 @@ public class ProductManagerResource
     /**
      * Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a
      * delivery of the product's data, at regular intervals.  The time between notifications is the request body's
-     * notificationInterval, in minutes.
+     * minimumNotificationInterval, in minutes.
      *
      * @param serverName name of called server
      * @param digitalProductGUID unique identifier of the product
-     * @param requestBody description of the subscription type, including the notification interval
+     * @param requestBody description of the subscription type, including the minimum notification interval
      * @return unique identifier of the governance action process that creates a subscription of this type or
      *  InvalidParameterException  one of the parameters is null or invalid.
      *  PropertyServerException    a problem retrieving information from the property server(s).
@@ -321,7 +321,7 @@ public class ProductManagerResource
 
     @Operation(summary="createPeriodicSubscription",
             description="Add a periodic subscription type to a product.  A subscriber to this type receives a notification, and so a delivery of" +
-                    " the product's data, at regular intervals.  The time between notifications is the request body's notificationInterval, in minutes." +
+                    " the product's data, at regular intervals.  The time between notifications is the request body's minimumNotificationInterval, in minutes." +
                     "  The subscription type is a notification type, registered with the subscription manager (Baudot by default), and the" +
                     " governance action process that a subscriber runs to take out a subscription of this type.  The unique identifier of the" +
                     " governance action process is returned.",
@@ -339,7 +339,7 @@ public class ProductManagerResource
     /**
      * Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
      * so a delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no
-     * more often than the request body's notificationInterval, in minutes.
+     * more often than the request body's minimumNotificationInterval, in minutes.
      *
      * @param serverName name of called server
      * @param digitalProductGUID unique identifier of the product
@@ -356,7 +356,7 @@ public class ProductManagerResource
     @Operation(summary="createOngoingUpdateSubscription",
             description="Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and so a" +
                     " delivery of the product's data, whenever one of the request body's monitoredResourceGUIDs changes - but no more often than" +
-                    " the request body's notificationInterval, in minutes.  The subscription type is a notification type, registered with the" +
+                    " the request body's minimumNotificationInterval, in minutes.  The subscription type is a notification type, registered with the" +
                     " subscription manager (Baudot by default), and the governance action process that a subscriber runs to take out a subscription" +
                     " of this type.  The unique identifier of the governance action process is returned.",
             externalDocs=@ExternalDocumentation(description="Further Information",

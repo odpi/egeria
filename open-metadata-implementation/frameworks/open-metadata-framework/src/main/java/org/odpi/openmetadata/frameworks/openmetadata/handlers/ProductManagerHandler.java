@@ -435,7 +435,8 @@ public class ProductManagerHandler extends CollectionHandler
      *                                  null means the first license type that the product is governed by
      * @param serviceLevelObjectiveGUID unique identifier of the service level objective offered by the subscription;
      *                                  null means the first service level objective that the product is governed by
-     * @param notificationInterval      time between notifications in minutes
+     * @param minimumNotificationInterval time between notifications in minutes - the subscription manager
+     *                                    notifies the subscribers each time it has passed
      * @return unique identifier of the governance action process that creates a subscription of this type
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -450,9 +451,9 @@ public class ProductManagerHandler extends CollectionHandler
                                              String                description,
                                              String                licenseTypeGUID,
                                              String                serviceLevelObjectiveGUID,
-                                             long                  notificationInterval) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+                                             long                  minimumNotificationInterval) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "createPeriodicSubscription";
 
@@ -462,11 +463,11 @@ public class ProductManagerHandler extends CollectionHandler
                                            subscriptionManagerGUID,
                                            this.defaultValue(identifier, PERIODIC_SUBSCRIPTION_IDENTIFIER),
                                            this.defaultValue(displayName, "Periodic subscription"),
-                                           this.defaultValue(description, "This subscription delivers the data to the target destination every " + notificationInterval + " minutes."),
+                                           this.defaultValue(description, "This subscription delivers the data to the target destination every " + minimumNotificationInterval + " minutes."),
                                            licenseTypeGUID,
                                            serviceLevelObjectiveGUID,
                                            true,
-                                           notificationInterval,
+                                           minimumNotificationInterval,
                                            null,
                                            methodName);
     }
@@ -476,6 +477,11 @@ public class ProductManagerHandler extends CollectionHandler
      * Add an ongoing update subscription type to a product.  A subscriber to this type receives a notification, and
      * so a delivery of the product's data, whenever one of the monitored resources changes - but no more often than
      * the minimum notification interval.
+     * <br>
+     * The notification type is only registered with the subscription manager once it has at least one monitored
+     * resource.  The monitored resources can be added over several calls - for example, a product family's
+     * notification type is set up with an empty list and then called again with each member's asset as the
+     * member is catalogued.  A call that leaves it with no monitored resources removes an earlier registration.
      *
      * @param userId                      userId of user making request
      * @param digitalProductGUID          unique identifier of the product
@@ -863,7 +869,9 @@ public class ProductManagerHandler extends CollectionHandler
     /**
      * Set up the notification type for a subscription type.  The notification type is anchored to the product.
      * If it already exists, its notification pattern is brought into line with the request and any monitored
-     * resources not yet linked are added.  Either way it is registered with the subscription manager.
+     * resources not yet linked are added.  Either way it is registered with the subscription manager - unless it
+     * is an ongoing update notification type (monitoredResourceGUIDs is not null) with no monitored resources,
+     * when any earlier registration is removed instead.
      *
      * @param userId calling user
      * @param digitalProductGUID unique identifier of the product
@@ -992,9 +1000,33 @@ public class ProductManagerHandler extends CollectionHandler
             }
         }
 
-        this.linkMonitoredResources(userId, notificationTypeGUID, metadataSourceOptions, productContext, monitoredResourceGUIDs, notificationTypeElement != null);
+        int monitoredResourceCount = this.linkMonitoredResources(userId, notificationTypeGUID, metadataSourceOptions, productContext, monitoredResourceGUIDs, notificationTypeElement != null);
 
-        if (subscriptionManagerGUID != null)
+        /*
+         * Only an ongoing update subscription type supplies monitored resources (possibly an empty list).
+         * Without any, the subscription manager cannot tell it from a periodic notification type and would
+         * notify its subscribers every time the minimum notification interval passed - so it is kept away from
+         * the subscription manager until it has something to monitor.  A product family is in this state
+         * until one of its members has a product asset.
+         */
+        boolean awaitingMonitoredResources = (monitoredResourceGUIDs != null) && (monitoredResourceCount == 0);
+
+        if ((subscriptionManagerGUID != null) && (awaitingMonitoredResources))
+        {
+            if (notificationTypeElement != null)
+            {
+                this.deregisterFromSubscriptionManager(userId, notificationTypeGUID, subscriptionManagerGUID, metadataSourceOptions);
+            }
+
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OMFAuditCode.NOTIFICATION_TYPE_NOT_MONITORING.getMessageDefinition(localServiceName,
+                                                                                                      notificationTypeGUID,
+                                                                                                      subscriptionManagerGUID));
+            }
+        }
+        else if (subscriptionManagerGUID != null)
         {
             this.registerWithSubscriptionManager(userId, notificationTypeGUID, subscriptionManagerGUID, metadataSourceOptions, notificationTypeElement != null);
         }
@@ -1020,11 +1052,12 @@ public class ProductManagerHandler extends CollectionHandler
      * @param productContext the elements around the product
      * @param monitoredResourceGUIDs elements whose changes trigger a notification (may be null)
      * @param notificationTypeExisted was the notification type already catalogued?
+     * @return number of resources the notification type now monitors (0 if monitoredResourceGUIDs is null)
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private void linkMonitoredResources(String                userId,
+    private int linkMonitoredResources(String                userId,
                                         String                notificationTypeGUID,
                                         MetadataSourceOptions metadataSourceOptions,
                                         ProductContext        productContext,
@@ -1035,7 +1068,7 @@ public class ProductManagerHandler extends CollectionHandler
     {
         if (monitoredResourceGUIDs == null)
         {
-            return;
+            return 0;
         }
 
         List<String> existingMonitoredResources = new ArrayList<>();
@@ -1071,8 +1104,11 @@ public class ProductManagerHandler extends CollectionHandler
             if ((monitoredResourceGUID != null) && (! existingMonitoredResources.contains(monitoredResourceGUID)))
             {
                 notificationTypeHandler.linkMonitoredResource(userId, notificationTypeGUID, monitoredResourceGUID, makeAnchorOptions, monitoredResourceProperties);
+                existingMonitoredResources.add(monitoredResourceGUID);
             }
         }
+
+        return existingMonitoredResources.size();
     }
 
 
@@ -1132,6 +1168,49 @@ public class ProductManagerHandler extends CollectionHandler
                                                         notificationTypeGUID,
                                                         new MakeAnchorOptions(metadataSourceOptions),
                                                         relationshipBuilder.getNewElementProperties(catalogTargetProperties));
+    }
+
+
+    /**
+     * Remove the notification type from the subscription manager's catalog targets, so that the manager stops
+     * notifying its subscribers.  The manager drops the catalog target on its next refresh.  Nothing happens if
+     * the notification type is not one of the manager's catalog targets.
+     *
+     * @param userId calling user
+     * @param notificationTypeGUID unique identifier of the notification type
+     * @param subscriptionManagerGUID integration connector that notifies the subscribers
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void deregisterFromSubscriptionManager(String                userId,
+                                                   String                notificationTypeGUID,
+                                                   String                subscriptionManagerGUID,
+                                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        RelatedMetadataElementList catalogTargetRelationships = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                              notificationTypeGUID,
+                                                                                                              2,
+                                                                                                              OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                                                                              new QueryOptions(metadataSourceOptions));
+
+        if ((catalogTargetRelationships != null) && (catalogTargetRelationships.getElementList() != null))
+        {
+            for (RelatedMetadataElement catalogTargetRelationship : catalogTargetRelationships.getElementList())
+            {
+                if ((catalogTargetRelationship != null) &&
+                        (catalogTargetRelationship.getElement() != null) &&
+                        (subscriptionManagerGUID.equals(catalogTargetRelationship.getElement().getElementGUID())))
+                {
+                    openMetadataClient.deleteRelationshipInStore(userId,
+                                                                 catalogTargetRelationship.getRelationshipGUID(),
+                                                                 new DeleteOptions(metadataSourceOptions));
+                }
+            }
+        }
     }
 
 

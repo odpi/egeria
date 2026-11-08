@@ -470,7 +470,7 @@ public class ProductManagerFVT
         requestBody.setIdentifier(identifier);
         requestBody.setDisplayName("FVT " + identifier + " subscription");
         requestBody.setDescription("Subscription type created by the product manager FVT");
-        requestBody.setNotificationInterval(interval);
+        requestBody.setMinimumNotificationInterval(interval);
         requestBody.setMonitoredResourceGUIDs(monitoredResourceGUIDs);
 
         return requestBody;

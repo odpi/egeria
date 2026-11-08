@@ -274,12 +274,6 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
 
     /**
-     * Only notify subscribers if the notification type properties allow.
-     *
-     * @param notificationTypeProperties notification type properties
-     * @return true if the subscribers should be notified
-     */
-    /**
      * Convert a notification interval to milliseconds.  A notification type's minimumNotificationInterval is
      * in minutes - that is how {@link NotificationTypeProperties} documents it and how the notification types
      * are defined - while the arithmetic here is against {@code System.currentTimeMillis()}.  Comparing the two
@@ -295,8 +289,17 @@ public class NotificationHandler extends GovernanceDefinitionHandler
     }
 
 
-    private boolean notificationPermitted(String                     requester,
-                                          NotificationTypeProperties notificationTypeProperties)
+    /**
+     * Only notify subscribers if the notification type properties allow.  The notification type must be active,
+     * its planned start date (if any) must have passed, and its minimumNotificationInterval (if any) must have
+     * passed since its last notification.  Package-private for unit testing.
+     *
+     * @param requester name of the calling service, for the audit log
+     * @param notificationTypeProperties notification type properties
+     * @return true if the subscribers should be notified
+     */
+    boolean notificationPermitted(String                     requester,
+                                  NotificationTypeProperties notificationTypeProperties)
     {
         final String methodName = "notificationPermitted";
 
@@ -314,6 +317,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                 OMFAuditCode.NOTIFICATION_TYPE_NOT_STARTED.getMessageDefinition(requester,
                                                                                                 notificationTypeProperties.getDisplayName(),
                                                                                                 notificationTypeProperties.getPlannedStartDate().toString()));
+            return false;
         }
 
         if (notificationTypeProperties.getLastNotification() == null)
