@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +32,13 @@ import org.apache.commons.lang3.StringUtils;
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
+
+    /*
+     * Producer property (read by Egeria, ignored by Kafka) that limits how many events may wait in memory to be sent.
+     * Once the limit is reached, new events are discarded rather than allowed to exhaust the heap.
+     */
+    static final String MAX_BUFFERED_EVENTS_PROPERTY = "egeria.max.buffered.events";
+    static final int    DEFAULT_MAX_BUFFERED_EVENTS  = 100000;
 
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
@@ -48,6 +56,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
+
+    /* this buffer is for events waiting to be sent - it outlives individual producer threads */
+    private BlockingQueue<String> outgoingEventsQueue = null;
 
     private String       topicName          = null;
     private String       serverId           = null;
@@ -119,10 +130,22 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         producerProperties.put("bootstrap.servers", "localhost:9092");
         producerProperties.put("acks", "all");
-        producerProperties.put("retries", 1);
-        producerProperties.put("batch.size", 16384);
-        producerProperties.put("linger.ms", 0);
+        /*
+         * Events are sent asynchronously, so let the client batch and compress them.  Retries are left to the
+         * Kafka client defaults (bounded by delivery.timeout.ms); idempotence keeps each partition in order.
+         */
+        producerProperties.put("batch.size", 131072);
+        producerProperties.put("linger.ms", 10);
+        producerProperties.put("compression.type", "lz4");
         producerProperties.put("buffer.memory", 33554432);
+
+        /*
+         * Hold unsent events through an outage of up to 10 minutes rather than the Kafka default of 2.  This does not
+         * raise the memory used: buffer.memory caps the client's buffer, and once it is full, new events wait on the
+         * bounded send buffer instead (see egeria.max.buffered.events).
+         */
+        producerProperties.put("delivery.timeout.ms", 600000);
+        producerProperties.put(MAX_BUFFERED_EVENTS_PROPERTY, Integer.toString(DEFAULT_MAX_BUFFERED_EVENTS));
         producerProperties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producerProperties.put("bring.up.retries", "10");
@@ -375,8 +398,44 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private void initializeProducerAndProducerThread()
     {
         log.info("Initializing the producer thread");
-        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, auditLog);
+
+        if (outgoingEventsQueue == null)
+        {
+            outgoingEventsQueue = new LinkedBlockingQueue<>(getMaxBufferedEvents());
+        }
+
+        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, outgoingEventsQueue, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
+    }
+
+
+    /**
+     * Return the configured limit on the number of events waiting to be sent.
+     *
+     * @return positive count
+     */
+    int getMaxBufferedEvents()
+    {
+        String value = producerProperties.getProperty(MAX_BUFFERED_EVENTS_PROPERTY);
+
+        if (value != null)
+        {
+            try
+            {
+                int maxBufferedEvents = Integer.parseInt(value.trim());
+
+                if (maxBufferedEvents > 0)
+                {
+                    return maxBufferedEvents;
+                }
+            }
+            catch (NumberFormatException error)
+            {
+                log.warn("Ignoring invalid {} value {} for topic {}", MAX_BUFFERED_EVENTS_PROPERTY, value, topicName);
+            }
+        }
+
+        return DEFAULT_MAX_BUFFERED_EVENTS;
     }
 
 
@@ -410,13 +469,18 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         // This method is called periodically from a independent thread managed by OpenMetadataTopic
         // (superclass) so it should not block.
 
-        if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
+        /*
+         * Take the whole list and empty it in one step.  (Removing the copied events with removeAll compared every
+         * queued event with every copied one.)
+         */
+        synchronized (incomingEventsList)
         {
-            log.debug("Checking for events.  Number of found events: {}", incomingEventsList.size());
-            newEvents = new ArrayList<>(incomingEventsList);
-
-            // empty incomingEventsList otherwise same events will be sent again
-            incomingEventsList.removeAll(newEvents);
+            if (! incomingEventsList.isEmpty())
+            {
+                log.debug("Checking for events.  Number of found events: {}", incomingEventsList.size());
+                newEvents = new ArrayList<>(incomingEventsList);
+                incomingEventsList.clear();
+            }
         }
 
         return newEvents;

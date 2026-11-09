@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.auditlog.requestid.ActiveRequests;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
@@ -158,6 +159,33 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
     }
 
 
+    /*
+     * Suffix for the key that records an explicit retrieval of an anchor element (directly or through one of its
+     * attachments) against the external request that caused it.
+     */
+    private static final String EXPLICIT_READ_ACTIVITY = ":explicit-read";
+
+
+    /**
+     * Is this element anchored to another element whose activity is observed?  If so, activity on this element
+     * is reported against that anchor.
+     *
+     * @param entity retrieved entity
+     * @param methodName calling method
+     * @return boolean
+     */
+    private boolean isAnchoredToObservedElement(EntityDetail entity,
+                                                String       methodName)
+    {
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorsFromAnchorsClassification(entity, methodName);
+
+        return (anchorIdentifiers != null) &&
+                (anchorIdentifiers.anchorGUID != null) &&
+                (! anchorIdentifiers.anchorGUID.equals(entity.getGUID())) &&
+                (this.isObservedAnchorType(anchorIdentifiers.anchorTypeName));
+    }
+
+
     /**
      * Check that a retrieved entity is readable.  This is always the first check and includes checks
      * for private feedback, connection selection, and zones
@@ -204,12 +232,21 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         {
             if (isExplicitGetRequest)
             {
-                auditLog.logMessage(assetActionDescription,
-                                    OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ.getMessageDefinition(userId,
-                                                                                                                connectToEntity.getType().getTypeDefName(),
-                                                                                                                connectToEntity.getGUID(),
-                                                                                                                methodName,
-                                                                                                                serviceName));
+                /*
+                 * An explicit get is reported once per external request against the anchor element that was
+                 * requested.  If this element is anchored to another observed element, the request is reported
+                 * against that anchor (as an attachment retrieval) instead.
+                 */
+                if ((! this.isAnchoredToObservedElement(connectToEntity, methodName)) &&
+                        (ActiveRequests.isFirstReport(connectToEntity.getGUID() + EXPLICIT_READ_ACTIVITY)))
+                {
+                    auditLog.logMessage(assetActionDescription,
+                                        OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ.getMessageDefinition(userId,
+                                                                                                                    connectToEntity.getType().getTypeDefName(),
+                                                                                                                    connectToEntity.getGUID(),
+                                                                                                                    methodName,
+                                                                                                                    serviceName));
+                }
             }
             else
             {
@@ -873,12 +910,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                     }
                     else if (isExplicitGetRequest)
                     {
-                        auditLog.logMessage(assetActionDescription,
-                                            OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
-                                                                                                                                   anchorEntityType.getTypeDefName(),
-                                                                                                                                   anchorEntity.getGUID(),
-                                                                                                                                   methodName,
-                                                                                                                                   serviceName));
+                        /*
+                         * Once per external request for each anchor element, however many of its attachments
+                         * the request retrieves.
+                         */
+                        if (ActiveRequests.isFirstReport(anchorEntity.getGUID() + EXPLICIT_READ_ACTIVITY))
+                        {
+                            auditLog.logMessage(assetActionDescription,
+                                                OpenMetadataObservabilityAuditCode.ANCHOR_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
+                                                                                                                                       anchorEntityType.getTypeDefName(),
+                                                                                                                                       anchorEntity.getGUID(),
+                                                                                                                                       methodName,
+                                                                                                                                       serviceName));
+                        }
                     }
                     else
                     {

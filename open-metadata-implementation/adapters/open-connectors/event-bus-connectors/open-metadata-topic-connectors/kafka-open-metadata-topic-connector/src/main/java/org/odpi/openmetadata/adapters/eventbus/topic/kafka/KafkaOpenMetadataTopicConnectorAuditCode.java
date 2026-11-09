@@ -99,8 +99,8 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
 
     EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0012",
                              AuditLogRecordSeverityLevel.ERROR,
-                             "Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Latest error message is {3}",
-                             "There is a reoccurring error being returned by the Apache Kafka event bus.  Outbound events are being buffered.",
+                             "Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Error {3} returned with message {4}",
+                             "There is a reoccurring error being returned by the Apache Kafka event bus.  Outbound events are being buffered, up to the limit set by the egeria.max.buffered.events producer property.",
                              "Review the operational status of Apache Kafka to ensure it is running and the topic is defined.  " +
                                      "If no events have been send, then it may be a configuration error, either in this " +
                                      "server or in the event bus itself. Once the error is corrected, " +
@@ -157,6 +157,26 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                                             "indicate the cause of this error.  Work to clear the underlying error.  " +
                                             "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka.",
                                             "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
+
+    EVENT_BUFFER_FULL("OCF-KAFKA-TOPIC-CONNECTOR-0020",
+                      AuditLogRecordSeverityLevel.ERROR,
+                      "The send buffer for topic {0} is full with {1} events; {2} events have been discarded so far and {3} events have been sent",
+                      "Events are being produced faster than Apache Kafka is accepting them, or Kafka is unavailable.  " +
+                              "New events are discarded while the buffer is full so that the server does not run out of memory.  " +
+                              "This message is repeated every 10000 discarded events.",
+                      "Check that Apache Kafka is running and keeping up with this topic.  If the volume of events is the cause, " +
+                              "either reduce it (for example, by lowering the severities sent to an audit log destination), " +
+                              "or raise the egeria.max.buffered.events producer property and the server's heap size together.",
+                      "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
+
+    EVENT_DELIVERY_FAILED("OCF-KAFKA-TOPIC-CONNECTOR-0021",
+                          AuditLogRecordSeverityLevel.EXCEPTION,
+                          "Apache Kafka failed to deliver an event on topic {0}; {1} events have failed and {2} have been sent.  Error {3} returned with message {4}",
+                          "The Kafka client gave up on the event after its own retries (bounded by the delivery.timeout.ms producer property) and the event is lost.  " +
+                                  "This message is repeated every 10000 failed events.",
+                          "Review the operational status of Apache Kafka and the error message to determine the cause.  " +
+                                  "Check that the topic exists and that this server is authorized to write to it.",
+                          "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
     ;
 
     private final String                      logMessageId;

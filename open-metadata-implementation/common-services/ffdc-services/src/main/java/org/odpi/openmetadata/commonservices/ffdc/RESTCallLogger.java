@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.commonservices.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.requestid.ActiveRequests;
 import org.odpi.openmetadata.frameworks.auditlog.requestid.RequestId;
 import org.odpi.openmetadata.frameworks.auditlog.requestid.RequestIdService;
 import org.slf4j.Logger;
@@ -53,6 +54,8 @@ public class RESTCallLogger
     {
         requestId.setRequestId(null);
 
+        ActiveRequests.beginRequest(requestId.getRequestId());
+
         if (log.isDebugEnabled())
         {
             RESTCallToken token = new RESTCallToken(serviceName, serverName, userId, methodName);
@@ -89,6 +92,8 @@ public class RESTCallLogger
         {
             requestId.setRequestId(null);
         }
+
+        ActiveRequests.beginRequest(requestId.getRequestId());
 
         if (log.isDebugEnabled())
         {
@@ -138,6 +143,8 @@ public class RESTCallLogger
         {
             requestId.clearRequestId();
         }
+
+        ActiveRequests.beginRequest(requestId.getRequestId());
 
         if (log.isDebugEnabled())
         {
@@ -205,6 +212,7 @@ public class RESTCallLogger
             }
         }
 
+        ActiveRequests.endRequest();
         requestId.clearRequestId();
     }
 
@@ -249,6 +257,7 @@ public class RESTCallLogger
             response.setRequestId(requestId.getRequestId());
         }
 
+        ActiveRequests.endRequest();
         requestId.clearRequestId();
     }
 }
