@@ -119,6 +119,30 @@ public enum ProductGovernanceDefinition
                       null),
 
     /**
+     * This license is for highly sensitive security information that must stay within the security team.
+     */
+    SECURITY_TEAM_ONLY("LICENSE-TYPE-SECURITY-TEAM-ONLY",
+                       OpenMetadataType.LICENSE_TYPE.typeName,
+                       "Highly Sensitive - Security Team Only",
+                       "This data is highly sensitive security information.  It is for the security team only and must not be shared outside of the security team.",
+                       "This license covers information about how the open metadata ecosystem is secured: its secrets stores and the collections within them, its user identities and accounts, and the governance zones that control who can see what.  In the wrong hands this information shows where the ecosystem is weakest and which accounts are worth attacking, so it is handled as highly sensitive.  Products with this license are in the security zone, so only the security team can find them, subscribe to them or read their data.",
+                       "Used for digital products that describe the security of the open metadata ecosystem.",
+                       "Mandatory",
+                       new String[]{"This license identifies data that could be used to compromise the security of the organization's systems if it is disclosed beyond the security team."},
+                       new String[]{"By identifying security-sensitive data, the requirement to keep it within the security team is made clear to everyone who handles it."},
+                       new String[]{"Information about secrets, accounts and access controls is not disclosed beyond the people responsible for protecting them."},
+                       new String[]{"The data may be used by members of the security team, and by the systems and processes they operate, for the purposes of auditing, monitoring and protecting the organization's systems."},
+                       new String[]{"The data must not be shared, copied or reported outside of the security team, including to other teams within the organization.",
+                                    "The data must not be combined with, or published in, data sets that people outside of the security team can access.",
+                                    "The data must not be distributed to persons or systems outside of the organization."},
+                       new String[]{"The data must be stored only in locations that are restricted to the security team, such as resources in the security governance zone.",
+                                    "Copies of the data must be deleted when they are no longer needed for the purpose they were obtained for.",
+                                    "Any suspected disclosure of the data outside of the security team must be reported to the security team immediately."},
+                       GovernanceDomain.SECURITY.getOrdinal(),
+                       ScopeDefinition.WITHIN_TEAM,
+                       null),
+
+    /**
      * This license provides an unrestricted use of data for purposes that support our business.
      */
     CC_BY_40("LICENSE-TYPE-CC-BY-40",

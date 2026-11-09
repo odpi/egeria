@@ -131,7 +131,7 @@ test {
     /*
      * Forward -Dopenlineage.fvt.* overrides into the forked test JVM.
      */
-    systemProperties System.properties.findAll { it.key.toString().startsWith('openlineage.fvt.') }
+    systemProperties providers.systemPropertiesPrefixedBy('openlineage.fvt.').get()
 }
 
 jvmDependencyConflicts {

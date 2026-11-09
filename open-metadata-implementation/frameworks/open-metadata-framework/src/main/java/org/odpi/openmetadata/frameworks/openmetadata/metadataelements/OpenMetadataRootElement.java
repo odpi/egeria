@@ -40,6 +40,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
      * These are the mermaid Markdown versions of the values from the properties and retrieved relationships.
      */
     private String mermaidGraph                            = null;
+    private String actionMermaidGraph                      = null;
+    private String activityMermaidGraph                    = null;
     private String rootHierarchyMermaidGraph               = null;
     private String specificationMermaidGraph               = null;
     private String solutionBlueprintMermaidGraph           = null;
@@ -76,6 +78,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
             properties                              = template.getProperties();
             specification                           = template.getSpecification();
             mermaidGraph                            = template.getMermaidGraph();
+            actionMermaidGraph                      = template.getActionMermaidGraph();
+            activityMermaidGraph                    = template.getActivityMermaidGraph();
             rootHierarchyMermaidGraph               = template.getRootHierarchyMermaidGraph();
             specificationMermaidGraph               = template.getSpecificationMermaidGraph();
             solutionBlueprintMermaidGraph           = template.getSolutionBlueprintMermaidGraph();
@@ -136,7 +140,9 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
-     * Return the mermaid representation of this element.
+     * Return the mermaid representation of this element's context.  This shows the element plus its
+     * relationships (and the elements they link to) except for those whose relationship purpose is
+     * Action or Activity.  These are shown in actionMermaidGraph and activityMermaidGraph respectively.
      *
      * @return string markdown
      */
@@ -154,6 +160,58 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     public void setMermaidGraph(String mermaidGraph)
     {
         this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
+     * Return the mermaid graph of the element plus its relationships whose relationship purpose is Action
+     * (governance actions and requests), with the elements they link to.
+     *
+     * @return string markdown (null if there are no such relationships)
+     */
+    @JsonProperty("actionMermaidGraph")
+    public String getActionMermaidGraph()
+    {
+        return actionMermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid graph of the element plus its relationships whose relationship purpose is Action
+     * (governance actions and requests), with the elements they link to.
+     *
+     * @param actionMermaidGraph string markdown
+     */
+    @JsonProperty("actionMermaidGraph")
+    public void setActionMermaidGraph(String actionMermaidGraph)
+    {
+        this.actionMermaidGraph = actionMermaidGraph;
+    }
+
+
+    /**
+     * Return the mermaid graph of the element plus its relationships whose relationship purpose is Activity
+     * (ongoing events such as observability or contribution records), with the elements they link to.
+     *
+     * @return string markdown (null if there are no such relationships)
+     */
+    @JsonProperty("activityMermaidGraph")
+    public String getActivityMermaidGraph()
+    {
+        return activityMermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid graph of the element plus its relationships whose relationship purpose is Activity
+     * (ongoing events such as observability or contribution records), with the elements they link to.
+     *
+     * @param activityMermaidGraph string markdown
+     */
+    @JsonProperty("activityMermaidGraph")
+    public void setActivityMermaidGraph(String activityMermaidGraph)
+    {
+        this.activityMermaidGraph = activityMermaidGraph;
     }
 
 
@@ -411,6 +469,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", specification=" + specification +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", actionMermaidGraph='" + actionMermaidGraph + '\'' +
+                ", activityMermaidGraph='" + activityMermaidGraph + '\'' +
                 ", rootHierarchyMermaidGraph='" + rootHierarchyMermaidGraph + '\'' +
                 ", specificationMermaidGraph='" + specificationMermaidGraph + '\'' +
                 ", solutionBlueprintMermaidGraph='" + solutionBlueprintMermaidGraph + '\'' +
@@ -441,6 +501,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(specification, that.specification) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph) &&
+                Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
+                Objects.equals(activityMermaidGraph, that.activityMermaidGraph) &&
                 Objects.equals(rootHierarchyMermaidGraph, that.rootHierarchyMermaidGraph) &&
                 Objects.equals(specificationMermaidGraph, that.specificationMermaidGraph) &&
                 Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph) &&
@@ -463,7 +525,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, specification, mermaidGraph, rootHierarchyMermaidGraph,
+        return Objects.hash(super.hashCode(), properties, specification, mermaidGraph, actionMermaidGraph,
+                            activityMermaidGraph, rootHierarchyMermaidGraph,
                             specificationMermaidGraph, solutionBlueprintMermaidGraph, solutionSubcomponentMermaidGraph,
                             organizationTreeMermaidGraph, collectionMermaidMindMap, zoneProfileMermaidPieChart,
                             zoneProfileAnchoredMermaidPieChart, zoneProfileAllMermaidPieChart,

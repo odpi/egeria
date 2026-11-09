@@ -19,7 +19,6 @@ public class AssetGraph extends OpenMetadataRootElement
     private String                           anchorMermaidGraph                 = null;
     private String                           informationSupplyChainMermaidGraph = null;
     private String                           fieldLevelLineageGraph             = null;
-    private String                           actionMermaidGraph                 = null;
     private String                           localLineageGraph                  = null;
 
     /**
@@ -58,7 +57,6 @@ public class AssetGraph extends OpenMetadataRootElement
             anchorMermaidGraph                 = template.getAnchorMermaidGraph();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
             fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
-            actionMermaidGraph                 = template.getActionMermaidGraph();
             localLineageGraph                  = template.getLocalLineageGraph();
         }
     }
@@ -202,28 +200,6 @@ public class AssetGraph extends OpenMetadataRootElement
 
 
     /**
-     * Return details of the actions operating on the asset.
-     *
-     * @return mermaid string
-     */
-    public String getActionMermaidGraph()
-    {
-        return actionMermaidGraph;
-    }
-
-
-    /**
-     * Set up details of the actions operating on the asset.
-     *
-     * @param actionMermaidGraph mermaid string
-     */
-    public void setActionMermaidGraph(String actionMermaidGraph)
-    {
-        this.actionMermaidGraph = actionMermaidGraph;
-    }
-
-
-    /**
      * Return the mermaid graph that shows the directly connected lineage relationships.
      *
      * @return mermaid string
@@ -260,7 +236,6 @@ public class AssetGraph extends OpenMetadataRootElement
                 ", anchorMermaidGraph='" + anchorMermaidGraph + '\'' +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
-                ", actionMermaidGraph='" + actionMermaidGraph + '\'' +
                 ", localLineageGraph='" + localLineageGraph + '\'' +
                 "} " + super.toString();
     }
@@ -284,7 +259,6 @@ public class AssetGraph extends OpenMetadataRootElement
                 Objects.equals(partOfInformationSupplyChains, that.partOfInformationSupplyChains) &&
                 Objects.equals(anchorMermaidGraph, that.anchorMermaidGraph) &&
                 Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
-                Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
                 Objects.equals(localLineageGraph, that.localLineageGraph) &&
                 Objects.equals(fieldLevelLineageGraph, that.fieldLevelLineageGraph);
     }
@@ -300,6 +274,6 @@ public class AssetGraph extends OpenMetadataRootElement
     {
         return Objects.hash(super.hashCode(), anchoredElements, relationships, partOfInformationSupplyChains,
                             anchorMermaidGraph, informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
-                            actionMermaidGraph, localLineageGraph);
+                            localLineageGraph);
     }
 }

@@ -7,17 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -86,7 +82,7 @@ public class TabularDataSetContractFVT
     @DisplayName("Every tabular data set in the catalogue honours the contract its consumers rely on")
     void dataSetHonoursItsContract(TabularDataSetCatalog.DataSetUnderTest dataSet) throws Exception
     {
-        Connector connector = dataSet.connectorProvider().getConnector(connectionFor(dataSet.productName()));
+        Connector connector = dataSet.connectorProvider().getConnector(TabularDataSetConnections.connectionFor(dataSet.productName()));
 
         assertTrue(connector instanceof ReadableTabularDataSource,
                    dataSet.productName() + " is published as a tabular data set but its connector is a " +
@@ -262,39 +258,6 @@ public class TabularDataSetContractFVT
              * Refusing the read is a perfectly good answer, and is what most of these connectors do.
              */
         }
-    }
-
-
-    /**
-     * Build the connection a tabular data set connector needs: where the metadata is, which server holds it,
-     * and who to ask as.
-     * <br><br>
-     * These connectors are configured rather than injected - each one builds its own open metadata client in
-     * {@code start()} from its connection - so this is the whole of what they need.
-     *
-     * @param dataSetName names the connector instance, which is what appears in its audit log messages
-     * @return connection
-     */
-    private Connection connectionFor(String dataSetName)
-    {
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setNetworkAddress(OMAGPlatformExtension.getPlatformURLRoot());
-
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put("serverName", OMAGPlatformExtension.SERVER_NAME);
-        configurationProperties.put("maxPageSize", OMAGPlatformExtension.MAX_PAGE_SIZE);
-
-        Connection connection = new Connection();
-
-        connection.setQualifiedName("TabularDataFVT::" + dataSetName);
-        connection.setDisplayName(dataSetName);
-        connection.setEndpoint(endpoint);
-        connection.setConfigurationProperties(configurationProperties);
-        connection.setUserId(OMAGPlatformExtension.USER_ID);
-
-        return connection;
     }
 
 

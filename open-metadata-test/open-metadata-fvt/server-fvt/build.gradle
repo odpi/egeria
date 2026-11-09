@@ -151,7 +151,7 @@ test {
 
     // Any server.fvt.* setting can be overridden for a single run from the command line.  Gradle does not
     // pass its own system properties to the forked test JVM, so they are forwarded here.
-    systemProperties System.properties.findAll { it.key.toString().startsWith('server.fvt.') }
+    systemProperties providers.systemPropertiesPrefixedBy('server.fvt.').get()
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis

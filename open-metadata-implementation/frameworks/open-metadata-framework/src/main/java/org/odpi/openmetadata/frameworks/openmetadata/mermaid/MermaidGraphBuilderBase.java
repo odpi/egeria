@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
@@ -66,6 +67,39 @@ public class MermaidGraphBuilderBase
      */
     private final Map<String, AnchorNode>    extractedAnchors = new HashMap<>();
     private final Map<String, Set<String>>   anchorLinks      = new HashMap<>();
+
+    /**
+     * Map from relationship type name to the purpose declared for it in OpenMetadataType.
+     */
+    private static final Map<String, OpenMetadataRelationshipPurpose> relationshipPurposes = new HashMap<>();
+
+    static
+    {
+        for (OpenMetadataType openMetadataType : OpenMetadataType.values())
+        {
+            if (openMetadataType.relationshipPurpose != null)
+            {
+                relationshipPurposes.put(openMetadataType.typeName, openMetadataType.relationshipPurpose);
+            }
+        }
+    }
+
+    /**
+     * Relationship purposes that are never drawn, at any depth of the graph.  Null means no exclusions.
+     */
+    private Set<OpenMetadataRelationshipPurpose> excludedRelationshipPurposes = null;
+
+    /**
+     * Relationship purposes that may be drawn from the graph's root element(s).  Null means any purpose.
+     * Elements nested below a relationship that passes this test are drawn whatever their purpose
+     * (subject to excludedRelationshipPurposes).
+     */
+    private Set<OpenMetadataRelationshipPurpose> rootRelationshipPurposes     = null;
+
+    /**
+     * How deep the builder is in nested related elements (0 means relationships attached to a root element).
+     */
+    private int                                  relatedElementDepth          = 0;
 
 
     /**
@@ -2107,6 +2141,115 @@ public class MermaidGraphBuilderBase
 
 
     /**
+     * Restrict the relationships drawn by addRelatedElementSummary/addRelatedElementSummaries according to
+     * the purpose declared for their relationship type.
+     *
+     * @param rootRelationshipPurposes purposes allowed for relationships attached to a root element (null for any)
+     * @param excludedRelationshipPurposes purposes never drawn at any depth (null for none)
+     */
+    protected void setRelationshipPurposeFilter(Set<OpenMetadataRelationshipPurpose> rootRelationshipPurposes,
+                                                Set<OpenMetadataRelationshipPurpose> excludedRelationshipPurposes)
+    {
+        this.rootRelationshipPurposes     = rootRelationshipPurposes;
+        this.excludedRelationshipPurposes = excludedRelationshipPurposes;
+    }
+
+
+    /**
+     * Return the purpose declared for a relationship type.  If the type itself has no declared purpose
+     * (for example, it comes from an extension archive), the purpose of its nearest super type is used.
+     *
+     * @param relationshipType type of the relationship
+     * @return purpose or null if none is known
+     */
+    public static OpenMetadataRelationshipPurpose getRelationshipPurpose(ElementType relationshipType)
+    {
+        if (relationshipType != null)
+        {
+            OpenMetadataRelationshipPurpose purpose = relationshipPurposes.get(relationshipType.getTypeName());
+
+            if ((purpose == null) && (relationshipType.getSuperTypeNames() != null))
+            {
+                for (String superTypeName : relationshipType.getSuperTypeNames())
+                {
+                    purpose = relationshipPurposes.get(superTypeName);
+
+                    if (purpose != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return purpose;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Should this related element be drawn, given the relationship purpose filter and the current depth?
+     *
+     * @param relatedMetadataElement related element
+     * @return boolean
+     */
+    protected boolean isRelationshipShown(RelatedMetadataElementSummary relatedMetadataElement)
+    {
+        if ((excludedRelationshipPurposes == null) && (rootRelationshipPurposes == null))
+        {
+            return true;
+        }
+
+        OpenMetadataRelationshipPurpose purpose = null;
+
+        if ((relatedMetadataElement != null) && (relatedMetadataElement.getRelationshipHeader() != null))
+        {
+            purpose = getRelationshipPurpose(relatedMetadataElement.getRelationshipHeader().getType());
+        }
+
+        if ((excludedRelationshipPurposes != null) && (purpose != null) && (excludedRelationshipPurposes.contains(purpose)))
+        {
+            return false;
+        }
+
+        if ((relatedElementDepth == 0) && (rootRelationshipPurposes != null))
+        {
+            return (purpose != null) && (rootRelationshipPurposes.contains(purpose));
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Return the related elements that pass the relationship purpose filter.
+     *
+     * @param relatedMetadataElements list of related elements (may be null)
+     * @return filtered list (null if the input is null)
+     */
+    private List<RelatedMetadataElementSummary> filterByRelationshipPurpose(List<RelatedMetadataElementSummary> relatedMetadataElements)
+    {
+        if ((relatedMetadataElements == null) || ((excludedRelationshipPurposes == null) && (rootRelationshipPurposes == null)))
+        {
+            return relatedMetadataElements;
+        }
+
+        List<RelatedMetadataElementSummary> results = new ArrayList<>();
+
+        for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
+        {
+            if ((relatedMetadataElement != null) && (isRelationshipShown(relatedMetadataElement)))
+            {
+                results.add(relatedMetadataElement);
+            }
+        }
+
+        return results;
+    }
+
+
+    /**
      * Link the related element into the graph.
      *
      * @param relatedMetadataElement related element (if null, nothing is added to the graph)
@@ -2142,16 +2285,18 @@ public class MermaidGraphBuilderBase
     /**
      * Link the list of related elements into the graph.
      *
-     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param unfilteredRelatedMetadataElements list of related elements before the relationship purpose filter is applied (if null, nothing is added to the graph)
      * @param visualStyle visual style for new nodes
      * @param startingEndId identity of the starting node
      * @param lineStyle type of line - null is for no line
      */
-    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> unfilteredRelatedMetadataElements,
                                            VisualStyle                         visualStyle,
                                            String                              startingEndId,
                                            LineStyle                           lineStyle)
     {
+        List<RelatedMetadataElementSummary> relatedMetadataElements = filterByRelationshipPurpose(unfilteredRelatedMetadataElements);
+
         if (relatedMetadataElements != null)
         {
             int nodeCount=0;
@@ -2192,18 +2337,20 @@ public class MermaidGraphBuilderBase
     /**
      * Link the list of related elements into the graph.
      *
-     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param unfilteredRelatedMetadataElements list of related elements before the relationship purpose filter is applied (if null, nothing is added to the graph)
      * @param relatedElementTypeName type nam of element to add the the graph
      * @param visualStyle visual style for new nodes
      * @param startingEndId identity of the starting node
      * @param lineStyle type of line - null is for no line
      */
-    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+    public void addRelatedElementSummaries(List<RelatedMetadataElementSummary> unfilteredRelatedMetadataElements,
                                            String                              relatedElementTypeName,
                                            VisualStyle                         visualStyle,
                                            String                              startingEndId,
                                            LineStyle                           lineStyle)
     {
+        List<RelatedMetadataElementSummary> relatedMetadataElements = filterByRelationshipPurpose(unfilteredRelatedMetadataElements);
+
         if (relatedMetadataElements != null)
         {
             int nodeCount=0;
@@ -2244,16 +2391,18 @@ public class MermaidGraphBuilderBase
     /**
      * Link the list of related elements into the graph.
      *
-     * @param relatedMetadataElements list of related element (if null, nothing is added to the graph)
+     * @param unfilteredRelatedMetadataElements list of related elements before the relationship purpose filter is applied (if null, nothing is added to the graph)
      * @param relatedElementTypeName type nam of element to add the the graph
      * @param visualStyle visual style for new nodes
      * @param startingEndId identity of the starting node
      */
-    public void addUnlinkedRelatedElementSummaries(List<RelatedMetadataElementSummary> relatedMetadataElements,
+    public void addUnlinkedRelatedElementSummaries(List<RelatedMetadataElementSummary> unfilteredRelatedMetadataElements,
                                                    String                              relatedElementTypeName,
                                                    VisualStyle                         visualStyle,
                                                    String                              startingEndId)
     {
+        List<RelatedMetadataElementSummary> relatedMetadataElements = filterByRelationshipPurpose(unfilteredRelatedMetadataElements);
+
         if (relatedMetadataElements != null)
         {
             int nodeCount=0;
@@ -2307,7 +2456,7 @@ public class MermaidGraphBuilderBase
                                          String                        startingEndId,
                                          LineStyle                     lineStyle)
     {
-        if (relatedMetadataElement != null)
+        if ((relatedMetadataElement != null) && (isRelationshipShown(relatedMetadataElement)))
         {
             appendNewMermaidNode(relatedMetadataElement.getRelatedElement(), this.getVisualStyleForClassifications(relatedMetadataElement.getRelatedElement().getElementHeader(), visualStyle));
 
@@ -2341,17 +2490,26 @@ public class MermaidGraphBuilderBase
 
             if (relatedMetadataElement instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
             {
-                this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getNestedElements(),
-                                                relatedElementTypeName,
-                                                visualStyle,
-                                                relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
-                                                lineStyle);
+                relatedElementDepth++;
 
-                this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getSideLinks(),
-                                                relatedElementTypeName,
-                                                visualStyle,
-                                                relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
-                                                lineStyle);
+                try
+                {
+                    this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getNestedElements(),
+                                                    relatedElementTypeName,
+                                                    visualStyle,
+                                                    relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
+                                                    lineStyle);
+
+                    this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getSideLinks(),
+                                                    relatedElementTypeName,
+                                                    visualStyle,
+                                                    relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
+                                                    lineStyle);
+                }
+                finally
+                {
+                    relatedElementDepth--;
+                }
             }
         }
     }

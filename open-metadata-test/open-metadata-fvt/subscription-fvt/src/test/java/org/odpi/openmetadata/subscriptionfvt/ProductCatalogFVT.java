@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductSubscriptionDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -98,6 +100,151 @@ public class ProductCatalogFVT
                            + " products it defines: " + missingProducts);
         assertTrue(wrongTypeProducts.isEmpty(),
                    "Products were created with the wrong type: " + wrongTypeProducts);
+    }
+
+
+    /**
+     * A product's product asset and the subscription processes it offers are as hidden as the product.  The zones
+     * are what keep a product such as the security team's away from everyone else, and that only works if the data
+     * behind the product, and the processes that would deliver it, are covered too.  Jacquard zones only the
+     * product: the asset and processes are anchored to it, so their effective zones are the product's, carried on
+     * their Anchors classification.
+     *
+     * @throws Exception problem reading the repository
+     */
+    @Test
+    @DisplayName("A product's asset and subscription processes have the product's governance zones")
+    void productAssetsAndSubscriptionProcessesShareTheProductZones() throws Exception
+    {
+        List<String> problems = new ArrayList<>();
+        int          checked  = 0;
+
+        for (ProductDefinitionEnum productDefinition : ProductDefinitionEnum.values())
+        {
+            List<String> zones = productDefinition.zoneMembership();
+
+            if ((zones == null) || (zones.isEmpty()))
+            {
+                continue;
+            }
+
+            OpenMetadataElement product = openMetadataStore.getMetadataElementByUniqueName(productDefinition.getQualifiedName(),
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name);
+
+            assertNotNull(product, "Product " + productDefinition.getQualifiedName() + " is not in the catalogue");
+
+            checkZones(productDefinition.getProductName() + " product", product, null, zones, problems);
+
+            if (productDefinition.getAssetTypeName() != null)
+            {
+                boolean assetFound = false;
+
+                for (RelatedMetadataElement member : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                                    product.getElementGUID(),
+                                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                    1))
+                {
+                    if (productDefinition.getAssetTypeName().equals(member.getElement().getType().getTypeName()))
+                    {
+                        assetFound = true;
+                        checkZones(productDefinition.getProductName() + " asset", member.getElement(), product.getElementGUID(), zones, problems);
+                    }
+                }
+
+                if (! assetFound)
+                {
+                    problems.add(productDefinition.getProductName() + " has no " + productDefinition.getAssetTypeName() + " member");
+                }
+            }
+
+            if (productDefinition.getSubscriptionTypes() != null)
+            {
+                for (ProductSubscriptionDefinition subscriptionType : productDefinition.getSubscriptionTypes())
+                {
+                    String processName = SubscriptionFvtTestSupport.subscriptionProcessQualifiedName(productDefinition, subscriptionType);
+
+                    OpenMetadataElement process = openMetadataStore.getMetadataElementByUniqueName(processName,
+                                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                    if (process == null)
+                    {
+                        problems.add(processName + " was not found");
+                    }
+                    else
+                    {
+                        checkZones(processName, process, product.getElementGUID(), zones, problems);
+                    }
+                }
+            }
+
+            checked++;
+        }
+
+        assertTrue(checked > 0, "No product definition names governance zones, so there was nothing to check");
+        assertTrue(problems.isEmpty(), problems.size() + " element(s) do not have their product's zones: " + problems);
+    }
+
+
+    /**
+     * Record a problem if the element's effective zones are not exactly the expected zones.  An element's own
+     * ZoneMembership classification decides its zones; without one, an anchored element has its anchor's zones,
+     * which are kept on its Anchors classification.
+     *
+     * @param description what the element is, for the message
+     * @param element element to check
+     * @param expectedAnchorGUID the product the element should be anchored to, or null for the product itself
+     * @param expectedZones zones the product definition names
+     * @param problems list to add to
+     */
+    private static void checkZones(String              description,
+                                   OpenMetadataElement element,
+                                   String              expectedAnchorGUID,
+                                   List<String>        expectedZones,
+                                   List<String>        problems)
+    {
+        final String methodName = "checkZones";
+
+        List<String> ownZones    = null;
+        List<String> anchorZones = null;
+        String       anchorGUID  = null;
+
+        if (element.getClassifications() != null)
+        {
+            for (AttachedClassification classification : element.getClassifications())
+            {
+                if (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                {
+                    ownZones = propertyHelper.getStringArrayProperty(ProductCatalogFVT.class.getName(),
+                                                                     OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                     classification.getClassificationProperties(),
+                                                                     methodName);
+                }
+                else if (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                {
+                    anchorZones = propertyHelper.getStringArrayProperty(ProductCatalogFVT.class.getName(),
+                                                                        OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                        classification.getClassificationProperties(),
+                                                                        methodName);
+                    anchorGUID  = propertyHelper.getStringProperty(ProductCatalogFVT.class.getName(),
+                                                                   OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                   classification.getClassificationProperties(),
+                                                                   methodName);
+                }
+            }
+        }
+
+        if ((expectedAnchorGUID != null) && (! expectedAnchorGUID.equals(anchorGUID)))
+        {
+            problems.add(description + " is anchored to " + anchorGUID + " rather than its product " + expectedAnchorGUID);
+        }
+
+        List<String> effectiveZones = (ownZones != null) ? ownZones : anchorZones;
+
+        if ((effectiveZones == null) || (! new HashSet<>(effectiveZones).equals(new HashSet<>(expectedZones))))
+        {
+            problems.add(description + " has effective zones " + effectiveZones + " (own " + ownZones + ", from anchor "
+                                 + anchorZones + ") rather than " + expectedZones);
+        }
     }
 
 

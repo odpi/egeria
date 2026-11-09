@@ -3,16 +3,22 @@
 
 package org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security;
 
+import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDataFieldDefinition;
 import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.ProductDefinitionEnum;
-import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.OpenMetadataRootDataSetConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.OpenMetadataRowDataSetConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.Map;
 
 
 /**
- * SecretsStoresTabularDataSetConnector supports the list of secrets stores known to open metadata as if it is a tabular data set.
+ * SecretsStoresTabularDataSetConnector lists the secrets stores known to open metadata as if they are a tabular
+ * data set.  There is one row per secrets store file (KeyStoreFile).  The network address is the file's path name.
+ * Only the description of the store is published - never its content.
  */
-public class SecretsStoresTabularDataSetConnector extends OpenMetadataRootDataSetConnectorBase
+public class SecretsStoresTabularDataSetConnector extends OpenMetadataRowDataSetConnectorBase
 {
     private static final String myConnectorName = SecretsStoresTabularDataSetConnector.class.getName();
 
@@ -27,13 +33,23 @@ public class SecretsStoresTabularDataSetConnector extends OpenMetadataRootDataSe
 
 
     /**
-     * Refresh any cached values.
+     * One row per secrets store.
      *
-     * @throws ConnectorCheckedException unable to refresh
+     * @throws Exception problem retrieving the metadata
      */
     @Override
-    public void refreshCache() throws ConnectorCheckedException
+    protected void collectRows() throws Exception
     {
-        refreshCache(OpenMetadataType.KEY_STORE_FILE.typeName);
+        for (OpenMetadataRootElement secretsStore : getAllElements(OpenMetadataType.KEY_STORE_FILE.typeName, 0))
+        {
+            Map<String, String> values = newValues();
+
+            if (secretsStore.getProperties() instanceof DataStoreProperties dataStoreProperties)
+            {
+                putValue(values, ProductDataFieldDefinition.NETWORK_ADDRESS, dataStoreProperties.getPathName());
+            }
+
+            addRow(secretsStore, values);
+        }
     }
 }

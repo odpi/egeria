@@ -696,6 +696,178 @@ public enum ProductDataFieldDefinition
                                     ProductGlossaryTermDefinition.GUID),
 
     /**
+     * The unique identifier of a business capability.
+     */
+    BUSINESS_CAPABILITY_GUID("Business Capability Unique Identifier (GUID)",
+                             "Business Capability GUID",
+                             "The unique identifier of a business capability.",
+                             DataType.STRING,
+                             null,
+                             null,
+                             true,
+                             false,
+                             ProductGlossaryTermDefinition.RELATED_GUID),
+
+    /**
+     * The display name of a business capability.
+     */
+    BUSINESS_CAPABILITY_NAME("Business Capability Name",
+                             "Business Capability Name",
+                             "The display name of a business capability.",
+                             DataType.STRING,
+                             null,
+                             null,
+                             false,
+                             true),
+
+    /**
+     * The kind of business capability, such as business area or business function.
+     */
+    BUSINESS_CAPABILITY_TYPE("Business Capability Type",
+                             "Business Capability Type",
+                             OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE.description,
+                             DataType.STRING,
+                             null,
+                             null,
+                             false,
+                             true),
+
+    /**
+     * How the business capability is implemented.
+     */
+    BUSINESS_IMPLEMENTATION_TYPE("Business Implementation Type",
+                                 "Business Implementation Type",
+                                 OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE.description,
+                                 OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE.dataType,
+                                 null,
+                                 null,
+                                 false,
+                                 true),
+
+    /**
+     * The unique identifier of a department - that is a team that is part of an organization's structure.
+     */
+    DEPARTMENT_GUID("Department Unique Identifier (GUID)",
+                    "Department GUID",
+                    "The unique identifier of a department - that is a team that is part of an organization's structure.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    true,
+                    false,
+                    ProductGlossaryTermDefinition.RELATED_GUID),
+
+    /**
+     * The display name of a department.
+     */
+    DEPARTMENT_NAME("Department Name",
+                    "Department Name",
+                    "The display name of a department - that is a team that is part of an organization's structure.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true),
+
+    /**
+     * The type of team, such as division or department.
+     */
+    TEAM_TYPE("Team Type",
+              "Team Type",
+              OpenMetadataProperty.TEAM_TYPE.description,
+              OpenMetadataProperty.TEAM_TYPE.dataType,
+              null,
+              null,
+              false,
+              true),
+
+    /**
+     * The unique identifier of the team (or organization) that a team reports to.
+     */
+    SUPER_TEAM_GUID("Super Team Unique Identifier (GUID)",
+                    "Super Team GUID",
+                    "The unique identifier of the team (or organization) that this team reports to in the organization's structure.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true,
+                    ProductGlossaryTermDefinition.RELATED_GUID),
+
+    /**
+     * The display name of the team (or organization) that a team reports to.
+     */
+    SUPER_TEAM_NAME("Super Team Name",
+                    "Super Team Name",
+                    "The display name of the team (or organization) that this team reports to in the organization's structure.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true),
+
+    /**
+     * The unique identifier of the organization at the top of a team's reporting structure.
+     */
+    ORGANIZATION_GUID("Organization Unique Identifier (GUID)",
+                      "Organization GUID",
+                      "The unique identifier of the organization at the top of this team's reporting structure.",
+                      DataType.STRING,
+                      null,
+                      null,
+                      false,
+                      true,
+                      ProductGlossaryTermDefinition.RELATED_GUID),
+
+    /**
+     * The display name of the organization at the top of a team's reporting structure.
+     */
+    ORGANIZATION_NAME("Organization Name",
+                      "Organization Name",
+                      "The display name of the organization at the top of this team's reporting structure.",
+                      DataType.STRING,
+                      null,
+                      null,
+                      false,
+                      true),
+
+    /**
+     * The number of teams that report directly to this team.
+     */
+    SUB_TEAM_COUNT("Sub Team Count",
+                   "Sub Team Count",
+                   "The number of teams that report directly to this team in the organization's structure.",
+                   DataType.INT,
+                   null,
+                   null,
+                   false,
+                   true),
+
+    /**
+     * Name of the type of membership.
+     */
+    MEMBERSHIP_TYPE("Membership Type",
+                    "Membership Type",
+                    OpenMetadataProperty.MEMBERSHIP_TYPE.description,
+                    OpenMetadataProperty.MEMBERSHIP_TYPE.dataType,
+                    null,
+                    null,
+                    false,
+                    true),
+
+    /**
+     * Description of why the member belongs to the collection.
+     */
+    MEMBERSHIP_RATIONALE("Membership Rationale",
+                         "Membership Rationale",
+                         OpenMetadataProperty.MEMBERSHIP_RATIONALE.description,
+                         OpenMetadataProperty.MEMBERSHIP_RATIONALE.dataType,
+                         null,
+                         null,
+                         false,
+                         true),
+
+    /**
      * Identifier of a steward.
      */
     STEWARD("Steward",

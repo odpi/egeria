@@ -365,12 +365,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                 secretsCollectionProperties.setDisplayName(secretsCollection.getDisplayName());
             }
             secretsCollectionProperties.setDescription(secretsCollection.getDescription());
-
-            Map<String, String> additionalProperties = new HashMap<>();
-
-            additionalProperties.put(OpenMetadataProperty.REFRESH_TIME_INTERVAL.name, Long.toString(secretsCollection.getRefreshTimeInterval()));
-
-            secretsCollectionProperties.setAdditionalProperties(additionalProperties);
+            secretsCollectionProperties.setRefreshTimeInterval(secretsCollection.getRefreshTimeInterval());
 
             DataSetContentProperties dataSetContentProperties = new DataSetContentProperties();
 

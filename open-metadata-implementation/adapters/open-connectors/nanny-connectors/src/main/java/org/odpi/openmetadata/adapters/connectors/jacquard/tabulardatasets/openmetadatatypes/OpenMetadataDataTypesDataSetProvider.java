@@ -16,7 +16,7 @@ public class OpenMetadataDataTypesDataSetProvider extends OpenConnectorProviderB
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName  = OpenMetadataAttributesForTypesDataSetConnector.class.getName();
+    private static final String connectorClassName  = OpenMetadataDataTypesDataSetConnector.class.getName();
 
 
     /**

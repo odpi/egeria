@@ -3,22 +3,63 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootHierarchy;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedBy;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
+import java.util.EnumSet;
 import java.util.List;
 
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's attributed
- * metadata element.
+ * metadata element.  The relationships shown depend on the graph's scope: the context graph
+ * leaves out relationships whose purpose is Action or Activity so that it does not grow as
+ * new actions and activity are recorded; the action and activity graphs show just those relationships.
  */
 public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
 {
+    private final GraphScope graphScope;
+
     /**
-     * Construct a mermaid markdown graph.
+     * Which relationships attached to the root element are drawn in the graph.
+     */
+    public enum GraphScope
+    {
+        /**
+         * Every relationship (at any depth) except those whose purpose is Action or Activity.
+         */
+        CONTEXT(null, EnumSet.of(OpenMetadataRelationshipPurpose.ACTION, OpenMetadataRelationshipPurpose.ACTIVITY), " - "),
+
+        /**
+         * Relationships attached to the root element whose purpose is Action, plus anything nested below them.
+         */
+        ACTION(EnumSet.of(OpenMetadataRelationshipPurpose.ACTION), null, " Actions - "),
+
+        /**
+         * Relationships attached to the root element whose purpose is Activity, plus anything nested below them.
+         */
+        ACTIVITY(EnumSet.of(OpenMetadataRelationshipPurpose.ACTIVITY), null, " Activity - ");
+
+        private final EnumSet<OpenMetadataRelationshipPurpose> rootPurposes;
+        private final EnumSet<OpenMetadataRelationshipPurpose> excludedPurposes;
+        private final String                                   titleSeparator;
+
+        GraphScope(EnumSet<OpenMetadataRelationshipPurpose> rootPurposes,
+                   EnumSet<OpenMetadataRelationshipPurpose> excludedPurposes,
+                   String                                   titleSeparator)
+        {
+            this.rootPurposes     = rootPurposes;
+            this.excludedPurposes = excludedPurposes;
+            this.titleSeparator   = titleSeparator;
+        }
+    }
+
+
+    /**
+     * Construct the context mermaid markdown graph.
      *
      * @param openMetadataRootElement content
      * @param maxNodeCount             maximum nodes linked by a particular relationship to an element to include in the graph
@@ -26,7 +67,25 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
     public OpenMetadataRootMermaidGraphBuilder(OpenMetadataRootElement openMetadataRootElement,
                                                int                     maxNodeCount)
     {
+        this(openMetadataRootElement, maxNodeCount, GraphScope.CONTEXT);
+    }
+
+
+    /**
+     * Construct a mermaid markdown graph for the requested scope.
+     *
+     * @param openMetadataRootElement content
+     * @param maxNodeCount             maximum nodes linked by a particular relationship to an element to include in the graph
+     * @param graphScope               which relationships to include
+     */
+    public OpenMetadataRootMermaidGraphBuilder(OpenMetadataRootElement openMetadataRootElement,
+                                               int                     maxNodeCount,
+                                               GraphScope              graphScope)
+    {
         super(maxNodeCount);
+
+        super.setRelationshipPurposeFilter(graphScope.rootPurposes, graphScope.excludedPurposes);
+        this.graphScope = graphScope;
 
         /*
          * Add the graph title
@@ -43,13 +102,13 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append("---\n");
         mermaidGraph.append("title: ");
         mermaidGraph.append(openMetadataRootElement.getElementHeader().getType().getTypeName());
-        if (openMetadataRootElement instanceof OpenMetadataRootHierarchy)
+        if ((graphScope == GraphScope.CONTEXT) && (openMetadataRootElement instanceof OpenMetadataRootHierarchy))
         {
             mermaidGraph.append(" Hierarchy - ");
         }
         else
         {
-            mermaidGraph.append(" - ");
+            mermaidGraph.append(graphScope.titleSeparator);
         }
         if (currentDisplayName != null)
         {
@@ -84,6 +143,9 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                int                           maxNodeCount)
     {
         super(maxNodeCount);
+
+        super.setRelationshipPurposeFilter(GraphScope.CONTEXT.rootPurposes, GraphScope.CONTEXT.excludedPurposes);
+        this.graphScope = GraphScope.CONTEXT;
 
         /*
          * Add the graph title
@@ -161,9 +223,12 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                                         VisualStyle.ANCHOR_ELEMENT));
 
             /*
-             * Add related by details
+             * Add related by details - these describe how the element was found, so belong in the context graph.
              */
-            addRelatedByToMermaidGraph(openMetadataRootElement.getElementHeader().getGUID(), openMetadataRootElement.getRelatedBy());
+            if (graphScope == GraphScope.CONTEXT)
+            {
+                addRelatedByToMermaidGraph(openMetadataRootElement.getElementHeader().getGUID(), openMetadataRootElement.getRelatedBy());
+            }
 
             /*
              * Area 0
