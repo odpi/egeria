@@ -62,6 +62,7 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      * @throws PropertyServerException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
+    @Override
     public boolean connectToCohort(String cohortName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
@@ -79,6 +80,7 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
+    @Override
     public boolean disconnectFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
@@ -96,6 +98,7 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
      * @throws RepositoryErrorException a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
+    @Override
     public boolean unregisterFromCohort(String cohortName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException

@@ -3186,6 +3186,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
      * Generates and writes out an open metadata archive containing all the connector types
      * describing the Egeria project open connectors.
      */
+    @Override
     public void writeOpenMetadataArchive()
     {
         try

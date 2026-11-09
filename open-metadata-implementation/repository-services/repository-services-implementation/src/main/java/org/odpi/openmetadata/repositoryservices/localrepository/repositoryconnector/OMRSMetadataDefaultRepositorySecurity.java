@@ -547,6 +547,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
      * @param instance instance details
      * @return flag indicating whether the reference copy should be saved
      */
+    @Override
     public boolean  validateEntityReferenceCopySave(String userId, EntityDetail   instance)
     {
         return true;
@@ -560,6 +561,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
      * @param instance instance details
      * @return flag indicating whether the reference copy should be saved
      */
+    @Override
     public boolean  validateRelationshipReferenceCopySave(String userId, Relationship   instance)
     {
         return true;

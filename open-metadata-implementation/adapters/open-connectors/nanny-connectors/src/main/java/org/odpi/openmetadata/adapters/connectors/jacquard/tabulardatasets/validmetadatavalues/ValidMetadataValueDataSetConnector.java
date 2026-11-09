@@ -40,6 +40,7 @@ public class ValidMetadataValueDataSetConnector extends DynamicOpenMetadataDataS
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connectionDetails   POJO for the configuration used to create the connector
      */
+    @Override
     public void initialize(String                                 connectorInstanceId,
                            Connection                             connectionDetails) throws ConnectorCheckedException
     {
@@ -78,6 +79,7 @@ public class ValidMetadataValueDataSetConnector extends DynamicOpenMetadataDataS
      *
      * @throws ConnectorCheckedException unable to refresh
      */
+    @Override
     public void refreshCache() throws ConnectorCheckedException
     {
         final String methodName = "refreshCache";

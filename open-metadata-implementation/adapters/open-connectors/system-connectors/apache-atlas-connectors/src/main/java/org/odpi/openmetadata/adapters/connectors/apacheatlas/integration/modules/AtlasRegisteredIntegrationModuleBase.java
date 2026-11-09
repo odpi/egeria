@@ -87,6 +87,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
      *
      * @return list of types
      */
+    @Override
     public List<String> getListenForTypes()
     {
         return listenForTypes;
@@ -98,6 +99,7 @@ public abstract class AtlasRegisteredIntegrationModuleBase extends AtlasIntegrat
      *
      * @return module name
      */
+    @Override
     public String getModuleName()
     {
         return moduleName;

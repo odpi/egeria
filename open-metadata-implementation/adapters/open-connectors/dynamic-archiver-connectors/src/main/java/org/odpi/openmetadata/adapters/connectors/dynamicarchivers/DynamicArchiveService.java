@@ -118,6 +118,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      * @param error caught exception
      * @throws ConnectorCheckedException wrapped exception
      */
+    @Override
     protected void handleUnexpectedException(String    methodName,
                                              Exception error) throws ConnectorCheckedException
     {
@@ -138,6 +139,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      * @throws ConnectorCheckedException error to say that the connector (governance action service) is not able to proceed because
      * it has not been set up correctly.
      */
+    @Override
     protected void validateContext(RepositoryGovernanceContext governanceContext) throws ConnectorCheckedException
     {
         final String methodName = "start";

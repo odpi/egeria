@@ -551,6 +551,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException a problem accessing the metadata store
      */
+    @Override
     public OpenMetadataElement getDeletedElementByUniqueName(String  userId,
                                                              String  uniqueName,
                                                              String  uniquePropertyName) throws InvalidParameterException,

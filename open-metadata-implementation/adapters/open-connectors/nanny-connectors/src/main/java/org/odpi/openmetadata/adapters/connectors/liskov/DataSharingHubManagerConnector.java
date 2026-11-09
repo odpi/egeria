@@ -188,6 +188,7 @@ public class DataSharingHubManagerConnector extends DynamicIntegrationConnectorB
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";

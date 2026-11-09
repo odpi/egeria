@@ -17,6 +17,7 @@ public interface SolutionComponentDefinition extends ReferenceableDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.SOLUTION_COMPONENT.typeName; }
 
 
@@ -41,6 +42,7 @@ public interface SolutionComponentDefinition extends ReferenceableDefinition
      *
      * @return string
      */
+    @Override
     default String getURL()
     {
         return null;

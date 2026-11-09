@@ -150,13 +150,6 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Configure a metadata access store server (PostgreSQL local repository, console audit log, all
-     * access services enabled with no event topics, the open metadata types) and start it,
-     * checking along the way that the platform is responding and that the server actually came up.
-     *
-     * @throws Exception any problem configuring or starting the server is fatal to the whole anchor-fvt run
-     */
-    /**
      * Is this run using the in-memory repository rather than PostgreSQL?
      *
      * @return true if the in-memory repository was selected
@@ -167,6 +160,13 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     }
 
 
+    /**
+     * Configure a metadata access store server (PostgreSQL local repository, console audit log, all
+     * access services enabled with no event topics, the open metadata types) and start it,
+     * checking along the way that the platform is responding and that the server actually came up.
+     *
+     * @throws Exception any problem configuring or starting the server is fatal to the whole anchor-fvt run
+     */
     private void configureAndStartServer() throws Exception
     {
         PlatformServicesClient platformServicesClient = new PlatformServicesClient("anchor-fvt Platform",

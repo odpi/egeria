@@ -123,6 +123,7 @@ public class OMFOperationalServices extends AccessServiceAdmin
     /**
      * Shutdown the service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

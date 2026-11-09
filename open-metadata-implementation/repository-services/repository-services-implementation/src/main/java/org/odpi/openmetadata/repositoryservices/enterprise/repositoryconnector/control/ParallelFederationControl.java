@@ -43,6 +43,7 @@ public class ParallelFederationControl extends FederationControlBase
      * @throws RepositoryErrorException problem with the state of one of the repositories.
      * This is probably a logic error rather than an outage
      */
+    @Override
     public void executeCommand(RepositoryExecutor executor) throws RepositoryErrorException
     {
         sequentialFederationControl.executeCommand(executor);

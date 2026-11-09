@@ -23,6 +23,7 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      *
      * @return String guid
      */
+    @Override
     String getMetadataCollectionId();
 
 
@@ -98,6 +99,7 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      *
      * @return String name
      */
+    @Override
     String getOrganizationName();
 
 

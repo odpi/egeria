@@ -62,6 +62,7 @@ public class EnumDef extends AttributeTypeDef
      *
      * @return subclass of AttributeTypeDef
      */
+    @Override
     public AttributeTypeDef cloneFromSubclass()
     {
         return new EnumDef(this);

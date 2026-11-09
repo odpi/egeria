@@ -219,13 +219,6 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
 
 
     /**
-     * Ask the integration daemon to refresh the cataloguer now, and wait for the call to return.  The
-     * refresh is synchronous, so when this returns the cataloguer has worked through every catalog target it
-     * has: the platform, its servers and their configuration.
-     *
-     * @throws Exception the refresh failed
-     */
-    /**
      * Restart the integration daemon, and wait until the cataloguer is running in it again.  This is how a
      * test makes the connector's {@code start()} run a second time.
      *
@@ -242,6 +235,13 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     }
 
 
+    /**
+     * Ask the integration daemon to refresh the cataloguer now, and wait for the call to return.  The
+     * refresh is synchronous, so when this returns the cataloguer has worked through every catalog target it
+     * has: the platform, its servers and their configuration.
+     *
+     * @throws Exception the refresh failed
+     */
     public static void refreshCataloguer() throws Exception
     {
         getIntegrationDaemonClient().refreshConnector(CATALOGUER_CONNECTOR_NAME);

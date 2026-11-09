@@ -46,6 +46,7 @@ public abstract class GetEntityExecutor extends RepositoryExecutorBase
      *
      * @return null (if no augmentation of results is required) or a list containing the guids of the results.
      */
+    @Override
     public List<String> getResultsForAugmentation()
     {
         return accumulator.getResultsForAugmentation();
@@ -59,6 +60,7 @@ public abstract class GetEntityExecutor extends RepositoryExecutorBase
      * @param metadataCollectionId identifier for the metadata collection
      * @param metadataCollection metadata collection object for the repository
      */
+    @Override
     public void augmentResultFromRepository(String                 resultGUID,
                                             String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)

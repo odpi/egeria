@@ -45,6 +45,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
      * @throws PropertyServerException a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public B getNewRelatedMetadataElementsBean(Class<B>                 beanClass,
                                                OpenMetadataRelationship relationship,
                                                String                   methodName) throws PropertyServerException

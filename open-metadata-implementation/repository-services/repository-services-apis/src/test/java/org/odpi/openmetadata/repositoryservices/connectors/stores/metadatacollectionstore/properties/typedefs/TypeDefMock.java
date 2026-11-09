@@ -75,6 +75,7 @@ public class TypeDefMock extends TypeDef
      *
      * @return subclass of AttributeTypeDef
      */
+    @Override
     public TypeDef cloneFromSubclass()
     {
         return new TypeDefMock(this);

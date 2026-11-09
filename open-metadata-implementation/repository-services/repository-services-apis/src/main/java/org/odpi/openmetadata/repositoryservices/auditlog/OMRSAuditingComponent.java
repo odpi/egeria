@@ -277,6 +277,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      *
      * @return int componentId
      */
+    @Override
     public int getComponentId()
     {
         return componentId;

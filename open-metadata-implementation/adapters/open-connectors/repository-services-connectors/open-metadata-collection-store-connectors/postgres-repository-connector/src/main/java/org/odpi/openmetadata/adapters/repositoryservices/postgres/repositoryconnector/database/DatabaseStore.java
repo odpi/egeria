@@ -94,34 +94,6 @@ public class DatabaseStore implements AutoCloseable
 
 
     /**
-     * Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.
-     * <br><br>
-     * Every instance row carries its type's supertype chain, denormalised into type_name as
-     * ":Type:Super:Super:" when the row is written (see RepositoryMapper.setUpTypeNameInRow()), and a search
-     * for a supertype matches against it with "type_name like '%:Super:%'" (see QueryBuilder.getTypeClause()).
-     * That makes a search for a supertype fast, but it also freezes the hierarchy as it stood when each row was
-     * written.  When a TypeDefPatch gives a type a new supertype - which is how a type that was defined
-     * standalone is later brought under a more general one, so that existing instances answer searches for the
-     * new supertype - the rows already written keep the old chain and stay invisible to exactly the searches the
-     * patch was meant to make them visible to.  This rewrites them.
-     * <br><br>
-     * The rewrite is driven off the distinct chains actually stored rather than off the type system, because the
-     * patched type may appear in the chain of any number of its own subtypes as well as in its own rows, and
-     * everything after it in a chain is by definition its supertypes - so replacing the remainder of the chain
-     * after the patched type's own name is correct wherever the type appears.  Rows whose chain already matches
-     * are left alone, which is what makes this cheap to run on every server start: on a repository that is
-     * already correct it issues one small query per table and no updates at all.
-     * <br><br>
-     * Every version of a row is rewritten, not just the current one, so that historical (asOfTime) queries see
-     * the same hierarchy as queries against the present.
-     *
-     * @param typeName the type whose supertypes have changed
-     * @param superTypeChain the type's new supertypes, outermost last, each followed by a colon - empty if the
-     *                       type no longer has any
-     * @return number of distinct chains rewritten, across all the instance tables
-     * @throws RepositoryErrorException problem communicating with the database
-     */
-    /**
      * Rewrite every stored supertype chain that no longer matches the type system.
      * <br><br>
      * This is the unconditional form of {@link #repairSuperTypeChains(String, List)}, and it is what a server
@@ -261,6 +233,35 @@ public class DatabaseStore implements AutoCloseable
     }
 
 
+
+    /**
+     * Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.
+     * <br><br>
+     * Every instance row carries its type's supertype chain, denormalised into type_name as
+     * ":Type:Super:Super:" when the row is written (see RepositoryMapper.setUpTypeNameInRow()), and a search
+     * for a supertype matches against it with "type_name like '%:Super:%'" (see QueryBuilder.getTypeClause()).
+     * That makes a search for a supertype fast, but it also freezes the hierarchy as it stood when each row was
+     * written.  When a TypeDefPatch gives a type a new supertype - which is how a type that was defined
+     * standalone is later brought under a more general one, so that existing instances answer searches for the
+     * new supertype - the rows already written keep the old chain and stay invisible to exactly the searches the
+     * patch was meant to make them visible to.  This rewrites them.
+     * <br><br>
+     * The rewrite is driven off the distinct chains actually stored rather than off the type system, because the
+     * patched type may appear in the chain of any number of its own subtypes as well as in its own rows, and
+     * everything after it in a chain is by definition its supertypes - so replacing the remainder of the chain
+     * after the patched type's own name is correct wherever the type appears.  Rows whose chain already matches
+     * are left alone, which is what makes this cheap to run on every server start: on a repository that is
+     * already correct, it issues one small query per table and no updates at all.
+     * <br><br>
+     * Every version of a row is rewritten, not just the current one, so that historical (asOfTime) queries see
+     * the same hierarchy as queries against the present.
+     *
+     * @param typeName the type whose supertypes have changed
+     * @param superTypeChain the type's new supertypes, outermost last, each followed by a colon - empty if the
+     *                       type no longer has any
+     * @return number of distinct chains rewritten, across all the instance tables
+     * @throws RepositoryErrorException problem communicating with the database
+     */
     public int repairSuperTypeChains(String       typeName,
                                      List<String> superTypeChain) throws RepositoryErrorException
     {

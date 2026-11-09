@@ -185,6 +185,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
      *
      * @throws ConnectorCheckedException unable to refresh
      */
+    @Override
     public void refreshCache() throws ConnectorCheckedException
     {
         final String methodName = "refreshCache";
@@ -345,6 +346,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
      * @return list of values (as strings) where each string is the value from a column.  The order is the same as the columns
      * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
+    @Override
     public List<String> readRecord(long rowNumber) throws ConnectorCheckedException
     {
         final String methodName = "readRecord";
@@ -464,6 +466,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
     /**
      * Close the file
      */
+    @Override
     public void disconnect()
     {
         try

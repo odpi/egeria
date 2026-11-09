@@ -1084,6 +1084,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
     /**
      * Close the file
      */
+    @Override
     public void disconnect()
     {
         try

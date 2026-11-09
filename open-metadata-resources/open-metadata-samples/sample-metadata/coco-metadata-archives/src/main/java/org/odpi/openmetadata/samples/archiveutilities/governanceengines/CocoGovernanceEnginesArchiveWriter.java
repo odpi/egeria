@@ -588,6 +588,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     /**
      * Generates and writes out an open metadata archive for Coco Pharmaceuticals governance engines.
      */
+    @Override
     public void writeOpenMetadataArchive()
     {
         try

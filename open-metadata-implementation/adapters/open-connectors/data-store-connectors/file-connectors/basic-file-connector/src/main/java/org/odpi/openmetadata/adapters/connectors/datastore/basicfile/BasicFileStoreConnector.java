@@ -296,7 +296,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     /**
      * Return the Java File object that provides access to the file.
      *
-     * @param methodName, calling method
+     * @param methodName calling method
      * @return File object
      * @throws FileException problem accessing the file
      */

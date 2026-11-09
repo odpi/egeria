@@ -50,6 +50,7 @@ public class GAFRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
+    @Override
     public BooleanResponse callBooleanGetRESTCall(String    methodName,
                                                   String    urlTemplate,
                                                   Object... params) throws InvalidParameterException,

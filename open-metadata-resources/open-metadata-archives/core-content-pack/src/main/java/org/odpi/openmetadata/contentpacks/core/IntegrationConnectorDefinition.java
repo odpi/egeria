@@ -985,11 +985,6 @@ public enum IntegrationConnectorDefinition
 
 
     /**
-     * Get the configuration properties for the Unity Catalog Server Cataloguer.
-     *
-     * @return map
-     */
-    /**
      * Return the configuration properties for the Jacquard Digital Product Loom.  Jacquard needs to know which
      * connector is the subscription manager, so that it can hand each notification type it creates to that
      * connector as a catalog target.  The GUID is seeded here from the definition of the Baudot connector in

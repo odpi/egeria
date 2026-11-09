@@ -156,6 +156,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param typeName name of instance's type
      * @return list of attribute names
      */
+    @Override
     public List<String> getUniqueAttributesList(String sourceName,
                                                 String typeName)
     {
@@ -208,6 +209,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param allProperties all the instance's properties
      * @return just the unique properties
      */
+    @Override
     public InstanceProperties getUniqueProperties(String              sourceName,
                                                   String              typeName,
                                                   InstanceProperties  allProperties)
@@ -2589,6 +2591,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sequencingOrder ascending or descending order
      * @return sort result
      */
+    @Override
     public int  compareProperties(InstanceProperties     instance1Properties,
                                   InstanceProperties     instance2Properties,
                                   String                 propertyName,
@@ -2829,6 +2832,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     /**
      * {@inheritDoc}
      */
+    @Override
     public SearchClassifications getSearchClassificationsFromList(List<String> classificationNames)
     {
         SearchClassifications sc = null;

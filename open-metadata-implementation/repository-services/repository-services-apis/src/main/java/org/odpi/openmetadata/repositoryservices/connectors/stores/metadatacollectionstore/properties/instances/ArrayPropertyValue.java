@@ -57,6 +57,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public InstancePropertyValue cloneFromSubclass()
     {
         return new ArrayPropertyValue(this);

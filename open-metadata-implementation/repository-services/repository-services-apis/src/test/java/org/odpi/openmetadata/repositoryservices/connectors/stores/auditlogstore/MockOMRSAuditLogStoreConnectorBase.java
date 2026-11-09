@@ -18,6 +18,7 @@ public class MockOMRSAuditLogStoreConnectorBase extends OMRSAuditLogStoreConnect
      * @return unique identifier assigned to the log record
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      */
+    @Override
     public String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException
     {
         return null;
@@ -31,6 +32,7 @@ public class MockOMRSAuditLogStoreConnectorBase extends OMRSAuditLogStoreConnect
      * @return requested audit log record
      * @throws InvalidParameterException indicates that the logRecordId parameter is invalid.
      */
+    @Override
     public OMRSAuditLogRecord  getAuditLogRecord(String     logRecordId) throws InvalidParameterException
     {
         return null;
@@ -49,6 +51,7 @@ public class MockOMRSAuditLogStoreConnectorBase extends OMRSAuditLogStoreConnect
      * @throws InvalidParameterException indicates that the start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date startDate,
                                                                   Date    endDate,
                                                                   int     offset,
@@ -71,6 +74,7 @@ public class MockOMRSAuditLogStoreConnectorBase extends OMRSAuditLogStoreConnect
      * @throws InvalidParameterException indicates that the severity, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String   severity,
                                                                  Date     startDate,
                                                                  Date     endDate,
@@ -94,6 +98,7 @@ public class MockOMRSAuditLogStoreConnectorBase extends OMRSAuditLogStoreConnect
      * @throws InvalidParameterException indicates that the component, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String   component,
                                                                   Date     startDate,
                                                                   Date     endDate,

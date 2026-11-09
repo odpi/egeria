@@ -96,6 +96,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
     /**
      * This is the method called by the listener thread when it starts.
      */
+    @Override
     public void run()
     {
         logRecord(listenerThreadName,

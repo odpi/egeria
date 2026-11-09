@@ -530,6 +530,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *                           all repositories registered in the open metadata repository cohort.
      * @return String identifier for the connectorConsumer used for the call to unregister.
      */
+    @Override
     public synchronized String registerConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
     {
         /*
@@ -593,6 +594,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param connectorConsumerId String identifier of the connector consumer returned on the
      *                             registerConnectorConsumer.
      */
+    @Override
     public synchronized void unregisterConnectorConsumer(String   connectorConsumerId)
     {
         /*

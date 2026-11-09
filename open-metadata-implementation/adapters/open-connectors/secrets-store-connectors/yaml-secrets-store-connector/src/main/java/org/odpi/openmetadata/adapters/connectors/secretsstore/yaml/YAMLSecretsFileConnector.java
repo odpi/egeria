@@ -22,6 +22,7 @@ public class YAMLSecretsFileConnector extends YAMLSecretsStoreConnector
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();

@@ -46,6 +46,7 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
      * @param metadataCollectionId Unique identifier for the metadata collection
      * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
+    @Override
     public void setLocalConnector(String                       metadataCollectionId,
                                   LocalOMRSRepositoryConnector localConnector)
     {
@@ -67,6 +68,7 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
      * @param metadataCollectionId Unique identifier for the metadata collection
      * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
+    @Override
     public void addRemoteConnector(String                  metadataCollectionId,
                                    OMRSRepositoryConnector remoteConnector)
     {
@@ -104,6 +106,7 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
      *
      * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
+    @Override
     public void removeRemoteConnector(String  metadataCollectionId)
     {
         final String methodName = "removeRemoteConnector";
@@ -138,6 +141,7 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
     /**
      * Call disconnect on all registered connectors and stop calling them.  The OMRS is about to shutdown.
      */
+    @Override
     public void disconnectAllConnectors()
     {
         Set<String> repositoryIds = connectorMap.keySet();

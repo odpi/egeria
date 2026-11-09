@@ -65,6 +65,7 @@ public class OpenMetadataPrimitiveDef extends OpenMetadataAttributeTypeDef
      *
      * @return subclass of OpenMetadataAttributeTypeDef
      */
+    @Override
     public OpenMetadataAttributeTypeDef cloneFromSubclass()
     {
         return new OpenMetadataPrimitiveDef(this);

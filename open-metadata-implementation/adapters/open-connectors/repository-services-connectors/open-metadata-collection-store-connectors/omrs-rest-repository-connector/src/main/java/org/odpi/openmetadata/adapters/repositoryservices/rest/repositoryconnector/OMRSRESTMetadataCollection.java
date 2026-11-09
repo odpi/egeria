@@ -1036,6 +1036,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<Classification> getClassificationHistory(String                 userId,
                                                          String                 guid,
                                                          String                 classificationName,

@@ -1097,6 +1097,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @return Object
      * @throws RESTServerException something went wrong with the REST call stack.
      */
+    @Override
     public  <T> T callPatchRESTCall(String    methodName,
                                     Class<T>  returnClass,
                                     String    urlTemplate,

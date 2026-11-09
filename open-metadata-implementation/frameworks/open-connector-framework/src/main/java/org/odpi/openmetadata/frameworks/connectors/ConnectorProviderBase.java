@@ -80,6 +80,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      *
      * @return id, name, description, wiki page URL.
      */
+    @Override
     public ComponentDescription getConnectorComponentDescription()
     {
         return connectorComponentDescription;

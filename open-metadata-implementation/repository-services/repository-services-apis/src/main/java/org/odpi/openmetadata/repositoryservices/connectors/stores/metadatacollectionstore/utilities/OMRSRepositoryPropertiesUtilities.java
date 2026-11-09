@@ -2442,18 +2442,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
-     * property in the instances properties.   If the instance properties object
-     * supplied is null, a new instance properties object is created.
-     *
-     * @param sourceName name of caller
-     * @param properties properties object to add property to, may be null.
-     * @param propertyName name of property
-     * @param mapValues contents of the map
-     * @param methodName calling method name
-     * @return instance properties object.
-     */
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -2568,6 +2556,18 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
     @Override
     public InstanceProperties addMapPropertyToInstance(String              sourceName,
                                                        InstanceProperties  properties,

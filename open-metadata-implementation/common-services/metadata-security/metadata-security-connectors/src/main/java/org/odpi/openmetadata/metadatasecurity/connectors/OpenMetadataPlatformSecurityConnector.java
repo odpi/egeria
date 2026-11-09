@@ -34,6 +34,7 @@ public class OpenMetadataPlatformSecurityConnector extends OpenMetadataSecurityC
     /**
      * Write an audit log message to say that the connector is initializing.
      */
+    @Override
     protected void logConnectorStarting()
     {
         AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.PLATFORM_INITIALIZING.getMessageDefinition(connectorName, platformName);
@@ -45,6 +46,7 @@ public class OpenMetadataPlatformSecurityConnector extends OpenMetadataSecurityC
     /**
      * Write an audit log message to say that the connector is stopping.
      */
+    @Override
     protected void logConnectorDisconnecting()
     {
         AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.PLATFORM_SHUTDOWN.getMessageDefinition(connectorName, platformName);

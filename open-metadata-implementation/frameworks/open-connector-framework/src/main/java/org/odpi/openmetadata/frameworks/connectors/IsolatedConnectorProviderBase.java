@@ -29,6 +29,7 @@ public class IsolatedConnectorProviderBase extends OpenConnectorProviderBase
      * @return class
      * @throws ClassNotFoundException unable to locate a class by that name on the class path
      */
+    @Override
     protected Class<?> getClassForConnector() throws ClassNotFoundException
     {
         try

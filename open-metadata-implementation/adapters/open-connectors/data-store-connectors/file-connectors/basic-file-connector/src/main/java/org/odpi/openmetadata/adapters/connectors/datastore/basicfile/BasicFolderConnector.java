@@ -76,6 +76,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return file name
      * @throws FileException problem accessing the file
      */
+    @Override
     public String   getFileName() throws FileException
     {
         final String  methodName = "getFileName";
@@ -92,6 +93,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return number
      * @throws FileException unable to locate the file
      */
+    @Override
     public long  getFileLength() throws FileException
     {
         final String  methodName = "getFileLength";
@@ -108,6 +110,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return Date object
      * @throws FileException problem accessing the file
      */
+    @Override
     public Date getCreationDate() throws FileException, FileReadException
     {
         final String  methodName = "getCreationDate";
@@ -138,6 +141,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return Date object
      * @throws FileException problem accessing the file
      */
+    @Override
     public Date getLastUpdateDate() throws FileException, FileReadException
     {
         final String  methodName = "getLastUpdateDate";
@@ -168,6 +172,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return Date object
      * @throws FileException problem accessing the file
      */
+    @Override
     public Date getLastAccessDate() throws FileException, FileReadException
     {
         final String  methodName = "getLastAccessedDate";
@@ -240,6 +245,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
      * @return File object
      * @throws FileException problem accessing the file
      */
+    @Override
     public File  getFile() throws FileException
     {
         final String  methodName = "getFile";
@@ -251,7 +257,7 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
     /**
      * Return the Java File object that provides access to the file.
      *
-     * @param methodName, calling method
+     * @param methodName calling method
      * @return File object
      * @throws FileException problem accessing the file
      */

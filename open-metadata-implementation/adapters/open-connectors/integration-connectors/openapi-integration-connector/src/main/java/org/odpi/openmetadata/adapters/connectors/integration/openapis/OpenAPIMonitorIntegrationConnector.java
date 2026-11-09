@@ -165,6 +165,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
      *
      * @param event event object - call getEventType to find out what type of event.
      */
+    @Override
     public void processEvent(OpenMetadataOutTopicEvent event)
     {
         /*

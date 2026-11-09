@@ -81,6 +81,7 @@ public class ClassificationDef extends TypeDef
      *
      * @return subclass of TypeDef
      */
+    @Override
     public TypeDef cloneFromSubclass()
     {
         return new ClassificationDef(this);

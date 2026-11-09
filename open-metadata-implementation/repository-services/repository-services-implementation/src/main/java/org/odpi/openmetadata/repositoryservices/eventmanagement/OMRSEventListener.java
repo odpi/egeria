@@ -82,6 +82,7 @@ public class OMRSEventListener implements OMRSTopicListener
      *
      * @param registryEvent event to unpack
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent   registryEvent)
     {
         log.debug("Processing registry event: " + registryEvent);
@@ -208,6 +209,7 @@ public class OMRSEventListener implements OMRSTopicListener
      *
      * @param typeDefEvent event to unpack
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent   typeDefEvent)
     {
         if (typeDefEvent == null)
@@ -235,6 +237,7 @@ public class OMRSEventListener implements OMRSTopicListener
      *
      * @param instanceEvent event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
         log.debug("Processing instance event: " + instanceEvent);

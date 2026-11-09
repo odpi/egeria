@@ -51,6 +51,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      *
      * @return string display name suitable for messages.
      */
+    @Override
     public String  getDestinationName()
     {
         return destinationName;
@@ -62,6 +63,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      *
      * @return list of severity names (see OMRSAuditLogRecordSeverity)
      */
+    @Override
     public List<String>  getSupportedSeverities()
     {
         return supportedSeverities;
@@ -76,6 +78,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws InvalidParameterException indicates that the logRecord parameter is invalid.
      * @throws RepositoryErrorException  indicates that the audit log store is not available or has an error.
      */
+    @Override
     public abstract String storeLogRecord(OMRSAuditLogRecord logRecord) throws InvalidParameterException,
                                                                                RepositoryErrorException;
 
@@ -104,6 +107,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws FunctionNotSupportedException indicates that the audit log store does not support queries.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public OMRSAuditLogRecord getAuditLogRecord(String logRecordId) throws InvalidParameterException,
                                                                            FunctionNotSupportedException,
                                                                            RepositoryErrorException
@@ -129,6 +133,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws FunctionNotSupportedException indicates that the audit log store does not support queries.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date startDate,
                                                                   Date endDate,
                                                                   int  offset,
@@ -159,6 +164,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws FunctionNotSupportedException indicates that the audit log store does not support queries.
      * @throws RepositoryErrorException      indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String severity,
                                                                  Date   startDate,
                                                                  Date   endDate,
@@ -190,6 +196,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws FunctionNotSupportedException indicates that the audit log store does not support queries.
      * @throws RepositoryErrorException indicates that the audit log store is not available or has an error.
      */
+    @Override
     public List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String component,
                                                                   Date   startDate,
                                                                   Date   endDate,
@@ -329,6 +336,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
      * @throws ConnectorCheckedException  a problem within the connector.
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void initialize(String     connectorInstanceId,
                            Connection connection) throws ConnectorCheckedException
     {

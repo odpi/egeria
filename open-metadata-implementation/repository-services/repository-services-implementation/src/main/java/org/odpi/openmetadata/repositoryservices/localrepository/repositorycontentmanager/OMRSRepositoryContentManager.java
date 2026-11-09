@@ -4011,7 +4011,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param originatorAttributeTypeDef- description of the AttributeTypeDef in the event originator.
+     * @param originatorAttributeTypeDef description of the AttributeTypeDef in the event originator.
      * @param otherMetadataCollectionId the metadataCollection using the conflicting AttributeTypeDef.
      * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage details of the error that occurs when the connection is used.

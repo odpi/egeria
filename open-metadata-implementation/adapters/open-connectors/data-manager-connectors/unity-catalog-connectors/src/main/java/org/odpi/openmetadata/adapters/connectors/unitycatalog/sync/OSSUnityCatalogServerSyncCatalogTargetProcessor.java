@@ -287,6 +287,7 @@ public class OSSUnityCatalogServerSyncCatalogTargetProcessor extends CatalogTarg
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

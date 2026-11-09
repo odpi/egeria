@@ -244,19 +244,6 @@ final class PostgresFvtTestSupport
 
 
     /**
-     * Open a JDBC connection to one database on the server under test, using the same credentials the servers
-     * are configured with.
-     * <br>
-     * These are plain driver connections, so they arrive with auto-commit <b>on</b> - the JDBC default.  That
-     * is deliberately different from the connections Egeria's own JDBC resource connector hands out, which
-     * turn auto-commit off and require the caller to commit.  Callers here must therefore <em>not</em> commit:
-     * doing so fails with "Cannot commit when autoCommit is enabled".
-     *
-     * @param databaseName database to connect to
-     * @return open connection - the caller closes it
-     * @throws Exception the server is not reachable or the credentials do not work
-     */
-    /**
      * Empty the repository this suite's metadata access store runs on, by dropping and recreating its
      * PostgreSQL schema.
      * <br>
@@ -303,6 +290,19 @@ final class PostgresFvtTestSupport
     }
 
 
+    /**
+     * Open a JDBC connection to one database on the server under test, using the same credentials the servers
+     * are configured with.
+     * <br>
+     * These are plain driver connections, so they arrive with auto-commit <b>on</b> - the JDBC default.  That
+     * is deliberately different from the connections Egeria's own JDBC resource connector hands out, which
+     * turn auto-commit off and require the caller to commit.  Callers here must therefore <em>not</em> commit:
+     * doing so fails with "Cannot commit when autoCommit is enabled".
+     *
+     * @param databaseName database to connect to
+     * @return open connection - the caller closes it
+     * @throws Exception the server is not reachable or the credentials do not work
+     */
     static Connection getServerUnderTestConnection(String databaseName) throws Exception
     {
         String userId   = OMAGPlatformExtension.getServerUnderTestSecret("userId");

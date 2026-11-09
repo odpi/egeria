@@ -60,11 +60,6 @@ public class GAFOutTopicClientConnector extends OpenMetadataTopicListenerConnect
 
 
     /**
-     * Method to pass an event received on the topic.
-     *
-     * @param event inbound event
-     */
-    /**
      * Pass an event received from the topic to each registered listener.
      * <br><br>
      * This method is deliberately not synchronized.  A listener may call into its server, and if that code holds

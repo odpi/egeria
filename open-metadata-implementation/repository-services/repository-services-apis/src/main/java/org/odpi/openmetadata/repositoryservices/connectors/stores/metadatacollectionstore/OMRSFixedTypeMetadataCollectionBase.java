@@ -79,6 +79,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public boolean verifyTypeDef(String       userId,
                                  TypeDef      typeDef) throws InvalidParameterException,
                                                               RepositoryErrorException,
@@ -123,6 +124,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
@@ -160,6 +162,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public void addTypeDef(String       userId,
                            TypeDef      newTypeDef) throws FunctionNotSupportedException
     {
@@ -176,6 +179,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public  void addAttributeTypeDef(String             userId,
                                      AttributeTypeDef   newAttributeTypeDef) throws FunctionNotSupportedException
     {
@@ -194,6 +198,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @return updated TypeDef
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public TypeDef updateTypeDef(String       userId,
                                  TypeDefPatch typeDefPatch) throws FunctionNotSupportedException
     {
@@ -213,6 +218,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param obsoleteTypeDefName String unique name for the TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public void deleteTypeDef(String    userId,
                               String    obsoleteTypeDefGUID,
                               String    obsoleteTypeDefName) throws FunctionNotSupportedException
@@ -232,6 +238,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public void deleteAttributeTypeDef(String    userId,
                                        String    obsoleteTypeDefGUID,
                                        String    obsoleteTypeDefName) throws FunctionNotSupportedException
@@ -255,6 +262,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @return typeDef new values for this TypeDef, including the new guid/name.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public  TypeDef reIdentifyTypeDef(String     userId,
                                       String     originalTypeDefGUID,
                                       String     originalTypeDefName,
@@ -281,6 +289,7 @@ public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCo
      * @return attributeTypeDef new values for this AttributeTypeDef, including the new guid/name.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
+    @Override
     public  AttributeTypeDef reIdentifyAttributeTypeDef(String     userId,
                                                         String     originalAttributeTypeDefGUID,
                                                         String     originalAttributeTypeDefName,

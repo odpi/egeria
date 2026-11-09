@@ -443,6 +443,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /**
      * Close the config file
      */
+    @Override
     public void disconnect()
     {
         log.debug("Closing Config Store.");

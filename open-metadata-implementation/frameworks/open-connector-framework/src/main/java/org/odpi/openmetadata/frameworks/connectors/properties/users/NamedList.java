@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +45,10 @@ public class NamedList
 
 
     /**
-     * Copy constructor
+     * Copy constructor.  The member lists and property map are copied, so the new named list can be changed
+     * without changing the template.
+     *
+     * @param template object to copy
      */
     public NamedList(NamedList template)
     {
@@ -53,9 +58,18 @@ public class NamedList
             this.listTypeName      = template.getListTypeName();
             this.description       = template.getDescription();
             this.distinguishedName = template.getDistinguishedName();
-            this.userMembers       = template.getUserMembers();
-            this.listMembers       = template.getListMembers();
-            this.otherProperties   = template.getOtherProperties();
+            if (template.getUserMembers() != null)
+            {
+                this.userMembers = new ArrayList<>(template.getUserMembers());
+            }
+            if (template.getListMembers() != null)
+            {
+                this.listMembers = new ArrayList<>(template.getListMembers());
+            }
+            if (template.getOtherProperties() != null)
+            {
+                this.otherProperties = new HashMap<>(template.getOtherProperties());
+            }
         }
     }
 

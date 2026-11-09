@@ -160,6 +160,7 @@ public class EgeriaOpenGovernanceEventClient extends OpenMetadataEventClient
     /**
      * Shutdown the event listener.
      */
+    @Override
     public void disconnect()
     {
         final String methodName = "disconnect";

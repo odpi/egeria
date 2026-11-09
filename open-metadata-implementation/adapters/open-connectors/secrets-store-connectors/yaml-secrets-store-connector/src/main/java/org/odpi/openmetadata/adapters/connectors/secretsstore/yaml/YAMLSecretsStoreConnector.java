@@ -57,6 +57,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         /*
@@ -732,27 +733,44 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
                                     String            listTypeName,
                                     SecretsCollection secretsCollection)
     {
-        NamedList namedList = secretsStore.getSecretsCollections().get(secretsCollectionName).getNamedLists().get(listName);
+        Map<String, NamedList> namedLists = secretsCollection.getNamedLists();
+
+        if (namedLists == null)
+        {
+            namedLists = new HashMap<>();
+            secretsCollection.setNamedLists(namedLists);
+        }
+
+        NamedList namedList = namedLists.get(listName);
 
         if (namedList != null)
         {
-            if (namedList.getUserMembers() == null)
+            /*
+             * Build a new member list rather than adding to the one held in the bean.  That list may be immutable,
+             * or shared with a copy of this named list taken elsewhere.
+             */
+            List<String> userMembers = new ArrayList<>();
+
+            if (namedList.getUserMembers() != null)
             {
-                namedList.setUserMembers(new ArrayList<>());
+                userMembers.addAll(namedList.getUserMembers());
             }
 
-            if (! namedList.getUserMembers().contains(userId))
+            if (! userMembers.contains(userId))
             {
-                namedList.getUserMembers().add(userId);
+                userMembers.add(userId);
+                namedList.setUserMembers(userMembers);
             }
         }
         else
         {
+            List<String> userMembers = new ArrayList<>();
+            userMembers.add(userId);
+
             namedList = new NamedList();
             namedList.setListTypeName(listTypeName);
-            namedList.setUserMembers(new ArrayList<>());
-            namedList.getUserMembers().add(userId);
-            secretsCollection.getNamedLists().put(listName, namedList);
+            namedList.setUserMembers(userMembers);
+            namedLists.put(listName, namedList);
         }
     }
 

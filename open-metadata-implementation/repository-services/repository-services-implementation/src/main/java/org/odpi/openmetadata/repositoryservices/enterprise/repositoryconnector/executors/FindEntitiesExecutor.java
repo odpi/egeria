@@ -161,6 +161,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
      *
      * @return clone of this executor
      */
+    @Override
     public CloneableRepositoryExecutor getClone()
     {
         return new FindEntitiesExecutor(userId,
@@ -187,6 +188,7 @@ public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {

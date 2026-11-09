@@ -122,6 +122,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
+    @Override
     public void registerListener(OMRSTopicRepositoryEventListener listener) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    RepositoryErrorException,
@@ -137,6 +138,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *
      * @throws ConnectorCheckedException problem with the topic connector
      */
+    @Override
     public void disconnectFromEnterpriseTopic() throws ConnectorCheckedException
     {
         repositoryServicesClient.disconnectFromEnterpriseTopic();
@@ -157,6 +159,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @return String metadata collection id.
      * @throws RepositoryErrorException a problem communicating with the metadata repository.
      */
+    @Override
     public String getMetadataCollectionId() throws RepositoryErrorException
     {
         return repositoryServicesClient.getMetadataCollectionId(userId);
@@ -179,6 +182,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public TypeDefGallery getAllTypes() throws InvalidParameterException,
                                                             RepositoryErrorException,
                                                             UserNotAuthorizedException
@@ -198,6 +202,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public TypeDefGallery findTypesByName(String name) throws InvalidParameterException,
                                                               RepositoryErrorException,
                                                               UserNotAuthorizedException
@@ -215,6 +220,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<TypeDef> findTypeDefsByCategory(TypeDefCategory category) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
                                                                                  UserNotAuthorizedException
@@ -232,6 +238,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<AttributeTypeDef> findAttributeTypeDefsByCategory(AttributeTypeDefCategory category) throws InvalidParameterException,
                                                                                                             RepositoryErrorException,
                                                                                                             UserNotAuthorizedException
@@ -249,6 +256,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<TypeDef> findTypeDefsByProperty(TypeDefProperties matchCriteria) throws InvalidParameterException,
                                                                                         RepositoryErrorException,
                                                                                         UserNotAuthorizedException
@@ -269,6 +277,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<TypeDef> findTypesByExternalID(String standard,
                                                String organization,
                                                String identifier) throws InvalidParameterException,
@@ -289,6 +298,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws RepositoryErrorException   a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<TypeDef> searchForTypeDefs(String searchCriteria) throws InvalidParameterException,
                                                                          RepositoryErrorException,
                                                                          UserNotAuthorizedException
@@ -308,6 +318,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public TypeDef getTypeDefByGUID(String guid) throws InvalidParameterException,
                                                         RepositoryErrorException,
                                                         TypeDefNotKnownException,
@@ -328,6 +339,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws TypeDefNotKnownException   The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public AttributeTypeDef getAttributeTypeDefByGUID(String guid) throws InvalidParameterException,
                                                                           RepositoryErrorException,
                                                                           TypeDefNotKnownException,
@@ -348,6 +360,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public TypeDef getTypeDefByName(String name) throws InvalidParameterException,
                                                         RepositoryErrorException,
                                                         TypeDefNotKnownException,
@@ -368,6 +381,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws TypeDefNotKnownException   the requested TypeDef is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public AttributeTypeDef getAttributeTypeDefByName(String name) throws InvalidParameterException,
                                                                           RepositoryErrorException,
                                                                           TypeDefNotKnownException,
@@ -392,6 +406,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *                                    the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public EntityDetail isEntityKnown(String guid) throws InvalidParameterException,
                                                           RepositoryErrorException,
                                                           UserNotAuthorizedException
@@ -412,6 +427,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws EntityNotKnownException    the requested entity instance is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public EntitySummary getEntitySummary(String guid) throws InvalidParameterException,
                                                               RepositoryErrorException,
                                                               EntityNotKnownException,
@@ -433,6 +449,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws EntityProxyOnlyException   the requested entity instance is only a proxy in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public EntityDetail getEntityDetail(String guid) throws InvalidParameterException,
                                                             RepositoryErrorException,
                                                             EntityNotKnownException,
@@ -458,6 +475,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
+    @Override
     public EntityDetail getEntityDetail(String guid,
                                         Date   asOfTime) throws InvalidParameterException,
                                                                 RepositoryErrorException,
@@ -492,6 +510,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<EntityDetail> getEntityDetailHistory(String                 guid,
                                                      Date                   fromTime,
                                                      Date                   toTime,
@@ -538,6 +557,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
+    @Override
     public List<Relationship> getRelationshipsForEntity(String               entityGUID,
                                                         String               relationshipTypeGUID,
                                                         int                  fromRelationshipElement,
@@ -591,6 +611,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support this optional method.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<EntityDetail> findEntities(String                    entityTypeGUID,
                                            List<String>              entitySubtypeGUIDs,
                                            SearchProperties          matchProperties,
@@ -646,6 +667,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<EntityDetail> findEntitiesByProperty(String                    entityTypeGUID,
                                                      InstanceProperties        matchProperties,
                                                      MatchCriteria             matchCriteria,
@@ -703,6 +725,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  List<EntityDetail> findEntitiesByClassification(String                    entityTypeGUID,
                                                             String                    classificationName,
                                                             InstanceProperties        matchClassificationProperties,
@@ -761,6 +784,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  List<EntityDetail> findEntitiesByPropertyValue(String                entityTypeGUID,
                                                            String                searchString,
                                                            boolean               startsWith,
@@ -807,6 +831,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public Relationship isRelationshipKnown(String     guid) throws InvalidParameterException,
                                                                     RepositoryErrorException,
                                                                     UserNotAuthorizedException
@@ -827,6 +852,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *                                         the requested GUID stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public Relationship getRelationship(String    guid) throws InvalidParameterException,
                                                                RepositoryErrorException,
                                                                RelationshipNotKnownException,
@@ -850,6 +876,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public Relationship getRelationship(String    guid,
                                         Date      asOfTime) throws InvalidParameterException,
                                                                    RepositoryErrorException,
@@ -882,6 +909,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support history.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public List<Relationship> getRelationshipHistory(String                 guid,
                                                      Date                   fromTime,
                                                      Date                   toTime,
@@ -942,6 +970,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  List<Relationship> findRelationships(String               relationshipTypeGUID,
                                                  List<String>         relationshipSubtypeGUIDs,
                                                  List<String>         end1EntityGUIDs,
@@ -1016,6 +1045,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  List<Relationship> findRelationshipsByProperty(String                    relationshipTypeGUID,
                                                            InstanceProperties        matchProperties,
                                                            MatchCriteria             matchCriteria,
@@ -1069,6 +1099,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  List<Relationship> findRelationshipsByPropertyValue(String                    relationshipTypeGUID,
                                                                 String                    searchString,
                                                                 boolean                   startsWith,
@@ -1118,6 +1149,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *
      * @throws PropertyServerException a problem connecting to the metadata store
      */
+    @Override
     public synchronized  void recordCompletionStatus(CompletionStatus      status,
                                                      List<String>          outputGuards,
                                                      Map<String, String>   newRequestParameters,
@@ -1169,6 +1201,7 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      *
      * @return completion status enum
      */
+    @Override
     public synchronized CompletionStatus getCompletionStatus()
     {
         return completionStatus;

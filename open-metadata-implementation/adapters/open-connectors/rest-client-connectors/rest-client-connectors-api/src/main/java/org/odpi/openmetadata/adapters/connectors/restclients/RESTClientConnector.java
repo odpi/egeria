@@ -90,6 +90,7 @@ public abstract class RESTClientConnector extends ConnectorBase implements RESTC
      *
      * @return id, name, description, wiki page URL.
      */
+    @Override
     public ComponentDescription getConnectorComponentDescription()
     {
         if ((this.auditLog != null) && (this.auditLog.getReport() != null))

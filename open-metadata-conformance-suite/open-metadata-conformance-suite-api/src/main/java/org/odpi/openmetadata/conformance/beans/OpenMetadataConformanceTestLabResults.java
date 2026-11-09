@@ -39,6 +39,7 @@ public class OpenMetadataConformanceTestLabResults extends OpenMetadataConforman
      *
      * @return int count
      */
+    @Override
     public int getTestCaseCount()
     {
         if (testResultsFromWorkbenches == null)
@@ -68,6 +69,7 @@ public class OpenMetadataConformanceTestLabResults extends OpenMetadataConforman
      *
      * @return int count
      */
+    @Override
     public int getTestPassCount()
     {
         if (testResultsFromWorkbenches == null)
@@ -97,6 +99,7 @@ public class OpenMetadataConformanceTestLabResults extends OpenMetadataConforman
      *
      * @return int count
      */
+    @Override
     public int getTestFailedCount()
     {
         if (testResultsFromWorkbenches == null)
@@ -126,6 +129,7 @@ public class OpenMetadataConformanceTestLabResults extends OpenMetadataConforman
      *
      * @return int count
      */
+    @Override
     public int getTestSkippedCount()
     {
         if (testResultsFromWorkbenches == null)
