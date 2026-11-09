@@ -324,7 +324,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#repairSuperTypeChains(java.lang.String,java.util.List)" class="member-name-link">repairSuperTypeChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;superTypeChain)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveEntitiesByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
  <a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;classificationQueryBuilder,
@@ -455,9 +457,35 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">repairSuperTypeChains</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;superTypeChain)</span>
                           throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Rewrite the stored supertype chains of a type whose place in the type hierarchy has changed.
+ <br><br>
+ Every instance row carries its type's supertype chain, denormalised into type_name as
+ ":Type:Super:Super:" when the row is written (see RepositoryMapper.setUpTypeNameInRow()), and a search
+ for a supertype matches against it with "type_name like '%:Super:%'" (see QueryBuilder.getTypeClause()).
+ That makes a search for a supertype fast, but it also freezes the hierarchy as it stood when each row was
+ written.  When a TypeDefPatch gives a type a new supertype - which is how a type that was defined
+ standalone is later brought under a more general one, so that existing instances answer searches for the
+ new supertype - the rows already written keep the old chain and stay invisible to exactly the searches the
+ patch was meant to make them visible to.  This rewrites them.
+ <br><br>
+ The rewrite is driven off the distinct chains actually stored rather than off the type system, because the
+ patched type may appear in the chain of any number of its own subtypes as well as in its own rows, and
+ everything after it in a chain is by definition its supertypes - so replacing the remainder of the chain
+ after the patched type's own name is correct wherever the type appears.  Rows whose chain already matches
+ are left alone, which is what makes this cheap to run on every server start: on a repository that is
+ already correct, it issues one small query per table and no updates at all.
+ <br><br>
+ Every version of a row is rewritten, not just the current one, so that historical (asOfTime) queries see
+ the same hierarchy as queries against the present.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>typeName</code> - the type whose supertypes have changed</dd>
+<dd><code>superTypeChain</code> - the type's new supertypes, outermost last, each followed by a colon - empty if the
+                       type no longer has any</dd>
+<dt>Returns:</dt>
+<dd>number of distinct chains rewritten, across all the instance tables</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code></dd>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
 </dl>
 </section>
 </li>
