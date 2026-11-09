@@ -180,7 +180,7 @@ test {
     // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
     // Spring's Environment reads system properties ahead of application.properties, so a value given this
     // way wins for that run without editing the file.
-    systemProperties System.properties.findAll { it.key.toString().startsWith('unitycatalog.fvt.') }
+    systemProperties providers.systemPropertiesPrefixedBy('unitycatalog.fvt.').get()
 
     // Asking for both at once is refused rather than resolved to one of them: the two runs answer different
     // questions, and a report that does not say which one it was is worth nothing.

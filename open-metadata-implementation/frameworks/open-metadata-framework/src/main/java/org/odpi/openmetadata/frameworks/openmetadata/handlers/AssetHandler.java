@@ -4601,7 +4601,15 @@ public class AssetHandler extends OpenMetadataHandlerBase
             assetGraph.setAnchorMermaidGraph(graphBuilder.getMermaidGraph());
             assetGraph.setInformationSupplyChainMermaidGraph(graphBuilder.getInformationSupplyChainMermaidGraph());
             assetGraph.setFieldLevelLineageGraph(graphBuilder.getFieldLevelLineageGraph());
-            assetGraph.setActionMermaidGraph(graphBuilder.getActionGraph());
+
+            /*
+             * The asset graph's action graph covers actions on any of the asset's anchored elements, so it
+             * replaces the action graph of the asset alone (inherited from the asset's root element) when there is one.
+             */
+            if (graphBuilder.getActionGraph() != null)
+            {
+                assetGraph.setActionMermaidGraph(graphBuilder.getActionGraph());
+            }
             assetGraph.setLocalLineageGraph(graphBuilder.getLocalLineageGraph());
 
             return assetGraph;

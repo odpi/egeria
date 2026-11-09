@@ -22,7 +22,7 @@ import java.util.Map;
  * OMAGPlatformExtension starts a single OMAG Server Platform in-process for the whole tabular-data-fvt run,
  * configures and starts a metadata access store server on it backed by the PostgreSQL repository connector
  * and a real Apache Kafka event bus, loads the open
- * metadata type archive from the repo's top-level {@code content-packs} directory, and shuts everything
+ * metadata archives listed in {@link #ARCHIVE_FILES} from the repo's top-level {@code content-packs} directory, and shuts everything
  * down once when the test run finishes.
  * <br>
  * It follows the JUnit 5 "singleton resource" pattern: the first test class that is extended with this
@@ -69,17 +69,23 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     /**
      * The open metadata archives to load at server startup.
      * <br>
-     * The type archive plus the core content pack.  The clients under test are exercised against elements
-     * this suite creates itself, so the wider content packs would add load time without adding coverage -
-     * but the core pack carries the valid metadata values and reference data that several clients
-     * (ValidMetadataValuesClient, SpecificationPropertyClient) read, so it is worth its startup cost.
+     * The type archive, the core content pack and the Coco Pharmaceuticals combination archive with the content
+     * packs it depends on.  The core pack carries the valid metadata values and reference data; Coco supplies
+     * the organization (business capabilities, teams in their reporting structure, people, locations) and the
+     * software servers, so the data sets built from them have real rows to check rather than only a shape.
+     * The dependencies are listed before the archive that needs them.
      * <br>
      * The path is resolved at runtime (see {@link #findContentPacksDirectory()}) rather than assumed to be
      * a fixed number of "../" above the current working directory - Gradle's test worker process does not
      * always use this module's project directory as its working directory.
      */
     private static final List<String> ARCHIVE_FILES = List.of("OpenMetadataTypes.omarchive",
-                                                              "CoreContentPack.omarchive");
+                                                              "CoreContentPack.omarchive",
+                                                              "EgeriaContentPack.omarchive",
+                                                              "FilesContentPack.omarchive",
+                                                              "PostgresContentPack.omarchive",
+                                                              "UnityCatalogContentPack.omarchive",
+                                                              "CocoComboArchive.omarchive");
 
     private static volatile boolean                 started = false;
     private static ConfigurableApplicationContext    platformContext;

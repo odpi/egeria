@@ -102,7 +102,7 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                               "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
-     * JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}
+     * JACQUARD-HARVESTER-0027 - The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)
      */
     DUPLICATE_CATALOG_TARGETS_REMOVED("JACQUARD-HARVESTER-0027",
                                       AuditLogRecordSeverityLevel.INFO,
@@ -249,6 +249,26 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                           "The {0} integration connector cannot read {1} as a date at record {2}, column {3} of the {4} data set for digital product {5}; values that are not dates are ignored when working out when the data set was created and last updated",
                           "The connector expects a date column to hold an ISO-8601 instant, or a count of milliseconds since the epoch.  It skips the value and carries on with the rest of the data set, so the product's DataScope classification may be maintained from fewer records than it has.",
                           "Check how the product's data set connector writes its date columns and correct it to write ISO-8601 instants.",
+                          "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
+     * JACQUARD-HARVESTER-0031 - The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}
+     */
+    PRODUCT_RENAMED("JACQUARD-HARVESTER-0031",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}",
+                    "The product's display name has changed in its definition, which changes its qualified name.  The existing product is updated in place, so it keeps its subscription processes, notification types and subscribers, rather than a second product being created beside it.",
+                    "No action is required.  This message appears once for each product whose display name has been corrected.",
+                    "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
+     * JACQUARD-HARVESTER-0030 - The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}
+     */
+    PRODUCT_ASSET_RETYPED("JACQUARD-HARVESTER-0030",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}",
+                          "The product's definition now asks for a different type of asset from the one an earlier version of the connector created.  The asset is found by its qualified name, so without this correction it would keep its old type for ever.  The asset keeps its unique identifier, relationships and classifications.",
+                          "No action is required.  This message appears once for each asset created by an earlier version of the connector.",
                           "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     ;

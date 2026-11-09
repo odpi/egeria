@@ -661,6 +661,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
          */
         OpenMetadataRootElement productElement = classificationExplorerClient.getRootElementByUniqueName(productDefinition.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, this.headerAndProperties(collectionClient));
 
+        if (productElement == null)
+        {
+            productElement = this.getRenamedProduct(productDefinition);
+        }
+
         DigitalProductProperties digitalProductProperties = this.getDigitalProductProperties(productDefinition);
 
         /*
@@ -747,6 +752,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * perspectives they are scoped by, are refreshed when the questions are loaded at start-up.
              */
             this.addMissingQuestions(productElement.getElementHeader().getGUID(), productDefinition);
+
+            /*
+             * The product's zones decide who may see it, so a change to the zones in the definition - such as
+             * a product being moved into the security zone - must reach a product that is already catalogued.
+             */
+            this.applyZoneMembership(productElement.getElementHeader().getGUID(), productDefinition);
 
             /*
              * An existing product's membership of its families is re-checked because a family that could not be
@@ -2089,6 +2100,8 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
             else
             {
                 assetGUID = assetElement.getElementHeader().getGUID();
+
+                this.correctProductAssetType(productDefinition, assetElement);
 
                 assetClient.updateAsset(assetGUID, assetClient.getUpdateOptions(true), dataSetProperties);
             }
@@ -4630,6 +4643,133 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
         }
 
         return roleGUID;
+    }
+
+
+    /**
+     * Return a product that was catalogued under an earlier qualified name for the same definition.  A product's
+     * qualified name includes its display name, so correcting a display name in the definition changes the
+     * qualified name, and a lookup by qualified name alone would miss the existing product and create a second
+     * one beside it.  The original would keep its subscription processes, notification types and subscribers.
+     * The product's identifier does not change, so the product is looked for by identifier, and accepted only
+     * if its qualified name is in this definition's part of Jacquard's namespace.  The caller's update then
+     * gives it the new qualified name and display name.
+     *
+     * @param productDefinition definition of the product
+     * @return the existing product, or null if there is none (or more than one, which is left alone)
+     * @throws UserNotAuthorizedException security error
+     */
+    private OpenMetadataRootElement getRenamedProduct(ProductDefinition productDefinition) throws UserNotAuthorizedException
+    {
+        final String methodName = "getRenamedProduct";
+
+        String qualifiedNamePrefix = productDefinition.getTypeName() + "::Jacquard::" + productDefinition.getIdentifier() + "::";
+
+        try
+        {
+            ClassificationExplorerClient client = integrationContext.getClassificationExplorerClient(productDefinition.getTypeName());
+
+            OpenMetadataRootElement candidate = client.getRootElementByUniqueName(productDefinition.getIdentifier(),
+                                                                                  OpenMetadataProperty.IDENTIFIER.name,
+                                                                                  this.headerAndProperties(client));
+
+            if ((candidate != null) &&
+                    (candidate.getProperties() instanceof ReferenceableProperties referenceableProperties) &&
+                    (referenceableProperties.getQualifiedName() != null) &&
+                    (referenceableProperties.getQualifiedName().startsWith(qualifiedNamePrefix)))
+            {
+                logRecord(methodName,
+                          JacquardAuditCode.PRODUCT_RENAMED.getMessageDefinition(connectorName,
+                                                                                 candidate.getElementHeader().getGUID(),
+                                                                                 referenceableProperties.getQualifiedName(),
+                                                                                 productDefinition.getQualifiedName()));
+                return candidate;
+            }
+        }
+        catch (InvalidParameterException | PropertyServerException error)
+        {
+            /*
+             * More than one element has this identifier, or it cannot be read.  A new product is created, as
+             * it was before this lookup existed.
+             */
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Change the type of a product asset that an earlier version of the connector created with a different type
+     * from the one its definition now asks for.  The asset is found by qualified name, so a corrected definition
+     * would otherwise never reach it: the update keeps the old type.  Retyping keeps the asset's unique identifier,
+     * relationships and classifications, so subscriptions and catalog targets that refer to it are unaffected.
+     *
+     * @param productDefinition definition of the product
+     * @param assetElement the existing asset
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private void correctProductAssetType(ProductDefinition       productDefinition,
+                                         OpenMetadataRootElement assetElement) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "correctProductAssetType";
+
+        String wantedTypeName = productDefinition.getAssetTypeName();
+
+        if ((wantedTypeName != null) && (assetElement.getElementHeader().getType() != null))
+        {
+            String currentTypeName = assetElement.getElementHeader().getType().getTypeName();
+
+            if (! wantedTypeName.equals(currentTypeName))
+            {
+                OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+                openMetadataStore.reTypeMetadataElementInStore(assetElement.getElementHeader().getGUID(),
+                                                               openMetadataStore.getMetadataSourceOptions(),
+                                                               wantedTypeName);
+
+                logRecord(methodName,
+                          JacquardAuditCode.PRODUCT_ASSET_RETYPED.getMessageDefinition(connectorName,
+                                                                                       assetElement.getElementHeader().getGUID(),
+                                                                                       productDefinition.getProductName(),
+                                                                                       currentTypeName,
+                                                                                       wantedTypeName));
+            }
+        }
+    }
+
+
+    /**
+     * Set the zones of a product to the zones in its definition.  Only the product needs them: its asset,
+     * subscription processes, notification types and data specification are anchored to it, so their effective
+     * zones come from the product through their Anchors classification, which is maintained whenever the
+     * product's zones change.  Setting the same zones again changes nothing, so this is called on every refresh,
+     * which is what carries a change to a definition's zones to a catalogue that already exists.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param productDefinition definition of the product that the element belongs to
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void applyZoneMembership(String            elementGUID,
+                                     ProductDefinition productDefinition) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        if (elementGUID != null)
+        {
+            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+            classificationExplorerClient.addZoneMembership(elementGUID,
+                                                           (ZoneMembershipProperties) this.getInitialClassificationProperties(productDefinition.zoneMembership()).get(OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName),
+                                                           classificationExplorerClient.getMetadataSourceOptions());
+        }
     }
 
 

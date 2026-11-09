@@ -510,13 +510,9 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 (ProductDataFieldDefinition.REPORT_ORIGINATOR_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.EXCEPTION_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.LICENSE_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.PROFILE_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.PROJECT_GUID.getDisplayName().equals(columnName)) ||
                 (ProductDataFieldDefinition.SECRETS_COLLECTION_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.SECRETS_STORE_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.SEMANTIC_TERM_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.SURVEY_REPORT_GUID.getDisplayName().equals(columnName)) ||
-                (ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID.getDisplayName().equals(columnName)))
+                (ProductDataFieldDefinition.SEMANTIC_TERM_GUID.getDisplayName().equals(columnName)))
         {
             recordValues.add(elementHeader.getGUID());
             return true;
@@ -548,7 +544,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
             recordValues.add(updateTime.toInstant().toString());
             return true;
         }
-        else  if (elementHeader.getLocationKinds() != null)
+
+        if (elementHeader.getLocationKinds() != null)
         {
             for (ElementClassification locationKind : elementHeader.getLocationKinds())
             {
@@ -585,7 +582,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 }
             }
         }
-        else if (ProductDataFieldDefinition.OWNER_GUID.getDisplayName().equals(columnName))
+
+        if (ProductDataFieldDefinition.OWNER_GUID.getDisplayName().equals(columnName))
         {
             if ((elementHeader.getOwnership() != null) && (elementHeader.getOwnership().getClassificationProperties() instanceof OwnershipProperties ownershipProperties))
             {
@@ -593,7 +591,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if (ProductDataFieldDefinition.ORIGIN_ORGANIZATION_GUID.getDisplayName().equals(columnName))
+
+        if (ProductDataFieldDefinition.ORIGIN_ORGANIZATION_GUID.getDisplayName().equals(columnName))
         {
             if ((elementHeader.getDigitalResourceOrigin() != null) && (elementHeader.getDigitalResourceOrigin().getClassificationProperties() instanceof DigitalResourceOriginProperties digitalResourceOriginProperties))
             {
@@ -601,7 +600,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if (ProductDataFieldDefinition.ORIGIN_BUSINESS_CAPABILITY_GUID.getDisplayName().equals(columnName))
+
+        if (ProductDataFieldDefinition.ORIGIN_BUSINESS_CAPABILITY_GUID.getDisplayName().equals(columnName))
         {
             if ((elementHeader.getDigitalResourceOrigin() != null) && (elementHeader.getDigitalResourceOrigin().getClassificationProperties() instanceof DigitalResourceOriginProperties digitalResourceOriginProperties))
             {
@@ -609,7 +609,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if ((elementHeader.getSecurityListMembership() != null) && (elementHeader.getSecurityListMembership().getClassificationProperties() instanceof SecurityListMembershipProperties securityListMembershipProperties))
+
+        if ((elementHeader.getSecurityListMembership() != null) && (elementHeader.getSecurityListMembership().getClassificationProperties() instanceof SecurityListMembershipProperties securityListMembershipProperties))
         {
             if (ProductDataFieldDefinition.SECURITY_ROLES.getDisplayName().equals(columnName))
             {
@@ -633,9 +634,11 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 {
                     recordValues.add(null);
                 }
+                return true;
             }
         }
-        else if ((elementHeader.getUserAccountProfile() != null) && (elementHeader.getUserAccountProfile().getClassificationProperties() instanceof UserAccountProfileProperties userAccountProfileProperties))
+
+        if ((elementHeader.getUserAccountProfile() != null) && (elementHeader.getUserAccountProfile().getClassificationProperties() instanceof UserAccountProfileProperties userAccountProfileProperties))
         {
             if (ProductDataFieldDefinition.USER_ACCOUNT_COUNT.getDisplayName().equals(columnName))
             {
@@ -683,7 +686,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if ((elementHeader.getZoneMembershipProfile() != null) && (elementHeader.getZoneMembershipProfile().getClassificationProperties() instanceof ZoneMembershipProfileProperties zoneMembershipProfileProperties))
+
+        if ((elementHeader.getZoneMembershipProfile() != null) && (elementHeader.getZoneMembershipProfile().getClassificationProperties() instanceof ZoneMembershipProfileProperties zoneMembershipProfileProperties))
         {
             if (ProductDataFieldDefinition.TOTAL_ELEMENT_MEMBERSHIP.getDisplayName().equals(columnName))
             {
@@ -701,7 +705,8 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 return true;
             }
         }
-        else if (ProductDataFieldDefinition.ZONE_MEMBERSHIP.getDisplayName().equals(columnName))
+
+        if (ProductDataFieldDefinition.ZONE_MEMBERSHIP.getDisplayName().equals(columnName))
         {
             if ((elementHeader.getZoneMembership() != null) && (elementHeader.getZoneMembership().getClassificationProperties() instanceof ZoneMembershipProperties zoneMembershipProperties))
             {
@@ -713,6 +718,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 {
                     recordValues.add(null);
                 }
+                return true;
             }
             else if ((elementHeader.getAnchor() != null) && (elementHeader.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
             {
@@ -724,6 +730,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 {
                     recordValues.add(null);
                 }
+                return true;
             }
         }
 
@@ -762,8 +769,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                 recordValues.add(referenceableProperties.getQualifiedName());
                 return true;
             }
-            else if ((ProductDataFieldDefinition.DISPLAY_NAME.getDisplayName().equals(columnName)) ||
-                     (ProductDataFieldDefinition.PROFILE_NAME.getDisplayName().equals(columnName)))
+            else if (ProductDataFieldDefinition.DISPLAY_NAME.getDisplayName().equals(columnName))
             {
                 recordValues.add(referenceableProperties.getDisplayName());
                 return true;
@@ -800,10 +806,12 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                     if (ProductDataFieldDefinition.USER_ID.getDisplayName().equals(columnName))
                     {
                         recordValues.add(userIdentityProperties.getUserId());
+                        return true;
                     }
                     else if (ProductDataFieldDefinition.DISTINGUISHED_NAME.getDisplayName().equals(columnName))
                     {
                         recordValues.add(userIdentityProperties.getDistinguishedName());
+                        return true;
                     }
                 }
             }
@@ -970,6 +978,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                             if (ProductDataFieldDefinition.PURPOSE.getDisplayName().equals(columnName))
                             {
                                 recordValues.add(reportProperties.getPurpose());
+                                return true;
                             }
                         }
                         else if (dataSetProperties instanceof SecretsCollectionProperties secretsCollectionProperties)
@@ -977,6 +986,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                             if (ProductDataFieldDefinition.REFRESH_TIME_INTERVAL.getDisplayName().equals(columnName))
                             {
                                 recordValues.add(Long.toString(OpenMetadataProperty.REFRESH_TIME_INTERVAL.longValueOrDefault(secretsCollectionProperties.getRefreshTimeInterval())));
+                                return true;
                             }
                         }
                     }
@@ -986,6 +996,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
                     if (ProductDataFieldDefinition.EXPECTED_BEHAVIOUR.getDisplayName().equals(columnName))
                     {
                         recordValues.add(processProperties.getExpectedBehaviour());
+                        return true;
                     }
                 }
 

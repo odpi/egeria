@@ -40,10 +40,6 @@ class TabularDataSetCatalog
         put("ValidMetadataValueDataSetProvider",
             "serves one valid metadata value set at a time, chosen at run time; reached through " +
                     "ValidMetadataValueSetListProvider, which is in the catalogue");
-        put("OpenMetadataDataTypesDataSetProvider",
-            "serves the data types behind the open metadata types product rather than a product of its own");
-        put("SecretsStoresTabularDataSetProvider",
-            "not published as a product - a secrets store inventory is not something to hand out");
     }};
 
     /**

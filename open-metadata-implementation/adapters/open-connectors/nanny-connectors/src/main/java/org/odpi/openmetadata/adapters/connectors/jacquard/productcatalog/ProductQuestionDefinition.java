@@ -523,6 +523,50 @@ public enum ProductQuestionDefinition
                      ProductPerspectiveDefinition.ADMINISTRATION,
                      ProductPerspectiveDefinition.ARCHITECTURE),
 
+    /**
+     * How is the organization structured, and which parts of it deliver each business capability?
+     */
+    ORGANIZATION_STRUCTURE("Organization Structure",
+                           "How is the organization structured, and which parts of it deliver each business capability?",
+                           "The products in this family describe the shape of the business: the business capabilities it delivers, the departments it is organized into, and which departments are responsible for each capability.  Together they are the starting point for working out who is accountable for a piece of data or a process.",
+                           "https://egeria-project.org/concepts/business-capability/",
+                           ProductPerspectiveDefinition.GOVERNANCE,
+                           ProductPerspectiveDefinition.OWNER,
+                           ProductPerspectiveDefinition.ARCHITECTURE),
+
+    /**
+     * What business capabilities does the organization have?
+     */
+    BUSINESS_CAPABILITIES("Business Capabilities",
+                          "What business capabilities does the organization have?",
+                          "One record per business capability - the business areas, functions and services that the organization delivers.  These are the stable building blocks of the business that digital resources, processes and data are aligned to.",
+                          "https://egeria-project.org/concepts/business-capability/",
+                          ProductPerspectiveDefinition.GOVERNANCE,
+                          ProductPerspectiveDefinition.OWNER,
+                          ProductPerspectiveDefinition.ARCHITECTURE),
+
+    /**
+     * What departments is the organization divided into, and who do they report to?
+     */
+    DEPARTMENTS("Departments",
+                "What departments is the organization divided into, and who do they report to?",
+                "One record per team that is part of an organization's reporting structure, with the team it reports to and the organization at the top of the structure.  It shows how responsibility is divided up across the organization.",
+                "https://egeria-project.org/concepts/team",
+                ProductPerspectiveDefinition.GOVERNANCE,
+                ProductPerspectiveDefinition.OWNER,
+                ProductPerspectiveDefinition.STEWARD),
+
+    /**
+     * Which departments deliver each business capability?
+     */
+    BUSINESS_CAPABILITY_DEPARTMENTS("Business Capability Departments",
+                                    "Which departments deliver each business capability?",
+                                    "One record per department linked to a business capability, with the type of the department's involvement - such as owner - and why it is involved.  It links the capability view of the business to its organizational view so that accountability can be traced from one to the other.",
+                                    "https://egeria-project.org/concepts/business-capability/",
+                                    ProductPerspectiveDefinition.GOVERNANCE,
+                                    ProductPerspectiveDefinition.OWNER,
+                                    ProductPerspectiveDefinition.STEWARD),
+
     ;
 
     private final String                             displayName;

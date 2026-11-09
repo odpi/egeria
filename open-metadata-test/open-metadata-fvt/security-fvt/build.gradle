@@ -131,7 +131,7 @@ test {
 
     // Any security.fvt.* setting, such as security.fvt.database.url, can be given on the command line with -D.
     // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
-    systemProperties System.properties.findAll { it.key.toString().startsWith('security.fvt.') && it.key.toString() != 'security.fvt.repository' }
+    systemProperties providers.systemPropertiesPrefixedBy('security.fvt.').get().findAll { it.key != 'security.fvt.repository' }
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis

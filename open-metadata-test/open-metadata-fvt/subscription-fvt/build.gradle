@@ -166,7 +166,7 @@ test {
     // Gradle does not pass its own system properties to the forked test JVM, so they are forwarded here.
     // Spring's Environment reads system properties ahead of application.properties, so a value given this
     // way wins for that run without editing the file.
-    systemProperties System.properties.findAll { it.key.toString().startsWith('subscription.fvt.') }
+    systemProperties providers.systemPropertiesPrefixedBy('subscription.fvt.').get()
 }
 
 // Resolves logging conflicts between the various connectors pulled in by the platform chassis

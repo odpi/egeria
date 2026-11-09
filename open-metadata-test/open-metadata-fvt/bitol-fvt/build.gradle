@@ -135,7 +135,7 @@ test {
 
     // Any bitol.fvt.* setting can be overridden for a single run from the command line, e.g.
     //   ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvt -Dbitol.fvt.refresh.timeout.seconds=600
-    systemProperties System.properties.findAll { it.key.toString().startsWith('bitol.fvt.') }
+    systemProperties providers.systemPropertiesPrefixedBy('bitol.fvt.').get()
 
     if (project.hasProperty('runBitolFvt') && project.hasProperty('runBitolFvtInMemory'))
     {

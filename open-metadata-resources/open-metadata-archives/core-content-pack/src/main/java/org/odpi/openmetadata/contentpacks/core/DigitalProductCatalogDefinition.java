@@ -13,7 +13,7 @@ public enum DigitalProductCatalogDefinition
     ROOT("dcec6ddb-317e-4c64-907e-be508ceba6d9",
          OpenMetadataType.ROOT_COLLECTION.typeName,
          "Egeria::DigitalProductCatalogsRoot",
-         "Digital Product Catalogs Root",
+         "Digital Product Catalogs",
          "Root collection linking the digital product catalogs together.",
          null,
          null,

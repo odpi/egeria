@@ -1813,6 +1813,17 @@ public class OpenMetadataHandlerBase
 
             rootElement.setMermaidGraph(graphBuilder.getMermaidGraph());
 
+            /*
+             * Actions and activity are kept out of the context graph so that it does not grow without bound
+             * as they are recorded.  They have graphs of their own.
+             */
+            rootElement.setActionMermaidGraph(new OpenMetadataRootMermaidGraphBuilder(rootElement,
+                                                                                      queryOptions.getMaxMermaidNodeCount(),
+                                                                                      OpenMetadataRootMermaidGraphBuilder.GraphScope.ACTION).getMermaidGraph());
+            rootElement.setActivityMermaidGraph(new OpenMetadataRootMermaidGraphBuilder(rootElement,
+                                                                                        queryOptions.getMaxMermaidNodeCount(),
+                                                                                        OpenMetadataRootMermaidGraphBuilder.GraphScope.ACTIVITY).getMermaidGraph());
+
             if (rootElement.getSpecificationProperties() != null)
             {
                 SpecificationMermaidGraphBuilder specificationMermaidGraphBuilder = new SpecificationMermaidGraphBuilder(rootElement);

@@ -10,11 +10,35 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.master
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.LocationsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.OrganizationsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.PeopleTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.masterdata.ServersTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataAttributesForTypesDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataDataTypesDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.organization.BusinessCapabilitiesTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.organization.BusinessCapabilityDepartmentsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.organization.DepartmentsTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataPropertiesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.openmetadatatypes.OpenMetadataTypesDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.productfamily.DigitalProductFamilyDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.referencedata.ReferenceDataSetListProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.SecretsCollectionsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.SecretsStoresTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.UserAccountsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.UserIdentitiesTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.ZoneMembershipProfileTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.security.ZoneMembershipTotalsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.AnnotationsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.FileMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.FolderMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.MissingFileClassifiersTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.ProfileMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RelationalColumnMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RelationalDataManagerMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RelationalSchemaMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RelationalTableMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RequestForActionAnnotationsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.RequestForActionTargetsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.ResourceMeasurementsTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.surveyreports.SurveyReportListTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.validmetadatavalues.ValidMetadataValueSetListProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.GovernanceZoneName;
@@ -215,12 +239,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductDataFieldDefinition.DESCRIPTION,
                             ProductDataFieldDefinition.CATEGORY,
                             ProductDataFieldDefinition.VERSION_IDENTIFIER,
-                            ProductDataFieldDefinition.VERSION,
-                            ProductDataFieldDefinition.CREATE_TIME,
-                            ProductDataFieldDefinition.UPDATE_TIME},
+                            ProductDataFieldDefinition.VERSION},
                     OpenMetadataType.REFERENCE_CODE_TABLE.typeName,
                     "Data set",
-                    new OpenMetadataTypesDataSetProvider(),
+                    new OpenMetadataDataTypesDataSetProvider(),
                     "Open Metadata Data Types",
                     null),
 
@@ -520,6 +542,154 @@ public enum ProductDefinitionEnum implements ProductDefinition
               "Locations",
               null),
 
+    /*
+     * =============================================================================================
+     */
+
+    /**
+     * Organization Structure
+     */
+    ORGANIZATION_STRUCTURE(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+                           null,
+                           "Organization Structure",
+                           "ORGANIZATION-STRUCTURE-FAMILY",
+                           ProductFolderDefinition.PRODUCTS,
+                           "Organization Structure",
+                           "Each product in this folder describes the shape of the business: the business capabilities it delivers, the departments it is organized into (the teams that are part of an organization's reporting structure), and which departments deliver each business capability.  Subscribing to the family delivers all three as related tables that join on the business capability and department unique identifiers.",
+                           ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                           new ProductQuestionDefinition[]{
+                                   ProductQuestionDefinition.ORGANIZATION_STRUCTURE},
+                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductCommunityDefinition.MASTER_DATA_SIG,
+                           new ProductSubscriptionDefinition[]{
+                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                   ProductSubscriptionDefinition.ONGOING_UPDATE},
+                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                           "Data sets",
+                           null),
+
+    /**
+     * List of business capabilities
+     */
+    BUSINESS_CAPABILITIES(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                          new ProductDefinition[]{ProductDefinitionEnum.ORGANIZATION_STRUCTURE},
+                          "Business Capability List",
+                          "BUSINESS-CAPABILITY-LIST",
+                          null,
+                          "Business Capability List",
+                          "A tabular data set where each record describes a business capability - a business area, function or service that the organization delivers.",
+                          ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                          new ProductQuestionDefinition[]{
+                                  ProductQuestionDefinition.BUSINESS_CAPABILITIES},
+                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                          ProductCommunityDefinition.MASTER_DATA_SIG,
+                          new ProductSubscriptionDefinition[]{
+                                  ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                  ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                  ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                  ProductSubscriptionDefinition.ONGOING_UPDATE},
+                          "Business Capabilities",
+                          new ProductDataFieldDefinition[]{
+                                  ProductDataFieldDefinition.GUID},
+                          new ProductDataFieldDefinition[]{
+                                  ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                                  ProductDataFieldDefinition.QUALIFIED_NAME,
+                                  ProductDataFieldDefinition.IDENTIFIER,
+                                  ProductDataFieldDefinition.DISPLAY_NAME,
+                                  ProductDataFieldDefinition.DESCRIPTION,
+                                  ProductDataFieldDefinition.CATEGORY,
+                                  ProductDataFieldDefinition.BUSINESS_CAPABILITY_TYPE,
+                                  ProductDataFieldDefinition.BUSINESS_IMPLEMENTATION_TYPE,
+                                  ProductDataFieldDefinition.CREATE_TIME,
+                                  ProductDataFieldDefinition.UPDATE_TIME},
+                          OpenMetadataType.TABULAR_DATA_SET.typeName,
+                          "Data set",
+                          new BusinessCapabilitiesTabularDataSetProvider(),
+                          "Business Capabilities",
+                          null),
+
+    /**
+     * List of departments
+     */
+    DEPARTMENTS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                new ProductDefinition[]{ProductDefinitionEnum.ORGANIZATION_STRUCTURE},
+                "Department List",
+                "DEPARTMENT-LIST",
+                null,
+                "Department List",
+                "A tabular data set where each record describes a department - a team that is part of an organization's reporting structure - with the team it reports to and the organization at the top of its structure.",
+                ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                new ProductQuestionDefinition[]{
+                        ProductQuestionDefinition.DEPARTMENTS},
+                ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                ProductCommunityDefinition.MASTER_DATA_SIG,
+                new ProductSubscriptionDefinition[]{
+                        ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                        ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                        ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                        ProductSubscriptionDefinition.ONGOING_UPDATE},
+                "Departments",
+                new ProductDataFieldDefinition[]{
+                        ProductDataFieldDefinition.GUID},
+                new ProductDataFieldDefinition[]{
+                        ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
+                        ProductDataFieldDefinition.QUALIFIED_NAME,
+                        ProductDataFieldDefinition.IDENTIFIER,
+                        ProductDataFieldDefinition.DISPLAY_NAME,
+                        ProductDataFieldDefinition.DESCRIPTION,
+                        ProductDataFieldDefinition.TEAM_TYPE,
+                        ProductDataFieldDefinition.SUPER_TEAM_GUID,
+                        ProductDataFieldDefinition.SUPER_TEAM_NAME,
+                        ProductDataFieldDefinition.ORGANIZATION_GUID,
+                        ProductDataFieldDefinition.ORGANIZATION_NAME,
+                        ProductDataFieldDefinition.SUB_TEAM_COUNT,
+                        ProductDataFieldDefinition.CREATE_TIME,
+                        ProductDataFieldDefinition.UPDATE_TIME},
+                OpenMetadataType.TABULAR_DATA_SET.typeName,
+                "Data set",
+                new DepartmentsTabularDataSetProvider(),
+                "Departments",
+                null),
+
+    /**
+     * List of the departments that belong to each business capability
+     */
+    BUSINESS_CAPABILITY_DEPARTMENTS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                    new ProductDefinition[]{ProductDefinitionEnum.ORGANIZATION_STRUCTURE},
+                                    "Business Capability Departments",
+                                    "BUSINESS-CAPABILITY-DEPARTMENTS",
+                                    null,
+                                    "Business Capability Departments",
+                                    "A tabular data set where each record links a business capability to a department that belongs to it, with the type of membership (such as owner) and the reason for it.",
+                                    ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                                    new ProductQuestionDefinition[]{
+                                            ProductQuestionDefinition.BUSINESS_CAPABILITY_DEPARTMENTS},
+                                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                    ProductCommunityDefinition.MASTER_DATA_SIG,
+                                    new ProductSubscriptionDefinition[]{
+                                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                            ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
+                                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                    "Business Capability Departments",
+                                    new ProductDataFieldDefinition[]{
+                                            ProductDataFieldDefinition.BUSINESS_CAPABILITY_GUID,
+                                            ProductDataFieldDefinition.DEPARTMENT_GUID},
+                                    new ProductDataFieldDefinition[]{
+                                            ProductDataFieldDefinition.BUSINESS_CAPABILITY_NAME,
+                                            ProductDataFieldDefinition.DEPARTMENT_NAME,
+                                            ProductDataFieldDefinition.MEMBERSHIP_TYPE,
+                                            ProductDataFieldDefinition.MEMBERSHIP_RATIONALE,
+                                            ProductDataFieldDefinition.CREATE_TIME,
+                                            ProductDataFieldDefinition.UPDATE_TIME},
+                                    OpenMetadataType.TABULAR_DATA_SET.typeName,
+                                    "Data set",
+                                    new BusinessCapabilityDepartmentsTabularDataSetProvider(),
+                                    "Business Capability Departments",
+                                    null),
+
 
 
     /*
@@ -579,7 +749,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.DISPLAY_NAME,
                                ProductDataFieldDefinition.CATEGORY,
                                ProductDataFieldDefinition.IDENTIFIER,
-                               ProductDataFieldDefinition.DISPLAY_NAME,
                                ProductDataFieldDefinition.DESCRIPTION,
                                ProductDataFieldDefinition.PURPOSE,
                                ProductDataFieldDefinition.START_TIMESTAMP,
@@ -595,7 +764,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.UPDATE_TIME},
                        OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
-                       null,
+                       new SurveyReportListTabularDataSetProvider(),
                        "Survey Report List",
                        null),
 
@@ -630,7 +799,6 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         ProductDataFieldDefinition.DISPLAY_NAME,
                         ProductDataFieldDefinition.CATEGORY,
                         ProductDataFieldDefinition.IDENTIFIER,
-                        ProductDataFieldDefinition.DISPLAY_NAME,
                         ProductDataFieldDefinition.DESCRIPTION,
                         ProductDataFieldDefinition.PURPOSE,
                         ProductDataFieldDefinition.START_TIMESTAMP,
@@ -647,7 +815,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         ProductDataFieldDefinition.UPDATE_TIME},
                 OpenMetadataType.TABULAR_DATA_SET.typeName,
                 "Data set",
-                null,
+                new AnnotationsTabularDataSetProvider(),
                 "Annotation List",
                 null),
 
@@ -683,7 +851,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductDataFieldDefinition.UPDATE_TIME},
                        OpenMetadataType.TABULAR_DATA_SET.typeName,
                        "Data set",
-                       null,
+                       new RequestForActionAnnotationsTabularDataSetProvider(),
                        "Request For Action Annotation List",
                        null),
 
@@ -695,8 +863,8 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Request For Action Target List",
                               "REQUEST-FOR-ACTION-TARGET-LIST",
                               null,
-                              "List of Request For Action Annotations from all Survey Reports",
-                              "A tabular data set where each record describes a request for action annotation from a survey report.  This digital product supplements the main annotation list product (Annotation List).",
+                              "List of the action targets of the Request For Action Annotations from all Survey Reports",
+                              "A tabular data set where each record describes an element that a request for action annotation from a survey report identifies as needing action.  This digital product supplements the main annotation list product (Annotation List).",
                               ProductCategoryDefinition.SURVEY_REPORTS.getPreferredValue(),
                               new ProductQuestionDefinition[]{
                                       ProductQuestionDefinition.ELEMENTS_NEEDING_ACTION},
@@ -710,20 +878,20 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               "Request For Action Target List",
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.SURVEY_REPORT_GUID,
-                                      ProductDataFieldDefinition.GUID
+                                      ProductDataFieldDefinition.GUID,
+                                      ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID
                               },
                               new ProductDataFieldDefinition[]{
                                       ProductDataFieldDefinition.ACTION_REQUEST_NAME,
                                       ProductDataFieldDefinition.ACTION_TARGET_GUID,
                                       ProductDataFieldDefinition.ACTION_TARGET_NAME,
                                       ProductDataFieldDefinition.ACTION_TARGET_TYPE_NAME,
-                                      ProductDataFieldDefinition.ACTION_TARGET_RELATIONSHIP_GUID,
                                       ProductDataFieldDefinition.ANNOTATION_SUBJECT_GUID,
                                       ProductDataFieldDefinition.CREATE_TIME,
                                       ProductDataFieldDefinition.UPDATE_TIME},
                               OpenMetadataType.TABULAR_DATA_SET.typeName,
                               "Data set",
-                              null,
+                              new RequestForActionTargetsTabularDataSetProvider(),
                               "Request For Action Target List",
                               null),
 
@@ -765,15 +933,17 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                                  ProductDataFieldDefinition.COLUMN_COUNT,
                                                  ProductDataFieldDefinition.DATA_SIZE,
                                                  ProductDataFieldDefinition.ROWS_FETCHED,
+                                                 ProductDataFieldDefinition.ROWS_INSERTED,
                                                  ProductDataFieldDefinition.ROWS_UPDATED,
                                                  ProductDataFieldDefinition.ROWS_DELETED,
                                                  ProductDataFieldDefinition.SESSION_TIME,
                                                  ProductDataFieldDefinition.ACTIVE_TIME,
+                                                 ProductDataFieldDefinition.LAST_STATS_RESET,
                                                  ProductDataFieldDefinition.CREATE_TIME,
                                                  ProductDataFieldDefinition.UPDATE_TIME},
                                          OpenMetadataType.TABULAR_DATA_SET.typeName,
                                          "Data set",
-                                         null,
+                                         new RelationalDataManagerMeasurementsTabularDataSetProvider(),
                                          "Relational Data Manager Measurements",
                                          null),
 
@@ -817,7 +987,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                            ProductDataFieldDefinition.UPDATE_TIME},
                                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
-                                   null,
+                                   new RelationalSchemaMeasurementsTabularDataSetProvider(),
                                    "Relational Schema Measurements",
                                    null),
 
@@ -853,16 +1023,24 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                           ProductDataFieldDefinition.METADATA_COLLECTION_ID,
                                           ProductDataFieldDefinition.REPORT_SUBJECT_TYPE_NAME,
                                           ProductDataFieldDefinition.DISPLAY_NAME,
-                                          ProductDataFieldDefinition.TABLE_COUNT,
-                                          ProductDataFieldDefinition.VIEW_COUNT,
-                                          ProductDataFieldDefinition.MAT_VIEW_COUNT,
+                                          ProductDataFieldDefinition.TABLE_TYPE,
                                           ProductDataFieldDefinition.COLUMN_COUNT,
                                           ProductDataFieldDefinition.DATA_SIZE,
+                                          ProductDataFieldDefinition.ROWS_INSERTED,
+                                          ProductDataFieldDefinition.ROWS_UPDATED,
+                                          ProductDataFieldDefinition.ROWS_DELETED,
+                                          ProductDataFieldDefinition.RESOURCE_OWNER,
+                                          ProductDataFieldDefinition.IS_POPULATED,
+                                          ProductDataFieldDefinition.HAS_INDEXES,
+                                          ProductDataFieldDefinition.HAS_RULES,
+                                          ProductDataFieldDefinition.HAS_TRIGGERS,
+                                          ProductDataFieldDefinition.HAS_ROW_SECURITY,
+                                          ProductDataFieldDefinition.QUERY_DEFINITION,
                                           ProductDataFieldDefinition.CREATE_TIME,
                                           ProductDataFieldDefinition.UPDATE_TIME},
                                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                                   "Data set",
-                                  null,
+                                  new RelationalTableMeasurementsTabularDataSetProvider(),
                                   "Relational Table Measurements",
                                   null),
 
@@ -899,7 +1077,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                            ProductDataFieldDefinition.DISPLAY_NAME,
                                            ProductDataFieldDefinition.DATA_TYPE,
                                            ProductDataFieldDefinition.DATA_SIZE,
-                                           ProductDataFieldDefinition.DATA_SIZE,
+                                           ProductDataFieldDefinition.NOT_NULL,
                                            ProductDataFieldDefinition.AVERAGE_WIDTH,
                                            ProductDataFieldDefinition.NUMBER_OF_DISTINCT_VALUES,
                                            ProductDataFieldDefinition.MOST_COMMON_VALUES,
@@ -908,7 +1086,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                            ProductDataFieldDefinition.UPDATE_TIME},
                                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                                    "Data set",
-                                   null,
+                                   new RelationalColumnMeasurementsTabularDataSetProvider(),
                                    "Relational Column Measurements",
                                    null),
 
@@ -961,7 +1139,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                               ProductDataFieldDefinition.UPDATE_TIME},
                       OpenMetadataType.TABULAR_DATA_SET.typeName,
                       "Data set",
-                      null,
+                      new FileMeasurementsTabularDataSetProvider(),
                       "File Measurements",
                       null),
 
@@ -1016,7 +1194,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductDataFieldDefinition.UPDATE_TIME},
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
-                        null,
+                        new FolderMeasurementsTabularDataSetProvider(),
                         "File Directory Measurements",
                         null),
 
@@ -1063,7 +1241,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                   ProductDataFieldDefinition.UPDATE_TIME},
                           OpenMetadataType.TABULAR_DATA_SET.typeName,
                           "Data set",
-                          null,
+                          new ResourceMeasurementsTabularDataSetProvider(),
                           "Resource Measurements",
                           null),
 
@@ -1105,7 +1283,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                  ProductDataFieldDefinition.UPDATE_TIME},
                          OpenMetadataType.TABULAR_DATA_SET.typeName,
                          "Data set",
-                         null,
+                         new ProfileMeasurementsTabularDataSetProvider(),
                          "Profile Measurements",
                          null),
 
@@ -1132,22 +1310,21 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                      ProductSubscriptionDefinition.ONGOING_UPDATE},
                              "Missing File Classifiers",
                              new ProductDataFieldDefinition[]{
-                                     ProductDataFieldDefinition.SYNC_TIME,
+                                     ProductDataFieldDefinition.SURVEY_REPORT_GUID,
                                      ProductDataFieldDefinition.PATHNAME
                              },
                              new ProductDataFieldDefinition[]{
-                                     ProductDataFieldDefinition.SURVEY_REPORT_GUID,
                                      ProductDataFieldDefinition.FILE_NAME,
                                      ProductDataFieldDefinition.FILE_EXTENSION,
                                      ProductDataFieldDefinition.FILE_TYPE,
                                      ProductDataFieldDefinition.DEPLOYED_IMPLEMENTATION_TYPE,
                                      ProductDataFieldDefinition.ENCODING,
-                                     ProductDataFieldDefinition.ANNOTATION_SUBJECT_TYPE_NAME,
+                                     ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                                      ProductDataFieldDefinition.CREATE_TIME,
                                      ProductDataFieldDefinition.UPDATE_TIME},
                              OpenMetadataType.TABULAR_DATA_SET.typeName,
                              "Data set",
-                             null,
+                             new MissingFileClassifiersTabularDataSetProvider(),
                              "Missing File Classifiers",
                              null),
 
@@ -1441,19 +1618,18 @@ public enum ProductDefinitionEnum implements ProductDefinition
             new ProductDataFieldDefinition[]{
                     ProductDataFieldDefinition.GUID},
             new ProductDataFieldDefinition[]{
-                    ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                     ProductDataFieldDefinition.OPEN_METADATA_TYPE_NAME,
                     ProductDataFieldDefinition.URL,
                     ProductDataFieldDefinition.QUALIFIED_NAME,
                     ProductDataFieldDefinition.DESCRIPTION,
                     ProductDataFieldDefinition.DISPLAY_NAME,
-                    ProductDataFieldDefinition.SCOPE,
+                    ProductDataFieldDefinition.DEPLOYED_IMPLEMENTATION_TYPE,
                     ProductDataFieldDefinition.ASSET_LOCATION_GUID,
                     ProductDataFieldDefinition.CREATE_TIME,
                     ProductDataFieldDefinition.UPDATE_TIME},
             OpenMetadataType.TABULAR_DATA_SET.typeName,
             "Data set",
-            null,
+            new ServersTabularDataSetProvider(),
             "Software Servers",
             null),
 
@@ -1474,7 +1650,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                            new ProductQuestionDefinition[]{
                                    ProductQuestionDefinition.SECURITY_POSTURE},
-                           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                           ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                            ProductCommunityDefinition.SECURITY_SIG,
                            new ProductSubscriptionDefinition[]{
                                    ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1499,7 +1675,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                           new ProductQuestionDefinition[]{
                                   ProductQuestionDefinition.SECRETS_MANAGEMENT},
-                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                          ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                           ProductCommunityDefinition.SECURITY_SIG,
                           new ProductSubscriptionDefinition[]{
                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1524,7 +1700,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                    ProductCategoryDefinition.SECURITY.getPreferredValue(),
                    new ProductQuestionDefinition[]{
                            ProductQuestionDefinition.SECRETS_STORES},
-                   ProductGovernanceDefinition.CC_BY_40,
+                   ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                    ProductCommunityDefinition.SECURITY_SIG,
                    new ProductSubscriptionDefinition[]{
                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1546,7 +1722,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductDataFieldDefinition.UPDATE_TIME},
                    OpenMetadataType.TABULAR_DATA_SET.typeName,
                    "Data set",
-                   null,
+                   new SecretsStoresTabularDataSetProvider(),
                    "Open Metadata Secrets Stores",
                    new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1559,11 +1735,11 @@ public enum ProductDefinitionEnum implements ProductDefinition
                         "OPEN-METADATA-SECRETS-COLLECTIONS",
                         null,
                         "Open Metadata Secrets Collections",
-                        "A tabular data set where each record describes a user identity and its associated actor profile.",
+                        "A tabular data set where each record describes a secrets collection known to open metadata, the secrets store that holds it, and the profile of its user accounts.  The secrets themselves are never included.",
                         ProductCategoryDefinition.SECURITY.getPreferredValue(),
                         new ProductQuestionDefinition[]{
                                 ProductQuestionDefinition.SECRETS_COLLECTIONS},
-                        ProductGovernanceDefinition.CC_BY_40,
+                        ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                         ProductCommunityDefinition.SECURITY_SIG,
                         new ProductSubscriptionDefinition[]{
                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1593,7 +1769,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                 ProductDataFieldDefinition.UPDATE_TIME},
                         OpenMetadataType.TABULAR_DATA_SET.typeName,
                         "Data set",
-                        null,
+                        new SecretsCollectionsTabularDataSetProvider(),
                         "Open Metadata Secrets Collections",
                         new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1611,7 +1787,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                        new ProductQuestionDefinition[]{
                                ProductQuestionDefinition.USER_POPULATION},
-                       ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                       ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                        ProductCommunityDefinition.SECURITY_SIG,
                        new ProductSubscriptionDefinition[]{
                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1636,7 +1812,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                     ProductCategoryDefinition.SECURITY.getPreferredValue(),
                     new ProductQuestionDefinition[]{
                             ProductQuestionDefinition.USER_IDENTITIES},
-                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                     ProductCommunityDefinition.SECURITY_SIG,
                     new ProductSubscriptionDefinition[]{
                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1660,7 +1836,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductDataFieldDefinition.UPDATE_TIME},
                     OpenMetadataType.TABULAR_DATA_SET.typeName,
                     "Data set",
-                    null,
+                    new UserIdentitiesTabularDataSetProvider(),
                     "Open Metadata User Identities",
                     new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1673,12 +1849,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
                   "OPEN-METADATA-USER-ACCOUNTS",
                   null,
                   "Open Metadata User Accounts",
-                  "A tabular data set where each record describes a user account defined in a secrets store.",
+                  "A tabular data set where each record describes a user account defined in a secrets collection, as catalogued from the OMAG Server Platform.  A user with accounts in several collections has a record for each.  The secrets themselves are never included.",
                   ProductCategoryDefinition.SECURITY.getPreferredValue(),
                   new ProductQuestionDefinition[]{
                           ProductQuestionDefinition.USER_ACCOUNT_STATUS,
                           ProductQuestionDefinition.USER_ACCOUNT_PROFILE},
-                  ProductGovernanceDefinition.CC_BY_40,
+                  ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                   ProductCommunityDefinition.SECURITY_SIG,
                   new ProductSubscriptionDefinition[]{
                           ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1687,23 +1863,17 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductSubscriptionDefinition.ONGOING_UPDATE},
                   "Open Metadata User Accounts",
                   new ProductDataFieldDefinition[]{
+                          ProductDataFieldDefinition.SECRETS_COLLECTION_GUID,
                           ProductDataFieldDefinition.USER_ID},
                   new ProductDataFieldDefinition[]{
                           ProductDataFieldDefinition.SECRETS_COLLECTION_NAME,
-                          ProductDataFieldDefinition.NETWORK_ADDRESS,
-                          ProductDataFieldDefinition.DISTINGUISHED_NAME,
-                          ProductDataFieldDefinition.QUALIFIED_NAME,
-                          ProductDataFieldDefinition.DESCRIPTION,
                           ProductDataFieldDefinition.DISPLAY_NAME,
-                          ProductDataFieldDefinition.USER_ACCOUNT_TYPE,
-                          ProductDataFieldDefinition.USER_ACCOUNT_STATUS,
+                          ProductDataFieldDefinition.DISTINGUISHED_NAME,
                           ProductDataFieldDefinition.SECURITY_GROUPS,
-                          ProductDataFieldDefinition.SECURITY_ROLES,
-                          ProductDataFieldDefinition.CREATE_TIME,
-                          ProductDataFieldDefinition.UPDATE_TIME},
+                          ProductDataFieldDefinition.SECURITY_ROLES},
                   OpenMetadataType.TABULAR_DATA_SET.typeName,
                   "Data set",
-                  null,
+                  new UserAccountsTabularDataSetProvider(),
                   "Open Metadata User Accounts",
                   new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1720,7 +1890,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                        ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                        new ProductQuestionDefinition[]{
                                ProductQuestionDefinition.VISIBILITY_OF_METADATA},
-                       ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                       ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                        ProductCommunityDefinition.SECURITY_SIG,
                        new ProductSubscriptionDefinition[]{
                                ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1728,8 +1898,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                ProductSubscriptionDefinition.WEEKLY_REFRESH_SUBSCRIPTION,
                                ProductSubscriptionDefinition.ONGOING_UPDATE
                        },
-
-                       OpenMetadataType.TABULAR_DATA_SET.typeName,
+                       OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
                        "Data sets",
                        new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1737,7 +1906,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * Details of a governance zone and the total count of members and related elements.
      */
     ZONE_MEMBERSHIP_TOTALS(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                           new ProductDefinition[]{ProductDefinitionEnum.SECURITY_OBSERVABILITY},
+                           new ProductDefinition[]{ProductDefinitionEnum.ZONE_OBSERVABILITY},
                            "Zone Membership Totals",
                            "ZONE-MEMBERSHIP-TOTALS",
                            null,
@@ -1746,7 +1915,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
                            new ProductQuestionDefinition[]{
                                    ProductQuestionDefinition.ZONE_SIZES},
-                           ProductGovernanceDefinition.CC_BY_40,
+                           ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                            ProductCommunityDefinition.GOVERNANCE_SIG,
                            new ProductSubscriptionDefinition[]{
                                    ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1760,6 +1929,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                            new ProductDataFieldDefinition[]{
                                    ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                                    ProductDataFieldDefinition.IDENTIFIER,
+                                   ProductDataFieldDefinition.DISPLAY_NAME,
                                    ProductDataFieldDefinition.CRITERIA,
                                    ProductDataFieldDefinition.TOTAL_ELEMENT_MEMBERSHIP,
                                    ProductDataFieldDefinition.ANCHORED_ELEMENT_MEMBERSHIP,
@@ -1767,7 +1937,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                    ProductDataFieldDefinition.CREATE_TIME},
                            OpenMetadataType.TABULAR_DATA_SET.typeName,
                            "Data set",
-                           null,
+                           new ZoneMembershipTotalsTabularDataSetProvider(),
                            "Zone Membership Totals",
                            new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1775,7 +1945,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * Details of the total count of members and related elements of a specific type in the governance zone.
      */
     ZONE_MEMBERSHIP_PROFILE(OpenMetadataType.DIGITAL_PRODUCT.typeName,
-                            new ProductDefinition[]{ProductDefinitionEnum.SECURITY_OBSERVABILITY},
+                            new ProductDefinition[]{ProductDefinitionEnum.ZONE_OBSERVABILITY},
                             "Zone Membership Profile",
                             "ZONE-MEMBERSHIP-PROFILE",
                             null,
@@ -1784,7 +1954,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             ProductCategoryDefinition.GOVERNANCE.getPreferredValue(),
                             new ProductQuestionDefinition[]{
                                     ProductQuestionDefinition.ZONE_CONTENTS_BY_TYPE},
-                            ProductGovernanceDefinition.CC_BY_40,
+                            ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                             ProductCommunityDefinition.GOVERNANCE_SIG,
                             new ProductSubscriptionDefinition[]{
                                     ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -1799,6 +1969,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                             new ProductDataFieldDefinition[]{
                                     ProductDataFieldDefinition.DOMAIN_IDENTIFIER,
                                     ProductDataFieldDefinition.IDENTIFIER,
+                                    ProductDataFieldDefinition.DISPLAY_NAME,
                                     ProductDataFieldDefinition.CRITERIA,
                                     ProductDataFieldDefinition.TOTAL_TYPE_MEMBERSHIP,
                                     ProductDataFieldDefinition.ANCHORED_TYPE_MEMBERSHIP,
@@ -1806,7 +1977,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                                     ProductDataFieldDefinition.CREATE_TIME},
                             OpenMetadataType.TABULAR_DATA_SET.typeName,
                             "Data set",
-                            null,
+                            new ZoneMembershipProfileTabularDataSetProvider(),
                             "Zone Membership Profile",
                             new String[]{GovernanceZoneName.SECURITY.getZoneName()}),
 
@@ -1818,12 +1989,12 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           "Service Observability",
                           "SERVICE-OBSERVABILITY-FAMILY",
                           null,
-                          "Security Observability",
+                          "Service Observability",
                           "Each product in this group publishes insights about the servers, services and operations supporting the open metadata ecosystem from a security perspective.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each on as a trigger to perform specific processing.",
                           ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),
                           new ProductQuestionDefinition[]{
                                   ProductQuestionDefinition.SERVICES_EXPOSED},
-                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                          ProductGovernanceDefinition.SECURITY_TEAM_ONLY,
                           ProductCommunityDefinition.SECURITY_SIG,
                           new ProductSubscriptionDefinition[]{
                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,

@@ -740,7 +740,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DISPLAY_NAME.name, surveyReportElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DESCRIPTION.name, surveyReportElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.PURPOSE, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.PURPOSE.name, surveyReportElement.getElementProperties(), methodName));
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.START_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.START_DATE.name, surveyReportElement.getElementProperties(), methodName));
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.START_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.START_TIME.name, surveyReportElement.getElementProperties(), methodName));
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.END_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.COMPLETION_TIME.name, surveyReportElement.getElementProperties(), methodName));
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_GUID, relatedAsset.getElement().getElementGUID());
@@ -905,8 +905,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                 {
                     openMetadataRecord = this.getRequestForActionTargetDataValues(surveyReportGUID,
                                                                                   requestForActionAnnotation,
-                                                                                  relatedAnnotationSubject,
-                                                                                  relatedActionTarget);
+                                                                                  relatedActionTarget,
+                                                                                  relatedAnnotationSubject);
 
                     databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.REQUEST_FOR_ACTION_TARGET.getTableName(), openMetadataRecord);
                 }
@@ -1877,7 +1877,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.PATHNAME, fileMeasurement.getPathName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_EXTENSION, fileMeasurement.getFileExtension());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_TYPE, fileMeasurement.getFileType());
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT, fileMeasurement.getDeployedImplementationType());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE, fileMeasurement.getDeployedImplementationType());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, fileMeasurement.getEncoding());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, fileMeasurement.getAssetTypeName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.CAN_READ, fileMeasurement.getCanRead());
@@ -1887,7 +1887,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_HIDDEN, fileMeasurement.getHidden());
 
         addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_CREATION_TIME, fileMeasurement.getCreationTime());
-        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, fileMeasurement.getLastModifiedTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME, fileMeasurement.getLastModifiedTime());
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_SIZE, fileMeasurement.getFileSize());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RECORD_COUNT, fileMeasurement.getRecordCount());

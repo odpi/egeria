@@ -335,7 +335,7 @@ public class OpenMetadataAttributesForTypesDataSetConnector extends OpenMetadata
     @Override
     public List<TabularColumnDescription> getColumnDescriptions() throws ConnectorCheckedException
     {
-        return super.getColumnDescriptions(ProductDefinitionEnum.TYPES_LIST);
+        return super.getColumnDescriptions(productDefinition);
     }
 
 
