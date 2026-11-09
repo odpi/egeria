@@ -419,8 +419,8 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
 
         archiveHelper.addPerspective(qualifiedName,
-                                     displayName,
                                      identifier,
+                                     displayName,
                                      description,
                                      url);
     }

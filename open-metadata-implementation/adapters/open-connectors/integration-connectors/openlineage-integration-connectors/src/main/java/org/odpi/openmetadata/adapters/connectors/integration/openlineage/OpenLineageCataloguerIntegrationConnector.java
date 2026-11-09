@@ -311,6 +311,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * as well as any external REST API calls to explicitly refresh the connector.
      * This connector is event driven so there is nothing to do.
      */
+    @Override
     public void refresh()
     {
         // nothing to do

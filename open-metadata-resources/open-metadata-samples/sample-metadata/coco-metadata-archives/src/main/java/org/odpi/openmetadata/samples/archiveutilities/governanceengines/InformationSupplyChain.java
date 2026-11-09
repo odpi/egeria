@@ -313,6 +313,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -324,6 +325,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -335,6 +337,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -355,6 +358,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public ScopeDefinition getScope()
     {
         return scope;
@@ -366,6 +370,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return list of strings
      */
+    @Override
     public List<String> getDataProcessingPurposes()
     {
         if (dataProcessingPurposes == null)
@@ -383,6 +388,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getOwner()
     {
         return ownerGUID;
@@ -394,6 +400,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getOwnerTypeName()
     {
         return OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName;
@@ -405,6 +412,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getOwnerPropertyName()
     {
         return OpenMetadataProperty.GUID.name;
@@ -416,6 +424,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return information supply chain
      */
+    @Override
     public String getOwningSupplyChain()
     {
         if (owningSupplyChain != null)
@@ -432,6 +441,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return boolean
      */
+    @Override
     public boolean isOwningInformationSupplyChainAnchor()
     {
         return isOwningInformationSupplyChainAnchor;
@@ -443,6 +453,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getAnchorScopeGUID()
     {
         if (anchorScope != null)
@@ -461,6 +472,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return boolean
      */
+    @Override
     public boolean isTemplate()
     {
         return isTemplate;
@@ -472,6 +484,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getTemplateName()
     {
         return templateName;
@@ -483,6 +496,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getTemplateDescription()
     {
         return templateDescription;
@@ -494,6 +508,7 @@ public enum InformationSupplyChain implements InformationSupplyChainDefinition
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return "InformationSupplyChain::" + displayName;

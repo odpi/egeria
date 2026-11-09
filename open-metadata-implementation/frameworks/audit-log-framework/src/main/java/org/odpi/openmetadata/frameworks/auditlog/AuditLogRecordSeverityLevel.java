@@ -128,6 +128,7 @@ public enum AuditLogRecordSeverityLevel implements AuditLogRecordSeverity
      *
      * @return int numeric for this enum
      */
+    @Override
     public int getOrdinal()
     {
         return severityCode;
@@ -139,6 +140,7 @@ public enum AuditLogRecordSeverityLevel implements AuditLogRecordSeverity
      *
      * @return String name
      */
+    @Override
     public String getName()
     {
         return severityName;
@@ -152,6 +154,7 @@ public enum AuditLogRecordSeverityLevel implements AuditLogRecordSeverity
      *
      * @return String default description
      */
+    @Override
     public String getDescription()
     {
         return severityDescription;

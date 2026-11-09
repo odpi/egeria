@@ -97,6 +97,7 @@ public class OMRSAuditLogDestination extends AuditLogDestination
      *
      * @param logRecord the log record
      */
+    @Override
     public void addLogRecord(AuditLogRecord logRecord)
     {
         this.addLogRecord(new OMRSAuditLogRecord(logRecord));

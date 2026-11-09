@@ -34,6 +34,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      */
+    @Override
     public DirectoryToMonitor createDirectoryToMonitor(String               sourceName,
                                                        String               pathName,
                                                        String               catalogTargetGUID,
@@ -66,6 +67,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @throws ConnectorCheckedException a problem retrieving the folder element.
      */
+    @Override
     OpenMetadataRootElement getFolderElement(File                 dataFolderFile,
                                              FileSystemProperties fileSystemProperties,
                                              Map<String, Object>  configurationProperties) throws ConnectorCheckedException

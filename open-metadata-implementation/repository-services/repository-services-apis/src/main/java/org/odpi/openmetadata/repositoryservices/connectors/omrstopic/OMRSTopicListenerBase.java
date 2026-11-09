@@ -170,6 +170,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      *
      * @param registryEvent inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent registryEvent)
     {
         final String actionDescription = "processRegistryEvent";
@@ -303,6 +304,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      *
      * @param typeDefEvent inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent typeDefEvent)
     {
         final String actionDescription = "processTypeDefEvent";
@@ -464,6 +466,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      *
      * @param instanceEvent inbound event
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent)
     {
         final String actionDescription = "processInstanceEvent";

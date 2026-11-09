@@ -60,6 +60,7 @@ public abstract class FederationControlBase implements FederationControl
      * @throws RepositoryErrorException problem with the state of one of the repositories.
      * This is probably a logic error rather than an outage
      */
+    @Override
     public abstract void executeCommand(RepositoryExecutor   executor) throws RepositoryErrorException;
 
 

@@ -32,6 +32,7 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
      *
      * @param embeddedConnectors  list of connectors
      */
+    @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
         super.initializeEmbeddedConnectors(embeddedConnectors);
@@ -57,6 +58,7 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
      *
      * @param event inbound event
      */
+    @Override
     public abstract void processEvent(String event);
 
 
@@ -85,6 +87,7 @@ public abstract class OpenMetadataTopicListenerConnectorBase extends OpenMetadat
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public  void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

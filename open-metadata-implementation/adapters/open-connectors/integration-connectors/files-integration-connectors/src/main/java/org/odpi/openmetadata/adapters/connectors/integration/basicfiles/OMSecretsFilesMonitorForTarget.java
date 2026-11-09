@@ -144,6 +144,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
+    @Override
     protected String addDataFileToCatalog(String                      typeName,
                                           String                      fileAddress,
                                           DataFileProperties          properties,
@@ -182,6 +183,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @param methodName calling method
      * @return unique identifier of the file asset
      */
+    @Override
     protected synchronized String catalogFile(File  file,
                                               String methodName)
     {
@@ -202,6 +204,7 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
+    @Override
     protected String addDataFileViaTemplate(String              assetTypeName,
                                             String              fileTemplateGUID,
                                             ElementProperties   replacementProperties,
@@ -1100,19 +1103,30 @@ public class OMSecretsFilesMonitorForTarget extends DataFilesMonitorForTarget
                         }
                         else // preserve any existing zone membership
                         {
-                            if (! zoneMembershipProperties.getZoneMembership().contains(GovernanceZoneName.SECURITY.getZoneName()))
+                            /*
+                             * Work on a copy - the list from the bean may be immutable.  Only update the
+                             * classification if a zone was actually missing.
+                             */
+                            List<String> zoneMembership = new ArrayList<>(zoneMembershipProperties.getZoneMembership());
+
+                            if (! zoneMembership.contains(GovernanceZoneName.SECURITY.getZoneName()))
                             {
-                                zoneMembershipProperties.getZoneMembership().add(GovernanceZoneName.SECURITY.getZoneName());
+                                zoneMembership.add(GovernanceZoneName.SECURITY.getZoneName());
                             }
-                            if (! zoneMembershipProperties.getZoneMembership().contains(userIdentityProperties.getUserId()))
+                            if (! zoneMembership.contains(userIdentityProperties.getUserId()))
                             {
-                                zoneMembershipProperties.getZoneMembership().add(userIdentityProperties.getUserId());
+                                zoneMembership.add(userIdentityProperties.getUserId());
                             }
 
-                            integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
-                                                                                                                            OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                                            null,
-                                                                                                                            classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                            if (zoneMembership.size() != zoneMembershipProperties.getZoneMembership().size())
+                            {
+                                zoneMembershipProperties.setZoneMembership(zoneMembership);
+
+                                integrationConnector.integrationContext.getOpenMetadataStore().reclassifyMetadataElementInStore(userIdentity.getElementHeader().getGUID(),
+                                                                                                                                OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                                                                null,
+                                                                                                                                classificationBuilder.getNewElementProperties(zoneMembershipProperties));
+                            }
                         }
                     }
                 }

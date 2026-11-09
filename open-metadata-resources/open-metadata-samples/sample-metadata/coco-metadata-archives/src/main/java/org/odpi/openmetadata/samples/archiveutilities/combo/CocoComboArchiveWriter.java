@@ -60,6 +60,7 @@ public class CocoComboArchiveWriter extends EgeriaBaseArchiveWriter
      *
      * @return populated open metadata archive object
      */
+    @Override
     public OpenMetadataArchive getOpenMetadataArchive()
     {
         getArchiveContent();

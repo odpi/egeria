@@ -53,6 +53,7 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * @param messageDefinition description of the audit log record including specific resources involved
      * @param actionDescription calling method
      */
+    @Override
     protected void logRecord(String                    actionDescription,
                              AuditLogMessageDefinition messageDefinition)
     {

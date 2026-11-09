@@ -29,6 +29,7 @@ public class OMSecretsFilesMonitorIntegrationConnector extends DataFilesMonitorI
      * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      */
+    @Override
     public DirectoryToMonitor createDirectoryToMonitor(String               sourceName,
                                                        String               pathName,
                                                        String               catalogTargetGUID,

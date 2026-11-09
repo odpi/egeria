@@ -45,6 +45,7 @@ public abstract class RepositoryExecutorBase implements RepositoryExecutor
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public abstract boolean issueRequestToRepository(String                 metadataCollectionId,
                                                      OMRSMetadataCollection metadataCollection);
 }

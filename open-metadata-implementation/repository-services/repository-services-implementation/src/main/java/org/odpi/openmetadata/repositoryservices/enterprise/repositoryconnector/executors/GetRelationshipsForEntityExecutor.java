@@ -139,6 +139,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
      *
      * @return clone of this executor
      */
+    @Override
     public CloneableRepositoryExecutor getClone()
     {
         return new GetRelationshipsForEntityExecutor(userId,
@@ -162,6 +163,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {

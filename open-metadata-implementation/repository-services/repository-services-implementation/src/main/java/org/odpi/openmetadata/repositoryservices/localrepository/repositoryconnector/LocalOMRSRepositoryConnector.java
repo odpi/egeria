@@ -413,6 +413,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         super.setAuditLog(auditLog);

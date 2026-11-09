@@ -20,6 +20,7 @@ public class OMRSMetadataDefaultEventsSecurity implements OpenMetadataEventsSecu
      * @param event event that has been received
      * @return inbound event to process (may be updated) or null to indicate that the event should be ignored
      */
+    @Override
     public OMRSInstanceEvent validateInboundEvent(String            cohortName,
                                                   OMRSInstanceEvent event)
     {
@@ -34,6 +35,7 @@ public class OMRSMetadataDefaultEventsSecurity implements OpenMetadataEventsSecu
      * @param event event that has been received
      * @return outbound event to send (may be updated) or null to indicate that the event should be ignored
      */
+    @Override
     public OMRSInstanceEvent validateOutboundEvent(String            cohortName,
                                                    OMRSInstanceEvent event)
     {

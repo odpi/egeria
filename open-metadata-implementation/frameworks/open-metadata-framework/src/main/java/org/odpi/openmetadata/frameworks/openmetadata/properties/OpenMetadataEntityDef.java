@@ -78,6 +78,7 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
      *
      * @return subclass of OpenMetadataTypeDef
      */
+    @Override
     public OpenMetadataTypeDef cloneFromSubclass()
     {
         return new OpenMetadataEntityDef(this);

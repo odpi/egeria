@@ -39,6 +39,7 @@ public class GenericWatchdogActionListener extends WatchdogGovernanceListener
      *                                    called until the watchdog governance action service declares it is complete
      *                                    or administrator action shuts down the service.
      */
+    @Override
     public void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
     {
         connector.processEvent(event);

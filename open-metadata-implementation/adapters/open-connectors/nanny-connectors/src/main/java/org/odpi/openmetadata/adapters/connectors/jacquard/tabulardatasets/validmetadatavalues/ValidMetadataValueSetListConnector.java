@@ -201,6 +201,7 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
      *
      * @throws ConnectorCheckedException unable to refresh
      */
+    @Override
     public void refreshCache() throws ConnectorCheckedException
     {
         final String methodName = "refreshCache";
@@ -345,6 +346,7 @@ public class ValidMetadataValueSetListConnector extends OpenMetadataDataSetConne
      * @return list of  values (as strings) where each string is the value from a column.  The order is the same as the columns
      * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
+    @Override
     public List<String> readRecord(long  rowNumber) throws ConnectorCheckedException
     {
         final String methodName = "readRecord";

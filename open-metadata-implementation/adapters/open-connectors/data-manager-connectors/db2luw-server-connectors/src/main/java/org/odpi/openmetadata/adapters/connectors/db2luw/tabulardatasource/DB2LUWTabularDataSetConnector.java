@@ -384,6 +384,7 @@ public class DB2LUWTabularDataSetConnector extends ConnectorBase implements Writ
     /**
      * Close the file
      */
+    @Override
     public void disconnect()
     {
         try

@@ -83,6 +83,7 @@ public class CollectionDef extends AttributeTypeDef
      *
      * @return subclass of AttributeTypeDef
      */
+    @Override
     public AttributeTypeDef cloneFromSubclass()
     {
         return new CollectionDef(this);

@@ -96,6 +96,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
+    @Override
     protected String addDataFileToCatalog(String                      typeName,
                                           String                      fileAddress,
                                           DataFileProperties          properties,
@@ -179,6 +180,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
      * @throws PropertyServerException unable to communicate with the repository
      * @throws UserNotAuthorizedException access problem for userId
      */
+    @Override
     protected String addDataFileViaTemplate(String              assetTypeName,
                                             String              fileTemplateGUID,
                                             ElementProperties   replacementProperties,

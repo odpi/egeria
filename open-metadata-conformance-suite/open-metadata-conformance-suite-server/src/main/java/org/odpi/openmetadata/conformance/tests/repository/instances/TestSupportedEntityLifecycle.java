@@ -1645,6 +1645,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
      *
      * @throws Exception something went wrong but there is no particular action to take.
      */
+    @Override
     public void cleanup() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();

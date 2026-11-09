@@ -100,6 +100,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      *
      * @param event inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent event)
     {
         final String methodName = "processRegistryEvent";
@@ -126,6 +127,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      *
      * @param event inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event)
     {
         final String methodName = "processTypeDefEvent";
@@ -152,6 +154,7 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
      *
      * @param event inbound event
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent event)
     {
         final String methodName = "processInstanceEvent";

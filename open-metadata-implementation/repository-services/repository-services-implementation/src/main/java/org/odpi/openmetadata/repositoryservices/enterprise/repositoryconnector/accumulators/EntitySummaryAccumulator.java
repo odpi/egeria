@@ -82,6 +82,7 @@ public class EntitySummaryAccumulator extends ClassificationAccumulator
      *
      * @return null or list of GUIDs
      */
+    @Override
     public List<String> getResultsForAugmentation()
     {
         if (currentSavedEntity != null)

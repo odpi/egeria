@@ -35,6 +35,7 @@ public abstract class DynamicOpenMetadataDataSetConnectorBase extends OpenMetada
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connectionDetails   POJO for the configuration used to create the connector
      */
+    @Override
     public void initialize(String     connectorInstanceId,
                            Connection connectionDetails) throws ConnectorCheckedException
     {

@@ -52,6 +52,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity
      *
      * @return int componentId
      */
+    @Override
     public int getOrdinal()
     {
         return ordinal;
@@ -72,6 +73,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity
      *
      * @return String component name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -94,6 +96,7 @@ public class OMRSAuditLogReportSeverity implements AuditLogRecordSeverity
      *
      * @return String description
      */
+    @Override
     public String getDescription()
     {
         return description;

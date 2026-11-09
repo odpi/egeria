@@ -62,6 +62,7 @@ public class MetadataCollectionIterator extends IntegrationIterator
      * @throws PropertyServerException repository not working properly
      * @throws UserNotAuthorizedException permissions problem
      */
+    @Override
     protected boolean fillCache() throws InvalidParameterException,
                                          PropertyServerException,
                                          UserNotAuthorizedException

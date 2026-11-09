@@ -217,6 +217,7 @@ public enum HarvestSurveysView implements PostgreSQLView
      *
      * @return list of columns
      */
+    @Override
     public List<PostgreSQLTable> getTables()
     {
         if (tables != null)

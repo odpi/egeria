@@ -85,6 +85,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      *
      * @param integrationContext integration context.
      */
+    @Override
     public void setContext(IntegrationContext integrationContext)
     {
         this.integrationContext = integrationContext;
@@ -98,6 +99,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
+    @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         super.start();
@@ -266,6 +268,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void engage() throws ConnectorCheckedException
     {
         final String actionDescription = "Calling default engage() method";

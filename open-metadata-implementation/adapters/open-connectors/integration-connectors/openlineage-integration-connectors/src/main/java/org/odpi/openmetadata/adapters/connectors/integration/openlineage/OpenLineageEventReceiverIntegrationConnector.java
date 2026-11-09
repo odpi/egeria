@@ -41,6 +41,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegra
      *
      * @param event inbound event
      */
+    @Override
     public void processEvent(String event)
     {
         final String methodName = "processEvent";

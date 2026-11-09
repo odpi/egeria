@@ -222,6 +222,7 @@ public abstract class OpenMetadataRelationshipDataSetConnectorBase extends OpenM
      * @return list of values (as strings) where each string is the value from a column.  The order is the same as the columns
      * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
+    @Override
     public List<String> readRecord(long  rowNumber) throws ConnectorCheckedException
     {
         final String methodName = "readRecord";

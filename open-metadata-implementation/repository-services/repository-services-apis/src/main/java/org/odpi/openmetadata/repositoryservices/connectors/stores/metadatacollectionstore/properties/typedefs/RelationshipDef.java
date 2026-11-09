@@ -84,6 +84,7 @@ public class RelationshipDef extends TypeDef
      *
      * @return subclass of TypeDef
      */
+    @Override
     public TypeDef cloneFromSubclass()
     {
         return new RelationshipDef(this);

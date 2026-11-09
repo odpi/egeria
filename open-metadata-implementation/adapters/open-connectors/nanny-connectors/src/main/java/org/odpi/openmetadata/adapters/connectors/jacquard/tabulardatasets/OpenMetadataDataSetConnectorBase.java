@@ -1516,6 +1516,7 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
     /**
      * Close the connector
      */
+    @Override
     public void disconnect()
     {
         try

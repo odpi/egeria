@@ -90,6 +90,7 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
      * @throws ConnectorCheckedException the connector detected a problem.
      * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
+    @Override
     public void start() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         final String methodName = "start";

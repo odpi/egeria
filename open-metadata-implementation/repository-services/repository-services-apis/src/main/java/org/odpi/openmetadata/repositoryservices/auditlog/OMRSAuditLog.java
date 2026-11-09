@@ -76,6 +76,7 @@ public class OMRSAuditLog extends AuditLog
      * @param componentWikiURL link to more information
      * @return new logging destination
      */
+    @Override
     public OMRSAuditLog  createNewAuditLog(int                        componentId,
                                            ComponentDevelopmentStatus componentDevelopmentStatus,
                                            String                     componentName,

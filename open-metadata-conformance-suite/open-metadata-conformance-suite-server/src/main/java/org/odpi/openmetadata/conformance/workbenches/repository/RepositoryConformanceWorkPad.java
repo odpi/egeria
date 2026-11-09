@@ -490,6 +490,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      *
      * @return the profile names
      */
+    @Override
     public synchronized List<String> getProfileNames()
     {
         List<String> list = new ArrayList<>();
@@ -508,6 +509,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      * @param profileName for which to obtain the detailed results
      * @return the test evidence organized by profile and requirement within profile
      */
+    @Override
     public synchronized OpenMetadataConformanceProfileResults getProfileResults(String profileName)
     {
 
@@ -623,6 +625,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      *
      * @return the test evidence organized by profile and requirement withing profile
      */
+    @Override
     public synchronized List<OpenMetadataConformanceProfileResults> getProfileResults()
     {
         List<OpenMetadataConformanceProfileResults>  resultsList = new ArrayList<>();
@@ -652,6 +655,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
      *
      * @return the summarized test evidence organized by profile and requirement withing profile
      */
+    @Override
     public synchronized  List<OpenMetadataConformanceProfileSummary> getProfileSummaries()
     {
         List<OpenMetadataConformanceProfileSummary>  summaryList = new ArrayList<>();

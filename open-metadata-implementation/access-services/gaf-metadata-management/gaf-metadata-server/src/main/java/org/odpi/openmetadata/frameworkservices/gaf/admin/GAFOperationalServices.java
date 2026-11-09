@@ -47,6 +47,7 @@ public class GAFOperationalServices extends AccessServiceAdmin
      * @param maxPageSize max results to return on a single request.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
+    @Override
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
@@ -125,6 +126,7 @@ public class GAFOperationalServices extends AccessServiceAdmin
     /**
      * Shutdown the service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

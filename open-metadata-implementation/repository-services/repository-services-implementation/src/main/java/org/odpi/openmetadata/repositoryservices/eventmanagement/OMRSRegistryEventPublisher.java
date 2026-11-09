@@ -142,6 +142,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @return flag indicating if the event was sent or not.
      */
+    @Override
     public boolean processRegistrationEvent(String sourceName,
                                             String metadataCollectionId,
                                             String metadataCollectionName,
@@ -178,6 +179,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param originatorServerType       type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      */
+    @Override
     public boolean processRegistrationRefreshRequest(String sourceName,
                                                      String originatorServerName,
                                                      String originatorServerType,
@@ -211,6 +213,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @return flag indicating if the event was sent or not.
      */
+    @Override
     public boolean processReRegistrationEvent(String sourceName,
                                               String metadataCollectionId,
                                               String metadataCollectionName,
@@ -250,6 +253,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @return flag indicating if the event was sent or not.
      */
+    @Override
     public boolean processUnRegistrationEvent(String sourceName,
                                               String metadataCollectionId,
                                               String metadataCollectionName,
@@ -287,6 +291,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param conflictingMetadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
      * @param errorMessage  details of the conflict
      */
+    @Override
     public void processConflictingCollectionIdEvent(String sourceName,
                                                     String originatorMetadataCollectionId,
                                                     String originatorMetadataCollectionName,
@@ -328,6 +333,7 @@ public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
+    @Override
     public void processBadConnectionEvent(String sourceName,
                                           String originatorMetadataCollectionId,
                                           String originatorMetadataCollectionName,

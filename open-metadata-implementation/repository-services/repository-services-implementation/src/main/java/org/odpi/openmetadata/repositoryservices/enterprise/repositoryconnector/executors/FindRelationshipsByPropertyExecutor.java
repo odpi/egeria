@@ -152,6 +152,7 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
      *
      * @return clone of this executor
      */
+    @Override
     public CloneableRepositoryExecutor getClone()
     {
         return new FindRelationshipsByPropertyExecutor(userId,
@@ -176,6 +177,7 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {

@@ -52,6 +52,7 @@ public class ConformanceSuiteOMRSTopicListener implements OMRSTopicListener
      *
      * @param event inbound event
      */
+    @Override
     public void processRegistryEvent(OMRSRegistryEvent event)
     {
         // Registry events are not passed to the Enterprise topic listener
@@ -63,6 +64,7 @@ public class ConformanceSuiteOMRSTopicListener implements OMRSTopicListener
      *
      * @param event inbound event
      */
+    @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event)
     {
         log.debug("Processing type event: " + event.toString());
@@ -166,6 +168,7 @@ public class ConformanceSuiteOMRSTopicListener implements OMRSTopicListener
      *
      * @param event event to unpack
      */
+    @Override
     public void processInstanceEvent(OMRSInstanceEvent  event)
     {
         log.debug("Processing instance event: " + event);

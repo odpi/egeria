@@ -196,6 +196,7 @@ public enum PropertyComparisonOperator implements OpenMetadataRefData
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal()
     {
         return ordinal;
@@ -207,6 +208,7 @@ public enum PropertyComparisonOperator implements OpenMetadataRefData
      *
      * @return String name
      */
+    @Override
     public String getDisplayName()
     {
         return name;
@@ -218,6 +220,7 @@ public enum PropertyComparisonOperator implements OpenMetadataRefData
      *
      * @return String description
      */
+    @Override
     public String getDescription()
     {
         return description;

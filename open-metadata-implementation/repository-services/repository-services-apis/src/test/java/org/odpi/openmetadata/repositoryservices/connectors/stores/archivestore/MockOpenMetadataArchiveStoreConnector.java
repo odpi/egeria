@@ -11,6 +11,7 @@ public class MockOpenMetadataArchiveStoreConnector extends OpenMetadataArchiveSt
      *
      * @return OpenMetadataArchive object
      */
+    @Override
     public OpenMetadataArchive getArchiveContents()
     {
         return null;
@@ -22,6 +23,7 @@ public class MockOpenMetadataArchiveStoreConnector extends OpenMetadataArchiveSt
      *
      * @param archiveContents  OpenMetadataArchive object
      */
+    @Override
     public void setArchiveContents(OpenMetadataArchive   archiveContents)
     {
 

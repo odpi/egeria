@@ -212,6 +212,7 @@ public class OMRSRegistryEvent extends OMRSEvent
      *
      * @return OMRSEvent (Version 1) object
      */
+    @Override
     public OMRSEventV2 getOMRSEventV1()
     {
         OMRSEventV2 omrsEvent = super.getOMRSEventV1();

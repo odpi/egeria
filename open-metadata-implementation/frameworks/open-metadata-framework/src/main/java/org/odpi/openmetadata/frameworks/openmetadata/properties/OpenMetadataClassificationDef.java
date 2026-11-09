@@ -81,6 +81,7 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
      *
      * @return subclass of OpenMetadataTypeDef
      */
+    @Override
     public OpenMetadataTypeDef cloneFromSubclass()
     {
         return new OpenMetadataClassificationDef(this);

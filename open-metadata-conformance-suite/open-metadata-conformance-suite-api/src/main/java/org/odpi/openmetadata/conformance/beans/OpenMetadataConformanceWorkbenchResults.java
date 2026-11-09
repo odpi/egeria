@@ -206,6 +206,7 @@ public class OpenMetadataConformanceWorkbenchResults extends OpenMetadataConform
      *
      * @return int count
      */
+    @Override
     public int getTestCaseCount()
     {
         return (this.countTestCaseResults(passedTestCases) +
@@ -219,6 +220,7 @@ public class OpenMetadataConformanceWorkbenchResults extends OpenMetadataConform
      *
      * @return int count
      */
+    @Override
     public int getTestPassCount()
     {
         return super.countTestCaseResults(passedTestCases);
@@ -230,6 +232,7 @@ public class OpenMetadataConformanceWorkbenchResults extends OpenMetadataConform
      *
      * @return int count
      */
+    @Override
     public int getTestFailedCount()
     {
         return super.countTestCaseResults(failedTestCases);
@@ -241,6 +244,7 @@ public class OpenMetadataConformanceWorkbenchResults extends OpenMetadataConform
      *
      * @return int count
      */
+    @Override
     public int getTestSkippedCount()
     {
         return super.countTestCaseSummaries(skippedTestCases);

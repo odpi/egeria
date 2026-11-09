@@ -652,6 +652,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
+    @Override
     public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException,
                                                                            InvalidParameterException,
                                                                            PropertyServerException
@@ -3544,6 +3545,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
 
+    @Override
     public boolean  validateEntityReferenceCopySave(String       userId,
                                                     EntityDetail instance) throws UserNotAuthorizedException,
                                                                                   InvalidParameterException,
@@ -3563,6 +3565,7 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws PropertyServerException    unable to retrieve necessary information to make the decision.
      */
+    @Override
     public boolean  validateRelationshipReferenceCopySave(String       userId,
                                                           Relationship instance) throws UserNotAuthorizedException,
                                                                                         InvalidParameterException,

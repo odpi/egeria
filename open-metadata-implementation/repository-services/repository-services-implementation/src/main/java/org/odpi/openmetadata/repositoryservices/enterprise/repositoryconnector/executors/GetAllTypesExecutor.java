@@ -62,6 +62,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      *
      * @return clone of this executor
      */
+    @Override
     public CloneableRepositoryExecutor getClone()
     {
         return new GetAllTypesExecutor(userId, methodName, accumulator);
@@ -75,6 +76,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      * @param metadataCollection metadata collection object for the repository
      * @return boolean true means that the required results have been achieved
      */
+    @Override
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {

@@ -40,6 +40,7 @@ public class SequentialFederationControl extends FederationControlBase
      * @throws RepositoryErrorException problem with the state of one of the repositories.
      * This is probably a logic error rather than an outage
      */
+    @Override
     public void executeCommand(RepositoryExecutor executor) throws RepositoryErrorException
     {
         if (super.cohortConnectors != null)

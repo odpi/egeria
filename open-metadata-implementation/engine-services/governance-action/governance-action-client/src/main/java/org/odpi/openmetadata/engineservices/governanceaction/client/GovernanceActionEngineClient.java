@@ -102,6 +102,7 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
+    @Override
     public ConnectorReport validateConnector(String connectorProviderClassName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException

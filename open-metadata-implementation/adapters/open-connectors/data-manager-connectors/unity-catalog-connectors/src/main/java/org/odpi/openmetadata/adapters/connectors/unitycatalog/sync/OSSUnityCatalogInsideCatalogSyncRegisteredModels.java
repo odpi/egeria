@@ -108,6 +108,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
      * @throws UserNotAuthorizedException security error
      * @throws ConnectorCheckedException problem extracting properties
      */
+    @Override
     protected IntegrationIterator refreshEgeria(String                     parentGUID,
                                                 String                     parentRelationshipTypeName,
                                                 RelationshipBeanProperties relationshipProperties) throws InvalidParameterException,
@@ -192,6 +193,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
      * @throws UserNotAuthorizedException security error
      * @throws ConnectorCheckedException logic error in properties
      */
+    @Override
     protected void refreshUnityCatalog(String                     parentGUID,
                                        String                     parentRelationshipTypeName,
                                        RelationshipBeanProperties relationshipProperties,

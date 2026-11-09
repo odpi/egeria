@@ -239,6 +239,7 @@ public enum SolutionComponentWire implements SolutionComponentWireDefinition
      *
      * @return list of strings
      */
+    @Override
     public List<String> getISCQualifiedNames()
     {
         if (informationSupplyChains == null)

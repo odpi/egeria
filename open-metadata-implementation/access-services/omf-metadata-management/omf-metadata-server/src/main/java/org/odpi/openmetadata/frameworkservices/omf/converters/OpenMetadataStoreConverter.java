@@ -109,6 +109,7 @@ abstract public class OpenMetadataStoreConverter<B> extends OMFConverter<B>
      * @param instanceProperties retrieve properties
      * @return  properties mapped to omf
      */
+    @Override
     public ElementProperties mapElementProperties(InstanceProperties instanceProperties)
     {
         if (instanceProperties != null)

@@ -734,6 +734,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @return bean populated with properties from the relatedMetadataElement supplied
      * @throws PropertyServerException a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>               beanClass,
                         RelatedMetadataElement relatedMetadataElement,
                         String                 methodName) throws PropertyServerException
@@ -760,6 +761,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException a problem instantiating the bean
      */
+    @Override
     public B getNewBean(Class<B>                 beanClass,
                         OpenMetadataElement      element,
                         OpenMetadataRelationship relationship,
@@ -788,6 +790,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>                     beanClass,
                                OpenMetadataElement          primaryElement,
                                List<RelatedMetadataElement> relationships,
@@ -817,6 +820,7 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>                     beanClass,
                                RelatedMetadataElement       primaryElement,
                                List<RelatedMetadataElement> relationships,

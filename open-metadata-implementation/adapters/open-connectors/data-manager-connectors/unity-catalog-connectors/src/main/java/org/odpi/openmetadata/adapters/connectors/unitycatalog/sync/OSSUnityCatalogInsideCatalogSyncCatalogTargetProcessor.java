@@ -332,6 +332,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor extends Cata
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();

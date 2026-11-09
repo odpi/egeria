@@ -560,6 +560,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return guid
      */
+    @Override
     public String getImplementationResource()
     {
         return implementationResource;
@@ -570,6 +571,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return "SolutionComponent::" + displayName + "::" + versionIdentifier;

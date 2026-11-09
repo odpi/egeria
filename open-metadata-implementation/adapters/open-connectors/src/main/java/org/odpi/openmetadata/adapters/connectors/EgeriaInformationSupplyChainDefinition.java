@@ -211,6 +211,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -233,6 +234,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -244,6 +246,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -266,6 +269,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public ScopeDefinition getScope()
     {
         return scope;
@@ -277,6 +281,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return list of strings
      */
+    @Override
     public List<String> getDataProcessingPurposes()
     {
         if (dataProcessingPurposes == null)
@@ -294,6 +299,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getOwner()
     {
         return ownerGUID;
@@ -305,6 +311,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getOwnerTypeName()
     {
         return OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName;
@@ -315,6 +322,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getOwnerPropertyName()
     {
         return OpenMetadataProperty.GUID.name;
@@ -326,6 +334,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return information supply chain
      */
+    @Override
     public String getOwningSupplyChain()
     {
         if (owningSupplyChain != null)
@@ -342,11 +351,13 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return boolean
      */
+    @Override
     public boolean isOwningInformationSupplyChainAnchor()
     {
         return isOwningInformationSupplyChainAnchor;
     }
 
+    @Override
     public String getAnchorScopeGUID()
     {
         if (anchorScope != null)
@@ -364,6 +375,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return boolean
      */
+    @Override
     public boolean isTemplate()
     {
         return isTemplate;
@@ -375,6 +387,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getTemplateName()
     {
         return templateName;
@@ -386,6 +399,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getTemplateDescription()
     {
         return templateDescription;
@@ -397,6 +411,7 @@ public enum EgeriaInformationSupplyChainDefinition implements InformationSupplyC
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return "InformationSupplyChain::" + displayName;

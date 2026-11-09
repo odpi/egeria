@@ -4710,6 +4710,7 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      *
      * @throws ConnectorCheckedException the connector detected a problem.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";

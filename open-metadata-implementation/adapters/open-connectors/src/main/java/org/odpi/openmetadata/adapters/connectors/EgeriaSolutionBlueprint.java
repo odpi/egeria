@@ -142,6 +142,7 @@ public enum EgeriaSolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID() { return guid; }
 
 

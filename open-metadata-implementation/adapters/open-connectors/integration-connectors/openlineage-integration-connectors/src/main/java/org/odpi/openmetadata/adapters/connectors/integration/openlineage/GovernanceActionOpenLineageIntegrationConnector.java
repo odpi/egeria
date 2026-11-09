@@ -114,6 +114,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      */
+    @Override
     public void refresh()
     {
         // nothing to do

@@ -45,6 +45,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param sourceName    source of the event
      * @param typeDefEvent  properties of the event to send
      */
+    @Override
     public abstract void sendTypeDefEvent(String           sourceName,
                                           OMRSTypeDefEvent typeDefEvent);
 
@@ -66,6 +67,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param typeDef  details of the new TypeDef.
      */
+    @Override
     public abstract void processNewTypeDefEvent(String      sourceName,
                                                 String      originatorMetadataCollectionId,
                                                 String      originatorServerName,
@@ -86,6 +88,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param attributeTypeDef  details of the new AttributeTypeDef.
      */
+    @Override
     public abstract void processNewAttributeTypeDefEvent(String           sourceName,
                                                          String           originatorMetadataCollectionId,
                                                          String           originatorServerName,
@@ -106,6 +109,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param typeDefPatch  details of the new version of the TypeDef
      */
+    @Override
     public abstract void processUpdatedTypeDefEvent(String       sourceName,
                                                     String       originatorMetadataCollectionId,
                                                     String       originatorServerName,
@@ -128,6 +132,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param typeDefGUID  unique identifier of the TypeDef
      * @param typeDefName  unique name of the TypeDef
      */
+    @Override
     public abstract void processDeletedTypeDefEvent(String      sourceName,
                                                     String      originatorMetadataCollectionId,
                                                     String      originatorServerName,
@@ -151,6 +156,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param attributeTypeDefGUID  unique identifier of the AttributeTypeDef
      * @param attributeTypeDefName  unique name of the AttributeTypeDef
      */
+    @Override
     public abstract void processDeletedAttributeTypeDefEvent(String      sourceName,
                                                              String      originatorMetadataCollectionId,
                                                              String      originatorServerName,
@@ -173,6 +179,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param originalTypeDef  description of original TypeDef
      * @param typeDef  updated TypeDef with new identifiers inside.
      */
+    @Override
     public abstract void processReIdentifiedTypeDefEvent(String         sourceName,
                                                          String         originatorMetadataCollectionId,
                                                          String         originatorServerName,
@@ -196,6 +203,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param originalAttributeTypeDef  description of original AttributeTypeDef
      * @param attributeTypeDef  updated AttributeTypeDef with new identifiers inside.
      */
+    @Override
     public abstract void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
                                                                   String           originatorMetadataCollectionId,
                                                                   String           originatorServerName,
@@ -220,6 +228,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param conflictingTypeDef  description of the TypeDef in the other metadata collection.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
+    @Override
     public abstract void processTypeDefConflictEvent(String         sourceName,
                                                      String         originatorMetadataCollectionId,
                                                      String         originatorServerName,
@@ -246,6 +255,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param conflictingAttributeTypeDef  description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
+    @Override
     public abstract void processAttributeTypeDefConflictEvent(String           sourceName,
                                                               String           originatorMetadataCollectionId,
                                                               String           originatorServerName,
@@ -275,6 +285,7 @@ public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProce
      * @param otherTypeDef  details of the TypeDef in the other repository.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
+    @Override
     public abstract void processTypeDefPatchMismatchEvent(String         sourceName,
                                                           String         originatorMetadataCollectionId,
                                                           String         originatorServerName,

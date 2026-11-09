@@ -44,6 +44,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param sourceName source of the event
      * @param instanceEvent  properties of the event to send
      * */
+    @Override
     public abstract void sendInstanceEvent(String            sourceName,
                                            OMRSInstanceEvent instanceEvent);
 
@@ -65,6 +66,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the new entity
      */
+    @Override
     public abstract void processNewEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -86,6 +88,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param oldEntity  original entity before update.
      * @param newEntity  details of the new version of the entity.
      */
+    @Override
     public abstract void processUpdatedEntityEvent(String       sourceName,
                                                    String       originatorMetadataCollectionId,
                                                    String       originatorServerName,
@@ -107,6 +110,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
      */
+    @Override
     public abstract void processUndoneEntityEvent(String       sourceName,
                                                   String       originatorMetadataCollectionId,
                                                   String       originatorServerName,
@@ -153,6 +157,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param classification new classification
      */
     @SuppressWarnings(value = {"unused", "deprecation"})
+    @Override
     public  void processClassifiedEntityEvent(String         sourceName,
                                               String         originatorMetadataCollectionId,
                                               String         originatorServerName,
@@ -184,6 +189,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param classification new classification
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public void processClassifiedEntityEvent(String         sourceName,
                                              String         originatorMetadataCollectionId,
                                              String         originatorServerName,
@@ -233,6 +239,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalClassification classification that was removed
      */
     @SuppressWarnings(value = {"unused", "deprecation"})
+    @Override
     public  void processDeclassifiedEntityEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -264,6 +271,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalClassification classification that was removed
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -315,6 +323,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param classification new classification
      */
     @SuppressWarnings(value = {"unused", "deprecation"})
+    @Override
     public  void processReclassifiedEntityEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -348,6 +357,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param classification new classification
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public void processReclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -377,6 +387,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
+    @Override
     public abstract void processDeletedEntityEvent(String       sourceName,
                                                    String       originatorMetadataCollectionId,
                                                    String       originatorServerName,
@@ -397,6 +408,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
      */
+    @Override
     public abstract void processRestoredEntityEvent(String       sourceName,
                                                     String       originatorMetadataCollectionId,
                                                     String       originatorServerName,
@@ -417,6 +429,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been purged.
      */
+    @Override
     public  void processPurgedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,
@@ -470,6 +483,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param typeDefName  name of this entity's TypeDef
      * @param instanceGUID  unique identifier for the entity
      */
+    @Override
     public abstract void processPurgedEntityEvent(String       sourceName,
                                                   String       originatorMetadataCollectionId,
                                                   String       originatorServerName,
@@ -496,6 +510,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
+    @Override
     public void processDeletePurgedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -542,6 +557,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalTypeDef  description of this entity's original TypeDef.
      * @param entity  new values for this entity, including the new type information.
      */
+    @Override
     public abstract void processReTypedEntityEvent(String         sourceName,
                                                    String         originatorMetadataCollectionId,
                                                    String         originatorServerName,
@@ -566,6 +582,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalHomeMetadataCollectionId  unique identifier for the original home metadata collection/repository.
      * @param entity  new values for this entity, including the new home information.
      */
+    @Override
     public abstract void processReHomedEntityEvent(String       sourceName,
                                                    String       originatorMetadataCollectionId,
                                                    String       originatorServerName,
@@ -589,6 +606,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalEntityGUID  the existing identifier for the entity.
      * @param entity  new values for this entity, including the new guid.
      */
+    @Override
     public abstract void processReIdentifiedEntityEvent(String       sourceName,
                                                         String       originatorMetadataCollectionId,
                                                         String       originatorServerName,
@@ -614,6 +632,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param instanceGUID  unique identifier for the entity
      * @param homeMetadataCollectionId  metadata collection id for the home of this instance.
      */
+    @Override
     public abstract void processRefreshEntityRequested(String       sourceName,
                                                        String       originatorMetadataCollectionId,
                                                        String       originatorServerName,
@@ -637,6 +656,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the requested entity
      */
+    @Override
     public abstract void processRefreshEntityEvent(String       sourceName,
                                                    String       originatorMetadataCollectionId,
                                                    String       originatorServerName,
@@ -657,6 +677,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the new relationship
      */
+    @Override
     public abstract void processNewRelationshipEvent(String       sourceName,
                                                      String       originatorMetadataCollectionId,
                                                      String       originatorServerName,
@@ -678,6 +699,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param oldRelationship  original details of the relationship.
      * @param newRelationship  details of the new version of the relationship.
      */
+    @Override
     public abstract void processUpdatedRelationshipEvent(String       sourceName,
                                                          String       originatorMetadataCollectionId,
                                                          String       originatorServerName,
@@ -699,6 +721,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship details of the version of the relationship that has been restored.
      */
+    @Override
     public abstract void processUndoneRelationshipEvent(String       sourceName,
                                                         String       originatorMetadataCollectionId,
                                                         String       originatorServerName,
@@ -720,6 +743,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
+    @Override
     public abstract void processDeletedRelationshipEvent(String       sourceName,
                                                          String       originatorMetadataCollectionId,
                                                          String       originatorServerName,
@@ -740,6 +764,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the version of the relationship that has been restored.
      */
+    @Override
     public abstract void processRestoredRelationshipEvent(String       sourceName,
                                                           String       originatorMetadataCollectionId,
                                                           String       originatorServerName,
@@ -761,6 +786,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  details of the  relationship that has been purged.
      */
+    @Override
     public void processPurgedRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
                                                String       originatorServerName,
@@ -814,6 +840,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param typeDefName name of this relationship's TypeDef.
      * @param instanceGUID  unique identifier for the relationship.
      */
+    @Override
     public abstract void processPurgedRelationshipEvent(String sourceName,
                                                         String originatorMetadataCollectionId,
                                                         String originatorServerName,
@@ -836,6 +863,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
+    @Override
     public void processDeletePurgedRelationshipEvent(String       sourceName,
                                                      String       originatorMetadataCollectionId,
                                                      String       originatorServerName,
@@ -883,6 +911,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalTypeDef  description of this relationship's original TypeDef.
      * @param relationship  new values for this relationship, including the new type information.
      */
+    @Override
     public abstract void processReTypedRelationshipEvent(String         sourceName,
                                                          String         originatorMetadataCollectionId,
                                                          String         originatorServerName,
@@ -907,6 +936,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalHomeMetadataCollectionId  unique identifier for the original home repository.
      * @param relationship  new values for this relationship, including the new home information.
      */
+    @Override
     public abstract void processReHomedRelationshipEvent(String       sourceName,
                                                          String       originatorMetadataCollectionId,
                                                          String       originatorServerName,
@@ -931,6 +961,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalRelationshipGUID  the existing identifier for the relationship.
      * @param relationship  new values for this relationship, including the new guid.
      */
+    @Override
     public abstract void processReIdentifiedRelationshipEvent(String       sourceName,
                                                               String       originatorMetadataCollectionId,
                                                               String       originatorServerName,
@@ -957,6 +988,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param instanceGUID unique identifier for the instance
      * @param homeMetadataCollectionId metadata collection id for the home of this instance.
      */
+    @Override
     public abstract void processRefreshRelationshipRequest(String       sourceName,
                                                            String       originatorMetadataCollectionId,
                                                            String       originatorServerName,
@@ -981,6 +1013,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param relationship relationship details
      */
+    @Override
     public abstract void processRefreshRelationshipEvent(String       sourceName,
                                                          String       originatorMetadataCollectionId,
                                                          String       originatorServerName,
@@ -1002,6 +1035,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param instances multiple entities and relationships for sharing.
      */
+    @Override
     public abstract void processInstanceBatchEvent(String         sourceName,
                                                    String         originatorMetadataCollectionId,
                                                    String         originatorServerName,
@@ -1032,6 +1066,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param otherInstanceGUID unique identifier for the other (older) instance
      * @param errorMessage description of the error.
      */
+    @Override
     public abstract void processConflictingInstancesEvent(String                 sourceName,
                                                           String                 originatorMetadataCollectionId,
                                                           String                 originatorServerName,
@@ -1063,6 +1098,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param otherTypeDef details of the other (older) instance's TypeDef
      * @param errorMessage description of the error.
      */
+    @Override
     public abstract void processConflictingTypeEvent(String                 sourceName,
                                                      String                 originatorMetadataCollectionId,
                                                      String                 originatorServerName,

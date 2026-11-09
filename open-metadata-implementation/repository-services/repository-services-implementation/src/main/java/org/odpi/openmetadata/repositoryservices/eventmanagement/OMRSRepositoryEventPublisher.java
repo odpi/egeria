@@ -147,6 +147,7 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
      * @param sourceName name of caller
      * @param typeDefEvent properties of the event to send
      */
+    @Override
     public void sendTypeDefEvent(String           sourceName,
                                  OMRSTypeDefEvent typeDefEvent)
     {
@@ -193,6 +194,7 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
      * @param sourceName name of caller
      * @param instanceEvent properties of the event to send
      */
+    @Override
     public void sendInstanceEvent(String            sourceName,
                                   OMRSInstanceEvent instanceEvent)
     {

@@ -43,6 +43,7 @@ public class OIFContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
+    @Override
     public void initializeContextManager(String              localServerName,
                                          String              localServerURL,
                                          String              localServiceName,

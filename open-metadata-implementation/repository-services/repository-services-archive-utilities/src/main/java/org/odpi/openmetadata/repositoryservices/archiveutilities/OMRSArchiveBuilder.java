@@ -1590,6 +1590,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
      *
      * @return open metadata archive object with all the supplied content in it.
      */
+    @Override
     public OpenMetadataArchive getOpenMetadataArchive()
     {
         log.debug("Retrieving Open Metadata Archive: " + archiveProperties.getArchiveName());

@@ -97,6 +97,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
+    @Override
     public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         String   methodName = "getConnector";

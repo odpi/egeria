@@ -80,6 +80,7 @@ public class RDBMSIntegrationModule extends DatabaseIntegrationModuleBase
      * @param egeriaTypeName name of the type used in the open metadata ecosystem
      * @return properties to pass to Egeria
      */
+    @Override
     protected DataAssetProperties getEgeriaDatabaseProperties(AtlasEntity atlasEntity,
                                                               String      egeriaTypeName)
     {
@@ -99,6 +100,7 @@ public class RDBMSIntegrationModule extends DatabaseIntegrationModuleBase
      * @param egeriaSchemaAttributeTypeName name of the type used in the open metadata ecosystem
      * @return properties to pass to Egeria
      */
+    @Override
     protected RelationalTableProperties getEgeriaDatabaseTableProperties(AtlasEntity atlasEntity,
                                                                          String      egeriaSchemaAttributeTypeName)
     {
@@ -119,6 +121,7 @@ public class RDBMSIntegrationModule extends DatabaseIntegrationModuleBase
      * @param egeriaSchemaAttributeTypeName name of the type used in the open metadata ecosystem
      * @return properties to pass to Egeria
      */
+    @Override
     protected RelationalColumnProperties getEgeriaDatabaseColumnProperties(AtlasEntity atlasEntity,
                                                                            String      egeriaSchemaAttributeTypeName)
     {

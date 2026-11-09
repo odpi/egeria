@@ -63,6 +63,7 @@ public class EntityDef extends TypeDef
      *
      * @return subclass of TypeDef
      */
+    @Override
     public TypeDef cloneFromSubclass()
     {
         return new EntityDef(this);
