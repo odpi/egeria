@@ -99,12 +99,17 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">KafkaOpenMetadataEventProducer</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/auditlog/AuditLoggingBase.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingBase</a>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></span></div>
-<div class="block">KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.  This is done through called to
- the Kafka Producer interface.
+<div class="block">KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.
  <p>
- Kafka is not always running.  When this occurs, the call to publish events hangs and this is disruptive to the
- rest of the server.  So the role of this class is to manage the sending of events in a separate thread
- and manage the logging of errors to alert the operations team that Kafka needs restarting.</div>
+ Callers hand events to <a href="#sendEvent(java.lang.String)"><code>sendEvent(String)</code></a>, which only places them on a bounded in-memory queue and
+ so never blocks the calling thread - even when Kafka is down.  A single producer thread drains the queue and
+ hands each event to the Kafka client asynchronously.  The Kafka client batches, compresses and pipelines the
+ events, and reports the outcome of each one through a callback, so throughput is no longer limited to one
+ broker round trip per event.
+ <p>
+ The queue is owned by the topic connector rather than this object, so events waiting to be sent survive a
+ restart of the producer thread.  When the queue is full, new events are discarded (and counted) rather than
+ allowed to exhaust the heap.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -128,25 +133,20 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recoverAfterError()" class="member-name-link">recoverAfterError</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Give time for an error to clear.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This is the method that provides the behaviour of the thread.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#safeCloseProducer()" class="member-name-link">safeCloseProducer</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#safeCloseProducer()" class="member-name-link">safeCloseProducer</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Normal shutdown</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendEvent(java.lang.String)" class="member-name-link">sendEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sends the supplied event to the topic.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendEvent(java.lang.String)" class="member-name-link">sendEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Queue the supplied event for sending.</div>
 </div>
 </div>
 </div>
@@ -169,6 +169,19 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="sendEvent(java.lang.String)">
+<h3>sendEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</span></div>
+<div class="block">Queue the supplied event for sending.  This method never blocks.  If the queue is full, the event is
+ discarded and counted, because the alternatives - blocking the caller or growing the queue without limit -
+ stall or crash the server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>event</code> - event to publish</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="run()">
 <h3>run</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">run</span>()</div>
@@ -177,24 +190,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <dt>Specified by:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html#run()" title="class or interface in java.lang" class="external-link">run</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></code></dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="sendEvent(java.lang.String)">
-<h3>sendEvent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;event)</span></div>
-<div class="block">Sends the supplied event to the topic.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>event</code> - OMRSEvent object containing the event properties.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="recoverAfterError()">
-<h3>recoverAfterError</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">recoverAfterError</span>()</div>
-<div class="block">Give time for an error to clear.</div>
 </section>
 </li>
 <li>
