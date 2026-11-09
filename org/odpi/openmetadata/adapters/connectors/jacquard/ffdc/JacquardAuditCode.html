@@ -139,7 +139,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 </div>
 <div class="col-first even-row-color"><code><a href="#DUPLICATE_CATALOG_TARGETS_REMOVED" class="member-name-link">DUPLICATE_CATALOG_TARGETS_REMOVED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}</div>
+<div class="block">JACQUARD-HARVESTER-0027 - The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DUPLICATE_ELEMENT_DETECTED" class="member-name-link">DUPLICATE_ELEMENT_DETECTED</a></code></div>
 <div class="col-last odd-row-color">
@@ -184,6 +184,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first odd-row-color"><code><a href="#NO_SUBSCRIPTION_MANAGER" class="member-name-link">NO_SUBSCRIPTION_MANAGER</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">JACQUARD-HARVESTER-0006 - The {0} integration connector has no subscription manager configured: configuration property {1} is not set, so the products' notification types will not be handed to a subscription manager and their subscribers will not be notified</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PRODUCT_ASSET_RETYPED" class="member-name-link">PRODUCT_ASSET_RETYPED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JACQUARD-HARVESTER-0030 - The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PRODUCT_RENAMED" class="member-name-link">PRODUCT_RENAMED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">JACQUARD-HARVESTER-0031 - The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#REFRESH_CATALOG_TARGET" class="member-name-link">REFRESH_CATALOG_TARGET</a></code></div>
 <div class="col-last even-row-color">
@@ -341,7 +349,7 @@ the order they are declared.</div>
 <section class="detail" id="DUPLICATE_CATALOG_TARGETS_REMOVED">
 <h3>DUPLICATE_CATALOG_TARGETS_REMOVED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATE_CATALOG_TARGETS_REMOVED</span></div>
-<div class="block">JACQUARD-HARVESTER-0025 - The {0} integration connector has updated the {1} supporting definition called {2} with GUID {3}</div>
+<div class="block">JACQUARD-HARVESTER-0027 - The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)</div>
 </section>
 </li>
 <li>
@@ -440,6 +448,20 @@ the order they are declared.</div>
 <h3>UNREADABLE_DATE_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">UNREADABLE_DATE_VALUE</span></div>
 <div class="block">JACQUARD-HARVESTER-0028 - The {0} integration connector cannot read {1} as a date at record {2}, column {3} of the {4} data set for digital product {5}; values that are not dates are ignored when working out when the data set was created and last updated</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PRODUCT_RENAMED">
+<h3>PRODUCT_RENAMED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">PRODUCT_RENAMED</span></div>
+<div class="block">JACQUARD-HARVESTER-0031 - The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PRODUCT_ASSET_RETYPED">
+<h3>PRODUCT_ASSET_RETYPED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></span>&nbsp;<span class="element-name">PRODUCT_ASSET_RETYPED</span></div>
+<div class="block">JACQUARD-HARVESTER-0030 - The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}</div>
 </section>
 </li>
 </ul>
