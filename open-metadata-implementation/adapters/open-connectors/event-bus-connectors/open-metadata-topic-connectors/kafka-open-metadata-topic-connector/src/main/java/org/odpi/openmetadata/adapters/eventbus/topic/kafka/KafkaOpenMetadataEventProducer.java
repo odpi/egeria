@@ -2,65 +2,96 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.errors.RetriableException;
-import org.apache.kafka.common.errors.WakeupException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.time.Duration;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.  This is done through called to
- * the Kafka Producer interface.
+ * KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.
  * <p>
- * Kafka is not always running.  When this occurs, the call to publish events hangs and this is disruptive to the
- * rest of the server.  So the role of this class is to manage the sending of events in a separate thread
- * and manage the logging of errors to alert the operations team that Kafka needs restarting.
+ * Callers hand events to {@link #sendEvent(String)}, which only places them on a bounded in-memory queue and
+ * so never blocks the calling thread - even when Kafka is down.  A single producer thread drains the queue and
+ * hands each event to the Kafka client asynchronously.  The Kafka client batches, compresses and pipelines the
+ * events, and reports the outcome of each one through a callback, so throughput is no longer limited to one
+ * broker round trip per event.
+ * <p>
+ * The queue is owned by the topic connector rather than this object, so events waiting to be sent survive a
+ * restart of the producer thread.  When the queue is full, new events are discarded (and counted) rather than
+ * allowed to exhaust the heap.
  */
-public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements Runnable {
+public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements Runnable
+{
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
-    private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
-    private final String topicName;
-    private final String localServerId;
-    private final Properties producerProperties;
-    private volatile boolean running = true;
-    private Producer<String, String> producer = null;
-    private long messageSendCount = 0;
-    private long kafkaSendAttemptCount = 0;
-    private long messagePublishRequestCount = 0;
-    private long inmemoryPutMessageCount = 0;
-    private long kafkaSendFailCount = 0;
-    private long messageFailedSendCount = 0;
-    private static final long retryBackoffBaseMs = 500L;
-    private static final long retryBackoffMaxMs  = 5000L;
+
+    /*
+     * How often (in events) the repeating error conditions are reported after the first occurrence.
+     */
+    static final long         REPORTING_INTERVAL   = 10000L;
+
+    private static final long retryBackoffBaseMs   = 500L;
+    private static final long retryBackoffMaxMs    = 5000L;
+    private static final long pollTimeoutMs        = 1000L;
+    private static final long closeTimeoutSeconds  = 30L;
+
+    private final BlockingQueue<String> sendBuffer;
+    private final String                topicName;
+    private final String                localServerId;
+    private final Properties            producerProperties;
+
+    private volatile boolean            running  = true;
+    private Producer<String, String>    producer = null;
+
+    /*
+     * The event taken from the queue whose hand-off to the Kafka client failed with a retryable error.
+     * It is retried before any other event is taken from the queue so that ordering is preserved.
+     */
+    private String                      pendingEvent = null;
+
+    /*
+     * Counters are updated from the caller threads, this thread and the Kafka client's I/O thread.
+     */
+    private final AtomicLong messagePublishRequestCount = new AtomicLong(0);
+    private final AtomicLong messageSendCount           = new AtomicLong(0);
+    private final AtomicLong messageFailedSendCount     = new AtomicLong(0);
+    private final AtomicLong droppedEventCount          = new AtomicLong(0);
+
+    private final Callback   deliveryCallback           = this::deliveryComplete;
 
 
     /**
      * Constructor for the event producer.
      *
-     * @param topicName          name of the topic to listen on.
+     * @param topicName          name of the topic to send on.
      * @param localServerId      identifier to enable receiver to identify that an event came from this server.
-     * @param producerProperties properties for the consumer.
+     * @param producerProperties properties for the producer.
+     * @param sendBuffer         bounded queue of events waiting to be sent - owned by the topic connector.
      * @param auditLog           audit log for this component.
      */
-    KafkaOpenMetadataEventProducer(String topicName, String localServerId, Properties producerProperties,
-                                   AuditLog auditLog) {
+    KafkaOpenMetadataEventProducer(String                topicName,
+                                   String                localServerId,
+                                   Properties            producerProperties,
+                                   BlockingQueue<String> sendBuffer,
+                                   AuditLog              auditLog)
+    {
         super(auditLog);
 
-        this.topicName = topicName;
-        this.localServerId = localServerId;
+        this.topicName          = topicName;
+        this.localServerId      = localServerId;
         this.producerProperties = producerProperties;
+        this.sendBuffer         = sendBuffer;
 
         final String           actionDescription = "new producer";
 
@@ -72,130 +103,33 @@ public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements 
 
 
     /**
-     * Sends the supplied event to the topic.  It retries if Kafka is not responding.
+     * Queue the supplied event for sending.  This method never blocks.  If the queue is full, the event is
+     * discarded and counted, because the alternatives - blocking the caller or growing the queue without limit -
+     * stall or crash the server.
      *
-     * @param event object containing the event properties.
-     * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
+     * @param event event to publish
      */
-    private void publishEvent(String event) throws ConnectorCheckedException {
-        final String methodName = "publishEvent";
-        final String messageFailedCountString = "Metrics: messageFailedSendCount {}";
+    public void sendEvent(String event)
+    {
+        messagePublishRequestCount.incrementAndGet();
 
-        boolean eventSent = false;
-        long eventRetryCount = 0;
+        if (! sendBuffer.offer(event))
+        {
+            long dropped = droppedEventCount.incrementAndGet();
 
-        messagePublishRequestCount++;
-        log.debug("Metrics: messagePublishRequestCount {}", messagePublishRequestCount);
+            if ((dropped == 1) || (dropped % REPORTING_INTERVAL == 0))
+            {
+                final String actionDescription = "sendEvent";
 
-        if (producer == null) {
-            try {
-                log.debug("Creating new producer for topic {}", topicName);
-                producer = new KafkaProducer<>(producerProperties);
-            } catch (Exception error) {
-                logExceptionRecord(methodName,
-                                   KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
-                                           topicName), error);
-
-                throw new ConnectorCheckedException(
-                        KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
-                                error.getMessage()), this.getClass().getName(), methodName, error);
+                log.warn("Send buffer for topic {} is full; {} events discarded so far", topicName, dropped);
+                logRecord(actionDescription,
+                          KafkaOpenMetadataTopicConnectorAuditCode.EVENT_BUFFER_FULL.getMessageDefinition(
+                                  topicName,
+                                  Integer.toString(sendBuffer.size()),
+                                  Long.toString(dropped),
+                                  Long.toString(messageSendCount.get())));
             }
         }
-        while (!eventSent) {
-            try {
-                log.debug("Sending message try {} [0 based] : {}", eventRetryCount,event);
-                ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, localServerId, event);
-                kafkaSendAttemptCount++;
-                log.debug("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
-                producer.send(producerRecord).get();
-                eventSent = true;
-                messageSendCount++;
-                log.debug("Metrics: messageSendCount {}", messageSendCount);
-            } catch (ExecutionException error) {
-                kafkaSendFailCount++;
-                log.debug("Metrics: kafkaSendFailCount {}", kafkaSendFailCount);
-                /*
-                 * This may be a simple timeout or something else more
-                 */
-                log.debug("Kafka had trouble sending event: {} : Exception  message is {}", event, error.getMessage());
-
-                if (!isExceptionRetryable(error)) {
-                    /* kafka thinks this isn't a retryable problem */
-                    /* so let the caller try */
-
-                    log.debug("Exception not retryable, closing producer");
-                    producer.close();
-                    producer = null;
-
-                    messageFailedSendCount++;
-                    log.warn(messageFailedCountString, messageFailedSendCount);
-
-                    throw new ConnectorCheckedException(
-                            KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
-                                    error.getClass().getName(), topicName, error.getMessage()),
-                            this.getClass().getName(), methodName, error);
-                }
-                if (eventRetryCount == 10) {
-                    /* we've retried now let the caller retry */
-                    producer.close();
-                    producer = null;
-                    messageFailedSendCount++;
-                    log.warn(messageFailedCountString, messageFailedSendCount);
-                    log.error("Retryable Exception closed producer after {} tries", eventRetryCount);
-                    break;
-                } else {
-                    if (eventRetryCount == 0) {
-                        log.debug("Retrying event warning - count is {}", eventRetryCount);
-                        logRecord(methodName,
-                                  KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
-                                          topicName, Long.toString(messageSendCount),
-                                          Long.toString(this.getSendBufferSize()), error.getMessage()));
-                    }
-
-                    eventRetryCount++;
-
-                    /*
-                     * Back off before retrying so that a broker returning fast failures does not
-                     * drive this thread into a tight send loop.
-                     */
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(Math.min(retryBackoffBaseMs * eventRetryCount, retryBackoffMaxMs));
-                    } catch (InterruptedException interrupted) {
-                        Thread.currentThread().interrupt();
-                        producer.close();
-                        producer = null;
-                        messageFailedSendCount++;
-                        log.warn(messageFailedCountString, messageFailedSendCount);
-
-                        throw new ConnectorCheckedException(
-                                KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
-                                        interrupted.getClass().getName(), topicName, interrupted.getMessage()),
-                                this.getClass().getName(), methodName, interrupted);
-                    }
-                }
-            } catch (WakeupException error) {
-                log.warn("Wake up for shut down");
-            } catch (Exception error) {
-                if (producer!=null) {
-                    producer.close();
-                    producer = null;
-                }
-                log.warn("Closed producer due to Exception in sendEvent {}",error.getMessage());
-
-                if (error instanceof InterruptedException) {
-                    Thread.currentThread().interrupt();
-                }
-
-                messageFailedSendCount++;
-                log.warn(messageFailedCountString, messageFailedSendCount);
-
-                throw new ConnectorCheckedException(
-                        KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
-                                error.getClass().getName(), topicName, error.getMessage()), this.getClass().getName(),
-                        methodName, error);
-            }
-        }
-
     }
 
 
@@ -203,9 +137,9 @@ public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements 
      * This is the method that provides the behaviour of the thread.
      */
     @Override
-    public void run() {
-
-        // Keep as compact a possible. topis is important, and keep id for disambiguation. Kafka producer already in class which is logged
+    public void run()
+    {
+        // Keep as compact as possible. Topic is important, and keep id for disambiguation.
         String listenerThreadName = topicName + "/" + Thread.currentThread().getName();
 
         final String actionDescription = listenerThreadName + ":run";
@@ -218,126 +152,257 @@ public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements 
                   this.producerProperties.toString());
 
         log.info("Main loop started for topic {}", topicName);
-        int sleepTime = 1000;
-        while (isRunning()) {
-            try {
-                String bufferedEvent = this.getEvent();
 
-                /*
-                 * If there are no events waiting then sleep
-                 */
-                if (bufferedEvent == null) {
-                    TimeUnit.MILLISECONDS.sleep(sleepTime);
-                } else {
-                    log.debug("Processing buffered events");
-                    /*
-                     * Send all waiting events
-                     */
-                    while (bufferedEvent != null) {
-                        publishEvent(bufferedEvent);
-                        bufferedEvent = this.getEvent();
-                    }
+        long consecutiveFailures = 0;
+
+        while (isRunning())
+        {
+            try
+            {
+                String event = pendingEvent;
+
+                if (event == null)
+                {
+                    event = sendBuffer.poll(pollTimeoutMs, TimeUnit.MILLISECONDS);
                 }
-            } catch (InterruptedException error) {
-                log.debug("Woken up from sleep ");
+
+                if (event != null)
+                {
+                    pendingEvent = event;
+
+                    if (producer == null)
+                    {
+                        try
+                        {
+                            log.debug("Creating new producer for topic {}", topicName);
+                            producer = createProducer();
+                        }
+                        catch (Exception error)
+                        {
+                            /*
+                             * Usually a configuration problem.  The event is kept and the creation retried after a
+                             * back-off; the bounded queue limits what accumulates meanwhile.
+                             */
+                            consecutiveFailures++;
+
+                            if (consecutiveFailures == 1)
+                            {
+                                logExceptionRecord(actionDescription,
+                                                   KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(topicName),
+                                                   error);
+                            }
+
+                            if (backOff(consecutiveFailures))
+                            {
+                                continue;
+                            }
+                            break;
+                        }
+                    }
+
+                    /*
+                     * Asynchronous hand-off.  This only blocks if the Kafka client's own buffer is full or the
+                     * topic's metadata is not available - up to max.block.ms.
+                     */
+                    producer.send(new ProducerRecord<>(topicName, localServerId, event), deliveryCallback);
+
+                    pendingEvent        = null;
+                    consecutiveFailures = 0;
+                }
+            }
+            catch (InterruptedException error)
+            {
+                log.debug("Producer thread for topic {} interrupted", topicName);
                 Thread.currentThread().interrupt();
-            } catch (Exception error) {
-                log.warn("Bad exception from sending events: {}",error.getMessage());
+                break;
+            }
+            catch (Exception error)
+            {
+                consecutiveFailures++;
 
-                if (isExceptionRetryable(error)) {
-                    log.debug("Trying to recover");
-                    this.recoverAfterError();
-                } else {
+                if (consecutiveFailures == 1)
+                {
+                    logExceptionRecord(actionDescription,
+                                       KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
+                                               topicName,
+                                               Long.toString(messageSendCount.get()),
+                                               Integer.toString(sendBuffer.size()),
+                                               error.getClass().getName(),
+                                               error.getMessage()),
+                                       error);
+                }
 
-                    /* This is an unrecoverable error so clean up and shutdown*/
+                if (! isExceptionRetryable(error))
+                {
+                    /*
+                     * The Kafka client will not recover from this by itself, so discard the event that caused it
+                     * and rebuild the client before trying the next one.
+                     */
+                    log.warn("Discarding event for topic {} after non-retryable error: {}", topicName, error.getMessage());
+                    messageFailedSendCount.incrementAndGet();
+                    pendingEvent = null;
+                    closeProducer(Duration.ZERO);
+                }
+
+                if (! backOff(consecutiveFailures))
+                {
                     break;
                 }
             }
         }
+
         log.info("Exiting main loop for topic {} & cleaning up", topicName);
 
-        /* producer may have already closed by exception handler in publishEvent */
-        if (producer != null) {
-            log.debug("");
-            producer.close();
-            producer = null;
+        /*
+         * Closing the producer sends the events already handed to the Kafka client.  Any event still on the
+         * queue stays there for the next producer thread.
+         */
+        if (pendingEvent != null)
+        {
+            sendBuffer.offer(pendingEvent);
+            pendingEvent = null;
         }
+
+        closeProducer(Duration.ofSeconds(closeTimeoutSeconds));
 
         logRecord(actionDescription,
                   KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN.getMessageDefinition(
-                          topicName, Integer.toString(getSendBufferSize()),
-                          Long.toString(messageSendCount)), this.producerProperties.toString());
+                          topicName,
+                          Integer.toString(sendBuffer.size()),
+                          Long.toString(messageSendCount.get())),
+                  this.producerProperties.toString());
     }
 
 
     /**
-     * Supports putting events to the in memory OMRS Topic
+     * Called by the Kafka client's I/O thread once an event has been acknowledged or has finally failed (after the
+     * client's own retries, bounded by delivery.timeout.ms).  It must return quickly.
      *
-     * @param newEvent event to publish
+     * @param metadata details of the stored record, or null if it failed
+     * @param exception failure, or null if the event was stored
      */
-    private void putEvent(String newEvent) {
-        inmemoryPutMessageCount++;
-        log.debug("Metrics: inmemoryPutMessageCount {}", inmemoryPutMessageCount);
-        log.debug("Metrics: sendBufferSize {}", sendBuffer.size());
-        sendBuffer.add(newEvent);
-    }
-
-
-    /**
-     * Returns the size of the send buffer
-     *
-     * @return int
-     */
-    private int getSendBufferSize() {
-        return sendBuffer.size();
-    }
-
-
-    /**
-     * Returns all the events found on the in memory OMRS Topic.
-     *
-     * @return list of received events.
-     */
-    private String getEvent() {
-        if (sendBuffer.isEmpty()) {
-            return null;
+    private void deliveryComplete(RecordMetadata metadata, Exception exception)
+    {
+        if (exception == null)
+        {
+            messageSendCount.incrementAndGet();
         }
+        else
+        {
+            long failed = messageFailedSendCount.incrementAndGet();
 
-        return sendBuffer.remove(0);
+            if ((failed == 1) || (failed % REPORTING_INTERVAL == 0))
+            {
+                final String actionDescription = "deliveryComplete";
+
+                log.warn("Kafka failed to deliver an event on topic {}; {} failures so far: {}", topicName, failed, exception.getMessage());
+                logExceptionRecord(actionDescription,
+                                   KafkaOpenMetadataTopicConnectorAuditCode.EVENT_DELIVERY_FAILED.getMessageDefinition(
+                                           topicName,
+                                           Long.toString(failed),
+                                           Long.toString(messageSendCount.get()),
+                                           exception.getClass().getName(),
+                                           exception.getMessage()),
+                                   exception);
+            }
+        }
     }
 
 
     /**
-     * Sends the supplied event to the topic.
+     * Wait before retrying so that a broker returning fast failures does not drive this thread into a tight loop.
      *
-     * @param event OMRSEvent object containing the event properties.
+     * @param consecutiveFailures number of failures in a row
+     * @return false if the thread was interrupted and should stop
      */
-    public void sendEvent(String event) {
-        this.putEvent(event);
-    }
-
-
-    /**
-     * Give time for an error to clear.
-     */
-    protected void recoverAfterError() {
-        long recoverySleepTimeSec = 10L;
-        log.info("Waiting {} seconds to recover", recoverySleepTimeSec);
-
-        try {
-            Thread.sleep(recoverySleepTimeSec * 1000L);
-        } catch (InterruptedException e1) {
-            log.debug("Interrupted while recovering with exception: {}", e1.getMessage());
+    private boolean backOff(long consecutiveFailures)
+    {
+        try
+        {
+            TimeUnit.MILLISECONDS.sleep(Math.min(retryBackoffBaseMs * consecutiveFailures, retryBackoffMaxMs));
+            return true;
+        }
+        catch (InterruptedException interrupted)
+        {
             Thread.currentThread().interrupt();
+            return false;
         }
+    }
+
+
+    /**
+     * Close the Kafka client, if there is one.
+     *
+     * @param timeout how long to wait for events already handed to the client to be sent
+     */
+    private void closeProducer(Duration timeout)
+    {
+        if (producer != null)
+        {
+            try
+            {
+                producer.close(timeout);
+            }
+            catch (Exception error)
+            {
+                log.debug("Error closing producer for topic {}: {}", topicName, error.getMessage());
+            }
+
+            producer = null;
+        }
+    }
+
+
+    /**
+     * Create the Kafka client.  Overridden by the unit tests.
+     *
+     * @return new producer
+     */
+    Producer<String, String> createProducer()
+    {
+        return new KafkaProducer<>(producerProperties);
+    }
+
+
+    /**
+     * Return the number of events acknowledged by Kafka.
+     *
+     * @return count
+     */
+    long getMessageSendCount()
+    {
+        return messageSendCount.get();
+    }
+
+
+    /**
+     * Return the number of events that Kafka failed to store.
+     *
+     * @return count
+     */
+    long getMessageFailedSendCount()
+    {
+        return messageFailedSendCount.get();
+    }
+
+
+    /**
+     * Return the number of events discarded because the send buffer was full.
+     *
+     * @return count
+     */
+    long getDroppedEventCount()
+    {
+        return droppedEventCount.get();
     }
 
 
     /**
      * Normal shutdown
      */
-    public void safeCloseProducer() {
-        stopRunning();
+    public void safeCloseProducer()
+    {
+        running = false;
     }
 
 
@@ -346,17 +411,11 @@ public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements 
      *
      * @return boolean
      */
-    private boolean isRunning() {
+    private boolean isRunning()
+    {
         return running;
     }
 
-
-    /**
-     * Flip the switch to stop the thread.
-     */
-    private synchronized void stopRunning() {
-        running = false;
-    }
 
     /**
      * Walk the cause chain looking for a Kafka RetriableException.
@@ -364,21 +423,24 @@ public class KafkaOpenMetadataEventProducer extends AuditLoggingBase implements 
      * @param error exception to test
      * @return true if any exception in the chain is retryable
      */
-    static boolean isExceptionRetryable(Throwable error) {
-
+    static boolean isExceptionRetryable(Throwable error)
+    {
         /*
          * Step down the cause chain - stopping at the end or at a self-referencing cause.  The previous
          * implementation re-wrapped the same cause on each iteration, so a non-retryable cause spun
          * forever allocating exceptions (high CPU and heap pressure).
          */
         Throwable current = error;
-        while (current != null) {
-            if (current instanceof RetriableException) {
+        while (current != null)
+        {
+            if (current instanceof RetriableException)
+            {
                 return true;
             }
 
             Throwable cause = current.getCause();
-            if (cause == current) {
+            if (cause == current)
+            {
                 break;
             }
             current = cause;

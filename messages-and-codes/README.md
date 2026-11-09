@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 70 | 646 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 110 | 1073 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 70 | 644 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 110 | 1075 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -189,8 +189,8 @@ Every message identifier begins with a prefix that names the component that rais
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | Audit log messages | 1 | [DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.md) |
 | `OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | Exception messages | 2 | [DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode](connectors/repository-services-connectors/DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode.md) |
 | `OCF-FILE-REGISTRY-STORE-CONNECTOR-` | Audit log messages | 10 | [FileBasedRegistryStoreConnectorAuditCode](connectors/repository-services-connectors/FileBasedRegistryStoreConnectorAuditCode.md) |
-| `OCF-KAFKA-TOPIC-CONNECTOR-` | Audit log messages | 19 | [KafkaOpenMetadataTopicConnectorAuditCode](connectors/event-bus-connectors/KafkaOpenMetadataTopicConnectorAuditCode.md) |
-| `OCF-KAFKA-TOPIC-CONNECTOR-400-` | Exception messages | 3 | [KafkaOpenMetadataTopicConnectorErrorCode](connectors/event-bus-connectors/KafkaOpenMetadataTopicConnectorErrorCode.md) |
+| `OCF-KAFKA-TOPIC-CONNECTOR-` | Audit log messages | 21 | [KafkaOpenMetadataTopicConnectorAuditCode](connectors/event-bus-connectors/KafkaOpenMetadataTopicConnectorAuditCode.md) |
+| `OCF-KAFKA-TOPIC-CONNECTOR-400-` | Exception messages | 1 | [KafkaOpenMetadataTopicConnectorErrorCode](connectors/event-bus-connectors/KafkaOpenMetadataTopicConnectorErrorCode.md) |
 | `OIF-CONNECTOR-` | Audit log messages | 22 | [OIFAuditCode](frameworks/OIFAuditCode.md) |
 | `OIF-CONNECTOR-` | Exception messages | 8 | [OIFErrorCode](frameworks/OIFErrorCode.md) |
 | `OMAG-ADMIN-` | Audit log messages | 8 | [OMAGAdminAuditCode](admin-services/OMAGAdminAuditCode.md) |

@@ -343,7 +343,7 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
                 configurationProperties = new HashMap<>(configurationProperties);
             }
 
-            configurationProperties.put(serverIdPropertyName, callerId);
+            configurationProperties.put(serverIdPropertyName, getTopicSubscriberId(callerId, newEventBusConnection));
             configurationProperties.put(OpenMetadataTopicProvider.EVENT_DIRECTION_PROPERTY_NAME, eventDirection);
 
             newEventBusConnection.setConfigurationProperties(configurationProperties);
@@ -358,6 +358,42 @@ public class AccessServerServiceInstance extends AuditableServerServiceInstance
                                               this.getClass().getName(),
                                               methodName);
         }
+    }
+
+
+    /**
+     * Return the identity a caller subscribes to a topic under: the caller identifier scoped by the topic's name.
+     * The topic's event bus uses it to track which events the caller has seen.  For Apache Kafka it is the
+     * consumer group.
+     * <br><br>
+     * Topics are what scope an ecosystem: a metadata store's out topic is read only by the governance servers that
+     * work with that store.  Caller identifiers do not follow that scope.  An integration connector's identifier is
+     * the guid of its registration in a content pack, and an engine host's is the governance engine's name, so
+     * every deployment that loads the same content pack uses the same caller identifiers.  Apache Kafka consumer
+     * groups belong to the whole broker rather than to a topic, so without the topic name in the identity, the
+     * subscribers of deployments that share a broker join one consumer group.  They read different topics and share
+     * no events, but each rebalance of the group waits for every member to rejoin, so a slow subscriber in one
+     * deployment holds up the subscribers of the others for minutes at a time.
+     * <br><br>
+     * Callers with the same identifier on the same topic still share one identity, so engine hosts that run the
+     * same governance engine against the same metadata store continue to divide its events between them.
+     *
+     * @param callerId unique identifier of the caller
+     * @param topicConnection connection for the topic's event bus, with the topic's name as its endpoint's address
+     * @return identity for the caller's subscription to the topic
+     */
+    static String getTopicSubscriberId(String     callerId,
+                                       Connection topicConnection)
+    {
+        if ((topicConnection != null) &&
+            (topicConnection.getEndpoint() != null) &&
+            (topicConnection.getEndpoint().getNetworkAddress() != null) &&
+            (! topicConnection.getEndpoint().getNetworkAddress().isBlank()))
+        {
+            return callerId + "@" + topicConnection.getEndpoint().getNetworkAddress();
+        }
+
+        return callerId;
     }
 
 

@@ -31,6 +31,11 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
 
 
     private final long recoverySleepTimeSec; 
+    /*
+     * How long to wait before checking again whether the queue of received events has drained.
+     */
+    private static final long QUEUE_FULL_WAIT_MS = 10L;
+
     private final long pollTimeout;
     private final long maxQueueSize;
 
@@ -456,10 +461,15 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
         return result;
     }
 
+    /**
+     * Wait briefly for the listener thread to take the events already received.  The wait is short because the
+     * listener thread takes the whole queue every few milliseconds; waiting a whole second here capped the
+     * consumer at roughly one poll's worth of records a second.
+     */
     private void awaitNextPollingTime() {
 		try
 		{
-		    sleep(1000);
+		    sleep(QUEUE_FULL_WAIT_MS);
 		}
 		catch (InterruptedException e)
 		{
