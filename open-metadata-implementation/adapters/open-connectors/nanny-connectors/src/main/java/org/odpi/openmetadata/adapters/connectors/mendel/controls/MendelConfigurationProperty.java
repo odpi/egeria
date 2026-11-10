@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.mendel.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,37 @@ public enum MendelConfigurationProperty
                            "3",
                            false),
 
+    /**
+     * The relationship types whose duplicate instances are removed.  Two relationships are duplicates when they
+     * are of the same type, connect the same two elements, and have the same properties and effectivity dates.
+     * The oldest is kept.
+     */
+    DUPLICATE_RELATIONSHIP_TYPES("duplicateRelationshipTypes",
+                                 "The relationship types whose duplicate instances are removed.  Two relationships are duplicates when they are of the same type, connect the same two elements, and have the same properties and effectivity dates.  The oldest is kept.",
+                                 DataType.ARRAY_STRING.getDisplayName(),
+                                 "AgreementItem,ExternalReferenceLink",
+                                 false),
+
+    /**
+     * The relationship types that attach elements to an element (at end 1) where duplicate attached elements are
+     * removed.  Two attached elements are duplicates when they are anchored to the same element through the same
+     * type of relationship, are of the same type, and have the same properties.  The oldest is kept.
+     */
+    DUPLICATE_ATTACHMENT_TYPES("duplicateAttachmentTypes",
+                               "The relationship types that attach elements to an element (at end 1) where duplicate attached elements are removed.  Two attached elements are duplicates when they are anchored to the same element through the same type of relationship, are of the same type, and have the same properties.  The oldest is kept.",
+                               DataType.ARRAY_STRING.getDisplayName(),
+                               "SearchKeywordLink",
+                               false),
+
+    /**
+     * Report the duplicate relationships and attached elements in the audit log without removing them.
+     */
+    REPORT_DUPLICATES_ONLY("reportDuplicatesOnly",
+                           "Report the duplicate relationships and attached elements in the audit log without removing them.",
+                           DataType.BOOLEAN.getDisplayName(),
+                           "true",
+                           false),
+
     ;
 
     public final String  name;
@@ -38,6 +70,21 @@ public enum MendelConfigurationProperty
      * The default number of validated peer duplicates in a cluster before they are consolidated.
      */
     public static final int DEFAULT_DUPLICATE_CLUSTER_SIZE = 3;
+
+
+    /**
+     * The relationship types whose duplicates are removed in the standard deployment: the links that a
+     * connector re-creates each time it catalogues a document can multiply when the document is catalogued
+     * again.
+     */
+    public static final List<String> DEFAULT_DUPLICATE_RELATIONSHIP_TYPES = List.of(OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName,
+                                                                                   OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
+
+
+    /**
+     * The attachment relationship types whose duplicate attached elements are removed in the standard deployment.
+     */
+    public static final List<String> DEFAULT_DUPLICATE_ATTACHMENT_TYPES = List.of(OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName);
 
 
     /**

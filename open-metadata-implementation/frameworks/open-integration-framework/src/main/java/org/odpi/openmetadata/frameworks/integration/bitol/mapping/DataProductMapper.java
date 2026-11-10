@@ -536,6 +536,16 @@ public class DataProductMapper extends BitolMapperBase
 
         if ((agreement != null) && (agreement.getElementHeader() != null))
         {
+            /*
+             * The product is catalogued again whenever its document changes.  The AgreementItem relationship allows
+             * more than one link between the same elements, so a port that is already an item of the agreement is
+             * not linked again.  The port sits at end 2.
+             */
+            if (getLinkedElementGUIDs(portGUID, 2, OpenMetadataType.AGREEMENT_ITEM_RELATIONSHIP.typeName).contains(agreement.getElementHeader().getGUID()))
+            {
+                return;
+            }
+
             AgreementItemProperties itemProperties = new AgreementItemProperties();
 
             itemProperties.setAgreementItemId(portName);

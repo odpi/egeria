@@ -412,6 +412,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String typeParameterName = "metadataElementTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        /*
+         * A page size of zero means the server's maximum page size.  Passed on unchanged, zero would ask the
+         * repository for every matching instance.
+         */
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
         invalidParameterHandler.validateName(requestedTypeName, typeParameterName, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesByType(userId,
@@ -423,7 +429,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                           forLineage,
                                                                           forDuplicateProcessing,
                                                                           startFrom,
-                                                                          pageSize,
+                                                                          validatedPageSize,
                                                                           effectiveTime,
                                                                           methodName);
 
@@ -487,6 +493,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String guidParameterName = "elementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        /*
+         * A page size of zero means the server's maximum page size.  Passed on unchanged, zero would ask the
+         * repository for every matching instance.
+         */
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
         invalidParameterHandler.validateObject(startingEntity, guidParameterName, methodName);
 
         String relationshipTypeGUID = null;
@@ -543,7 +555,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     startFrom,
-                                                                                    pageSize,
+                                                                                    validatedPageSize,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -1939,6 +1951,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String typeParameterName = "typeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        /*
+         * A page size of zero means the server's maximum page size.  Passed on unchanged, zero would ask the
+         * repository for every matching instance.
+         */
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
         invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
@@ -1953,7 +1971,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                      typeName,
                                                                                      this.getInstanceStatuses(limitResultsByStatus),
                                                                                      startFrom,
-                                                                                     pageSize,
+                                                                                     validatedPageSize,
                                                                                      asOfTime,
                                                                                      sequencingProperty,
                                                                                      getSequencingOrder(sequencingOrder),

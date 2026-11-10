@@ -50,7 +50,7 @@ This is its connection definition to embed into a calling connector's connection
         "endpoint" :
         {
             "class" : "Endpoint",
-            "address" : {{secretsStoreFileLocation}}
+            "networkAddress" : "{{secretsStoreFileLocation}}"
         },
         "configurationProperties" :
         {
@@ -89,7 +89,7 @@ This is its connection definition to embed into a calling connector's connection
         "endpoint" :
         {
             "class" : "Endpoint",
-            "address" : {{secretsStoreFileLocation}}
+            "networkAddress" : "{{secretsStoreFileLocation}}"
         }
     }
 }

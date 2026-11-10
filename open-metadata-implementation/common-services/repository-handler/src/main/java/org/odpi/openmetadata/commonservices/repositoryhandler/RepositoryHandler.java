@@ -3161,17 +3161,19 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                             entityTypeGUID,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startingFrom,
-                                                                                             limitResultsByStatus,
-                                                                                             limitResultsByClassification,
-                                                                                             asOfTime,
-                                                                                             sequencingPropertyName,
-                                                                                             sequencingOrder,
-                                                                                             pageSize);
+            List<EntityDetail> retrievedEntities = this.retrieveInBatches(startingFrom,
+                                                                          pageSize,
+                                                                          (batchStartingFrom, batchPageSize) -> metadataCollection.findEntitiesByProperty(userId,
+                                                                                                                                                          entityTypeGUID,
+                                                                                                                                                          null,
+                                                                                                                                                          null,
+                                                                                                                                                          batchStartingFrom,
+                                                                                                                                                          limitResultsByStatus,
+                                                                                                                                                          limitResultsByClassification,
+                                                                                                                                                          asOfTime,
+                                                                                                                                                          sequencingPropertyName,
+                                                                                                                                                          sequencingOrder,
+                                                                                                                                                          batchPageSize));
 
 
             /*
@@ -3622,15 +3624,17 @@ public class RepositoryHandler
             /*
              * The entity may be at either end, which is not expressible as a single end-constrained query.
              */
-            return metadataCollection.getRelationshipsForEntity(userId,
-                                                                entityGUID,
-                                                                relationshipTypeGUID,
-                                                                startingFrom,
-                                                                limitResultsByStatus,
-                                                                asOfTime,
-                                                                sequencingPropertyName,
-                                                                sequencingOrder,
-                                                                pageSize);
+            return this.retrieveInBatches(startingFrom,
+                                          pageSize,
+                                          (batchStartingFrom, batchPageSize) -> metadataCollection.getRelationshipsForEntity(userId,
+                                                                                                                             entityGUID,
+                                                                                                                             relationshipTypeGUID,
+                                                                                                                             batchStartingFrom,
+                                                                                                                             limitResultsByStatus,
+                                                                                                                             asOfTime,
+                                                                                                                             sequencingPropertyName,
+                                                                                                                             sequencingOrder,
+                                                                                                                             batchPageSize));
         }
 
         /*
@@ -3665,22 +3669,27 @@ public class RepositoryHandler
             end2EntityTypeGUID = attachmentEntityTypeGUID;
         }
 
-        return metadataCollection.findRelationships(userId,
-                                                    relationshipTypeGUID,
-                                                    null,
-                                                    false,
-                                                    (end1EntityGUIDs.isEmpty() ? null : end1EntityGUIDs),
-                                                    end1EntityTypeGUID,
-                                                    (end2EntityGUIDs.isEmpty() ? null : end2EntityGUIDs),
-                                                    end2EntityTypeGUID,
-                                                    EndMatchCriteria.BOTH,
-                                                    this.getEffectivitySearchProperties(effectiveTime),
-                                                    startingFrom,
-                                                    limitResultsByStatus,
-                                                    asOfTime,
-                                                    sequencingPropertyName,
-                                                    sequencingOrder,
-                                                    pageSize);
+        final String end1TypeGUID = end1EntityTypeGUID;
+        final String end2TypeGUID = end2EntityTypeGUID;
+
+        return this.retrieveInBatches(startingFrom,
+                                      pageSize,
+                                      (batchStartingFrom, batchPageSize) -> metadataCollection.findRelationships(userId,
+                                                                                                                 relationshipTypeGUID,
+                                                                                                                 null,
+                                                                                                                 false,
+                                                                                                                 (end1EntityGUIDs.isEmpty() ? null : end1EntityGUIDs),
+                                                                                                                 end1TypeGUID,
+                                                                                                                 (end2EntityGUIDs.isEmpty() ? null : end2EntityGUIDs),
+                                                                                                                 end2TypeGUID,
+                                                                                                                 EndMatchCriteria.BOTH,
+                                                                                                                 this.getEffectivitySearchProperties(effectiveTime),
+                                                                                                                 batchStartingFrom,
+                                                                                                                 limitResultsByStatus,
+                                                                                                                 asOfTime,
+                                                                                                                 sequencingPropertyName,
+                                                                                                                 sequencingOrder,
+                                                                                                                 batchPageSize));
     }
 
 
@@ -4135,17 +4144,19 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                             entityTypeGUID,
-                                                                                             nameProperties,
-                                                                                             MatchCriteria.ANY,
-                                                                                             startingFrom,
-                                                                                             limitResultsByStatus,
-                                                                                             limitResultsByClassification,
-                                                                                             asOfTime,
-                                                                                             sequencingPropertyName,
-                                                                                             sequencingOrder,
-                                                                                             pageSize);
+            List<EntityDetail> retrievedEntities = this.retrieveInBatches(startingFrom,
+                                                                          pageSize,
+                                                                          (batchStartingFrom, batchPageSize) -> metadataCollection.findEntitiesByProperty(userId,
+                                                                                                                                                          entityTypeGUID,
+                                                                                                                                                          nameProperties,
+                                                                                                                                                          MatchCriteria.ANY,
+                                                                                                                                                          batchStartingFrom,
+                                                                                                                                                          limitResultsByStatus,
+                                                                                                                                                          limitResultsByClassification,
+                                                                                                                                                          asOfTime,
+                                                                                                                                                          sequencingPropertyName,
+                                                                                                                                                          sequencingOrder,
+                                                                                                                                                          batchPageSize));
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -4223,19 +4234,21 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByPropertyValue(userId,
-                                                                                                  entityTypeGUID,
-                                                                                                  searchString,
-                                                                                                  startsWith,
-                                                                                                  endsWith,
-                                                                                                  ignoreCase,
-                                                                                                  startingFrom,
-                                                                                                  limitResultsByStatus,
-                                                                                                  limitResultsByClassification,
-                                                                                                  asOfTime,
-                                                                                                  sequencingPropertyName,
-                                                                                                  sequencingOrder,
-                                                                                                  pageSize);
+            List<EntityDetail> retrievedEntities = this.retrieveInBatches(startingFrom,
+                                                                          pageSize,
+                                                                          (batchStartingFrom, batchPageSize) -> metadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                                                                                               entityTypeGUID,
+                                                                                                                                                               searchString,
+                                                                                                                                                               startsWith,
+                                                                                                                                                               endsWith,
+                                                                                                                                                               ignoreCase,
+                                                                                                                                                               batchStartingFrom,
+                                                                                                                                                               limitResultsByStatus,
+                                                                                                                                                               limitResultsByClassification,
+                                                                                                                                                               asOfTime,
+                                                                                                                                                               sequencingPropertyName,
+                                                                                                                                                               sequencingOrder,
+                                                                                                                                                               batchPageSize));
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -4303,17 +4316,19 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                             entityTypeGUID,
-                                                                                             null,
-                                                                                             null,
-                                                                                             startingFrom,
-                                                                                             limitResultsByStatus,
-                                                                                             null,
-                                                                                             asOfTime,
-                                                                                             sequencingProperty,
-                                                                                             sequencingOrder,
-                                                                                             pageSize);
+            List<EntityDetail> retrievedEntities = this.retrieveInBatches(startingFrom,
+                                                                          pageSize,
+                                                                          (batchStartingFrom, batchPageSize) -> metadataCollection.findEntitiesByProperty(userId,
+                                                                                                                                                          entityTypeGUID,
+                                                                                                                                                          null,
+                                                                                                                                                          null,
+                                                                                                                                                          batchStartingFrom,
+                                                                                                                                                          limitResultsByStatus,
+                                                                                                                                                          null,
+                                                                                                                                                          asOfTime,
+                                                                                                                                                          sequencingProperty,
+                                                                                                                                                          sequencingOrder,
+                                                                                                                                                          batchPageSize));
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -4460,18 +4475,20 @@ public class RepositoryHandler
 
         try
         {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntities(userId,
-                                                                                   entityTypeGUID,
-                                                                                   entitySubtypeGUIDs,
-                                                                                   skipSubtypes,
-                                                                                   searchProperties,
-                                                                                   startingFrom,
-                                                                                   limitResultsByStatus,
-                                                                                   searchClassifications,
-                                                                                   asOfTime,
-                                                                                   sequencingProperty,
-                                                                                   sequencingOrder,
-                                                                                   pageSize);
+            List<EntityDetail> retrievedEntities = this.retrieveInBatches(startingFrom,
+                                                                          pageSize,
+                                                                          (batchStartingFrom, batchPageSize) -> metadataCollection.findEntities(userId,
+                                                                                                                                                entityTypeGUID,
+                                                                                                                                                entitySubtypeGUIDs,
+                                                                                                                                                skipSubtypes,
+                                                                                                                                                searchProperties,
+                                                                                                                                                batchStartingFrom,
+                                                                                                                                                limitResultsByStatus,
+                                                                                                                                                searchClassifications,
+                                                                                                                                                asOfTime,
+                                                                                                                                                sequencingProperty,
+                                                                                                                                                sequencingOrder,
+                                                                                                                                                batchPageSize));
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -4698,22 +4715,24 @@ public class RepositoryHandler
 
         try
         {
-            List<Relationship> relationships = metadataCollection.findRelationships(userId,
-                                                                                    relationshipTypeGUID,
-                                                                                    relationshipSubtypeGUIDs,
-                                                                                    skipSubtypes,
-                                                                                    end1EntityGUIDs,
-                                                                                    end1EntityTypeGUID,
-                                                                                    end2EntityGUIDs,
-                                                                                    end2EntityTypeGUID,
-                                                                                    endMatchCriteria,
-                                                                                    searchProperties,
-                                                                                    startingFrom,
-                                                                                    limitResultsByStatus,
-                                                                                    asOfTime,
-                                                                                    sequencingProperty,
-                                                                                    sequencingOrder,
-                                                                                    pageSize);
+            List<Relationship> relationships = this.retrieveInBatches(startingFrom,
+                                                                      pageSize,
+                                                                      (batchStartingFrom, batchPageSize) -> metadataCollection.findRelationships(userId,
+                                                                                                                                                 relationshipTypeGUID,
+                                                                                                                                                 relationshipSubtypeGUIDs,
+                                                                                                                                                 skipSubtypes,
+                                                                                                                                                 end1EntityGUIDs,
+                                                                                                                                                 end1EntityTypeGUID,
+                                                                                                                                                 end2EntityGUIDs,
+                                                                                                                                                 end2EntityTypeGUID,
+                                                                                                                                                 endMatchCriteria,
+                                                                                                                                                 searchProperties,
+                                                                                                                                                 batchStartingFrom,
+                                                                                                                                                 limitResultsByStatus,
+                                                                                                                                                 asOfTime,
+                                                                                                                                                 sequencingProperty,
+                                                                                                                                                 sequencingOrder,
+                                                                                                                                                 batchPageSize));
 
             if (relationships != null)
             {
@@ -5542,16 +5561,18 @@ public class RepositoryHandler
 
         try
         {
-            List<Relationship> retrievedRelationships = metadataCollection.findRelationshipsByProperty(userId,
-                                                                                                       relationshipTypeGUID,
-                                                                                                       null,
-                                                                                                       null,
-                                                                                                       startingFrom,
-                                                                                                       limitResultsByStatus,
-                                                                                                       asOfTime,
-                                                                                                       sequencingProperty,
-                                                                                                       sequencingOrder,
-                                                                                                       pageSize);
+            List<Relationship> retrievedRelationships = this.retrieveInBatches(startingFrom,
+                                                                               pageSize,
+                                                                               (batchStartingFrom, batchPageSize) -> metadataCollection.findRelationshipsByProperty(userId,
+                                                                                                                                                                    relationshipTypeGUID,
+                                                                                                                                                                    null,
+                                                                                                                                                                    null,
+                                                                                                                                                                    batchStartingFrom,
+                                                                                                                                                                    limitResultsByStatus,
+                                                                                                                                                                    asOfTime,
+                                                                                                                                                                    sequencingProperty,
+                                                                                                                                                                    sequencingOrder,
+                                                                                                                                                                    batchPageSize));
 
             return validateRelationships(retrievedRelationships,
                                          relationshipTypeName,
@@ -6992,5 +7013,110 @@ public class RepositoryHandler
     public OMRSMetadataCollection getMetadataCollection()
     {
         return metadataCollection;
+    }
+
+
+    /**
+     * The largest number of instances requested from the repositories in a single call.  A repository connector
+     * retrieves the properties and classifications of every instance on a page together, so an unbounded page
+     * (or a very large one) becomes one enormous query that can exhaust the memory of the repository's database.
+     */
+    static final int REPOSITORY_BATCH_SIZE = 500;
+
+
+    /**
+     * Retrieves one batch of instances from the repositories.
+     *
+     * @param <T> type of instance
+     */
+    @FunctionalInterface
+    interface RepositoryBatchRetriever<T>
+    {
+        /**
+         * Retrieve one batch.
+         *
+         * @param batchStartingFrom position of the first instance in the batch
+         * @param batchPageSize maximum number of instances in the batch
+         * @return instances or null if there are none
+         * @throws Exception problem with the repository
+         */
+        List<T> retrieve(int batchStartingFrom,
+                         int batchPageSize) throws Exception;
+    }
+
+
+    /**
+     * Retrieve a page of instances from the repositories in batches of no more than REPOSITORY_BATCH_SIZE.
+     *
+     * @param startingFrom position of the first instance requested
+     * @param pageSize maximum number of instances requested - zero means all of them
+     * @param retriever call to the repositories
+     * @param <T> type of instance
+     * @return instances or null if there are none
+     * @throws Exception problem with the repository
+     */
+    private <T> List<T> retrieveInBatches(int                         startingFrom,
+                                          int                         pageSize,
+                                          RepositoryBatchRetriever<T> retriever) throws Exception
+    {
+        return retrieveInBatches(startingFrom, pageSize, REPOSITORY_BATCH_SIZE, retriever);
+    }
+
+
+    /**
+     * Retrieve a page of instances from the repositories in batches.  A page that fits in one batch is a single
+     * call.  Otherwise, batches are retrieved one after another until the page is full or a batch comes back short,
+     * which means there are no more instances.
+     *
+     * @param startingFrom position of the first instance requested
+     * @param pageSize maximum number of instances requested - zero means all of them
+     * @param batchSize maximum number of instances to request in one call
+     * @param retriever call to the repositories
+     * @param <T> type of instance
+     * @return instances or null if there are none
+     * @throws Exception problem with the repository
+     */
+    static <T> List<T> retrieveInBatches(int                         startingFrom,
+                                         int                         pageSize,
+                                         int                         batchSize,
+                                         RepositoryBatchRetriever<T> retriever) throws Exception
+    {
+        if ((pageSize > 0) && (pageSize <= batchSize))
+        {
+            return retriever.retrieve(startingFrom, pageSize);
+        }
+
+        List<T> instances         = null;
+        int     batchStartingFrom = startingFrom;
+
+        while (true)
+        {
+            int batchPageSize = batchSize;
+
+            if ((pageSize > 0) && (instances != null))
+            {
+                batchPageSize = Math.min(batchSize, pageSize - instances.size());
+            }
+
+            List<T> batch = retriever.retrieve(batchStartingFrom, batchPageSize);
+
+            if ((batch == null) || (batch.isEmpty()))
+            {
+                return instances;
+            }
+
+            if (instances == null)
+            {
+                instances = new ArrayList<>();
+            }
+
+            instances.addAll(batch);
+            batchStartingFrom = batchStartingFrom + batch.size();
+
+            if ((batch.size() < batchPageSize) || ((pageSize > 0) && (instances.size() >= pageSize)))
+            {
+                return instances;
+            }
+        }
     }
 }

@@ -285,8 +285,6 @@ public class BitolRoundTripFVT
 
         assertTrue(stored.isFile(), "The store has not yet written " + stored.getPath() + " - the earlier tests did not complete.");
 
-        String storedBefore = Files.readString(stored.toPath(), StandardCharsets.UTF_8);
-
         OpenMetadataElement catalog = openMetadataStore.getMetadataElementByUniqueName(OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName + "::" + DOMAIN, "qualifiedName");
 
         assertNotNull(catalog, "The DigitalProductCatalog for domain " + DOMAIN + " is missing.");
@@ -297,22 +295,19 @@ public class BitolRoundTripFVT
         context.getAssetClient().addCatalogTarget(IntegrationConnectorDefinition.BITOL_DOCUMENT_PUBLISHER.getGUID(), catalog.getElementGUID(), null, catalogTargetProperties);
 
         /*
-         * A refresh picks up the new catalog target and regenerates every product in it.  The generated
-         * document differs in layout from the original that the store holds, so the store rewrites the file.
+         * A refresh picks up the new catalog target and regenerates every product in it, and the store writes
+         * each one.  The publisher has already published this product from the events for the elements catalogued
+         * by the earlier tests, and it only publishes a document that differs from the last one it published for
+         * the same element, so a refresh of the running connector would rightly publish nothing.  The publisher is
+         * restarted, which discards its memory of what it published, and the stored file is removed: the file
+         * reappearing is what shows that the refresh regenerated the product.
          */
+        Files.delete(stored.toPath());
+
+        integrationDaemon.restartConnector(IntegrationConnectorDefinition.BITOL_DOCUMENT_PUBLISHER.getConnectorName());
         integrationDaemon.refreshConnector(IntegrationConnectorDefinition.BITOL_DOCUMENT_PUBLISHER.getConnectorName());
 
-        BitolFvtTestSupport.waitFor("The publisher regenerating " + stored.getPath(), () ->
-        {
-            try
-            {
-                return ! storedBefore.equals(Files.readString(stored.toPath(), StandardCharsets.UTF_8));
-            }
-            catch (Exception error)
-            {
-                return false;
-            }
-        });
+        BitolFvtTestSupport.waitFor("The publisher regenerating " + stored.getPath(), () -> (stored.isFile() && stored.length() > 0));
 
         DataProduct regenerated = BitolDocumentFormatter.parseDataProduct(Files.readString(stored.toPath(), StandardCharsets.UTF_8));
 

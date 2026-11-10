@@ -42,7 +42,7 @@ public class LogoutController
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="platformLogout",
-               description="Invalidate the user's token supplied in the request.",
+               description="Remove the user's token supplied in the request from the token cache, if one (TokenClient) is configured.  No token cache is supplied with Egeria, so this call does not revoke the token: it remains valid until it expires.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/features/metadata-security/overview"))
 
@@ -69,7 +69,7 @@ public class LogoutController
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="serverLogout",
-            description="Invalidate the user's token supplied in the request.",
+            description="Remove the user's token supplied in the request from the token cache, if one (TokenClient) is configured.  No token cache is supplied with Egeria, so this call does not revoke the token: it remains valid until it expires.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/metadata-security/overview"))
 

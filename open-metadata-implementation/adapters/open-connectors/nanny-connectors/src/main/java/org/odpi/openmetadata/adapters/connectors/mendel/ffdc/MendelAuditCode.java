@@ -271,6 +271,36 @@ public enum MendelAuditCode implements AuditLogMessageSet
                                   "Review the cluster.  If its members are still duplicates of each other, nothing needs doing.  If they are not, remove the consolidated element and its ConsolidatedDuplicateLink relationships; the members then stop being combined once none of their duplicate links are live.",
                                   "https://egeria-project.org/features/duplicate-management/overview/"),
 
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0019 - The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.  Examples: {5}
+     */
+    DUPLICATES_REPORTED("MENDEL-DUPLICATE-MANAGER-0019",
+                        AuditLogRecordSeverityLevel.ACTION,
+                        "The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.  Examples: {5}",
+                        "Each group holds instances that are identical apart from their unique identifiers and audit headers.  The oldest in each group would be kept and the rest deleted.",
+                        "Review the examples.  To remove the duplicates, set the reportDuplicatesOnly configuration property to false; to leave this type alone, remove it from the duplicateRelationshipTypes or duplicateAttachmentTypes configuration property.",
+                        "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0020 - The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group
+     */
+    DUPLICATES_REMOVED("MENDEL-DUPLICATE-MANAGER-0020",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group",
+                       "The duplicates are deleted using the server's default delete method, so a soft-deleted instance can be restored.",
+                       "No action is required.  If duplicates reappear on every refresh, find and fix the process that creates them.",
+                       "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * MENDEL-DUPLICATE-MANAGER-0021 - The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}
+     */
+    DUPLICATE_REMOVAL_FAILED("MENDEL-DUPLICATE-MANAGER-0021",
+                             AuditLogRecordSeverityLevel.EXCEPTION,
+                             "The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}",
+                             "The duplicates of this type are left for the next refresh.  The other types are still processed.",
+                             "Use the exception message to correct the cause - for example, a relationship type name in the configuration that is not known.",
+                             "https://egeria-project.org/features/duplicate-management/overview/"),
+
     ;
 
     private final String                      logMessageId;

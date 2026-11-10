@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openlineagefvt;
 
+import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
@@ -177,6 +178,56 @@ class OpenLineageFvtTestSupport
 
         waitFor(description + " (" + qualifiedName + ")", () ->
         {
+            OpenMetadataRootElement element = getAsset(qualifiedName);
+
+            if ((element != null) && (condition.isMet(element)))
+            {
+                holder.clear();
+                holder.add(element);
+                return true;
+            }
+
+            return false;
+        });
+
+        return holder.get(0);
+    }
+
+
+    /**
+     * Ask the Open Lineage Cataloguer to refresh.  It queues the run events for each element and writes the
+     * RunMetrics and DataScope classifications on its refresh, so a test that checks them has to make it refresh
+     * rather than wait for its refresh interval.
+     *
+     * @throws Exception problem calling the integration daemon
+     */
+    static void refreshCataloguer() throws Exception
+    {
+        OMAGPlatformExtension.getIntegrationDaemonClient().refreshConnector(IntegrationConnectorDefinition.OPEN_LINEAGE_CATALOGUER.getConnectorName());
+    }
+
+
+    /**
+     * Wait for the RunMetrics or DataScope classification of an asset to satisfy a condition.  The cataloguer
+     * is refreshed before each check, so the run events that it has received by then are written - including
+     * those that arrive while the test is waiting.
+     *
+     * @param qualifiedName qualified name
+     * @param description what is being waited for
+     * @param condition test on the element
+     * @return the element in the state that satisfied the condition
+     * @throws Exception timed out or repository problem
+     */
+    static OpenMetadataRootElement waitForCataloguerWrite(String           qualifiedName,
+                                                          String           description,
+                                                          ElementCondition condition) throws Exception
+    {
+        List<OpenMetadataRootElement> holder = new ArrayList<>();
+
+        waitFor(description + " (" + qualifiedName + ")", () ->
+        {
+            refreshCataloguer();
+
             OpenMetadataRootElement element = getAsset(qualifiedName);
 
             if ((element != null) && (condition.isMet(element)))

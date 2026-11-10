@@ -39,7 +39,7 @@ class BitolFvtTestSupport
      * The directory the Bitol File Store writes to - the connector's default endpoint, resolved against this
      * module's directory because that is the working directory of the test JVM.
      */
-    static final File STORE_DIRECTORY = new File("logs/bitol");
+    static final File STORE_DIRECTORY = new File("distribution-hub/bitol");
 
     /**
      * The directory the Bitol Files Receiver monitors by default, resolved the same way.

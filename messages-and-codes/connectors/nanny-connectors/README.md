@@ -6,7 +6,7 @@
 
 The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed.
 
-This directory documents 132 messages in 20 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 137 messages in 20 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -23,11 +23,11 @@ This directory documents 132 messages in 20 message sets.  Return to the [messag
 | [HarvestOpenMetadataErrorCode](HarvestOpenMetadataErrorCode.md) | Exception messages | `HARVEST-OPEN-METADATA-500-` | 1 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 | [HarvestSurveysAuditCode](HarvestSurveysAuditCode.md) | Audit log messages | `HARVEST-SURVEYS-` | 1 | <https://egeria-project.org/concepts/survey-report/> |
 | [HarvestSurveysErrorCode](HarvestSurveysErrorCode.md) | Exception messages | `HARVEST-SURVEYS-500-` | 1 | <https://egeria-project.org/concepts/survey-report/> |
-| [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 23 |  |
+| [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 25 |  |
 | [JacquardErrorCode](JacquardErrorCode.md) | Exception messages | `JACQUARD-HARVESTER-` | 2 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 | [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 13 | <https://egeria-project.org/concepts/data-sharing-hub/> |
 | [LiskovErrorCode](LiskovErrorCode.md) | Exception messages | `LISKOV-DATA-HUB-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/data-sharing-hub/> |
-| [MendelAuditCode](MendelAuditCode.md) | Audit log messages | `MENDEL-DUPLICATE-MANAGER-` | 18 | <https://egeria-project.org/features/duplicate-management/overview/> |
+| [MendelAuditCode](MendelAuditCode.md) | Audit log messages | `MENDEL-DUPLICATE-MANAGER-` | 21 | <https://egeria-project.org/features/duplicate-management/overview/> |
 | [MendelErrorCode](MendelErrorCode.md) | Exception messages | `MENDEL-DUPLICATE-MANAGER-500-` | 1 | <https://egeria-project.org/features/duplicate-management/overview/> |
 | [PepysAuditCode](PepysAuditCode.md) | Audit log messages | `PEPYS-ACTIVITY-OBSERVER-` | 7 | <https://egeria-project.org/types/7/0795-Usage-Activity/> |
 | [SimonAuditCode](SimonAuditCode.md) | Audit log messages | `SIMON-CONTRIBUTION-RECORDER-` | 7 | <https://egeria-project.org/concepts/karma-point/> |

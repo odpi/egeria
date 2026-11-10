@@ -54,6 +54,20 @@ public class DataProductCataloguerIntegrationConnector extends IntegrationConnec
 
 
     /**
+     * This connector catalogues the documents it receives, so it is not sent the documents that the Bitol document
+     * publisher generates from open metadata.  Cataloguing those again would change the elements they describe,
+     * causing them to be published again.
+     *
+     * @return true
+     */
+    @Override
+    public boolean isCataloguingListener()
+    {
+        return true;
+    }
+
+
+    /**
      * The documents arrive through the listener so there is nothing to do on refresh.
      */
     @Override

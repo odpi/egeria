@@ -35,8 +35,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -310,19 +312,47 @@ public abstract class BitolGeneratorBase
             return null;
         }
 
-        List<String> tags = new ArrayList<>();
+        List<String> keywords = new ArrayList<>();
 
         for (RelatedMetadataElementSummary keyword : element.getSearchKeywords())
         {
             if ((keyword != null) && (keyword.getRelatedElement() != null) &&
-                (keyword.getRelatedElement().getProperties() instanceof SearchKeywordProperties properties) &&
-                (properties.getDisplayName() != null))
+                (keyword.getRelatedElement().getProperties() instanceof SearchKeywordProperties properties))
             {
-                tags.add(properties.getDisplayName());
+                keywords.add(properties.getDisplayName());
             }
         }
 
-        return tags.isEmpty() ? null : tags;
+        return getDistinctTags(keywords);
+    }
+
+
+    /**
+     * Return each keyword once, in the order first seen.  An element can carry the same keyword more than once, and
+     * a tag repeated in a published document is catalogued again for every repeat when the document is read back,
+     * so the duplicates would grow on every round trip.
+     *
+     * @param keywords keyword names (may contain nulls, blanks and repeats)
+     * @return distinct tags or null if there are none
+     */
+    static List<String> getDistinctTags(List<String> keywords)
+    {
+        if (keywords == null)
+        {
+            return null;
+        }
+
+        Set<String> tags = new LinkedHashSet<>();
+
+        for (String keyword : keywords)
+        {
+            if ((keyword != null) && (! keyword.isBlank()))
+            {
+                tags.add(keyword);
+            }
+        }
+
+        return tags.isEmpty() ? null : new ArrayList<>(tags);
     }
 
 

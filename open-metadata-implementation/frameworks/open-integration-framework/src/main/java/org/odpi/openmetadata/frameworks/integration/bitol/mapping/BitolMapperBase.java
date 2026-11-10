@@ -23,6 +23,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AuthoredReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactDetailsProperties;
@@ -38,6 +40,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ScopedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -48,8 +51,10 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * BitolMapperBase holds the mapping logic that is shared by the Open Data Contract Standard (ODCS) and Open Data
@@ -144,6 +149,8 @@ public abstract class BitolMapperBase
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     protected final ConnectorContextBase context;
+
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -750,22 +757,161 @@ public abstract class BitolMapperBase
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        if (tags != null)
+        if ((tags != null) && (! tags.isEmpty()))
         {
-            for (String tag : tags)
+            for (String tag : getNewTags(tags, getSearchKeywords(elementGUID)))
             {
-                if ((tag != null) && (! tag.isBlank()))
+                SearchKeywordProperties properties = new SearchKeywordProperties();
+
+                properties.setDisplayName(tag);
+
+                context.getSearchKeywordClient().addSearchKeywordToElement(elementGUID,
+                                                                           context.getSearchKeywordClient().getMetadataSourceOptions(),
+                                                                           null,
+                                                                           properties);
+            }
+        }
+    }
+
+
+    /**
+     * Return the tags that are not yet attached to the element as search keywords, each once.  A document is
+     * catalogued again whenever it changes, so without this check every tag gains another keyword each time.
+     *
+     * @param tags tags from the document
+     * @param existingKeywords names of the keywords already attached to the element
+     * @return tags to add (may be empty)
+     */
+    static List<String> getNewTags(List<String> tags,
+                                   Set<String>  existingKeywords)
+    {
+        Set<String> knownTags = new HashSet<>(existingKeywords);
+        List<String> newTags  = new ArrayList<>();
+
+        for (String tag : tags)
+        {
+            if ((tag != null) && (! tag.isBlank()) && (knownTags.add(tag)))
+            {
+                newTags.add(tag);
+            }
+        }
+
+        return newTags;
+    }
+
+
+    /**
+     * Return the names of the search keywords attached to an element.
+     *
+     * @param elementGUID element to query
+     * @return set of keyword names (may be empty)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the metadata store
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected Set<String> getSearchKeywords(String elementGUID) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        final String methodName = "getSearchKeywords";
+
+        Set<String> keywords = new HashSet<>();
+
+        for (RelatedMetadataElement keyword : getRelationships(elementGUID, 1, OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName))
+        {
+            if (keyword.getElement() != null)
+            {
+                String keywordName = propertyHelper.getStringProperty(OpenMetadataType.SEARCH_KEYWORD.typeName,
+                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                      keyword.getElement().getElementProperties(),
+                                                                      methodName);
+
+                if (keywordName != null)
                 {
-                    SearchKeywordProperties properties = new SearchKeywordProperties();
-
-                    properties.setDisplayName(tag);
-
-                    context.getSearchKeywordClient().addSearchKeywordToElement(elementGUID,
-                                                                               context.getSearchKeywordClient().getMetadataSourceOptions(),
-                                                                               null,
-                                                                               properties);
+                    keywords.add(keywordName);
                 }
             }
+        }
+
+        return keywords;
+    }
+
+
+    /**
+     * Return the unique identifiers of the elements linked to an element by a type of relationship.
+     *
+     * @param elementGUID element to query
+     * @param startingAtEnd the end of the relationship where the element sits (1 or 2)
+     * @param relationshipTypeName type of relationship
+     * @return set of guids (may be empty)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the metadata store
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected Set<String> getLinkedElementGUIDs(String elementGUID,
+                                                int    startingAtEnd,
+                                                String relationshipTypeName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        Set<String> linkedGUIDs = new HashSet<>();
+
+        for (RelatedMetadataElement relatedElement : getRelationships(elementGUID, startingAtEnd, relationshipTypeName))
+        {
+            if (relatedElement.getElement() != null)
+            {
+                linkedGUIDs.add(relatedElement.getElement().getElementGUID());
+            }
+        }
+
+        return linkedGUIDs;
+    }
+
+
+    /**
+     * Return all the relationships of a type attached to an element, reading page by page.
+     *
+     * @param elementGUID element to query
+     * @param startingAtEnd the end of the relationship where the element sits (1 or 2)
+     * @param relationshipTypeName type of relationship
+     * @return list of relationships with the element at the other end (may be empty)
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem with the metadata store
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<RelatedMetadataElement> getRelationships(String elementGUID,
+                                                          int    startingAtEnd,
+                                                          String relationshipTypeName) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final int pageSize = 100;
+
+        List<RelatedMetadataElement> relationships = new ArrayList<>();
+        int                          startFrom     = 0;
+
+        while (true)
+        {
+            RelatedMetadataElementList page = context.getOpenMetadataStore().getRelatedMetadataElements(elementGUID,
+                                                                                                         startingAtEnd,
+                                                                                                         relationshipTypeName,
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+
+            if ((page == null) || (page.getElementList() == null) || (page.getElementList().isEmpty()))
+            {
+                return relationships;
+            }
+
+            for (RelatedMetadataElement relationship : page.getElementList())
+            {
+                if (relationship != null)
+                {
+                    relationships.add(relationship);
+                }
+            }
+
+            startFrom = startFrom + page.getElementList().size();
         }
     }
 
@@ -826,8 +972,14 @@ public abstract class BitolMapperBase
                                                                                                         PropertyServerException,
                                                                                                         UserNotAuthorizedException
     {
-        if (authoritativeDefinitions != null)
+        if ((authoritativeDefinitions != null) && (! authoritativeDefinitions.isEmpty()))
         {
+            /*
+             * The document is catalogued again whenever it changes.  A reference that is already linked is not
+             * linked again since the relationship type allows more than one link between the same elements.
+             */
+            Set<String> linkedReferenceGUIDs = getLinkedElementGUIDs(elementGUID, 1, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
+
             for (BitolAuthoritativeDefinition definition : authoritativeDefinitions)
             {
                 if ((definition != null) && (definition.getUrl() != null))
@@ -851,15 +1003,18 @@ public abstract class BitolMapperBase
                                                                                                              null);
                     }
 
-                    ExternalReferenceLinkProperties linkProperties = new ExternalReferenceLinkProperties();
+                    if (linkedReferenceGUIDs.add(externalReferenceGUID))
+                    {
+                        ExternalReferenceLinkProperties linkProperties = new ExternalReferenceLinkProperties();
 
-                    linkProperties.setLabel(definition.getType());
-                    linkProperties.setDescription(definition.getDescription());
+                        linkProperties.setLabel(definition.getType());
+                        linkProperties.setDescription(definition.getDescription());
 
-                    context.getExternalReferenceClient().linkExternalReference(elementGUID,
-                                                                               externalReferenceGUID,
-                                                                               context.getExternalReferenceClient().getMakeAnchorOptions(false),
-                                                                               linkProperties);
+                        context.getExternalReferenceClient().linkExternalReference(elementGUID,
+                                                                                   externalReferenceGUID,
+                                                                                   context.getExternalReferenceClient().getMakeAnchorOptions(false),
+                                                                                   linkProperties);
+                    }
                 }
             }
         }

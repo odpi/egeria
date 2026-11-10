@@ -9,7 +9,7 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 18 |
+| **Number of messages** | 21 |
 | **Message identifiers begin** | `MENDEL-DUPLICATE-MANAGER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.mendel.ffdc.MendelAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -39,6 +39,9 @@ The MendelAuditCode is used to define the message content for the Audit Log.
 | [MENDEL-DUPLICATE-MANAGER-0008](#mendel-duplicate-manager-0008) | INFO | The {0} integration connector has stopped managing the duplicates in server {1} on platform {2} and is shutting down |
 | [MENDEL-DUPLICATE-MANAGER-0017](#mendel-duplicate-manager-0017) | INFO | The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match |
 | [MENDEL-DUPLICATE-MANAGER-0018](#mendel-duplicate-manager-0018) | ACTION | The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence |
+| [MENDEL-DUPLICATE-MANAGER-0019](#mendel-duplicate-manager-0019) | ACTION | The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.  Examples: {5} |
+| [MENDEL-DUPLICATE-MANAGER-0020](#mendel-duplicate-manager-0020) | INFO | The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group |
+| [MENDEL-DUPLICATE-MANAGER-0021](#mendel-duplicate-manager-0021) | EXCEPTION | The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3} |
 
 ----
 
@@ -416,6 +419,69 @@ The cluster is not broken up: its members go on being reached through the elemen
 **User action**
 
 Review the cluster.  If its members are still duplicates of each other, nothing needs doing.  If they are not, remove the consolidated element and its ConsolidatedDuplicateLink relationships; the members then stop being combined once none of their duplicate links are live.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0019
+
+> The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.  Examples: {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.DUPLICATES_REPORTED` |
+| **Severity** | ACTION - Action is required by the administrator. At a minimum, the situation needs to be investigated and if necessary, corrective action taken. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+
+**System action**
+
+Each group holds instances that are identical apart from their unique identifiers and audit headers.  The oldest in each group would be kept and the rest deleted.
+
+**User action**
+
+Review the examples.  To remove the duplicates, set the reportDuplicatesOnly configuration property to false; to leave this type alone, remove it from the duplicateRelationshipTypes or duplicateAttachmentTypes configuration property.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0020
+
+> The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.DUPLICATES_REMOVED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+The duplicates are deleted using the server's default delete method, so a soft-deleted instance can be restored.
+
+**User action**
+
+No action is required.  If duplicates reappear on every refresh, find and fix the process that creates them.
+
+
+----
+
+### MENDEL-DUPLICATE-MANAGER-0021
+
+> The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `MendelAuditCode.DUPLICATE_REMOVAL_FAILED` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The duplicates of this type are left for the next refresh.  The other types are still processed.
+
+**User action**
+
+Use the exception message to correct the cause - for example, a relationship type name in the configuration that is not known.
 
 
 ----

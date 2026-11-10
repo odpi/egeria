@@ -641,7 +641,7 @@ public enum IntegrationConnectorDefinition
                      "bitolstorenpa",
                      null,
                      null,
-                     "logs/bitol",
+                     "distribution-hub/bitol",
                      null,
                      60,
                      new DeployedImplementationTypeDefinition[]{
@@ -904,7 +904,7 @@ public enum IntegrationConnectorDefinition
                                        null,
                                        "2d499775-4a9c-45db-b07e-630aec9d6166",
                                        "Automated Duplicate Manager",
-                                       "Reviews the duplicate links that have been detected in the open metadata ecosystem.  It confirms the close matches, asks a steward to decide on the rest, retires the classifications of the duplicates that a steward has separated, and consolidates the clusters of confirmed duplicates.",
+                                       "Reviews the duplicate links that have been detected in the open metadata ecosystem.  It confirms the close matches, asks a steward to decide on the rest, retires the classifications of the duplicates that a steward has separated, consolidates the clusters of confirmed duplicates, and removes the exact duplicate relationships and attached elements of the configured types.",
                                        true,
                                        null,
                                        null,
@@ -1051,6 +1051,12 @@ public enum IntegrationConnectorDefinition
 
         configurationProperties.put(MendelConfigurationProperty.DUPLICATE_CLUSTER_SIZE.getName(),
                                     MendelConfigurationProperty.DEFAULT_DUPLICATE_CLUSTER_SIZE);
+        configurationProperties.put(MendelConfigurationProperty.DUPLICATE_RELATIONSHIP_TYPES.getName(),
+                                    MendelConfigurationProperty.DEFAULT_DUPLICATE_RELATIONSHIP_TYPES);
+        configurationProperties.put(MendelConfigurationProperty.DUPLICATE_ATTACHMENT_TYPES.getName(),
+                                    MendelConfigurationProperty.DEFAULT_DUPLICATE_ATTACHMENT_TYPES);
+        configurationProperties.put(MendelConfigurationProperty.REPORT_DUPLICATES_ONLY.getName(),
+                                    false);
 
         return configurationProperties;
     }

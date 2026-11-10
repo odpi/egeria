@@ -92,7 +92,7 @@ public class OpenLineageLovelaceServicesFVT
          * Wait for the cataloguer (so the elements the services update exist) and for the file publisher (so the
          * log store holds the events the services analyse).
          */
-        OpenLineageFvtTestSupport.waitForAsset(processQN, "the runs to be catalogued", element ->
+        OpenLineageFvtTestSupport.waitForCataloguerWrite(processQN, "the runs to be catalogued", element ->
                 (element.getElementHeader().getRunMetrics() != null) &&
                 (element.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties metrics) &&
                 (OpenMetadataProperty.RUN_COUNT.longValueOrDefault(metrics.getRunCount()) >= RUN_COUNT) &&
