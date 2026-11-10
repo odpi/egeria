@@ -53,12 +53,6 @@ org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.ffdc
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.schema
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.ffdc
-org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestsurveys.schema
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
@@ -201,10 +195,6 @@ org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.eventdisplay
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.controls
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.ffdc
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.schema
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc
