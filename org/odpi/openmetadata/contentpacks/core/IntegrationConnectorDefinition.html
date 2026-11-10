@@ -191,31 +191,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#ORACLE_SERVER_CATALOGUER" class="member-name-link">ORACLE_SERVER_CATALOGUER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PEPYS_ACTIVITY_OBSERVER" class="member-name-link">PEPYS_ACTIVITY_OBSERVER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#PASTEUR_ACTION_HISTORY_CLEANUP" class="member-name-link">PASTEUR_ACTION_HISTORY_CLEANUP</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Pasteur deletes the finished actions once a configured number of days has passed since they completed,
+ so the action history does not grow without bound.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PEPYS_ACTIVITY_OBSERVER" class="member-name-link">PEPYS_ACTIVITY_OBSERVER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Pepys listens to the topics that the OMAG Servers write their audit logs to and maintains the usage activity
  counts of the assets reported there.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRES_SERVER_CATALOGUER" class="member-name-link">POSTGRES_SERVER_CATALOGUER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PRODUCT_HARVESTER" class="member-name-link">PRODUCT_HARVESTER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#POSTGRES_SERVER_CATALOGUER" class="member-name-link">POSTGRES_SERVER_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SAMPLE_DATA_CATALOGUER" class="member-name-link">SAMPLE_DATA_CATALOGUER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code><a href="#PRODUCT_HARVESTER" class="member-name-link">PRODUCT_HARVESTER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#SAMPLE_DATA_CATALOGUER" class="member-name-link">SAMPLE_DATA_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Catalogs files found under the sample-data directory (folder).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SECRETS_STORE_CATALOGUER" class="member-name-link">SECRETS_STORE_CATALOGUER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code><a href="#SECRETS_STORE_CATALOGUER" class="member-name-link">SECRETS_STORE_CATALOGUER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Simon listens to the open metadata events and awards a karma point to the user responsible for each change.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -618,6 +623,15 @@ the order they are declared.</div>
 <section class="detail" id="DARWIN_PRODUCT_DEPENDENCY_MANAGER">
 <h3>DARWIN_PRODUCT_DEPENDENCY_MANAGER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">DARWIN_PRODUCT_DEPENDENCY_MANAGER</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="PASTEUR_ACTION_HISTORY_CLEANUP">
+<h3>PASTEUR_ACTION_HISTORY_CLEANUP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">PASTEUR_ACTION_HISTORY_CLEANUP</span></div>
+<div class="block">Pasteur deletes the finished actions once a configured number of days has passed since they completed,
+ so the action history does not grow without bound.  Its configuration properties hold the days to keep each
+ type of action and the activity statuses that show an action has finished.</div>
 </section>
 </li>
 <li>

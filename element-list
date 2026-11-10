@@ -128,6 +128,9 @@ org.odpi.openmetadata.adapters.connectors.oracle.ffdc
 org.odpi.openmetadata.adapters.connectors.oracle.survey
 org.odpi.openmetadata.adapters.connectors.oracle.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.oracle.utilities
+org.odpi.openmetadata.adapters.connectors.pasteur
+org.odpi.openmetadata.adapters.connectors.pasteur.controls
+org.odpi.openmetadata.adapters.connectors.pasteur.ffdc
 org.odpi.openmetadata.adapters.connectors.pepys
 org.odpi.openmetadata.adapters.connectors.pepys.controls
 org.odpi.openmetadata.adapters.connectors.pepys.ffdc
