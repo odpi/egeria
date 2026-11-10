@@ -82,6 +82,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +195,32 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * Which catalog templates are loaded (template GUID to flag).
      */
     private final Map<String, Boolean> loadedTemplates = new ConcurrentHashMap<>();
+
+    /**
+     * The changes to the RunMetrics classifications of processes (and process steps), and to the DataScope
+     * classifications of datasets, that have arrived since the last refresh, keyed by element GUID.  The events are
+     * queued as they arrive and replayed on each refresh onto the classification as it is then, so that each
+     * element is read and updated once per refresh rather than once per event (each update adds another version to
+     * the repository's history).  Replaying onto the latest classification keeps the values that the Lovelace
+     * OpenLineage analysis services write to the same classifications.  Events arrive on the listener's thread and
+     * are replayed on the refresh thread, so every access is synchronized on pendingClassificationLock.
+     */
+    private final Object                                       pendingClassificationLock = new Object();
+    private final Map<String, List<OpenLineageRunEvent>>       pendingRunMetrics         = new LinkedHashMap<>();
+    private final Map<String, List<PendingDataScopeChange>>    pendingDataScopes         = new LinkedHashMap<>();
+
+
+    /**
+     * A change to the DataScope classification of a dataset from a run event: a write to the dataset (output is
+     * set) or a read of it (output is null).
+     *
+     * @param event run event
+     * @param output the output dataset written, or null for a read
+     */
+    record PendingDataScopeChange(OpenLineageRunEvent      event,
+                                  OpenLineageOutputDataSet output)
+    {
+    }
 
 
     /**
@@ -309,12 +336,250 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
-     * This connector is event driven so there is nothing to do.
+     * The lineage is catalogued as the events arrive.  The refresh writes the RunMetrics and DataScope
+     * classifications that the events have changed since the last refresh.
      */
     @Override
     public void refresh()
     {
-        // nothing to do
+        writeCachedClassifications();
+    }
+
+
+    /**
+     * Write the cached classifications before the connector shuts down, so the changes from the events received
+     * since the last refresh are not lost.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    @Override
+    public void disconnect() throws ConnectorCheckedException
+    {
+        if (myContext != null)
+        {
+            writeCachedClassifications();
+        }
+
+        super.disconnect();
+    }
+
+
+    /**
+     * Apply the run events received since the last refresh to the RunMetrics and DataScope classifications.  Each
+     * element's queue is taken before its classification is read, so events that arrive during the update are kept
+     * for the next refresh.  If the repository is unavailable, the events are put back to try again on the next
+     * refresh.  If the element is no longer there, or the connector is not permitted to change it, trying again
+     * will not help, so the events are discarded.
+     */
+    private void writeCachedClassifications()
+    {
+        final String methodName = "writeCachedClassifications";
+
+        int updatedElements = 0;
+
+        for (String processGUID : takePendingGUIDs(pendingRunMetrics))
+        {
+            List<OpenLineageRunEvent> events;
+
+            synchronized (pendingClassificationLock)
+            {
+                events = pendingRunMetrics.remove(processGUID);
+            }
+
+            if (events == null)
+            {
+                continue;
+            }
+
+            try
+            {
+                ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
+
+                /*
+                 * A process step is not an asset, so the element is retrieved generically.
+                 */
+                OpenMetadataRootElement process    = classificationClient.getRootElementByGUID(processGUID, elementOnly(classificationClient.getGetOptions()));
+                RunMetricsProperties    runMetrics = new RunMetricsProperties();
+                boolean                 classified = false;
+
+                if ((process != null) && (process.getElementHeader() != null) && (process.getElementHeader().getRunMetrics() != null))
+                {
+                    classified = true;
+
+                    if (process.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties existingMetrics)
+                    {
+                        runMetrics = new RunMetricsProperties(existingMetrics);
+                    }
+                }
+
+                for (OpenLineageRunEvent event : events)
+                {
+                    applyRunEvent(runMetrics, event);
+                }
+
+                if (classified)
+                {
+                    classificationClient.updateRunMetricsClassification(processGUID, runMetrics, classificationClient.getUpdateOptions(false));
+                }
+                else
+                {
+                    classificationClient.addRunMetricsClassification(processGUID, runMetrics, classificationClient.getMetadataSourceOptions());
+                }
+
+                updatedElements++;
+            }
+            catch (Exception error)
+            {
+                handleWriteFailure(pendingRunMetrics, processGUID, events, "process run metrics", error, methodName);
+            }
+        }
+
+        for (String assetGUID : takePendingGUIDs(pendingDataScopes))
+        {
+            List<PendingDataScopeChange> changes;
+
+            synchronized (pendingClassificationLock)
+            {
+                changes = pendingDataScopes.remove(assetGUID);
+            }
+
+            if (changes == null)
+            {
+                continue;
+            }
+
+            try
+            {
+                ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
+
+                /*
+                 * The dataset may be an asset or a schema attribute such as a table, so it is retrieved generically.
+                 */
+                OpenMetadataRootElement asset      = classificationClient.getRootElementByGUID(assetGUID, elementOnly(classificationClient.getGetOptions()));
+                DataScopeProperties     dataScope  = new DataScopeProperties();
+                boolean                 classified = false;
+
+                if ((asset != null) && (asset.getElementHeader() != null) && (asset.getElementHeader().getDataScope() != null))
+                {
+                    classified = true;
+
+                    if (asset.getElementHeader().getDataScope().getClassificationProperties() instanceof DataScopeProperties existingProperties)
+                    {
+                        dataScope = new DataScopeProperties(existingProperties);
+                    }
+                }
+
+                for (PendingDataScopeChange change : changes)
+                {
+                    if (change.output() == null)
+                    {
+                        applyDataScopeRead(dataScope, change.event());
+                    }
+                    else
+                    {
+                        applyDataScopeWrite(dataScope, change.event(), change.output());
+                    }
+                }
+
+                if (classified)
+                {
+                    classificationClient.updateDataScopeClassification(assetGUID, dataScope, classificationClient.getUpdateOptions(false));
+                }
+                else
+                {
+                    classificationClient.addDataScopeClassification(assetGUID, dataScope, classificationClient.getMetadataSourceOptions());
+                }
+
+                updatedElements++;
+            }
+            catch (Exception error)
+            {
+                handleWriteFailure(pendingDataScopes, assetGUID, changes, "data scope", error, methodName);
+            }
+        }
+
+        if (updatedElements > 0)
+        {
+            logRecord(methodName,
+                      OpenLineageIntegrationConnectorAuditCode.CLASSIFICATIONS_WRITTEN.getMessageDefinition(connectorName,
+                                                                                                           Integer.toString(updatedElements)));
+        }
+    }
+
+
+    /**
+     * Return the GUIDs of the elements with queued changes.
+     *
+     * @param pendingChanges queued changes
+     * @return list of element GUIDs
+     */
+    private List<String> takePendingGUIDs(Map<String, ?> pendingChanges)
+    {
+        synchronized (pendingClassificationLock)
+        {
+            return new ArrayList<>(pendingChanges.keySet());
+        }
+    }
+
+
+    /**
+     * Queue a change to an element's classification for the next refresh.
+     *
+     * @param pendingChanges queued changes
+     * @param elementGUID element to change
+     * @param change change to queue
+     * @param <C> type of change
+     */
+    private <C> void queueChange(Map<String, List<C>> pendingChanges,
+                                 String               elementGUID,
+                                 C                    change)
+    {
+        synchronized (pendingClassificationLock)
+        {
+            pendingChanges.computeIfAbsent(elementGUID, guid -> new ArrayList<>()).add(change);
+        }
+    }
+
+
+    /**
+     * Handle a classification that could not be updated.  If the element is no longer there, or the connector is
+     * not permitted to change it, trying again will not help, so the changes are discarded.  Otherwise, the
+     * repository is probably unavailable, so the changes are put back in front of any that arrived since, ready
+     * for the next refresh.
+     *
+     * @param pendingChanges queued changes
+     * @param elementGUID element that was being updated
+     * @param changes the changes that were taken from the queue
+     * @param metadataDescription what could not be written
+     * @param error exception from the update
+     * @param methodName calling method
+     * @param <C> type of change
+     */
+    private <C> void handleWriteFailure(Map<String, List<C>> pendingChanges,
+                                        String               elementGUID,
+                                        List<C>              changes,
+                                        String               metadataDescription,
+                                        Exception            error,
+                                        String               methodName)
+    {
+        if ((! (error instanceof InvalidParameterException)) && (! (error instanceof UserNotAuthorizedException)))
+        {
+            synchronized (pendingClassificationLock)
+            {
+                List<C> laterChanges = pendingChanges.remove(elementGUID);
+
+                List<C> allChanges = new ArrayList<>(changes);
+
+                if (laterChanges != null)
+                {
+                    allChanges.addAll(laterChanges);
+                }
+
+                pendingChanges.put(elementGUID, allChanges);
+            }
+        }
+
+        logOptionalMetadataFailed(methodName, metadataDescription, "the run events received since the last refresh for element " + elementGUID, error);
     }
 
 
@@ -404,7 +669,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (metricsElement != null)
             {
-                updateProcessMetrics(event, metricsElement, eventDescription);
+                updateProcessMetrics(event, metricsElement);
             }
 
             if ((captureStatistics) || (captureDataQuality))
@@ -414,7 +679,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (updateDataScope)
             {
-                updateDataScope(event, jobProcess, inputAssets, outputAssets, eventDescription);
+                updateDataScope(event, inputAssets, outputAssets);
             }
         }
         catch (Exception error)
@@ -1269,192 +1534,160 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     /**
      * Maintain the RunMetrics classification on the job's process (or, for a governance action process, on the
      * process step).  This is always maintained (whether or not runs are catalogued as elements) so that the process
-     * records how often it runs and how much data it handles.
+     * records how often it runs and how much data it handles.  The event is queued and applied on the next refresh.
      *
      * @param event run event
      * @param jobProcess catalogued process (or process step) that holds the run metrics
-     * @param eventDescription description of the event for logging
      */
     private void updateProcessMetrics(OpenLineageRunEvent event,
-                                      CataloguedElement   jobProcess,
-                                      String              eventDescription)
+                                      CataloguedElement   jobProcess)
     {
-        final String methodName = "updateProcessMetrics";
+        queueChange(pendingRunMetrics, jobProcess.guid(), event);
+    }
 
-        try
+
+    /**
+     * Update run metrics with the details of a run event: the run count and timings, and the volumes of data
+     * read and written if the event reports them.
+     *
+     * @param runMetrics run metrics to update
+     * @param event run event
+     */
+    void applyRunEvent(RunMetricsProperties runMetrics,
+                       OpenLineageRunEvent  event)
+    {
+        String runId     = getRunId(event);
+        String eventType = event.getEventType();
+        Date   eventTime = parseTimestamp(event.getEventTime());
+
+        if ((runId != null) && (! runId.equals(runMetrics.getLastRunId())))
         {
-            ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
-
             /*
-             * Always re-read the process so that the metrics are built on the latest classification.  A process step
-             * is not an asset, so the element is retrieved generically.
+             * First event seen for this run.
              */
-            OpenMetadataRootElement process = classificationClient.getRootElementByGUID(jobProcess.guid(), elementOnly(classificationClient.getGetOptions()));
+            runMetrics.setRunCount(OpenMetadataProperty.RUN_COUNT.longValueOrDefault(runMetrics.getRunCount()) + 1);
+            runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()));
+            runMetrics.setLastRunId(runId);
+            runMetrics.setLastRunStartTime(eventTime);
+            runMetrics.setLastRunEndTime(null);
+            runMetrics.setLastRunDuration(0L);
 
-            RunMetricsProperties runMetrics        = null;
-            boolean              classified        = false;
-
-            if ((process != null) && (process.getElementHeader() != null) && (process.getElementHeader().getRunMetrics() != null))
+            if (runMetrics.getFirstRunStartTime() == null)
             {
-                classified = true;
-
-                if (process.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties existingMetrics)
-                {
-                    runMetrics = new RunMetricsProperties(existingMetrics);
-                }
-            }
-
-            if (runMetrics == null)
-            {
-                runMetrics = new RunMetricsProperties();
-            }
-
-            String runId     = getRunId(event);
-            String eventType = event.getEventType();
-            Date   eventTime = parseTimestamp(event.getEventTime());
-
-            if ((runId != null) && (! runId.equals(runMetrics.getLastRunId())))
-            {
-                /*
-                 * First event seen for this run.
-                 */
-                runMetrics.setRunCount(OpenMetadataProperty.RUN_COUNT.longValueOrDefault(runMetrics.getRunCount()) + 1);
-                runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()));
-                runMetrics.setLastRunId(runId);
-                runMetrics.setLastRunStartTime(eventTime);
-                runMetrics.setLastRunEndTime(null);
-                runMetrics.setLastRunDuration(0L);
-
-                if (runMetrics.getFirstRunStartTime() == null)
-                {
-                    runMetrics.setFirstRunStartTime(eventTime);
-                }
-            }
-
-            if (("START".equals(eventType)) && (eventTime != null))
-            {
-                runMetrics.setLastRunStartTime(eventTime);
-
-                if ((runMetrics.getFirstRunStartTime() == null) || (eventTime.before(runMetrics.getFirstRunStartTime())))
-                {
-                    runMetrics.setFirstRunStartTime(eventTime);
-                }
-            }
-
-            if (eventType != null)
-            {
-                runMetrics.setLastRunStatus(eventType);
-            }
-
-            if (("COMPLETE".equals(eventType)) || ("FAIL".equals(eventType)) || ("ABORT".equals(eventType)))
-            {
-                runMetrics.setLastRunEndTime(eventTime);
-
-                if ((runMetrics.getLastRunStartTime() != null) && (eventTime != null))
-                {
-                    long duration = eventTime.getTime() - runMetrics.getLastRunStartTime().getTime();
-
-                    runMetrics.setLastRunDuration(duration);
-                    runMetrics.setTotalRunDuration(OpenMetadataProperty.TOTAL_RUN_DURATION.longValueOrDefault(runMetrics.getTotalRunDuration()) + duration);
-                }
-
-                if ("FAIL".equals(eventType))
-                {
-                    runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()) + 1);
-                }
-            }
-
-            long    rowsRead          = 0;
-            long    bytesRead         = 0;
-            long    rowsWritten       = 0;
-            long    bytesWritten      = 0;
-            boolean statisticsPresent = false;
-
-            if (event.getInputs() != null)
-            {
-                for (OpenLineageInputDataSet input : event.getInputs())
-                {
-                    if ((input != null) && (input.getInputFacets() != null))
-                    {
-                        OpenLineageInputStatisticsInputDataSetFacet    inputStatistics = input.getInputFacets().getInputStatistics();
-                        OpenLineageDataQualityMetricsInputDataSetFacet inputMetrics    = input.getInputFacets().getDataQualityMetrics();
-
-                        if (inputStatistics != null)
-                        {
-                            if (inputStatistics.getRowCount() != null)
-                            {
-                                rowsRead += inputStatistics.getRowCount();
-                                statisticsPresent = true;
-                            }
-                            if (inputStatistics.getSize() != null)
-                            {
-                                bytesRead += inputStatistics.getSize();
-                                statisticsPresent = true;
-                            }
-                        }
-                        else if (inputMetrics != null)
-                        {
-                            if (inputMetrics.getRowCount() != null)
-                            {
-                                rowsRead += inputMetrics.getRowCount();
-                                statisticsPresent = true;
-                            }
-                            if (inputMetrics.getBytes() != null)
-                            {
-                                bytesRead += inputMetrics.getBytes();
-                                statisticsPresent = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (event.getOutputs() != null)
-            {
-                for (OpenLineageOutputDataSet output : event.getOutputs())
-                {
-                    if ((output != null) && (output.getOutputFacets() != null) && (output.getOutputFacets().getOutputStatistics() != null))
-                    {
-                        OpenLineageOutputStatisticsOutputDataSetFacet outputStatistics = output.getOutputFacets().getOutputStatistics();
-
-                        if (outputStatistics.getRowCount() != null)
-                        {
-                            rowsWritten += outputStatistics.getRowCount();
-                            statisticsPresent = true;
-                        }
-                        if (outputStatistics.getSize() != null)
-                        {
-                            bytesWritten += outputStatistics.getSize();
-                            statisticsPresent = true;
-                        }
-                    }
-                }
-            }
-
-            if (statisticsPresent)
-            {
-                runMetrics.setLastRunRowsRead(rowsRead);
-                runMetrics.setLastRunBytesRead(bytesRead);
-                runMetrics.setLastRunRowsWritten(rowsWritten);
-                runMetrics.setLastRunBytesWritten(bytesWritten);
-                runMetrics.setTotalRowsRead(OpenMetadataProperty.TOTAL_ROWS_READ.longValueOrDefault(runMetrics.getTotalRowsRead()) + rowsRead);
-                runMetrics.setTotalBytesRead(OpenMetadataProperty.TOTAL_BYTES_READ.longValueOrDefault(runMetrics.getTotalBytesRead()) + bytesRead);
-                runMetrics.setTotalRowsWritten(OpenMetadataProperty.TOTAL_ROWS_WRITTEN.longValueOrDefault(runMetrics.getTotalRowsWritten()) + rowsWritten);
-                runMetrics.setTotalBytesWritten(OpenMetadataProperty.TOTAL_BYTES_WRITTEN.longValueOrDefault(runMetrics.getTotalBytesWritten()) + bytesWritten);
-            }
-
-            if (classified)
-            {
-                classificationClient.updateRunMetricsClassification(jobProcess.guid(), runMetrics, classificationClient.getUpdateOptions(false));
-            }
-            else
-            {
-                classificationClient.addRunMetricsClassification(jobProcess.guid(), runMetrics, classificationClient.getMetadataSourceOptions());
+                runMetrics.setFirstRunStartTime(eventTime);
             }
         }
-        catch (Exception error)
+
+        if (("START".equals(eventType)) && (eventTime != null))
         {
-            logOptionalMetadataFailed(methodName, "process run metrics", eventDescription, error);
+            runMetrics.setLastRunStartTime(eventTime);
+
+            if ((runMetrics.getFirstRunStartTime() == null) || (eventTime.before(runMetrics.getFirstRunStartTime())))
+            {
+                runMetrics.setFirstRunStartTime(eventTime);
+            }
+        }
+
+        if (eventType != null)
+        {
+            runMetrics.setLastRunStatus(eventType);
+        }
+
+        if (("COMPLETE".equals(eventType)) || ("FAIL".equals(eventType)) || ("ABORT".equals(eventType)))
+        {
+            runMetrics.setLastRunEndTime(eventTime);
+
+            if ((runMetrics.getLastRunStartTime() != null) && (eventTime != null))
+            {
+                long duration = eventTime.getTime() - runMetrics.getLastRunStartTime().getTime();
+
+                runMetrics.setLastRunDuration(duration);
+                runMetrics.setTotalRunDuration(OpenMetadataProperty.TOTAL_RUN_DURATION.longValueOrDefault(runMetrics.getTotalRunDuration()) + duration);
+            }
+
+            if ("FAIL".equals(eventType))
+            {
+                runMetrics.setFailedRunCount(OpenMetadataProperty.FAILED_RUN_COUNT.longValueOrDefault(runMetrics.getFailedRunCount()) + 1);
+            }
+        }
+
+        long    rowsRead          = 0;
+        long    bytesRead         = 0;
+        long    rowsWritten       = 0;
+        long    bytesWritten      = 0;
+        boolean statisticsPresent = false;
+
+        if (event.getInputs() != null)
+        {
+            for (OpenLineageInputDataSet input : event.getInputs())
+            {
+                if ((input != null) && (input.getInputFacets() != null))
+                {
+                    OpenLineageInputStatisticsInputDataSetFacet    inputStatistics = input.getInputFacets().getInputStatistics();
+                    OpenLineageDataQualityMetricsInputDataSetFacet inputMetrics    = input.getInputFacets().getDataQualityMetrics();
+
+                    if (inputStatistics != null)
+                    {
+                        if (inputStatistics.getRowCount() != null)
+                        {
+                            rowsRead += inputStatistics.getRowCount();
+                            statisticsPresent = true;
+                        }
+                        if (inputStatistics.getSize() != null)
+                        {
+                            bytesRead += inputStatistics.getSize();
+                            statisticsPresent = true;
+                        }
+                    }
+                    else if (inputMetrics != null)
+                    {
+                        if (inputMetrics.getRowCount() != null)
+                        {
+                            rowsRead += inputMetrics.getRowCount();
+                            statisticsPresent = true;
+                        }
+                        if (inputMetrics.getBytes() != null)
+                        {
+                            bytesRead += inputMetrics.getBytes();
+                            statisticsPresent = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (event.getOutputs() != null)
+        {
+            for (OpenLineageOutputDataSet output : event.getOutputs())
+            {
+                if ((output != null) && (output.getOutputFacets() != null) && (output.getOutputFacets().getOutputStatistics() != null))
+                {
+                    OpenLineageOutputStatisticsOutputDataSetFacet outputStatistics = output.getOutputFacets().getOutputStatistics();
+
+                    if (outputStatistics.getRowCount() != null)
+                    {
+                        rowsWritten += outputStatistics.getRowCount();
+                        statisticsPresent = true;
+                    }
+                    if (outputStatistics.getSize() != null)
+                    {
+                        bytesWritten += outputStatistics.getSize();
+                        statisticsPresent = true;
+                    }
+                }
+            }
+        }
+
+        if (statisticsPresent)
+        {
+            runMetrics.setLastRunRowsRead(rowsRead);
+            runMetrics.setLastRunBytesRead(bytesRead);
+            runMetrics.setLastRunRowsWritten(rowsWritten);
+            runMetrics.setLastRunBytesWritten(bytesWritten);
+            runMetrics.setTotalRowsRead(OpenMetadataProperty.TOTAL_ROWS_READ.longValueOrDefault(runMetrics.getTotalRowsRead()) + rowsRead);
+            runMetrics.setTotalBytesRead(OpenMetadataProperty.TOTAL_BYTES_READ.longValueOrDefault(runMetrics.getTotalBytesRead()) + bytesRead);
+            runMetrics.setTotalRowsWritten(OpenMetadataProperty.TOTAL_ROWS_WRITTEN.longValueOrDefault(runMetrics.getTotalRowsWritten()) + rowsWritten);
+            runMetrics.setTotalBytesWritten(OpenMetadataProperty.TOTAL_BYTES_WRITTEN.longValueOrDefault(runMetrics.getTotalBytesWritten()) + bytesWritten);
         }
     }
 
@@ -4388,232 +4621,172 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * describes the data held in the store: dataCollectionStartTime is when the first record was stored and
      * dataCollectionEndTime is the last known write.  For outputs, the window is extended (or restarted when the
      * store is created, overwritten or truncated) from the time of the write, and the latest write statistics are
-     * held in the additional properties.  For inputs, only the read statistics are recorded.
+     * held in the additional properties.  For inputs, only the read statistics are recorded.  The changes are
+     * queued and applied on the next refresh.
      *
      * @param event run event
-     * @param jobProcess catalogued process for the job
      * @param inputAssets catalogued input assets
      * @param outputAssets catalogued output assets
-     * @param eventDescription description of the event for logging
      */
     private void updateDataScope(OpenLineageRunEvent     event,
-                                 CataloguedElement       jobProcess,
                                  List<CataloguedElement> inputAssets,
-                                 List<CataloguedElement> outputAssets,
-                                 String                  eventDescription)
+                                 List<CataloguedElement> outputAssets)
     {
-        final String methodName = "updateDataScope";
-
         boolean runComplete = "COMPLETE".equals(event.getEventType());
 
-        try
+        if (event.getOutputs() != null)
         {
-            if (event.getOutputs() != null)
+            for (int i = 0; i < event.getOutputs().size() && i < outputAssets.size(); i++)
             {
-                for (int i = 0; i < event.getOutputs().size() && i < outputAssets.size(); i++)
+                OpenLineageOutputDataSet output = event.getOutputs().get(i);
+                CataloguedElement        asset  = outputAssets.get(i);
+
+                /*
+                 * A write is recorded when the run completes, or when a streaming/RUNNING event reports output statistics.
+                 */
+                if ((output != null) && (asset != null) &&
+                    ((runComplete) || ((output.getOutputFacets() != null) && (output.getOutputFacets().getOutputStatistics() != null))))
                 {
-                    OpenLineageOutputDataSet output = event.getOutputs().get(i);
-                    CataloguedElement        asset  = outputAssets.get(i);
-
-                    if ((output == null) || (asset == null))
-                    {
-                        continue;
-                    }
-
-                    OpenLineageOutputStatisticsOutputDataSetFacet outputStatistics = (output.getOutputFacets() != null) ? output.getOutputFacets().getOutputStatistics() : null;
-
-                    /*
-                     * A write is recorded when the run completes, or when a streaming/RUNNING event reports output statistics.
-                     */
-                    if ((! runComplete) && (outputStatistics == null))
-                    {
-                        continue;
-                    }
-
-                    DataScopeProperties dataScope = getExistingDataScope(asset);
-                    Map<String, String> additionalProperties = new HashMap<>();
-
-                    if (dataScope.getAdditionalProperties() != null)
-                    {
-                        additionalProperties.putAll(dataScope.getAdditionalProperties());
-                    }
-
-                    /*
-                     * The data collection window is the span of the data held in the store: it starts when the first
-                     * record was stored and ends with the last known write.  The write time is the event time of the
-                     * event that reports the write, or the dataset's lastUpdated metric if the producer supplies it.
-                     * A CREATE, OVERWRITE or TRUNCATE means the store now holds only this write's records, so the
-                     * window restarts.
-                     */
-                    Date writeTime = parseTimestamp(event.getEventTime());
-
-                    if ((output.getFacets() != null) && (output.getFacets().getDataQualityMetrics() != null))
-                    {
-                        Date lastUpdated = parseTimestamp(output.getFacets().getDataQualityMetrics().getLastUpdated());
-
-                        if ((lastUpdated != null) && ((writeTime == null) || (lastUpdated.after(writeTime))))
-                        {
-                            writeTime = lastUpdated;
-                        }
-                    }
-
-                    String lifecycleStateChange = null;
-
-                    if ((output.getFacets() != null) && (output.getFacets().getLifecycleStateChange() != null))
-                    {
-                        lifecycleStateChange = output.getFacets().getLifecycleStateChange().getLifecycleStateChange();
-                    }
-
-                    boolean storeReplaced = ("CREATE".equalsIgnoreCase(lifecycleStateChange)) ||
-                                            ("OVERWRITE".equalsIgnoreCase(lifecycleStateChange)) ||
-                                            ("TRUNCATE".equalsIgnoreCase(lifecycleStateChange));
-
-                    if (writeTime != null)
-                    {
-                        if ((storeReplaced) || (dataScope.getDataCollectionStartTime() == null) || (writeTime.before(dataScope.getDataCollectionStartTime())))
-                        {
-                            dataScope.setDataCollectionStartTime(writeTime);
-                        }
-
-                        if ((storeReplaced) || (dataScope.getDataCollectionEndTime() == null) || (writeTime.after(dataScope.getDataCollectionEndTime())))
-                        {
-                            dataScope.setDataCollectionEndTime(writeTime);
-                        }
-                    }
-
-                    if (runComplete)
-                    {
-                        incrementCounter(additionalProperties, WRITE_COUNT_PROPERTY);
-                    }
-
-                    putIfNotNull(additionalProperties, LAST_WRITTEN_BY_PROPERTY, getRunId(event));
-                    putIfNotNull(additionalProperties, LAST_WRITTEN_AT_PROPERTY, event.getEventTime());
-
-                    if (outputStatistics != null)
-                    {
-                        putIfNotNull(additionalProperties, LAST_ROW_COUNT_PROPERTY, outputStatistics.getRowCount());
-                        putIfNotNull(additionalProperties, LAST_SIZE_PROPERTY, outputStatistics.getSize());
-                        putIfNotNull(additionalProperties, LAST_FILE_COUNT_PROPERTY, outputStatistics.getFileCount());
-                    }
-
-                    if ((output.getOutputFacets() != null) && (output.getOutputFacets().getSubset() != null))
-                    {
-                        putIfNotNull(additionalProperties, LAST_PARTITION_PROPERTY, getJSON(output.getOutputFacets().getSubset().getOutputCondition()));
-                    }
-
-                    if (output.getFacets() != null)
-                    {
-                        if (output.getFacets().getLifecycleStateChange() != null)
-                        {
-                            putIfNotNull(additionalProperties, LAST_LIFECYCLE_CHANGE_PROPERTY, output.getFacets().getLifecycleStateChange().getLifecycleStateChange());
-                        }
-                        if (output.getFacets().getVersion() != null)
-                        {
-                            putIfNotNull(additionalProperties, DATASET_VERSION_PROPERTY, output.getFacets().getVersion().getDatasetVersion());
-                        }
-                    }
-
-                    dataScope.setAdditionalProperties(additionalProperties);
-
-                    saveDataScope(asset, dataScope);
-                }
-            }
-
-            if ((runComplete) && (event.getInputs() != null))
-            {
-                for (int i = 0; i < event.getInputs().size() && i < inputAssets.size(); i++)
-                {
-                    OpenLineageInputDataSet input = event.getInputs().get(i);
-                    CataloguedElement       asset = inputAssets.get(i);
-
-                    if ((input == null) || (asset == null))
-                    {
-                        continue;
-                    }
-
-                    DataScopeProperties dataScope = getExistingDataScope(asset);
-                    Map<String, String> additionalProperties = new HashMap<>();
-
-                    if (dataScope.getAdditionalProperties() != null)
-                    {
-                        additionalProperties.putAll(dataScope.getAdditionalProperties());
-                    }
-
-                    incrementCounter(additionalProperties, READ_COUNT_PROPERTY);
-                    putIfNotNull(additionalProperties, LAST_READ_BY_PROPERTY, getRunId(event));
-                    putIfNotNull(additionalProperties, LAST_READ_AT_PROPERTY, event.getEventTime());
-
-                    dataScope.setAdditionalProperties(additionalProperties);
-
-                    saveDataScope(asset, dataScope);
+                    queueChange(pendingDataScopes, asset.guid(), new PendingDataScopeChange(event, output));
                 }
             }
         }
-        catch (Exception error)
+
+        if ((runComplete) && (event.getInputs() != null))
         {
-            logOptionalMetadataFailed(methodName, "data scope", eventDescription, error);
+            for (int i = 0; i < event.getInputs().size() && i < inputAssets.size(); i++)
+            {
+                if ((event.getInputs().get(i) != null) && (inputAssets.get(i) != null))
+                {
+                    queueChange(pendingDataScopes, inputAssets.get(i).guid(), new PendingDataScopeChange(event, null));
+                }
+            }
         }
     }
 
 
     /**
-     * Retrieve the current DataScope classification of an asset (a new empty one if it is not classified).
+     * Update a DataScope classification with a write to its dataset reported by a run event.
      *
-     * @param asset catalogued asset
-     * @return data scope properties
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException repository problem
-     * @throws UserNotAuthorizedException security problem
+     * @param dataScope classification properties to update
+     * @param event run event
+     * @param output the dataset written
      */
-    private DataScopeProperties getExistingDataScope(CataloguedElement asset) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    void applyDataScopeWrite(DataScopeProperties      dataScope,
+                             OpenLineageRunEvent      event,
+                             OpenLineageOutputDataSet output)
     {
-        AssetClient assetClient = myContext.getAssetClient();
+        boolean runComplete = "COMPLETE".equals(event.getEventType());
 
-        OpenMetadataRootElement element = retrieveElement(asset);
+        OpenLineageOutputStatisticsOutputDataSetFacet outputStatistics = (output.getOutputFacets() != null) ? output.getOutputFacets().getOutputStatistics() : null;
 
-        if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getDataScope() != null))
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        if (dataScope.getAdditionalProperties() != null)
         {
-            ElementClassification classification = element.getElementHeader().getDataScope();
+            additionalProperties.putAll(dataScope.getAdditionalProperties());
+        }
 
-            if (classification.getClassificationProperties() instanceof DataScopeProperties existingProperties)
+        /*
+         * The data collection window is the span of the data held in the store: it starts when the first
+         * record was stored and ends with the last known write.  The write time is the event time of the
+         * event that reports the write, or the dataset's lastUpdated metric if the producer supplies it.
+         * A CREATE, OVERWRITE or TRUNCATE means the store now holds only this write's records, so the
+         * window restarts.
+         */
+        Date writeTime = parseTimestamp(event.getEventTime());
+
+        if ((output.getFacets() != null) && (output.getFacets().getDataQualityMetrics() != null))
+        {
+            Date lastUpdated = parseTimestamp(output.getFacets().getDataQualityMetrics().getLastUpdated());
+
+            if ((lastUpdated != null) && ((writeTime == null) || (lastUpdated.after(writeTime))))
             {
-                return new DataScopeProperties(existingProperties);
+                writeTime = lastUpdated;
             }
         }
 
-        return new DataScopeProperties();
+        String lifecycleStateChange = null;
+
+        if ((output.getFacets() != null) && (output.getFacets().getLifecycleStateChange() != null))
+        {
+            lifecycleStateChange = output.getFacets().getLifecycleStateChange().getLifecycleStateChange();
+        }
+
+        boolean storeReplaced = ("CREATE".equalsIgnoreCase(lifecycleStateChange)) ||
+                                ("OVERWRITE".equalsIgnoreCase(lifecycleStateChange)) ||
+                                ("TRUNCATE".equalsIgnoreCase(lifecycleStateChange));
+
+        if (writeTime != null)
+        {
+            if ((storeReplaced) || (dataScope.getDataCollectionStartTime() == null) || (writeTime.before(dataScope.getDataCollectionStartTime())))
+            {
+                dataScope.setDataCollectionStartTime(writeTime);
+            }
+
+            if ((storeReplaced) || (dataScope.getDataCollectionEndTime() == null) || (writeTime.after(dataScope.getDataCollectionEndTime())))
+            {
+                dataScope.setDataCollectionEndTime(writeTime);
+            }
+        }
+
+        if (runComplete)
+        {
+            incrementCounter(additionalProperties, WRITE_COUNT_PROPERTY);
+        }
+
+        putIfNotNull(additionalProperties, LAST_WRITTEN_BY_PROPERTY, getRunId(event));
+        putIfNotNull(additionalProperties, LAST_WRITTEN_AT_PROPERTY, event.getEventTime());
+
+        if (outputStatistics != null)
+        {
+            putIfNotNull(additionalProperties, LAST_ROW_COUNT_PROPERTY, outputStatistics.getRowCount());
+            putIfNotNull(additionalProperties, LAST_SIZE_PROPERTY, outputStatistics.getSize());
+            putIfNotNull(additionalProperties, LAST_FILE_COUNT_PROPERTY, outputStatistics.getFileCount());
+        }
+
+        if ((output.getOutputFacets() != null) && (output.getOutputFacets().getSubset() != null))
+        {
+            putIfNotNull(additionalProperties, LAST_PARTITION_PROPERTY, getJSON(output.getOutputFacets().getSubset().getOutputCondition()));
+        }
+
+        if (output.getFacets() != null)
+        {
+            if (output.getFacets().getLifecycleStateChange() != null)
+            {
+                putIfNotNull(additionalProperties, LAST_LIFECYCLE_CHANGE_PROPERTY, output.getFacets().getLifecycleStateChange().getLifecycleStateChange());
+            }
+            if (output.getFacets().getVersion() != null)
+            {
+                putIfNotNull(additionalProperties, DATASET_VERSION_PROPERTY, output.getFacets().getVersion().getDatasetVersion());
+            }
+        }
+
+        dataScope.setAdditionalProperties(additionalProperties);
     }
 
 
     /**
-     * Save the DataScope classification on an asset - adding it if the asset was not classified.
+     * Update a DataScope classification with a read of its dataset by a completed run.
      *
-     * @param asset catalogued asset
-     * @param dataScope properties
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException repository problem
-     * @throws UserNotAuthorizedException security problem
+     * @param dataScope classification properties to update
+     * @param event run event
      */
-    private void saveDataScope(CataloguedElement   asset,
-                               DataScopeProperties dataScope) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    void applyDataScopeRead(DataScopeProperties dataScope,
+                            OpenLineageRunEvent event)
     {
-        AssetClient                  assetClient          = myContext.getAssetClient();
-        ClassificationExplorerClient classificationClient = myContext.getClassificationExplorerClient();
+        Map<String, String> additionalProperties = new HashMap<>();
 
-        OpenMetadataRootElement element = retrieveElement(asset);
+        if (dataScope.getAdditionalProperties() != null)
+        {
+            additionalProperties.putAll(dataScope.getAdditionalProperties());
+        }
 
-        if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getDataScope() != null))
-        {
-            classificationClient.updateDataScopeClassification(asset.guid(), dataScope, classificationClient.getUpdateOptions(false));
-        }
-        else
-        {
-            classificationClient.addDataScopeClassification(asset.guid(), dataScope, classificationClient.getMetadataSourceOptions());
-        }
+        incrementCounter(additionalProperties, READ_COUNT_PROPERTY);
+        putIfNotNull(additionalProperties, LAST_READ_BY_PROPERTY, getRunId(event));
+        putIfNotNull(additionalProperties, LAST_READ_AT_PROPERTY, event.getEventTime());
+
+        dataScope.setAdditionalProperties(additionalProperties);
     }
 
 

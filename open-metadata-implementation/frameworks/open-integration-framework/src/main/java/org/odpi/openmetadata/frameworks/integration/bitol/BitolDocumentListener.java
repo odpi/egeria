@@ -17,6 +17,21 @@ import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
 public interface BitolDocumentListener
 {
     /**
+     * Return whether this listener catalogues the documents it receives into open metadata.  A cataloguing listener
+     * is not sent the documents generated from open metadata (those published through publishGeneratedDataContract
+     * and publishGeneratedDataProduct).  They describe elements that are already catalogued.  Cataloguing them again
+     * changes those elements, which causes their documents to be generated and published again, in an endless loop.
+     * Listeners that store or forward documents receive every document.
+     *
+     * @return true if the listener catalogues documents into open metadata
+     */
+    default boolean isCataloguingListener()
+    {
+        return false;
+    }
+
+
+    /**
      * Called each time an Open Data Contract Standard (ODCS) data contract is published to the integration daemon.
      *
      * @param dataContract parsed document (null if the raw document could not be parsed into the bean)

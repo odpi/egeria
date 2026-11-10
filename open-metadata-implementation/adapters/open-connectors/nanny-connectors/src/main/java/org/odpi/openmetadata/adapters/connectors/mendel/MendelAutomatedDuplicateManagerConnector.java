@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventTyp
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -71,6 +70,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  * Each pass works from one snapshot of the duplicate links, so the links that this refresh validates are
  * consolidated by the next refresh rather than this one.
+ * <p>
+ * Each refresh then removes the exact duplicates of the relationship types named in the duplicateRelationshipTypes
+ * configuration property, and the exact duplicate attached elements of the relationship types named in the
+ * duplicateAttachmentTypes configuration property, using {@link MendelDuplicateInstanceRemover}.  These are the
+ * identical copies that a process makes when it adds the same thing more than once, so the oldest is kept without
+ * a steward's decision.  Setting the reportDuplicatesOnly configuration property reports them without deleting them.
  * <p>
  * Once the first refresh has worked through the backlog, the connector also listens for open metadata events so
  * that a new or updated duplicate link is reviewed as soon as it appears, rather than waiting for the next refresh.
@@ -133,8 +138,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
      */
     private final Set<String> toDosRaised = ConcurrentHashMap.newKeySet();
 
-    private int    clusterSize     = MendelConfigurationProperty.DEFAULT_DUPLICATE_CLUSTER_SIZE;
-    private String stewardRoleGUID = null;
+    private int          clusterSize                = MendelConfigurationProperty.DEFAULT_DUPLICATE_CLUSTER_SIZE;
+    private String       stewardRoleGUID            = null;
+    private List<String> duplicateRelationshipTypes = new ArrayList<>();
+    private List<String> duplicateAttachmentTypes   = new ArrayList<>();
+    private boolean      reportDuplicatesOnly       = false;
 
     private static final Logger log = LoggerFactory.getLogger(MendelAutomatedDuplicateManagerConnector.class);
 
@@ -163,6 +171,11 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
         {
             clusterSize = configuredClusterSize;
         }
+
+        duplicateRelationshipTypes = this.getTypeNames(MendelConfigurationProperty.DUPLICATE_RELATIONSHIP_TYPES.getName());
+        duplicateAttachmentTypes   = this.getTypeNames(MendelConfigurationProperty.DUPLICATE_ATTACHMENT_TYPES.getName());
+        reportDuplicatesOnly       = super.getBooleanConfigurationProperty(MendelConfigurationProperty.REPORT_DUPLICATES_ONLY.getName(),
+                                                                           connectionBean.getConfigurationProperties());
 
         logRecord(methodName,
                   MendelAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
@@ -195,6 +208,18 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                 this.consolidateValidatedClusters(duplicateLinks);
             }
 
+            if ((! duplicateRelationshipTypes.isEmpty()) || (! duplicateAttachmentTypes.isEmpty()))
+            {
+                MendelDuplicateInstanceRemover remover = new MendelDuplicateInstanceRemover(integrationContext,
+                                                                                            propertyHelper,
+                                                                                            connectorName,
+                                                                                            reportDuplicatesOnly,
+                                                                                            auditLog);
+
+                remover.removeDuplicateRelationships(duplicateRelationshipTypes);
+                remover.removeDuplicateAttachments(duplicateAttachmentTypes);
+            }
+
             /*
              * The listener is registered once the first refresh has worked through the backlog of duplicate links,
              * so that the events for the links this connector has just processed are not delivered as well.
@@ -218,6 +243,32 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                                                 methodName,
                                                 error);
         }
+    }
+
+
+    /**
+     * Return the type names listed in a configuration property, without blanks or repeats.
+     *
+     * @param propertyName name of the configuration property
+     * @return list of type names - empty if the property is not set
+     */
+    private List<String> getTypeNames(String propertyName)
+    {
+        List<String> typeNames = new ArrayList<>();
+        List<String> values    = super.getArrayConfigurationProperty(propertyName, connectionBean.getConfigurationProperties());
+
+        if (values != null)
+        {
+            for (String value : values)
+            {
+                if ((value != null) && (! value.isBlank()) && (! typeNames.contains(value.trim())))
+                {
+                    typeNames.add(value.trim());
+                }
+            }
+        }
+
+        return typeNames;
     }
 
 
@@ -340,59 +391,25 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             return;
         }
 
-        ElementHeader endOne = event.getEndOneElementHeader();
-        ElementHeader endTwo = event.getEndTwoElementHeader();
-
-        if ((endOne == null) || (endTwo == null))
-        {
-            return;
-        }
-
+        /*
+         * The event is not used to make the decision.  Its status may be out of date - the events for links that
+         * were created before the listener was registered are delivered after the refresh has already ruled on
+         * them - and the elements at each end are read in the combined view, so two duplicates both appear as the
+         * element they are combined into, with the same qualified name.  The link is read again, with its own ends.
+         */
         try
         {
-            int statusIdentifier = propertyHelper.getIntProperty(connectorName,
-                                                                 OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                                 event.getElementProperties(),
-                                                                 methodName);
+            OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+            GetOptions        getOptions        = openMetadataStore.getGetOptions();
 
-            if (! undecidedStatuses.contains(statusIdentifier))
+            getOptions.setForDuplicateProcessing(true);
+
+            OpenMetadataRelationship duplicateLink = openMetadataStore.getRelationshipByGUID(event.getElementHeader().getGUID(),
+                                                                                             getOptions);
+
+            if (duplicateLink != null)
             {
-                /*
-                 * A steward (or a previous pass of this connector) has already ruled on this link.  This is also
-                 * the event that results from this connector's own update, which is why there is no loop.
-                 */
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Ignoring duplicate link " + event.getElementHeader().getGUID() + " with status " + statusIdentifier);
-                }
-
-                return;
-            }
-
-            String endOneQualifiedName = propertyHelper.getStringProperty(connectorName,
-                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                          event.getEndOneElementProperties(),
-                                                                          methodName);
-
-            String endTwoQualifiedName = propertyHelper.getStringProperty(connectorName,
-                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                          event.getEndTwoElementProperties(),
-                                                                          methodName);
-
-            if (this.isCloseMatch(endOne, endOneQualifiedName, endTwo, endTwoQualifiedName))
-            {
-                this.validateDuplicates(event.getElementHeader().getGUID(),
-                                        event.getElementHeader(),
-                                        endOne.getGUID(),
-                                        endOne,
-                                        endOne.getKnownDuplicate() != null,
-                                        endTwo.getGUID(),
-                                        endTwo,
-                                        endTwo.getKnownDuplicate() != null);
-            }
-            else
-            {
-                this.requestStewardDecision(event.getElementHeader().getGUID(), endOne.getGUID(), endTwo.getGUID());
+                this.reviewUndecidedLink(duplicateLink);
             }
         }
         catch (Exception error)
@@ -442,47 +459,67 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
         for (OpenMetadataRelationship duplicateLink : duplicateLinks)
         {
-            if (undecidedStatuses.contains(this.getStatusIdentifier(duplicateLink)))
+            try
             {
-                OpenMetadataElementStub endOne = duplicateLink.getElementAtEnd1();
-                OpenMetadataElementStub endTwo = duplicateLink.getElementAtEnd2();
-
-                if ((endOne == null) || (endTwo == null))
-                {
-                    continue;
-                }
-
-                try
-                {
-                    if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
-                    {
-                        this.validateDuplicates(duplicateLink.getRelationshipGUID(),
-                                                duplicateLink,
-                                                endOne.getGUID(),
-                                                endOne,
-                                                this.isKnownDuplicate(endOne),
-                                                endTwo.getGUID(),
-                                                endTwo,
-                                                this.isKnownDuplicate(endTwo));
-                    }
-                    else
-                    {
-                        this.requestStewardDecision(duplicateLink.getRelationshipGUID(), endOne.getGUID(), endTwo.getGUID());
-                    }
-                }
-                catch (Exception error)
-                {
-                    /*
-                     * One duplicate link that can not be processed must not stop the rest being reviewed.
-                     */
-                    logExceptionRecord(methodName,
-                                       MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                 error.getClass().getName(),
-                                                                                                 methodName,
-                                                                                                 error.getMessage()),
-                                       error);
-                }
+                this.reviewUndecidedLink(duplicateLink);
             }
+            catch (Exception error)
+            {
+                /*
+                 * One duplicate link that can not be processed must not stop the rest being reviewed.
+                 */
+                logExceptionRecord(methodName,
+                                   MendelAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName,
+                                                                                             error.getMessage()),
+                                   error);
+            }
+        }
+    }
+
+
+    /**
+     * Rule on one duplicate link if it is still waiting for a decision: a close match is validated and anything
+     * else is passed to a steward.  The link must have been retrieved with forDuplicateProcessing set, so that
+     * the elements at its ends are the elements themselves rather than the element they are combined into.
+     *
+     * @param duplicateLink duplicate link with its own ends
+     * @throws Exception the update failed - reported by the caller
+     */
+    private void reviewUndecidedLink(OpenMetadataRelationship duplicateLink) throws Exception
+    {
+        if (! undecidedStatuses.contains(this.getStatusIdentifier(duplicateLink)))
+        {
+            /*
+             * A steward (or a previous pass of this connector) has already ruled on this link.  This is also
+             * the case for the event that results from this connector's own update, which is why there is no loop.
+             */
+            return;
+        }
+
+        OpenMetadataElementStub endOne = duplicateLink.getElementAtEnd1();
+        OpenMetadataElementStub endTwo = duplicateLink.getElementAtEnd2();
+
+        if ((endOne == null) || (endTwo == null))
+        {
+            return;
+        }
+
+        if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
+        {
+            this.validateDuplicates(duplicateLink.getRelationshipGUID(),
+                                    duplicateLink,
+                                    endOne.getGUID(),
+                                    endOne,
+                                    this.isKnownDuplicate(endOne),
+                                    endTwo.getGUID(),
+                                    endTwo,
+                                    this.isKnownDuplicate(endTwo));
+        }
+        else
+        {
+            this.requestStewardDecision(duplicateLink.getRelationshipGUID(), endOne.getGUID(), endTwo.getGUID());
         }
     }
 

@@ -348,6 +348,34 @@ public class IntegrationContext extends ConnectorContextBase
     }
 
 
+    /**
+     * Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract that it
+     * generated from open metadata.  The bean is serialized and passed to each of the registered Bitol document listeners
+     * except those that catalogue documents into open metadata, since the document describes elements that are already
+     * catalogued.
+     *
+     * @param dataContract bean for the document
+     */
+    public void publishGeneratedDataContract(DataContract dataContract)
+    {
+        bitolDocumentManager.publishGeneratedDataContract(dataContract);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product that it
+     * generated from open metadata.  The bean is serialized and passed to each of the registered Bitol document listeners
+     * except those that catalogue documents into open metadata, since the document describes elements that are already
+     * catalogued.
+     *
+     * @param dataProduct bean for the document
+     */
+    public void publishGeneratedDataProduct(DataProduct dataProduct)
+    {
+        bitolDocumentManager.publishGeneratedDataProduct(dataProduct);
+    }
+
+
     /* ========================================================
      * Configuration information
      */

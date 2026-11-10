@@ -156,7 +156,7 @@ public class OpenLineageCataloguerFVT
         /*
          * Run metrics on the process.
          */
-        OpenMetadataRootElement measuredProcess = OpenLineageFvtTestSupport.waitForAsset(PROCESS_QN, "the run metrics to record the completed run", element ->
+        OpenMetadataRootElement measuredProcess = OpenLineageFvtTestSupport.waitForCataloguerWrite(PROCESS_QN, "the run metrics to record the completed run", element ->
                 (element.getElementHeader().getRunMetrics() != null) &&
                 (element.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties metrics) &&
                 ("COMPLETE".equals(metrics.getLastRunStatus())));
@@ -175,7 +175,7 @@ public class OpenLineageCataloguerFVT
         /*
          * Data scope on the output.
          */
-        OpenMetadataRootElement scopedCounts = OpenLineageFvtTestSupport.waitForAsset(COUNTS_QN, "the data scope to record the write", element ->
+        OpenMetadataRootElement scopedCounts = OpenLineageFvtTestSupport.waitForCataloguerWrite(COUNTS_QN, "the data scope to record the write", element ->
                 (element.getElementHeader().getDataScope() != null) &&
                 (element.getElementHeader().getDataScope().getClassificationProperties() instanceof DataScopeProperties));
 
@@ -230,7 +230,7 @@ public class OpenLineageCataloguerFVT
     @DisplayName("A second run accumulates in the process's run metrics")
     void secondRunAccumulatesRunMetrics() throws Exception
     {
-        OpenLineageFvtTestSupport.waitForAsset(PROCESS_QN, "the first run to be catalogued", element -> element.getElementHeader().getRunMetrics() != null);
+        OpenLineageFvtTestSupport.waitForCataloguerWrite(PROCESS_QN, "the first run to be catalogued", element -> element.getElementHeader().getRunMetrics() != null);
 
         Instant now = Instant.now();
 
@@ -243,7 +243,7 @@ public class OpenLineageCataloguerFVT
         OpenLineageEventFactory.withOutput(complete, OpenLineageEventFactory.COUNTS_TABLE, 40L);
         OpenLineageFvtTestSupport.publish(complete);
 
-        OpenMetadataRootElement process = OpenLineageFvtTestSupport.waitForAsset(PROCESS_QN, "the run metrics to record the second run", element ->
+        OpenMetadataRootElement process = OpenLineageFvtTestSupport.waitForCataloguerWrite(PROCESS_QN, "the run metrics to record the second run", element ->
                 (element.getElementHeader().getRunMetrics() != null) &&
                 (element.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties metrics) &&
                 (SECOND_RUN.toString().equals(metrics.getLastRunId())) &&
@@ -255,7 +255,7 @@ public class OpenLineageCataloguerFVT
         assertEquals(40, runMetrics.getLastRunRowsWritten(), "The last run's rows written should be from the second run");
         assertEquals(71, runMetrics.getTotalRowsWritten(), "The total rows written should be the sum of both runs");
 
-        OpenMetadataRootElement counts = OpenLineageFvtTestSupport.waitForAsset(COUNTS_QN, "the data scope to record the second write", element ->
+        OpenMetadataRootElement counts = OpenLineageFvtTestSupport.waitForCataloguerWrite(COUNTS_QN, "the data scope to record the second write", element ->
                 (element.getElementHeader().getDataScope() != null) &&
                 (element.getElementHeader().getDataScope().getClassificationProperties() instanceof DataScopeProperties scope) &&
                 (scope.getAdditionalProperties() != null) &&
@@ -275,7 +275,7 @@ public class OpenLineageCataloguerFVT
     @DisplayName("A failed run is counted in the process's run metrics")
     void failedRunIsCounted() throws Exception
     {
-        OpenLineageFvtTestSupport.waitForAsset(PROCESS_QN, "the earlier runs to be catalogued", element -> element.getElementHeader().getRunMetrics() != null);
+        OpenLineageFvtTestSupport.waitForCataloguerWrite(PROCESS_QN, "the earlier runs to be catalogued", element -> element.getElementHeader().getRunMetrics() != null);
 
         Instant now = Instant.now();
 
@@ -285,7 +285,7 @@ public class OpenLineageCataloguerFVT
         OpenLineageRunEvent fail = OpenLineageEventFactory.runEvent("FAIL", now, FAILED_RUN, OpenLineageEventFactory.JOB_NAME);
         OpenLineageFvtTestSupport.publish(fail);
 
-        OpenMetadataRootElement process = OpenLineageFvtTestSupport.waitForAsset(PROCESS_QN, "the run metrics to record the failed run", element ->
+        OpenMetadataRootElement process = OpenLineageFvtTestSupport.waitForCataloguerWrite(PROCESS_QN, "the run metrics to record the failed run", element ->
                 (element.getElementHeader().getRunMetrics() != null) &&
                 (element.getElementHeader().getRunMetrics().getClassificationProperties() instanceof RunMetricsProperties metrics) &&
                 ("FAIL".equals(metrics.getLastRunStatus())));

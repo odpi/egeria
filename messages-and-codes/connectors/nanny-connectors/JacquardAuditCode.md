@@ -9,7 +9,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 23 |
+| **Number of messages** | 25 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -43,6 +43,8 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0024](#jacquard-harvester-0024) | INFO | The {0} integration connector has linked its solution component {1} ({2}) to the equivalent solution component {3} as a validated duplicate |
 | [JACQUARD-HARVESTER-0029](#jacquard-harvester-0029) | ERROR | The {0} integration connector found more than one element with the qualified name of {1} while cataloguing {2}; the copies have been linked as peer duplicates for the duplicate manager and {2} is skipped until they are resolved |
 | [JACQUARD-HARVESTER-0028](#jacquard-harvester-0028) | ERROR | The {0} integration connector cannot read {1} as a date at record {2}, column {3} of the {4} data set for digital product {5}; values that are not dates are ignored when working out when the data set was created and last updated |
+| [JACQUARD-HARVESTER-0031](#jacquard-harvester-0031) | INFO | The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3} |
+| [JACQUARD-HARVESTER-0030](#jacquard-harvester-0030) | INFO | The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4} |
 
 ----
 
@@ -548,6 +550,50 @@ The connector expects a date column to hold an ISO-8601 instant, or a count of m
 **User action**
 
 Check how the product's data set connector writes its date columns and correct it to write ISO-8601 instants.
+
+
+----
+
+### JACQUARD-HARVESTER-0031
+
+> The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.PRODUCT_RENAMED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The product's display name has changed in its definition, which changes its qualified name.  The existing product is updated in place, so it keeps its subscription processes, notification types and subscribers, rather than a second product being created beside it.
+
+**User action**
+
+No action is required.  This message appears once for each product whose display name has been corrected.
+
+
+----
+
+### JACQUARD-HARVESTER-0030
+
+> The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.PRODUCT_ASSET_RETYPED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The product's definition now asks for a different type of asset from the one an earlier version of the connector created.  The asset is found by its qualified name, so without this correction it would keep its old type for ever.  The asset keeps its unique identifier, relationships and classifications.
+
+**User action**
+
+No action is required.  This message appears once for each asset created by an earlier version of the connector.
 
 
 ----

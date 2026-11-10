@@ -173,6 +173,13 @@ distributions {
                     unix('0755')
                 }
             }
+            into('assembly/platform/distribution-hub') {
+                // Describe the distribution hub, where the platform writes files for people and tools to pick up
+                from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/distribution-hub")
+                filePermissions {
+                    unix('0755')
+                }
+            }
             into('assembly/platform/data') {
                 // Describe the data files
                 from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data")

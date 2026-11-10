@@ -36,7 +36,7 @@ Two servers on one in-process platform, on a port allocated at run time:
 | `bitolFvtMetadataStore` | Metadata access store | PostgreSQL local repository, Apache Kafka out topics; `OpenMetadataTypes`, `CoreContentPack` and `BitolContentPack` loaded at start-up |
 | `bitolFvtIntegrationDaemon` | Integration daemon | `BitolIntegrationGroup`, where the six Bitol connectors run |
 
-The connectors' default endpoints (`loading-bay/bitol` for the files receiver and `logs/bitol` for the file
+The connectors' default endpoints (`loading-bay/bitol` for the files receiver and `distribution-hub/bitol` for the file
 store) are relative paths, resolved against this module's directory because that is the working directory of
 the test JVM.  Both directories are emptied at the start of each run and are ignored by git.
 
@@ -56,7 +56,7 @@ the test JVM.  Both directories are emptied at the start of each run and are ign
     2. the data product becomes a `DigitalProduct` in the `DigitalProductCatalog` for its domain, with a
        `SolutionComponent` carrying one `SolutionPort` per input and output port, and the `DataProductGenerator`
        turns it back into a product with the same ports and contract references;
-    3. the file store wrote every document as `logs/bitol/{kind}/{id}/{version}.yaml`;
+    3. the file store wrote every document as `distribution-hub/bitol/{kind}/{id}/{version}.yaml`;
     4. attaching the product catalog to the publisher connector as a catalog target and refreshing it causes
        the product's document to be regenerated and rewritten by the store.
 

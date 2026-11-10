@@ -9,7 +9,7 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 8 |
+| **Number of messages** | 9 |
 | **Message identifiers begin** | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors) |
@@ -29,6 +29,7 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0024](#open-lineage-integration-connector-0024) | INFO | The {0} integration connector has renamed asset {1} from {2} to {3} following open lineage {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025](#open-lineage-integration-connector-0025) | INFO | The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023](#open-lineage-integration-connector-0023) | ERROR | The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4} |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026](#open-lineage-integration-connector-0026) | INFO | The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements |
 
 ----
 
@@ -196,6 +197,27 @@ The lineage from the event has been catalogued, but the optional metadata (run d
 **User action**
 
 Use the details from the error message to determine the cause of the error.  The optional metadata will be captured from subsequent events once the problem is resolved.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026
+
+> The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.CLASSIFICATIONS_WRITTEN` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The run metrics of processes and the data scope of datasets are gathered from the run events as they arrive and written once per element on each refresh, rather than once per event.
+
+**User action**
+
+No specific action is required.  The interval between refreshes sets how up to date these classifications are.
 
 
 ----

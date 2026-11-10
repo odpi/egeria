@@ -53,7 +53,7 @@ $ docker run -it -p 7443:7443 odpi/egeria-platform:latest /bin/bash
 bash-4.4$ pwd
 /deployments
 bash-4.4$ ls
-LICENSE   NOTICE   application.properties   content-packs   data   extra   keystore.p12   landing-area
+LICENSE   NOTICE   application.properties   content-packs   data   distribution-hub   extra   keystore.p12   landing-area
 lib   loading-bay   logs   omag-server-platform-*.jar   secrets   truststore.p12
 bash-4.4$
 ```

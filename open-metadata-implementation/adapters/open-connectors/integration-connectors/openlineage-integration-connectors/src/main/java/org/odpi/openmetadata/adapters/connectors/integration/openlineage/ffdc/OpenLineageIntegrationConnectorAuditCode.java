@@ -101,6 +101,16 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                              "Use the details from the error message to determine the cause of the error.  The optional metadata will be captured from subsequent events once the problem is resolved.",
                              "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026 - The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements
+     */
+    CLASSIFICATIONS_WRITTEN("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements",
+                            "The run metrics of processes and the data scope of datasets are gathered from the run events as they arrive and written once per element on each refresh, rather than once per event.",
+                            "No specific action is required.  The interval between refreshes sets how up to date these classifications are.",
+                            "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
     ;
 
     private final String                     logMessageId;

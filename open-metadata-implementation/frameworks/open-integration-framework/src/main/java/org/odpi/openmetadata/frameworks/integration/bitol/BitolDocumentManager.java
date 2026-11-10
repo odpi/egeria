@@ -60,4 +60,24 @@ public interface BitolDocumentManager
      * @param dataProduct bean for the document
      */
     void publishDataProduct(DataProduct dataProduct);
+
+
+    /**
+     * Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.  It is not
+     * sent to the listeners that catalogue documents into open metadata, since it describes elements that are
+     * already catalogued.
+     *
+     * @param dataContract bean for the document
+     */
+    void publishGeneratedDataContract(DataContract dataContract);
+
+
+    /**
+     * Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.  It is not
+     * sent to the listeners that catalogue documents into open metadata, since it describes elements that are
+     * already catalogued.
+     *
+     * @param dataProduct bean for the document
+     */
+    void publishGeneratedDataProduct(DataProduct dataProduct);
 }

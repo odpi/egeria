@@ -184,7 +184,7 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         DataProduct dataProduct = productGenerator.generateDataProduct(product);
         String      yaml        = BitolDocumentFormatter.toYAML(dataProduct);
 
-        if (publishIfChanged(digitalProductGUID, yaml, () -> context.publishDataProduct(dataProduct)))
+        if (publishIfChanged(digitalProductGUID, yaml, () -> context.publishGeneratedDataProduct(dataProduct)))
         {
             logRecord(methodName,
                       BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,
@@ -305,7 +305,7 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         DataContract dataContract = contractGenerator.generateDataContract(agreement);
         String       yaml         = BitolDocumentFormatter.toYAML(dataContract);
 
-        if (publishIfChanged(agreementGUID, yaml, () -> context.publishDataContract(dataContract)))
+        if (publishIfChanged(agreementGUID, yaml, () -> context.publishGeneratedDataContract(dataContract)))
         {
             logRecord(methodName,
                       BitolIntegrationConnectorAuditCode.DOCUMENT_GENERATED.getMessageDefinition(connectorName,

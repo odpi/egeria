@@ -81,6 +81,19 @@ public class IntegrationContextManagerBitolTest
 
 
     /**
+     * Listener that catalogues documents into open metadata.
+     */
+    private static class CataloguingListener extends RecordingListener
+    {
+        @Override
+        public boolean isCataloguingListener()
+        {
+            return true;
+        }
+    }
+
+
+    /**
      * Listener that always fails - the manager must carry on to the other listeners.
      */
     private static class FailingListener implements BitolDocumentListener
@@ -229,5 +242,46 @@ public class IntegrationContextManagerBitolTest
         assertEquals(listener.products.size(), 1);
         assertSame(listener.products.get(0), product);
         assertEquals(BitolDocumentFormatter.parseDataProduct(listener.productRaws.get(0)), product);
+    }
+
+
+    /**
+     * Documents generated from open metadata go to the listeners that store or forward documents, but not to the
+     * cataloguing listeners: cataloguing them again would change the elements they describe and cause them to be
+     * published again.  Documents from anywhere else go to every listener.
+     *
+     * @throws IOException problem reading the examples
+     */
+    @Test public void testGeneratedDocumentsSkipCataloguers() throws IOException
+    {
+        DataContract contract = BitolDocumentFormatter.parseDataContract(readResource("bitol/odcs/full-example.odcs.yaml"));
+        DataProduct  product  = BitolDocumentFormatter.parseDataProduct(readResource("bitol/odps/customer-data-product.odps.yaml"));
+
+        TestContextManager  manager    = new TestContextManager();
+        RecordingListener   store      = new RecordingListener();
+        CataloguingListener cataloguer = new CataloguingListener();
+
+        manager.registerListener(store);
+        manager.registerListener(cataloguer);
+
+        manager.publishGeneratedDataContract(contract);
+        manager.publishGeneratedDataProduct(product);
+        manager.publishGeneratedDataContract(null);
+        manager.publishGeneratedDataProduct(null);
+
+        assertEquals(store.contracts.size(), 1);
+        assertSame(store.contracts.get(0), contract);
+        assertEquals(store.products.size(), 1);
+        assertSame(store.products.get(0), product);
+        assertTrue(cataloguer.contracts.isEmpty(), "a generated contract is not catalogued again");
+        assertTrue(cataloguer.products.isEmpty(), "a generated product is not catalogued again");
+
+        manager.publishDataContract(contract);
+        manager.publishDataProduct(product);
+
+        assertEquals(cataloguer.contracts.size(), 1, "other documents still reach the cataloguers");
+        assertEquals(cataloguer.products.size(), 1);
+        assertEquals(store.contracts.size(), 2);
+        assertEquals(store.products.size(), 2);
     }
 }

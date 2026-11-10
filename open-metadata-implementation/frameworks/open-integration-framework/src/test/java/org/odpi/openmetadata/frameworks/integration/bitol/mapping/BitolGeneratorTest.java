@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -124,5 +125,20 @@ public class BitolGeneratorTest
         assertEquals(restored.get(0).getProperty(), "latency");
         assertEquals(restored.get(0).getValue(), 4);
         assertEquals(restored.get(6).getDriver(), "regulatory");
+    }
+
+
+    /**
+     * A keyword attached more than once becomes one tag, so a published document does not repeat it.
+     */
+    @Test public void testDistinctTags()
+    {
+        List<String> keywords = new ArrayList<>(List.of("Reference Data", "Sales", "Reference Data", ""));
+
+        keywords.add(null);
+
+        assertEquals(BitolGeneratorBase.getDistinctTags(keywords), List.of("Reference Data", "Sales"));
+        assertNull(BitolGeneratorBase.getDistinctTags(List.of(" ")));
+        assertNull(BitolGeneratorBase.getDistinctTags(null));
     }
 }

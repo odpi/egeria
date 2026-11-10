@@ -287,6 +287,8 @@ public class GovernanceActionPublisherFVT
 
         OpenLineageFvtTestSupport.waitFor("the process step to have RunMetrics for its run", () ->
         {
+            OpenLineageFvtTestSupport.refreshCataloguer();
+
             OpenMetadataRootElement step = classificationClient.getRootElementByGUID(processStep.getElementGUID(), classificationClient.getGetOptions());
 
             return (step != null) && (step.getElementHeader().getRunMetrics() != null) &&

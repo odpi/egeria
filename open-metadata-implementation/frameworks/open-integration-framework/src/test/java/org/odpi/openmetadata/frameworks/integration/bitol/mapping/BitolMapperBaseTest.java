@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -197,5 +198,21 @@ public class BitolMapperBaseTest
 
         assertEquals(regenerated.size(), 1);
         assertEquals(regenerated.get(0).getVendor(), "acme");
+    }
+
+
+    /**
+     * Only the tags that are not already keywords of the element are added, each once, so cataloguing the same
+     * document again adds nothing.
+     */
+    @Test public void testGetNewTags()
+    {
+        List<String> tags = new ArrayList<>(List.of("Reference Data", "Sales", "Reference Data", " ", "Finance"));
+
+        tags.add(null);
+
+        assertEquals(BitolMapperBase.getNewTags(tags, Set.of()), List.of("Reference Data", "Sales", "Finance"));
+        assertEquals(BitolMapperBase.getNewTags(tags, Set.of("Reference Data", "Finance")), List.of("Sales"));
+        assertTrue(BitolMapperBase.getNewTags(tags, Set.of("Reference Data", "Sales", "Finance")).isEmpty());
     }
 }

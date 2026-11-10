@@ -518,6 +518,36 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     {
         final String methodName = "publishDataContract(bean)";
 
+        publishDataContractBean(dataContract, false, methodName);
+    }
+
+
+    /**
+     * Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.  The
+     * cataloguing listeners do not receive it.
+     *
+     * @param dataContract bean for the document
+     */
+    @Override
+    public synchronized void publishGeneratedDataContract(DataContract dataContract)
+    {
+        final String methodName = "publishGeneratedDataContract";
+
+        publishDataContractBean(dataContract, true, methodName);
+    }
+
+
+    /**
+     * Serialize a data contract bean and pass it to the listeners.
+     *
+     * @param dataContract bean for the document
+     * @param generatedFromOpenMetadata true if the document was generated from open metadata
+     * @param methodName calling method
+     */
+    private void publishDataContractBean(DataContract dataContract,
+                                         boolean      generatedFromOpenMetadata,
+                                         String       methodName)
+    {
         if (dataContract != null)
         {
             String rawDocument = null;
@@ -536,7 +566,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                       error);
             }
 
-            publishToBitolListeners(dataContract, null, rawDocument, methodName);
+            publishToBitolListeners(dataContract, null, rawDocument, generatedFromOpenMetadata, methodName);
         }
     }
 
@@ -594,6 +624,36 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     {
         final String methodName = "publishDataProduct(bean)";
 
+        publishDataProductBean(dataProduct, false, methodName);
+    }
+
+
+    /**
+     * Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.  The
+     * cataloguing listeners do not receive it.
+     *
+     * @param dataProduct bean for the document
+     */
+    @Override
+    public synchronized void publishGeneratedDataProduct(DataProduct dataProduct)
+    {
+        final String methodName = "publishGeneratedDataProduct";
+
+        publishDataProductBean(dataProduct, true, methodName);
+    }
+
+
+    /**
+     * Serialize a data product bean and pass it to the listeners.
+     *
+     * @param dataProduct bean for the document
+     * @param generatedFromOpenMetadata true if the document was generated from open metadata
+     * @param methodName calling method
+     */
+    private void publishDataProductBean(DataProduct dataProduct,
+                                        boolean     generatedFromOpenMetadata,
+                                        String      methodName)
+    {
         if (dataProduct != null)
         {
             String rawDocument = null;
@@ -612,7 +672,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                       error);
             }
 
-            publishToBitolListeners(null, dataProduct, rawDocument, methodName);
+            publishToBitolListeners(null, dataProduct, rawDocument, generatedFromOpenMetadata, methodName);
         }
     }
 
@@ -695,11 +755,11 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
 
         if (BitolDocument.DATA_CONTRACT_KIND.equals(kind))
         {
-            publishToBitolListeners((DataContract) document, null, rawDocument, methodName);
+            publishToBitolListeners((DataContract) document, null, rawDocument, false, methodName);
         }
         else if (BitolDocument.DATA_PRODUCT_KIND.equals(kind))
         {
-            publishToBitolListeners(null, (DataProduct) document, rawDocument, methodName);
+            publishToBitolListeners(null, (DataProduct) document, rawDocument, false, methodName);
         }
         else
         {
@@ -738,16 +798,19 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * @param dataContract bean for a data contract (null if the document is a data product or could not be parsed)
      * @param dataProduct bean for a data product (null if the document is a data contract or could not be parsed)
      * @param rawDocument the document as received or serialized
+     * @param generatedFromOpenMetadata true if the document was generated from open metadata, so the cataloguing
+     *                                  listeners are skipped
      * @param methodName calling method
      */
     private void publishToBitolListeners(DataContract dataContract,
                                          DataProduct  dataProduct,
                                          String       rawDocument,
+                                         boolean      generatedFromOpenMetadata,
                                          String       methodName)
     {
         for (BitolDocumentListener listener : registeredBitolListeners)
         {
-            if (listener != null)
+            if ((listener != null) && ((! generatedFromOpenMetadata) || (! listener.isCataloguingListener())))
             {
                 try
                 {
