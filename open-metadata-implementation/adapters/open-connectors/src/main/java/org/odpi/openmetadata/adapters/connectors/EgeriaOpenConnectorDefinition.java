@@ -947,6 +947,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
+    PASTEUR_ACTION_HISTORY_CLEANUP(593,
+                                   "e20b2cdf-c033-4ac1-9510-ce9b6397efa2",
+                                   "Egeria::IntegrationConnector::Pasteur::ActionHistoryCleanup",
+                                   "Pasteur Action History Cleanup Integration Connector",
+                                   "Connector deletes the finished actions (Action and its subtypes, such as engine actions, governance action process instances and to dos) once a configured number of days has passed since they completed, so the action history does not grow without bound.",
+                                   "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/nanny-connectors",
+                                   "org.odpi.openmetadata.adapters.connectors.pasteur.PasteurActionHistoryCleanupProvider",
+                                   ComponentDevelopmentStatus.STABLE,
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     ZONE_MEMBERSHIP_PROFILER_LOVELACE_SERVICE(392,
                                            "d77f6c4c-abb7-4f1c-b839-fb41819ec9e1",
                                            "Egeria::GovernanceService::Verification::Lovelace::ZoneMembershipProfilerService",

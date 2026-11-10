@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The RuntimeManagerResource provides part of the server-side implementation of the Runtime Manager OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/runtime-manager")
 @SecurityScheme(

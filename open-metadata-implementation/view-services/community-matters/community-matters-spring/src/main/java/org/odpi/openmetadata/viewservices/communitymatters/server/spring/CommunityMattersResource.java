@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The CommunityMattersResource provides part of the server-side implementation of the Community Matters OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/community-matters")
 @SecurityScheme(

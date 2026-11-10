@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataDesignerResource provides part of the server-side implementation of the Data Designer OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-designer")
 @SecurityScheme(

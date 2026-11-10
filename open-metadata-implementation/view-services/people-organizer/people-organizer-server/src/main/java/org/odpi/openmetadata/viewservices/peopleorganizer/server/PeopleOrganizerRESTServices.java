@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The PeopleOrganizerRESTServices provides the server-side implementation of the People Organizer Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class PeopleOrganizerRESTServices extends TokenController
 {

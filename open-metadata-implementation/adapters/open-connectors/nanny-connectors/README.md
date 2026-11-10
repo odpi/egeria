@@ -99,6 +99,22 @@ The karma points are gathered in memory as the events arrive and are added to th
 
 The users whose userIds match one of the patterns in the `ignoredUserIdPatterns` configuration property are not awarded karma points.  The property works in the same way as Pepys's: each pattern is a Java regular expression matched against the whole userId, and the core content pack sets the patterns to `.*npa` and `.*engine` so that only the contributions of people are recognized.  Simon's own userId is always ignored, whether a pattern matches it or not - each update it makes to a contribution record produces an event of its own, and otherwise it would award itself a karma point for every one, without end.  A pattern that is not a valid regular expression is reported (SIMON-CONTRIBUTION-RECORDER-0007) and skipped.
 
+## Pasteur Action History Cleanup
+
+In recognition of [Louis Pasteur](https://en.wikipedia.org/wiki/Louis_Pasteur) (1822-1895), whose work on germ theory and vaccination defeated infectious diseases.
+
+Every engine action, governance action process instance, to do and other kind of [action](https://egeria-project.org/concepts/action/) stays in the repository after it finishes, so without housekeeping the action history grows without bound.  The Pasteur Action History Cleanup is an integration connector that deletes the finished actions once they are old enough.  It runs once a day in the `Egeria:IntegrationGroup:Pasteur` integration group and has no catalog targets.
+
+Three configuration properties control what it removes, and how:
+
+* `daysToCleanUp` maps the name of Action, or one of its subtypes, to the minimum number of days after its completion before a finished action of that type is deleted.  An action uses the entry for its own type or, if there is none, the entry for its nearest supertype; an action whose type has no entry, directly or through a supertype, is never deleted.  The core content pack sets `EngineAction` to 7, `GovernanceActionProcessInstance` to 14 and `ToDo` to 90 (which covers `DataSharingRequest` too).  Meetings, notifications (and so notes, journal and blog entries) and reviews are left alone unless they are added.
+* `completionStatuses` lists the activity statuses that show an action has finished.  The default is `COMPLETED`, `INVALID` and `FAILED`; actions that are `CANCELLED`, `IGNORED` or `ABANDONED` are kept unless those statuses are added.
+* `deleteMethod` names the delete method used to remove the actions: `LOOK_FOR_LINEAGE` (the default), `ARCHIVE`, `SOFT_DELETE` or `PURGE`.
+
+The completion time is the action's `completionTime` property or, if that is not set, the time it was last updated.  The delete is cascaded, so the elements anchored to the action go with it.  With the default `LOOK_FOR_LINEAGE` delete method, an action with lineage relationships is archived, so lineage queries can still find it, and the others are soft-deleted.  Neither is a purge, so an action removed in error can be restored.  Set `deleteMethod` to `PURGE` to remove the actions permanently instead.  An action anchored to another action whose type has its own entry in `daysToCleanUp` is left for its anchor's delete to remove: that is how the engine actions of a governance action process stay as long as their process instance, and go with it.
+
+Invalid entries in `daysToCleanUp` and `completionStatuses` are reported (PASTEUR-ACTION-HISTORY-CLEANUP-0005 and 0006) and skipped, an invalid `deleteMethod` is reported (PASTEUR-ACTION-HISTORY-CLEANUP-0008) and replaced by `LOOK_FOR_LINEAGE`, and a configuration that leaves nothing to clean up is reported as PASTEUR-ACTION-HISTORY-CLEANUP-0007.  The [pasteur-fvt](../../../../open-metadata-test/open-metadata-fvt/pasteur-fvt) suite tests the connector with the core content pack's configuration.
+
 ## Darwin Product Dependency Manager
 
 In tribute to [Charles Darwin](https://en.wikipedia.org/wiki/Charles_Darwin), who traced the origin of species - Darwin traces the origin of each digital product's data.

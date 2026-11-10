@@ -158,6 +158,18 @@ suites that use them.
   ./gradlew :open-metadata-test:open-metadata-fvt:darwin-fvt:test -PrunDarwinFvt
   ```
 
+* **[pasteur-fvt](pasteur-fvt)** - tests the **Pasteur Action History Cleanup**, the nanny connector that
+  deletes finished actions once the number of days configured for their type has passed since they
+  completed. The test creates to dos, data sharing requests, meetings, engine actions and governance action
+  process instances with completion times in the past, runs Pasteur with the core content pack's configuration,
+  and checks the age limits, the inherited limits of subtypes, the completion statuses, the types that are left
+  alone, that the engine actions of a process instance go with their process instance, and that the `deleteMethod`
+  configuration property changes the delete method.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:pasteur-fvt:test -PrunPasteurFvt
+  ```
+
 * **[platform-catalog-fvt](platform-catalog-fvt)** - tests the **OMAG Server Platform Cataloguer**, the Egeria
   system connector that keeps the open metadata description of an OMAG Server Platform in step with the
   platform's live state. The resource under test is the suite's own platform: it starts one in-process and

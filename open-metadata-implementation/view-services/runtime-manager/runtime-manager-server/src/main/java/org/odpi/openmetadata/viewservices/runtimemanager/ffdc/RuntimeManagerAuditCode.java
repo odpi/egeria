@@ -9,14 +9,14 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 
 /**
  * The RuntimeManagerAuditCode is used to define the message content for the OMRS Audit Log.
- * The 5 fields in the enum are:
+ * The 6 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
  *     <li>Severity - is this an event, decision, action, error or exception</li>
  *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
- *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
  *     <li>SystemAction - describes the result of the situation</li>
  *     <li>UserAction - describes how a user should correct the situation</li>
+ *     <li>Documentation URL - the page in the Egeria documentation that describes the service (optional)</li>
  * </ul>
  */
 public enum RuntimeManagerAuditCode implements AuditLogMessageSet

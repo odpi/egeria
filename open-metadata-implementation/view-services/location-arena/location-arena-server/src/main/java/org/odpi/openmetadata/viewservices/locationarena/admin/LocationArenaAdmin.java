@@ -56,8 +56,8 @@ public class LocationArenaAdmin extends ViewServiceAdmin
         try
         {
             /*
-             * The name and rootURL of a repository server are not passed at this stage - they are not known at this stage
-             * because they are set at runtime by the user and potentially changed between operations.
+             * The name and platform root URL of the metadata access server that this view service calls
+             * are taken from the view service configuration.
              */
             this.instance = new LocationArenaInstance(serverName,
                                                       auditLog,

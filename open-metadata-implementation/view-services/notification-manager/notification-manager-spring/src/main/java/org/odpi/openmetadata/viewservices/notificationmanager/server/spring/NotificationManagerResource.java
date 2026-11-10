@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The NotificationManagerResource provides part of the server-side implementation of the Notification Manager OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/notification-manager")
 

@@ -127,6 +127,15 @@ public enum IntegrationGroupDefinition
              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Dynamic integration group supporting integration connectors that clean up the action history.
+     */
+    PASTEUR("5f18a8cf-4a8f-4142-b604-1a44b97df913",
+             "Egeria:IntegrationGroup:Pasteur",
+             "PasteurIntegrationGroup",
+             "Dynamic integration group supporting integration connectors that clean up the finished actions in the action history.",
+             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Dynamic integration group supporting integration connectors managing Data Hubs.
      */
     LISKOV("c7f37f8d-af7a-433d-86f8-153dae9577fd",

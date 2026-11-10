@@ -34,7 +34,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMem
 
 /**
  * The SecurityOfficerRESTServices provides the server-side implementation of the Security Officer Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class SecurityOfficerRESTServices extends TokenController
 {

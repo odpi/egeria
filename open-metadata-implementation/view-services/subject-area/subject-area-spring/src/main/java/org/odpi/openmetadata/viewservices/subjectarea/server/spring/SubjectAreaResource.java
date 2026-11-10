@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The SubjectAreaResource provides part of the server-side implementation of the Subject Area OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/subject-area")
 @SecurityScheme(

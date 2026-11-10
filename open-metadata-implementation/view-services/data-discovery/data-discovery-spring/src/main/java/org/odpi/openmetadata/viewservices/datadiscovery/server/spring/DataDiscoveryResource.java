@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataDiscoveryResource provides part of the server-side implementation of the Data Discovery OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-discovery")
 @SecurityScheme(

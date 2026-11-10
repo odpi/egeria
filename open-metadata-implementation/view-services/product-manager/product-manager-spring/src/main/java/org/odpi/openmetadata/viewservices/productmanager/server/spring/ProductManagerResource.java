@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ProductManagerResource provides part of the server-side implementation of the Product Manager OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/product-manager")
 

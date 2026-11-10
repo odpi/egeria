@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ProductCatalogResource provides part of the server-side implementation of the Product Catalog OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/product-catalog")
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The MyProfileResource provides part of the server-side implementation of the My Profile OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/my-profile")
 @SecurityScheme(

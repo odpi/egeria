@@ -39,7 +39,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareDevelopmen
 
 /**
  * The DevopsPipelineRESTServices provides the server-side implementation of the Devops Pipeline Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class DevopsPipelineRESTServices extends TokenController
 {
