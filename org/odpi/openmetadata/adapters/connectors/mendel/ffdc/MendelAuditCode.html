@@ -154,62 +154,74 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0018 - The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DUPLICATES_CONSOLIDATED" class="member-name-link">DUPLICATES_CONSOLIDATED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DUPLICATE_REMOVAL_FAILED" class="member-name-link">DUPLICATE_REMOVAL_FAILED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0021 - The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATES_CONSOLIDATED" class="member-name-link">DUPLICATES_CONSOLIDATED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0007 - The {0} integration connector has created consolidated element {1} from {2} duplicate {3} elements</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DUPLICATES_VALIDATED" class="member-name-link">DUPLICATES_VALIDATED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DUPLICATES_REMOVED" class="member-name-link">DUPLICATES_REMOVED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0020 - The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATES_REPORTED" class="member-name-link">DUPLICATES_REPORTED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">MENDEL-DUPLICATE-MANAGER-0019 - The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DUPLICATES_VALIDATED" class="member-name-link">DUPLICATES_VALIDATED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0004 - The {0} integration connector has validated the duplicate link ({1}) between elements {2} and {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION" class="member-name-link">INCOMPATIBLE_CLASSIFICATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION" class="member-name-link">INCOMPATIBLE_CLASSIFICATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0014 - The {0} integration connector is discarding the {1} classification from element {2} because
  it can not be attached to {3}, the type of the consolidated element</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION_PROPERTY" class="member-name-link">INCOMPATIBLE_CLASSIFICATION_PROPERTY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_CLASSIFICATION_PROPERTY" class="member-name-link">INCOMPATIBLE_CLASSIFICATION_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0016 - The {0} integration connector is discarding the {1} property ({2}) of the {3}
  classification supplied by element {4} because it is not a property of that classification</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCOMPATIBLE_PROPERTY" class="member-name-link">INCOMPATIBLE_PROPERTY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCOMPATIBLE_PROPERTY" class="member-name-link">INCOMPATIBLE_PROPERTY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0012 - The {0} integration connector is discarding the {1} property ({2}) supplied by element {3}
  because it is not a property of {4}, the type of the consolidated element</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LISTENER_REGISTERED" class="member-name-link">LISTENER_REGISTERED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LISTENER_REGISTERED" class="member-name-link">LISTENER_REGISTERED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0009 - The {0} integration connector has registered a listener for open metadata events</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_STEWARD_ROLE" class="member-name-link">NEW_STEWARD_ROLE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_STEWARD_ROLE" class="member-name-link">NEW_STEWARD_ROLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0003 - The {0} integration connector has created the {1} person role ({2}) to receive the
  to dos raised for duplicates that it can not resolve</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OWN_VALIDATION_WITHDRAWN" class="member-name-link">OWN_VALIDATION_WITHDRAWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OWN_VALIDATION_WITHDRAWN" class="member-name-link">OWN_VALIDATION_WITHDRAWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0017 - The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RETIRED_DUPLICATE" class="member-name-link">RETIRED_DUPLICATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#RETIRED_DUPLICATE" class="member-name-link">RETIRED_DUPLICATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0006 - The {0} integration connector has removed the KnownDuplicate classification from element {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0002 - The {0} integration connector is starting to manage the duplicates in server {1} on
  platform {2}; validated duplicates are consolidated once there are {3} of them linked together</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STEWARD_ACTION_REQUESTED" class="member-name-link">STEWARD_ACTION_REQUESTED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STEWARD_ACTION_REQUESTED" class="member-name-link">STEWARD_ACTION_REQUESTED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0005 - The {0} integration connector has created to do {1} to request that a steward reviews
  the duplicate link ({2}) between elements {3} and {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0010 - The {0} integration connector is unable to register a listener for open metadata events due to a {1} exception with message {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">MENDEL-DUPLICATE-MANAGER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -407,6 +419,27 @@ the order they are declared.</div>
 <h3>CONSOLIDATED_CLUSTER_WEAKENED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">CONSOLIDATED_CLUSTER_WEAKENED</span></div>
 <div class="block">MENDEL-DUPLICATE-MANAGER-0018 - The {0} integration connector has retired the duplicate link {1}, and {2} or {3} belongs to a consolidated cluster that now rests on less evidence</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUPLICATES_REPORTED">
+<h3>DUPLICATES_REPORTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATES_REPORTED</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0019 - The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.  Examples: {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUPLICATES_REMOVED">
+<h3>DUPLICATES_REMOVED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATES_REMOVED</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0020 - The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUPLICATE_REMOVAL_FAILED">
+<h3>DUPLICATE_REMOVAL_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></span>&nbsp;<span class="element-name">DUPLICATE_REMOVAL_FAILED</span></div>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0021 - The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}</div>
 </section>
 </li>
 </ul>

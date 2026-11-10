@@ -319,6 +319,18 @@ loadScripts(document, 'script');</script>
 <div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract</a><wbr>(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract that it
+ generated from open metadata.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct</a><wbr>(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product that it
+ generated from open metadata.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)" class="member-name-link">publishOpenLineageDataSetEvent</a><wbr>(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an open lineage dataset event is published to the integration daemon as a bean.</div>
@@ -634,6 +646,34 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
 <div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.  The bean is
  serialized and passed, with the bean, to each of the registered Bitol document listeners.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProduct</code> - bean for the document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>publishGeneratedDataContract</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishGeneratedDataContract</span><wbr><span class="parameters">(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span></div>
+<div class="block">Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract that it
+ generated from open metadata.  The bean is serialized and passed to each of the registered Bitol document listeners
+ except those that catalogue documents into open metadata, since the document describes elements that are already
+ catalogued.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataContract</code> - bean for the document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>publishGeneratedDataProduct</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishGeneratedDataProduct</span><wbr><span class="parameters">(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
+<div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product that it
+ generated from open metadata.  The bean is serialized and passed to each of the registered Bitol document listeners
+ except those that catalogue documents into open metadata, since the document describes elements that are already
+ catalogued.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataProduct</code> - bean for the document</dd>

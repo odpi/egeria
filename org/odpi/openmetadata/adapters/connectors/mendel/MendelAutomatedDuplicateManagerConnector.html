@@ -126,6 +126,12 @@ implements <a href="../../../frameworks/openmetadata/events/OpenMetadataEventLis
  Each pass works from one snapshot of the duplicate links, so the links that this refresh validates are
  consolidated by the next refresh rather than this one.
  <p>
+ Each refresh then removes the exact duplicates of the relationship types named in the duplicateRelationshipTypes
+ configuration property, and the exact duplicate attached elements of the relationship types named in the
+ duplicateAttachmentTypes configuration property, using <a href="MendelDuplicateInstanceRemover.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel"><code>MendelDuplicateInstanceRemover</code></a>.  These are the
+ identical copies that a process makes when it adds the same thing more than once, so the oldest is kept without
+ a steward's decision.  Setting the reportDuplicatesOnly configuration property reports them without deleting them.
+ <p>
  Once the first refresh has worked through the backlog, the connector also listens for open metadata events so
  that a new or updated duplicate link is reviewed as soon as it appears, rather than waiting for the next refresh.
  The update that this connector makes to a duplicate link produces another event for the same relationship, which

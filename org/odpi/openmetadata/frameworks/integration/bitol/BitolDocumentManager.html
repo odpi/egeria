@@ -136,6 +136,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract</a><wbr>(<a href="odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct</a><wbr>(<a href="odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)" class="member-name-link">registerListener</a><wbr>(<a href="BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Register a listener to receive Bitol documents.</div>
@@ -215,6 +225,32 @@ loadScripts(document, 'script');</script>
 <h3>publishDataProduct</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">publishDataProduct</span><wbr><span class="parameters">(<a href="odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
 <div class="block">Publish an Open Data Product Standard (ODPS) data product.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataProduct</code> - bean for the document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)">
+<h3>publishGeneratedDataContract</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">publishGeneratedDataContract</span><wbr><span class="parameters">(<a href="odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</span></div>
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.  It is not
+ sent to the listeners that catalogue documents into open metadata, since it describes elements that are
+ already catalogued.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataContract</code> - bean for the document</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)">
+<h3>publishGeneratedDataProduct</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">publishGeneratedDataProduct</span><wbr><span class="parameters">(<a href="odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</span></div>
+<div class="block">Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.  It is not
+ sent to the listeners that catalogue documents into open metadata, since it describes elements that are
+ already catalogued.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataProduct</code> - bean for the document</dd>

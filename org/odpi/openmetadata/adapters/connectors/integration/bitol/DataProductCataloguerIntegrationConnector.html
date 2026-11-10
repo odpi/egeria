@@ -159,20 +159,26 @@ implements <a href="../../../../frameworks/integration/bitol/BitolDocumentListen
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct,java.lang.String)" class="member-name-link">processDataProduct</a><wbr>(<a href="../../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isCataloguingListener()" class="member-name-link">isCataloguingListener</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Catalogue a data product.</div>
+<div class="block">This connector catalogues the documents it receives, so it is not sent the documents that the Bitol document
+ publisher generates from open metadata.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct,java.lang.String)" class="member-name-link">processDataProduct</a><wbr>(<a href="../../../../frameworks/integration/bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The documents arrive through the listener so there is nothing to do on refresh.</div>
+<div class="block">Catalogue a data product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The documents arrive through the listener so there is nothing to do on refresh.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -237,6 +243,21 @@ implements <a href="../../../../frameworks/integration/bitol/BitolDocumentListen
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isCataloguingListener()">
+<h3>isCataloguingListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCataloguingListener</span>()</div>
+<div class="block">This connector catalogues the documents it receives, so it is not sent the documents that the Bitol document
+ publisher generates from open metadata.  Cataloguing those again would change the elements they describe,
+ causing them to be published again.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/integration/bitol/BitolDocumentListener.html#isCataloguingListener()">isCataloguingListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a></code></dd>
+<dt>Returns:</dt>
+<dd>true</dd>
 </dl>
 </section>
 </li>

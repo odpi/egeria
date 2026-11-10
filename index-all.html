@@ -13064,6 +13064,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/externalharvesters/harvestopenmetadata/schema/HarvestOpenMetadataColumn.html#CLASSIFICATIONS" class="member-name-link">CLASSIFICATIONS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.schema.<a href="org/odpi/openmetadata/adapters/connectors/externalharvesters/harvestopenmetadata/schema/HarvestOpenMetadataColumn.html" title="enum class in org.odpi.openmetadata.adapters.connectors.externalharvesters.harvestopenmetadata.schema">HarvestOpenMetadataColumn</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/ffdc/OpenLineageIntegrationConnectorAuditCode.html#CLASSIFICATIONS_WRITTEN" class="member-name-link">CLASSIFICATIONS_WRITTEN</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/ffdc/OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></dt>
+<dd>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026 - The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/rest/properties/ClassificationWithEntityRequest.html" class="type-name-link" title="class in org.odpi.openmetadata.repositoryservices.rest.properties">ClassificationWithEntityRequest</a> - Class in <a href="org/odpi/openmetadata/repositoryservices/rest/properties/package-summary.html">org.odpi.openmetadata.repositoryservices.rest.properties</a></dt>
 <dd>
 <div class="block">ClassificationWithEntityRequest carries a classification that has changed along with its entity.</div>
@@ -25704,9 +25708,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Number of hours that a bearer token is valid for if the bearerTokenTimeout property is not set.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#DEFAULT_DUPLICATE_ATTACHMENT_TYPES" class="member-name-link">DEFAULT_DUPLICATE_ATTACHMENT_TYPES</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
+<dd>
+<div class="block">The attachment relationship types whose duplicate attached elements are removed in the standard deployment.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#DEFAULT_DUPLICATE_CLUSTER_SIZE" class="member-name-link">DEFAULT_DUPLICATE_CLUSTER_SIZE</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
 <dd>
 <div class="block">The default number of validated peer duplicates in a cluster before they are consolidated.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#DEFAULT_DUPLICATE_RELATIONSHIP_TYPES" class="member-name-link">DEFAULT_DUPLICATE_RELATIONSHIP_TYPES</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
+<dd>
+<div class="block">The relationship types whose duplicates are removed in the standard deployment: the links that a
+ connector re-creates each time it catalogues a document can multiply when the document is catalogued
+ again.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/pepys/controls/PepysConfigurationProperty.html#DEFAULT_IGNORED_USER_ID_PATTERNS" class="member-name-link">DEFAULT_IGNORED_USER_ID_PATTERNS</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.pepys.controls.<a href="org/odpi/openmetadata/adapters/connectors/pepys/controls/PepysConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.pepys.controls">PepysConfigurationProperty</a></dt>
 <dd>
@@ -31845,6 +31859,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Shutdown monitoring</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationConnector.html#disconnect()" class="member-name-link">disconnect()</a> - Method in class org.odpi.openmetadata.adapters.connectors.integration.openlineage.<a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/OpenLineageCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageCataloguerIntegrationConnector</a></dt>
+<dd>
+<div class="block">Write the cached classifications before the connector shuts down, so the changes from the events received
+ since the last refresh are not lost.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/JacquardIntegrationConnector.html#disconnect()" class="member-name-link">disconnect()</a> - Method in class org.odpi.openmetadata.adapters.connectors.jacquard.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/JacquardIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.jacquard">JacquardIntegrationConnector</a></dt>
 <dd>
 <div class="block">Free up any resources held since the connector is no longer needed.</div>
@@ -32912,6 +32931,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html#DUPLICATE_ASSIGNED" class="member-name-link">DUPLICATE_ASSIGNED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGuard</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#DUPLICATE_ATTACHMENT_TYPES" class="member-name-link">DUPLICATE_ATTACHMENT_TYPES</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
+<dd>
+<div class="block">The relationship types that attach elements to an element (at end 1) where duplicate attached elements are
+ removed.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html#DUPLICATE_CATALOG_TARGETS_REMOVED" class="member-name-link">DUPLICATE_CATALOG_TARGETS_REMOVED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></dt>
 <dd>
 <div class="block">JACQUARD-HARVESTER-0027 - The {0} integration connector removed {1} duplicate catalog target relationship(s) from its own catalog targets, leaving one for each of its {2} product asset(s)</div>
@@ -32980,6 +33004,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">OMRS-ARCHIVE-BUILDER-400-009 - Duplicate attribute name {0} is defined in RelationshipDef {1}</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#DUPLICATE_RELATIONSHIP_TYPES" class="member-name-link">DUPLICATE_RELATIONSHIP_TYPES</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
+<dd>
+<div class="block">The relationship types whose duplicate instances are removed.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#DUPLICATE_REMOVAL_FAILED" class="member-name-link">DUPLICATE_REMOVAL_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
+<dd>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0021 - The {0} integration connector was unable to remove the duplicate {1} instances because of a {2} exception with message: {3}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ActionType.html#DUPLICATE_REVIEW" class="member-name-link">DUPLICATE_REVIEW</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ActionType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ActionType</a></dt>
 <dd>
 <div class="block">Elements have been detected as potential duplicates and need a steward's decision.</div>
@@ -33011,6 +33043,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#DUPLICATES_CONSOLIDATED" class="member-name-link">DUPLICATES_CONSOLIDATED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
 <dd>
 <div class="block">MENDEL-DUPLICATE-MANAGER-0007 - The {0} integration connector has created consolidated element {1} from {2} duplicate {3} elements</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#DUPLICATES_REMOVED" class="member-name-link">DUPLICATES_REMOVED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
+<dd>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0020 - The {0} integration connector has deleted {1} duplicate {2} from {3} groups of identical {4} instances, keeping the oldest in each group</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#DUPLICATES_REPORTED" class="member-name-link">DUPLICATES_REPORTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
+<dd>
+<div class="block">MENDEL-DUPLICATE-MANAGER-0019 - The {0} integration connector has found {1} duplicate {2} in {3} groups of identical {4} instances; reportDuplicatesOnly is set so they have not been removed.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html#DUPLICATES_VALIDATED" class="member-name-link">DUPLICATES_VALIDATED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/mendel/ffdc/MendelAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.ffdc">MendelAuditCode</a></dt>
 <dd>
@@ -67640,6 +67680,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Return the name of this link</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/mapping/BitolMapperBase.html#getLinkedElementGUIDs(java.lang.String,int,java.lang.String)" class="member-name-link">getLinkedElementGUIDs(String, int, String)</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.mapping.<a href="org/odpi/openmetadata/frameworks/integration/bitol/mapping/BitolMapperBase.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.mapping">BitolMapperBase</a></dt>
+<dd>
+<div class="block">Return the unique identifiers of the elements linked to an element by a type of relationship.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html#getLinkedFiles()" class="member-name-link">getLinkedFiles()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></dt>
 <dd>
 <div class="block">Return files linked to the folder.</div>
@@ -83898,6 +83942,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html#getSearchKeywords()" class="member-name-link">getSearchKeywords()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="org/odpi/openmetadata/frameworks/openmetadata/metadataelements/AttributedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AttributedMetadataElement</a></dt>
 <dd>
 <div class="block">Return the attached search keywords.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/mapping/BitolMapperBase.html#getSearchKeywords(java.lang.String)" class="member-name-link">getSearchKeywords(String)</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.mapping.<a href="org/odpi/openmetadata/frameworks/integration/bitol/mapping/BitolMapperBase.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.mapping">BitolMapperBase</a></dt>
+<dd>
+<div class="block">Return the names of the search keywords attached to an element.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/viewservices/classificationexplorer/server/ClassificationExplorerRESTServices.html#getSearchKeywordsByKeyword(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getSearchKeywordsByKeyword(String, String, FilterRequestBody)</a> - Method in class org.odpi.openmetadata.viewservices.classificationexplorer.server.<a href="org/odpi/openmetadata/viewservices/classificationexplorer/server/ClassificationExplorerRESTServices.html" title="class in org.odpi.openmetadata.viewservices.classificationexplorer.server">ClassificationExplorerRESTServices</a></dt>
 <dd>
@@ -103838,6 +103886,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Is the file writable?</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/bitol/DataContractCataloguerIntegrationConnector.html#isCataloguingListener()" class="member-name-link">isCataloguingListener()</a> - Method in class org.odpi.openmetadata.adapters.connectors.integration.bitol.<a href="org/odpi/openmetadata/adapters/connectors/integration/bitol/DataContractCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataContractCataloguerIntegrationConnector</a></dt>
+<dd>
+<div class="block">This connector catalogues the documents it receives, so it is not sent the documents that the Bitol document
+ publisher generates from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/bitol/DataProductCataloguerIntegrationConnector.html#isCataloguingListener()" class="member-name-link">isCataloguingListener()</a> - Method in class org.odpi.openmetadata.adapters.connectors.integration.bitol.<a href="org/odpi/openmetadata/adapters/connectors/integration/bitol/DataProductCataloguerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.bitol">DataProductCataloguerIntegrationConnector</a></dt>
+<dd>
+<div class="block">This connector catalogues the documents it receives, so it is not sent the documents that the Bitol document
+ publisher generates from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentListener.html#isCataloguingListener()" class="member-name-link">isCataloguingListener()</a> - Method in interface org.odpi.openmetadata.frameworks.integration.bitol.<a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a></dt>
+<dd>
+<div class="block">Return whether this listener catalogues the documents it receives into open metadata.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericBuilder.html#isClassificationSet(java.lang.String)" class="member-name-link">isClassificationSet(String)</a> - Method in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericBuilder</a></dt>
 <dd>
 <div class="block">Return whether a particular classification has been set up by the caller.</div>
@@ -111783,6 +111845,16 @@ loadScripts(document, 'script');</script>
  using survivorship rules to decide what the consolidated element contains.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateConsolidator.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">MendelDuplicateConsolidator(IntegrationContext, PropertyHelper, String, AuditLog)</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.mendel.<a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateConsolidator.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel">MendelDuplicateConsolidator</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.mendel">MendelDuplicateInstanceRemover</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/mendel/package-summary.html">org.odpi.openmetadata.adapters.connectors.mendel</a></dt>
+<dd>
+<div class="block">MendelDuplicateInstanceRemover removes the exact duplicates that a process creates when it adds the same thing
+ more than once - typically a connector that re-links or re-attaches everything each time it catalogues a
+ document.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html#%3Cinit%3E(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper,java.lang.String,boolean,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">MendelDuplicateInstanceRemover(IntegrationContext, PropertyHelper, String, boolean, AuditLog)</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.mendel.<a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel">MendelDuplicateInstanceRemover</a></dt>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
@@ -134062,6 +134134,32 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Copy/clone constructor</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentManager.html#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract(DataContract)</a> - Method in interface org.odpi.openmetadata.frameworks.integration.bitol.<a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></dt>
+<dd>
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/context/IntegrationContext.html#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract(DataContract)</a> - Method in class org.odpi.openmetadata.frameworks.integration.context.<a href="org/odpi/openmetadata/frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></dt>
+<dd>
+<div class="block">Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract that it
+ generated from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/contextmanager/IntegrationContextManager.html#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract(DataContract)</a> - Method in class org.odpi.openmetadata.frameworks.integration.contextmanager.<a href="org/odpi/openmetadata/frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></dt>
+<dd>
+<div class="block">Publish an Open Data Contract Standard (ODCS) data contract that was generated from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentManager.html#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct(DataProduct)</a> - Method in interface org.odpi.openmetadata.frameworks.integration.bitol.<a href="org/odpi/openmetadata/frameworks/integration/bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></dt>
+<dd>
+<div class="block">Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/context/IntegrationContext.html#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct(DataProduct)</a> - Method in class org.odpi.openmetadata.frameworks.integration.context.<a href="org/odpi/openmetadata/frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></dt>
+<dd>
+<div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product that it
+ generated from open metadata.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/integration/contextmanager/IntegrationContextManager.html#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct(DataProduct)</a> - Method in class org.odpi.openmetadata.frameworks.integration.contextmanager.<a href="org/odpi/openmetadata/frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></dt>
+<dd>
+<div class="block">Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworkservices/omf/ffdc/OMFServicesAuditCode.html#PUBLISHING_SHUTDOWN" class="member-name-link">PUBLISHING_SHUTDOWN</a> - Enum constant in enum class org.odpi.openmetadata.frameworkservices.omf.ffdc.<a href="org/odpi/openmetadata/frameworkservices/omf/ffdc/OMFServicesAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesAuditCode</a></dt>
 <dd>
 <div class="block">OMF-SERVICES-0007 The Open Metadata Store is no longer publishing events to topic {0}</div>
@@ -140015,6 +140113,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Extract and delete the dueTime property from the supplied element properties.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html#removeDuplicateAttachments(java.util.List)" class="member-name-link">removeDuplicateAttachments(List&lt;String&gt;)</a> - Method in class org.odpi.openmetadata.adapters.connectors.mendel.<a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel">MendelDuplicateInstanceRemover</a></dt>
+<dd>
+<div class="block">Remove the duplicate elements attached through each of the requested relationship types.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html#removeDuplicateRelationships(java.util.List)" class="member-name-link">removeDuplicateRelationships(List&lt;String&gt;)</a> - Method in class org.odpi.openmetadata.adapters.connectors.mendel.<a href="org/odpi/openmetadata/adapters/connectors/mendel/MendelDuplicateInstanceRemover.html" title="class in org.odpi.openmetadata.adapters.connectors.mendel">MendelDuplicateInstanceRemover</a></dt>
+<dd>
+<div class="block">Remove the duplicate relationships of each of the requested types.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/converters/OpenMetadataPropertyConverterBase.html#removeEdition(org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties)" class="member-name-link">removeEdition(ElementProperties)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.converters.<a href="org/odpi/openmetadata/frameworks/openmetadata/converters/OpenMetadataPropertyConverterBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.converters">OpenMetadataPropertyConverterBase</a></dt>
 <dd>
 <div class="block">Extract and delete the property from the supplied element properties.</div>
@@ -142810,6 +142916,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html#REPORT_DIRECTORY" class="member-name-link">REPORT_DIRECTORY</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.reports.<a href="org/odpi/openmetadata/adapters/connectors/reports/ReportRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.reports">ReportRequestParameter</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html#REPORT_DUPLICATES_ONLY" class="member-name-link">REPORT_DUPLICATES_ONLY</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.mendel.controls.<a href="org/odpi/openmetadata/adapters/connectors/mendel/controls/MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></dt>
+<dd>
+<div class="block">Report the duplicate relationships and attached elements in the audit log without removing them.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/reports/ReportGuard.html#REPORT_FAILED" class="member-name-link">REPORT_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.reports.<a href="org/odpi/openmetadata/adapters/connectors/reports/ReportGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.reports">ReportGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/reports/messages/MessageSetCategory.html#REPORT_GENERATING_CONNECTORS" class="member-name-link">REPORT_GENERATING_CONNECTORS</a> - Enum constant in enum class org.odpi.openmetadata.reports.messages.<a href="org/odpi/openmetadata/reports/messages/MessageSetCategory.html" title="enum class in org.odpi.openmetadata.reports.messages">MessageSetCategory</a></dt>

@@ -120,10 +120,23 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DUPLICATE_CLUSTER_SIZE" class="member-name-link">DUPLICATE_CLUSTER_SIZE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATE_ATTACHMENT_TYPES" class="member-name-link">DUPLICATE_ATTACHMENT_TYPES</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The relationship types that attach elements to an element (at end 1) where duplicate attached elements are
+ removed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DUPLICATE_CLUSTER_SIZE" class="member-name-link">DUPLICATE_CLUSTER_SIZE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The number of validated peer duplicates that must be linked together before they are consolidated into a
  single element.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DUPLICATE_RELATIONSHIP_TYPES" class="member-name-link">DUPLICATE_RELATIONSHIP_TYPES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The relationship types whose duplicate instances are removed.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#REPORT_DUPLICATES_ONLY" class="member-name-link">REPORT_DUPLICATES_ONLY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Report the duplicate relationships and attached elements in the audit log without removing them.</div>
 </div>
 </div>
 </section>
@@ -140,10 +153,22 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#dataType" class="member-name-link">dataType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#DEFAULT_DUPLICATE_CLUSTER_SIZE" class="member-name-link">DEFAULT_DUPLICATE_CLUSTER_SIZE</a></code></div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#DEFAULT_DUPLICATE_ATTACHMENT_TYPES" class="member-name-link">DEFAULT_DUPLICATE_ATTACHMENT_TYPES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The attachment relationship types whose duplicate attached elements are removed in the standard deployment.</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#DEFAULT_DUPLICATE_CLUSTER_SIZE" class="member-name-link">DEFAULT_DUPLICATE_CLUSTER_SIZE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The default number of validated peer duplicates in a cluster before they are consolidated.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#DEFAULT_DUPLICATE_RELATIONSHIP_TYPES" class="member-name-link">DEFAULT_DUPLICATE_RELATIONSHIP_TYPES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The relationship types whose duplicates are removed in the standard deployment: the links that a
+ connector re-creates each time it catalogues a document can multiply when the document is catalogued
+ again.</div>
 </div>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
@@ -250,6 +275,31 @@ the order they are declared.</div>
  single element.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="DUPLICATE_RELATIONSHIP_TYPES">
+<h3>DUPLICATE_RELATIONSHIP_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></span>&nbsp;<span class="element-name">DUPLICATE_RELATIONSHIP_TYPES</span></div>
+<div class="block">The relationship types whose duplicate instances are removed.  Two relationships are duplicates when they
+ are of the same type, connect the same two elements, and have the same properties and effectivity dates.
+ The oldest is kept.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DUPLICATE_ATTACHMENT_TYPES">
+<h3>DUPLICATE_ATTACHMENT_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></span>&nbsp;<span class="element-name">DUPLICATE_ATTACHMENT_TYPES</span></div>
+<div class="block">The relationship types that attach elements to an element (at end 1) where duplicate attached elements are
+ removed.  Two attached elements are duplicates when they are anchored to the same element through the same
+ type of relationship, are of the same type, and have the same properties.  The oldest is kept.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REPORT_DUPLICATES_ONLY">
+<h3>REPORT_DUPLICATES_ONLY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MendelConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.mendel.controls">MendelConfigurationProperty</a></span>&nbsp;<span class="element-name">REPORT_DUPLICATES_ONLY</span></div>
+<div class="block">Report the duplicate relationships and attached elements in the audit log without removing them.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -301,6 +351,22 @@ the order they are declared.</div>
 </ul>
 </dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DEFAULT_DUPLICATE_RELATIONSHIP_TYPES">
+<h3>DEFAULT_DUPLICATE_RELATIONSHIP_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">DEFAULT_DUPLICATE_RELATIONSHIP_TYPES</span></div>
+<div class="block">The relationship types whose duplicates are removed in the standard deployment: the links that a
+ connector re-creates each time it catalogues a document can multiply when the document is catalogued
+ again.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DEFAULT_DUPLICATE_ATTACHMENT_TYPES">
+<h3>DEFAULT_DUPLICATE_ATTACHMENT_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">DEFAULT_DUPLICATE_ATTACHMENT_TYPES</span></div>
+<div class="block">The attachment relationship types whose duplicate attached elements are removed in the standard deployment.</div>
 </section>
 </li>
 </ul>
