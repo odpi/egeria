@@ -27,8 +27,8 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
-| Exception messages | 70 | 644 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 111 | 1089 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Exception messages | 67 | 641 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
+| Audit log messages | 109 | 1088 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -94,13 +94,13 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
 | [Data Manager Connectors](connectors/data-manager-connectors) | 15 | 93 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](connectors/data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
-| [Integration Connectors](connectors/integration-connectors) | 14 | 88 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
+| [Integration Connectors](connectors/integration-connectors) | 14 | 89 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 80 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
-| [Repository Services Connectors](connectors/repository-services-connectors) | 8 | 35 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
+| [Repository Services Connectors](connectors/repository-services-connectors) | 7 | 34 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
 | [Governance Action Connectors](connectors/governance-action-connectors) | 2 | 58 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](connectors/file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
-| [Nanny Connectors](connectors/nanny-connectors) | 21 | 145 | The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed. |
+| [Nanny Connectors](connectors/nanny-connectors) | 17 | 141 | The nanny connectors look after the open metadata ecosystem itself, recording its activity and deriving insight from it so that the operation of Egeria can be analysed. |
 | [Lovelace Insights](connectors/lovelace-insights) | 2 | 13 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |
 | [Report Generating Connectors](connectors/report-generating-connectors) | 1 | 2 | These connectors turn the contents of the open metadata ecosystem into human-readable documents. |
 | [Secrets Store Connectors](connectors/secrets-store-connectors) | 2 | 5 | These connectors supply the credentials that other connectors need when they call a third party technology. |
@@ -152,7 +152,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | Exception messages | 1 | [DarwinErrorCode](connectors/nanny-connectors/DarwinErrorCode.md) |
 | `DB2LUW-CONNECTOR-` | Audit log messages | 8 | [DB2LUWAuditCode](connectors/data-manager-connectors/DB2LUWAuditCode.md) |
 | `DB2LUW-CONNECTOR-` | Exception messages | 2 | [DB2LUWErrorCode](connectors/data-manager-connectors/DB2LUWErrorCode.md) |
-| `DISTRIBUTE-KAFKA-AUDIT-LOG-` | Audit log messages | 1 | [DistributeKafkaAuditCode](connectors/integration-connectors/DistributeKafkaAuditCode.md) |
+| `DISTRIBUTE-KAFKA-AUDIT-LOG-` | Audit log messages | 2 | [DistributeKafkaAuditCode](connectors/integration-connectors/DistributeKafkaAuditCode.md) |
 | `DUCKDB-CONNECTOR-` | Audit log messages | 15 | [DuckDBAuditCode](connectors/data-manager-connectors/DuckDBAuditCode.md) |
 | `DUCKDB-CONNECTOR-500-` | Exception messages | 1 | [DuckDBErrorCode](connectors/data-manager-connectors/DuckDBErrorCode.md) |
 | `ENGINE-HOST-SERVICES-` | Audit log messages | 28 | [EngineHostServicesAuditCode](governance-server-services/EngineHostServicesAuditCode.md) |
@@ -164,15 +164,10 @@ Every message identifier begins with a prefix that names the component that rais
 | `GOVERNANCE-ACTION-CONNECTORS-` | Exception messages | 4 | [GovernanceActionConnectorsErrorCode](connectors/governance-action-connectors/GovernanceActionConnectorsErrorCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Audit log messages | 5 | [GovernanceActionSamplesAuditCode](samples/GovernanceActionSamplesAuditCode.md) |
 | `GOVERNANCE-ACTION-SAMPLES-` | Exception messages | 4 | [GovernanceActionSamplesErrorCode](samples/GovernanceActionSamplesErrorCode.md) |
-| `HARVEST-OPEN-METADATA-` | Audit log messages | 1 | [HarvestOpenMetadataAuditCode](connectors/nanny-connectors/HarvestOpenMetadataAuditCode.md) |
-| `HARVEST-OPEN-METADATA-500-` | Exception messages | 1 | [HarvestOpenMetadataErrorCode](connectors/nanny-connectors/HarvestOpenMetadataErrorCode.md) |
-| `HARVEST-SURVEYS-` | Audit log messages | 1 | [HarvestSurveysAuditCode](connectors/nanny-connectors/HarvestSurveysAuditCode.md) |
-| `HARVEST-SURVEYS-500-` | Exception messages | 1 | [HarvestSurveysErrorCode](connectors/nanny-connectors/HarvestSurveysErrorCode.md) |
 | `INTEGRATION-DAEMON-SERVICES-` | Audit log messages | 36 | [IntegrationDaemonServicesAuditCode](governance-server-services/IntegrationDaemonServicesAuditCode.md) |
 | `INTEGRATION-DAEMON-SERVICES-400-` | Exception messages | 8 | [IntegrationDaemonServicesErrorCode](governance-server-services/IntegrationDaemonServicesErrorCode.md) |
 | `JACQUARD-HARVESTER-` | Audit log messages | 25 | [JacquardAuditCode](connectors/nanny-connectors/JacquardAuditCode.md) |
 | `JACQUARD-HARVESTER-` | Exception messages | 2 | [JacquardErrorCode](connectors/nanny-connectors/JacquardErrorCode.md) |
-| `JDBC-AUDIT-LOG-500-` | Exception messages | 1 | [PostgreSQLAuditLogErrorCode](connectors/repository-services-connectors/PostgreSQLAuditLogErrorCode.md) |
 | `JDBC-INTEGRATION-CONNECTOR-` | Audit log messages | 13 | [JDBCIntegrationConnectorAuditCode](connectors/integration-connectors/JDBCIntegrationConnectorAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Audit log messages | 4 | [JDBCAuditCode](connectors/data-store-connectors/JDBCAuditCode.md) |
 | `JDBC-RESOURCE-CONNECTOR-` | Exception messages | 7 | [JDBCErrorCode](connectors/data-store-connectors/JDBCErrorCode.md) |

@@ -39,9 +39,8 @@ The url is carried on `MessageDefinition`, so it travels with the message at run
 these pages:
 
 * `AuditLog` copies it into the `messageURL` of every audit log record, so it reaches the audit log
-  destinations - including the `message_url` column of the PostgreSQL audit log store, which existing
-  deployments pick up as an `ALTER TABLE` when the server restarts.  The console destination prints it
-  under the record for the severities that report a problem.
+  destinations.  The console destination prints it under the record for the severities that report a
+  problem.
 * The exception base classes record it as `reportedURL`, and `RESTExceptionHandler` carries it out in the
   `exceptionURL` of the error response and puts it back on the exception the client rebuilds - so a caller
   on the far side of a REST call still gets the link.

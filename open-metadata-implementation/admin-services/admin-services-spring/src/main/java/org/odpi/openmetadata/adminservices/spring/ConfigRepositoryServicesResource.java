@@ -163,32 +163,6 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.
-     *
-     * @param serverName  local server name.
-     * @param delegatingUserId external userId making request
-     * @param storageProperties  properties used to configure access to the database
-     * @return void response or
-     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * InvalidParameterException invalid serverName.
-     */
-    @PostMapping(path = "/audit-log-destinations/postgres")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="addPostgreSQLDatabaseAuditLogDestination",
-            description="Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/audit-log-destination-connector/"))
-
-    public VoidResponse addPostgreSQLDatabaseAuditLogDestination(@PathVariable String              serverName,
-                                                                 @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
-                                                                 @RequestBody  Map<String, Object> storageProperties)
-    {
-        return adminAPI.addPostgreSQLAuditLogDestination(serverName, delegatingUserId, storageProperties);
-    }
-
-
-    /**
      * Add an audit log destination that sends each log record as an event on the supplied event topic.
      *
      * @param serverName  local server name.

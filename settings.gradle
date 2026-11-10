@@ -46,7 +46,6 @@ include(':open-metadata-implementation:adapters:open-connectors:repository-servi
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-event-display-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
-include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:postgres-repository-connector')

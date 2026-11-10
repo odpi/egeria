@@ -9,8 +9,6 @@ import org.odpi.openmetadata.adminservices.client.OMAGServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * second matters as much as the first - there are around forty setters on this API, most of them taking a
  * single string, and a message that does not say which one was rejected is not much better than silence.
  * <br><br>
- * It also holds the three admin-services client methods that address URLs that no longer exist.  They are
+ * It also holds the admin-services client methods that address URLs that no longer exist.  They are
  * validation tests in the sense that matters here: each one is a request the caller cannot get right,
  * because there is nothing at the other end.
  */
@@ -84,65 +82,6 @@ public class AdminServicesValidationFVT
 
 
     /**
-     * A database audit log destination should be configurable.
-     * <br><br>
-     * This failed when it was first written.  {@code addJDBCAuditLogDestination} posted to
-     * {@code .../audit-log-destinations/jdbc}, and {@code ConfigRepositoryServicesResource} publishes
-     * {@code default}, {@code console}, {@code slf4j}, {@code files}, {@code postgres},
-     * {@code event-topic} and {@code connection} - but not {@code jdbc}.  The JDBC destination had become
-     * the PostgreSQL one and the client had not followed it.
-     * <br><br>
-     * The method is now deprecated and delegates to {@code addPostgreSQLAuditLogDestination}, which is new
-     * and takes the storage properties that destination actually needs rather than a bare connection string.
-     * Both are exercised here, because the deprecated one is what existing callers will still be using.
-     * <br><br>
-     * The same method carried a second, smaller defect, fixed at the same time: its {@code methodName} was
-     * {@code "addFileAuditLogDestination"}, copied from the method below it, so every error it reported named
-     * the wrong operation - which is how a 404 on {@code /jdbc} would come to be read as a problem with the
-     * file destination.
-     *
-     * @throws Exception unexpected failure in the test
-     */
-    @Test
-    void aJDBCAuditLogDestinationCanBeConfigured() throws Exception
-    {
-        final String serverName = "serverFvtJDBCAuditLog";
-
-        try
-        {
-            OMAGServerConfigurationClient client = ServerFvtTestSupport.getServerConfigurationClient(serverName);
-
-            client.clearOMAGServerConfig();
-            client.setServerUserId(OMAGPlatformExtension.USER_ID);
-
-            Map<String, Object> storageProperties = new HashMap<>();
-
-            storageProperties.put("databaseURL", "jdbc:postgresql://localhost:5432/egeria");
-            storageProperties.put("databaseSchema", "audit_log_server_fvt");
-
-            client.addPostgreSQLAuditLogDestination(storageProperties);
-
-            assertNotNull(client.getOMAGServerConfig().getRepositoryServicesConfig(),
-                          "A server with an audit log destination should have repository services configured");
-
-            /*
-             * The deprecated JDBC method has to keep working for callers that have not moved yet, so it is
-             * called here too - it delegates to the PostgreSQL destination.  Neither call connects to a
-             * database: configuring a destination stores a connection, it does not open one.
-             */
-            client.addJDBCAuditLogDestination(new ArrayList<>(), "jdbc:postgresql://localhost:5432/egeria");
-
-            assertNotNull(client.getOMAGServerConfig().getRepositoryServicesConfig().getAuditLogConnections(),
-                          "The audit log destinations should have been stored");
-        }
-        finally
-        {
-            ServerFvtTestSupport.deleteServer(serverName);
-        }
-    }
-
-
-    /**
      * The configuration a running server is using should be reachable through the admin services client.
      * <br><br>
      * This failed when it was first written.
@@ -156,7 +95,7 @@ public class AdminServicesValidationFVT
      * addresses the server-operations one: the administration services own the configuration document on
      * disk, and the configuration a <em>running</em> instance is using belongs to the server operations.
      * <br><br>
-     * The pattern across all three of this class's URL defects was the same: the endpoint was relocated to
+     * The pattern across this class's URL defects was the same: the endpoint was relocated to
      * another service and one client was left behind.  Nothing in the build notices, because the client and
      * the controller share only a string literal - which is the argument for this suite existing.
      *

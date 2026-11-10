@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.Dis
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.PostgreSQLAuditLogDestinationProvider;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -50,8 +49,14 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
 
         if (connectorToTarget instanceof JDBCResourceConnector)
         {
-            auditLogConnection = getAuditLogConnection(connectorToTarget,
-                                                       new PostgreSQLAuditLogDestinationProvider().getConnectorType());
+            /*
+             * Audit log records are no longer stored in database schemas.  Metadata observability is provided
+             * by the Pepys Activity Observer and the Lovelace services instead.
+             */
+            logRecord(methodName,
+                      DistributeKafkaAuditCode.UNSUPPORTED_DESTINATION.getMessageDefinition(connectorName,
+                                                                                            connectorToTarget.getClass().getName()));
+            return;
         }
         else if (connectorToTarget instanceof BasicFolderConnector)
         {
@@ -119,7 +124,7 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
                 logExceptionRecord(methodName,
                                    DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                       error.getClass().getName(),
-
+                                                                                                      methodName,
                                                                                                       error.getMessage()),
                                    error);
             }

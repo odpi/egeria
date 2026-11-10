@@ -24,7 +24,6 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-event-display-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
-    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')

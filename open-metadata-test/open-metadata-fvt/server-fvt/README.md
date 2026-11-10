@@ -100,7 +100,6 @@ client and the controller share only a string literal.
 | --- | --- | --- |
 | `ServerOperationsClient.getServerStatus` | `/open-metadata/server-operations/servers/{name}/status` | Points at platform-services, which owns a server's start/stop history |
 | `OMAGServerConfigurationClient.getOMAGServerInstanceConfig` | `/admin-services/servers/{name}/instance/configuration` | Points at server-operations, which owns a *running* instance's configuration |
-| `OMAGServerConfigurationClient.addJDBCAuditLogDestination` | `.../audit-log-destinations/jdbc` | Deprecated; delegates to the new `addPostgreSQLAuditLogDestination(Map)`, which takes the storage properties that destination needs |
 | `OMAGServerPlatformConfigurationClient.{set,clear,get}PlatformSecurityConnection` | `/admin-services/platform/security/connection` | Point at platform-services (they remain deprecated, but now work) |
 | `OMAGServerConfigurationClient.setServerType` | `.../servers/{name}/server-type` | **Server-side**: the client was right and the administration service existed — the Spring mapping was missing from `ConfigPropertiesResource`, whose own class comment says it configures the server type. Added. |
 
@@ -138,9 +137,8 @@ client and the controller share only a string literal.
   delegate to it. Nothing called them, which is why it had gone unnoticed — and is also why widening the
   signature breaks no working code. (`ConfigurationManagementClient` and `OMAGServerPlatformConfigurationClient`
   address the platform rather than a named server and are unchanged.)
-* **`AuditLogServicesClient.getSeverityList` and `addJDBCAuditLogDestination`** each declared a `methodName`
-  copied from a neighbouring method, so every error they reported named the wrong operation — which is how a
-  404 on `/jdbc` came to be reported as a problem with the file destination.
+* **`AuditLogServicesClient.getSeverityList`** declared a `methodName` copied from a neighbouring method, so
+  every error it reported named the wrong operation.
 * **`AuditLogServicesClient` and `MetadataHighwayServicesClient`** documented `restURLRoot` as
   `serverURLroot + "/servers/" + serverName` while prepending `/servers/{0}/...` themselves, so following the
   javadoc gave a doubled path segment and a 404 on every call. Their javadoc now says what the code does, and

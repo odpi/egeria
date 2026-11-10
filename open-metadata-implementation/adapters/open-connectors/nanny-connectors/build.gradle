@@ -19,11 +19,9 @@ dependencies {
     compileOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     compileOnly project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
-    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
-    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
 
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

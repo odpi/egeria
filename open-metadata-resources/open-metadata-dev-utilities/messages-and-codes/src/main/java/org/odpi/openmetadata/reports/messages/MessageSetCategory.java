@@ -189,8 +189,8 @@ public enum MessageSetCategory
     NANNY_CONNECTORS("open-metadata-implementation/adapters/open-connectors/nanny-connectors",
                      "connectors/nanny-connectors",
                      "Nanny Connectors",
-                     "The nanny connectors harvest observability data from the open metadata ecosystem into a " +
-                             "database so that the operation of Egeria itself can be analysed."),
+                     "The nanny connectors look after the open metadata ecosystem itself, recording its activity " +
+                             "and deriving insight from it so that the operation of Egeria can be analysed."),
 
     /**
      * Message sets defined by the connectors that generate insight reports.

@@ -41,18 +41,6 @@ A metadata store that uses a postgreSQL-backed repository
 
 
 ###
-# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Add JDBC audit log destination
-# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
-# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/postgres-metadata-store/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_postgres_metadata_store"
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-["Error", "Exception", "Activity", "Action"]
-
-
-###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the PostgreSQL Repository
 # Set up the local repository to use the PostgreSQL Repository implementation.

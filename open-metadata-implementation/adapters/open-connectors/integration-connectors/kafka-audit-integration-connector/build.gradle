@@ -14,7 +14,6 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
-    compileOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

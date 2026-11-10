@@ -1235,49 +1235,6 @@ public class OMAGServerAdminServices extends TokenController
 
 
     /**
-     * Set up the JDBC based audit log destination for the server.
-     *
-     * @param serverName  local server name.
-     * @param delegatingUserId external userId making request
-     * @param storageProperties  properties used to configure access to the database
-     * @return void response or
-     * UserNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * InvalidParameterException invalid serverName or null userId parameter.
-     */
-    public VoidResponse addPostgreSQLAuditLogDestination(String              serverName,
-                                                         String              delegatingUserId,
-                                                         Map<String, Object> storageProperties)
-    {
-        final String methodName = "addPostgreSQLAuditLogDestination";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            errorHandler.validateServerName(serverName, methodName);
-
-            String userId = super.getUser(CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
-
-            this.addAuditLogDestination(serverName, delegatingUserId, configurationFactory.getPostgreSQLBasedAuditLogConnection(storageProperties));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, null);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response);
-
-        return response;
-    }
-
-
-    /**
      * Set up the File based audit log destination for the server.
      *
      * @param serverName  local server name.
