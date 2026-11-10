@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ReferenceDataResource provides part of the server-side implementation of the Reference Data OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/reference-data")
 @SecurityScheme(

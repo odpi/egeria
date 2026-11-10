@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The SecurityOfficerResource provides part of the server-side implementation of the Security Officer OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/security-officer")
 @SecurityScheme(

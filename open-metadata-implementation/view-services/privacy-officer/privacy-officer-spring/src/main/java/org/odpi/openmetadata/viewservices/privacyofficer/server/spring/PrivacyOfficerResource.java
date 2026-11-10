@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The PrivacyOfficerResource provides part of the server-side implementation of the Privacy Officer OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/privacy-officer")
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The SolutionArchitectResource provides part of the server-side implementation of the Solution Architect OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/solution-architect")
 @SecurityScheme(

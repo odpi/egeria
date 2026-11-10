@@ -895,8 +895,7 @@ public class OMAGServerOperationalServices extends TokenController
                         catch (Exception error)
                         {
                             auditLog.logException(methodName,
-                                                  ServerOpsAuditCode.ACCESS_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
-                                                                                                                          accessServiceConfig.getAccessServiceName(),
+                                                  ServerOpsAuditCode.ACCESS_SERVICE_INSTANCE_FAILURE.getMessageDefinition(accessServiceConfig.getAccessServiceName(),
                                                                                                                           error.getMessage()),
                                                   accessServiceConfig.toString(),
                                                   error);
@@ -991,8 +990,7 @@ public class OMAGServerOperationalServices extends TokenController
                     catch (Exception error)
                     {
                         auditLog.logException(methodName,
-                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
-                                                                                                                    registrationEntry.getViewServiceName(),
+                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(registrationEntry.getViewServiceName(),
                                                                                                                     error.getMessage()),
                                               error);
 
@@ -1093,8 +1091,7 @@ public class OMAGServerOperationalServices extends TokenController
                     catch (Exception error)
                     {
                         auditLog.logException(methodName,
-                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
-                                                                                                                    viewServiceConfig.getViewServiceName(),
+                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(viewServiceConfig.getViewServiceName(),
                                                                                                                     error.getMessage()),
                                               viewServiceConfig.toString(),
                                               error);
@@ -1185,8 +1182,7 @@ public class OMAGServerOperationalServices extends TokenController
                     catch (Exception error)
                     {
                         auditLog.logException(methodName,
-                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
-                                                                                                                    genericService.getViewServiceName(),
+                                              ServerOpsAuditCode.VIEW_SERVICE_INSTANCE_FAILURE.getMessageDefinition(genericService.getViewServiceName(),
                                                                                                                     error.getMessage()),
                                               genericService.toString(),
                                               error);

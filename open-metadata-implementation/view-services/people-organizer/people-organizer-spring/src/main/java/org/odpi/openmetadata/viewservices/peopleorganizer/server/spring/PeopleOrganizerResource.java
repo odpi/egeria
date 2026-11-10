@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The PeopleOrganizerResource provides part of the server-side implementation of the People Organizer OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/people-organizer")
 @SecurityScheme(

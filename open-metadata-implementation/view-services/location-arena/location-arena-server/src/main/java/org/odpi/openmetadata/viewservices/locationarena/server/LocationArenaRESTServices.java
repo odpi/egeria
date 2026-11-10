@@ -23,7 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Secure
 
 /**
  * The LocationArenaRESTServices provides the server-side implementation of the Location Arena Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class LocationArenaRESTServices extends TokenController
 {

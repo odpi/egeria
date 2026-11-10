@@ -18,6 +18,9 @@ import org.odpi.openmetadata.adapters.connectors.darwin.controls.DarwinConfigura
 import org.odpi.openmetadata.adapters.connectors.mendel.MendelAutomatedDuplicateManagerProvider;
 import org.odpi.openmetadata.adapters.connectors.pepys.PepysActivityObserverProvider;
 import org.odpi.openmetadata.adapters.connectors.pepys.controls.PepysConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.pasteur.PasteurActionHistoryCleanupProvider;
+import org.odpi.openmetadata.adapters.connectors.pasteur.PasteurCleanUpPolicy;
+import org.odpi.openmetadata.adapters.connectors.pasteur.controls.PasteurConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.simon.SimonContributionRecorderProvider;
 import org.odpi.openmetadata.adapters.connectors.simon.controls.SimonConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformCatalogConfigurationProperty;
@@ -936,6 +939,34 @@ public enum IntegrationConnectorDefinition
                                       IntegrationGroupDefinition.DARWIN,
                                       ContentPackDefinition.CORE_CONTENT_PACK),
 
+    /**
+     * Pasteur deletes the finished actions once a configured number of days has passed since they completed,
+     * so the action history does not grow without bound.  Its configuration properties hold the days to keep each
+     * type of action and the activity statuses that show an action has finished.
+     */
+    PASTEUR_ACTION_HISTORY_CLEANUP("c43f43b7-2e02-4d88-9298-41ee8bc662a6",
+                                   "PasteurActionHistoryCleanupIntegrationConnector",
+                                   "Deletes the finished actions once a configured number of days has passed since they completed.",
+                                   PasteurActionHistoryCleanupProvider.class.getName(),
+                                   "PasteurActionHistoryCleanup",
+                                   "pasteurnpa",
+                                   null,
+                                   null,
+                                   null,
+                                   getPasteurConfigProperties(),
+                                   60*24, // 24 hours
+                                   null,
+                                   "d4f78982-20f2-4b15-8195-0efa87fbdd73",
+                                   "Action History Cleanup",
+                                   "Deletes the finished engine actions, governance action process instances, to dos and other actions once the number of days configured for their type has passed since they completed.  Actions with lineage relationships are archived so lineage queries can still find them; the others are soft-deleted.  The engine actions of a governance action process are removed with their process instance.",
+                                   true,
+                                   null,
+                                   null,
+                                   null,
+                                   null,
+                                   IntegrationGroupDefinition.PASTEUR,
+                                   ContentPackDefinition.CORE_CONTENT_PACK),
+
     LISKOV_DATA_SHARING_HUB_MANAGER("a38e7f2b-a672-419e-95b4-d650d9bb5c92",
                                     "LiskovDataSharingHubManagerIntegrationConnector",
                                     "Manages the content of the data dictionary for a data sharing hub.",
@@ -1057,6 +1088,26 @@ public enum IntegrationConnectorDefinition
                                     MendelConfigurationProperty.DEFAULT_DUPLICATE_ATTACHMENT_TYPES);
         configurationProperties.put(MendelConfigurationProperty.REPORT_DUPLICATES_ONLY.getName(),
                                     false);
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Return the configuration properties for the Pasteur Action History Cleanup.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getPasteurConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PasteurConfigurationProperty.DAYS_TO_CLEAN_UP.getName(),
+                                    PasteurConfigurationProperty.getDefaultDaysToCleanUp());
+        configurationProperties.put(PasteurConfigurationProperty.COMPLETION_STATUSES.getName(),
+                                    PasteurConfigurationProperty.DEFAULT_COMPLETION_STATUSES);
+        configurationProperties.put(PasteurConfigurationProperty.DELETE_METHOD.getName(),
+                                    PasteurCleanUpPolicy.DEFAULT_DELETE_METHOD.name());
 
         return configurationProperties;
     }

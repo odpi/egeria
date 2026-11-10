@@ -49,6 +49,7 @@ SUITES=(auth-fvt:runAuthFvt
         templates-fvt:runTemplatesFvt
         duplicate-fvt:runDuplicateFvt
         darwin-fvt:runDarwinFvt
+        pasteur-fvt:runPasteurFvt
         platform-catalog-fvt:runPlatformCatalogFvt
         tabular-data-fvt:runTabularDataFvt
         postgres-fvt:runPostgresFvt

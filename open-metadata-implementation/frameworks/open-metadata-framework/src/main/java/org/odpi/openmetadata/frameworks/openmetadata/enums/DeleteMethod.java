@@ -32,7 +32,7 @@ public enum DeleteMethod implements OpenMetadataEnum
                        "Delete the element from the active store, however it can still be restored if it has been deleted in error.", false),
 
     /**
-     * If the element has lineage relationships then archive; otherwise soft-delete."
+     * If the element has lineage relationships then archive; otherwise soft-delete.
      */
     LOOK_FOR_LINEAGE (2, "eff96544-c730-4abe-b71e-1524b5859183", "LookForLineage",
                       "If the element has lineage relationships then archive; otherwise soft-delete.", true),

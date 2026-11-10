@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ActionAuthorResource provides the Spring API endpoints of the Action Author Open Metadata View Service (OMVS).
- = */
+ */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/action-author")

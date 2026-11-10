@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DevopsPipelineResource provides part of the server-side implementation of the Devops Pipeline OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/devops-pipeline")
 @SecurityScheme(

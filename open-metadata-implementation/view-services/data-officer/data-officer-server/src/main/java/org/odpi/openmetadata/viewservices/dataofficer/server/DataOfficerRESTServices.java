@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The DataOfficerRESTServices provides the server-side implementation of the Data Officer Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class DataOfficerRESTServices extends TokenController
 {

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The NotificationManagerRESTServices provides the server-side implementation of the Notification Manager Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class NotificationManagerRESTServices extends TokenController
 {

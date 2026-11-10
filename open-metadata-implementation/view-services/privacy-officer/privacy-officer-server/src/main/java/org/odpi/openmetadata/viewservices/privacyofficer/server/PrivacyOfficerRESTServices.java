@@ -23,7 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.D
 
 /**
  * The PrivacyOfficerRESTServices provides the server-side implementation of the Privacy Officer Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class PrivacyOfficerRESTServices extends TokenController
 {

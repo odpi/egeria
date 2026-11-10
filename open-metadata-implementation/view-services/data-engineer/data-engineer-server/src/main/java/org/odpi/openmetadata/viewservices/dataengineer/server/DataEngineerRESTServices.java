@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * The DataEngineerRESTServices provides the server-side implementation of the Data Engineer Open Metadata
- * View Service (OMVS).  This interface provides access to a person's profile, roles and network.
+ * View Service (OMVS).
  */
 public class DataEngineerRESTServices extends TokenController
 {

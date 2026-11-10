@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The LocationArenaResource provides part of the server-side implementation of the Location Arena OMVS.
- = */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/location-arena")
 @SecurityScheme(

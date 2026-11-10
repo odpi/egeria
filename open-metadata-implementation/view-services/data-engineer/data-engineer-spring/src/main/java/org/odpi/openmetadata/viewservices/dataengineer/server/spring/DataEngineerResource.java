@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataEngineerResource provides part of the server-side implementation of the Data Engineer OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-engineer")
 @SecurityScheme(

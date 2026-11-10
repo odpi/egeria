@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataOfficerResource provides part of the server-side implementation of the Data Officer OMVS.
-= */
+ */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-officer")
 
