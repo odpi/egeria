@@ -4,9 +4,9 @@
 
 # Nanny Connectors Messages
 
-The nanny connectors harvest observability data from the open metadata ecosystem into a database so that the operation of Egeria itself can be analysed.
+The nanny connectors look after the open metadata ecosystem itself, recording its activity and deriving insight from it so that the operation of Egeria can be analysed.
 
-This directory documents 145 messages in 21 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 141 messages in 17 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -19,10 +19,6 @@ This directory documents 145 messages in 21 message sets.  Return to the [messag
 | [BaudotNotificationMessageSet](BaudotNotificationMessageSet.md) | Notification messages | `BAUDOT-SUBSCRIPTION-MANAGEMENT-` | 5 | <https://egeria-project.org/concepts/notification/> |
 | [DarwinAuditCode](DarwinAuditCode.md) | Audit log messages | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-` | 20 |  |
 | [DarwinErrorCode](DarwinErrorCode.md) | Exception messages | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/digital-product/> |
-| [HarvestOpenMetadataAuditCode](HarvestOpenMetadataAuditCode.md) | Audit log messages | `HARVEST-OPEN-METADATA-` | 1 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
-| [HarvestOpenMetadataErrorCode](HarvestOpenMetadataErrorCode.md) | Exception messages | `HARVEST-OPEN-METADATA-500-` | 1 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
-| [HarvestSurveysAuditCode](HarvestSurveysAuditCode.md) | Audit log messages | `HARVEST-SURVEYS-` | 1 | <https://egeria-project.org/concepts/survey-report/> |
-| [HarvestSurveysErrorCode](HarvestSurveysErrorCode.md) | Exception messages | `HARVEST-SURVEYS-500-` | 1 | <https://egeria-project.org/concepts/survey-report/> |
 | [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 25 |  |
 | [JacquardErrorCode](JacquardErrorCode.md) | Exception messages | `JACQUARD-HARVESTER-` | 2 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 | [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 13 | <https://egeria-project.org/concepts/data-sharing-hub/> |

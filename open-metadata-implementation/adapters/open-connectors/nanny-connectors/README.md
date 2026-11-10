@@ -14,10 +14,6 @@ There are also the tabular data set connectors - one for each type of product.
 These connectors assemble a collection of open metadata into a single table structure that can
 be provisioned into a destination that supports tabular data (eg CSV file, database table or kafka topic).
 
-Finally, there are the external harvester connectors that harvest data from external sources and
-create insights in open metadata for Jacquard products.  These connectors
-can also feed tabular data stores with the raw data they are processing.
-
 ## Babbage Analytical Engine
 
 In tribute to [Charles Babbage](https://en.wikipedia.org/wiki/Charles_Babbage)

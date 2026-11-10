@@ -561,60 +561,6 @@ public class OMAGServerConfigurationClient
 
 
     /**
-     * Add an audit log destination that creates log records as rows in a PostgreSQL database schema.
-     *
-     * @param storageProperties properties used to configure access to the database
-     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws InvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void addPostgreSQLAuditLogDestination(Map<String, Object> storageProperties) throws UserNotAuthorizedException,
-                                                                                               InvalidParameterException,
-                                                                                               OMAGConfigurationErrorException
-    {
-        final String methodName  = "addPostgreSQLAuditLogDestination";
-        final String urlTemplate = "/open-metadata/admin-services/servers/{0}/audit-log-destinations/postgres?delegatingUserId={1}";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        storageProperties,
-                                        serverName,
-                                        delegatingUserId);
-    }
-
-
-    /**
-     * Add an audit log destination that creates log records as rows in a JDBC database.
-     *
-     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
-     * @param jdbcConnectionString connection string used to connect to the JDBC data base
-     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws InvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     * @deprecated the platform publishes no JDBC audit log destination.  It was replaced by the PostgreSQL
-     * destination and this method was left addressing the endpoint the JDBC one used to publish, so every
-     * call to it returned a 404.  Use {@link #addPostgreSQLAuditLogDestination(Map)} instead, which takes the
-     * storage properties that destination needs rather than a bare connection string - note that the
-     * severities argument here has never had anywhere to go and is ignored.
-     */
-    @Deprecated
-    public void addJDBCAuditLogDestination(List<String> supportedSeverities,
-                                           String       jdbcConnectionString) throws UserNotAuthorizedException,
-                                                                                     InvalidParameterException,
-                                                                                     OMAGConfigurationErrorException
-    {
-        Map<String, Object> storageProperties = new HashMap<>();
-
-        if (jdbcConnectionString != null)
-        {
-            storageProperties.put("databaseURL", jdbcConnectionString);
-        }
-
-        this.addPostgreSQLAuditLogDestination(storageProperties);
-    }
-
-
-    /**
      * Add an audit log destination that creates log records as JSON files in a shared directory.
      *
      * @param directoryName optional directory name

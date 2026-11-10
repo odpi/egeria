@@ -6,7 +6,7 @@
 
 These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores.
 
-This directory documents 35 messages in 8 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 34 messages in 7 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -18,7 +18,6 @@ This directory documents 35 messages in 8 message sets.  Return to the [messages
 | [FileBasedOpenMetadataArchiveStoreConnectorAuditCode](FileBasedOpenMetadataArchiveStoreConnectorAuditCode.md) | Audit log messages | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-` | 2 | <https://egeria-project.org/concepts/open-metadata-archive-store-connector/> |
 | [FileBasedOpenMetadataArchiveStoreConnectorErrorCode](FileBasedOpenMetadataArchiveStoreConnectorErrorCode.md) | Exception messages | `FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-400-` | 1 | <https://egeria-project.org/concepts/open-metadata-archive-store-connector/> |
 | [FileBasedRegistryStoreConnectorAuditCode](FileBasedRegistryStoreConnectorAuditCode.md) | Audit log messages | `OCF-FILE-REGISTRY-STORE-CONNECTOR-` | 10 | <https://egeria-project.org/concepts/cohort-registry-store-connector/> |
-| [PostgreSQLAuditLogErrorCode](PostgreSQLAuditLogErrorCode.md) | Exception messages | `JDBC-AUDIT-LOG-500-` | 1 | <https://egeria-project.org/concepts/audit-log-destination-connector/> |
 | [PostgresAuditCode](PostgresAuditCode.md) | Audit log messages | `POSTGRES-REPOSITORY-CONNECTOR-` | 7 | <https://egeria-project.org/concepts/repository-connector/> |
 | [PostgresErrorCode](PostgresErrorCode.md) | Exception messages | `POSTGRES-REPOSITORY-CONNECTOR-` | 11 | <https://egeria-project.org/concepts/repository-connector/> |
 

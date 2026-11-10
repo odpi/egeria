@@ -204,28 +204,10 @@ Content-Type: application/json
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Add PostgreSQL audit log destination
-# Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
-# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/postgres
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision", "Security", "Cohort"],
-  "databaseURL": "~{repositoryDatabaseURL}~?currentSchema=audit_logs",
-  "databaseSchema": "audit_logs",
-  "secretsStore": "~{egeriaServersSecretsStore}~",
-  "secretsCollectionName": "~{repositorySecretCollectionName}~"
-}
-
-
-###
-# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Add SLF4J audit log destination
-# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# Add the SLF4J audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/event-topic
+POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/slf4j
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -245,7 +227,7 @@ Content-Type: application/json
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Add audit log destination connection
-# Add a connection for an audit log destination to the server's configuration document.  This connection typically creates an audit log destination connector written by a thrid party.
+# Add a connection for an audit log destination to the server's configuration document.  This connection typically creates an audit log destination connector written by a third party.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
 POST {{baseURL}}/open-metadata/admin-services/servers/{{server}}/audit-log-destinations/connection
 Authorization: Bearer {{token}}

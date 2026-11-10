@@ -157,12 +157,12 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 QualityAnnotationProperties angleLeftAnnotation   = new QualityAnnotationProperties();
                 QualityAnnotationProperties angleRightAnnotation  = new QualityAnnotationProperties();
 
-                super.setUpAnnotation(columnCountAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
-                super.setUpAnnotation(columnNamesAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
+                super.setUpAnnotation(columnCountAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION, "columnCount");
+                super.setUpAnnotation(columnNamesAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION, "columnNames");
                 super.setUpAnnotation(patientIdAnnotation, CocoClinicalTrialsAnnotationType.PATIENT_ID_VALIDATION);
-                super.setUpAnnotation(dateAnnotation, CocoClinicalTrialsAnnotationType.PATIENT_ID_VALIDATION);
-                super.setUpAnnotation(angleLeftAnnotation, CocoClinicalTrialsAnnotationType.ANGLE_VALIDATION);
-                super.setUpAnnotation(angleRightAnnotation, CocoClinicalTrialsAnnotationType.ANGLE_VALIDATION);
+                super.setUpAnnotation(dateAnnotation, CocoClinicalTrialsAnnotationType.DATE_VALIDATION);
+                super.setUpAnnotation(angleLeftAnnotation, CocoClinicalTrialsAnnotationType.ANGLE_VALIDATION, "angleLeft");
+                super.setUpAnnotation(angleRightAnnotation, CocoClinicalTrialsAnnotationType.ANGLE_VALIDATION, "angleRight");
 
                 String columnCountAnnotationGUID = null;
                 String columnNamesAnnotationGUID = null;

@@ -50,12 +50,6 @@ dependencies {
     // file-based: nothing here talks to a database or a message broker.
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
-    // The PostgreSQL audit log destination, and the JDBC resource connector it is built on.  Neither is used
-    // to log anything here: they are needed because *configuring* that destination instantiates its connector
-    // provider, so a platform without them on the classpath refuses the configuration call with a
-    // NoClassDefFoundError rather than storing it.
-    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-postgres-connector')
-    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')

@@ -6,7 +6,7 @@
 
 Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor.
 
-This directory documents 88 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 89 messages in 14 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -19,7 +19,7 @@ This directory documents 88 messages in 14 message sets.  Return to the [message
 | [BitolIntegrationConnectorErrorCode](BitolIntegrationConnectorErrorCode.md) | Exception messages | `BITOL-INTEGRATION-CONNECTOR-500-` | 1 | <https://egeria-project.org/concepts/digital-product/> |
 | [CSVLineageImporterAuditCode](CSVLineageImporterAuditCode.md) | Audit log messages | `CSV-LINEAGE-IMPORTER-` | 1 | <https://egeria-project.org/features/lineage-management/overview/> |
 | [CSVLineageImporterErrorCode](CSVLineageImporterErrorCode.md) | Exception messages | `CSV-LINEAGE-IMPORTER-400-` | 1 | <https://egeria-project.org/features/lineage-management/overview/> |
-| [DistributeKafkaAuditCode](DistributeKafkaAuditCode.md) | Audit log messages | `DISTRIBUTE-KAFKA-AUDIT-LOG-` | 1 | <https://egeria-project.org/concepts/audit-log-destination-connector/> |
+| [DistributeKafkaAuditCode](DistributeKafkaAuditCode.md) | Audit log messages | `DISTRIBUTE-KAFKA-AUDIT-LOG-` | 2 |  |
 | [JDBCIntegrationConnectorAuditCode](JDBCIntegrationConnectorAuditCode.md) | Audit log messages | `JDBC-INTEGRATION-CONNECTOR-` | 13 | <https://egeria-project.org/concepts/integration-connector/> |
 | [OpenAPIIntegrationConnectorAuditCode](OpenAPIIntegrationConnectorAuditCode.md) | Audit log messages | `OPEN-API-INTEGRATION-CONNECTOR-` | 14 | <https://egeria-project.org/concepts/integration-connector/> |
 | [OpenAPIIntegrationConnectorErrorCode](OpenAPIIntegrationConnectorErrorCode.md) | Exception messages | `OPEN-API-INTEGRATION-CONNECTOR-` | 2 | <https://egeria-project.org/concepts/integration-connector/> |

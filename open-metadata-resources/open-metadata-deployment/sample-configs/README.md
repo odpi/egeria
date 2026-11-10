@@ -64,7 +64,6 @@ The other scripts in this directory adjust the default configuration:
 
 * `AddInMemoryRepository.http` and `AddPostgreSQLRepository.http` switch the local repository used by a
   metadata access store between the in-memory repository and a PostgreSQL repository.
-* `AddPostgreSQLAuditLogs.http` adds a PostgreSQL audit log destination to the servers.
 * `AddCocoMetadata.http` adds the Coco Pharmaceuticals metadata (see below).
 * `ConnectCohort.http` connects the two metadata stores via a cohort (see below).
 

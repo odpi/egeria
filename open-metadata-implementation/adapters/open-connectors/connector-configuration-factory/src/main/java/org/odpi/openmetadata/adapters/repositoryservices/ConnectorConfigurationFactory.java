@@ -56,7 +56,6 @@ public class ConnectorConfigurationFactory
     private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
     private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
     private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER             = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
-    private static final String POSTGRES_BASED_AUDIT_LOG_STORE_PROVIDER         = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.PostgreSQLAuditLogDestinationProvider";
     private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
     private static final String FILE_BASED_REGISTRY_STORE_PROVIDER              = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
     private static final String POSTGRES_OMRS_REPOSITORY_CONNECTOR_PROVIDER     = "org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.PostgresOMRSRepositoryConnectorProvider";
@@ -219,71 +218,6 @@ public class ConnectorConfigurationFactory
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
         return connection;
-    }
-
-
-    /**
-     * Return the connection for the JDBC-based audit log.
-     * By default, the File-based Audit log is stored in a directory called localServerName.ffdc.
-     *
-     * @param storageProperties  properties used to configure access to the database
-     * @return OCF Connection used to create the file based audit logger
-     */
-    public Connection getPostgreSQLBasedAuditLogConnection(Map<String, Object> storageProperties)
-    {
-        Connection secretsStoreConnection = new Connection();
-        Endpoint   endpoint               = new Endpoint();
-
-        if (storageProperties.containsKey(JDBCConfigurationProperty.SECRETS_STORE.getName()))
-        {
-            endpoint.setNetworkAddress(storageProperties.get(JDBCConfigurationProperty.SECRETS_STORE.getName()).toString());
-        }
-        else
-        {
-            endpoint.setNetworkAddress(JDBCConfigurationProperty.SECRETS_STORE.getExample());
-        }
-
-        secretsStoreConnection.setEndpoint(endpoint);
-        secretsStoreConnection.setConnectorType(getConnectorType(YAML_SECRETS_STORE_CONNECTOR_PROVIDER));
-        secretsStoreConnection.setConfigurationProperties(storageProperties);
-
-        List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
-        EmbeddedConnection       embeddedConnection  = new EmbeddedConnection();
-
-        embeddedConnection.setEmbeddedConnection(secretsStoreConnection);
-        embeddedConnections.add(embeddedConnection);
-
-        VirtualConnection jdbcResourceConnection = new VirtualConnection();
-
-        jdbcResourceConnection.setEmbeddedConnections(embeddedConnections);
-        jdbcResourceConnection.setConnectorType(getConnectorType(JDBC_RESOURCE_CONNECTOR_PROVIDER));
-        jdbcResourceConnection.setConfigurationProperties(storageProperties);
-
-        endpoint = new Endpoint();
-
-        if (storageProperties.containsKey(JDBCConfigurationProperty.DATABASE_URL.getName()))
-        {
-            endpoint.setNetworkAddress(storageProperties.get(JDBCConfigurationProperty.DATABASE_URL.getName()).toString());
-        }
-        else
-        {
-            endpoint.setNetworkAddress(JDBCConfigurationProperty.DATABASE_URL.getExample());
-        }
-        jdbcResourceConnection.setEndpoint(endpoint);
-
-        embeddedConnections = new ArrayList<>();
-        embeddedConnection = new EmbeddedConnection();
-        embeddedConnection.setEmbeddedConnection(jdbcResourceConnection);
-        embeddedConnections.add(embeddedConnection);
-
-        VirtualConnection jdbcAuditLogConnection = new VirtualConnection();
-
-        jdbcAuditLogConnection.setDisplayName("PostgreSQL Database Schema for Audit Log events");
-        jdbcAuditLogConnection.setConnectorType(getConnectorType(POSTGRES_BASED_AUDIT_LOG_STORE_PROVIDER));
-        jdbcAuditLogConnection.setConfigurationProperties(storageProperties);
-        jdbcAuditLogConnection.setEmbeddedConnections(embeddedConnections);
-
-        return jdbcAuditLogConnection;
     }
 
 

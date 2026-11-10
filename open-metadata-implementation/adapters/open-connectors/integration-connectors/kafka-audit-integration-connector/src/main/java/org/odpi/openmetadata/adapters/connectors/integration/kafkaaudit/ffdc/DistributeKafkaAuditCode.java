@@ -27,9 +27,19 @@ public enum DistributeKafkaAuditCode implements AuditLogMessageSet
     UNEXPECTED_EXCEPTION("DISTRIBUTE-KAFKA-AUDIT-LOG-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
-                         "The connector cannot catalog one or more metadata elements in the observations database.",
+                         "The connector cannot pass one or more audit log records to the audit log destination.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/concepts/audit-log-destination-connector/"),
+
+    /**
+     * DISTRIBUTE-KAFKA-AUDIT-LOG-0002 - The {0} integration connector has been given a catalog target accessed through connector {1}, which is not a supported audit log destination
+     */
+    UNSUPPORTED_DESTINATION("DISTRIBUTE-KAFKA-AUDIT-LOG-0002",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "The {0} integration connector has been given a catalog target accessed through connector {1}, which is not a supported audit log destination",
+                            "Audit log records are not sent to this catalog target.  Database destinations are no longer supported; the connector can send audit log records to a folder, or to the console.",
+                            "Remove this catalog target from the integration connector.  To observe the activity recorded in the audit log, use the Pepys Activity Observer and the Lovelace services.",
+                            "https://egeria-project.org/features/metadata-observability/overview/"),
 
     ;
 

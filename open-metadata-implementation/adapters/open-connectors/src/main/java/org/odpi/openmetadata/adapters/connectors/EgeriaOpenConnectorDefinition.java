@@ -172,17 +172,6 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                          DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getAssociatedTypeName(),
                                          DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getDeployedImplementationType()),
 
-    POSTGRES_AUDIT_LOG_DESTINATION_CONNECTOR(44,
-                                             "757ab89a-dc11-4bb7-a09f-6436b3a8eee2",
-                                             "Egeria::AuditLogDestinationConnector::PostgreSQL",
-                                             "PostgreSQL Audit Log Destination Connector",
-                                             "Connector supports the distribution of audit log record to a PostgreSQL database schema.",
-                                             "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-postgres-connector",
-                                             "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.PostgreSQLAuditLogDestinationProvider",
-                                             ComponentDevelopmentStatus.STABLE,
-                                             DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getAssociatedTypeName(),
-                                             DeployedImplementationType.AUDIT_LOG_DESTINATION_CONNECTOR.getDeployedImplementationType()),
-
     /*
      * This connector's GUID was changed because the value it had - e8303911-ba1c-4640-974e-c4d57ee1b310 -
      * is the type GUID of the DigitalProductDependency relationship in OpenMetadataType.  The content pack
