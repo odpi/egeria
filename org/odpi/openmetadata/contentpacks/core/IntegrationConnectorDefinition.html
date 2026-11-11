@@ -189,38 +189,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_KAFKA_LISTENER" class="member-name-link">OPEN_LINEAGE_KAFKA_LISTENER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ORACLE_SERVER_CATALOGUER" class="member-name-link">ORACLE_SERVER_CATALOGUER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_POSTGRES_PUBLISHER" class="member-name-link">OPEN_LINEAGE_POSTGRES_PUBLISHER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#PASTEUR_ACTION_HISTORY_CLEANUP" class="member-name-link">PASTEUR_ACTION_HISTORY_CLEANUP</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code><a href="#ORACLE_SERVER_CATALOGUER" class="member-name-link">ORACLE_SERVER_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#PASTEUR_ACTION_HISTORY_CLEANUP" class="member-name-link">PASTEUR_ACTION_HISTORY_CLEANUP</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Pasteur deletes the finished actions once a configured number of days has passed since they completed,
  so the action history does not grow without bound.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PEPYS_ACTIVITY_OBSERVER" class="member-name-link">PEPYS_ACTIVITY_OBSERVER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PEPYS_ACTIVITY_OBSERVER" class="member-name-link">PEPYS_ACTIVITY_OBSERVER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Pepys listens to the topics that the OMAG Servers write their audit logs to and maintains the usage activity
  counts of the assets reported there.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POSTGRES_SERVER_CATALOGUER" class="member-name-link">POSTGRES_SERVER_CATALOGUER</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#PRODUCT_HARVESTER" class="member-name-link">PRODUCT_HARVESTER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#POSTGRES_SERVER_CATALOGUER" class="member-name-link">POSTGRES_SERVER_CATALOGUER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SAMPLE_DATA_CATALOGUER" class="member-name-link">SAMPLE_DATA_CATALOGUER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code><a href="#PRODUCT_HARVESTER" class="member-name-link">PRODUCT_HARVESTER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#SAMPLE_DATA_CATALOGUER" class="member-name-link">SAMPLE_DATA_CATALOGUER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Catalogs files found under the sample-data directory (folder).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SECRETS_STORE_CATALOGUER" class="member-name-link">SECRETS_STORE_CATALOGUER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code><a href="#SECRETS_STORE_CATALOGUER" class="member-name-link">SECRETS_STORE_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#SIMON_CONTRIBUTION_RECORDER" class="member-name-link">SIMON_CONTRIBUTION_RECORDER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Simon listens to the open metadata events and awards a karma point to the user responsible for each change.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SMART_COLLECTIONS_MEMBERSHIP_MANAGER" class="member-name-link">SMART_COLLECTIONS_MEMBERSHIP_MANAGER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UC_CATALOG_CATALOGUER" class="member-name-link">UC_CATALOG_CATALOGUER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UC_SERVER_CATALOGUER" class="member-name-link">UC_SERVER_CATALOGUER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -235,80 +237,92 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfigurationProperties()" class="member-name-link">getConfigurationProperties</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateConnectorActivityReport()" class="member-name-link">generateConnectorActivityReport</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether the integration daemon should write a connector activity report for each refresh of this
+ connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConfigurationProperties()" class="member-name-link">getConfigurationProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the configuration properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorName()" class="member-name-link">getConnectorName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorName()" class="member-name-link">getConnectorName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the connector in the integration group</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorProviderClassName()" class="member-name-link">getConnectorProviderClassName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorProviderClassName()" class="member-name-link">getConnectorProviderClassName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the class name of the connector provider.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorUserId()" class="member-name-link">getConnectorUserId</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorUserId()" class="member-name-link">getConnectorUserId</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connector's userId.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContentPackDefinition()" class="member-name-link">getContentPackDefinition</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContentPackDefinition()" class="member-name-link">getContentPackDefinition</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get identifier of content pack where this template should be located.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationTypes()" class="member-name-link">getDeployedImplementationTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../frameworks/openmetadata/definitions/DeployedImplementationTypeDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">DeployedImplementationTypeDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationTypes()" class="member-name-link">getDeployedImplementationTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name for the deployed implementation type that this connector supports</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the integration connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the display name of the integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointAddress()" class="member-name-link">getEndpointAddress</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointAddress()" class="member-name-link">getEndpointAddress</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional endpoint address for the first catalog target.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationGroupDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationGroupDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupDefinition()" class="member-name-link">getIntegrationGroupDefinition</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationGroupDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationGroupDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGroupDefinition()" class="member-name-link">getIntegrationGroupDefinition</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the integration group definition.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCollectionQualifiedName()" class="member-name-link">getMetadataCollectionQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCollectionQualifiedName()" class="member-name-link">getMetadataCollectionQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional metadata collection qualified name for the connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional metadata source qualified name for the connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique name of the integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshTimeInterval()" class="member-name-link">getRefreshTimeInterval</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the refresh time interval (minutes)</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRegistrationContentPackDefinition()" class="member-name-link">getRegistrationContentPackDefinition</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the content pack that registers this connector with its integration group, which is what makes the
+ integration daemon run it.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/openmetadata/refdata/ResourceUse.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ResourceUse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceUse()" class="member-name-link">getResourceUse</a>()</code></div>
@@ -566,6 +580,12 @@ the order they are declared.</div>
 <section class="detail" id="OPEN_LINEAGE_FILE_PUBLISHER">
 <h3>OPEN_LINEAGE_FILE_PUBLISHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_FILE_PUBLISHER</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_POSTGRES_PUBLISHER">
+<h3>OPEN_LINEAGE_POSTGRES_PUBLISHER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_POSTGRES_PUBLISHER</span></div>
 </section>
 </li>
 <li>
@@ -880,6 +900,41 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="generateConnectorActivityReport()">
+<h3>generateConnectorActivityReport</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">generateConnectorActivityReport</span>()</div>
+<div class="block">Return whether the integration daemon should write a connector activity report for each refresh of this
+ connector.
+ <br>
+ Jacquard's reports are switched off.  Each refresh of Jacquard re-checks every product, so its report
+ lists thousands of elements; one report reached 1.3 MB, larger than the largest event that the event bus
+ accepts, and was dropped from the out topic.  The reports also added little: they list the same products
+ on every refresh.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRegistrationContentPackDefinition()">
+<h3>getRegistrationContentPackDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackDefinition</a></span>&nbsp;<span class="element-name">getRegistrationContentPackDefinition</span>()</div>
+<div class="block">Return the content pack that registers this connector with its integration group, which is what makes the
+ integration daemon run it.  This is usually the content pack that defines the connector.
+ <br>
+ The file publisher is defined in the OpenLineageContentPack but registered by the
+ OpenLineageFileStoreContentPack, which only Egeria's default runtime loads.  The file store writes a file for
+ every event and has no retention, so it grows without bound on a busy platform.  The connector itself stays in
+ the OpenLineageContentPack because an element cannot move between content packs: each content pack is the home
+ of the elements it defines, and a repository rejects a copy of an element from a different home.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>content pack definition</dd>
 </dl>
 </section>
 </li>

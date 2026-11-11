@@ -264,7 +264,9 @@ loadScripts(document, 'script');</script>
  Each subscriber is considered in turn.  Each subscriber may be in a different state which affects whether it is notified and how.
  This method determines if the subscriber is eligible to receive the notification.  It also determines
  if this is the first notification for the subscriber, or later one, since it affects the notification properties.
- The notification type is updated if it is eligible for delivering notifications (even if it has no subscribers).</div>
+ The notification type's notificationCount and lastNotification are updated only when at least one
+ subscriber is notified, or when the notification type has passed its planned completion date (and so
+ becomes OBSOLETE).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>externalSourceGUID</code> - unique identifier of the external source - null means local</dd>

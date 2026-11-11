@@ -133,6 +133,22 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last even-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026 - The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_LOG_STORE_PURGED" class="member-name-link">DATABASE_LOG_STORE_PURGED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031 - The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_LOG_STORE_READY" class="member-name-link">DATABASE_LOG_STORE_READY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030 - The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_LOG_STORE_UNUSABLE" class="member-name-link">DATABASE_LOG_STORE_UNUSABLE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032 - The {0} integration connector is not able to store open lineage events in catalog target {1} because {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_LOG_STORE_WRITE_FAILED" class="member-name-link">DATABASE_LOG_STORE_WRITE_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033 - The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DATASET_DROPPED" class="member-name-link">DATASET_DROPPED</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025 - The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4}</div>
@@ -149,20 +165,24 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="col-last even-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0022 - The {0} integration connector is ignoring open lineage event {1} because {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#KAFKA_RECEIVER_CONFIGURATION" class="member-name-link">KAFKA_RECEIVER_CONFIGURATION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_DAYS_TO_CLEAN_UP" class="member-name-link">INVALID_DAYS_TO_CLEAN_UP</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034 - The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#KAFKA_RECEIVER_CONFIGURATION" class="member-name-link">KAFKA_RECEIVER_CONFIGURATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0001 - The {0} integration connector has been initialized to monitor Apache Kafka topic {1} with connection: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LINEAGE_CATALOGUED" class="member-name-link">LINEAGE_CATALOGUED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LINEAGE_CATALOGUED" class="member-name-link">LINEAGE_CATALOGUED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0021 - The {0} integration connector has added a {1} lineage relationship from {2} to {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPTIONAL_METADATA_FAILED" class="member-name-link">OPTIONAL_METADATA_FAILED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPTIONAL_METADATA_FAILED" class="member-name-link">OPTIONAL_METADATA_FAILED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023 - The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}</div>
 </div>
 </div>
@@ -286,6 +306,41 @@ the order they are declared.</div>
 <h3>CLASSIFICATIONS_WRITTEN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CLASSIFICATIONS_WRITTEN</span></div>
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026 - The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_LOG_STORE_READY">
+<h3>DATABASE_LOG_STORE_READY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATABASE_LOG_STORE_READY</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030 - The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_LOG_STORE_PURGED">
+<h3>DATABASE_LOG_STORE_PURGED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATABASE_LOG_STORE_PURGED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031 - The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_LOG_STORE_UNUSABLE">
+<h3>DATABASE_LOG_STORE_UNUSABLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATABASE_LOG_STORE_UNUSABLE</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032 - The {0} integration connector is not able to store open lineage events in catalog target {1} because {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATABASE_LOG_STORE_WRITE_FAILED">
+<h3>DATABASE_LOG_STORE_WRITE_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">DATABASE_LOG_STORE_WRITE_FAILED</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033 - The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INVALID_DAYS_TO_CLEAN_UP">
+<h3>INVALID_DAYS_TO_CLEAN_UP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">INVALID_DAYS_TO_CLEAN_UP</span></div>
+<div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034 - The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more</div>
 </section>
 </li>
 </ul>

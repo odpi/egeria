@@ -134,46 +134,50 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0020 - Log message for asset {0} from governance service {1}: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EVENT_SHUTDOWN_ERROR" class="member-name-link">EVENT_SHUTDOWN_ERROR</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EVENT_PROPERTY_SHORTENED" class="member-name-link">EVENT_PROPERTY_SHORTENED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMF-SERVICES-0015 The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EVENT_SHUTDOWN_ERROR" class="member-name-link">EVENT_SHUTDOWN_ERROR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0011 The Open Metadata Store caught an unexpected {0} exception whilst shutting down the out
  topic listeners.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OUT_TOPIC_EVENT" class="member-name-link">OUT_TOPIC_EVENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OUT_TOPIC_EVENT" class="member-name-link">OUT_TOPIC_EVENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-0013 The OMF Services has sent event of type: {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROCESS_EVENT_EXCEPTION" class="member-name-link">PROCESS_EVENT_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PROCESS_EVENT_EXCEPTION" class="member-name-link">PROCESS_EVENT_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0014 Event {0} could not be published due to {1} exception with message: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PUBLISHING_SHUTDOWN" class="member-name-link">PUBLISHING_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PUBLISHING_SHUTDOWN" class="member-name-link">PUBLISHING_SHUTDOWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-0007 The Open Metadata Store is no longer publishing events to topic {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PUBLISHING_SHUTDOWN_ERROR" class="member-name-link">PUBLISHING_SHUTDOWN_ERROR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PUBLISHING_SHUTDOWN_ERROR" class="member-name-link">PUBLISHING_SHUTDOWN_ERROR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0008 The Open Metadata Store caught an unexpected {0} exception whilst shutting down the out
  topic {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-0005 - The Open Metadata Store Services has initialized a new instance for server {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0001 - The Open Metadata Store Services are initializing a new server instance</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-0006 - The Open Metadata Store Services are unable to initialize a new instance; error message is {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_PUBLISHING" class="member-name-link">SERVICE_PUBLISHING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_PUBLISHING" class="member-name-link">SERVICE_PUBLISHING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMF-SERVICES-0002 The Open Metadata Store is ready to publish notifications to topic {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMF-SERVICES-0012 - The Open Metadata Store Services are shutting down its instance for server {0}</div>
 </div>
 </div>
@@ -306,6 +310,13 @@ the order they are declared.</div>
 <h3>PROCESS_EVENT_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFServicesAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesAuditCode</a></span>&nbsp;<span class="element-name">PROCESS_EVENT_EXCEPTION</span></div>
 <div class="block">OMF-SERVICES-0014 Event {0} could not be published due to {1} exception with message: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EVENT_PROPERTY_SHORTENED">
+<h3>EVENT_PROPERTY_SHORTENED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFServicesAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesAuditCode</a></span>&nbsp;<span class="element-name">EVENT_PROPERTY_SHORTENED</span></div>
+<div class="block">OMF-SERVICES-0015 The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send</div>
 </section>
 </li>
 <li>

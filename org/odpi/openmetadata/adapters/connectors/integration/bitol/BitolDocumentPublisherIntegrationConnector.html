@@ -110,9 +110,12 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
  data sharing agreement, and publishes them to the Bitol listeners registered in the same integration daemon (for
  example the file store connector, which writes them to a directory ready to commit to git).
  <br><br>
- Documents are generated when the connector receives an event describing a change to a digital product or agreement,
- and on each refresh for every product that is a member of a DigitalProductCatalog catalog target (together with the
- agreements referenced by the product's ports).  Each process that the lineage shows assembling a product's data
+ Documents are generated on each refresh: for every product that is a member of a DigitalProductCatalog catalog
+ target (together with the agreements referenced by the product's ports), and for each digital product or agreement
+ that an event has reported a change to since the last refresh.  Each element is generated at most once per refresh,
+ however many events arrived for it and however many products share it.  Generating a document takes thousands of
+ reads, and a product receives many events in a burst - create, update, classify, reclassify - so generating on
+ every event left the connector hours behind its events on a busy repository.  Each process that the lineage shows assembling a product's data
  becomes an input port of the product; a process with no data contract gets a sparsely populated draft one, catalogued
  and published with the product so that it can be filled out later.
  <br><br>
@@ -181,16 +184,19 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
 <div class="block">Process an event from the open metadata server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Generate the documents for the catalog targets' products, and then for the products and agreements that
+ events have reported changes to and that the catalog targets did not cover.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></h3>
-<code><a href="../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#refresh()">refresh</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
 <code><a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#engage()">engage</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#getNetworkAddress(org.odpi.openmetadata.frameworks.connectors.Connector)">getNetworkAddress</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#passEventToCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetEventProcessor,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">passEventToCatalogTargets</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#refreshCatalogTargets(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator)">refreshCatalogTargets</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setConnectorName(java.lang.String)">setConnectorName</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)">setContext</a></code></div>
@@ -251,11 +257,30 @@ implements <a href="../../../../frameworks/openmetadata/events/OpenMetadataEvent
 </section>
 </li>
 <li>
+<section class="detail" id="refresh()">
+<h3>refresh</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
+             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Generate the documents for the catalog targets' products, and then for the products and agreements that
+ events have reported changes to and that the catalog targets did not cover.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/integration/connectors/DynamicIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">DynamicIntegrationConnectorBase</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during the refresh</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
 <h3>processEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processEvent</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span></div>
-<div class="block">Process an event from the open metadata server.  Changes to digital products and data sharing agreements cause
- their documents to be regenerated and published.</div>
+<div class="block">Process an event from the open metadata server.  A change to a digital product or data sharing agreement is
+ noted, and its document is regenerated and published by the next refresh.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">processEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/openmetadata/events/OpenMetadataEventListener.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataEventListener</a></code></dd>

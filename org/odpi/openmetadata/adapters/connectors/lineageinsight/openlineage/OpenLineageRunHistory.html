@@ -180,9 +180,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Record that an event has been added.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countUnreadableFile()" class="member-name-link">countUnreadableFile</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#countUnreadableEvent()" class="member-name-link">countUnreadableEvent</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Record that a file could not be read.</div>
+<div class="block">Record that a stored event could not be read - for a file-based log store, an event file that is not an
+ OpenLineage run event in JSON.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageRunHistory.DataSetHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.DataSetHistory</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSet(org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.Key)" class="member-name-link">getDataSet</a><wbr>(<a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a>&nbsp;dataset)</code></div>
@@ -220,9 +221,17 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the time of the latest event in the history.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUnreadableFiles()" class="member-name-link">getUnreadableFiles</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUnreadableEvents()" class="member-name-link">getUnreadableEvents</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of files that could not be read.</div>
+<div class="block">Return the number of stored events that could not be read.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordEventSummary(int,java.util.Date,java.util.Date)" class="member-name-link">recordEventSummary</a><wbr>(int&nbsp;count,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;earliest,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;latest)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Record the number of events in the window, and the times of the first and last, when the history is built
+ from a digest rather than event by event.</div>
 </div>
 </div>
 </div>
@@ -315,10 +324,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="countUnreadableFile()">
-<h3>countUnreadableFile</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">countUnreadableFile</span>()</div>
-<div class="block">Record that a file could not be read.</div>
+<section class="detail" id="recordEventSummary(int,java.util.Date,java.util.Date)">
+<h3>recordEventSummary</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">recordEventSummary</span><wbr><span class="parameters">(int&nbsp;count,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;earliest,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;latest)</span></div>
+<div class="block">Record the number of events in the window, and the times of the first and last, when the history is built
+ from a digest rather than event by event.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>count</code> - number of events</dd>
+<dd><code>earliest</code> - time of the first event (null if there were none)</dd>
+<dd><code>latest</code> - time of the last event (null if there were none)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="countUnreadableEvent()">
+<h3>countUnreadableEvent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">countUnreadableEvent</span>()</div>
+<div class="block">Record that a stored event could not be read - for a file-based log store, an event file that is not an
+ OpenLineage run event in JSON.</div>
 </section>
 </li>
 <li>
@@ -333,10 +359,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getUnreadableFiles()">
-<h3>getUnreadableFiles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getUnreadableFiles</span>()</div>
-<div class="block">Return the number of files that could not be read.</div>
+<section class="detail" id="getUnreadableEvents()">
+<h3>getUnreadableEvents</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getUnreadableEvents</span>()</div>
+<div class="block">Return the number of stored events that could not be read.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>count</dd>

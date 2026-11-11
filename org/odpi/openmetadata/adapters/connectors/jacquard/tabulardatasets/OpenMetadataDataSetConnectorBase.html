@@ -281,31 +281,37 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Convert an open metadata property enum into a tabular column description.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshCache()" class="member-name-link">refreshCache</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypesLastChangedTime(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefGallery)" class="member-name-link">getTypesLastChangedTime</a><wbr>(<a href="../../../../frameworks/openmetadata/properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a>&nbsp;gallery)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the time the open metadata types last changed: the latest creation or update time of the type
+ definitions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshCache()" class="member-name-link">refreshCache</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Refresh any cached values.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the columns associated with this tabular data source.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalEnvironment(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setLocalEnvironment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientUserId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalEnvironment(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setLocalEnvironment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;clientUserId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up caller's environment details.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -626,6 +632,23 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code>columnDescriptions</code> - a list of column descriptions</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - data access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTypesLastChangedTime(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefGallery)">
+<h3>getTypesLastChangedTime</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getTypesLastChangedTime</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/properties/OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefGallery</a>&nbsp;gallery)</span></div>
+<div class="block">Return the time the open metadata types last changed: the latest creation or update time of the type
+ definitions.  The data types and properties are defined alongside the types and change only when they do,
+ so this is the create and update time of every record of the data sets that list them.  Without a last
+ update time, Jacquard could not tell whether these data sets had changed, and so could not tell their
+ subscribers.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>gallery</code> - the type definitions</dd>
+<dt>Returns:</dt>
+<dd>date, or null if no type definition has a time</dd>
 </dl>
 </section>
 </li>

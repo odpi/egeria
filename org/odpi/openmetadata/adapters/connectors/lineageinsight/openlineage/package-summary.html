@@ -130,46 +130,52 @@ loadScripts(document, 'script');</script>
 <div class="block">OpenLineageAnalysisRequestParameter provides the request parameters supported by the OpenLineage analysis
  Lovelace services.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageLogStoreReader.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageLogStoreReader</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageDatabaseLogStoreReader.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageDatabaseLogStoreReader</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">OpenLineageDatabaseLogStoreReader builds the OpenLineage run history for an analysis window from the digest
+ tables of a PostgreSQL OpenLineage log store (written by the PostgreSQL OpenLineage log store integration
+ connector).</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageLogStoreReader.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageLogStoreReader</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenLineageLogStoreReader walks the directory tree written by the file-based OpenLineage log store integration
  connector ({directory}/{namespace}/{job}/{runId}-{timestamp}-{eventType}.openlineageevent), parses each run event
  and accumulates it into an OpenLineageRunHistory.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">OpenLineageRunHistory is the in-memory model of a window of OpenLineage events read from a log store.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.AssertionRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.AssertionRecord</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.AssertionRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.AssertionRecord</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">A data quality assertion evaluated against a dataset.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.DataSetHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.DataSetHistory</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.DataSetHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.DataSetHistory</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The writes, reads and assertions seen for a dataset.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.JobHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.JobHistory</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.JobHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.JobHistory</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The runs seen for a job.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.Key.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Key</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">Identity of a job or dataset in OpenLineage.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.ReadRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.ReadRecord</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.ReadRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.ReadRecord</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">A read of a dataset by a run.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.RunRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.RunRecord</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenLineageRunHistory.RunRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.RunRecord</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The events seen for a single run of a job.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.TestRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.TestRecord</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.TestRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.TestRecord</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">A test reported by the test run facet.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.WriteRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.WriteRecord</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="OpenLineageRunHistory.WriteRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.WriteRecord</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">A write to a dataset by a run.</div>
 </div>
 </div>

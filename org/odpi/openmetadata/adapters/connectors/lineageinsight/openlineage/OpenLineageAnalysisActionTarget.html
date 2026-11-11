@@ -119,8 +119,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_LOG_STORE" class="member-name-link">OPEN_LINEAGE_LOG_STORE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_DATABASE_LOG_STORE" class="member-name-link">OPEN_LINEAGE_DATABASE_LOG_STORE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Database schema holding the OpenLineage log store.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_LOG_STORE" class="member-name-link">OPEN_LINEAGE_LOG_STORE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Folder holding the OpenLineage log store.</div>
 </div>
 </div>
@@ -231,7 +235,15 @@ the order they are declared.</div>
 <section class="detail" id="OPEN_LINEAGE_LOG_STORE">
 <h3>OPEN_LINEAGE_LOG_STORE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageAnalysisActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageAnalysisActionTarget</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_LOG_STORE</span></div>
-<div class="block">Folder holding the OpenLineage log store.</div>
+<div class="block">Folder holding the OpenLineage log store.  It has the same action target name as the database schema.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_LINEAGE_DATABASE_LOG_STORE">
+<h3>OPEN_LINEAGE_DATABASE_LOG_STORE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageAnalysisActionTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageAnalysisActionTarget</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_DATABASE_LOG_STORE</span></div>
+<div class="block">Database schema holding the OpenLineage log store.  It has the same action target name as the folder:
+ the service works out which kind of log store it has been given from the connector of the asset.</div>
 </section>
 </li>
 </ul>

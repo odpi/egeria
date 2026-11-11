@@ -182,25 +182,29 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0021 - Initializing a new engine action {0} from governance action process step {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7} as part of process {8}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SUCCESSFUL_ACTION_CLAIM_REQUEST" class="member-name-link">SUCCESSFUL_ACTION_CLAIM_REQUEST</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SKIPPED_PREDEFINED_ACTION_TARGET" class="member-name-link">SKIPPED_PREDEFINED_ACTION_TARGET</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMAG-GENERIC-HANDLERS-0033 - Predefined action target {0} ({1}) of {2} {3} is not passed to the new engine action because the element is archived, deleted or no longer effective</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SUCCESSFUL_ACTION_CLAIM_REQUEST" class="member-name-link">SUCCESSFUL_ACTION_CLAIM_REQUEST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TEMPLATE_MAPPING_SUMMARY" class="member-name-link">TEMPLATE_MAPPING_SUMMARY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TEMPLATE_MAPPING_SUMMARY" class="member-name-link">TEMPLATE_MAPPING_SUMMARY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0011 - Template {0} was used to create new {1} element {2} by mapping the following entities {3} and relationships {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_DELETE_UNANCHORED_BEAN" class="member-name-link">UNABLE_TO_DELETE_UNANCHORED_BEAN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_DELETE_UNANCHORED_BEAN" class="member-name-link">UNABLE_TO_DELETE_UNANCHORED_BEAN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0007 - The Open Metadata Service {0} has deleted a relationship, resulting in entity {1} of type {2} ({3}) losing its anchor.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNABLE_TO_MARK_DUPLICATES" class="member-name-link">UNABLE_TO_MARK_DUPLICATES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_MARK_DUPLICATES" class="member-name-link">UNABLE_TO_MARK_DUPLICATES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0030 - Method {0} was unable to link the duplicate entities {1} with PeerDuplicateLink relationships
  due to a {2} exception with message {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-GENERIC-HANDLERS-0001 - The Open Metadata Service {0} is not able to set the Anchors classification on entity {1} of type {2} ({3}) during method {4}.</div>
 </div>
 </div>
@@ -326,6 +330,13 @@ the order they are declared.</div>
 <h3>ADD_ACTION_TARGETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">ADD_ACTION_TARGETS</span></div>
 <div class="block">OMAG-GENERIC-HANDLERS-0022 - Adding action target {0} ({1}) to engine action {2} ({3})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SKIPPED_PREDEFINED_ACTION_TARGET">
+<h3>SKIPPED_PREDEFINED_ACTION_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GenericHandlersAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersAuditCode</a></span>&nbsp;<span class="element-name">SKIPPED_PREDEFINED_ACTION_TARGET</span></div>
+<div class="block">OMAG-GENERIC-HANDLERS-0033 - Predefined action target {0} ({1}) of {2} {3} is not passed to the new engine action because the element is archived, deleted or no longer effective</div>
 </section>
 </li>
 <li>
