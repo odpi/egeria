@@ -19,7 +19,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
     private static final String  connectorTypeGUID = "346939c4-de2c-44aa-a044-0ec64df0560f";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:Deduplication";
     private static final String  connectorTypeDisplayName = "Deduplication Governance Action Service";
-    private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.  Any duplicated found are linked to the action target element.";
+    private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.  Any duplicates found are linked to the action target element.";
 
     static final String ACTION_TARGET_NAME = "elementGUID";
 

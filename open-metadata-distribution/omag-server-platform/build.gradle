@@ -338,6 +338,16 @@ distributions {
                     unix('0755')
                 }
             }
+            into('assembly/platform') {
+                // The software bill of materials (SBOM) for the platform, listing the components on its
+                // runtime classpath.  It is copied into the container image along with the platform.
+                from(tasks.named('cyclonedxDirectBom').flatMap { it.jsonOutput }) {
+                    rename('bom\\.json', "omag-server-platform-${project.version}.cdx.json")
+                }
+                filePermissions {
+                    unix('0755')
+                }
+            }
             into('assembly/opt/http-client-collections') {
                 // Describe the HTTP clients
                 from("$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/http-client-collections")

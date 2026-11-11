@@ -40,6 +40,13 @@ If you are new to Egeria, try the ["Getting started with Egeria"](https://gettin
 * [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) describes how the platform works.
 * [Configuring OMAG Servers](https://egeria-project.org/guides/admin/servers/) describes how to configure servers to run on your platform.
 
+## Software bill of materials
+
+The `omag-server-platform-<version>.cdx.json` file is the platform's software bill of materials (SBOM) in
+[CycloneDX](https://cyclonedx.org/) format.  It lists the components on the platform's runtime classpath, with
+their versions and hashes and the licenses that their POMs declare.  Load it into a tool that reads SBOMs to
+check the platform for known vulnerabilities.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

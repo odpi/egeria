@@ -23,6 +23,8 @@ dependencies {
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-survey-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:open-watchdog-framework')
     testImplementation 'org.mockito:mockito-core'
     testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }

@@ -9,11 +9,12 @@ This module contains the implementation of the [governance action services](http
 [Governance Action Open Metadata Engine Service (OMES)](../../../engine-services/governance-action)
 hosted by the [Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
 
-It also contains two [watchdog action services](https://egeria-project.org/concepts/watchdog-action-service/) that run in the
+It also contains three [watchdog action services](https://egeria-project.org/concepts/watchdog-action-service/) that run in the
 [Watchdog Action OMES](../../../engine-services/watchdog-action) and are registered in the EgeriaWatchdog engine:
 
 * [Generic Element Watchdog Action Service](docs/generic-element-watchdog-governance-action-service.md)
 * [Generic Folder Watchdog Action Service](docs/generic-folder-watchdog-governance-action-service.md)
+* [Wait For Steward Watchdog Action Service](docs/wait-for-steward-watchdog-action-service.md)
 
 The governance action services with detailed documentation are:
 
@@ -32,7 +33,9 @@ The remaining governance action services, grouped by category, are:
   * **OwnerSetterGovernanceActionConnector** - sets an Ownership classification on the elements supplied
     as action targets, using the owner from its configuration properties and request parameters.
   * **QualifiedNamePeerDuplicateGovernanceActionConnector** - checks the qualified name of the entity passed as
-    an action target to determine its duplicates.
+    an action target to determine its duplicates.  Each element of the same type with the same qualified name is
+    linked to the action target with a PeerDuplicateLink relationship, and both are given the KnownDuplicate
+    classification.  Duplicates that are already linked are not linked again, so the service can be rerun safely.
   * **RetentionClassifierGovernanceActionConnector** - sets a Retention classification on the elements supplied
     as action targets.
 * **Stewardship**
@@ -45,12 +48,11 @@ The remaining governance action services, grouped by category, are:
     follow-on work.
   * **IncidentReporterGovernanceActionConnector** - creates an incident report using the configured template.  The request
     parameters fill out the template and the action targets are linked to the report as impacted resources.
-  * **EvaluateAnnotationsGovernanceActionConnector** - a placeholder for a service that will look through the
-    annotations from a survey report and set up guards to drive actions that process the different types.
+  * **EvaluateAnnotationsGovernanceActionConnector** - looks through the annotations from a survey report and opens
+    a to do for the steward for each request for action annotation.  The to dos are passed on as `stewardAction`
+    action targets.
   * **StewardInformerGovernanceActionConnector** - creates a to do for the steward supplied as an action target using
     the configured template.  The request parameters fill out the template and the other action targets are attached to the to do.
-  * **WaitForStewardGovernanceActionConnector** - a placeholder for a service that will wait for a steward to
-    complete a to do.
   * **WriteAuditLogMessageGovernanceActionConnector** - writes requested messages to the audit log.
 * **Verification**
   * **TypeDetectorGovernanceActionConnector** - checks that the elements supplied as action targets are of an
