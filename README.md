@@ -55,6 +55,20 @@ There you will see another `README.md` with further information.
 cat README.md
 ```
 
+### Software bills of materials
+
+The build also produces [CycloneDX](https://cyclonedx.org/) software bills of materials (SBOMs).  These list the
+components that Egeria is built from, with their versions and hashes and the licenses that their POMs declare, so
+that tools that read SBOMs can check them for known vulnerabilities and license obligations.
+
+* `./gradlew cyclonedxDirectBom` writes an SBOM for each module to `build/reports/cyclonedx-direct/bom.json`
+  and `bom.xml` in the module's directory.  It describes the module's runtime classpath.
+* `./gradlew cyclonedxBom` combines these into one SBOM for the whole repository, in `build/reports/cyclonedx`.
+
+Each module's SBOM is published to Maven Central with the module, as `<artifactId>-<version>-cyclonedx.json`
+and `<artifactId>-<version>-cyclonedx.xml`.  The distribution file includes the SBOM of the OMAG Server Platform
+as `assembly/platform/omag-server-platform-<version>.cdx.json`, and so does the `egeria-platform` container image.
+
 ### Further documentation
 
 For full documentation on Egeria, visit [the Egeria website](https://egeria-project.org/).
