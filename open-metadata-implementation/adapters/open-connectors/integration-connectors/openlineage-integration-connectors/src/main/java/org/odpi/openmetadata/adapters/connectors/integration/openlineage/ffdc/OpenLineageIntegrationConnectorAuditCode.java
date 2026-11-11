@@ -111,7 +111,58 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                             "No specific action is required.  The interval between refreshes sets how up to date these classifications are.",
                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030 - The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh
+     */
+    DATABASE_LOG_STORE_READY("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh",
+                             "The connector has created the schema and its tables, if they did not exist, and stores each open lineage event it receives, along with a digest of its run, datasets, data quality assertions and tests.",
+                             "No specific action is required.  The number of days is set by the daysToCleanUp configuration property: if it is not set, nothing is deleted and the log store grows without bound.",
+                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031 - The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6}
+     */
+    DATABASE_LOG_STORE_PURGED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6}",
+                              "The records older than the number of days in the daysToCleanUp configuration property are deleted on each refresh.  The datasets of each deleted run are deleted with it.",
+                              "No specific action is required.  The analysis services that read the log store can only look back as far as the records that are kept, so their analysis window should not be longer than daysToCleanUp.",
+                              "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032 - The {0} integration connector is not able to store open lineage events in catalog target {1} because {2}
+     */
+    DATABASE_LOG_STORE_UNUSABLE("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032",
+                                AuditLogRecordSeverityLevel.ERROR,
+                                "The {0} integration connector is not able to store open lineage events in catalog target {1} because {2}",
+                                "The connector ignores this catalog target.  The events it receives are still stored in its other catalog targets.",
+                                "The catalog target must be a PostgreSQL database schema asset whose connection uses the JDBC resource connector.  The name of the schema is taken from the databaseSchema configuration property of the catalog target relationship or, if it is not set there, of the asset's connection.  Correct the catalog target and the connector will use it on its next refresh.",
+                                "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033 - The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6}
+     */
+    DATABASE_LOG_STORE_WRITE_FAILED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033",
+                                    AuditLogRecordSeverityLevel.ERROR,
+                                    "The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6}",
+                                    "None of the event is stored: the raw event and its digest are written in one transaction.",
+                                    "Use the details from the error message to determine the cause of the error.  Events that arrive once the problem is resolved are stored as usual.",
+                                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034 - The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more
+     */
+    INVALID_DAYS_TO_CLEAN_UP("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more",
+                             "No records are deleted from the log store, so it grows without bound.",
+                             "Correct the daysToCleanUp configuration property in the connector's connection, or in the catalog target relationship of the database schema.",
+                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
     ;
+
 
     private final String                     logMessageId;
     private final AuditLogRecordSeverityLevel severity;

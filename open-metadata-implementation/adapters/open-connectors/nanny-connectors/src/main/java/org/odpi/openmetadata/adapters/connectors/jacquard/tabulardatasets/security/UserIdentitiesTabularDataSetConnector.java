@@ -84,7 +84,7 @@ public class UserIdentitiesTabularDataSetConnector extends OpenMetadataRowDataSe
      * @param userIdentity user identity element
      * @return names or null
      */
-    private String getSecretsCollectionNames(OpenMetadataRootElement userIdentity)
+    static String getSecretsCollectionNames(OpenMetadataRootElement userIdentity)
     {
         if (userIdentity.getConfiguredInSecurityCollections() == null)
         {
@@ -98,19 +98,26 @@ public class UserIdentitiesTabularDataSetConnector extends OpenMetadataRowDataSe
             if ((collection != null) && (collection.getRelatedElement() != null))
             {
                 MetadataElementSummary collectionElement = collection.getRelatedElement();
+                String                 name              = null;
 
                 if ((collectionElement.getProperties() instanceof AssetProperties assetProperties) && (assetProperties.getResourceName() != null))
                 {
-                    names.add(assetProperties.getResourceName());
+                    name = assetProperties.getResourceName();
                 }
                 else if (collectionElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
                 {
-                    names.add(referenceableProperties.getDisplayName());
+                    name = referenceableProperties.getDisplayName();
+                }
+
+                /*
+                 * A TreeSet rejects null (even in remove), so a collection without a name is skipped here.
+                 */
+                if (name != null)
+                {
+                    names.add(name);
                 }
             }
         }
-
-        names.remove(null);
 
         if (names.isEmpty())
         {

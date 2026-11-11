@@ -330,7 +330,23 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                     }
                 }
 
-                this.deleteAnnotation(userId, duplicateAnnotationGUID, new DeleteOptions(metadataSourceOptions));
+                try
+                {
+                    this.deleteAnnotation(userId, duplicateAnnotationGUID, new DeleteOptions(metadataSourceOptions));
+                }
+                catch (InvalidParameterException notFound)
+                {
+                    /*
+                     * Surveys of the same asset can run at the same time (Liskov starts every survey request type
+                     * for an asset together).  Each may create the same annotation, and whichever finds the pair
+                     * first deletes the newer one.  The other survey's list of candidates still holds it, so the
+                     * duplicate may already be gone - which is the outcome wanted.
+                     */
+                    if (notFound.getReportedHTTPCode() != 404)
+                    {
+                        throw notFound;
+                    }
+                }
             }
         }
 

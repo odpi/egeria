@@ -2950,6 +2950,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         QueryOptions queryOptions = new QueryOptions(deleteOptions);
 
+        /*
+         * The caller has named both ends, so the relationship is found even when one of them is only visible to
+         * lineage queries - for example, an element that was deleted while it had lineage becomes a Memento
+         * and keeps its relationships.  Without this, the lookup skipped such a relationship and the detach
+         * returned normally without removing it.
+         */
+        queryOptions.setForLineage(true);
+
         OpenMetadataRelationshipList relationshipList = this.getMetadataElementRelationships(userId,
                                                                                              metadataElement1GUID,
                                                                                              metadataElement2GUID,

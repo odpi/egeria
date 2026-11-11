@@ -59,7 +59,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0038](#governance-action-connectors-0038) | INFO | The governance service {0} has completed successfully |
 | [GOVERNANCE-ACTION-CONNECTORS-0039](#governance-action-connectors-0039) | ERROR | The {0} governance action service has not been passed a {1} request parameter |
 | [GOVERNANCE-ACTION-CONNECTORS-0040](#governance-action-connectors-0040) | INFO | The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8}) |
-| [GOVERNANCE-ACTION-CONNECTORS-0041](#governance-action-connectors-0041) | INFO | The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4} |
+| [GOVERNANCE-ACTION-CONNECTORS-0041](#governance-action-connectors-0041) | INFO | The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}, of which {5} were new or changed |
 | [GOVERNANCE-ACTION-CONNECTORS-0042](#governance-action-connectors-0042) | EXCEPTION | The {0} governance action service was unable to deliver table {1} from {2} to {3}: {4} exception with message {5} |
 | [GOVERNANCE-ACTION-CONNECTORS-0043](#governance-action-connectors-0043) | INFO | The {0} governance action service has delivered all {1} table(s) of collection {2} to {3} |
 | [GOVERNANCE-ACTION-CONNECTORS-0044](#governance-action-connectors-0044) | ERROR | The {0} governance action service delivered {1} of the {2} table(s) of collection {3} to {4}; the table(s) it could not deliver are: {5} |
@@ -937,18 +937,18 @@ Ensure follow-on uses of the subscription are successful.
 
 ### GOVERNANCE-ACTION-CONNECTORS-0041
 
-> The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}
+> The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}, of which {5} were new or changed
 
 |  |  |
 |---|---|
 | **Java constant** | `GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
-| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
 | **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
 
 **System action**
 
-The table's records have been written to the destination, replacing any earlier delivery of the same records.
+The destination now holds exactly the table's records.  When the destination can be read back, only the records that are new or differ from the earlier delivery are written, so delivering a table that has not changed writes nothing.
 
 **User action**
 

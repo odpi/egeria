@@ -234,6 +234,19 @@ public class BitolRoundTripFVT
         List<String> allDocuments = new ArrayList<>(CONTRACT_DOCUMENTS);
         allDocuments.add(PRODUCT_DOCUMENT);
 
+        /*
+         * The publisher gathers the events for the elements catalogued by the earlier tests and generates their
+         * documents once per refresh, so refreshes are requested rather than waiting for the next scheduled one
+         * (an hour away).  The events reach the daemon some time after the elements are catalogued - tens of
+         * seconds in a burst of thousands - so a single refresh straight away finds some of them still on their
+         * way; a refresh is requested again every few seconds while the test waits for the documents.
+         * The documents the receivers published reach the store first - before the elements describing them are
+         * catalogued - so it is the publisher's documents that the store catalogs and links to those elements.
+         */
+        IntegrationDaemon integrationDaemon = OMAGPlatformExtension.getIntegrationDaemonClient();
+        long[]            lastRefresh       = { 0L };
+        final long        refreshInterval   = 10000L;
+
         for (String documentName : allDocuments)
         {
             BitolDocument document = BitolDocumentFormatter.parseDocument(BitolFvtTestSupport.readSampleDocument(documentName));
@@ -260,7 +273,18 @@ public class BitolRoundTripFVT
             {
                 try
                 {
-                    return BitolFvtTestSupport.findDocumentFileAsset(context, element.getElementGUID(), expectedType) != null;
+                    if (BitolFvtTestSupport.findDocumentFileAsset(context, element.getElementGUID(), expectedType) != null)
+                    {
+                        return true;
+                    }
+
+                    if (System.currentTimeMillis() - lastRefresh[0] >= refreshInterval)
+                    {
+                        lastRefresh[0] = System.currentTimeMillis();
+                        integrationDaemon.refreshConnector(IntegrationConnectorDefinition.BITOL_DOCUMENT_PUBLISHER.getConnectorName());
+                    }
+
+                    return false;
                 }
                 catch (Exception error)
                 {

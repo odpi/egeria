@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions;
@@ -28,6 +30,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -36,6 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.expectThrows;
 
 /**
  * AnnotationHandlerReuseTest covers the form of addAnnotationToReport that takes the reuse candidates from the
@@ -176,6 +180,55 @@ public class AnnotationHandlerReuseTest
         verify(handler, times(1)).deleteAnnotation(anyString(), eq("newer-duplicate"), any());
         assertEquals(candidates.size(), 1);
         assertEquals(candidates.get(0).getElementHeader().getGUID(), "oldest");
+    }
+
+
+    /**
+     * Two surveys of the same asset running at once can each create the annotation; whichever finds the pair
+     * first deletes the newer one.  The other survey still holds the deleted duplicate in its candidates, so its
+     * delete finds nothing.  That is the outcome wanted, so the survey carries on with the oldest annotation.
+     *
+     * @throws Exception not expected
+     */
+    @Test public void testDuplicateAlreadyDeletedByConcurrentSurvey() throws Exception
+    {
+        List<OpenMetadataRootElement> candidates = new ArrayList<>();
+
+        candidates.add(this.getAnnotation("newer-duplicate", new Date(5000L), REPORT_1, "orders"));
+        candidates.add(this.getAnnotation("oldest", new Date(1000L), REPORT_1, "orders"));
+
+        doThrow(new InvalidParameterException(OMFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition("newer-duplicate", "elementGUID", "deleteMetadataElementInStore"),
+                                              this.getClass().getName(),
+                                              "deleteMetadataElementInStore",
+                                              "elementGUID")).when(handler).deleteAnnotation(anyString(), eq("newer-duplicate"), any());
+        doReturn(this.getAnnotation("oldest", new Date(1000L), REPORT_2, "orders")).when(handler).getAnnotationByGUID(anyString(), eq("oldest"), any());
+
+        AnnotationHandler.AnnotationResult result = this.addAnnotation(REPORT_2, "orders", candidates);
+
+        assertEquals(result.annotationGUID(), "oldest");
+        assertEquals(candidates.size(), 1);
+        assertEquals(candidates.get(0).getElementHeader().getGUID(), "oldest");
+    }
+
+
+    /**
+     * Any other failure deleting a duplicate is still reported.
+     *
+     * @throws Exception not expected
+     */
+    @Test public void testOtherDuplicateDeleteFailureIsReported() throws Exception
+    {
+        List<OpenMetadataRootElement> candidates = new ArrayList<>();
+
+        candidates.add(this.getAnnotation("newer-duplicate", new Date(5000L), REPORT_1, "orders"));
+        candidates.add(this.getAnnotation("oldest", new Date(1000L), REPORT_1, "orders"));
+
+        doThrow(new InvalidParameterException(OMFErrorCode.NULL_GUID.getMessageDefinition("elementGUID", "delete"),
+                                              this.getClass().getName(),
+                                              "deleteMetadataElementInStore",
+                                              "elementGUID")).when(handler).deleteAnnotation(anyString(), eq("newer-duplicate"), any());
+
+        expectThrows(InvalidParameterException.class, () -> this.addAnnotation(REPORT_2, "orders", candidates));
     }
 
 

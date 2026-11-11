@@ -12,6 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation 'org.testng:testng'
+    testImplementation 'org.mockito:mockito-core'
     implementation 'commons-io:commons-io'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'

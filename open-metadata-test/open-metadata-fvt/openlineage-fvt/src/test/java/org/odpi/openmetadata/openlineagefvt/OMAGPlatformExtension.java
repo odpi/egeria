@@ -105,7 +105,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      */
     private static final List<String> ARCHIVE_FILES = List.of("OpenMetadataTypes.omarchive",
                                                               "CoreContentPack.omarchive",
-                                                              "OpenLineageContentPack.omarchive");
+                                                              "OpenLineageContentPack.omarchive",
+                                                              "OpenLineageFileStoreContentPack.omarchive");
 
     /**
      * The integration group the daemon runs.  It is named from the content pack's definition so that a renamed

@@ -468,12 +468,12 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                       "https://egeria-project.org/concepts/governance-action-service/"),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0041 - The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}
+     * GOVERNANCE-ACTION-CONNECTORS-0041 - The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}, of which {5} were new or changed
      */
     TABLE_PROVISIONED("GOVERNANCE-ACTION-CONNECTORS-0041",
                       AuditLogRecordSeverityLevel.INFO,
-                      "The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}",
-                      "The table's records have been written to the destination, replacing any earlier delivery of the same records.",
+                      "The {0} governance action service has delivered {1} record(s) of table {2} from {3} to {4}, of which {5} were new or changed",
+                      "The destination now holds exactly the table's records.  When the destination can be read back, only the records that are new or differ from the earlier delivery are written, so delivering a table that has not changed writes nothing.",
                       "No action is required.  This message records what was delivered.",
                       "https://egeria-project.org/concepts/governance-action-service/"),
 

@@ -83,7 +83,7 @@ public class OpenLineageLogStoreReader
             {
                 readDirectory(file, windowStart, windowEnd, history);
             }
-            else if (file.getName().endsWith(EVENT_SUFFIX))
+            else if ((file.getName().endsWith(EVENT_SUFFIX)) && (! isWrittenBefore(file, windowStart)))
             {
                 try
                 {
@@ -95,10 +95,38 @@ public class OpenLineageLogStoreReader
                 catch (Exception error)
                 {
                     log.debug("Unable to read OpenLineage event file {}: {}", file.getAbsolutePath(), error.getMessage());
-                    history.countUnreadableFile();
+                    history.countUnreadableEvent();
                 }
             }
         }
+    }
+
+
+    /**
+     * Return whether an event file was last written before the start of the window.  The log store writes each
+     * event when it arrives, so the event happened no later than its file was written: a file written before the
+     * window cannot hold an event inside it, and is skipped without being opened.  The log store keeps every event
+     * it has received, so without this each analysis would read and parse the whole store, however old, only to
+     * discard what lies outside the window.  A file copied into the store has a new time and is still read.
+     *
+     * @param file event file
+     * @param windowStart earliest event time to include (null for no limit)
+     * @return true if the file can be skipped
+     */
+    static boolean isWrittenBefore(File file,
+                                   Date windowStart)
+    {
+        if (windowStart == null)
+        {
+            return false;
+        }
+
+        long lastModified = file.lastModified();
+
+        /*
+         * Zero means the time is not known, so the file is read.
+         */
+        return (lastModified != 0L) && (lastModified < windowStart.getTime());
     }
 
 

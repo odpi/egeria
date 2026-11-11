@@ -9,7 +9,7 @@ The OMFServicesAuditCode is used to define the message content for the OMRS Audi
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 11 |
+| **Number of messages** | 12 |
 | **Message identifiers begin** | `OMF-SERVICES-` |
 | **Java class** | `org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesAuditCode` |
 | **Module** | [open-metadata-implementation/access-services/omf-metadata-management/omf-metadata-api](../../open-metadata-implementation/access-services/omf-metadata-management/omf-metadata-api) |
@@ -31,6 +31,7 @@ The OMFServicesAuditCode is used to define the message content for the OMRS Audi
 | [OMF-SERVICES-0012](#omf-services-0012) | SHUTDOWN | The Open Metadata Store Services are shutting down its instance for server {0} |
 | [OMF-SERVICES-0013](#omf-services-0013) | EVENT | The OMF Services has sent event of type: {0} |
 | [OMF-SERVICES-0014](#omf-services-0014) | EXCEPTION | Event {0} could not be published due to {1} exception with message: {2} |
+| [OMF-SERVICES-0015](#omf-services-0015) | INFO | The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send |
 | [OMF-SERVICES-0020](#omf-services-0020) | INFO | Log message for asset {0} from governance service {1}: {2} |
 
 ----
@@ -241,6 +242,27 @@ The system cannot publish the event to the OMF Services' OutTopic.
 **User action**
 
 Verify the topic configuration and that the event broker is running.
+
+
+----
+
+### OMF-SERVICES-0015
+
+> The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send
+
+|  |  |
+|---|---|
+| **Java constant** | `OMFServicesAuditCode.EVENT_PROPERTY_SHORTENED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+
+**System action**
+
+Each property in an out topic event is limited in size so that the event fits within the largest message that the event bus accepts.  An event that is too large is dropped by the event bus, and every listener misses the change.  The values that fit are sent, in order; the stored element is unchanged.
+
+**User action**
+
+Listeners that need the whole value should read the element.  If this message occurs often for the same type of element, consider whether the property should hold so many values.
 
 
 ----

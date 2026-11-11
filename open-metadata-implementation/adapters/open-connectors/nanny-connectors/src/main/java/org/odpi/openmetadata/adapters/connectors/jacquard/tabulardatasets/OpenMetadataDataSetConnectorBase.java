@@ -472,6 +472,41 @@ public abstract class OpenMetadataDataSetConnectorBase extends ConnectorBase imp
 
 
     /**
+     * Return the time the open metadata types last changed: the latest creation or update time of the type
+     * definitions.  The data types and properties are defined alongside the types and change only when they do,
+     * so this is the create and update time of every record of the data sets that list them.  Without a last
+     * update time, Jacquard could not tell whether these data sets had changed, and so could not tell their
+     * subscribers.
+     *
+     * @param gallery the type definitions
+     * @return date, or null if no type definition has a time
+     */
+    protected Date getTypesLastChangedTime(OpenMetadataTypeDefGallery gallery)
+    {
+        Date lastChanged = null;
+
+        if ((gallery != null) && (gallery.getTypeDefs() != null))
+        {
+            for (OpenMetadataTypeDef typeDef : gallery.getTypeDefs())
+            {
+                if (typeDef != null)
+                {
+                    for (Date changeTime : new Date[]{typeDef.getCreateTime(), typeDef.getUpdateTime()})
+                    {
+                        if ((changeTime != null) && ((lastChanged == null) || (changeTime.after(lastChanged))))
+                        {
+                            lastChanged = changeTime;
+                        }
+                    }
+                }
+            }
+        }
+
+        return lastChanged;
+    }
+
+
+    /**
      * Extract the update time from the element header
      *
      * @param elementHeader header

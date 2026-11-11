@@ -1941,6 +1941,35 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
 
     /**
+     * Register with their integration groups the integration connectors that another content pack defines but this
+     * content pack registers - see IntegrationConnectorDefinition.getRegistrationContentPackDefinition().  The
+     * registration relationship has its own unique identifier, distinct from one the defining content pack may have
+     * created in the past, since a repository rejects a copy of an element from a different content pack.
+     *
+     * @param contentPackDefinition content pack being processed
+     */
+    protected void addIntegrationConnectorRegistrations(ContentPackDefinition contentPackDefinition)
+    {
+        for (IntegrationConnectorDefinition integrationConnectorDefinition : IntegrationConnectorDefinition.values())
+        {
+            if ((contentPackDefinition.equals(integrationConnectorDefinition.getRegistrationContentPackDefinition())) &&
+                    (! contentPackDefinition.equals(integrationConnectorDefinition.getContentPackDefinition())))
+            {
+                archiveHelper.addRegisteredIntegrationConnector(integrationConnectorDefinition.getIntegrationGroupDefinition().getGUID(),
+                                                                integrationConnectorDefinition.getConnectorName(),
+                                                                integrationConnectorDefinition.getConnectorUserId(),
+                                                                integrationConnectorDefinition.getMetadataSourceQualifiedName(),
+                                                                integrationConnectorDefinition.getMetadataCollectionQualifiedName(),
+                                                                integrationConnectorDefinition.getRefreshTimeInterval(),
+                                                                integrationConnectorDefinition.generateConnectorActivityReport(),
+                                                                integrationConnectorDefinition.getGUID(),
+                                                                contentPackDefinition.getArchiveName());
+            }
+        }
+    }
+
+
+    /**
      * Add the integration connectors for the content pack.
      *
      * @param contentPackDefinition content pack being processed
@@ -1971,14 +2000,17 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
                 assert (integrationConnectorDefinition.getGUID().equals(guid));
 
-                archiveHelper.addRegisteredIntegrationConnector(integrationGroupDefinition.getGUID(),
-                                                                integrationConnectorDefinition.getConnectorName(),
-                                                                integrationConnectorDefinition.getConnectorUserId(),
-                                                                integrationConnectorDefinition.getMetadataSourceQualifiedName(),
-                                                                integrationConnectorDefinition.getMetadataCollectionQualifiedName(),
-                                                                integrationConnectorDefinition.getRefreshTimeInterval(),
-                                                                true,
-                                                                integrationConnectorDefinition.getGUID());
+                if (contentPackDefinition.equals(integrationConnectorDefinition.getRegistrationContentPackDefinition()))
+                {
+                    archiveHelper.addRegisteredIntegrationConnector(integrationGroupDefinition.getGUID(),
+                                                                    integrationConnectorDefinition.getConnectorName(),
+                                                                    integrationConnectorDefinition.getConnectorUserId(),
+                                                                    integrationConnectorDefinition.getMetadataSourceQualifiedName(),
+                                                                    integrationConnectorDefinition.getMetadataCollectionQualifiedName(),
+                                                                    integrationConnectorDefinition.getRefreshTimeInterval(),
+                                                                    integrationConnectorDefinition.generateConnectorActivityReport(),
+                                                                    integrationConnectorDefinition.getGUID());
+                }
 
                 /*
                  * This IT profile gives the connector's userId an actor profile, so it can be awarded karma points.

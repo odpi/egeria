@@ -141,6 +141,16 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
                             "https://egeria-project.org/services/framework-services/"),
 
     /**
+     * OMF-SERVICES-0015 The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send
+     */
+    EVENT_PROPERTY_SHORTENED("OMF-SERVICES-0015",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} property of {1} {2} has been shortened from about {3} bytes to {4} values in the out topic event for this change because it is too large to send",
+                             "Each property in an out topic event is limited in size so that the event fits within the largest message that the event bus accepts.  An event that is too large is dropped by the event bus, and every listener misses the change.  The values that fit are sent, in order; the stored element is unchanged.",
+                             "Listeners that need the whole value should read the element.  If this message occurs often for the same type of element, consider whether the property should hold so many values.",
+                             "https://egeria-project.org/services/framework-services/"),
+
+    /**
      * OMF-SERVICES-0020 - Log message for asset {0} from governance service {1}: {2}
      */
     ASSET_AUDIT_LOG("OMF-SERVICES-0020",

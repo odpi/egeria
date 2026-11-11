@@ -124,6 +124,16 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                          "https://egeria-project.org/services/generic-handlers/"),
 
     /**
+     * OMAG-GENERIC-HANDLERS-0033 - Predefined action target {0} ({1}) of {2} {3} is not passed to the new engine action because the element is archived, deleted or no longer effective
+     */
+    SKIPPED_PREDEFINED_ACTION_TARGET("OMAG-GENERIC-HANDLERS-0033",
+                                     AuditLogRecordSeverityLevel.INFO,
+                                     "Predefined action target {0} ({1}) of {2} {3} is not passed to the new engine action because the element is archived, deleted or no longer effective",
+                                     "The TargetForGovernanceAction relationship still links the element as a standing action target, but the element can no longer be used, so it is not passed to the governance service.  An element that is deleted while it has lineage becomes a Memento and keeps its relationships so it can be restored.",
+                                     "Remove the TargetForGovernanceAction relationship if the element is not going to be restored, or restore the element if it should still be an action target.",
+                                     "https://egeria-project.org/services/generic-handlers/"),
+
+    /**
      * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}, changing its status from {2} to {3}
      */
     SUCCESSFUL_ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0024",

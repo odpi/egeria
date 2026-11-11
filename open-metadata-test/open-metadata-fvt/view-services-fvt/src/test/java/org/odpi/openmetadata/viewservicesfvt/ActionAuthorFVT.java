@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
@@ -66,6 +67,7 @@ public class ActionAuthorFVT
     private static final ViewServiceClient governanceOfficer = new ViewServiceClient(ViewServiceDescription.GOVERNANCE_OFFICER);
     private static final ViewServiceClient automatedCuration = new ViewServiceClient(ViewServiceDescription.AUTOMATED_CURATION);
     private static final ViewServiceClient assetMaker        = new ViewServiceClient(ViewServiceDescription.ASSET_MAKER);
+    private static final ViewServiceClient metadataExpert    = new ViewServiceClient(ViewServiceDescription.METADATA_EXPERT);
 
     /*
      * The Core Content Pack's Stewardship governance engine.
@@ -79,6 +81,7 @@ public class ActionAuthorFVT
     private static final String processQN              = ViewServicesFvtTestSupport.qualifiedName("GovernanceActionProcess", "audit");
 
     private static String targetGUID               = null;
+    private static String archivedTargetGUID       = null;
     private static String governanceActionTypeGUID = null;
     private static String processGUID              = null;
     private static String firstStepGUID            = null;
@@ -139,11 +142,70 @@ public class ActionAuthorFVT
 
 
     /**
+     * An archived element (a Memento) keeps its relationships so that it can be restored, including a
+     * TargetForGovernanceAction relationship that makes it a predefined action target.  It is not passed to the
+     * engine actions initiated from the governance action type - the governance service could not use it - and
+     * the relationship can still be detached by naming both ends.  The detach is proved by restoring the
+     * element: once restored, it is no longer a predefined action target.
+     */
+    @Test
+    @Order(2)
+    void archivedTargetIsSkippedAndCanBeDetached()
+    {
+        final String archivedTargetName = "archivedElement";
+
+        archivedTargetGUID = AutomatedCurationFVT.createTargetAsset("action-author-archived-target");
+
+        TargetForGovernanceActionProperties targetProperties = new TargetForGovernanceActionProperties();
+
+        targetProperties.setActionTargetName(archivedTargetName);
+
+        actionAuthor.call("/governance-actions/" + governanceActionTypeGUID + "/action-targets/" + archivedTargetGUID + "/attach",
+                          newRelationship(targetProperties));
+
+        DeleteElementRequestBody archiveRequestBody = new DeleteElementRequestBody();
+
+        archiveRequestBody.setArchiveProcess(ActionAuthorFVT.class.getSimpleName());
+
+        metadataExpert.call("/metadata-elements/" + archivedTargetGUID + "/archive", archiveRequestBody);
+
+        String engineActionGUID = initiateGovernanceActionType();
+
+        EngineActionElement active = AutomatedCurationFVT.findActiveEngineAction(engineActionGUID);
+
+        assertNotNull(active, "the engine action initiated from the governance action type is not active");
+        assertNotNull(active.getActionTargetElements(), "the engine action has no action targets");
+        assertTrue(active.getActionTargetElements().stream().anyMatch(target -> targetGUID.equals(target.getActionTargetGUID())),
+                   "the live predefined action target is missing from the engine action");
+        assertTrue(active.getActionTargetElements().stream().noneMatch(target -> archivedTargetGUID.equals(target.getActionTargetGUID())),
+                   "the archived predefined action target was passed to the engine action");
+
+        cancel(engineActionGUID);
+
+        actionAuthor.call("/governance-actions/" + governanceActionTypeGUID + "/action-targets/" + archivedTargetGUID + "/detach",
+                          new DeleteRelationshipRequestBody());
+
+        metadataExpert.call("/metadata-elements/" + archivedTargetGUID + "/restore", new MetadataSourceRequestBody());
+
+        String afterRestoreGUID = initiateGovernanceActionType();
+
+        EngineActionElement afterRestore = AutomatedCurationFVT.findActiveEngineAction(afterRestoreGUID);
+
+        assertNotNull(afterRestore, "the engine action initiated after the restore is not active");
+        assertTrue((afterRestore.getActionTargetElements() == null) ||
+                           afterRestore.getActionTargetElements().stream().noneMatch(target -> archivedTargetGUID.equals(target.getActionTargetGUID())),
+                   "the detach did not remove the relationship to the archived element: once restored it is an action target again");
+
+        cancel(afterRestoreGUID);
+    }
+
+
+    /**
      * Once the action target is detached, an initiated governance action type has no action target; once the
      * executor is detached, it cannot be initiated at all.
      */
     @Test
-    @Order(2)
+    @Order(3)
     void detachTargetAndExecutor()
     {
         actionAuthor.call("/governance-actions/" + governanceActionTypeGUID + "/action-targets/" + targetGUID + "/detach",
@@ -180,7 +242,7 @@ public class ActionAuthorFVT
      * link's guard is visible there.
      */
     @Test
-    @Order(3)
+    @Order(4)
     void linkProcessSteps()
     {
         GovernanceActionProcessProperties processProperties = new GovernanceActionProcessProperties();
@@ -244,7 +306,7 @@ public class ActionAuthorFVT
      * instance cancels that engine action.
      */
     @Test
-    @Order(4)
+    @Order(5)
     void initiateAndCancelProcess()
     {
         InitiateGovernanceActionProcessRequestBody requestBody = new InitiateGovernanceActionProcessRequestBody();
@@ -285,7 +347,7 @@ public class ActionAuthorFVT
      * Removing the links leaves the process with no first step and no links between steps.
      */
     @Test
-    @Order(5)
+    @Order(6)
     void removeProcessStepLinks()
     {
         actionAuthor.call("/governance-action-process-steps/next-process-step/" + nextStepLinkGUID + "/detach", new DeleteRelationshipRequestBody());
@@ -305,7 +367,7 @@ public class ActionAuthorFVT
      * forLineage=true, and succeeds when it does.
      */
     @Test
-    @Order(6)
+    @Order(7)
     void deleteProcessAfterItsInstanceNeedsForLineage()
     {
         GovernanceActionProcessProperties processProperties = new GovernanceActionProcessProperties();
@@ -372,6 +434,7 @@ public class ActionAuthorFVT
 
         assets.add(processInstanceGUID);
         assets.add(targetGUID);
+        assets.add(archivedTargetGUID);
 
         for (String guid : assets)
         {

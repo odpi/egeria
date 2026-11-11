@@ -89,6 +89,23 @@ public enum ContentPackSolutionBlueprint
                               ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
+     * Save open lineage events as JSON files.
+     */
+    OPEN_LINEAGE_FILE_STORE_CONTENT_PACK("acbc69c1-7d1f-499a-b69d-c2f184854e4f",
+                                         "Egeria::SolutionBlueprint::OpenLineageFileStoreContentPack",
+                                         "Open Lineage File Store Content Pack",
+                                         "OPEN-LINEAGE-FILE-STORE-CONTENT-PACK",
+                                         "Solution blueprint containing the integration connector that saves open lineage events as JSON files in a file system directory.",
+                                         new String[]{
+                                                 IntegrationConnectorDefinition.OPEN_LINEAGE_KAFKA_LISTENER.getSolutionComponentGUID(),
+                                                 IntegrationConnectorDefinition.OPEN_LINEAGE_FILE_PUBLISHER.getSolutionComponentGUID()
+                                         },
+                                         new DeployedImplementationTypeDefinition[]{
+                                                 DeployedImplementationType.FILE_SYSTEM_DIRECTORY
+                                         },
+                                         ContentPackDefinition.OPEN_LINEAGE_FILE_STORE_CONTENT_PACK),
+
+    /**
      * Receive, catalog, generate and store Bitol data contract (ODCS) and data product (ODPS) documents.
      */
     BITOL_CONTENT_PACK("3e0f7f64-4563-471d-92d3-63e1cd9bc591",

@@ -12,6 +12,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
@@ -25,6 +26,9 @@ dependencies {
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'org.springframework:spring-web'

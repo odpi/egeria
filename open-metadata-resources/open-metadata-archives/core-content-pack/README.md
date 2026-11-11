@@ -15,6 +15,7 @@ This module implements a utility to build the technology-specific [open metadata
 * `FilesContentPack.omarchive`
 * `MSSQLContentPack.omarchive`
 * `OpenLineageContentPack.omarchive`
+* `OpenLineageFileStoreContentPack.omarchive`
 * `OpenMetadataDigitalProductsContentPack.omarchive`
 * `OracleContentPack.omarchive`
 * `OrganizationInsightContentPack.omarchive`

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic.OMFOutTopicServerConnector;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesAuditCode;
 import org.odpi.openmetadata.frameworkservices.omf.converters.ElementHeaderConverter;
@@ -14,6 +15,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * OpenMetadataOutTopicPublisher is responsible for sending events on the Open Metadata Store's out topic.
@@ -25,6 +29,7 @@ public class OpenMetadataOutTopicPublisher
     private final AuditLog                   outTopicAuditLog;
     private final String                                outTopicName;
     private final ElementHeaderConverter<ElementHeader> headerConverter;
+    private final OutTopicEventPropertyLimiter          propertyLimiter = new OutTopicEventPropertyLimiter();
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 
@@ -55,6 +60,40 @@ public class OpenMetadataOutTopicPublisher
         {
             outTopicAuditLog.logMessage(actionDescription, OMFServicesAuditCode.SERVICE_PUBLISHING.getMessageDefinition(outTopicName));
         }
+    }
+
+
+    /**
+     * Shorten any property that is too large to send, so the event is not dropped by the event bus, and say
+     * which properties were shortened.
+     *
+     * @param properties properties for the event
+     * @param elementHeader header of the element the properties belong to (for the audit log)
+     * @param methodName calling method
+     * @return properties to send
+     */
+    private ElementProperties limitProperties(ElementProperties properties,
+                                              ElementHeader     elementHeader,
+                                              String            methodName)
+    {
+        List<OutTopicEventPropertyLimiter.ShortenedProperty> shortenedProperties = new ArrayList<>();
+
+        ElementProperties limitedProperties = propertyLimiter.limitProperties(properties, shortenedProperties);
+
+        if (outTopicAuditLog != null)
+        {
+            for (OutTopicEventPropertyLimiter.ShortenedProperty shortenedProperty : shortenedProperties)
+            {
+                outTopicAuditLog.logMessage(methodName,
+                                            OMFServicesAuditCode.EVENT_PROPERTY_SHORTENED.getMessageDefinition(shortenedProperty.propertyName(),
+                                                                                                                ((elementHeader == null) || (elementHeader.getType() == null)) ? "element" : elementHeader.getType().getTypeName(),
+                                                                                                                (elementHeader == null) ? "" : elementHeader.getGUID(),
+                                                                                                                Long.toString(shortenedProperty.estimatedSize()),
+                                                                                                                Integer.toString(shortenedProperty.valuesKept())));
+            }
+        }
+
+        return limitedProperties;
     }
 
 
@@ -106,24 +145,24 @@ public class OpenMetadataOutTopicPublisher
                 }
 
                 event.setElementHeader(headerConverter.getNewBean(ElementHeader.class, entity, methodName));
-                event.setElementProperties(headerConverter.mapElementProperties(entity.getProperties()));
+                event.setElementProperties(this.limitProperties(headerConverter.mapElementProperties(entity.getProperties()), event.getElementHeader(), methodName));
 
                 if (previousEntity != null)
                 {
                     event.setPreviousElementHeader(headerConverter.getNewBean(ElementHeader.class, previousEntity, methodName));
-                    event.setPreviousElementProperties(headerConverter.mapElementProperties(previousEntity.getProperties()));
+                    event.setPreviousElementProperties(this.limitProperties(headerConverter.mapElementProperties(previousEntity.getProperties()), event.getElementHeader(), methodName));
                 }
 
                 if (newClassification != null)
                 {
                     event.setClassificationName(newClassification.getName());
-                    event.setClassificationProperties(headerConverter.mapElementProperties(newClassification.getProperties()));
+                    event.setClassificationProperties(this.limitProperties(headerConverter.mapElementProperties(newClassification.getProperties()), event.getElementHeader(), methodName));
                 }
 
                 if (previousClassification != null)
                 {
                     event.setClassificationName(previousClassification.getName());
-                    event.setPreviousClassificationProperties(headerConverter.mapElementProperties(previousClassification.getProperties()));
+                    event.setPreviousClassificationProperties(this.limitProperties(headerConverter.mapElementProperties(previousClassification.getProperties()), event.getElementHeader(), methodName));
                 }
 
                 outTopicServerConnector.sendEvent(event);
@@ -175,19 +214,19 @@ public class OpenMetadataOutTopicPublisher
                 }
 
                 event.setElementHeader(headerConverter.getNewBean(ElementHeader.class, relationship, methodName));
-                event.setElementProperties(headerConverter.mapElementProperties(relationship.getProperties()));
+                event.setElementProperties(this.limitProperties(headerConverter.mapElementProperties(relationship.getProperties()), event.getElementHeader(), methodName));
 
                 if (previousRelationship != null)
                 {
                     event.setPreviousElementHeader(headerConverter.getNewBean(ElementHeader.class, previousRelationship, methodName));
-                    event.setPreviousElementProperties(headerConverter.mapElementProperties(previousRelationship.getProperties()));
+                    event.setPreviousElementProperties(this.limitProperties(headerConverter.mapElementProperties(previousRelationship.getProperties()), event.getElementHeader(), methodName));
                 }
 
                 event.setEndOneElementHeader(headerConverter.getNewBean(ElementHeader.class, end1, methodName));
-                event.setEndOneElementProperties(headerConverter.mapElementProperties(end1.getProperties()));
+                event.setEndOneElementProperties(this.limitProperties(headerConverter.mapElementProperties(end1.getProperties()), event.getEndOneElementHeader(), methodName));
 
                 event.setEndTwoElementHeader(headerConverter.getNewBean(ElementHeader.class, end2, methodName));
-                event.setEndTwoElementProperties(headerConverter.mapElementProperties(end2.getProperties()));
+                event.setEndTwoElementProperties(this.limitProperties(headerConverter.mapElementProperties(end2.getProperties()), event.getEndTwoElementHeader(), methodName));
 
                 outTopicServerConnector.sendEvent(event);
             }

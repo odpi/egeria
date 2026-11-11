@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
@@ -31,8 +32,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * BitolDocumentPublisherIntegrationConnector is the outbound side of Egeria's Bitol support.  It generates an Open Data
@@ -40,9 +44,12 @@ import java.util.Map;
  * data sharing agreement, and publishes them to the Bitol listeners registered in the same integration daemon (for
  * example the file store connector, which writes them to a directory ready to commit to git).
  * <br><br>
- * Documents are generated when the connector receives an event describing a change to a digital product or agreement,
- * and on each refresh for every product that is a member of a DigitalProductCatalog catalog target (together with the
- * agreements referenced by the product's ports).  Each process that the lineage shows assembling a product's data
+ * Documents are generated on each refresh: for every product that is a member of a DigitalProductCatalog catalog
+ * target (together with the agreements referenced by the product's ports), and for each digital product or agreement
+ * that an event has reported a change to since the last refresh.  Each element is generated at most once per refresh,
+ * however many events arrived for it and however many products share it.  Generating a document takes thousands of
+ * reads, and a product receives many events in a burst - create, update, classify, reclassify - so generating on
+ * every event left the connector hours behind its events on a busy repository.  Each process that the lineage shows assembling a product's data
  * becomes an input port of the product; a process with no data contract gets a sparsely populated draft one, catalogued
  * and published with the product so that it can be filled out later.
  * <br><br>
@@ -56,6 +63,17 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
     private DataContractMapper    contractMapper    = null;
 
     private final Map<String, String> lastPublishedDocuments = new HashMap<>();
+
+    /*
+     * Digital products and agreements that events have reported changes to since the last refresh.
+     */
+    private final Set<String> pendingProductGUIDs   = new LinkedHashSet<>();
+    private final Set<String> pendingAgreementGUIDs = new LinkedHashSet<>();
+
+    /*
+     * Elements whose documents have been generated during the current refresh.
+     */
+    private final Set<String> generatedThisRefresh = new HashSet<>();
 
 
     /**
@@ -87,8 +105,88 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
 
 
     /**
-     * Process an event from the open metadata server.  Changes to digital products and data sharing agreements cause
-     * their documents to be regenerated and published.
+     * Generate the documents for the catalog targets' products, and then for the products and agreements that
+     * events have reported changes to and that the catalog targets did not cover.
+     *
+     * @throws ConnectorCheckedException there is a problem with the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during the refresh
+     */
+    @Override
+    public void refresh() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        final String methodName = "refresh";
+
+        synchronized (generatedThisRefresh)
+        {
+            generatedThisRefresh.clear();
+        }
+
+        super.refresh();
+
+        if (integrationContext == null)
+        {
+            return;
+        }
+
+        List<String> productGUIDs;
+        List<String> agreementGUIDs;
+
+        synchronized (pendingProductGUIDs)
+        {
+            productGUIDs   = new ArrayList<>(pendingProductGUIDs);
+            agreementGUIDs = new ArrayList<>(pendingAgreementGUIDs);
+
+            pendingProductGUIDs.clear();
+            pendingAgreementGUIDs.clear();
+        }
+
+        for (String productGUID : productGUIDs)
+        {
+            try
+            {
+                publishDataProduct(productGUID, integrationContext);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw error;
+            }
+            catch (Exception error)
+            {
+                logExceptionRecord(methodName,
+                                   BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                   error);
+            }
+        }
+
+        for (String agreementGUID : agreementGUIDs)
+        {
+            try
+            {
+                publishDataContract(agreementGUID, integrationContext);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw error;
+            }
+            catch (Exception error)
+            {
+                logExceptionRecord(methodName,
+                                   BitolIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()),
+                                   error);
+            }
+        }
+    }
+
+
+    /**
+     * Process an event from the open metadata server.  A change to a digital product or data sharing agreement is
+     * noted, and its document is regenerated and published by the next refresh.
      *
      * @param event event object
      */
@@ -117,13 +215,16 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         {
             ElementHeader elementHeader = event.getElementHeader();
 
-            if (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName))
+            synchronized (pendingProductGUIDs)
             {
-                publishDataProduct(elementHeader.getGUID(), integrationContext);
-            }
-            else if (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.AGREEMENT.typeName))
-            {
-                publishDataContract(elementHeader.getGUID(), integrationContext);
+                if (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DIGITAL_PRODUCT.typeName))
+                {
+                    pendingProductGUIDs.add(elementHeader.getGUID());
+                }
+                else if (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.AGREEMENT.typeName))
+                {
+                    pendingAgreementGUIDs.add(elementHeader.getGUID());
+                }
             }
         }
         catch (Exception error)
@@ -134,6 +235,46 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
                                                                                                             methodName,
                                                                                                             error.getMessage()),
                                error);
+        }
+    }
+
+
+    /**
+     * Reads the element that an event is about.
+     */
+    @FunctionalInterface
+    interface EventElementReader
+    {
+        /**
+         * Retrieve the element.
+         *
+         * @return element (or null)
+         * @throws Exception problem retrieving it
+         */
+        OpenMetadataRootElement read() throws Exception;
+    }
+
+
+    /**
+     * Retrieve the element that an event is about.  The element may no longer be there by the time the event is
+     * processed, or it may not be visible to this connector's user - a digital product that is still a proposal
+     * (Promise classification), for example, or one in a zone the user cannot see.  The repository reports both
+     * as an invalid parameter.  Neither is a document this connector should publish, so null is returned and the
+     * event is skipped.
+     *
+     * @param reader retrieves the element
+     * @return element, or null if it is not available to this connector
+     * @throws Exception any other problem retrieving the element
+     */
+    static OpenMetadataRootElement readEventElement(EventElementReader reader) throws Exception
+    {
+        try
+        {
+            return reader.read();
+        }
+        catch (InvalidParameterException notAvailable)
+        {
+            return null;
         }
     }
 
@@ -150,7 +291,12 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
     {
         final String methodName = "publishDataProduct";
 
-        OpenMetadataRootElement product = context.getCollectionClient().getCollectionByGUID(digitalProductGUID, context.getCollectionClient().getGetOptions());
+        if (! isFirstGenerationThisRefresh(digitalProductGUID))
+        {
+            return;
+        }
+
+        OpenMetadataRootElement product = readEventElement(() -> context.getCollectionClient().getCollectionByGUID(digitalProductGUID, context.getCollectionClient().getGetOptions()));
 
         if ((product == null) || (! propertyHelper.isTypeOf(product.getElementHeader(), OpenMetadataType.DIGITAL_PRODUCT.typeName)))
         {
@@ -295,7 +441,12 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
     {
         final String methodName = "publishDataContract";
 
-        OpenMetadataRootElement agreement = context.getCollectionClient().getCollectionByGUID(agreementGUID, context.getCollectionClient().getGetOptions());
+        if (! isFirstGenerationThisRefresh(agreementGUID))
+        {
+            return;
+        }
+
+        OpenMetadataRootElement agreement = readEventElement(() -> context.getCollectionClient().getCollectionByGUID(agreementGUID, context.getCollectionClient().getGetOptions()));
 
         if ((agreement == null) || (! propertyHelper.isTypeOf(agreement.getElementHeader(), OpenMetadataType.AGREEMENT.typeName)) || (! isDataSharingAgreement(agreement.getElementHeader())))
         {
@@ -337,6 +488,21 @@ public class BitolDocumentPublisherIntegrationConnector extends DynamicIntegrati
         }
 
         return false;
+    }
+
+
+    /**
+     * Record that an element's document is being generated in this refresh, and return whether it is the first time.
+     *
+     * @param elementGUID product or agreement
+     * @return true if it has not been generated yet in this refresh
+     */
+    boolean isFirstGenerationThisRefresh(String elementGUID)
+    {
+        synchronized (generatedThisRefresh)
+        {
+            return generatedThisRefresh.add(elementGUID);
+        }
     }
 
 

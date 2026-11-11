@@ -92,6 +92,12 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
     private final Map<String, Boolean> surveyReportComparisons = new HashMap<>();
 
     /*
+     * The number of different annotation types reported by each completed survey report, keyed by the report's
+     * GUID.  Like the comparisons above, these do not change once the survey is complete.
+     */
+    private final Map<String, Integer> surveyReportAnnotationTypeCounts = new HashMap<>();
+
+    /*
      * These caches are rebuilt on each refresh.  They ensure that each element is only considered once, and that
      * the supporting definitions are only retrieved once, no matter how many members of the data sharing hub use them.
      */
@@ -1082,21 +1088,42 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                  */
                 Set<String> runningActionTypeGUIDs = getRunningActionTypeGUIDs(assetElement.getElementHeader().getGUID());
 
+                List<MetadataElementSummary> surveyActionTypes = new ArrayList<>();
+                boolean                      surveyRunning     = false;
+
                 for (RelatedMetadataElementSummary resource : technologyType.getResourceList())
                 {
                     if ((resource != null) &&
                             (propertyHelper.isTypeOf(resource.getRelatedElement().getElementHeader(), OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName)) &&
-                            (resource.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties) &&
-                            (! runningActionTypeGUIDs.contains(resource.getRelatedElement().getElementHeader().getGUID())))
+                            (resource.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties))
                     {
+                        boolean running = runningActionTypeGUIDs.contains(resource.getRelatedElement().getElementHeader().getGUID());
+
                         if (ResourceUse.CATALOG_RESOURCE.getResourceUse().equals(resourceListProperties.getResourceUse()))
                         {
-                            enableCataloguing(assetElement, assetProperties, resource.getRelatedElement());
+                            if (! running)
+                            {
+                                enableCataloguing(assetElement, assetProperties, resource.getRelatedElement());
+                            }
                         }
                         else if (ResourceUse.SURVEY_RESOURCE.getResourceUse().equals(resourceListProperties.getResourceUse()))
                         {
-                            requestSurvey(assetElement, assetProperties, resource.getRelatedElement());
+                            surveyActionTypes.add(resource.getRelatedElement());
+                            surveyRunning = surveyRunning || running;
                         }
+                    }
+                }
+
+                /*
+                 * Only one survey of an element runs at a time, and only the one that describes it most fully.
+                 */
+                if ((! surveyActionTypes.isEmpty()) && (! surveyRunning))
+                {
+                    MetadataElementSummary chosenSurvey = chooseSurvey(assetElement.getElementHeader().getGUID(), surveyActionTypes);
+
+                    if (chosenSurvey != null)
+                    {
+                        requestSurvey(assetElement, assetProperties, chosenSurvey);
                     }
                 }
             }
@@ -1288,6 +1315,63 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                             assetProperties.getDisplayName(),
                                                                             assetGUID,
                                                                             governanceActionTypeProperties.getQualifiedName()));
+    }
+
+
+    /**
+     * Choose which of the surveys listed for an element's technology type to run - see {@link SurveySelector}.
+     * Each survey's latest completed report for the element is found from the element's survey reports, and the
+     * different types of annotation it reported are counted.  Surveys that are excluded by configuration, or whose
+     * governance action type cannot be read, are not considered.
+     *
+     * @param assetGUID unique identifier of the element to survey
+     * @param surveyActionTypes governance action types of the surveys listed for the element's technology type
+     * @return survey to run, or null if none can be run
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private MetadataElementSummary chooseSurvey(String                       assetGUID,
+                                                List<MetadataElementSummary> surveyActionTypes) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        List<SurveySelector.Candidate<MetadataElementSummary>> candidates = new ArrayList<>();
+
+        for (MetadataElementSummary surveyActionType : surveyActionTypes)
+        {
+            OpenMetadataRootElement governanceActionType = getGovernanceActionType(surveyActionType.getElementHeader().getGUID());
+
+            if ((governanceActionType == null) ||
+                    (! (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)) ||
+                    (isExcludedSurvey(governanceActionTypeProperties.getQualifiedName())))
+            {
+                continue;
+            }
+
+            String requestType = getRequestType(governanceActionType, governanceActionTypeProperties);
+
+            if (requestType == null)
+            {
+                /*
+                 * This survey's reports cannot be told apart from the others', so nothing is known of its results.
+                 * It is only chosen if no other survey has produced any annotations.
+                 */
+                candidates.add(new SurveySelector.Candidate<>(surveyActionType, true, 0));
+                continue;
+            }
+
+            List<OpenMetadataRootElement> surveyReports          = new ArrayList<>();
+            List<OpenMetadataRootElement> completedSurveyReports = new ArrayList<>();
+
+            this.getRecentSurveyReports(assetGUID, requestType, surveyReports, completedSurveyReports);
+
+            int annotationTypeCount = completedSurveyReports.isEmpty() ? 0 : getReportedAnnotationTypeCount(completedSurveyReports.get(0).getElementHeader().getGUID());
+
+            candidates.add(new SurveySelector.Candidate<>(surveyActionType, ! surveyReports.isEmpty(), annotationTypeCount));
+        }
+
+        return SurveySelector.chooseSurvey(candidates);
     }
 
 
@@ -1594,6 +1678,67 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
     {
         Set<String> annotationGUIDs = new HashSet<>();
 
+        for (OpenMetadataRootElement annotation : getReportedAnnotations(surveyReportGUID))
+        {
+            annotationGUIDs.add(annotation.getElementHeader().getGUID());
+        }
+
+        return annotationGUIDs;
+    }
+
+
+    /**
+     * Return the number of different types of annotation reported by a completed survey report.  The result is
+     * cached because a completed report does not change.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @return number of annotation types
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private int getReportedAnnotationTypeCount(String surveyReportGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        Integer annotationTypeCount = surveyReportAnnotationTypeCounts.get(surveyReportGUID);
+
+        if (annotationTypeCount == null)
+        {
+            Set<String> annotationTypeNames = new HashSet<>();
+
+            for (OpenMetadataRootElement annotation : getReportedAnnotations(surveyReportGUID))
+            {
+                if (annotation.getElementHeader().getType() != null)
+                {
+                    annotationTypeNames.add(annotation.getElementHeader().getType().getTypeName());
+                }
+            }
+
+            annotationTypeCount = annotationTypeNames.size();
+
+            surveyReportAnnotationTypeCounts.put(surveyReportGUID, annotationTypeCount);
+        }
+
+        return annotationTypeCount;
+    }
+
+
+    /**
+     * Return the annotations reported by a survey report.
+     *
+     * @param surveyReportGUID unique identifier of the survey report
+     * @return annotations - may be empty but not null
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private List<OpenMetadataRootElement> getReportedAnnotations(String surveyReportGUID) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        List<OpenMetadataRootElement> reportedAnnotations = new ArrayList<>();
+
         AnnotationClient annotationClient = integrationContext.getAnnotationClient();
         int              startFrom        = 0;
 
@@ -1606,9 +1751,9 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
         {
             for (OpenMetadataRootElement annotation : annotations)
             {
-                if (annotation != null)
+                if ((annotation != null) && (annotation.getElementHeader() != null))
                 {
-                    annotationGUIDs.add(annotation.getElementHeader().getGUID());
+                    reportedAnnotations.add(annotation);
                 }
             }
 
@@ -1620,7 +1765,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
             annotations = annotationClient.getNewAnnotations(surveyReportGUID, queryOptions);
         }
 
-        return annotationGUIDs;
+        return reportedAnnotations;
     }
 
 

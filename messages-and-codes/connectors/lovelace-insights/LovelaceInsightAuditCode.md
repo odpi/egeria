@@ -23,7 +23,7 @@ The LovelaceInsightAuditCode is used to define the message content for the Audit
 | [LOVELACE-INSIGHTS-0018](#lovelace-insights-0018) | INFO | The {0} governance service has processed the {1} governance zone ({2}) |
 | [LOVELACE-INSIGHTS-0038](#lovelace-insights-0038) | INFO | The {0} governance action service has completed successfully |
 | [LOVELACE-INSIGHTS-0039](#lovelace-insights-0039) | INFO | The {0} governance action service is analysing OpenLineage log store {1} for events between {2} and {3} |
-| [LOVELACE-INSIGHTS-0040](#lovelace-insights-0040) | INFO | The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets |
+| [LOVELACE-INSIGHTS-0040](#lovelace-insights-0040) | INFO | The {0} governance action service read {1} OpenLineage events covering {2} jobs and {3} datasets; {4} stored events could not be read |
 | [LOVELACE-INSIGHTS-0041](#lovelace-insights-0041) | INFO | The {0} governance action service has completed, updating {1} elements with {2} from OpenLineage log store {3} |
 | [LOVELACE-INSIGHTS-0042](#lovelace-insights-0042) | INFO | The {0} governance action service found {3} elements of type {1} for OpenLineage element {2} so it is skipped |
 | [LOVELACE-INSIGHTS-0043](#lovelace-insights-0043) | INFO | The {0} governance action service has profiled {3} runs of job {1} into process {2}; the inferred schedule is {4} |
@@ -103,7 +103,7 @@ No action is required.  This message records the log store and window being anal
 
 ### LOVELACE-INSIGHTS-0040
 
-> The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets
+> The {0} governance action service read {1} OpenLineage events covering {2} jobs and {3} datasets; {4} stored events could not be read
 
 |  |  |
 |---|---|
@@ -118,7 +118,7 @@ The service has built the run history from the log store and is starting its ana
 
 **User action**
 
-If files could not be read, check the log store for files that are not OpenLineage run events in JSON.
+If stored events could not be read, check the log store for entries that are not OpenLineage run events in JSON.
 
 
 ----
