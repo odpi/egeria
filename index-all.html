@@ -102482,6 +102482,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OwnerSetterGuard.html#INVALID_ACTION_TARGET_TYPE" class="member-name-link">INVALID_ACTION_TARGET_TYPE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OwnerSetterGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OwnerSetterGuard</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html#INVALID_ACTION_TARGET_TYPE" class="member-name-link">INVALID_ACTION_TARGET_TYPE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/controls/Guard.html#INVALID_ACTION_TARGET_TYPE" class="member-name-link">INVALID_ACTION_TARGET_TYPE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.opengovernance.controls.<a href="org/odpi/openmetadata/frameworks/opengovernance/controls/Guard.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.controls">Guard</a></dt>
 <dd>
 <div class="block">One or all of the action targets passed to this service are not of the correct type and so the service has failed to start.</div>
@@ -115253,6 +115255,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">OMRS-REPOSITORY-400-029 - Properties have been proposed for a new metadata instance of category {0} and type {1}; properties not supported for this type in open metadata repository {2}</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#NO_QUALIFIED_NAME" class="member-name-link">NO_QUALIFIED_NAME</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0060 - The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/ffdc/OpenLineageIntegrationConnectorErrorCode.html#NO_RAW_EVENT" class="member-name-link">NO_RAW_EVENT</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/ffdc/OpenLineageIntegrationConnectorErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc">OpenLineageIntegrationConnectorErrorCode</a></dt>
 <dd>
 <div class="block">OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-002 - The {0} integration connector received a null raw open lineage event in method {1} when working with open lineage events</div>
@@ -127993,6 +127999,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#PEER_DUPLICATE_LINK" class="member-name-link">PEER_DUPLICATE_LINK</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>
 <div class="block">Link between detected duplicate entities.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#PEER_DUPLICATE_LINKED" class="member-name-link">PEER_DUPLICATE_LINKED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0061 - The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#PEER_RELATIONSHIP" class="member-name-link">PEER_RELATIONSHIP</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>

@@ -105,7 +105,13 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">QualifiedNamePeerDuplicateGovernanceActionConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/opengovernance/GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GeneralGovernanceActionService</a></span></div>
 <div class="block">QualifiedNamePeerDuplicateGovernanceActionConnector checks the qualified name to determine the duplicates of the entity that is passed
- as an action target.</div>
+ as an action target.  Every other element of the same type with the same qualified name is linked to the action target with a
+ PeerDuplicateLink relationship, and both elements are given the KnownDuplicate classification.
+ Duplicates that are already linked to the action target are not linked again, so the service can be rerun safely.
+ If at least one new duplicate is linked, the output guard is duplicate-detected.
+ If all the duplicates are already linked, the output guard is duplicate-already-assigned.
+ If there are no duplicates, the output guard is no-duplication-detected.
+ If the action target does not have a qualified name, the output guard is invalid-action-target-type.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

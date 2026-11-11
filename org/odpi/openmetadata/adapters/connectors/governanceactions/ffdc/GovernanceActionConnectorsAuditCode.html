@@ -251,42 +251,50 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0047 - The {0} governance action service has not been supplied with an owner in either its configuration properties or its request parameters</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_RELATED_ASSET" class="member-name-link">NO_RELATED_ASSET</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_QUALIFIED_NAME" class="member-name-link">NO_QUALIFIED_NAME</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0060 - The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_RELATED_ASSET" class="member-name-link">NO_RELATED_ASSET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0012 - The context for {0} governance action service returned a RelatedMetadataElement with a
  null related element: {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_RFAS" class="member-name-link">NO_RFAS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_RFAS" class="member-name-link">NO_RFAS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0028 - No request for action annotations detected in survey report {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_SOURCE_FILE_NAME" class="member-name-link">NO_SOURCE_FILE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_SOURCE_FILE_NAME" class="member-name-link">NO_SOURCE_FILE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0005 - The {0} governance action service has been called without a source file name to work with</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_STEWARD" class="member-name-link">NO_STEWARD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_STEWARD" class="member-name-link">NO_STEWARD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_SURVEY_REPORT" class="member-name-link">NO_SURVEY_REPORT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_SURVEY_REPORT" class="member-name-link">NO_SURVEY_REPORT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0027 - The {0} governance action service has not been passed a survey report as an action target</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0018 - The {0} governance action service has no targets to operate on</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_TEMPLATE_GUID" class="member-name-link">NO_TEMPLATE_GUID</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_TEMPLATE_GUID" class="member-name-link">NO_TEMPLATE_GUID</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0030 - The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_TO_DOS" class="member-name-link">NO_TO_DOS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_TO_DOS" class="member-name-link">NO_TO_DOS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0059 - The {0} watchdog action service has not been supplied with any to dos to wait for</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PEER_DUPLICATE_LINKED" class="member-name-link">PEER_DUPLICATE_LINKED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0061 - The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#PROVISIONING_LINEAGE_CREATED" class="member-name-link">PROVISIONING_LINEAGE_CREATED</a></code></div>
 <div class="col-last even-row-color">
@@ -852,6 +860,20 @@ the order they are declared.</div>
 <h3>NO_TO_DOS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_TO_DOS</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0059 - The {0} watchdog action service has not been supplied with any to dos to wait for</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_QUALIFIED_NAME">
+<h3>NO_QUALIFIED_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_QUALIFIED_NAME</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0060 - The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PEER_DUPLICATE_LINKED">
+<h3>PEER_DUPLICATE_LINKED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PEER_DUPLICATE_LINKED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0061 - The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}</div>
 </section>
 </li>
 </ul>
