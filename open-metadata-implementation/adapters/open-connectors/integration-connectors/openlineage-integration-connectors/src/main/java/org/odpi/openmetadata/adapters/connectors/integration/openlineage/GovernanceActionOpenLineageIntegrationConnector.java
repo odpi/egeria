@@ -168,7 +168,14 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
                     }
                 }
             }
-            catch (InvalidParameterException | UserNotAuthorizedException error)
+            catch (InvalidParameterException notAvailable)
+            {
+                /*
+                 * The engine action has gone (deleted once it finished, or replayed from an event backlog) or
+                 * is not visible to this connector's user, so there is nothing to publish.
+                 */
+            }
+            catch (UserNotAuthorizedException error)
             {
                 String stringEvent = event.toString();
 

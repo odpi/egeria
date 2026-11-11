@@ -330,7 +330,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
             for (String destinationAddress : destinationAddresses)
             {
-                storeEvent(event, rawEvent, destinationAddress);
+                storeEvent(event, jsonEvent, destinationAddress);
             }
         }
         catch (Exception error)

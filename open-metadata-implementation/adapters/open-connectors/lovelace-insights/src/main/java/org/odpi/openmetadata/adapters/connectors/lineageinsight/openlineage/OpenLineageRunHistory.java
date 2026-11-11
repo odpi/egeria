@@ -267,7 +267,7 @@ public class OpenLineageRunHistory
     private final Map<Key, JobHistory>     jobs     = new LinkedHashMap<>();
     private final Map<Key, DataSetHistory> datasets = new LinkedHashMap<>();
     private       int                      eventCount      = 0;
-    private       int                      unreadableFiles = 0;
+    private       int                      unreadableEvents = 0;
     private       Date                     earliestEvent   = null;
     private       Date                     latestEvent     = null;
 
@@ -342,11 +342,30 @@ public class OpenLineageRunHistory
 
 
     /**
-     * Record that a file could not be read.
+     * Record the number of events in the window, and the times of the first and last, when the history is built
+     * from a digest rather than event by event.
+     *
+     * @param count number of events
+     * @param earliest time of the first event (null if there were none)
+     * @param latest time of the last event (null if there were none)
      */
-    public void countUnreadableFile()
+    public void recordEventSummary(int  count,
+                                   Date earliest,
+                                   Date latest)
     {
-        unreadableFiles++;
+        eventCount    = count;
+        earliestEvent = earliest;
+        latestEvent   = latest;
+    }
+
+
+    /**
+     * Record that a stored event could not be read - for a file-based log store, an event file that is not an
+     * OpenLineage run event in JSON.
+     */
+    public void countUnreadableEvent()
+    {
+        unreadableEvents++;
     }
 
 
@@ -362,13 +381,13 @@ public class OpenLineageRunHistory
 
 
     /**
-     * Return the number of files that could not be read.
+     * Return the number of stored events that could not be read.
      *
      * @return count
      */
-    public int getUnreadableFiles()
+    public int getUnreadableEvents()
     {
-        return unreadableFiles;
+        return unreadableEvents;
     }
 
 

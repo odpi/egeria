@@ -410,6 +410,44 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   boolean             generateIntegrationReport,
                                                   String              integrationConnectorGUID)
     {
+        this.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                               connectorName,
+                                               connectorUserId,
+                                               metadataSourceQualifiedName,
+                                               metadataCollectionQualifiedName,
+                                               refreshTimeInterval,
+                                               generateIntegrationReport,
+                                               integrationConnectorGUID,
+                                               null);
+    }
+
+
+    /**
+     * Create the relationship between an integration group and an integration connector, with a registration
+     * qualifier that gives the relationship a different unique identifier from any other registration of the same
+     * connector with the same group.  This is needed when the registration is made by a different archive from
+     * the one that has made it in the past, because a repository rejects a copy of an element from a different archive.
+     *
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param connectorName name of the connector used in messages and REST calls
+     * @param connectorUserId  userId for the connector to use (overrides the server's userId)
+     * @param metadataSourceQualifiedName unique name of the metadata source for anything catalogued by this connector
+     * @param metadataCollectionQualifiedName unique name of the metadata collection for anything catalogued by this connector
+     * @param refreshTimeInterval how long (in minutes) between each refresh of the connector
+     * @param generateIntegrationReport should the integration connector produce integration reports when it refreshes?
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     * @param registrationQualifier distinguishes this registration from others of the same connector - may be null
+     */
+    public void addRegisteredIntegrationConnector(String              integrationGroupGUID,
+                                                  String              connectorName,
+                                                  String              connectorUserId,
+                                                  String              metadataSourceQualifiedName,
+                                                  String              metadataCollectionQualifiedName,
+                                                  long                refreshTimeInterval,
+                                                  boolean             generateIntegrationReport,
+                                                  String              integrationConnectorGUID,
+                                                  String              registrationQualifier)
+    {
         final String methodName = "addRegisteredIntegrationConnector";
 
         EntityDetail groupEntity = archiveBuilder.getEntity(integrationGroupGUID);
@@ -426,7 +464,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name, generateIntegrationReport, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(integrationGroupGUID + "_to_" + integrationConnectorGUID + "_" + connectorName + "_registered_integration_connector_relationship"),
+                                                                     idToGUIDMap.getGUID(integrationGroupGUID + "_to_" + integrationConnectorGUID + "_" + connectorName + "_registered_integration_connector_relationship" + ((registrationQualifier == null) ? "" : "_" + registrationQualifier)),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

@@ -52,6 +52,8 @@ import static org.testng.Assert.assertEquals;
  *   A --&gt; G, B --NotificationSubscriber--&gt; G   G is at end 2 of B, but NotificationSubscriber is an ACTION
  *   E --&gt; B                             E is anchored to B itself, so belongs to B wherever it is linked
  * </pre>
+ * An element at end 2 of several parent-child relationships stays while any parent outside the delete or archive
+ * still links to it - see the shared-child graph further down.
  */
 public class AnchoredElementCascadeTest
 {
@@ -143,6 +145,104 @@ public class AnchoredElementCascadeTest
         repository.handler.deleteBeanInRepository(USER, null, null, "U", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
 
         assertEquals(repository.deletedEntities, Set.of("M", "U"));
+    }
+
+
+    /*
+     * A child shared by several parents.  T is at end 2 of both P1 and P2, as a schema type is when several
+     * attributes link to it.  Q links to T through ForeignKey, an ASSOCIATION, which does not hold T in the graph.
+     *
+     *   A (anchor) --> L --> P1 --> T        L, P1, P2, T, Q anchored to A
+     *                  L --> P2 --> T
+     *   A --> Q --ForeignKey--> T
+     */
+
+
+    @Test
+    public void testDeletingOneParentLeavesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.deleteBeanInRepository(USER, null, null, "P1", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+
+        assertEquals(repository.deletedEntities, Set.of("P1"));
+    }
+
+
+    @Test
+    public void testDeletingLastParentTakesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.deleteBeanInRepository(USER, null, null, "P1", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+        repository.handler.deleteBeanInRepository(USER, null, null, "P2", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+
+        assertEquals(repository.deletedEntities, Set.of("P1", "P2", "T"));
+    }
+
+
+    @Test
+    public void testArchivingOneParentLeavesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.archiveBeanInRepository(USER, null, null, "P1", "guid", ELEMENT_TYPE, null, false, false, null, "test");
+
+        assertEquals(repository.archivedEntities, Set.of("P1"));
+    }
+
+
+    @Test
+    public void testDeletingAllParentsTogetherTakesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.deleteBeanInRepository(USER, null, null, "L", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+
+        assertEquals(repository.deletedEntities, Set.of("L", "P1", "P2", "T"));
+    }
+
+
+    @Test
+    public void testArchivingAllParentsTogetherTakesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.archiveBeanInRepository(USER, null, null, "L", "guid", ELEMENT_TYPE, null, false, false, null, "test");
+
+        assertEquals(repository.archivedEntities, Set.of("L", "P1", "P2", "T"));
+    }
+
+
+    @Test
+    public void testDeletingAnchorTakesSharedChild() throws Exception
+    {
+        FakeRepository repository = this.getSharedChildGraph();
+
+        repository.handler.deleteBeanInRepository(USER, null, null, "A", "guid", null, ELEMENT_TYPE, false, null, null, false, false, null, "test");
+
+        assertEquals(repository.deletedEntities, Set.of("A", "L", "P1", "P2", "T", "Q"));
+    }
+
+
+    private FakeRepository getSharedChildGraph()
+    {
+        FakeRepository repository = new FakeRepository();
+
+        for (String guid : List.of("A", "L", "P1", "P2", "T", "Q"))
+        {
+            repository.addEntity(guid, ELEMENT_TYPE, "A");
+        }
+
+        repository.addRelationship("A", "L", LINK_TYPE);
+        repository.addRelationship("L", "P1", LINK_TYPE);
+        repository.addRelationship("L", "P2", LINK_TYPE);
+        repository.addRelationship("P1", "T", LINK_TYPE);
+        repository.addRelationship("P2", "T", LINK_TYPE);
+        repository.addRelationship("A", "Q", LINK_TYPE);
+        repository.addRelationship("Q", "T", OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName);
+
+        return repository;
     }
 
 

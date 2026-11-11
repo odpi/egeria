@@ -9,7 +9,7 @@ into two groups:
 
 - the integration connectors that are acquiring or creating the Open Lineage events (the *event receiver* and the
   *governance action publisher*);
-- the integration connectors that are processing or distributing them (the *cataloguer* and the two *log stores*).
+- the integration connectors that are processing or distributing them (the *cataloguer* and the three *log stores*).
 
 They are connected to each other by the integration daemon rather than by direct calls, which is what allows a new
 source or a new destination of events to be added without changing the others.  The same layering is used for the
@@ -53,10 +53,14 @@ services.  File references are relative to the repository root.
      not yet catalogued.
    * `GovernanceActionOpenLineageIntegrationConnector` is the outbound direction: it listens to the Open Metadata
      OutTopic for `EngineAction` changes and publishes the run events it generates from them.
-   * `FileBasedOpenLineageLogStoreConnector` and `APIBasedOpenLineageLogStoreConnector` are listeners that persist or
-     forward every event they receive.
+   * `PostgresOpenLineageLogStoreConnector` (in the `postgres` package), `FileBasedOpenLineageLogStoreConnector` and
+     `APIBasedOpenLineageLogStoreConnector` are listeners that persist or forward every event they receive.  The
+     PostgreSQL log store is the one the Lovelace OpenLineage analysis services read.
 7. **Content pack** - `ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK`, `IntegrationGroupDefinition.OPEN_LINEAGE`, the
-   five `IntegrationConnectorDefinition` entries, `OpenLineageArchiveWriter` (all in `core-content-pack`), and the
+   `IntegrationConnectorDefinition` entries in that group, `OpenLineageArchiveWriter` (all in `core-content-pack`).
+   The file-based log store's registration is in its own `OpenLineageFileStoreContentPack`
+   (`OpenLineageFileStoreArchiveWriter`), which only the default runtime built from this repository loads - it writes
+   one file per event, which soon becomes millions of files on a busy platform.  Also part of the support is the
    `logs/openlineage` directory of the platform distribution, described in
    `open-metadata-distribution/omag-server-platform/docs/logs/openlineage/README.md`.
 
@@ -248,9 +252,69 @@ This is its connection definition to use on the [administration commands that co
 }
 ```
 
+## PostgreSQL Open Lineage Log Store Integration Connector
+
+The PostgreSQL Open Lineage Log Store integration connector (`PostgresOpenLineageLogStoreConnector`, known in the
+content pack as the *Open Lineage Postgres Publisher*) stores the open lineage events published to the integration
+daemon in PostgreSQL.  Each PostgreSQL database schema linked to the connector by a `CatalogTarget` relationship
+(technology type *JDBC Relational Database Schema*) receives every event.  The schema and its tables are created when
+the catalog target starts if they do not exist; if that fails, each refresh tries again.
+
+Each event is kept twice, in one transaction:
+
+| Table | Contents |
+|-------|----------|
+| `ol_event` | The event exactly as it was received, as JSONB, for analysis that is not anticipated by the digest.  The key is (run_id, event_time, event_type, event_hash), so an event delivered twice - for example when a Kafka topic is replayed - is stored once, and only its first delivery updates the digest. |
+| `ol_run` | One row per run: its job, status, start and end time, and the `egeria_governanceAction` facet. |
+| `ol_run_dataset` | One row per run per input (`I`) or output (`O`) dataset, with the statistics reported for it. |
+| `ol_assertion` | Each data quality assertion reported on an input dataset. |
+| `ol_test` | Each test reported in a run's test facet. |
+
+The digest is what the [Lovelace OpenLineage analysis services](../../lovelace-insights) read
+(`OpenLineageDatabaseLogStoreReader`).  Reading a time window from it is a few indexed range scans returning one row
+per run, rather than a parse of every event, so the cost of an analysis follows the number of runs, not the number
+of events.  The table definitions and SQL live in `PostgresOpenLineageLogStoreSchema`, shared by the writer and the
+reader.
+
+### Configuration
+
+This connector runs in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) and is
+registered by the OpenLineage content pack.  The schemas are attached as catalog targets; each catalog target's
+connection (a JDBC resource connector) supplies the database URL and credentials, and the database user needs
+permission to create the schema, or to create tables in it if the schema already exists.  The Egeria workspaces set
+this up with the `store-open-lineage-events-in-postgres` notebook (the *OpenLineage Log Store* batch in the
+`loading-bay/dr-egeria-inbox` of the quickstart and freshstart exchanges), using the same database user as the
+PostgreSQL repository.
+
+| Configuration property | Description |
+|------------------------|-------------|
+| `daysToCleanUp` | The number of days that events, and their digest, are kept.  Each refresh deletes the events, assertions and tests recorded before this many days ago, and the runs whose last event was before then (with the datasets they read and wrote).  If it is not set, nothing is deleted; zero deletes everything stored before the refresh.  The Lovelace services can only look back this far, so it should be at least as long as their analysis window. |
+
+!!! example "Connection configuration"
+```json linenums="1"
+{
+   "connection" : 
+                { 
+                    "class" : "Connection",
+                    "qualifiedName" : "Egeria:IntegrationConnector:Lineage:PostgresOpenLineageLogStore Connection",
+                    "connectorType" : 
+                    {
+                        "class" : "ConnectorType",
+                        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.PostgresOpenLineageLogStoreProvider"
+                    },
+                    "configurationProperties" :
+                    {
+                        "daysToCleanUp" : 30
+                    }
+                }
+}
+```
+
 ## File-based Open Lineage Log Store Integration Connector
 
-The File-based Open Lineage Log Store integration connector stores open lineage events to the file system.
+The File-based Open Lineage Log Store integration connector stores open lineage events to the file system, one file
+per event.  It is registered by the `OpenLineageFileStoreContentPack`, which only the default runtime built from this
+repository loads; elsewhere the PostgreSQL log store above is used.
 
 ![Figure 4](docs/file-based-open-lineage-log-store-integration-connector.svg)
 > **Figure 4:** Operation of the File-based Open Lineage log store integration connector

@@ -97,6 +97,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             "EgeriaContentPack.omarchive",
             "FilesContentPack.omarchive",
             "OpenLineageContentPack.omarchive",
+            "OpenLineageFileStoreContentPack.omarchive",
             "ApacheAtlasContentPack.omarchive",
             "ApacheKafkaContentPack.omarchive",
             "PostgresContentPack.omarchive",

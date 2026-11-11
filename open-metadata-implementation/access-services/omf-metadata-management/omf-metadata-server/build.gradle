@@ -22,11 +22,15 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
-    testImplementation 'junit:junit'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Metadata Store Server-side'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
 }

@@ -3352,6 +3352,72 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
+     * Return whether an element is still the child of a parent-child (STRUCTURAL or ATTACHMENT) relationship whose
+     * parent, at end 1, is not one of the excluded elements.  This is what keeps an element that several parents
+     * share in place when only one of those parents is deleted or archived.
+     *
+     * @param userId calling user
+     * @param entity element that may be deleted or archived along with its parent
+     * @param excludedGUIDs elements that are being deleted or archived in this request
+     * @param forLineage the request is to support lineage retrieval
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the relationships must be effective for
+     * @param methodName calling method
+     * @return true if another parent still holds the element
+     * @throws InvalidParameterException problem with the paging parameters
+     * @throws PropertyServerException problem in the repository services
+     * @throws UserNotAuthorizedException calling user is not authorized to issue this request
+     */
+    private boolean hasOtherParent(String             userId,
+                                   EntityDetail       entity,
+                                   Collection<String> excludedGUIDs,
+                                   boolean            forLineage,
+                                   boolean            forDuplicateProcessing,
+                                   Date               effectiveTime,
+                                   String             methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
+                                                                                       userId,
+                                                                                       entity,
+                                                                                       entity.getType().getTypeDefName(),
+                                                                                       null,
+                                                                                       null,
+                                                                                       0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       0,
+                                                                                       cascadeTraversalPageSize,
+                                                                                       effectiveTime,
+                                                                                       methodName);
+
+        while (iterator.moreToReceive())
+        {
+            Relationship relationship = iterator.getNext();
+
+            if ((relationship != null)
+                    && (relationship.getEntityOneProxy() != null)
+                    && (relationship.getEntityTwoProxy() != null)
+                    && (entity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
+                    && (! entity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
+                    && (! excludedGUIDs.contains(relationship.getEntityOneProxy().getGUID()))
+                    && (this.isPartOfAnchoredGraph(relationship)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * One element found by the archive walk, with what is needed to archive it.
      *
      * @param entity the entity as it was read
@@ -3470,7 +3536,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                             && (otherEnd.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
                                                             && (this.isPartOfAnchoredGraph(relationship));
 
-                if (anchoredToCollectedEntity || (sharesAnchor && ((! downstreamOnly) || isDownstream)))
+                /*
+                 * When only the downstream elements are archived, one that another parent outside this archive
+                 * still links to is left in place - see deleteIfAppropriatelyAnchoredEntity.  The walk adds each
+                 * element to processedGUIDs as it reaches it, so an element shared by two parents that are both
+                 * archived is collected when the walk reaches it from the second.
+                 */
+                if (anchoredToCollectedEntity
+                        || (sharesAnchor
+                                && ((! downstreamOnly)
+                                        || (isDownstream && (! this.hasOtherParent(userId, otherEntity, processedGUIDs, true, forDuplicateProcessing, effectiveTime, methodName))))))
                 {
                     this.collectArchiveTargets(userId,
                                                otherEntity,
@@ -3905,7 +3980,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                     && (anchorIdentifiers.anchorGUID.equals(anchorEntityGUID))
                                                     && (! entity.getGUID().equals(anchorEntityGUID));
 
-                if (anchoredToDeletedEntity || downstreamOfSameAnchor)
+                /*
+                 * A downstream element is only deleted with its parent when nothing else still holds it in the
+                 * graph.  An element can be at end 2 of several parent-child relationships - a schema type shared
+                 * by many attributes, say - and deleting one of those parents must not take it away from the
+                 * others.  The relationship from the parent being deleted has already been removed, and every
+                 * element already deleted in this request is excluded, so the last remaining parent to go takes
+                 * it.  An element anchored to an element being deleted goes regardless: its anchor is going.
+                 */
+                if (anchoredToDeletedEntity
+                        || ((downstreamOfSameAnchor)
+                                && (! this.hasOtherParent(localServerUserId, entity, deletedEntityGUIDs, forLineage, forDuplicateProcessing, effectiveTime, methodName))))
                 {
                     this.deleteAnchoredBeanInRepository(localServerUserId,
                                                         externalSourceGUID,

@@ -1544,6 +1544,17 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
                                       DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
 
+    POSTGRES_OPEN_LINEAGE_LOG_STORE(594,
+                                    "c6304d1a-8783-412f-b9f1-ab10dadcbd6f",
+                                    "Egeria::IntegrationConnector::Lineage::PostgresOpenLineageLogStore",
+                                    "PostgreSQL Open Lineage Log Store Integration Connector",
+                                    "Connector that stores open lineage events, and a digest of their runs, datasets, data quality assertions and tests, in the PostgreSQL database schemas attached as catalog targets.  It creates the schema and its tables if they do not exist, and its refresh deletes the records that are older than the configured number of days.",
+                                    "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors",
+                                    "org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.PostgresOpenLineageLogStoreProvider",
+                                    ComponentDevelopmentStatus.STABLE,
+                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                    DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
+
     GOVERNANCE_ACTION_OPEN_LINEAGE_INTEGRATION_CONNECTOR(522,
                                                          "de7320e7-3928-4266-8552-06a860533b99",
                                                          "Egeria::IntegrationConnector::Lineage::GovernanceActionOpenLineage",

@@ -97,7 +97,9 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * Each subscriber is considered in turn.  Each subscriber may be in a different state which affects whether it is notified and how.
      * This method determines if the subscriber is eligible to receive the notification.  It also determines
      * if this is the first notification for the subscriber, or later one, since it affects the notification properties.
-     * The notification type is updated if it is eligible for delivering notifications (even if it has no subscribers).
+     * The notification type's notificationCount and lastNotification are updated only when at least one
+     * subscriber is notified, or when the notification type has passed its planned completion date (and so
+     * becomes OBSOLETE).
      *
      * @param externalSourceGUID               unique identifier of the external source - null means local
      * @param externalSourceName               name of the external source
@@ -168,6 +170,8 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                 newSubscriberStatus = ActivityStatus.IN_PROGRESS;
             }
 
+            boolean subscriberNotified = false;
+
             if (notificationType.getSubscribers() != null)
             {
                 for (RelatedMetadataElementSummary subscriber : notificationType.getSubscribers())
@@ -180,7 +184,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                          */
                         if ((notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate())))
                         {
-                            notifySubscriber(userId,
+                            subscriberNotified |= notifySubscriber(userId,
                                              subscriber.getRelatedElement().getElementHeader().getGUID(),
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
@@ -197,7 +201,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                         }
                         else if (notificationSubscriberProperties.getLastNotification() == null)
                         {
-                            notifySubscriber(userId,
+                            subscriberNotified |= notifySubscriber(userId,
                                              subscriber.getRelatedElement().getElementHeader().getGUID(),
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
@@ -220,7 +224,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                              * subscriber has had its one notification - the first - and is left alone, however
                              * short the minimum interval.
                              */
-                            notifySubscriber(userId,
+                            subscriberNotified |= notifySubscriber(userId,
                                              subscriber.getRelatedElement().getElementHeader().getGUID(),
                                              subscriber.getRelatedElement().getElementHeader(),
                                              subscriber.getRelationshipHeader().getGUID(),
@@ -239,9 +243,22 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                 }
             }
 
+            boolean completed = (notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate()));
+
+            /*
+             * The notification type records each round of notifications.  When no subscriber was notified - a
+             * one-time notification type whose subscribers have all had their notification, or one with no
+             * subscribers yet - there is nothing to record.  Updating it anyway wrote a new version of every such
+             * notification type on every pass, and counted notifications that were never sent.
+             */
+            if ((! subscriberNotified) && (! completed))
+            {
+                return;
+            }
+
             NotificationTypeProperties updatedNotificationTypeProperties = new NotificationTypeProperties(notificationTypeProperties);
 
-            if ((notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate())))
+            if (completed)
             {
                 auditLog.logMessage(methodName,
                                     OMFAuditCode.NOTIFICATION_TYPE_COMPLETED.getMessageDefinition(requester,
@@ -351,12 +368,13 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @param actionTargets        the list of elements that should be acted upon
      * @param minimumNotificationInterval    minimum time between notifications
      * @param newSubscriberStatus    set the subscriber relationship to this value after a successful notification; null means leave it alone
-     * @return unique identifier of the action
+     * @return true if the subscriber was due a notification and one was issued (or the subscriber was found
+     *         to be of the wrong type and marked INVALID); false if the subscriber was left alone
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to continue
      * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    private String notifySubscriber(String                                userId,
+    private boolean notifySubscriber(String                                userId,
                                     String                                subscriberGUID,
                                     ElementControlHeader                  subscriberHeader,
                                     String                                notificationSubscriberGUID,
@@ -551,11 +569,11 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                                              updateOptions,
                                                              elementProperties);
 
-                return actionGUID;
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 
 

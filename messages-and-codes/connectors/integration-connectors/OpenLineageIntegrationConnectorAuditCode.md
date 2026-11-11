@@ -9,7 +9,7 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 9 |
+| **Number of messages** | 14 |
 | **Message identifiers begin** | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors) |
@@ -30,6 +30,11 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025](#open-lineage-integration-connector-0025) | INFO | The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023](#open-lineage-integration-connector-0023) | ERROR | The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026](#open-lineage-integration-connector-0026) | INFO | The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030](#open-lineage-integration-connector-0030) | INFO | The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031](#open-lineage-integration-connector-0031) | INFO | The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6} |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032](#open-lineage-integration-connector-0032) | ERROR | The {0} integration connector is not able to store open lineage events in catalog target {1} because {2} |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033](#open-lineage-integration-connector-0033) | ERROR | The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6} |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034](#open-lineage-integration-connector-0034) | ERROR | The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more |
 
 ----
 
@@ -218,6 +223,111 @@ The run metrics of processes and the data scope of datasets are gathered from th
 **User action**
 
 No specific action is required.  The interval between refreshes sets how up to date these classifications are.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030
+
+> The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.DATABASE_LOG_STORE_READY` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector has created the schema and its tables, if they did not exist, and stores each open lineage event it receives, along with a digest of its run, datasets, data quality assertions and tests.
+
+**User action**
+
+No specific action is required.  The number of days is set by the daysToCleanUp configuration property: if it is not set, nothing is deleted and the log store grows without bound.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031
+
+> The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.DATABASE_LOG_STORE_PURGED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}` |
+
+**System action**
+
+The records older than the number of days in the daysToCleanUp configuration property are deleted on each refresh.  The datasets of each deleted run are deleted with it.
+
+**User action**
+
+No specific action is required.  The analysis services that read the log store can only look back as far as the records that are kept, so their analysis window should not be longer than daysToCleanUp.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032
+
+> The {0} integration connector is not able to store open lineage events in catalog target {1} because {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.DATABASE_LOG_STORE_UNUSABLE` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The connector ignores this catalog target.  The events it receives are still stored in its other catalog targets.
+
+**User action**
+
+The catalog target must be a PostgreSQL database schema asset whose connection uses the JDBC resource connector.  The name of the schema is taken from the databaseSchema configuration property of the catalog target relationship or, if it is not set there, of the asset's connection.  Correct the catalog target and the connector will use it on its next refresh.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0033
+
+> The {0} integration connector was unable to store the {1} open lineage event for run {2} of job {3} in database schema {4}; the {5} exception message was: {6}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.DATABASE_LOG_STORE_WRITE_FAILED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}` |
+
+**System action**
+
+None of the event is stored: the raw event and its digest are written in one transaction.
+
+**User action**
+
+Use the details from the error message to determine the cause of the error.  Events that arrive once the problem is resolved are stored as usual.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0034
+
+> The {0} integration connector is ignoring the value {1} of its daysToCleanUp configuration property because it is not a whole number of days that is zero or more
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.INVALID_DAYS_TO_CLEAN_UP` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+No records are deleted from the log store, so it grows without bound.
+
+**User action**
+
+Correct the daysToCleanUp configuration property in the connector's connection, or in the catalog target relationship of the database schema.
 
 
 ----

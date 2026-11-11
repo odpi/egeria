@@ -31,14 +31,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.LinkedExternalSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeChoiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeOptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.StructSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIHeaderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
@@ -82,6 +87,16 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
     private String targetRootURL = null;
 
     private final Map<String, RESTClient> restClients = new HashMap<>();
+
+    /*
+     * The shared StructSchemaType catalogued for each component bean of the API specification being catalogued,
+     * keyed by bean name, and the shared SchemaTypeChoice catalogued for each distinct set of alternative beans,
+     * keyed by qualified name.  They are reset for each specification, so each one is checked once per refresh.
+     */
+    private final Map<String, String> beanSchemaTypeGUIDs       = new HashMap<>();
+    private final Map<String, String> choiceSchemaTypeGUIDs     = new HashMap<>();
+    private       String              beanQualifiedNamePrefix   = null;
+    private       String              choiceQualifiedNamePrefix = null;
 
     private             IntegrationContext myContext     = null;
     public static final ObjectReader       OBJECT_READER = new ObjectMapper().reader();
@@ -406,6 +421,11 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
         }
 
         String apiSchemaTypeGUID = this.getAPISchemaTypeGUID(apiGUID, apiQualifiedName);
+
+        beanSchemaTypeGUIDs.clear();
+        choiceSchemaTypeGUIDs.clear();
+        beanQualifiedNamePrefix   = apiQualifiedName + "::Bean::";
+        choiceQualifiedNamePrefix = apiQualifiedName + "::Choice::";
 
         int operationCount = 0;
 
@@ -844,8 +864,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                        APIParameterType.REQUEST_PARAMETER,
                                        ! parameter.isRequired(),
                                        position,
-                                       openAPISpecification,
-                                       new HashSet<>());
+                                       openAPISpecification);
             position++;
         }
 
@@ -863,8 +882,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                        APIParameterType.REQUEST_BODY,
                                        ! requestBody.isRequired(),
                                        position,
-                                       openAPISpecification,
-                                       new HashSet<>());
+                                       openAPISpecification);
         }
     }
 
@@ -922,8 +940,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                            APIParameterType.RESPONSE_STATUS,
                                            true,
                                            position,
-                                           openAPISpecification,
-                                           new HashSet<>());
+                                           openAPISpecification);
                 position++;
             }
         }
@@ -1013,8 +1030,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                            APIParameterType.SECURITY_HEADER,
                                            ! parameter.isRequired(),
                                            childPosition,
-                                           openAPISpecification,
-                                           new HashSet<>());
+                                           openAPISpecification);
                 childPosition++;
             }
 
@@ -1053,8 +1069,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                        APIParameterType.SECURITY_HEADER,
                                                        false,
                                                        childPosition,
-                                                       openAPISpecification,
-                                                       new HashSet<>());
+                                                       openAPISpecification);
                             childPosition++;
                         }
                     }
@@ -1250,11 +1265,19 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
     /**
      * Create (if not already catalogued) an APIParameter schema attribute for a single value - a URL parameter, a
-     * request/response body, a status code, a header or security scheme, or a field nested inside one of those
-     * structures - and recurse to catalogue its own nested structure, if it has one.
+     * request/response body, a status code, a header or security scheme, or a field of a structure.
+     * <p>
+     * A value whose type is one of the specification's component beans (or an array of one) is not given its own
+     * copy of the bean's fields.  Its TypeEmbeddedAttribute names ExternalSchemaType and it is linked, via
+     * LinkedExternalSchemaType, to the single StructSchemaType catalogued for that bean.  Schema attributes may only
+     * have one parent, so the bean's fields belong to that schema type alone and are shared by every value that
+     * uses the bean.  A bean that refers back to itself (such as OMAGConnectorProperties.nestedConnectors) is just another link
+     * to the same schema type.  A value that may hold any one of several beans (oneOf) is linked the same way to a
+     * shared SchemaTypeChoice whose options are those beans' schema types.  Inline structures (an object or array of objects without a $ref) are still
+     * catalogued as nested attributes.
      *
-     * @param parentGUID unique identifier of the parent element (an APIParameterList schema type, or another APIParameter)
-     * @param parentIsSchemaType true if the parent is an APIParameterList (link via AttributeForSchema), false if it is
+     * @param parentGUID unique identifier of the parent element (an APIParameterList or bean StructSchemaType, or another APIParameter)
+     * @param parentIsSchemaType true if the parent is a schema type (link via AttributeForSchema), false if it is
      *                           another APIParameter (link via NestedSchemaAttribute)
      * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
      * @param qualifiedName unique name for this parameter
@@ -1265,7 +1288,6 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
      * @param isNullable whether this parameter is optional
      * @param position position of this parameter amongst its siblings
      * @param openAPISpecification the parsed open API specification (for resolving $ref schemas)
-     * @param visitedRefs $ref values already being expanded in this branch of the recursion, to avoid infinite loops on circular schemas
      * @return unique identifier of the APIParameter
      * @throws InvalidParameterException one of the parameters is not correct
      * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
@@ -1281,10 +1303,9 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                          APIParameterType     parameterType,
                                          boolean              isNullable,
                                          int                  position,
-                                         OpenAPISpecification openAPISpecification,
-                                         Set<String>          visitedRefs) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                         OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient(OpenMetadataType.API_PARAMETER.typeName);
         String                existingGUID = this.findExistingSchemaAttribute(schemaAttributeClient, qualifiedName);
@@ -1294,8 +1315,8 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             return existingGUID;
         }
 
-        String        ref = (schema != null) ? schema.get$ref() : null;
         OpenAPISchema resolvedSchema = this.resolveSchema(schema, openAPISpecification);
+        List<String>  beanNames      = BeanReferences.getReferencedBeans(schema, this.getComponentSchemas(openAPISpecification));
 
         APIParameterProperties properties = new APIParameterProperties();
 
@@ -1313,9 +1334,21 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             properties.setDescription(resolvedSchema.getDescription());
         }
 
+        TypeEmbeddedAttributeProperties typeEmbeddedAttribute;
+
+        if (beanNames != null)
+        {
+            typeEmbeddedAttribute = new TypeEmbeddedAttributeProperties();
+            typeEmbeddedAttribute.setSchemaTypeName(OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName);
+        }
+        else
+        {
+            typeEmbeddedAttribute = this.buildTypeEmbeddedAttribute(resolvedSchema);
+        }
+
         Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
 
-        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, this.buildTypeEmbeddedAttribute(resolvedSchema));
+        initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, typeEmbeddedAttribute);
 
         NewElementOptions newElementOptions = new NewElementOptions(schemaAttributeClient.getMetadataSourceOptions());
 
@@ -1324,13 +1357,15 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         String newGUID = schemaAttributeClient.createSchemaAttribute(newElementOptions, initialClassifications, properties, null);
 
+        boolean isArray = (resolvedSchema != null) && ("array".equals(resolvedSchema.getType()));
+
         if (parentIsSchemaType)
         {
             AttributeForSchemaProperties relationshipProperties = new AttributeForSchemaProperties();
 
             relationshipProperties.setPosition(position);
 
-            if ((resolvedSchema != null) && ("array".equals(resolvedSchema.getType())))
+            if (isArray)
             {
                 relationshipProperties.setMaxCardinality(-1);
             }
@@ -1343,7 +1378,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
             relationshipProperties.setPosition(position);
 
-            if ((resolvedSchema != null) && ("array".equals(resolvedSchema.getType())))
+            if (isArray)
             {
                 relationshipProperties.setMaxCardinality(-1);
             }
@@ -1351,40 +1386,39 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
             schemaAttributeClient.linkNestedSchemaAttribute(parentGUID, newGUID, schemaAttributeClient.getMakeAnchorOptions(false), relationshipProperties);
         }
 
-        /*
-         * Recurse into the structure of the schema (its own properties, or the properties of its array element
-         * type) to catalogue any nested fields.  A $ref is tracked while it is being expanded so that a circular
-         * schema does not send this recursion into an infinite loop.
-         */
-        boolean addedRef = false;
+        if (beanNames != null)
+        {
+            String linkedSchemaTypeGUID = (beanNames.size() == 1)
+                                                  ? this.getBeanSchemaTypeGUID(beanNames.get(0), apiGUID, openAPISpecification)
+                                                  : this.getChoiceSchemaTypeGUID(beanNames, apiGUID, openAPISpecification);
 
-        if ((ref != null) && (! visitedRefs.contains(ref)))
-        {
-            visitedRefs.add(ref);
-            addedRef = true;
+            schemaAttributeClient.linkExternalSchemaType(newGUID,
+                                                         linkedSchemaTypeGUID,
+                                                         schemaAttributeClient.getMakeAnchorOptions(false),
+                                                         new LinkedExternalSchemaTypeProperties());
         }
-        else if ((ref != null) && (visitedRefs.contains(ref)))
+        else if (resolvedSchema != null)
         {
-            resolvedSchema = null;
-        }
-
-        if (resolvedSchema != null)
-        {
+            /*
+             * Catalogue the fields of an inline structure (its own properties, or those of its array element type).
+             */
             OpenAPISchema structureSchema = resolvedSchema;
 
-            if ("array".equals(resolvedSchema.getType()) && (resolvedSchema.getItems() != null))
+            if (isArray && (resolvedSchema.getItems() != null))
             {
                 structureSchema = this.resolveSchema(resolvedSchema.getItems(), openAPISpecification);
             }
 
-            if ((structureSchema != null) && (structureSchema.getProperties() != null))
+            if (structureSchema != null)
             {
-                int childPosition = 0;
+                Map<String, OpenAPISchema> fields         = BeanReferences.getOwnFields(structureSchema);
+                Set<String>                requiredFields = BeanReferences.getOwnRequiredFields(structureSchema);
+                int                        childPosition  = 0;
 
-                for (String fieldName : structureSchema.getProperties().keySet())
+                for (String fieldName : fields.keySet())
                 {
-                    OpenAPISchema fieldSchema = structureSchema.getProperties().get(fieldName);
-                    boolean       fieldRequired = (structureSchema.getRequired() != null) && (structureSchema.getRequired().contains(fieldName));
+                    OpenAPISchema fieldSchema   = fields.get(fieldName);
+                    boolean       fieldRequired = requiredFields.contains(fieldName);
 
                     this.createSchemaAttribute(newGUID,
                                                false,
@@ -1396,19 +1430,219 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                APIParameterType.NESTED_ATTRIBUTE,
                                                ! fieldRequired,
                                                childPosition,
-                                               openAPISpecification,
-                                               visitedRefs);
+                                               openAPISpecification);
                     childPosition++;
                 }
             }
         }
 
-        if (addedRef)
+        return newGUID;
+    }
+
+
+    /**
+     * Return the shared StructSchemaType for one of the specification's component beans, creating it if needed.
+     * It is anchored to the DeployedAPI asset.  The bean's own fields are catalogued as its attributes (fields that are
+     * beans themselves link to their own shared schema type).  A subclass (allOf its superclass and its own fields)
+     * holds only the fields it declares, and is linked to its superclass's schema type through LinkedExternalSchemaType,
+     * so inherited fields are catalogued once, on the class that declares them.  The schema type is recorded before its fields are
+     * catalogued, so a bean that refers to itself, directly or indirectly, links back to it rather than looping.
+     * Each bean's fields are checked once per refresh, so a bean whose earlier cataloguing was interrupted is completed.
+     *
+     * @param beanName name of the bean in the specification's components
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param openAPISpecification the parsed open API specification
+     * @return unique identifier of the bean's StructSchemaType
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String getBeanSchemaTypeGUID(String               beanName,
+                                         String               apiGUID,
+                                         OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        String beanSchemaTypeGUID = beanSchemaTypeGUIDs.get(beanName);
+
+        if (beanSchemaTypeGUID != null)
         {
-            visitedRefs.remove(ref);
+            return beanSchemaTypeGUID;
         }
 
-        return newGUID;
+        SchemaTypeClient schemaTypeClient  = myContext.getSchemaTypeClient(OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName);
+        String           beanQualifiedName = beanQualifiedNamePrefix + beanName;
+        OpenAPISchema    beanSchema        = this.getComponentSchemas(openAPISpecification).get(beanName);
+
+        String                  superclassName     = BeanReferences.getSuperclassName(beanSchema, this.getComponentSchemas(openAPISpecification));
+        OpenMetadataRootElement existingSchemaType = this.findExistingSchemaTypeElement(schemaTypeClient, beanQualifiedName, (superclassName == null) ? 0 : 1);
+        boolean                 linkedToSuperclass = false;
+
+        if (existingSchemaType != null)
+        {
+            beanSchemaTypeGUID = existingSchemaType.getElementHeader().getGUID();
+            linkedToSuperclass = (existingSchemaType.getExternalSchemaType() != null);
+        }
+        else
+        {
+            StructSchemaTypeProperties properties = new StructSchemaTypeProperties();
+
+            properties.setQualifiedName(beanQualifiedName);
+            properties.setDisplayName((beanSchema.getTitle() != null) ? beanSchema.getTitle() : beanName);
+            properties.setDescription(beanSchema.getDescription());
+
+            NewElementOptions newElementOptions = new NewElementOptions(schemaTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(apiGUID);
+
+            beanSchemaTypeGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, null);
+        }
+
+        beanSchemaTypeGUIDs.put(beanName, beanSchemaTypeGUID);
+
+        Map<String, OpenAPISchema> fields         = BeanReferences.getOwnFields(beanSchema);
+        Set<String>                requiredFields = BeanReferences.getOwnRequiredFields(beanSchema);
+        int                        position       = 0;
+
+        for (String fieldName : fields.keySet())
+        {
+            OpenAPISchema fieldSchema   = fields.get(fieldName);
+            boolean       fieldRequired = requiredFields.contains(fieldName);
+
+            this.createSchemaAttribute(beanSchemaTypeGUID,
+                                       true,
+                                       apiGUID,
+                                       beanQualifiedName + "::" + fieldName,
+                                       fieldName,
+                                       null,
+                                       fieldSchema,
+                                       APIParameterType.NESTED_ATTRIBUTE,
+                                       ! fieldRequired,
+                                       position,
+                                       openAPISpecification);
+            position++;
+        }
+
+        if (superclassName != null)
+        {
+            String superclassSchemaTypeGUID = this.getBeanSchemaTypeGUID(superclassName, apiGUID, openAPISpecification);
+
+            if (! linkedToSuperclass)
+            {
+                SchemaAttributeClient schemaAttributeClient = myContext.getSchemaAttributeClient();
+
+                schemaAttributeClient.linkExternalSchemaType(beanSchemaTypeGUID,
+                                                             superclassSchemaTypeGUID,
+                                                             schemaAttributeClient.getMakeAnchorOptions(false),
+                                                             new LinkedExternalSchemaTypeProperties());
+            }
+        }
+
+        return beanSchemaTypeGUID;
+    }
+
+
+    /**
+     * Return the shared SchemaTypeChoice for a value that may hold any one of several of the specification's
+     * component beans (a oneOf), creating it if needed.  It is anchored to the DeployedAPI asset and has a
+     * SchemaTypeOption link to the shared StructSchemaType of each alternative.  One choice is catalogued for each
+     * distinct set of alternatives, named after the nearest superclass that they all inherit from when there is one.
+     * Missing options are added once per refresh, so a choice whose earlier cataloguing was interrupted is completed.
+     *
+     * @param beanNames names of the alternative beans
+     * @param apiGUID unique identifier of the DeployedAPI asset that everything below it is anchored to
+     * @param openAPISpecification the parsed open API specification
+     * @return unique identifier of the SchemaTypeChoice
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private String getChoiceSchemaTypeGUID(List<String>         beanNames,
+                                           String               apiGUID,
+                                           OpenAPISpecification openAPISpecification) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        Map<String, OpenAPISchema> componentSchemas    = this.getComponentSchemas(openAPISpecification);
+        String                     choiceQualifiedName = choiceQualifiedNamePrefix + BeanReferences.getChoiceName(beanNames, componentSchemas);
+        String                     choiceGUID          = choiceSchemaTypeGUIDs.get(choiceQualifiedName);
+
+        if (choiceGUID != null)
+        {
+            return choiceGUID;
+        }
+
+        SchemaTypeClient        schemaTypeClient = myContext.getSchemaTypeClient(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName);
+        OpenMetadataRootElement existingChoice   = this.findExistingSchemaTypeElement(schemaTypeClient, choiceQualifiedName, 1);
+        Set<String>             linkedOptionGUIDs = new HashSet<>();
+
+        if (existingChoice != null)
+        {
+            choiceGUID = existingChoice.getElementHeader().getGUID();
+
+            if (existingChoice.getSchemaOptions() != null)
+            {
+                for (RelatedMetadataElementSummary option : existingChoice.getSchemaOptions())
+                {
+                    if ((option != null) && (option.getRelatedElement() != null) && (option.getRelatedElement().getElementHeader() != null))
+                    {
+                        linkedOptionGUIDs.add(option.getRelatedElement().getElementHeader().getGUID());
+                    }
+                }
+            }
+        }
+        else
+        {
+            String root = BeanReferences.getChoiceRoot(beanNames, componentSchemas);
+
+            SchemaTypeChoiceProperties properties = new SchemaTypeChoiceProperties();
+
+            properties.setQualifiedName(choiceQualifiedName);
+            properties.setDisplayName((root != null) ? root : "One of " + beanNames.size() + " types");
+            properties.setDescription("One of: " + String.join(", ", beanNames));
+
+            NewElementOptions newElementOptions = new NewElementOptions(schemaTypeClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(apiGUID);
+
+            choiceGUID = schemaTypeClient.createSchemaType(newElementOptions, null, properties, null);
+        }
+
+        choiceSchemaTypeGUIDs.put(choiceQualifiedName, choiceGUID);
+
+        for (String beanName : beanNames)
+        {
+            String optionGUID = this.getBeanSchemaTypeGUID(beanName, apiGUID, openAPISpecification);
+
+            if (linkedOptionGUIDs.add(optionGUID))
+            {
+                schemaTypeClient.linkSchemaTypeOption(choiceGUID,
+                                                      optionGUID,
+                                                      schemaTypeClient.getMakeAnchorOptions(false),
+                                                      new SchemaTypeOptionProperties());
+            }
+        }
+
+        return choiceGUID;
+    }
+
+
+    /**
+     * Return the component schemas (beans) defined in the specification.
+     *
+     * @param openAPISpecification the parsed open API specification
+     * @return map of bean name to schema - empty if there are none
+     */
+    private Map<String, OpenAPISchema> getComponentSchemas(OpenAPISpecification openAPISpecification)
+    {
+        if ((openAPISpecification.getComponents() != null) && (openAPISpecification.getComponents().getSchemas() != null))
+        {
+            return openAPISpecification.getComponents().getSchemas();
+        }
+
+        return new HashMap<>();
     }
 
 
@@ -1576,12 +1810,32 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
+        OpenMetadataRootElement element = this.findExistingSchemaTypeElement(schemaTypeClient, qualifiedName, 0);
+
+        return (element == null) ? null : element.getElementHeader().getGUID();
+    }
+
+
+    /**
+     * Find an existing schema type with the requested qualified name.
+     *
+     * @param schemaTypeClient client to search with
+     * @param qualifiedName unique name to search for
+     * @param graphQueryDepth 0 for just the element's header and properties; 1 to include its relationships
+     * @return the matching schema type, or null if not found
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
+    private OpenMetadataRootElement findExistingSchemaTypeElement(SchemaTypeClient schemaTypeClient,
+                                                                  String           qualifiedName,
+                                                                  int              graphQueryDepth) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
         QueryOptions queryOptions = schemaTypeClient.getQueryOptions();
 
-        /*
-         * Only each element's header and properties are used.
-         */
-        queryOptions.setGraphQueryDepth(0);
+        queryOptions.setGraphQueryDepth(graphQueryDepth);
 
         List<OpenMetadataRootElement> elements = schemaTypeClient.getSchemaTypesByName(qualifiedName, queryOptions);
 
@@ -1593,7 +1847,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
                 {
                     if (qualifiedName.equals(schemaTypeProperties.getQualifiedName()))
                     {
-                        return element.getElementHeader().getGUID();
+                        return element;
                     }
                 }
             }

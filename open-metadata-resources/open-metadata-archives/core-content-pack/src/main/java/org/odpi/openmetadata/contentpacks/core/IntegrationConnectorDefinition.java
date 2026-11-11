@@ -46,6 +46,8 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMArchiv
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.PostgresOpenLineageLogStoreConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.PostgresOpenLineageLogStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.smartcollections.SmartCollectionsIntegrationConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
@@ -59,7 +61,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.definitions.DeployedImpleme
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -738,6 +739,30 @@ public enum IntegrationConnectorDefinition
                                 IntegrationGroupDefinition.OPEN_LINEAGE,
                                 ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
+    OPEN_LINEAGE_POSTGRES_PUBLISHER("a388de80-081e-4303-894c-b3dc54147fcc",
+                                    "OpenLineagePostgresPublisherIntegrationConnector",
+                                    "Stores open lineage events, and a digest of their runs, datasets, data quality assertions and tests, in each of the PostgreSQL database schemas attached as catalog targets.",
+                                    PostgresOpenLineageLogStoreProvider.class.getName(),
+                                    "OpenLineagePostgresPublisher",
+                                    "olpgpubnpa",
+                                    null,
+                                    null,
+                                    null,
+                                    getPostgresOpenLineageLogStoreConfigProperties(),
+                                    60,
+                                    new DeployedImplementationTypeDefinition[]{
+                                            DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA},
+                                    "992c860a-2ce7-452c-bb9c-522fb5da7997",
+                                    "Open Lineage Postgres Publisher",
+                                    "Stores open lineage events in the PostgreSQL database schemas linked through CatalogTarget relationships, creating each schema and its tables if they do not exist.  Alongside each event it maintains a digest of its run, the datasets the run read and wrote, and the data quality assertions and tests it reported, which the Lovelace OpenLineage analysis services query by time window.  Each refresh deletes the records older than the daysToCleanUp configuration property.",
+                                    false,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    IntegrationGroupDefinition.OPEN_LINEAGE,
+                                    ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
     OPEN_LINEAGE_GA_PUBLISHER("206f8faf-04da-4b6f-8280-eeee3943afeb",
                               "OpenLineageGovernanceActionPublisherIntegrationConnector",
                               "Publishes open lineage events whenever governance actions run in the open metadata ecosystem.",
@@ -1088,6 +1113,22 @@ public enum IntegrationConnectorDefinition
                                     MendelConfigurationProperty.DEFAULT_DUPLICATE_ATTACHMENT_TYPES);
         configurationProperties.put(MendelConfigurationProperty.REPORT_DUPLICATES_ONLY.getName(),
                                     false);
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Set up the configuration properties for the PostgreSQL OpenLineage log store.  Records are kept for 30 days,
+     * matching the default analysis window of the Lovelace OpenLineage analysis services.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getPostgresOpenLineageLogStoreConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(PostgresOpenLineageLogStoreConfigurationProperty.DAYS_TO_CLEAN_UP.getName(), 30L);
 
         return configurationProperties;
     }
@@ -1554,6 +1595,46 @@ public enum IntegrationConnectorDefinition
     public boolean linkToMetadataServerSolutionComponent()
     {
         return linkToMetadataServerSolutionComponent;
+    }
+
+
+    /**
+     * Return whether the integration daemon should write a connector activity report for each refresh of this
+     * connector.
+     * <br>
+     * Jacquard's reports are switched off.  Each refresh of Jacquard re-checks every product, so its report
+     * lists thousands of elements; one report reached 1.3 MB, larger than the largest event that the event bus
+     * accepts, and was dropped from the out topic.  The reports also added little: they list the same products
+     * on every refresh.
+     *
+     * @return boolean
+     */
+    public boolean generateConnectorActivityReport()
+    {
+        return this != PRODUCT_HARVESTER;
+    }
+
+
+    /**
+     * Return the content pack that registers this connector with its integration group, which is what makes the
+     * integration daemon run it.  This is usually the content pack that defines the connector.
+     * <br>
+     * The file publisher is defined in the OpenLineageContentPack but registered by the
+     * OpenLineageFileStoreContentPack, which only Egeria's default runtime loads.  The file store writes a file for
+     * every event and has no retention, so it grows without bound on a busy platform.  The connector itself stays in
+     * the OpenLineageContentPack because an element cannot move between content packs: each content pack is the home
+     * of the elements it defines, and a repository rejects a copy of an element from a different home.
+     *
+     * @return content pack definition
+     */
+    public ContentPackDefinition getRegistrationContentPackDefinition()
+    {
+        if (this == OPEN_LINEAGE_FILE_PUBLISHER)
+        {
+            return ContentPackDefinition.OPEN_LINEAGE_FILE_STORE_CONTENT_PACK;
+        }
+
+        return contentPackDefinition;
     }
 
 

@@ -15,7 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * OpenAPISchema describes the type of a parameter.  For an "object" type, properties describes its fields; for an
- * "array" type, items describes the type of its elements.
+ * "array" type, items describes the type of its elements.  allOf combines schemas (a subclass is written as allOf its
+ * superclass's $ref and an object holding its own properties); oneOf and anyOf list alternative schemas for a value.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,6 +38,9 @@ public class OpenAPISchema
     private Map<String, OpenAPISchema> properties   = null;
     private OpenAPISchema              items        = null;
     private List<Object>               enumValues   = null;
+    private List<OpenAPISchema>        allOf        = null;
+    private List<OpenAPISchema>        oneOf        = null;
+    private List<OpenAPISchema>        anyOf        = null;
 
     private String              $ref         = null;
 
@@ -240,6 +244,42 @@ public class OpenAPISchema
     }
 
 
+    public List<OpenAPISchema> getAllOf()
+    {
+        return allOf;
+    }
+
+
+    public void setAllOf(List<OpenAPISchema> allOf)
+    {
+        this.allOf = allOf;
+    }
+
+
+    public List<OpenAPISchema> getOneOf()
+    {
+        return oneOf;
+    }
+
+
+    public void setOneOf(List<OpenAPISchema> oneOf)
+    {
+        this.oneOf = oneOf;
+    }
+
+
+    public List<OpenAPISchema> getAnyOf()
+    {
+        return anyOf;
+    }
+
+
+    public void setAnyOf(List<OpenAPISchema> anyOf)
+    {
+        this.anyOf = anyOf;
+    }
+
+
     @Override
     public String toString()
     {
@@ -259,6 +299,9 @@ public class OpenAPISchema
                        ", properties=" + properties +
                        ", items=" + items +
                        ", enumValues=" + enumValues +
+                       ", allOf=" + allOf +
+                       ", oneOf=" + oneOf +
+                       ", anyOf=" + anyOf +
                        ", $ref='" + $ref + '\'' +
                        '}';
     }

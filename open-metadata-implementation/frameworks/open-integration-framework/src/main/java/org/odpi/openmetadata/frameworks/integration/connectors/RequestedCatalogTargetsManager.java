@@ -24,8 +24,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Manages the map of catalog targets that this integration connector is working with.  It is also responsible for
@@ -187,10 +189,14 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                                                                   assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
             }
 
+            Set<String> retrievedRelationshipGUIDs = new HashSet<>();
+
             for (OpenMetadataRootElement catalogTargetRootElement : this.selectLocallyRegisteredTargets(integrationContext, allCatalogTargets))
             {
                     if (catalogTargetRootElement.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
                     {
+                        retrievedRelationshipGUIDs.add(catalogTargetRootElement.getRelatedBy().getRelationshipHeader().getGUID());
+
                         RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTargetRootElement.getRelatedBy().getRelationshipHeader().getGUID());
 
                         if (knownCatalogTarget == null)
@@ -221,6 +227,30 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                             knownCatalogTarget.setCatalogTargetElement(catalogTargetRootElement);
                         }
                     }
+            }
+
+            /*
+             * A catalog target that is no longer returned has been removed (or its element deleted) since the
+             * last refresh, so its processor and resource connector are shut down.  Without this, a removed
+             * catalog target carried on running until the integration connector restarted.
+             */
+            for (RequestedCatalogTarget knownCatalogTarget : currentCatalogTargetMap.values())
+            {
+                if (! retrievedRelationshipGUIDs.contains(knownCatalogTarget.getRelationshipGUID()))
+                {
+                    try
+                    {
+                        this.removedCatalogTarget(knownCatalogTarget);
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logMessage(methodName,
+                                            OIFAuditCode.DISCONNECT_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   knownCatalogTarget.getCatalogTargetName(),
+                                                                                                   error.getMessage()));
+                    }
+                }
             }
 
             return new ArrayList<>(currentCatalogTargetMap.values());
@@ -620,6 +650,22 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
         this.disconnectConnector(oldCatalogTarget, methodName);
 
+        if (oldCatalogTarget instanceof CatalogTargetProcessorBase oldCatalogTargetProcessor)
+        {
+            try
+            {
+                oldCatalogTargetProcessor.disconnect();
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.DISCONNECT_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           oldCatalogTarget.getCatalogTargetName(),
+                                                                                           error.getMessage()));
+            }
+        }
+
         currentCatalogTargetMap.put(newCatalogTarget);
 
         for (CatalogTargetChangeListener listener : registeredChangeListeners)
@@ -628,6 +674,26 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
         }
 
         startConnector(newCatalogTarget, methodName);
+
+        /*
+         * The replacement processor is started just as a new one is, so it can set itself up from the
+         * updated properties.
+         */
+        if (newCatalogTarget instanceof CatalogTargetProcessorBase newCatalogTargetProcessor)
+        {
+            try
+            {
+                newCatalogTargetProcessor.start();
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           newCatalogTarget.getCatalogTargetName(),
+                                                                                           error.getMessage()));
+            }
+        }
     }
 
 

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.contentpacks.core.db2luw.DB2LUWPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.duckdb.DuckDBPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.oracle.OraclePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.openlineage.OpenLineageArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.openlineage.OpenLineageFileStoreArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.organizationinsight.OrganizationInsightArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.security.SecurityPackArchiveWriter;
@@ -55,6 +56,9 @@ public class CorePacksArchivesWriter
 
             OpenLineageArchiveWriter openLineageArchiveWriter = new OpenLineageArchiveWriter();
             openLineageArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            OpenLineageFileStoreArchiveWriter openLineageFileStoreArchiveWriter = new OpenLineageFileStoreArchiveWriter();
+            openLineageFileStoreArchiveWriter.writeOpenMetadataArchive(folderName);
 
             BitolArchiveWriter bitolArchiveWriter = new BitolArchiveWriter();
             bitolArchiveWriter.writeOpenMetadataArchive(folderName);

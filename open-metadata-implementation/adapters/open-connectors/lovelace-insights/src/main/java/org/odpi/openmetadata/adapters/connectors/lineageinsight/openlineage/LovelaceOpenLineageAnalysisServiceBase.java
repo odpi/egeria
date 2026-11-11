@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.PostgresOpenLineageLogStoreSchema;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.LovelaceInsightAuditCode;
 import org.odpi.openmetadata.adapters.connectors.lovelaceinsight.ffdc.LovelaceInsightErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
@@ -130,10 +133,14 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
             windowStart = (windowDays > 0) ? new Date(analysisTime.getTime() - (windowDays * 24L * 60L * 60L * 1000L)) : null;
 
             /*
-             * Locate the log store: the action target folder first, then the request parameter.
+             * Locate the log store: the action target first - a PostgreSQL database schema written by the
+             * PostgreSQL OpenLineage log store, or a folder written by the file-based one - then the request
+             * parameter naming a folder.
              */
-            File   logStoreDirectory = null;
-            String logStoreName      = null;
+            File                  logStoreDirectory = null;
+            JDBCResourceConnector databaseLogStore  = null;
+            String                databaseSchema    = null;
+            String                logStoreName      = null;
 
             ActionTargetElement logStoreTarget = getActionTarget(OpenLineageAnalysisActionTarget.OPEN_LINEAGE_LOG_STORE.getName());
 
@@ -141,7 +148,31 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
             {
                 logStoreConnector = governanceContext.getConnectorForAsset(logStoreTarget.getTargetElement().getElementGUID());
 
-                if (logStoreConnector instanceof BasicFileStoreConnector fileStoreConnector)
+                if (logStoreConnector instanceof JDBCResourceConnector jdbcResourceConnector)
+                {
+                    jdbcResourceConnector.start();
+
+                    databaseSchema = getDatabaseSchema(jdbcResourceConnector);
+
+                    if (PostgresOpenLineageLogStoreSchema.isValidSchemaName(databaseSchema))
+                    {
+                        databaseLogStore = jdbcResourceConnector;
+                        logStoreName     = jdbcResourceConnector.getDatabaseName() + "." + databaseSchema + " (" + logStoreTarget.getTargetElement().getElementGUID() + ")";
+                    }
+                    else
+                    {
+                        AuditLogMessageDefinition messageDefinition = LovelaceInsightAuditCode.OPEN_LINEAGE_NO_LOG_STORE.getMessageDefinition(governanceServiceName,
+                                                                                                                                              logStoreTarget.getTargetElement().getElementGUID() + " (no valid databaseSchema)");
+                        logRecord(methodName, messageDefinition);
+
+                        List<String> outputGuards = new ArrayList<>();
+                        outputGuards.add(Guard.SERVICE_FAILED.getName());
+
+                        governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, messageDefinition);
+                        return;
+                    }
+                }
+                else if (logStoreConnector instanceof BasicFileStoreConnector fileStoreConnector)
                 {
                     fileStoreConnector.start();
 
@@ -150,41 +181,52 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
                 }
             }
 
-            if (logStoreDirectory == null)
+            OpenLineageRunHistory history;
+
+            if (databaseLogStore != null)
             {
-                logStoreDirectory = getLogStoreDirectory(requestParameters);
+                logRecord(methodName, LovelaceInsightAuditCode.OPEN_LINEAGE_ANALYSIS_STARTED.getMessageDefinition(governanceServiceName,
+                                                                                                                 logStoreName,
+                                                                                                                 formatDate(windowStart),
+                                                                                                                 formatDate(windowEnd)));
 
-                logStoreName = logStoreDirectory.getAbsolutePath();
+                history = new OpenLineageDatabaseLogStoreReader().read(databaseLogStore.getDataSource(), databaseSchema, windowStart, windowEnd);
             }
-
-            if (! logStoreDirectory.isDirectory())
+            else
             {
-                AuditLogMessageDefinition messageDefinition = LovelaceInsightAuditCode.OPEN_LINEAGE_NO_LOG_STORE.getMessageDefinition(governanceServiceName,
-                                                                                                                                      logStoreDirectory.getAbsolutePath());
-                logRecord(methodName, messageDefinition);
+                if (logStoreDirectory == null)
+                {
+                    logStoreDirectory = getLogStoreDirectory(requestParameters);
 
-                List<String> outputGuards = new ArrayList<>();
-                outputGuards.add(Guard.SERVICE_FAILED.getName());
+                    logStoreName = logStoreDirectory.getAbsolutePath();
+                }
 
-                governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, messageDefinition);
-                return;
+                if (! logStoreDirectory.isDirectory())
+                {
+                    AuditLogMessageDefinition messageDefinition = LovelaceInsightAuditCode.OPEN_LINEAGE_NO_LOG_STORE.getMessageDefinition(governanceServiceName,
+                                                                                                                                          logStoreDirectory.getAbsolutePath());
+                    logRecord(methodName, messageDefinition);
+
+                    List<String> outputGuards = new ArrayList<>();
+                    outputGuards.add(Guard.SERVICE_FAILED.getName());
+
+                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, messageDefinition);
+                    return;
+                }
+
+                logRecord(methodName, LovelaceInsightAuditCode.OPEN_LINEAGE_ANALYSIS_STARTED.getMessageDefinition(governanceServiceName,
+                                                                                                                 logStoreDirectory.getAbsolutePath(),
+                                                                                                                 formatDate(windowStart),
+                                                                                                                 formatDate(windowEnd)));
+
+                history = new OpenLineageLogStoreReader().read(logStoreDirectory, windowStart, windowEnd);
             }
-
-            logRecord(methodName, LovelaceInsightAuditCode.OPEN_LINEAGE_ANALYSIS_STARTED.getMessageDefinition(governanceServiceName,
-                                                                                                             logStoreDirectory.getAbsolutePath(),
-                                                                                                             formatDate(windowStart),
-                                                                                                             formatDate(windowEnd)));
-
-            /*
-             * Read and analyse.
-             */
-            OpenLineageRunHistory history = new OpenLineageLogStoreReader().read(logStoreDirectory, windowStart, windowEnd);
 
             logRecord(methodName, LovelaceInsightAuditCode.OPEN_LINEAGE_EVENTS_READ.getMessageDefinition(governanceServiceName,
                                                                                                         Integer.toString(history.getEventCount()),
-                                                                                                        Integer.toString(history.getUnreadableFiles()),
                                                                                                         Integer.toString(history.getJobs().size()),
-                                                                                                        Integer.toString(history.getDataSets().size())));
+                                                                                                        Integer.toString(history.getDataSets().size()),
+                                                                                                        Integer.toString(history.getUnreadableEvents())));
 
             int elementsUpdated = analyse(history);
 
@@ -564,6 +606,28 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
     protected void put(Map<String, String> map, String key, double value)
     {
         map.put(key, String.format("%.2f", value));
+    }
+
+
+    /**
+     * Return the name of the database schema holding a PostgreSQL OpenLineage log store, from the configuration
+     * of the schema asset's connection.
+     *
+     * @param jdbcResourceConnector connector to the database
+     * @return schema name or null
+     */
+    static String getDatabaseSchema(JDBCResourceConnector jdbcResourceConnector)
+    {
+        final String propertyName = JDBCConfigurationProperty.DATABASE_SCHEMA.getName();
+
+        if ((jdbcResourceConnector.getConnection() != null) &&
+                (jdbcResourceConnector.getConnection().getConfigurationProperties() != null) &&
+                (jdbcResourceConnector.getConnection().getConfigurationProperties().get(propertyName) != null))
+        {
+            return jdbcResourceConnector.getConnection().getConfigurationProperties().get(propertyName).toString();
+        }
+
+        return null;
     }
 
 

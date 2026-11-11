@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * WedgwoodProvisionSubscriptionGovernanceActionConnector copies data from one tabular data set to another.
@@ -319,36 +320,14 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
 
         long destinationRecordCount = destinationConnector.getRecordCount();
 
-        if (sourceRecordCount >= destinationRecordCount)
-        {
-            for (long rowNumber=0; rowNumber < destinationRecordCount ; rowNumber++)
-            {
-                destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
-            }
-
-            for (long rowNumber = destinationRecordCount; rowNumber < sourceRecordCount ; rowNumber ++)
-            {
-                destinationConnector.appendRecord(sourceConnector.readRecord(rowNumber));
-            }
-        }
-        else
-        {
-            for (long rowNumber=0; rowNumber < sourceRecordCount ; rowNumber++)
-            {
-                destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
-            }
-
-            for (long rowNumber = sourceRecordCount; rowNumber < destinationRecordCount ; rowNumber ++)
-            {
-                destinationConnector.deleteRecord(rowNumber);
-            }
-        }
+        long changedRecordCount = copyRecords(sourceConnector, sourceRecordCount, destinationConnector, destinationRecordCount);
 
         super.logRecord(methodName, GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED.getMessageDefinition(governanceServiceName,
                                                                                                                 Long.toString(sourceRecordCount),
                                                                                                                 tableName,
                                                                                                                 sourceName,
-                                                                                                                destinationName));
+                                                                                                                destinationName,
+                                                                                                                Long.toString(changedRecordCount)));
 
         /*
          * A collection destination was given the source's table name above; any other destination holds the
@@ -360,6 +339,60 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
         }
 
         return tableName;
+    }
+
+
+    /**
+     * Make the destination's records match the source's.  Where the destination can be read back, a record is
+     * only written if it differs from the one already there: a subscription is delivered again each time its
+     * product changes, and rewriting every record of an unchanged table on each delivery was most of the cost.
+     * Once the destination is current, a delivery writes nothing.
+     *
+     * @param sourceConnector where the records come from
+     * @param sourceRecordCount number of records in the source
+     * @param destinationConnector where they go - its table has already been selected and described
+     * @param destinationRecordCount number of records already in the destination
+     * @return number of records written, appended or deleted
+     * @throws ConnectorCheckedException problem reading or writing
+     */
+    static long copyRecords(ReadableTabularDataSource sourceConnector,
+                            long                      sourceRecordCount,
+                            WritableTabularDataSource destinationConnector,
+                            long                      destinationRecordCount) throws ConnectorCheckedException
+    {
+        ReadableTabularDataSource readableDestination = (destinationConnector instanceof ReadableTabularDataSource readable) ? readable : null;
+
+        long changedRecordCount = 0;
+        long overlappingRecords = Math.min(sourceRecordCount, destinationRecordCount);
+
+        for (long rowNumber = 0; rowNumber < overlappingRecords; rowNumber++)
+        {
+            List<String> sourceRecord = sourceConnector.readRecord(rowNumber);
+
+            if ((readableDestination == null) || (! Objects.equals(sourceRecord, readableDestination.readRecord(rowNumber))))
+            {
+                destinationConnector.writeRecord(rowNumber, sourceRecord);
+                changedRecordCount++;
+            }
+        }
+
+        for (long rowNumber = destinationRecordCount; rowNumber < sourceRecordCount; rowNumber++)
+        {
+            destinationConnector.appendRecord(sourceConnector.readRecord(rowNumber));
+            changedRecordCount++;
+        }
+
+        /*
+         * Records beyond the end of the source are removed from the end backwards, so the row numbers still to
+         * be deleted are not moved by each deletion.
+         */
+        for (long rowNumber = destinationRecordCount - 1; rowNumber >= sourceRecordCount; rowNumber--)
+        {
+            destinationConnector.deleteRecord(rowNumber);
+            changedRecordCount++;
+        }
+
+        return changedRecordCount;
     }
 
 

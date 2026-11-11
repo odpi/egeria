@@ -149,6 +149,15 @@ public enum ContentPackSolutionLinkingWire
                               ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
 
     /**
+     * Passes events to the PostgreSQL publisher.
+     */
+    PUBLISH_OL_EVENTS_TO_POSTGRES(IntegrationConnectorDefinition.OPEN_LINEAGE_KAFKA_LISTENER.getSolutionComponentGUID(),
+                                  IntegrationConnectorDefinition.OPEN_LINEAGE_POSTGRES_PUBLISHER.getSolutionComponentGUID(),
+                                  "distribute events",
+                                  "Passes events to the PostgreSQL publisher.",
+                                  ContentPackDefinition.OPEN_LINEAGE_CONTENT_PACK),
+
+    /**
      * Passes events to the API publisher.
      */
     PUBLISH_OL_EVENTS_TO_API(IntegrationConnectorDefinition.OPEN_LINEAGE_KAFKA_LISTENER.getSolutionComponentGUID(),

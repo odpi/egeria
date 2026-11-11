@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,11 @@ public class OpenMetadataPropertiesDataSetConnector extends OpenMetadataDataSetC
     private final Map<Long, OpenMetadataProperty> records = new HashMap<>();
 
     private final ProductDefinitionEnum productDefinition = ProductDefinitionEnum.PROPERTIES_LIST   ;
+
+    /*
+     * When the open metadata types - and so the properties - last changed.
+     */
+    private Date typesLastChanged = null;
 
 
     /**
@@ -107,6 +113,8 @@ public class OpenMetadataPropertiesDataSetConnector extends OpenMetadataDataSetC
                     knownTypeNames.add(property.name);
                 }
             }
+
+            typesLastChanged = getTypesLastChangedTime(connectorContext.getOpenMetadataTypesClient().getAllTypes(true, true));
 
             /*
              * Now retrieve all the types and look for any new types ...
@@ -257,6 +265,12 @@ public class OpenMetadataPropertiesDataSetConnector extends OpenMetadataDataSetC
                 else if (ProductDataFieldDefinition.CATEGORY.getDisplayName().equals(tabularColumnDescription.columnName()))
                 {
                     recordValues.add(property.propertyCategory.getDisplayName());
+                }
+                else if ((typesLastChanged != null) &&
+                         ((ProductDataFieldDefinition.CREATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName())) ||
+                          (ProductDataFieldDefinition.UPDATE_TIME.getDisplayName().equals(tabularColumnDescription.columnName()))))
+                {
+                    recordValues.add(typesLastChanged.toInstant().toString());
                 }
                 else
                 {

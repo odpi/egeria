@@ -26,6 +26,13 @@ public class OpenLineageFilePublisherFVT
 {
     private static final File LOG_STORE = new File("logs/openlineage");
 
+    /*
+     * This suite's own job.  The cataloguer also receives the event and counts the run in the RunMetrics of the job's
+     * process, so sharing a job with OpenLineageCataloguerFVT would change the run counts that suite checks whenever
+     * this suite runs first.
+     */
+    private static final String JOB_NAME = "file_publisher.store_event";
+
 
     /**
      * Publish an event and find it in the log store.
@@ -37,13 +44,13 @@ public class OpenLineageFilePublisherFVT
     void eventIsWrittenToTheLogStore() throws Exception
     {
         UUID   runId = UUID.randomUUID();
-        String json  = OpenLineageFvtTestSupport.publish(OpenLineageEventFactory.runEvent("START", Instant.now(), runId, OpenLineageEventFactory.JOB_NAME));
+        String json  = OpenLineageFvtTestSupport.publish(OpenLineageEventFactory.runEvent("START", Instant.now(), runId, JOB_NAME));
 
         OpenLineageFvtTestSupport.waitFor("the event for run " + runId + " to be written under " + LOG_STORE.getAbsolutePath(), () -> findEventFile(LOG_STORE, runId.toString()) != null);
 
         File eventFile = findEventFile(LOG_STORE, runId.toString());
 
-        assertTrue(eventFile.getPath().contains(OpenLineageEventFactory.JOB_NAME), "The event should be filed under its job name: " + eventFile.getPath());
+        assertTrue(eventFile.getPath().contains(JOB_NAME), "The event should be filed under its job name: " + eventFile.getPath());
         assertTrue(eventFile.getName().endsWith("-START.openlineageevent"), "The file name should end with the event type: " + eventFile.getName());
 
         String stored = Files.readString(eventFile.toPath(), StandardCharsets.UTF_8);

@@ -37,6 +37,7 @@ dependencies {
     testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation project(':open-metadata-implementation:common-services:metadata-observability')
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testRuntimeOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
 
 }
 

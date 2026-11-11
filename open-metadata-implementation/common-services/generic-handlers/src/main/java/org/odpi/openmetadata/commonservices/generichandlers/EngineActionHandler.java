@@ -492,15 +492,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 if (targetForAction != null)
                 {
-                    NewActionTarget newActionTarget = new NewActionTarget();
-
-                    newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
-                                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                                                           targetForAction.getProperties(),
-                                                                                           methodName));
-                    newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
-
-                    newTargetsForAction.add(newActionTarget);
+                    this.addPredefinedActionTarget(userId, targetForAction, governanceActionTypeEntity, newTargetsForAction, methodName);
                 }
             }
 
@@ -768,15 +760,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         if (targetForAction != null)
                         {
-                            NewActionTarget newActionTarget = new NewActionTarget();
-
-                            newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
-                                                                                                   OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                                                                   targetForAction.getProperties(),
-                                                                                                   methodName));
-                            newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
-
-                            newTargetsForAction.add(newActionTarget);
+                            this.addPredefinedActionTarget(userId, targetForAction, governanceActionProcessEntity, newTargetsForAction, methodName);
                         }
                     }
 
@@ -1163,15 +1147,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 if (targetForAction != null)
                 {
-                    NewActionTarget newActionTarget = new NewActionTarget();
-
-                    newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
-                                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                                                           targetForAction.getProperties(),
-                                                                                           methodName));
-                    newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
-
-                    newTargetsForAction.add(newActionTarget);
+                    this.addPredefinedActionTarget(userId, targetForAction, governanceActionProcessStepEntity, newTargetsForAction, methodName);
                 }
             }
 
@@ -1890,6 +1866,81 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   governanceActionProcessStepGUID,
                                   governanceActionProcessStepName,
                                   methodName);
+    }
+
+
+    /**
+     * Add an action target that is predefined through a TargetForGovernanceAction relationship, unless its element
+     * can no longer be used.  The relationship outlives the element when the element is archived - for example,
+     * deleting an element that has lineage turns it into a Memento that keeps its relationships so that it can
+     * be restored - and passing such an element to a governance service makes the service fail when it tries to
+     * use it.
+     *
+     * @param userId calling user
+     * @param targetForAction TargetForGovernanceAction relationship
+     * @param sourceEntity governance action type, process or process step that the relationship belongs to
+     * @param newTargetsForAction list of action targets to extend
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException problem accessing the repository services
+     */
+    private void addPredefinedActionTarget(String                userId,
+                                           Relationship          targetForAction,
+                                           EntityDetail          sourceEntity,
+                                           List<NewActionTarget> newTargetsForAction,
+                                           String                methodName) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String actionTargetGUIDParameterName = "targetForAction.getEntityTwoProxy().getGUID()";
+
+        String actionTargetName = repositoryHelper.getStringProperty(serviceName,
+                                                                     OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                     targetForAction.getProperties(),
+                                                                     methodName);
+        String actionTargetGUID = targetForAction.getEntityTwoProxy().getGUID();
+
+        EntityDetail actionTargetEntity = null;
+
+        try
+        {
+            actionTargetEntity = repositoryHandler.validateRetrievedEntity(userId,
+                                                                           repositoryHandler.validateEntityGUID(userId,
+                                                                                                                actionTargetGUID,
+                                                                                                                actionTargetGUIDParameterName,
+                                                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                                                null,
+                                                                                                                methodName),
+                                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                           null,
+                                                                           null,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                           null,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName);
+        }
+        catch (InvalidParameterException notKnown)
+        {
+            actionTargetEntity = null;
+        }
+
+        if (actionTargetEntity == null)
+        {
+            auditLog.logMessage(methodName,
+                                GenericHandlersAuditCode.SKIPPED_PREDEFINED_ACTION_TARGET.getMessageDefinition(actionTargetName,
+                                                                                                               actionTargetGUID,
+                                                                                                               sourceEntity.getType().getTypeDefName(),
+                                                                                                               sourceEntity.getGUID()));
+            return;
+        }
+
+        NewActionTarget newActionTarget = new NewActionTarget();
+
+        newActionTarget.setActionTargetName(actionTargetName);
+        newActionTarget.setActionTargetGUID(actionTargetGUID);
+
+        newTargetsForAction.add(newActionTarget);
     }
 
 

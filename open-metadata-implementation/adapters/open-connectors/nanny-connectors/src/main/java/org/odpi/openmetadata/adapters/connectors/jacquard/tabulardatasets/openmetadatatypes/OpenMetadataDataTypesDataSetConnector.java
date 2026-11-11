@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataType
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,8 @@ public class OpenMetadataDataTypesDataSetConnector extends OpenMetadataRowDataSe
 
         dataTypes.sort(Comparator.comparing(OpenMetadataAttributeTypeDef::getName));
 
+        Date typesLastChanged = getTypesLastChangedTime(gallery);
+
         for (OpenMetadataAttributeTypeDef dataType : dataTypes)
         {
             Map<String, String> values = newValues();
@@ -71,6 +74,8 @@ public class OpenMetadataDataTypesDataSetConnector extends OpenMetadataRowDataSe
             putValue(values, ProductDataFieldDefinition.CATEGORY, dataType.getCategory() == null ? null : dataType.getCategory().getTypeName());
             putValue(values, ProductDataFieldDefinition.VERSION_IDENTIFIER, dataType.getVersionName());
             putValue(values, ProductDataFieldDefinition.VERSION, dataType.getVersion());
+            putValue(values, ProductDataFieldDefinition.CREATE_TIME, typesLastChanged);
+            putValue(values, ProductDataFieldDefinition.UPDATE_TIME, typesLastChanged);
 
             addRow(null, null, values);
         }

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage;
 
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 
@@ -14,13 +15,24 @@ import java.util.List;
 public enum OpenLineageAnalysisActionTarget
 {
     /**
-     * Folder holding the OpenLineage log store.
+     * Folder holding the OpenLineage log store.  It has the same action target name as the database schema.
      */
     OPEN_LINEAGE_LOG_STORE("openLineageLogStore",
                            "Folder asset for the directory holding the OpenLineage log store written by the file-based OpenLineage log store integration connector.  " +
                                    "The service reads every .openlineageevent file below it.",
                            DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getAssociatedTypeName(),
                            DeployedImplementationType.FILE_SYSTEM_DIRECTORY.getDeployedImplementationType()),
+
+    /**
+     * Database schema holding the OpenLineage log store.  It has the same action target name as the folder:
+     * the service works out which kind of log store it has been given from the connector of the asset.
+     */
+    OPEN_LINEAGE_DATABASE_LOG_STORE("openLineageLogStore",
+                                    "PostgreSQL database schema asset for the OpenLineage log store written by the PostgreSQL OpenLineage log store integration connector.  " +
+                                            "The service reads the runs, datasets, assertions and tests in its analysis window from the log store's digest tables.  " +
+                                            "The schema name comes from the databaseSchema configuration property of the asset's connection.",
+                                    PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
+                                    PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType()),
     ;
 
     public final String name;

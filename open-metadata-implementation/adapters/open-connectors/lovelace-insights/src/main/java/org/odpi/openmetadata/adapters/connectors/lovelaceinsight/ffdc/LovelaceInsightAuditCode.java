@@ -54,13 +54,13 @@ public enum LovelaceInsightAuditCode implements AuditLogMessageSet
                                   "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     /**
-     * LOVELACE-INSIGHTS-0040 - The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets
+     * LOVELACE-INSIGHTS-0040 - The {0} governance action service read {1} OpenLineage events covering {2} jobs and {3} datasets; {4} stored events could not be read
      */
     OPEN_LINEAGE_EVENTS_READ("LOVELACE-INSIGHTS-0040",
                              AuditLogRecordSeverityLevel.INFO,
-                             "The {0} governance action service read {1} OpenLineage events ({2} files could not be read) covering {3} jobs and {4} datasets",
+                             "The {0} governance action service read {1} OpenLineage events covering {2} jobs and {3} datasets; {4} stored events could not be read",
                              "The service has built the run history from the log store and is starting its analysis.",
-                             "If files could not be read, check the log store for files that are not OpenLineage run events in JSON.",
+                             "If stored events could not be read, check the log store for entries that are not OpenLineage run events in JSON.",
                              "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     /**

@@ -89,7 +89,7 @@ public class OpenLineageLogStoreReaderTest
         OpenLineageRunHistory history = new OpenLineageLogStoreReader().read(root, windowStart, windowEnd);
 
         assertEquals(history.getEventCount(), 5);
-        assertEquals(history.getUnreadableFiles(), 1);
+        assertEquals(history.getUnreadableEvents(), 1);
         assertEquals(history.getJobs().size(), 2);
         assertEquals(history.getDataSets().size(), 2);
         assertEquals(history.getEarliestEvent(), OpenLineageLogStoreReader.parseTimestamp("2026-09-01T10:00:00Z"));
@@ -155,6 +155,44 @@ public class OpenLineageLogStoreReaderTest
 
         assertEquals(history.getEventCount(), 6);
         assertEquals(history.getJobs().get(new OpenLineageRunHistory.Key("airflow://prod", "count_orders")).runs.size(), 3);
+    }
+
+
+    /**
+     * A file written before the window starts cannot hold an event inside it, so it is not opened: neither its
+     * event nor (for a file that is not valid JSON) an unreadable file is counted.  A file written inside the
+     * window is read as before, and with no window every file is read.
+     *
+     * @throws Exception problem with the temporary files
+     */
+    @Test
+    public void testFilesWrittenBeforeWindowSkipped() throws Exception
+    {
+        File root = Files.createTempDirectory("openlineage-log-store-skip").toFile();
+
+        String current = "55555555-5555-5555-5555-555555555555";
+        String stale   = "66666666-6666-6666-6666-666666666666";
+
+        Date windowStart = OpenLineageLogStoreReader.parseTimestamp("2026-08-01T00:00:00Z");
+        long beforeWindow = OpenLineageLogStoreReader.parseTimestamp("2026-07-01T00:00:00Z").getTime();
+
+        write(root, "airflow:__prod/load/" + current + "-a-START.openlineageevent", event("START", "2026-09-01T10:00:00Z", current, "load", "", "", null));
+        write(root, "airflow:__prod/load/" + stale + "-a-START.openlineageevent",   event("START", "2026-09-01T11:00:00Z", stale, "load", "", "", null));
+        write(root, "airflow:__prod/load/stale-junk.openlineageevent", "this is not json");
+
+        assertTrue(new File(root, "airflow:__prod/load/" + stale + "-a-START.openlineageevent").setLastModified(beforeWindow));
+        assertTrue(new File(root, "airflow:__prod/load/stale-junk.openlineageevent").setLastModified(beforeWindow));
+
+        OpenLineageRunHistory history = new OpenLineageLogStoreReader().read(root, windowStart, null);
+
+        assertEquals(history.getEventCount(), 1);
+        assertEquals(history.getUnreadableEvents(), 0);
+        assertEquals(history.getJobs().get(new OpenLineageRunHistory.Key("airflow://prod", "load")).runs.keySet(), java.util.Set.of(current));
+
+        history = new OpenLineageLogStoreReader().read(root, null, null);
+
+        assertEquals(history.getEventCount(), 2);
+        assertEquals(history.getUnreadableEvents(), 1);
     }
 
 

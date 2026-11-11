@@ -26,7 +26,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -51,7 +54,25 @@ import java.util.List;
  */
 public class BaudotSubscriptionManagementConnector extends DynamicIntegrationConnectorBase implements OpenMetadataEventListener
 {
-    private final MonitoredResources monitoredResources = new MonitoredResources();
+    private final MonitoredResources            monitoredResources = new MonitoredResources();
+    private final MonitoredResourceChangeFilter changeFilter       = new MonitoredResourceChangeFilter();
+
+    /*
+     * Changes that arrived while their notification type was inside its minimum notification interval, by
+     * notification type GUID.  Each is sent by the first refresh after the interval has passed.  Only the latest
+     * change is kept for each notification type: a subscriber is told that the resource has changed, and the
+     * delivery that follows picks up all the changes made since the last one.
+     */
+    private final Map<String, DeferredChange> deferredChanges = new ConcurrentHashMap<>();
+
+    /**
+     * A change to a monitored resource that has not been sent yet.
+     *
+     * @param monitoredResource the notification type's interest in the changed resource
+     * @param changedElementGUID the element the change event was for
+     */
+    private record DeferredChange(MonitoredResource monitoredResource,
+                                  String            changedElementGUID) {}
 
 
     /**
@@ -117,6 +138,20 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         super.refresh();
 
         final String methodName = "refresh";
+
+        /*
+         * Send the changes that had to wait for their notification type's minimum interval to pass.  One that is
+         * still too early stays deferred.
+         */
+        for (String notificationTypeGUID : new ArrayList<>(deferredChanges.keySet()))
+        {
+            DeferredChange deferredChange = deferredChanges.get(notificationTypeGUID);
+
+            if (deferredChange != null)
+            {
+                this.notifyMonitoredResourceChanged(deferredChange.monitoredResource(), deferredChange.changedElementGUID());
+            }
+        }
 
         int notificationTypeCount = 0;
 
@@ -190,13 +225,17 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
                  */
                 List<MonitoredResource> monitoredResourceList = monitoredResources.isMonitored(event.getElementHeader());
 
-                if (monitoredResourceList != null)
+                /*
+                 * A record of activity on the resource - it was read, analysed or observed - is not a change to
+                 * it.  Counting these as changes made each subscription delivery trigger the next.
+                 */
+                if ((monitoredResourceList != null) && (changeFilter.isChangeToResource(event)))
                 {
                     for (MonitoredResource monitoredResource : monitoredResourceList)
                     {
                         if (monitoredResource != null)
                         {
-                            this.notifyMonitoredResourceChanged(monitoredResource, event);
+                            this.notifyMonitoredResourceChanged(monitoredResource, event.getElementHeader().getGUID());
                         }
                     }
                 }
@@ -240,6 +279,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
                      * longer told about changes; the next refresh retires its processor.
                      */
                     monitoredResources.removeMonitoredNotificationType(event.getEndTwoElementHeader().getGUID());
+                    deferredChanges.remove(event.getEndTwoElementHeader().getGUID());
                 }
             }
         }
@@ -256,13 +296,16 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
 
     /**
-     * Tell a notification type's subscribers that one of its monitored resources has changed.
+     * Tell a notification type's subscribers that one of its monitored resources has changed.  If the
+     * notification type is still within its minimum notification interval, the change is deferred to the first
+     * refresh after the interval has passed rather than dropped: otherwise the last change in a burst would
+     * never reach the subscribers, and a subscription would stay out of date until the resource next changed.
      *
      * @param monitoredResource the notification type's interest in the changed resource
-     * @param event the change
+     * @param changedElementGUID the element that the change event was for
      */
-    private void notifyMonitoredResourceChanged(MonitoredResource        monitoredResource,
-                                                OpenMetadataOutTopicEvent event)
+    private void notifyMonitoredResourceChanged(MonitoredResource monitoredResource,
+                                                String            changedElementGUID)
     {
         final String methodName = "notifyMonitoredResourceChanged";
 
@@ -283,11 +326,19 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
             if ((notificationType != null) && (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
             {
+                if (isWithinMinimumInterval(notificationTypeProperties, new Date()))
+                {
+                    deferredChanges.put(notificationTypeGUID, new DeferredChange(monitoredResource, changedElementGUID));
+                    return;
+                }
+
+                deferredChanges.remove(notificationTypeGUID);
+
                 long                  notificationCount = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
                 List<NewActionTarget> newActionTargets  = new ArrayList<>();
                 NewActionTarget       newActionTarget   = new NewActionTarget();
 
-                newActionTarget.setActionTargetGUID(event.getElementHeader().getGUID());
+                newActionTarget.setActionTargetGUID(changedElementGUID);
                 newActionTarget.setActionTargetName(ActionTarget.CHANGED_ELEMENT.name);
                 newActionTargets.add(newActionTarget);
 
@@ -302,6 +353,8 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
             }
             else
             {
+                deferredChanges.remove(notificationTypeGUID);
+
                 logRecord(methodName,
                           BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
                                                                                             monitoredResource.getNotificationTypeDisplayName(),
@@ -318,6 +371,29 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
                                                                                                      error.getMessage()),
                                error);
         }
+    }
+
+
+    /**
+     * Return whether a notification type sent its last notification less than its minimum notification
+     * interval ago.  The notification manager makes the same check and sends nothing in that case.
+     *
+     * @param notificationTypeProperties properties of the notification type
+     * @param now the time to test
+     * @return true if it is too early to notify the subscribers again
+     */
+    static boolean isWithinMinimumInterval(NotificationTypeProperties notificationTypeProperties,
+                                           Date                       now)
+    {
+        Date lastNotification = notificationTypeProperties.getLastNotification();
+        long minimumInterval  = OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval());
+
+        if ((lastNotification == null) || (minimumInterval <= 0))
+        {
+            return false;
+        }
+
+        return now.getTime() < lastNotification.getTime() + (minimumInterval * 60 * 1000);
     }
 
 
