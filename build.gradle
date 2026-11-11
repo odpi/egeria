@@ -17,6 +17,8 @@ plugins {
     // its jacocoClasspath and report output locations come from.  Without this the task cannot run at all:
     // it fails configuration validation with "property 'jacocoClasspath' doesn't have a configured value".
     id 'jacoco'
+    // Software bill of materials (SBOM) for each module - see the cyclonedxDirectBom configuration below
+    id 'org.cyclonedx.bom'
 }
 
 /*
@@ -55,6 +57,18 @@ allprojects {
     // Only use maven central
     repositories {
         mavenCentral()
+    }
+
+    // Software bill of materials (SBOM).  The org.cyclonedx.bom plugin applied to the root project gives
+    // every project a cyclonedxDirectBom task, which writes a CycloneDX SBOM for the project to
+    // build/reports/cyclonedx-direct/bom.json and bom.xml.  Left to itself the task describes every
+    // resolvable configuration - the test, checkstyle and jacoco tooling, and the root project's aggregate
+    // javadoc classpath, included - so it is limited to the runtime classpath: the components that a
+    // consumer of the module actually receives.  The container projects - the ones that only group other
+    // modules - have no build file and nothing to describe, so they are left out of the SBOMs altogether.
+    tasks.named('cyclonedxDirectBom') {
+        enabled = project.buildFile.exists()
+        includeConfigs = ['runtimeClasspath']
     }
 } // end of allProjects
 
@@ -189,6 +203,17 @@ subprojects {
                 publications {
                     mavenmodule(MavenPublication) {
                         from components.java
+                        // Publish the module's SBOM beside its jar, as <artifactId>-<version>-cyclonedx.json and
+                        // .xml - the classifier the CycloneDX Maven plugin uses - so it is signed with the jar.
+                        def sbom = tasks.named('cyclonedxDirectBom')
+                        artifact(sbom.flatMap { it.jsonOutput }) {
+                            classifier = 'cyclonedx'
+                            extension = 'json'
+                        }
+                        artifact(sbom.flatMap { it.xmlOutput }) {
+                            classifier = 'cyclonedx'
+                            extension = 'xml'
+                        }
                         pom {
                             url = 'https://egeria.odpi.org'
                             licenses {

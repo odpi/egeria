@@ -28,6 +28,8 @@ pluginManagement {
         // This plugin needs to be kept in step with bom
         id 'org.springframework.boot' version '3.5.16'
         id 'com.gradleup.shadow' version '9.6.1'
+        // Generates CycloneDX software bills of materials (SBOMs) from the resolved dependency graphs
+        id 'org.cyclonedx.bom' version '3.5.1'
     }
 }
 rootProject.name = 'egeria'
