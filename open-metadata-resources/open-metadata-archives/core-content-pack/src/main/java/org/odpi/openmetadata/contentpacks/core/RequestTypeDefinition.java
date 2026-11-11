@@ -93,6 +93,24 @@ public enum RequestTypeDefinition
                               ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * wait-for-steward
+     */
+    WAIT_FOR_STEWARD("wait-for-steward",
+                     null,
+                     null,
+                     null,
+                     GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                     GovernanceServiceDefinition.WAIT_FOR_STEWARD,
+                     "6aff5f34-a4e8-448b-80c9-8b856d8ab70e",
+                     GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                     null,
+                     "f7a190f0-d31c-4901-9459-685930a2bff5",
+                     "Wait For Steward",
+                     "Waits for the stewards to finish the to dos supplied as action targets, and then completes with a guard that shows whether they were all completed.",
+                     ContentCollectionDefinition.WATCHDOG_ACTIONS,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * copy-file
      */
     COPY_FILE("copy-file",

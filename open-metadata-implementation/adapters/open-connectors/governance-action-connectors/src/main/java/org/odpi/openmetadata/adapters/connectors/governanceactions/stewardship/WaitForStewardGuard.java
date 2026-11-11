@@ -10,20 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Guard enum describes some common guards that can be used when implementing governance services.
- * Using the common guard names where possible saves time when coding the provider class and improves the
- * ability of the service to be incorporated into governance action processes.
+ * WaitForStewardGuard describes the guards produced by the Wait For Steward Watchdog Action Service.
  */
 public enum WaitForStewardGuard
 {
-    NO_ACTION_REQUIRED("no-action-required", CompletionStatus.ACTIONED, "The survey report does not contain any Request For Action (RfA) annotations."),
-    ACTIONS_DETECTED("actions-detected", CompletionStatus.INVALID, "The survey report does contain at least one Request For Action (RfA) but no template is provided to action them."),
-    ACTIONS_ACTIONED("actions-actioned", CompletionStatus.ACTIONED, "The survey report contains at least one Request For Action and ToDos have been created to resolve any issues they report."),
-    NO_SURVEY_REPORT("no-survey-report", CompletionStatus.INVALID, "There is no survey report to process.  Details of the survey report should be provided as an action target."),
-    EVALUATION_FAILED("evaluation-failed", CompletionStatus.FAILED, "An unexpected error occurred during the evaluation and it is not able to complete."),
-
+    TO_DOS_COMPLETED("to-dos-completed", CompletionStatus.ACTIONED, "Every to do supplied as an action target has been completed."),
+    TO_DOS_NOT_COMPLETED("to-dos-not-completed", CompletionStatus.ACTIONED, "Every to do supplied as an action target has finished, but at least one finished without being completed.  For example, it was abandoned, cancelled or deleted."),
+    NO_TO_DOS("no-to-dos", CompletionStatus.ACTIONED, "No to dos have been supplied as action targets so there is nothing to wait for."),
+    WAIT_FAILED("wait-failed", CompletionStatus.FAILED, "An unexpected error occurred while waiting for the to dos to finish."),
     ;
-
 
 
     public final String           name;

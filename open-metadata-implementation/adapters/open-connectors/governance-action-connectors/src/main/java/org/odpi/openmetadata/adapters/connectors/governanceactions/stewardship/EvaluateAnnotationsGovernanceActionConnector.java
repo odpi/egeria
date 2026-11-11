@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * EvaluateAnnotationsGovernanceActionConnector is currently a placeholder for a governance action service
- * that will look through the annotations from a survey report and set up guards to drive actions that
- * process the different types.
+ * EvaluateAnnotationsGovernanceActionConnector is a governance action service that looks through the
+ * annotations from a survey report and opens a to do for the steward for each request for action annotation.
+ * The to dos are passed on as stewardAction action targets.
  */
 public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGovernanceActionService
 {
