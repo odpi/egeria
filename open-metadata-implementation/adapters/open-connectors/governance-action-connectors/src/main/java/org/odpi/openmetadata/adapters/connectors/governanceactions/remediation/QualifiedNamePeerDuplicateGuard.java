@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 
@@ -16,12 +17,15 @@ import java.util.List;
  */
 public enum QualifiedNamePeerDuplicateGuard
 {
-    DUPLICATE_ASSIGNED("duplicate-detected", CompletionStatus.ACTIONED, "A new duplicate was detected and linked to the element."),
+    DUPLICATE_ASSIGNED("duplicate-detected", CompletionStatus.ACTIONED, "At least one new duplicate was detected and linked to the element."),
     DUPLICATE_ALREADY_ASSIGNED("duplicate-already-assigned", CompletionStatus.ACTIONED, "This element already is linked to its duplicate(s)."),
     NO_DUPLICATION_DETECTED("no-duplication-detected", CompletionStatus.ACTIONED, "No duplicates were detected."),
     DUPLICATE_DETECTION_FAILED("duplicate-detection-failed", CompletionStatus.FAILED, "An unexpected error occurred during duplicate detection."),
+    INVALID_ACTION_TARGET_TYPE(Guard.INVALID_ACTION_TARGET_TYPE.getName(),
+                               Guard.INVALID_ACTION_TARGET_TYPE.getCompletionStatus(),
+                               "The action target does not have a qualified name and so the governance service can not look for its duplicates."),
     NO_TARGETS_DETECTED("no-targets-detected", CompletionStatus.INVALID, "There is no supplied action target and so the governance service does not know which element to work on."),
-    MULTIPLE_TARGETS_DETECTED("multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the origin search could be different for each action target making it difficult to automate the response."),
+    MULTIPLE_TARGETS_DETECTED("multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the duplicate search could be different for each action target making it difficult to automate the response."),
 
     ;
 
