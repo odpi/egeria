@@ -620,6 +620,46 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                 "The metadata access server's audit log has an OMAG-GENERIC-HANDLERS-0001 message for each element it could not correct, with the cause.  Correct each cause, for example by connecting the cohort member that owns the classification, then run the service again.",
                                 "https://egeria-project.org/features/governance-zoning/overview/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0056 - The {0} watchdog action service is waiting for {1} to dos to finish: {2}
+     */
+    WAITING_FOR_TO_DOS("GOVERNANCE-ACTION-CONNECTORS-0056",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} watchdog action service is waiting for {1} to dos to finish: {2}",
+                       "The watchdog action service listens for changes to these to dos.  It completes when each of them has a finished activity status or has been deleted.",
+                       "No action is required.  The stewards assigned to the to dos need to complete them.",
+                       "https://egeria-project.org/concepts/to-do/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0057 - The {0} watchdog action service has detected that every to do it was waiting for has been completed: {1}
+     */
+    TO_DOS_COMPLETED("GOVERNANCE-ACTION-CONNECTORS-0057",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "The {0} watchdog action service has detected that every to do it was waiting for has been completed: {1}",
+                     "The watchdog action service returns an ACTIONED completion status with the to-dos-completed guard.",
+                     "No action is required.",
+                     "https://egeria-project.org/concepts/to-do/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0058 - The {0} watchdog action service has detected that every to do it was waiting for has finished, but these were not completed: {1}
+     */
+    TO_DOS_NOT_COMPLETED("GOVERNANCE-ACTION-CONNECTORS-0058",
+                         AuditLogRecordSeverityLevel.INFO,
+                         "The {0} watchdog action service has detected that every to do it was waiting for has finished, but these were not completed: {1}",
+                         "The watchdog action service returns an ACTIONED completion status with the to-dos-not-completed guard.  A to do that was abandoned, cancelled, ignored, failed, marked invalid or deleted is not completed.",
+                         "Review the to dos that were not completed to understand why the stewards did not complete them, and validate that the governance action process is responding to the to-dos-not-completed guard as expected.",
+                         "https://egeria-project.org/concepts/to-do/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0059 - The {0} watchdog action service has not been supplied with any to dos to wait for
+     */
+    NO_TO_DOS("GOVERNANCE-ACTION-CONNECTORS-0059",
+              AuditLogRecordSeverityLevel.INFO,
+              "The {0} watchdog action service has not been supplied with any to dos to wait for",
+              "The watchdog action service returns an ACTIONED completion status with the no-to-dos guard.  The to dos are the action targets named stewardAction and any other action targets that are ToDo elements.",
+              "If to dos were expected, check that the previous step in the governance action process passed them on as action targets.",
+              "https://egeria-project.org/concepts/to-do/"),
+
     ;
 
     private final String                      logMessageId;

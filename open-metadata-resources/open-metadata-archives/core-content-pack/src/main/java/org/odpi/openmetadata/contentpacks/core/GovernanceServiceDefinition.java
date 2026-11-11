@@ -100,6 +100,17 @@ public enum GovernanceServiceDefinition
                      ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * Wait For Steward Watchdog Action Service
+     */
+    WAIT_FOR_STEWARD("749b149f-1d65-4184-a883-b6b67269f96b",
+                     "wait-for-steward-watchdog-action-service",
+                     "Wait For Steward Watchdog Action Service",
+                     new WaitForStewardGovernanceActionProvider(),
+                     ResourceUse.WATCH_DOG,
+                     DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Locate and Set Origin Governance Action Service -
      * Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.
      */
