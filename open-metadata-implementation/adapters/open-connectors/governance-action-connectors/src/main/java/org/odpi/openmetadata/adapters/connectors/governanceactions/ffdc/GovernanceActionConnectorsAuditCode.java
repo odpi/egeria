@@ -660,6 +660,26 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
               "If to dos were expected, check that the previous step in the governance action process passed them on as action targets.",
               "https://egeria-project.org/concepts/to-do/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0060 - The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name
+     */
+    NO_QUALIFIED_NAME("GOVERNANCE-ACTION-CONNECTORS-0060",
+                      AuditLogRecordSeverityLevel.ERROR,
+                      "The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name",
+                      "The governance action service returns an INVALID completion status with the invalid-action-target-type guard without searching for duplicates.",
+                      "Check that the action target passed to the governance action service is a Referenceable element with a qualified name, and then rerun the request.",
+                      "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0061 - The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}
+     */
+    PEER_DUPLICATE_LINKED("GOVERNANCE-ACTION-CONNECTORS-0061",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}",
+                          "The governance action service has created a PeerDuplicateLink relationship between the elements and has set the KnownDuplicate classification on both of them.",
+                          "Validate that the elements describe the same thing, and remove the PeerDuplicateLink relationship if they do not.",
+                          "https://egeria-project.org/concepts/governance-action-service/"),
+
     ;
 
     private final String                      logMessageId;

@@ -33,7 +33,9 @@ The remaining governance action services, grouped by category, are:
   * **OwnerSetterGovernanceActionConnector** - sets an Ownership classification on the elements supplied
     as action targets, using the owner from its configuration properties and request parameters.
   * **QualifiedNamePeerDuplicateGovernanceActionConnector** - checks the qualified name of the entity passed as
-    an action target to determine its duplicates.
+    an action target to determine its duplicates.  Each element of the same type with the same qualified name is
+    linked to the action target with a PeerDuplicateLink relationship, and both are given the KnownDuplicate
+    classification.  Duplicates that are already linked are not linked again, so the service can be rerun safely.
   * **RetentionClassifierGovernanceActionConnector** - sets a Retention classification on the elements supplied
     as action targets.
 * **Stewardship**
