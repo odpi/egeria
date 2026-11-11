@@ -500,16 +500,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html#ACTIONS_ACTIONED" class="member-name-link">ACTIONS_ACTIONED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGuard</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#ACTIONS_ACTIONED" class="member-name-link">ACTIONS_ACTIONED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/pasteur/ffdc/PasteurAuditCode.html#ACTIONS_DELETED" class="member-name-link">ACTIONS_DELETED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.pasteur.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/pasteur/ffdc/PasteurAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.pasteur.ffdc">PasteurAuditCode</a></dt>
 <dd>
 <div class="block">PASTEUR-ACTION-HISTORY-CLEANUP-0003 - The {0} integration connector has deleted {1} finished actions of type
  {2} that completed more than {3} days ago using delete method {4}</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html#ACTIONS_DETECTED" class="member-name-link">ACTIONS_DETECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGuard</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#ACTIONS_DETECTED" class="member-name-link">ACTIONS_DETECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#ACTIONS_RELATIONSHIP" class="member-name-link">ACTIONS_RELATIONSHIP</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>
@@ -39201,9 +39197,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGovernanceActionConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGovernanceActionConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship</a></dt>
 <dd>
-<div class="block">EvaluateAnnotationsGovernanceActionConnector is currently a placeholder for a governance action service
- that will look through the annotations from a survey report and set up guards to drive actions that
- process the different types.</div>
+<div class="block">EvaluateAnnotationsGovernanceActionConnector is a governance action service that looks through the
+ annotations from a survey report and opens a to do for the steward for each request for action annotation.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGovernanceActionConnector.html#%3Cinit%3E()" class="member-name-link">EvaluateAnnotationsGovernanceActionConnector()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGovernanceActionConnector</a></dt>
 <dd>
@@ -39224,8 +39219,6 @@ loadScripts(document, 'script');</script>
 <div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html#EVALUATION_FAILED" class="member-name-link">EVALUATION_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGuard</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#EVALUATION_FAILED" class="member-name-link">EVALUATION_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductGlossaryTermDefinition.html#EVALUATION_SUBSCRIPTION" class="member-name-link">EVALUATION_SUBSCRIPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductGlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductGlossaryTermDefinition</a></dt>
 <dd>&nbsp;</dd>
@@ -114966,8 +114959,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/iterator/MemberAction.html#NO_ACTION" class="member-name-link">NO_ACTION</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.integration.iterator.<a href="org/odpi/openmetadata/frameworks/integration/iterator/MemberAction.html" title="enum class in org.odpi.openmetadata.frameworks.integration.iterator">MemberAction</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#NO_ACTION_REQUIRED" class="member-name-link">NO_ACTION_REQUIRED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ProjectHealth.html#NO_ACTIVITY" class="member-name-link">NO_ACTIVITY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/ProjectHealth.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ProjectHealth</a></dt>
 <dd>
 <div class="block">The project is no longer being worked on either because it completed successfully, or was cancelled, or put on hold.</div>
@@ -115368,8 +115359,6 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html#NO_SURVEY_REPORT" class="member-name-link">NO_SURVEY_REPORT</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGuard</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#NO_SURVEY_REPORT" class="member-name-link">NO_SURVEY_REPORT</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/tabulardatasets/ffdc/TabularDataErrorCode.html#NO_TABLE_IN_FOCUS" class="member-name-link">NO_TABLE_IN_FOCUS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/tabulardatasets/ffdc/TabularDataErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.tabulardatasets.ffdc">TabularDataErrorCode</a></dt>
 <dd>
 <div class="block">REFERENCE-DATA-CONNECTORS-400-008 - Connector {0} has been asked to read digital product family {1} without being told which of its tabular data sets to read</div>
@@ -115410,6 +115399,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0030 - The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#NO_TO_DOS" class="member-name-link">NO_TO_DOS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0059 - The {0} watchdog action service has not been supplied with any to dos to wait for</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#NO_TO_DOS" class="member-name-link">NO_TO_DOS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/multitenant/ffdc/OMAGServerInstanceAuditCode.html#NO_TOPIC_INFORMATION" class="member-name-link">NO_TOPIC_INFORMATION</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.multitenant.ffdc.<a href="org/odpi/openmetadata/commonservices/multitenant/ffdc/OMAGServerInstanceAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.multitenant.ffdc">OMAGServerInstanceAuditCode</a></dt>
 <dd>
 <div class="block">OMAG-MULTI-TENANT-0002 - Method {0} called on behalf of the {1} service cannot create a client-side open metadata topic connection because the topic name is not configured in the configuration for this service.</div>
@@ -130255,6 +130250,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/baudot/BaudotSubscriptionManagementConnector.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.baudot.<a href="org/odpi/openmetadata/adapters/connectors/baudot/BaudotSubscriptionManagementConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.baudot">BaudotSubscriptionManagementConnector</a></dt>
 <dd>
 <div class="block">This method is called each time a metadata change is received.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a></dt>
+<dd>
+<div class="block">This method is called each time a to do is updated or deleted.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/watchdog/GenericElementWatchdogGovernanceActionConnector.html#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent(OpenMetadataOutTopicEvent)</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/watchdog/GenericElementWatchdogGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog">GenericElementWatchdogGovernanceActionConnector</a></dt>
 <dd>
@@ -171378,7 +171377,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a></dt>
 <dd>
-<div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
+<div class="block">Indicates that the watchdog action service is completely configured and can begin processing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WriteAuditLogMessageGovernanceActionConnector.html#start()" class="member-name-link">start()</a> - Method in class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WriteAuditLogMessageGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WriteAuditLogMessageGovernanceActionConnector</a></dt>
 <dd>
@@ -175994,6 +175993,18 @@ loadScripts(document, 'script');</script>
 <div class="block">An optional qualified name of a template To Do entity that is created if there is confusion identifying the correct
  reference data for a file being catalogued.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#TO_DOS_COMPLETED" class="member-name-link">TO_DOS_COMPLETED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0057 - The {0} watchdog action service has detected that every to do it was waiting for has been completed: {1}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#TO_DOS_COMPLETED" class="member-name-link">TO_DOS_COMPLETED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#TO_DOS_NOT_COMPLETED" class="member-name-link">TO_DOS_NOT_COMPLETED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0058 - The {0} watchdog action service has detected that every to do it was waiting for has finished, but these were not completed: {1}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#TO_DOS_NOT_COMPLETED" class="member-name-link">TO_DOS_NOT_COMPLETED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/enums/PermittedSynchronization.html#TO_THIRD_PARTY" class="member-name-link">TO_THIRD_PARTY</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.enums.<a href="org/odpi/openmetadata/frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></dt>
 <dd>
 <div class="block">To Third Party - The third party technology is logically downstream of open metadata.</div>
@@ -199899,6 +199910,8 @@ the order they are declared.</div>
 <dl class="index">
 <dt><a href="org/odpi/openmetadata/samples/archiveutilities/sustainability/GlossaryCategoryDefinition.html#W3C_STANDARDS" class="member-name-link">W3C_STANDARDS</a> - Enum constant in enum class org.odpi.openmetadata.samples.archiveutilities.sustainability.<a href="org/odpi/openmetadata/samples/archiveutilities/sustainability/GlossaryCategoryDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.sustainability">GlossaryCategoryDefinition</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html#WAIT_FAILED" class="member-name-link">WAIT_FAILED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html#WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY" class="member-name-link">WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY</a> - Static variable in class org.odpi.openmetadata.adapters.connectors.integration.basicfiles.<a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></dt>
 <dd>
 <div class="block">An optional flag that instructs the connector to wait for the monitoring directory to be created if it does not exist rather than
@@ -199919,6 +199932,14 @@ the order they are declared.</div>
 <div class="block">An optional flag that instructs the connector to wait for the monitoring directory to be created if it does not exist rather than
  throwing an exception to force the integration connector into failed state.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html#WAIT_FOR_STEWARD" class="member-name-link">WAIT_FOR_STEWARD</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">GovernanceServiceDefinition</a></dt>
+<dd>
+<div class="block">Wait For Steward Watchdog Action Service</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html#WAIT_FOR_STEWARD" class="member-name-link">WAIT_FOR_STEWARD</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></dt>
+<dd>
+<div class="block">wait-for-steward</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html#WAIT_TIME" class="member-name-link">WAIT_TIME</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></dt>
 <dd>
 <div class="block">The minimum number of minutes that the governance engine should wait before calling the governance service.</div>
@@ -199934,8 +199955,8 @@ the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship</a></dt>
 <dd>
-<div class="block">WaitForStewardGovernanceActionConnector is currently a placeholder for a governance action service
- that will wait for a steward to complete a to do.</div>
+<div class="block">WaitForStewardGovernanceActionConnector is a Watchdog Action Service that waits for stewards to finish the
+ to dos supplied as its action targets.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html#%3Cinit%3E()" class="member-name-link">WaitForStewardGovernanceActionConnector()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a></dt>
 <dd>
@@ -199944,7 +199965,7 @@ the order they are declared.</div>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionProvider.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionProvider</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship</a></dt>
 <dd>
 <div class="block">WaitForStewardGovernanceActionProvider is the OCF connector provider for the "WaitForSteward"
- Governance Action Service.</div>
+ Watchdog Action Service.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionProvider.html#%3Cinit%3E()" class="member-name-link">WaitForStewardGovernanceActionProvider()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionProvider</a></dt>
 <dd>
@@ -199953,7 +199974,7 @@ the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship</a></dt>
 <dd>
-<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+<div class="block">WaitForStewardGuard describes the guards produced by the Wait For Steward Watchdog Action Service.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/properties/GovernanceActionStatus.html#WAITING" class="member-name-link">WAITING</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.opengovernance.properties.<a href="org/odpi/openmetadata/frameworks/opengovernance/properties/GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.properties">GovernanceActionStatus</a></dt>
 <dd>
@@ -199966,6 +199987,10 @@ the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/properties/IntegrationConnectorStatus.html#WAITING" class="member-name-link">WAITING</a> - Enum constant in enum class org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/properties/IntegrationConnectorStatus.html" title="enum class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties">IntegrationConnectorStatus</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#WAITING_FOR_TO_DOS" class="member-name-link">WAITING_FOR_TO_DOS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
+<dd>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0056 - The {0} watchdog action service is waiting for {1} to dos to finish: {2}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/FileExtension.html#WAR_FILE" class="member-name-link">WAR_FILE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/FileExtension.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">FileExtension</a></dt>
 <dd>
 <div class="block">A file containing an organized collection of files that represent a web application.</div>

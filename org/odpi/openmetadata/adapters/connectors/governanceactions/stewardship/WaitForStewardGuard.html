@@ -98,9 +98,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">WaitForStewardGuard</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a>&gt;</span></div>
-<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.
- Using the common guard names where possible saves time when coding the provider class and improves the
- ability of the service to be incorporated into governance action processes.</div>
+<div class="block">WaitForStewardGuard describes the guards produced by the Wait For Steward Watchdog Action Service.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -121,16 +119,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ACTIONS_ACTIONED" class="member-name-link">ACTIONS_ACTIONED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_TO_DOS" class="member-name-link">NO_TO_DOS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ACTIONS_DETECTED" class="member-name-link">ACTIONS_DETECTED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#TO_DOS_COMPLETED" class="member-name-link">TO_DOS_COMPLETED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#EVALUATION_FAILED" class="member-name-link">EVALUATION_FAILED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TO_DOS_NOT_COMPLETED" class="member-name-link">TO_DOS_NOT_COMPLETED</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NO_ACTION_REQUIRED" class="member-name-link">NO_ACTION_REQUIRED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#WAIT_FAILED" class="member-name-link">WAIT_FAILED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_SURVEY_REPORT" class="member-name-link">NO_SURVEY_REPORT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -228,33 +224,27 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NO_ACTION_REQUIRED">
-<h3>NO_ACTION_REQUIRED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">NO_ACTION_REQUIRED</span></div>
+<section class="detail" id="TO_DOS_COMPLETED">
+<h3>TO_DOS_COMPLETED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">TO_DOS_COMPLETED</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ACTIONS_DETECTED">
-<h3>ACTIONS_DETECTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">ACTIONS_DETECTED</span></div>
+<section class="detail" id="TO_DOS_NOT_COMPLETED">
+<h3>TO_DOS_NOT_COMPLETED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">TO_DOS_NOT_COMPLETED</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ACTIONS_ACTIONED">
-<h3>ACTIONS_ACTIONED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">ACTIONS_ACTIONED</span></div>
+<section class="detail" id="NO_TO_DOS">
+<h3>NO_TO_DOS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">NO_TO_DOS</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_SURVEY_REPORT">
-<h3>NO_SURVEY_REPORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">NO_SURVEY_REPORT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="EVALUATION_FAILED">
-<h3>EVALUATION_FAILED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">EVALUATION_FAILED</span></div>
+<section class="detail" id="WAIT_FAILED">
+<h3>WAIT_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></span>&nbsp;<span class="element-name">WAIT_FAILED</span></div>
 </section>
 </li>
 </ul>

@@ -5183,9 +5183,8 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGovernanceActionConnector</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">EvaluateAnnotationsGovernanceActionConnector is currently a placeholder for a governance action service
- that will look through the annotations from a survey report and set up guards to drive actions that
- process the different types.</div>
+<div class="block">EvaluateAnnotationsGovernanceActionConnector is a governance action service that looks through the
+ annotations from a survey report and opens a to do for the steward for each request for action annotation.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/EvaluateAnnotationsGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGovernanceActionProvider</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -16638,17 +16637,17 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">WaitForStewardGovernanceActionConnector is currently a placeholder for a governance action service
- that will wait for a steward to complete a to do.</div>
+<div class="block">WaitForStewardGovernanceActionConnector is a Watchdog Action Service that waits for stewards to finish the
+ to dos supplied as its action targets.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionProvider</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">WaitForStewardGovernanceActionProvider is the OCF connector provider for the "WaitForSteward"
- Governance Action Service.</div>
+ Watchdog Action Service.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/stewardship/WaitForStewardGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGuard</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab3">
-<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+<div class="block">WaitForStewardGuard describes the guards produced by the Wait For Steward Watchdog Action Service.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="org/odpi/openmetadata/engineservices/watchdogaction/admin/WatchdogActionAdmin.html" title="class in org.odpi.openmetadata.engineservices.watchdogaction.admin">WatchdogActionAdmin</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
