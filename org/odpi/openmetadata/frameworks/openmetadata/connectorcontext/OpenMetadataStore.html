@@ -1092,7 +1092,10 @@ loadScripts(document, 'script');</script>
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return a list of elements with the requested search string in their (display, resource)name, qualified name,
  title, text, summary, identifier or description.
- The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.</div>
+ The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+ Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+ A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+ one page is returned on each of those pages, with the matches from that page.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - name to retrieve</dd>
@@ -1118,7 +1121,10 @@ loadScripts(document, 'script');</script>
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return a list of elements with the requested search string in their (display, resource)name, qualified name,
  title, text, summary, identifier or description.
- The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.</div>
+ The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+ Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+ A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+ one page is returned on each of those pages, with the matches from that page.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>searchString</code> - name to retrieve</dd>

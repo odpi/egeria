@@ -129,8 +129,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInAssetDomain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findInAssetDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a list of assets with the requested search string in their name, qualified name
- or description.</div>
+<div class="block">Locate string value in elements that are anchored to assets.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/DcatDocumentResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">DcatDocumentResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetAsDcat(java.lang.String,java.lang.String)" class="member-name-link">getAssetAsDcat</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -258,8 +257,10 @@ loadScripts(document, 'script');</script>
 <h3>findInAssetDomain</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">findInAssetDomain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Return a list of assets with the requested search string in their name, qualified name
- or description.</div>
+<div class="block">Locate string value in elements that are anchored to assets.  The results are organized by asset.
+ Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by asset.
+ A page may therefore hold fewer assets than pageSize, and an asset whose matches fall on more than
+ one page is returned on each of those pages, with the matches from that page.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
