@@ -59,6 +59,14 @@ public enum ContentPackDefinition
                        "BitolContentPack.omarchive"),
 
     /**
+     * Receive W3C Data Catalog Vocabulary (DCAT) descriptions of catalogs, datasets and data services from files and Apache Kafka topics, catalog them as assets, and publish the DCAT descriptions of the assets in the DCAT Publishing Catalog.
+     */
+    DCAT_CONTENT_PACK("14b3d5c3-d7a4-4800-a0aa-79fcc1211751",
+                      "DCATContentPack",
+                      "Receive W3C Data Catalog Vocabulary (DCAT) descriptions of catalogs, datasets and data services from files and Apache Kafka topics, catalog them as assets, and publish the DCAT descriptions of the assets in the DCAT Publishing Catalog.",
+                      "DCATContentPack.omarchive"),
+
+    /**
      * Reference data, templates, connectors, and governance services for working with Unity Catalog.
      */
     UNITY_CATALOG_CONTENT_PACK("e6756296-3fa3-4aa3-9450-0dc44b8beae2",

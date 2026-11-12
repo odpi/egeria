@@ -9,7 +9,7 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 22 |
+| **Number of messages** | 25 |
 | **Message identifiers begin** | `OIF-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-integration-framework](../../open-metadata-implementation/frameworks/open-integration-framework) |
@@ -43,6 +43,9 @@ The OIFAuditCode is used to define the message content for the Audit Log.
 | [OIF-CONNECTOR-0023](#oif-connector-0023) | ERROR | The integration daemon received a Bitol document of kind {0} through the {1} method which expects {2}; the document begins: {3} |
 | [OIF-CONNECTOR-0024](#oif-connector-0024) | INFO | The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2} |
 | [OIF-CONNECTOR-0025](#oif-connector-0025) | ERROR | The {0} integration connector found that every one of its {1} catalog target(s) is homed in another metadata collection, so it has nothing to refresh |
+| [OIF-CONNECTOR-0026](#oif-connector-0026) | ERROR | A {0} exception with message {1} occurred when parsing DCAT document: {2} |
+| [OIF-CONNECTOR-0027](#oif-connector-0027) | EXCEPTION | A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document |
+| [OIF-CONNECTOR-0028](#oif-connector-0028) | ERROR | The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0} |
 
 ----
 
@@ -504,6 +507,69 @@ The connector refreshes none of them.  They belong to other integration daemons 
 **User action**
 
 No action is required if this daemon is genuinely not responsible for anything - but a connector with nothing to refresh and a connector that has stopped refreshing look identical from outside, which is why this is said out loud.  If this daemon should be refreshing one of these catalog targets, register it through this daemon's own metadata access store rather than another.
+
+
+----
+
+### OIF-CONNECTOR-0026
+
+> A {0} exception with message {1} occurred when parsing DCAT document: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.DCAT_FORMAT_ERROR` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The integration daemon cannot parse an incoming Data Catalog Vocabulary (DCAT) document.  The document is discarded.
+
+**User action**
+
+Verify that the document is valid JSON-LD.  Other serializations of DCAT, such as Turtle and RDF/XML, are not supported and need to be converted to JSON-LD before they are sent to Egeria.
+
+
+----
+
+### OIF-CONNECTOR-0027
+
+> A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.DCAT_PUBLISH_ERROR` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The integration daemon has caught the exception and carries on passing the DCAT document to the other integration connectors that are listening for DCAT documents.
+
+**User action**
+
+Look at the resulting stack trace to understand what went wrong in the integration connector that was processing the DCAT document, and correct either the connector or the document.
+
+
+----
+
+### OIF-CONNECTOR-0028
+
+> The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFAuditCode.DCAT_EMPTY_DOCUMENT` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}` |
+
+**System action**
+
+The document is discarded because there is nothing in it to catalog.
+
+**User action**
+
+Check that the resources in the document are typed as dcat:Catalog, dcat:Dataset, dcat:DatasetSeries or dcat:DataService, and that the document either embeds its JSON-LD context or uses the standard names for the DCAT terms.  Egeria does not retrieve a context from the network.
 
 
 ----

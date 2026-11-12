@@ -1,0 +1,82 @@
+{
+  "@context": {
+    "@vocab": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "title": { "@id": "dct:title", "@container": "@language" },
+    "description": "dct:description",
+    "publisher": { "@id": "dct:publisher", "@type": "@id" },
+    "landingPage": { "@type": "@id" },
+    "endpointURL": { "@type": "@id" },
+    "servesDataset": { "@type": "@id" },
+    "inSeries": { "@type": "@id" },
+    "dataset": { "@type": "@id" },
+    "service": { "@type": "@id" },
+    "downloadURL": { "@type": "@id" },
+    "id": "@id",
+    "type": "@type"
+  },
+  "@graph": [
+    {
+      "id": "https://transport.example.gov/catalog",
+      "type": "Catalog",
+      "title": { "en": "Department for Transport open data", "cy": "Data agored yr Adran Drafnidiaeth" },
+      "description": "Datasets and services published by the Department for Transport.",
+      "publisher": "https://transport.example.gov/org/dft",
+      "foaf:homepage": { "id": "https://transport.example.gov" },
+      "dataset": [
+        "https://transport.example.gov/dataset/bus-timetables",
+        "https://transport.example.gov/dataset/bus-timetables-2025-q1",
+        "https://transport.example.gov/dataset/bus-timetables-2025-q2"
+      ],
+      "service": "https://transport.example.gov/service/timetable-api"
+    },
+    {
+      "id": "https://transport.example.gov/org/dft",
+      "type": "foaf:Organization",
+      "foaf:name": "Department for Transport"
+    },
+    {
+      "id": "https://transport.example.gov/dataset/bus-timetables",
+      "type": "DatasetSeries",
+      "title": { "en": "Bus timetables" },
+      "description": "Quarterly releases of the national bus timetable.",
+      "publisher": "https://transport.example.gov/org/dft"
+    },
+    {
+      "id": "https://transport.example.gov/dataset/bus-timetables-2025-q1",
+      "type": "Dataset",
+      "title": { "en": "Bus timetables 2025 Q1" },
+      "inSeries": "https://transport.example.gov/dataset/bus-timetables",
+      "keyword": [ "bus", "timetable" ],
+      "distribution": {
+        "type": "Distribution",
+        "downloadURL": "https://transport.example.gov/files/bus-2025-q1.zip",
+        "dct:format": "GTFS"
+      }
+    },
+    {
+      "id": "https://transport.example.gov/dataset/bus-timetables-2025-q2",
+      "type": "Dataset",
+      "title": { "en": "Bus timetables 2025 Q2" },
+      "inSeries": "https://transport.example.gov/dataset/bus-timetables",
+      "keyword": [ "bus", "timetable" ],
+      "distribution": {
+        "type": "Distribution",
+        "downloadURL": "https://transport.example.gov/files/bus-2025-q2.zip",
+        "dct:format": "GTFS"
+      }
+    },
+    {
+      "id": "https://transport.example.gov/service/timetable-api",
+      "type": "DataService",
+      "title": { "en": "Timetable API" },
+      "endpointURL": "https://api.transport.example.gov/timetables/v2",
+      "endpointDescription": { "id": "https://api.transport.example.gov/timetables/v2/openapi.json" },
+      "servesDataset": [
+        "https://transport.example.gov/dataset/bus-timetables-2025-q1",
+        "https://transport.example.gov/dataset/bus-timetables-2025-q2"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
@@ -38,6 +39,7 @@ public class CatalogTargetContext extends IntegrationContext
      * @param connectedAssetClient client for working with connectors
      * @param openLineageListenerManager distributes open lineage events to listeners
      * @param bitolDocumentManager distributes Bitol documents (ODCS data contracts and ODPS data products) to listeners
+     * @param dcatDocumentManager distributes DCAT documents to listeners
      * @param governanceConfiguration client for managing catalog targets
      * @param openGovernanceClient client for initiating governance actions
      * @param auditLog logging destination
@@ -59,6 +61,7 @@ public class CatalogTargetContext extends IntegrationContext
                                 ConnectedAssetClient       connectedAssetClient,
                                 OpenLineageListenerManager openLineageListenerManager,
                                 BitolDocumentManager       bitolDocumentManager,
+                                DcatDocumentManager        dcatDocumentManager,
                                 GovernanceConfiguration    governanceConfiguration,
                                 OpenGovernanceClient       openGovernanceClient,
                                 AuditLog                   auditLog,
@@ -80,6 +83,7 @@ public class CatalogTargetContext extends IntegrationContext
               connectedAssetClient,
               openLineageListenerManager,
               bitolDocumentManager,
+              dcatDocumentManager,
               governanceConfiguration,
               openGovernanceClient,
               auditLog,

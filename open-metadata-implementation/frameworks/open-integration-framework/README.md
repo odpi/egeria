@@ -79,6 +79,20 @@ build on this package: an event receiver for Kafka, log stores that forward even
 a publisher that turns Egeria's own governance actions into OpenLineage events, and a cataloguer that maps the
 events into open metadata.
 
+## DCAT document support
+
+The `dcat` package supports the W3C [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) version 3,
+which is used to exchange descriptions of data assets.  `dcat.properties` holds the beans for catalogs, datasets,
+dataset series, distributions and data services.  `dcat.DcatDocumentFormatter` reads and writes the JSON-LD
+serialization of DCAT using the small JSON-LD reader in `dcat.jsonld`, which expands any arrangement of a JSON-LD
+document without retrieving anything from the network.  `dcat.DcatDocumentListener` is the interface an integration
+connector implements to receive the documents (registered through `IntegrationContext.registerDcatListener`), and
+`IntegrationContext.publishDcatDocument` publishes them.
+
+The `dcat.mapping` package holds the mapping between the documents and open metadata.  `DcatMapper` catalogs a
+document and `DcatGenerator` creates the DCAT description of an asset or a collection.  Both work through a
+connector context, so they are used by the DCAT integration connectors and by the Asset Catalog OMVS.
+
 ## Bitol document support
 
 The `bitol` package provides the bean classes for the [Bitol](https://github.com/bitol-io) standards:

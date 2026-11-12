@@ -247,6 +247,36 @@ public enum OIFAuditCode implements AuditLogMessageSet
                                 "No action is required if this daemon is genuinely not responsible for anything - but a connector with nothing to refresh and a connector that has stopped refreshing look identical from outside, which is why this is said out loud.  If this daemon should be refreshing one of these catalog targets, register it through this daemon's own metadata access store rather than another.",
                                 "https://egeria-project.org/frameworks/oif/overview/"),
 
+    /**
+     * OIF-CONNECTOR-0026 - A {0} exception with message {1} occurred when parsing DCAT document: {2}
+     */
+    DCAT_FORMAT_ERROR("OIF-CONNECTOR-0026",
+                      AuditLogRecordSeverityLevel.ERROR,
+                      "A {0} exception with message {1} occurred when parsing DCAT document: {2}",
+                      "The integration daemon cannot parse an incoming Data Catalog Vocabulary (DCAT) document.  The document is discarded.",
+                      "Verify that the document is valid JSON-LD.  Other serializations of DCAT, such as Turtle and RDF/XML, are not supported and need to be converted to JSON-LD before they are sent to Egeria.",
+                      "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-0027 - A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document
+     */
+    DCAT_PUBLISH_ERROR("OIF-CONNECTOR-0027",
+                       AuditLogRecordSeverityLevel.EXCEPTION,
+                       "A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document",
+                       "The integration daemon has caught the exception and carries on passing the DCAT document to the other integration connectors that are listening for DCAT documents.",
+                       "Look at the resulting stack trace to understand what went wrong in the integration connector that was processing the DCAT document, and correct either the connector or the document.",
+                       "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-0028 - The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0}
+     */
+    DCAT_EMPTY_DOCUMENT("OIF-CONNECTOR-0028",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0}",
+                        "The document is discarded because there is nothing in it to catalog.",
+                        "Check that the resources in the document are typed as dcat:Catalog, dcat:Dataset, dcat:DatasetSeries or dcat:DataService, and that the document either embeds its JSON-LD context or uses the standard names for the DCAT terms.  Egeria does not retrieve a context from the network.",
+                        "https://egeria-project.org/frameworks/oif/overview/"),
+
     ;
 
     private final String                      logMessageId;

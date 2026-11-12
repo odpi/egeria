@@ -45,6 +45,15 @@ public enum IntegrationGroupDefinition
           ContentPackDefinition.BITOL_CONTENT_PACK),
 
     /**
+     * Dynamic integration group containing integration connectors for exchanging Data Catalog Vocabulary (DCAT) descriptions of data assets.
+     */
+    DCAT("fe71b3b2-549e-4ce7-938f-c799796e50a4",
+         "Egeria:IntegrationGroup:DCAT",
+         "DCATIntegrationGroup",
+         "Dynamic integration group containing integration connectors for exchanging Data Catalog Vocabulary (DCAT) descriptions of data assets.",
+         ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
      * Dynamic integration group containing integration connectors for working with Egeria's infrastructure.
      */
     EGERIA("502c6eb0-a9d5-4a65-97dc-5cd5a4f10c36",

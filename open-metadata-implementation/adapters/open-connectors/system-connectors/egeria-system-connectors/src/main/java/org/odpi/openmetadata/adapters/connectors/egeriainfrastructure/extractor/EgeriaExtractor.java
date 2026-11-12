@@ -1512,6 +1512,26 @@ public class EgeriaExtractor
 
 
     /**
+     * Pass a Data Catalog Vocabulary (DCAT) document to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for DCAT documents.
+     *
+     * @param document DCAT document in JSON-LD format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDcatDocument(String document) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        assert integrationDaemonClient != null;
+
+        integrationDaemonClient.publishDcatDocument(document);
+    }
+
+
+    /**
      * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
      * connectors that have registered a listener for Bitol documents.
      *

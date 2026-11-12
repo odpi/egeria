@@ -221,6 +221,24 @@ suites that use them.
   ./gradlew :open-metadata-test:open-metadata-fvt:bitol-fvt:test -PrunBitolFvtInMemory
   ```
 
+* **[dcat-fvt](dcat-fvt)** - tests the **DCAT connectors** - the integration connectors that receive, catalog
+  and publish descriptions of data assets in the W3C [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) -
+  together with the **DCAT content pack** that defines them and the **DCAT Publishing Catalog** from the Core
+  content pack. Built the same way as bitol-fvt. DCAT documents arrive through a loading bay directory, the
+  integration daemon's REST API and an Apache Kafka topic, and the suite checks the assets that the cataloguer
+  creates; it then adds assets to the publishing catalog and checks the files that the publisher writes and
+  withdraws.
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:dcat-fvt:test -PrunDcatFvt
+  ```
+
+  A second mode carries the out topics over the in-memory topic connector, so that only PostgreSQL is needed:
+
+  ```
+  ./gradlew :open-metadata-test:open-metadata-fvt:dcat-fvt:test -PrunDcatFvtInMemory
+  ```
+
 * **[tabular-data-fvt](tabular-data-fvt)** - tests the **tabular data set connectors**, the connectors that
   turn open metadata into rows and columns so it can be handed out as a digital product. Everything
   downstream of them - the report generator, the provisioning governance action that copies a data set into a

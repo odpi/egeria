@@ -131,6 +131,24 @@ public enum ContentPackSolutionLinkingWire
                                            ContentPackDefinition.BITOL_CONTENT_PACK),
 
     /**
+     * Passes the DCAT documents found in the files to the DCAT cataloguer.
+     */
+    DCAT_FILES_RECEIVER_TO_CATALOGUER(IntegrationConnectorDefinition.DCAT_FILES_RECEIVER.getSolutionComponentGUID(),
+                                      IntegrationConnectorDefinition.DCAT_CATALOGUER.getSolutionComponentGUID(),
+                                      "distribute documents",
+                                      "Passes the DCAT documents found in the files to the DCAT cataloguer.",
+                                      ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
+     * Passes the DCAT documents received from the topics to the DCAT cataloguer.
+     */
+    DCAT_EVENT_RECEIVER_TO_CATALOGUER(IntegrationConnectorDefinition.DCAT_EVENT_RECEIVER.getSolutionComponentGUID(),
+                                      IntegrationConnectorDefinition.DCAT_CATALOGUER.getSolutionComponentGUID(),
+                                      "distribute documents",
+                                      "Passes the DCAT documents received from the topics to the DCAT cataloguer.",
+                                      ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
      * Receive and push open lineage events to the other open lineage components.
      */
     RECEIVE_OL_EVENTS(EgeriaSolutionComponent.OL_KAFKA_TOPIC.getGUID(),

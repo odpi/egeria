@@ -113,3 +113,89 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
+
+###
+# =====================================================================================================================
+# Data Catalog Vocabulary (DCAT): https://www.w3.org/TR/vocab-dcat-3/
+# DCAT documents are exchanged in JSON-LD.  They describe catalogs, datasets (with their distributions), dataset series
+# and data services.
+# @integrationDaemonGUID is the GUID of the integration daemon's SoftwareServer asset in the catalog.
+# =====================================================================================================================
+
+@integrationDaemonGUID=add guid here
+@assetGUID=add guid here
+
+###
+# @name publishDcatDocument
+# Send a DCAT document to an integration daemon for its DCAT listeners (such as the DCAT Cataloguer).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/integration-daemons/{{integrationDaemonGUID}}/dcat/publish-document
+Authorization: Bearer {{token}}
+Content-Type: application/ld+json
+
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/"
+  },
+  "@id": "https://data.example.gov/dataset/air-quality-2025",
+  "@type": "dcat:Dataset",
+  "dct:title": "Air quality measurements 2025",
+  "dct:description": "Hourly readings of nitrogen dioxide, ozone and particulates from the national monitoring network.",
+  "dct:publisher": { "@type": "foaf:Organization", "foaf:name": "Environment Agency" },
+  "dcat:keyword": [ "air quality", "pollution" ],
+  "dct:license": { "@id": "https://creativecommons.org/licenses/by/4.0/" },
+  "dcat:distribution": {
+    "@type": "dcat:Distribution",
+    "dct:title": "Air quality 2025 (CSV)",
+    "dcat:downloadURL": { "@id": "https://data.example.gov/files/air-quality-2025.csv" },
+    "dct:format": "CSV"
+  }
+}
+
+###
+# @name importDcatDocument
+# Catalog a DCAT document directly.  Each dataset becomes a DataSet asset with an asset for each distribution, each data
+# service becomes a DeployedAPI and each catalog becomes a CollectionFolder.  The GUIDs of these elements are returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/dcat/import-document
+Authorization: Bearer {{token}}
+Content-Type: application/ld+json
+
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "vcard": "http://www.w3.org/2006/vcard/ns#"
+  },
+  "@id": "https://data.example.gov/dataset/air-quality-2025",
+  "@type": "dcat:Dataset",
+  "dct:title": "Air quality measurements 2025",
+  "dct:description": "Hourly readings of nitrogen dioxide, ozone and particulates from the national monitoring network.",
+  "dct:identifier": "air-quality-2025",
+  "dct:publisher": { "@type": "foaf:Organization", "foaf:name": "Environment Agency" },
+  "dcat:contactPoint": { "@type": "vcard:Organization", "vcard:fn": "Open Data Helpdesk", "vcard:hasEmail": { "@id": "mailto:opendata@environment.example.gov" } },
+  "dcat:keyword": [ "air quality", "pollution" ],
+  "dct:license": { "@id": "https://creativecommons.org/licenses/by/4.0/" },
+  "dcat:landingPage": { "@id": "https://data.example.gov/air-quality" },
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:title": "Air quality 2025 (CSV)",
+      "dcat:downloadURL": { "@id": "https://data.example.gov/files/air-quality-2025.csv" },
+      "dct:format": "CSV"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dct:title": "Air quality 2025 (API)",
+      "dcat:accessURL": { "@id": "https://api.example.gov/air-quality/v1" }
+    }
+  ]
+}
+
+###
+# @name getAssetAsDcat
+# Return the DCAT description of an asset.  A DeployedAPI is described as a dcat:DataService; any other type of asset is
+# described as a dcat:Dataset.  The "document" property of the response is a complete JSON-LD document.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/dcat-document
+Authorization: Bearer {{token}}

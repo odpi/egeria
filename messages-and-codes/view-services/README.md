@@ -6,7 +6,7 @@
 
 The view services provide the REST APIs used by user interfaces such as Egeria UI.  Each view service supports a particular type of user or task.
 
-This directory documents 127 messages in 26 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 128 messages in 26 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -14,7 +14,7 @@ This directory documents 127 messages in 26 message sets.  Return to the [messag
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
 | [ActionAuthorAuditCode](ActionAuthorAuditCode.md) | Audit log messages | `OMVS-ACTION-AUTHOR-` | 5 | <https://egeria-project.org/services/omvs/action-author/overview/> |
-| [AssetCatalogAuditCode](AssetCatalogAuditCode.md) | Audit log messages | `OMVS-ASSET-CATALOG-` | 5 | <https://egeria-project.org/services/omvs/asset-catalog/overview/> |
+| [AssetCatalogAuditCode](AssetCatalogAuditCode.md) | Audit log messages | `OMVS-ASSET-CATALOG-` | 6 | <https://egeria-project.org/services/omvs/asset-catalog/overview/> |
 | [CommunityMattersAuditCode](CommunityMattersAuditCode.md) | Audit log messages | `OMVS-COMMUNITY-MATTERS-` | 5 | <https://egeria-project.org/services/omvs/community-matters/overview/> |
 | [DataDesignerAuditCode](DataDesignerAuditCode.md) | Audit log messages | `OMVS-DATA-DESIGNER-` | 5 | <https://egeria-project.org/services/omvs/data-designer/overview/> |
 | [DataDiscoveryAuditCode](DataDiscoveryAuditCode.md) | Audit log messages | `OMVS-DATA-DISCOVERY-` | 5 | <https://egeria-project.org/services/omvs/data-discovery/overview/> |

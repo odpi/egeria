@@ -123,6 +123,23 @@ public enum ContentPackSolutionBlueprint
                        ContentPackDefinition.BITOL_CONTENT_PACK),
 
     /**
+     * Receive, catalog and publish Data Catalog Vocabulary (DCAT) descriptions of data assets.
+     */
+    DCAT_CONTENT_PACK("46808eab-539c-458a-90bd-109c1acaaabd",
+                      "Egeria::SolutionBlueprint::DCATContentPack",
+                      "DCAT Content Pack",
+                      "DCAT-CONTENT-PACK",
+                      "Solution blueprint containing integration connectors for exchanging Data Catalog Vocabulary (DCAT) descriptions of data assets.",
+                      new String[]{
+                              EgeriaDeployedImplementationType.METADATA_ACCESS_STORE.getSolutionComponentGUID()
+                      },
+                      new DeployedImplementationTypeDefinition[]{
+                              DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
+                              DeployedImplementationType.APACHE_KAFKA_TOPIC
+                      },
+                      ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
      * Reference data, templates, connectors, and governance services for working with Unity Catalog.
      */
     UNITY_CATALOG_CONTENT_PACK("548661f1-e792-4acd-8dc2-0aa41187d6d2",

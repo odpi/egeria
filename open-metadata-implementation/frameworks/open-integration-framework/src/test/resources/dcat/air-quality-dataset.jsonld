@@ -1,0 +1,77 @@
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "vcard": "http://www.w3.org/2006/vcard/ns#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "https://data.example.gov/dataset/air-quality-2025",
+  "@type": "dcat:Dataset",
+  "dct:title": [
+    { "@value": "Air quality measurements 2025", "@language": "en" },
+    { "@value": "Mesures de la qualité de l'air 2025", "@language": "fr" }
+  ],
+  "dct:description": { "@value": "Hourly readings of nitrogen dioxide, ozone and particulates from the national monitoring network.", "@language": "en" },
+  "dct:identifier": "air-quality-2025",
+  "dct:issued": { "@type": "xsd:date", "@value": "2025-01-15" },
+  "dct:modified": { "@type": "xsd:dateTime", "@value": "2025-11-02T09:30:00Z" },
+  "dct:language": { "@id": "http://publications.europa.eu/resource/authority/language/ENG" },
+  "dct:publisher": {
+    "@id": "https://data.example.gov/org/environment-agency",
+    "@type": "foaf:Organization",
+    "foaf:name": "Environment Agency",
+    "foaf:homepage": { "@id": "https://environment.example.gov" }
+  },
+  "dct:creator": { "@type": "foaf:Person", "foaf:name": "Air Quality Monitoring Team" },
+  "dcat:contactPoint": {
+    "@type": "vcard:Organization",
+    "vcard:fn": "Open Data Helpdesk",
+    "vcard:hasEmail": { "@id": "mailto:opendata@environment.example.gov" },
+    "vcard:hasTelephone": { "@id": "tel:+44-20-7946-0000" }
+  },
+  "dcat:keyword": [ "air quality", "pollution", "environment" ],
+  "dcat:theme": [
+    { "@id": "http://publications.europa.eu/resource/authority/data-theme/ENVI", "@type": "skos:Concept", "skos:prefLabel": "Environment" },
+    { "@id": "http://publications.europa.eu/resource/authority/data-theme/HEAL" }
+  ],
+  "dct:license": { "@id": "https://creativecommons.org/licenses/by/4.0/" },
+  "dct:accessRights": { "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC" },
+  "dct:conformsTo": { "@id": "https://www.w3.org/TR/vocab-ssn/" },
+  "dcat:landingPage": { "@id": "https://data.example.gov/air-quality" },
+  "foaf:page": { "@id": "https://data.example.gov/air-quality/methodology" },
+  "dcat:version": "2.1",
+  "dct:accrualPeriodicity": { "@id": "http://publications.europa.eu/resource/authority/frequency/HOURLY" },
+  "dct:spatial": { "@id": "http://sws.geonames.org/2635167/" },
+  "dct:temporal": {
+    "@type": "dct:PeriodOfTime",
+    "dcat:startDate": { "@type": "xsd:date", "@value": "2025-01-01" },
+    "dcat:endDate": { "@type": "xsd:date", "@value": "2025-12-31" }
+  },
+  "dcat:temporalResolution": { "@type": "xsd:duration", "@value": "PT1H" },
+  "http://data.europa.eu/r5r/applicableLegislation": { "@id": "http://data.europa.eu/eli/reg_impl/2023/138/oj" },
+  "dcat:distribution": [
+    {
+      "@id": "https://data.example.gov/dataset/air-quality-2025/csv",
+      "@type": "dcat:Distribution",
+      "dct:title": "Air quality 2025 (CSV)",
+      "dcat:accessURL": { "@id": "https://data.example.gov/air-quality" },
+      "dcat:downloadURL": { "@id": "https://data.example.gov/files/air-quality-2025.csv" },
+      "dcat:mediaType": { "@id": "https://www.iana.org/assignments/media-types/text/csv" },
+      "dct:format": "CSV",
+      "dcat:byteSize": { "@type": "xsd:nonNegativeInteger", "@value": "5242880" },
+      "http://spdx.org/rdf/terms#checksum": {
+        "http://spdx.org/rdf/terms#algorithm": { "@id": "http://spdx.org/rdf/terms#checksumAlgorithm_sha256" },
+        "http://spdx.org/rdf/terms#checksumValue": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    },
+    {
+      "@id": "https://data.example.gov/dataset/air-quality-2025/api",
+      "@type": "dcat:Distribution",
+      "dct:title": "Air quality 2025 (API)",
+      "dcat:accessURL": { "@id": "https://api.example.gov/air-quality/v1" },
+      "dcat:accessService": { "@id": "https://data.example.gov/service/air-quality-api" }
+    }
+  ]
+}

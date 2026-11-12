@@ -125,6 +125,32 @@ public class IntegrationDaemonResource
 
 
     /**
+     * Pass a Data Catalog Vocabulary (DCAT) document to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for DCAT documents.
+     *
+     * @param serverName integration daemon server name
+     * @param delegatingUserId external userId making request
+     * @param document DCAT document (JSON-LD) to publish.
+     * @return void or exception
+     */
+    @PostMapping(path = "/publish-dcat-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDcatDocument",
+            description="Send a Data Catalog Vocabulary (DCAT) document, in JSON-LD, to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for DCAT documents.",
+            externalDocs=@ExternalDocumentation(description="Data Catalog Vocabulary (DCAT)",
+                    url="https://www.w3.org/TR/vocab-dcat-3/"))
+
+    VoidResponse publishDcatDocument(@PathVariable String serverName,
+                                     @Parameter(description="delegating user id")  @RequestParam(required = false) String delegatingUserId,
+                                     @RequestBody  String document)
+    {
+        return restAPI.publishDcatDocument(serverName, delegatingUserId, document);
+    }
+
+
+    /**
      * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
      * connectors that have registered a listener for Bitol documents.
      *

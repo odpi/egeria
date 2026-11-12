@@ -9,7 +9,7 @@ The OIFErrorCode is used to define the message content for the OMRS Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 8 |
+| **Number of messages** | 11 |
 | **Message identifiers begin** | `OIF-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode` |
 | **Module** | [open-metadata-implementation/frameworks/open-integration-framework](../../open-metadata-implementation/frameworks/open-integration-framework) |
@@ -26,6 +26,9 @@ The OIFErrorCode is used to define the message content for the OMRS Audit Log.
 | [OIF-CONNECTOR-400-003](#oif-connector-400-003) | 400 | Catalog target {0} has a connection that is missing property {1} and connector {2} cannot proceed |
 | [OIF-CONNECTOR-400-004](#oif-connector-400-004) | 400 | Catalog target {0} has a connector of type {1} but the {2} connector only supports the following type(s) of connector: {3} |
 | [OIF-CONNECTOR-400-005](#oif-connector-400-005) | 400 | Element {0} passed to method {1} is of type {2}, but a Bitol {3} document can only be generated from an element of type {4} |
+| [OIF-CONNECTOR-400-006](#oif-connector-400-006) | 400 | Element {0} passed to method {1} is of type {2}, but a DCAT description can only be generated from an element of type {3} |
+| [OIF-CONNECTOR-400-007](#oif-connector-400-007) | 400 | The DCAT document supplied can not be read as JSON-LD: {0} |
+| [OIF-CONNECTOR-400-008](#oif-connector-400-008) | 400 | The JSON-LD document supplied does not describe a DCAT catalog, dataset, dataset series or data service |
 | [OIF-CONNECTOR-500-001](#oif-connector-500-001) | 500 | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
 | [OIF-CONNECTOR-500-003](#oif-connector-500-003) | 500 | The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3} |
 | [OIF-CONNECTOR-500-004](#oif-connector-500-004) | 500 | The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6} |
@@ -133,6 +136,69 @@ The generator raises an exception and no document is produced.
 **User action**
 
 The caller has asked for a Bitol document for the wrong kind of element.  Pass a digital product for an ODPS document, or a data sharing agreement for an ODCS document.
+
+
+----
+
+### OIF-CONNECTOR-400-006
+
+> Element {0} passed to method {1} is of type {2}, but a DCAT description can only be generated from an element of type {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFErrorCode.WRONG_ELEMENT_TYPE_FOR_DCAT_DOCUMENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+No DCAT description is generated and the request fails with this exception.
+
+**User action**
+
+The caller has asked for a DCAT description of the wrong kind of element.  Pass an asset for the description of a dataset or data service, or a collection for the description of a catalog.
+
+
+----
+
+### OIF-CONNECTOR-400-007
+
+> The DCAT document supplied can not be read as JSON-LD: {0}
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFErrorCode.INVALID_DCAT_DOCUMENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | `{0}` |
+
+**System action**
+
+The request fails because the document can not be parsed.  Nothing is catalogued.
+
+**User action**
+
+Correct the document and retry the request.  Other serializations of DCAT, such as Turtle and RDF/XML, are not supported and need to be converted to JSON-LD first.
+
+
+----
+
+### OIF-CONNECTOR-400-008
+
+> The JSON-LD document supplied does not describe a DCAT catalog, dataset, dataset series or data service
+
+|  |  |
+|---|---|
+| **Java constant** | `OIFErrorCode.EMPTY_DCAT_DOCUMENT` |
+| **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
+| **Message inserts** | none |
+
+**System action**
+
+The request fails because there is nothing in the document to catalog.
+
+**User action**
+
+Check that the resources in the document are typed as dcat:Catalog, dcat:Dataset, dcat:DatasetSeries or dcat:DataService, and that the document either embeds its JSON-LD context or uses the standard names for the DCAT terms.  Egeria does not retrieve a context from the network.
 
 
 ----

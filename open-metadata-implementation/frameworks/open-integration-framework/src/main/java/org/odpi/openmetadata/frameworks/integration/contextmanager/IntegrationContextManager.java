@@ -15,6 +15,10 @@ import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentFormatter;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentManager;
+import org.odpi.openmetadata.frameworks.integration.dcat.properties.DcatDocument;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -42,7 +46,8 @@ import java.util.List;
  * IntegrationContextManager is the base class for the context manager that is implemented by each integration service.
  */
 public abstract class IntegrationContextManager implements OpenLineageListenerManager,
-                                                           BitolDocumentManager
+                                                           BitolDocumentManager,
+                                                           DcatDocumentManager
 {
     protected String                  partnerOMASPlatformRootURL = null;
     protected String                  partnerOMASServerName      = null;
@@ -66,6 +71,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     private static final ObjectReader                   OBJECT_READER            = OBJECT_MAPPER.reader();
     private final        List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
     private final        List<BitolDocumentListener>    registeredBitolListeners = new ArrayList<>();
+    private final        List<DcatDocumentListener>     registeredDcatListeners  = new ArrayList<>();
 
     /**
      * Default constructor
@@ -234,6 +240,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                                         openMetadataClient,
                                                         this.createEventClient(connectorId),
                                                         connectedAssetClient,
+                                                        this,
                                                         this,
                                                         this,
                                                         governanceConfiguration,
@@ -455,6 +462,83 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                 catch (Exception error)
                 {
                     logPublishError(error, rawEvent, methodName);
+                }
+            }
+        }
+    }
+
+
+    /* ======================================================================================
+     * DCAT documents
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processDcatDocument()
+     * method is called each time a DCAT document is published to the integration daemon.
+     *
+     * @param listener listener to call
+     */
+    @Override
+    public synchronized void registerDcatListener(DcatDocumentListener listener)
+    {
+        registeredDcatListeners.add(listener);
+    }
+
+
+    /**
+     * Publish a DCAT document.  The document is parsed and passed to each of the registered listeners.  A document that can not be
+     * parsed, or that describes no catalogs, datasets or data services, is reported in the audit log and discarded.
+     *
+     * @param rawDocument document in JSON-LD format
+     */
+    @Override
+    public synchronized void publishDcatDocument(String rawDocument)
+    {
+        final String methodName = "publishDcatDocument";
+
+        if (rawDocument == null)
+        {
+            return;
+        }
+
+        DcatDocument document;
+
+        try
+        {
+            document = DcatDocumentFormatter.parseDocument(rawDocument);
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  OIFAuditCode.DCAT_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                      error.getMessage(),
+                                                                                      getDocumentStart(rawDocument)),
+                                  rawDocument,
+                                  error);
+            return;
+        }
+
+        if (! DcatDocumentFormatter.hasContent(document))
+        {
+            auditLog.logMessage(methodName, OIFAuditCode.DCAT_EMPTY_DOCUMENT.getMessageDefinition(getDocumentStart(rawDocument)));
+            return;
+        }
+
+        for (DcatDocumentListener listener : registeredDcatListeners)
+        {
+            if (listener != null)
+            {
+                try
+                {
+                    listener.processDcatDocument(document, rawDocument);
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          OIFAuditCode.DCAT_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                               error.getMessage()),
+                                          rawDocument,
+                                          error);
                 }
             }
         }
