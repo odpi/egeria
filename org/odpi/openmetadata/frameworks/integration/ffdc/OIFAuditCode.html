@@ -165,56 +165,68 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0001 - The integration connector context manager is being initialized for calls to server {0} on platform {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DISCONNECT_EXCEPTION" class="member-name-link">DISCONNECT_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DCAT_EMPTY_DOCUMENT" class="member-name-link">DCAT_EMPTY_DOCUMENT</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OIF-CONNECTOR-0028 - The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DCAT_FORMAT_ERROR" class="member-name-link">DCAT_FORMAT_ERROR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OIF-CONNECTOR-0026 - A {0} exception with message {1} occurred when parsing DCAT document: {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DCAT_PUBLISH_ERROR" class="member-name-link">DCAT_PUBLISH_ERROR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OIF-CONNECTOR-0027 - A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DISCONNECT_EXCEPTION" class="member-name-link">DISCONNECT_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0012 - The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FOREIGN_CATALOG_TARGETS_SKIPPED" class="member-name-link">FOREIGN_CATALOG_TARGETS_SKIPPED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FOREIGN_CATALOG_TARGETS_SKIPPED" class="member-name-link">FOREIGN_CATALOG_TARGETS_SKIPPED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The {0} integration connector is leaving {1} catalog target(s) to the integration daemons that registered them: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GET_CATALOG_TARGET_EXCEPTION" class="member-name-link">GET_CATALOG_TARGET_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#GET_CATALOG_TARGET_EXCEPTION" class="member-name-link">GET_CATALOG_TARGET_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0015 - An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IGNORED_EGERIA_ELEMENT" class="member-name-link">IGNORED_EGERIA_ELEMENT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#IGNORED_EGERIA_ELEMENT" class="member-name-link">IGNORED_EGERIA_ELEMENT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MEMBER_ACTION" class="member-name-link">MEMBER_ACTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MEMBER_ACTION" class="member-name-link">MEMBER_ACTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0019 - The {0} connector is recommending the {1} action to take for element {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_CATALOG_TARGETS" class="member-name-link">NO_CATALOG_TARGETS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NO_CATALOG_TARGETS" class="member-name-link">NO_CATALOG_TARGETS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0007 - No action targets are defined for the {0} integration connector</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_FORMAT_ERROR" class="member-name-link">OPEN_LINEAGE_FORMAT_ERROR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_FORMAT_ERROR" class="member-name-link">OPEN_LINEAGE_FORMAT_ERROR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0005 - A {0} exception with message {1} occurred when parsing open lineage event: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#OPEN_LINEAGE_PUBLISH_ERROR" class="member-name-link">OPEN_LINEAGE_PUBLISH_ERROR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_PUBLISH_ERROR" class="member-name-link">OPEN_LINEAGE_PUBLISH_ERROR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0006 - A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REFRESHED_CATALOG_TARGETS" class="member-name-link">REFRESHED_CATALOG_TARGETS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REFRESHED_CATALOG_TARGETS" class="member-name-link">REFRESHED_CATALOG_TARGETS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0009 - The {0} integration connector has refreshed {1} action target(s)</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REFRESHING_CATALOG_TARGET" class="member-name-link">REFRESHING_CATALOG_TARGET</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REFRESHING_CATALOG_TARGET" class="member-name-link">REFRESHING_CATALOG_TARGET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0008 - The {0} integration connector is refreshing action target {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0016 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0013 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0011 - The {0} connector is unsure which action to take for an element.</div>
 </div>
 </div>
@@ -429,6 +441,27 @@ the order they are declared.</div>
 <h3>ALL_CATALOG_TARGETS_FOREIGN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">ALL_CATALOG_TARGETS_FOREIGN</span></div>
 <div class="block">The {0} integration connector found that every one of its {1} catalog target(s) was registered through another metadata access store, so it is refreshing them all</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_FORMAT_ERROR">
+<h3>DCAT_FORMAT_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">DCAT_FORMAT_ERROR</span></div>
+<div class="block">OIF-CONNECTOR-0026 - A {0} exception with message {1} occurred when parsing DCAT document: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_PUBLISH_ERROR">
+<h3>DCAT_PUBLISH_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">DCAT_PUBLISH_ERROR</span></div>
+<div class="block">OIF-CONNECTOR-0027 - A {0} exception with message {1} occurred when a listening integration connector tried to process a DCAT document</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_EMPTY_DOCUMENT">
+<h3>DCAT_EMPTY_DOCUMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">DCAT_EMPTY_DOCUMENT</span></div>
+<div class="block">OIF-CONNECTOR-0028 - The integration daemon received a JSON-LD document that does not describe a DCAT catalog, dataset, dataset series or data service: {0}</div>
 </section>
 </li>
 </ul>

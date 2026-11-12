@@ -67,6 +67,9 @@ org.odpi.openmetadata.adapters.connectors.integration.bitol
 org.odpi.openmetadata.adapters.connectors.integration.bitol.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc
+org.odpi.openmetadata.adapters.connectors.integration.dcat
+org.odpi.openmetadata.adapters.connectors.integration.dcat.controls
+org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc
@@ -262,6 +265,7 @@ org.odpi.openmetadata.contentpacks.core.base
 org.odpi.openmetadata.contentpacks.core.bitol
 org.odpi.openmetadata.contentpacks.core.core
 org.odpi.openmetadata.contentpacks.core.db2luw
+org.odpi.openmetadata.contentpacks.core.dcat
 org.odpi.openmetadata.contentpacks.core.digitalproducts
 org.odpi.openmetadata.contentpacks.core.duckdb
 org.odpi.openmetadata.contentpacks.core.egeria
@@ -330,6 +334,10 @@ org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
 org.odpi.openmetadata.frameworks.integration.contextmanager
 org.odpi.openmetadata.frameworks.integration.controls
+org.odpi.openmetadata.frameworks.integration.dcat
+org.odpi.openmetadata.frameworks.integration.dcat.jsonld
+org.odpi.openmetadata.frameworks.integration.dcat.mapping
+org.odpi.openmetadata.frameworks.integration.dcat.properties
 org.odpi.openmetadata.frameworks.integration.ffdc
 org.odpi.openmetadata.frameworks.integration.iterator
 org.odpi.openmetadata.frameworks.integration.openlineage

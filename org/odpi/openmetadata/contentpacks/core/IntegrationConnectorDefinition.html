@@ -159,6 +159,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#DB2LUW_SERVER_CATALOGUER" class="member-name-link">DB2LUW_SERVER_CATALOGUER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#DCAT_CATALOGUER" class="member-name-link">DCAT_CATALOGUER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Catalogs the Data Catalog Vocabulary (DCAT) documents received by the integration daemon as data sets, distributions, deployed APIs and collection folders.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DCAT_EVENT_RECEIVER" class="member-name-link">DCAT_EVENT_RECEIVER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Receives the Data Catalog Vocabulary (DCAT) documents published to the Apache Kafka topics attached as catalog targets.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DCAT_FILES_RECEIVER" class="member-name-link">DCAT_FILES_RECEIVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Monitors file directories for Data Catalog Vocabulary (DCAT) documents in JSON-LD and publishes new and changed documents to the DCAT listeners in the integration daemon.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DCAT_PUBLISHER" class="member-name-link">DCAT_PUBLISHER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#DUCKDB_DATABASE_CATALOGUER" class="member-name-link">DUCKDB_DATABASE_CATALOGUER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#GENERAL_FOLDER_CATALOGUER" class="member-name-link">GENERAL_FOLDER_CATALOGUER</a></code></div>
@@ -567,6 +583,34 @@ the order they are declared.</div>
 <h3>BITOL_DOCUMENT_PUBLISHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">BITOL_DOCUMENT_PUBLISHER</span></div>
 <div class="block">Generates Bitol data product (ODPS) and data contract (ODCS) documents from the digital products and data sharing agreements in open metadata and publishes them to the Bitol listeners in the integration daemon.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_FILES_RECEIVER">
+<h3>DCAT_FILES_RECEIVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">DCAT_FILES_RECEIVER</span></div>
+<div class="block">Monitors file directories for Data Catalog Vocabulary (DCAT) documents in JSON-LD and publishes new and changed documents to the DCAT listeners in the integration daemon.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_EVENT_RECEIVER">
+<h3>DCAT_EVENT_RECEIVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">DCAT_EVENT_RECEIVER</span></div>
+<div class="block">Receives the Data Catalog Vocabulary (DCAT) documents published to the Apache Kafka topics attached as catalog targets.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_CATALOGUER">
+<h3>DCAT_CATALOGUER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">DCAT_CATALOGUER</span></div>
+<div class="block">Catalogs the Data Catalog Vocabulary (DCAT) documents received by the integration daemon as data sets, distributions, deployed APIs and collection folders.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DCAT_PUBLISHER">
+<h3>DCAT_PUBLISHER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></span>&nbsp;<span class="element-name">DCAT_PUBLISHER</span></div>
+<div class="block">Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.</div>
 </section>
 </li>
 <li>

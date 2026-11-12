@@ -149,7 +149,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager,org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager,org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentManager,org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
@@ -164,6 +164,7 @@ loadScripts(document, 'script');</script>
  <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a>&nbsp;connectedAssetClient,
  <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
  <a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a>&nbsp;bitolDocumentManager,
+ <a href="../dcat/DcatDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentManager</a>&nbsp;dcatDocumentManager,
  <a href="../../opengovernance/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
  <a href="../../opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
@@ -319,39 +320,49 @@ loadScripts(document, 'script');</script>
 <div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract</a><wbr>(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishDcatDocument(java.lang.String)" class="member-name-link">publishDcatDocument</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called when an integration connector wishes to publish a DCAT document.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataContract(org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract)" class="member-name-link">publishGeneratedDataContract</a><wbr>(<a href="../bitol/odcs/DataContract.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContract</a>&nbsp;dataContract)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called when an integration connector wishes to publish an Open Data Contract Standard (ODCS) data contract that it
  generated from open metadata.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct</a><wbr>(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishGeneratedDataProduct(org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct)" class="member-name-link">publishGeneratedDataProduct</a><wbr>(<a href="../bitol/odps/DataProduct.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odps">DataProduct</a>&nbsp;dataProduct)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called when an integration connector wishes to publish an Open Data Product Standard (ODPS) data product that it
  generated from open metadata.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)" class="member-name-link">publishOpenLineageDataSetEvent</a><wbr>(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageDataSetEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent)" class="member-name-link">publishOpenLineageDataSetEvent</a><wbr>(<a href="../openlineage/OpenLineageDataSetEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageDataSetEvent</a>&nbsp;event)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an open lineage dataset event is published to the integration daemon as a bean.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)" class="member-name-link">publishOpenLineageJobEvent</a><wbr>(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageJobEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobEvent)" class="member-name-link">publishOpenLineageJobEvent</a><wbr>(<a href="../openlineage/OpenLineageJobEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageJobEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an open lineage job event is published to the integration daemon as a bean.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(java.lang.String)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an integration connector wishes to publish an open lineage run event.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOpenLineageRunEvent(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent)" class="member-name-link">publishOpenLineageRunEvent</a><wbr>(<a href="../openlineage/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageRunEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called each time an open lineage run event is published to the integration daemon.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerBitolListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)" class="member-name-link">registerBitolListener</a><wbr>(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The listener is implemented by the integration connector.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerBitolListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)" class="member-name-link">registerBitolListener</a><wbr>(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)" class="member-name-link">registerDcatListener</a><wbr>(<a href="../dcat/DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The listener is implemented by the integration connector.</div>
 </div>
@@ -443,7 +454,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager,org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient,org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient,org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager,org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager,org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentManager,org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration,org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)">
 <h3>IntegrationContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
@@ -460,6 +471,7 @@ loadScripts(document, 'script');</script>
  <a href="../../connectors/client/ConnectedAssetClient.html" title="class in org.odpi.openmetadata.frameworks.connectors.client">ConnectedAssetClient</a>&nbsp;connectedAssetClient,
  <a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a>&nbsp;openLineageListenerManager,
  <a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a>&nbsp;bitolDocumentManager,
+ <a href="../dcat/DcatDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentManager</a>&nbsp;dcatDocumentManager,
  <a href="../../opengovernance/client/GovernanceConfiguration.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">GovernanceConfiguration</a>&nbsp;governanceConfiguration,
  <a href="../../opengovernance/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.client">OpenGovernanceClient</a>&nbsp;openGovernanceClient,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
@@ -483,6 +495,7 @@ loadScripts(document, 'script');</script>
 <dd><code>connectedAssetClient</code> - client for working with connectors</dd>
 <dd><code>openLineageListenerManager</code> - distributes open lineage events to listeners</dd>
 <dd><code>bitolDocumentManager</code> - distributes Bitol documents (ODCS data contracts and ODPS data products) to listeners</dd>
+<dd><code>dcatDocumentManager</code> - distributes DCAT documents to listeners</dd>
 <dd><code>governanceConfiguration</code> - client for managing catalog targets</dd>
 <dd><code>openGovernanceClient</code> - client for initiating governance actions</dd>
 <dd><code>auditLog</code> - logging destination</dd>
@@ -565,6 +578,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>event</code> - bean for the event</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)">
+<h3>registerDcatListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDcatListener</span><wbr><span class="parameters">(<a href="../dcat/DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</span></div>
+<div class="block">The listener is implemented by the integration connector.  Once it is registered with the context, its processDcatDocument()
+ method is called each time a DCAT document is published to the integration daemon.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="publishDcatDocument(java.lang.String)">
+<h3>publishDcatDocument</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDcatDocument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</span></div>
+<div class="block">Called when an integration connector wishes to publish a DCAT document.  The document is parsed and passed to each of the
+ registered DCAT document listeners.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rawDocument</code> - JSON-LD payload</dd>
 </dl>
 </section>
 </li>
