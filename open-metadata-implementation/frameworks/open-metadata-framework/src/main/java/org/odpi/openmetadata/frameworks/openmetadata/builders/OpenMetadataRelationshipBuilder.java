@@ -1112,6 +1112,18 @@ public class OpenMetadataRelationshipBuilder
                                                                      OpenMetadataProperty.LICENSEE_PROPERTY_NAME.name,
                                                                      licenseProperties.getLicenseePropertyName());
 
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.ENTITLEMENTS.name,
+                                                                        licenseProperties.getEntitlements());
+
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.RESTRICTIONS.name,
+                                                                        licenseProperties.getRestrictions());
+
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.OBLIGATIONS.name,
+                                                                        licenseProperties.getObligations());
+
                 return propertyHelper.addStringProperty(elementProperties,
                                                         OpenMetadataProperty.NOTES.name,
                                                         licenseProperties.getNotes());

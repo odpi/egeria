@@ -135,6 +135,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                                                                    "EgeriaContentPack.omarchive");
 
     private static volatile boolean               started = false;
+    private static volatile Exception             startupFailure = null;
     private static ConfigurableApplicationContext platformContext;
     private static String                         platformURLRoot;
 
@@ -299,30 +300,53 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     @Override
     public void beforeAll(ExtensionContext context) throws Exception
     {
-        if (! started)
+        synchronized (OMAGPlatformExtension.class)
         {
-            synchronized (OMAGPlatformExtension.class)
+            /*
+             * A start-up that has already failed is reported again rather than retried.  Retrying would start
+             * a second platform and server on the same repository while the first may still be loading its
+             * archives into it - the two then deadlock in the database and every later test class fails,
+             * burying the one message that says what actually went wrong.
+             */
+            if (startupFailure != null)
             {
-                if (! started)
-                {
-                    startPlatform();
+                throw new IllegalStateException("The platform-catalog-fvt environment failed to start: " + startupFailure.getMessage(),
+                                                startupFailure);
+            }
 
-                    /*
-                     * The repository is emptied before the metadata access store opens it, not afterwards.
-                     * The cataloguer registers the local platform as a catalog target in its start() method
-                     * and refreshes straight away, so anything a previous run left would be picked up and
-                     * worked on while it was being removed.
-                     */
-                    dropRepositorySchema();
+            if (started)
+            {
+                return;
+            }
 
-                    configureAndStartMetadataStore();
-                    configureAndStartIntegrationDaemon();
-                    waitForIntegrationGroup();
+            /*
+             * Registered before the environment is built rather than after, so that the platform is shut down
+             * at the end of the run even when the build below fails part-way.
+             */
+            context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
 
-                    started = true;
+            try
+            {
+                startPlatform();
 
-                    context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
-                }
+                /*
+                 * The repository is emptied before the metadata access store opens it, not afterwards.
+                 * The cataloguer registers the local platform as a catalog target in its start() method
+                 * and refreshes straight away, so anything a previous run left would be picked up and
+                 * worked on while it was being removed.
+                 */
+                dropRepositorySchema();
+
+                configureAndStartMetadataStore();
+                configureAndStartIntegrationDaemon();
+                waitForIntegrationGroup();
+
+                started = true;
+            }
+            catch (Exception error)
+            {
+                startupFailure = error;
+                throw error;
             }
         }
     }

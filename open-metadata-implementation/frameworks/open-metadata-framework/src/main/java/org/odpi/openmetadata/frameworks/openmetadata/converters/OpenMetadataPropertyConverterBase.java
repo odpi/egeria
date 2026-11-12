@@ -15603,6 +15603,8 @@ public class OpenMetadataPropertyConverterBase
              */
             beanProperties.setTypeName(attachedClassification.getType().getTypeName());
             beanProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+            beanProperties.setEffectiveFrom(attachedClassification.getEffectiveFromTime());
+            beanProperties.setEffectiveTo(attachedClassification.getEffectiveToTime());
 
             return beanProperties;
 
@@ -17716,7 +17718,6 @@ public class OpenMetadataPropertyConverterBase
                                 beanProperties = new DesignModelProperties();
                             }
 
-                            ((DesignModelProperties)beanProperties).setAuthors(this.removeAuthors(elementProperties));
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
@@ -17982,7 +17983,6 @@ public class OpenMetadataPropertyConverterBase
                         }
 
                         ((DesignModelElementProperties)beanProperties).setCanonicalName(this.removeCanonicalName(elementProperties));
-                        ((DesignModelElementProperties)beanProperties).setAuthors(this.removeAuthors(elementProperties));
 
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_PATTERN.typeName))
@@ -18049,7 +18049,6 @@ public class OpenMetadataPropertyConverterBase
 
                         ((ExternalReferenceProperties)beanProperties).setReferenceTitle(this.removeReferenceTitle(elementProperties));
                         ((ExternalReferenceProperties)beanProperties).setReferenceAbstract(this.removeReferenceAbstract(elementProperties));
-                        ((ExternalReferenceProperties)beanProperties).setAuthors(this.removeAuthors(elementProperties));
                         ((ExternalReferenceProperties)beanProperties).setOrganization(this.removeOrganization(elementProperties));
                         ((ExternalReferenceProperties)beanProperties).setSources(this.removeSources(elementProperties));
                         ((ExternalReferenceProperties)beanProperties).setCopyright(this.removeCopyright(elementProperties));
@@ -18088,7 +18087,6 @@ public class OpenMetadataPropertyConverterBase
                                 ((DataLensProperties)beanProperties).setDataCoverageStartTime(this.removeDataCoverageStartTime(elementProperties));
                                 ((DataLensProperties)beanProperties).setDataCoverageEndTime(this.removeDataCoverageEndTime(elementProperties));
                                 ((DataLensProperties)beanProperties).setScopeElements(this.removeScopeElements(elementProperties));
-                                ((DataLensProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
                             {
@@ -18386,6 +18384,7 @@ public class OpenMetadataPropertyConverterBase
                         ((ProjectProperties)beanProperties).setProjectStatus(this.removeProjectStatus(elementProperties));
                         ((ProjectProperties)beanProperties).setProjectPhase(this.removeProjectPhase(elementProperties));
                         ((ProjectProperties)beanProperties).setMission(this.removeMission(elementProperties));
+                        ((ProjectProperties)beanProperties).setScope(this.removeScope(elementProperties));
                         ((ProjectProperties)beanProperties).setDataProcessingPurposes(this.removeDataProcessingPurposes(elementProperties));
                         ((ProjectProperties)beanProperties).setSuccessCriteria(this.removeSuccessCriteria(elementProperties));
                     }
@@ -19762,6 +19761,13 @@ public class OpenMetadataPropertyConverterBase
              */
             beanProperties.setTypeName(openMetadataElement.getType().getTypeName());
             beanProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+
+            /*
+             * The effectivity dates are stored on the element rather than in its properties, so they are
+             * copied over separately - as they are for relationships and classifications.
+             */
+            beanProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
+            beanProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
 
             return beanProperties;
         }

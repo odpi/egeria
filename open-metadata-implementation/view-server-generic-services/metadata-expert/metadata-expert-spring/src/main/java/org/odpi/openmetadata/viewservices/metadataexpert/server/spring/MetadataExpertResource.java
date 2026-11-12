@@ -968,6 +968,9 @@ public class MetadataExpertResource
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
      * title, text, summary, identifier or description.
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+     * A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
@@ -983,7 +986,7 @@ public class MetadataExpertResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorDomain",
-            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.   The breadth of the search is determined by the supplied domain name.",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.   The breadth of the search is determined by the supplied domain name. Paging applies to the matching elements before they are grouped by anchor, so a page may hold fewer anchors than the page size, and an anchor can appear on more than one page.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/anchor-management/overview/"))
 
@@ -1000,6 +1003,9 @@ public class MetadataExpertResource
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
      * title, text, summary, identifier or description.
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+     * A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
@@ -1016,7 +1022,7 @@ public class MetadataExpertResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorScope",
-            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The breadth of the search is determined by the supplied scope guid.",
+            description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The breadth of the search is determined by the supplied scope guid. Paging applies to the matching elements before they are grouped by anchor, so a page may hold fewer anchors than the page size, and an anchor can appear on more than one page.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/anchor-management/overview/"))
 

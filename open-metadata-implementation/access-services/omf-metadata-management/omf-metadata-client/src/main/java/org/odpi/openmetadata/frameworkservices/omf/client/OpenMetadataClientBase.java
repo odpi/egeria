@@ -936,6 +936,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
      * title, text, summary, identifier or description.
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+     * A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
@@ -992,6 +995,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * Return a list of elements with the requested search string in their (display, resource)name, qualified name,
      * title, text, summary, identifier, or description.
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by anchor.
+     * A page may therefore hold fewer anchors than pageSize, and an anchor whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param userId caller's userId
      * @param searchString name to retrieve

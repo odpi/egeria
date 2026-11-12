@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -40,9 +39,8 @@ public class SchemaTypeProperties extends SchemaElementProperties
     /*
      * Values for when the schemaType is derived from other values rather than stored
      */
-    private String                                       formula     = null;
-    private String                                       formulaType = null;
-    private List<DerivedSchemaTypeQueryTargetProperties> queries     = null;
+    private String formula     = null;
+    private String formulaType = null;
 
     /**
      * Default constructor
@@ -70,7 +68,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
             namespacePath    = template.getNamespacePath();
             formula          = template.getFormula();
             formulaType      = template.getFormulaType();
-            queries          = template.getQueries();
         }
     }
 
@@ -181,29 +178,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
 
     /**
-     * Return the list of queries that are used to create the derived schema element.
-     *
-     * @return list of queries
-     */
-    public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
-    {
-        return queries;
-    }
-
-
-    /**
-     * Set up the list of queries that are used to create the derived schema element.
-     *
-     * @param queries list of queries
-     */
-    public void setQueries(List<DerivedSchemaTypeQueryTargetProperties> queries)
-    {
-        this.queries = queries;
-    }
-
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -217,7 +191,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 ", namespacePath='" + namespacePath + '\'' +
                 ", formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
-                ", queries=" + queries +
                 "} " + super.toString();
     }
 
@@ -248,8 +221,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 Objects.equals(encodingStandard, that.encodingStandard) &&
                 Objects.equals(namespacePath, that.namespacePath) &&
                 Objects.equals(formula, that.formula) &&
-                Objects.equals(formulaType, that.formulaType) &&
-                Objects.equals(queries, that.queries);
+                Objects.equals(formulaType, that.formulaType);
     }
 
 
@@ -261,6 +233,6 @@ public class SchemaTypeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), usage, encodingStandard, namespacePath, formula, formulaType, queries);
+        return Objects.hash(super.hashCode(), usage, encodingStandard, namespacePath, formula, formulaType);
     }
 }

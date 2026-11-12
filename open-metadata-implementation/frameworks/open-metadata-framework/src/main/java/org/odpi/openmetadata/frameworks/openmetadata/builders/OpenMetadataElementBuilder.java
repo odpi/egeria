@@ -619,11 +619,11 @@ public class OpenMetadataElementBuilder
                                                                                                   OpenMetadataProperty.CREATED_ELEMENTS.name,
                                                                                                   connectorActivityReportProperties.getCreatedElements());
                                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                                                  OpenMetadataProperty.CREATED_ELEMENTS.name,
-                                                                                                  connectorActivityReportProperties.getCreatedElements());
+                                                                                                  OpenMetadataProperty.UPDATED_ELEMENTS.name,
+                                                                                                  connectorActivityReportProperties.getUpdatedElements());
                                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                                                  OpenMetadataProperty.CREATED_ELEMENTS.name,
-                                                                                                  connectorActivityReportProperties.getCreatedElements());
+                                                                                                  OpenMetadataProperty.DELETED_ELEMENTS.name,
+                                                                                                  connectorActivityReportProperties.getDeletedElements());
 
                                     }
                                     else if (properties instanceof IncidentReportProperties incidentReportProperties)
@@ -993,7 +993,7 @@ public class OpenMetadataElementBuilder
 
                                     elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                                        OpenMetadataProperty.PROFILE_END_DATE.name,
-                                                                                       resourceProfileAnnotationProperties.getProfileStartDate());
+                                                                                       resourceProfileAnnotationProperties.getProfileEndDate());
 
                                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                             OpenMetadataProperty.PROFILE_PROPERTIES.name,
@@ -1963,9 +1963,6 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                             OpenMetadataProperty.SCOPE_ELEMENTS.name,
                                                                                             dataLensProperties.getScopeElements());
-                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                                            OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                                            dataLensProperties.getAdditionalProperties());
                                 }
                                 else if (governanceControlProperties instanceof GovernanceActionProperties governanceActionProperties)
                                 {
@@ -2108,6 +2105,9 @@ public class OpenMetadataElementBuilder
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                      OpenMetadataProperty.REGULATION_SOURCE.name,
                                                                                      regulationProperties.getRegulationSource());
+                                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                          OpenMetadataProperty.REGULATORS.name,
+                                                                                          regulationProperties.getRegulators());
                             }
                         }
                         else if (properties instanceof ProjectProperties projectProperties)
@@ -2115,6 +2115,10 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.MISSION.name,
                                                                                  projectProperties.getMission());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                                 projectProperties.getScope());
 
                             elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                                       OpenMetadataProperty.SUCCESS_CRITERIA.name,

@@ -165,8 +165,10 @@ public class AssetCatalogRESTServices extends TokenController
 
 
     /**
-     * Return a list of assets with the requested search string in their name, qualified name
-     * or description.
+     * Locate string value in elements that are anchored to assets.  The results are organized by asset.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by asset.
+     * A page may therefore hold fewer assets than pageSize, and an asset whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text

@@ -143,6 +143,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     private static final String TYPES_ARCHIVE_FILE = "OpenMetadataTypes.omarchive";
 
     private static volatile boolean               started = false;
+    private static volatile Exception             startupFailure = null;
     private static ConfigurableApplicationContext platformContext;
     private static String                         platformURLRoot;
 
@@ -379,32 +380,55 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     @Override
     public void beforeAll(ExtensionContext context) throws Exception
     {
-        if (! started)
+        synchronized (OMAGPlatformExtension.class)
         {
-            synchronized (OMAGPlatformExtension.class)
+            /*
+             * A start-up that has already failed is reported again rather than retried.  Retrying would start
+             * a second platform and server on the same repository while the first may still be loading its
+             * archives into it - the two then deadlock in the database and every later test class fails,
+             * burying the one message that says what actually went wrong.
+             */
+            if (startupFailure != null)
             {
-                if (! started)
-                {
-                    startPlatform();
+                throw new IllegalStateException("The cts-fvt environment failed to start: " + startupFailure.getMessage(),
+                                                startupFailure);
+            }
 
-                    /*
-                     * The conformance test server is configured and started first, so that its workbench is
-                     * already listening on the cohort when the technology under test registers.  Started the
-                     * other way round, the workbench relies on catching up with a registration that has
-                     * already happened, which is a slower and less certain path to the same place.
-                     */
-                    configureConformanceTestServer();
-                    configureTechnologyUnderTest();
+            if (started)
+            {
+                return;
+            }
 
-                    PlatformServicesClient platformServicesClient = getPlatformServicesClient();
+            /*
+             * Registered before the environment is built rather than after, so that the platform is shut down
+             * at the end of the run even when the build below fails part-way.
+             */
+            context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
 
-                    startServer(platformServicesClient, CTS_SERVER_NAME);
-                    startServer(platformServicesClient, TUT_SERVER_NAME);
+            try
+            {
+                startPlatform();
 
-                    started = true;
+                /*
+                 * The conformance test server is configured and started first, so that its workbench is
+                 * already listening on the cohort when the technology under test registers.  Started the
+                 * other way round, the workbench relies on catching up with a registration that has
+                 * already happened, which is a slower and less certain path to the same place.
+                 */
+                configureConformanceTestServer();
+                configureTechnologyUnderTest();
 
-                    context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
-                }
+                PlatformServicesClient platformServicesClient = getPlatformServicesClient();
+
+                startServer(platformServicesClient, CTS_SERVER_NAME);
+                startServer(platformServicesClient, TUT_SERVER_NAME);
+
+                started = true;
+            }
+            catch (Exception error)
+            {
+                startupFailure = error;
+                throw error;
             }
         }
     }
@@ -930,6 +954,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
             {
                 platformContext = null;
                 started         = false;
+                startupFailure  = null;
             }
         }
     }
