@@ -3497,7 +3497,10 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Locate string value in elements that are anchored to assets.
+     * Locate string value in elements that are anchored to assets.  The results are organized by asset.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by asset.
+     * A page may therefore hold fewer assets than pageSize, and an asset whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param userId calling user
      * @param searchString value to search for

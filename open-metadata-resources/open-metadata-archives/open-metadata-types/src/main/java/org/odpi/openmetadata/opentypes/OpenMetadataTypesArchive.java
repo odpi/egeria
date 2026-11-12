@@ -170,6 +170,9 @@ public class OpenMetadataTypesArchive
         update0581DataFieldImplementation();
         add0582ReportSpecifications();
         update0725SmartCollections();
+        update0424GovernanceZones();
+        update0505SchemaAttributes();
+        update0130Projects();
     }
 
 
@@ -1020,6 +1023,108 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DERIVATION));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0424GovernanceZones()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateZoneMembershipProfileClassification());
+    }
+
+
+    /**
+     * ZoneMembershipProfile holds the member counts that the zone profiler maintains.  The securityGroups
+     * attribute it was first defined with was copied from SecurityListMembership by mistake - no bean,
+     * builder or converter has ever carried it - so it is deprecated.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateZoneMembershipProfileClassification()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ZONE_MEMBERSHIP_PROFILE_CLASSIFICATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        TypeDefAttribute typeDefAttribute = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SECURITY_GROUPS);
+        typeDefAttribute.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(typeDefAttribute);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0505SchemaAttributes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSchemaAttributeEntity());
+    }
+
+
+    /**
+     * SchemaAttributeProperties has always carried defaultValueOverride, and the builder writes it, but the
+     * SchemaAttribute type never declared it - so creating any schema attribute with a default value was
+     * rejected by the repository.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateSchemaAttributeEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEFAULT_VALUE_OVERRIDE));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0130Projects()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateProjectEntity());
+    }
+
+
+    /**
+     * A project's scope describes what is in and out of scope for the project.
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateProjectEntity()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

@@ -73,6 +73,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     private static final int MAX_PAGE_SIZE = 1000;
 
     private static volatile boolean              started = false;
+    private static volatile Exception            startupFailure = null;
     private static ConfigurableApplicationContext platformContext;
     private static String                         platformURLRoot;
 
@@ -116,18 +117,42 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     @Override
     public void beforeAll(ExtensionContext context) throws Exception
     {
-        if (! started)
+        synchronized (OMAGPlatformExtension.class)
         {
-            synchronized (OMAGPlatformExtension.class)
+            /*
+             * A start-up that has already failed is reported again rather than retried.  Retrying would start
+             * a second platform and server on the same repository while the first may still be loading its
+             * archives into it - the two then deadlock in the database and every later test class fails,
+             * burying the one message that says what actually went wrong.
+             */
+            if (startupFailure != null)
             {
-                if (! started)
-                {
-                    startPlatform();
-                    configureAndStartServers();
-                    started = true;
+                throw new IllegalStateException("The view-services-fvt environment failed to start: " + startupFailure.getMessage(),
+                                                startupFailure);
+            }
 
-                    context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
-                }
+            if (started)
+            {
+                return;
+            }
+
+            /*
+             * Registered before the environment is built rather than after, so that the platform is shut down
+             * at the end of the run even when the build below fails part-way.
+             */
+            context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
+
+            try
+            {
+                startPlatform();
+                configureAndStartServers();
+
+                started = true;
+            }
+            catch (Exception error)
+            {
+                startupFailure = error;
+                throw error;
             }
         }
     }
@@ -325,7 +350,11 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     {
         if (platformContext != null)
         {
-            String coverageFailure = EndpointCoverage.writeReport(platformContext);
+            /*
+             * The coverage report is only meaningful for a run whose tests ran.  After a failed start-up it
+             * would report every endpoint as uncovered, burying the start-up failure under a second one.
+             */
+            String coverageFailure = (startupFailure == null) ? EndpointCoverage.writeReport(platformContext) : null;
 
             try
             {

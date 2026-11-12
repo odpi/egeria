@@ -295,6 +295,7 @@ public class OpenMetadataTypeTest
                             }
                             else if (elementProperties != null)
                             {
+                                assertAllPropertiesSurvive(softAssert, openMetadataType, returnedElementProperties);
                                 openMetadataElement.setElementProperties(returnedElementProperties);
                                 softAssert.assertEquals(newBeanProperties, propertyConverter.getBeanProperties(openMetadataElement), "Round-tripped entity bean properties do not match for " + openMetadataType.typeName);
                             }
@@ -334,6 +335,7 @@ public class OpenMetadataTypeTest
                             }
                             else if (elementProperties != null)
                             {
+                                assertAllPropertiesSurvive(softAssert, openMetadataType, returnedElementProperties);
                                 softAssert.assertEquals(newBeanProperties, propertyConverter.getRelationshipProperties(relationshipHeader, returnedElementProperties), "Round-tripped relationship bean properties do not match for " + openMetadataType.typeName);
                             }
 
@@ -378,6 +380,7 @@ public class OpenMetadataTypeTest
                             }
                             else if (elementProperties != null)
                             {
+                                assertAllPropertiesSurvive(softAssert, openMetadataType, returnedElementProperties);
                                 attachedClassification.setClassificationProperties(returnedElementProperties);
                                 softAssert.assertEquals(newBeanProperties, propertyConverter.getClassificationProperties(attachedClassification), "Round-tripped classification bean properties do not match for " + openMetadataType.typeName);
                             }
@@ -507,9 +510,76 @@ public class OpenMetadataTypeTest
             {
                 propertyHelper.addDateProperty(elementProperties,
                                                propertyName,
-                                               new Date());
+                                               dateFor(propertyName));
             }
         }
+        else if (attributeTypeDef instanceof CollectionDef collectionDef)
+        {
+            /*
+             * Collection properties are filled too, otherwise a builder that never writes an array or map
+             * property (or writes the wrong one) passes the round trip unseen.  map<string,object> is left out
+             * because its values are not a single type.
+             */
+            String value = propertyName + " value";
+
+            switch (collectionDef.getName())
+            {
+                case "array<string>"              -> propertyHelper.addStringArrayProperty(elementProperties, propertyName, List.of(value, value + " 2"));
+                case "array<int>"                 -> propertyHelper.addIntArrayProperty(elementProperties, propertyName, List.of(propertyName.length(), 7));
+                case "map<string,string>"         -> propertyHelper.addStringMapProperty(elementProperties, propertyName, Map.of(propertyName, value));
+                case "map<string,boolean>"        -> propertyHelper.addBooleanMapProperty(elementProperties, propertyName, Map.of(propertyName, true));
+                case "map<string,int>"            -> propertyHelper.addIntMapProperty(elementProperties, propertyName, Map.of(propertyName, propertyName.length()));
+                case "map<string,long>"           -> propertyHelper.addLongMapProperty(elementProperties, propertyName, Map.of(propertyName, propertyName.length() * 2L));
+                case "map<string,double>"         -> propertyHelper.addDoubleMapProperty(elementProperties, propertyName, Map.of(propertyName, propertyName.length() * 1.5));
+                case "map<string,date>"           -> propertyHelper.addDateMapProperty(elementProperties, propertyName, Map.of(propertyName, dateFor(propertyName)));
+                case "map<string, array<string>>" -> propertyHelper.addStringArrayStringMap(elementProperties, propertyName, Map.of(propertyName, List.of(value)));
+                default -> { }
+            }
+        }
+    }
+
+
+    /**
+     * Every property generated for the type must still be there after the converter has read it into a
+     * bean and the builder has written the bean back.  Comparing the bean with its own round trip is not
+     * enough: a property the converter loses on the first read (by removing it twice, say) is missing from
+     * both beans, so they still match.
+     *
+     * @param softAssert collects failures
+     * @param openMetadataType type under test
+     * @param returnedElementProperties what the builder wrote back
+     */
+    private void assertAllPropertiesSurvive(SoftAssert        softAssert,
+                                            OpenMetadataType  openMetadataType,
+                                            ElementProperties returnedElementProperties)
+    {
+        ElementProperties generatedElementProperties = this.getElementPropertiesForType(openMetadataType);
+
+        if (generatedElementProperties != null)
+        {
+            Iterator<String> propertyNames = generatedElementProperties.getPropertyNames();
+
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+
+                softAssert.assertNotNull(returnedElementProperties.getPropertyValue(propertyName),
+                                         "Property " + propertyName + " of " + openMetadataType.typeName + " is lost between the converter and the builder");
+            }
+        }
+    }
+
+
+    /**
+     * Return a date that is different for each property name, so that a builder or converter that writes
+     * one date property's value into another (start/end dates, say) shows up in the round trip.
+     *
+     * @param propertyName name of property
+     * @return date
+     */
+    private Date dateFor(String propertyName)
+    {
+        return new Date(1_600_000_000_000L + (propertyName.hashCode() & 0xFFFFFFFL) * 1000L);
     }
 
 

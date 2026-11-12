@@ -132,7 +132,10 @@ public class AssetCatalogResource
 
 
     /**
-     * Locate string value in elements that are anchored to assets.
+     * Locate string value in elements that are anchored to assets.  The results are organized by asset.
+     * Paging (startFrom and pageSize) applies to the matching elements, before they are grouped by asset.
+     * A page may therefore hold fewer assets than pageSize, and an asset whose matches fall on more than
+     * one page is returned on each of those pages, with the matches from that page.
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text
@@ -146,7 +149,7 @@ public class AssetCatalogResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findInAssetDomain",
-            description="Locate string value in elements that are anchored to assets.",
+            description="Locate string value in elements that are anchored to assets.  The results are organized by asset.  Paging applies to the matching elements before they are grouped by asset, so a page may hold fewer assets than the page size, and an asset can appear on more than one page.",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 

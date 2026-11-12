@@ -51,6 +51,8 @@ dependencies {
 
     // For PackagedPlatformSmokeTest - this module had no tests at all before it
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    // For PlatformPropertiesJsonTest
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     // Used at runtime but reached only transitively - declared directly so the classpath is explicit
@@ -153,6 +155,9 @@ test {
     dependsOn tasks.named('bootJar')
 
     systemProperty 'platform.boot.jar', tasks.named('bootJar').get().archiveFile.get().asFile.absolutePath
+
+    // PlatformPropertiesJsonTest reads the platform's application.properties files from the repository root.
+    systemProperty 'egeria.repository.root', rootProject.projectDir.absolutePath
 
     // Starting a real platform takes appreciably longer than a unit test, but not long enough to warrant
     // making this opt-in: a smoke test nobody is obliged to run would not have caught the launcher class

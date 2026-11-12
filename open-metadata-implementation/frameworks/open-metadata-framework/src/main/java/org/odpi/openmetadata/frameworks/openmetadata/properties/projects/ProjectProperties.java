@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProjectProperties extends AuthoredReferenceableProperties
 {
     private String       mission                = null;
+    private String       scope                  = null;
     private List<String> dataProcessingPurposes = null;
     private List<String> successCriteria        = null;
     private String       projectPhase          = null;
@@ -58,6 +59,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
         if (template != null)
         {
             this.mission                = template.getMission();
+            this.scope                  = template.getScope();
             this.dataProcessingPurposes = template.getDataProcessingPurposes();
             this.successCriteria        = template.getSuccessCriteria();
             this.projectPhase          = template.getProjectPhase();
@@ -67,7 +69,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
             this.plannedStartDate      = template.getPlannedStartDate();
             this.actualStartDate       = template.getActualStartDate();
             this.plannedCompletionDate = template.getPlannedCompletionDate();
-            this.actualCompletionDate  = template.getPlannedCompletionDate();
+            this.actualCompletionDate  = template.getActualCompletionDate();
         }
     }
 
@@ -91,6 +93,28 @@ public class ProjectProperties extends AuthoredReferenceableProperties
     public void setMission(String mission)
     {
         this.mission = mission;
+    }
+
+
+    /**
+     * Return the description of what is in and out of the scope of the project.
+     *
+     * @return string
+     */
+    public String getScope()
+    {
+        return scope;
+    }
+
+
+    /**
+     * Set up the description of what is in and out of the scope of the project.
+     *
+     * @param scope string
+     */
+    public void setScope(String scope)
+    {
+        this.scope = scope;
     }
 
 
@@ -325,6 +349,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
     {
         return "ProjectProperties{" +
                 "mission='" + mission + '\'' +
+                ", scope='" + scope + '\'' +
                 ", dataProcessingPurposes=" + dataProcessingPurposes +
                 ", successCriteria=" + successCriteria +
                 ", projectPhase='" + projectPhase + '\'' +
@@ -354,6 +379,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
         ProjectProperties that = (ProjectProperties) objectToCompare;
         return Objects.equals(priority, that.priority) &&
                 Objects.equals(mission, that.mission) &&
+                Objects.equals(scope, that.scope) &&
                 Objects.equals(dataProcessingPurposes, that.dataProcessingPurposes) &&
                 Objects.equals(successCriteria, that.successCriteria) &&
                 Objects.equals(projectPhase, that.projectPhase) &&
@@ -373,7 +399,7 @@ public class ProjectProperties extends AuthoredReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), mission, dataProcessingPurposes, successCriteria, projectPhase, projectHealth, projectStatus, priority,
+        return Objects.hash(super.hashCode(), mission, scope, dataProcessingPurposes, successCriteria, projectPhase, projectHealth, projectStatus, priority,
                             plannedStartDate, actualStartDate, plannedCompletionDate, actualCompletionDate);
     }
 }

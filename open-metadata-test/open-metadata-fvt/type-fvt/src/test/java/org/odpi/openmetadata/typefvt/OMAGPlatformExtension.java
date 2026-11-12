@@ -72,6 +72,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     private static final List<String> ARCHIVE_FILES = List.of("OpenMetadataTypes.omarchive");
 
     private static volatile boolean                 started = false;
+    private static volatile Exception               startupFailure = null;
     private static ConfigurableApplicationContext    platformContext;
     private static String                            platformURLRoot;
 
@@ -94,19 +95,43 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     @Override
     public void beforeAll(ExtensionContext context) throws Exception
     {
-        if (! started)
+        synchronized (OMAGPlatformExtension.class)
         {
-            synchronized (OMAGPlatformExtension.class)
+            /*
+             * A start-up that has already failed is reported again rather than retried.  Retrying would start
+             * a second platform and server on the same repository while the first may still be loading its
+             * archives into it - the two then deadlock in the database and every later test class fails,
+             * burying the one message that says what actually went wrong.
+             */
+            if (startupFailure != null)
             {
-                if (! started)
-                {
-                    startPlatform();
-                    configureAndStartServer();
-                    TypeFvtTestSupport.cleanUpLeftoverTestElements();
-                    started = true;
+                throw new IllegalStateException("The type-fvt environment failed to start: " + startupFailure.getMessage(),
+                                                startupFailure);
+            }
 
-                    context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
-                }
+            if (started)
+            {
+                return;
+            }
+
+            /*
+             * Registered before the environment is built rather than after, so that the platform is shut down
+             * at the end of the run even when the build below fails part-way.
+             */
+            context.getRoot().getStore(NAMESPACE).put(STORE_KEY, this);
+
+            try
+            {
+                startPlatform();
+                configureAndStartServer();
+                TypeFvtTestSupport.cleanUpLeftoverTestElements();
+
+                started = true;
+            }
+            catch (Exception error)
+            {
+                startupFailure = error;
+                throw error;
             }
         }
     }

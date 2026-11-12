@@ -87,6 +87,9 @@ Content-Type: application/json
 ###
 # @name=findAssetsInDomain
 # Locate string value in elements that are anchored to assets.
+# The results are organized by asset.
+# Paging applies to the matching elements before they are grouped, so a page may hold fewer assets than the
+# page size, and an asset can appear on more than one page.
 #
 # Asset: https://egeria-project.org/concepts/asset/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string
