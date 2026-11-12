@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener;
 import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentManager;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
 import org.odpi.openmetadata.frameworks.integration.bitol.odps.DataProduct;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageDataSetEvent;
@@ -49,6 +51,7 @@ public class IntegrationContext extends ConnectorContextBase
     protected final OpenMetadataEventClient    openMetadataEventClient;
     private final   OpenLineageListenerManager openLineageListenerManager;
     private final   BitolDocumentManager       bitolDocumentManager;
+    private final   DcatDocumentManager        dcatDocumentManager;
 
     protected final OpenGovernanceClient      openGovernanceClient;
     protected final ConnectedAssetClient      connectedAssetClient;
@@ -83,6 +86,7 @@ public class IntegrationContext extends ConnectorContextBase
      * @param connectedAssetClient      client for working with connectors
      * @param openLineageListenerManager distributes open lineage events to listeners
      * @param bitolDocumentManager distributes Bitol documents (ODCS data contracts and ODPS data products) to listeners
+     * @param dcatDocumentManager distributes DCAT documents to listeners
      * @param governanceConfiguration   client for managing catalog targets
      * @param openGovernanceClient      client for initiating governance actions
      * @param auditLog                  logging destination
@@ -104,6 +108,7 @@ public class IntegrationContext extends ConnectorContextBase
                               ConnectedAssetClient       connectedAssetClient,
                               OpenLineageListenerManager openLineageListenerManager,
                               BitolDocumentManager       bitolDocumentManager,
+                              DcatDocumentManager        dcatDocumentManager,
                               GovernanceConfiguration    governanceConfiguration,
                               OpenGovernanceClient       openGovernanceClient,
                               AuditLog                   auditLog,
@@ -126,6 +131,7 @@ public class IntegrationContext extends ConnectorContextBase
 
         this.openLineageListenerManager = openLineageListenerManager;
         this.bitolDocumentManager       = bitolDocumentManager;
+        this.dcatDocumentManager        = dcatDocumentManager;
         this.governanceConfiguration    = governanceConfiguration;
         this.openGovernanceClient       = openGovernanceClient;
         this.connectedAssetClient       = connectedAssetClient;
@@ -199,6 +205,7 @@ public class IntegrationContext extends ConnectorContextBase
                                         connectedAssetClient,
                                         openLineageListenerManager,
                                         bitolDocumentManager,
+                                        dcatDocumentManager,
                                         governanceConfiguration,
                                         openGovernanceClient,
                                         auditLog,
@@ -257,6 +264,34 @@ public class IntegrationContext extends ConnectorContextBase
     public void publishOpenLineageJobEvent(OpenLineageJobEvent event)
     {
         openLineageListenerManager.publishOpenLineageJobEvent(event);
+    }
+
+
+    /* ======================================================================================
+     * DCAT documents describing catalogs, datasets and data services.
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processDcatDocument()
+     * method is called each time a DCAT document is published to the integration daemon.
+     *
+     * @param listener listener to call
+     */
+    public void registerDcatListener(DcatDocumentListener listener)
+    {
+        dcatDocumentManager.registerDcatListener(listener);
+    }
+
+
+    /**
+     * Called when an integration connector wishes to publish a DCAT document.  The document is parsed and passed to each of the
+     * registered DCAT document listeners.
+     *
+     * @param rawDocument JSON-LD payload
+     */
+    public void publishDcatDocument(String rawDocument)
+    {
+        dcatDocumentManager.publishDcatDocument(rawDocument);
     }
 
 

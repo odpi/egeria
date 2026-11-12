@@ -6,6 +6,7 @@ import org.odpi.openmetadata.contentpacks.core.apacheatlas.ApacheAtlasPackArchiv
 import org.odpi.openmetadata.contentpacks.core.apachekafka.ApacheKafkaPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.apis.APIPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.bitol.BitolArchiveWriter;
+import org.odpi.openmetadata.contentpacks.core.dcat.DcatArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.digitalproducts.ProductPackArchiveWriter;
 import org.odpi.openmetadata.contentpacks.core.egeria.EgeriaArchiveWriter;
@@ -62,6 +63,9 @@ public class CorePacksArchivesWriter
 
             BitolArchiveWriter bitolArchiveWriter = new BitolArchiveWriter();
             bitolArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            DcatArchiveWriter dcatArchiveWriter = new DcatArchiveWriter();
+            dcatArchiveWriter.writeOpenMetadataArchive(folderName);
 
             PostgresPackArchiveWriter postgresPackArchiveWriter = new PostgresPackArchiveWriter();
             postgresPackArchiveWriter.writeOpenMetadataArchive(folderName);

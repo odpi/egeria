@@ -10,6 +10,8 @@ import org.odpi.openmetadata.adapters.connectors.babbage.BabbageAnalyticalEngine
 import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.bitol.*;
+import org.odpi.openmetadata.adapters.connectors.integration.dcat.*;
+import org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.DcatConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
@@ -688,6 +690,112 @@ public enum IntegrationConnectorDefinition
                              ContentPackDefinition.BITOL_CONTENT_PACK),
 
     /**
+     * Monitors file directories for Data Catalog Vocabulary (DCAT) documents in JSON-LD and publishes new and changed documents to the DCAT listeners in the integration daemon.
+     */
+    DCAT_FILES_RECEIVER("697b045f-7462-47a3-b98a-709fa1e67bfd",
+                        "DCATFilesReceiverIntegrationConnector",
+                        "Monitors file directories for Data Catalog Vocabulary (DCAT) documents in JSON-LD and publishes new and changed documents to the DCAT listeners in the integration daemon.",
+                        DcatFilesReceiverIntegrationProvider.class.getName(),
+                        "DCATFilesReceiver",
+                        "dcatfilesnpa",
+                        null,
+                        null,
+                        "loading-bay/dcat",
+                        null,
+                        60,
+                        new DeployedImplementationTypeDefinition[]{
+                                DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
+                        "248847c4-2a29-44e9-b588-afccb4bbad8a",
+                        "DCAT Files Receiver",
+                        "Monitors file directories for DCAT documents and publishes the new and changed documents to the DCAT listeners registered in the same integration daemon.",
+                        false,
+                        null,
+                        null,
+                        null,
+                        null,
+                        IntegrationGroupDefinition.DCAT,
+                        ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
+     * Receives the Data Catalog Vocabulary (DCAT) documents published to the Apache Kafka topics attached as catalog targets.
+     */
+    DCAT_EVENT_RECEIVER("d287bfc7-4fb3-4e03-ac1b-30c7a773d74b",
+                        "DCATEventReceiverIntegrationConnector",
+                        "Receives the Data Catalog Vocabulary (DCAT) documents published to the Apache Kafka topics attached as catalog targets.",
+                        DcatEventReceiverIntegrationProvider.class.getName(),
+                        "DCATEventReceiver",
+                        "dcateventsnpa",
+                        null,
+                        null,
+                        null,
+                        null,
+                        60,
+                        null,
+                        "0e48f99e-8b39-4ba0-aba0-12b9925400c2",
+                        "DCAT Event Receiver",
+                        "Receives DCAT documents from Apache Kafka topics attached as catalog targets and publishes them to the DCAT listeners registered in the same integration daemon.",
+                        false,
+                        null,
+                        null,
+                        null,
+                        null,
+                        IntegrationGroupDefinition.DCAT,
+                        ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
+     * Catalogs the Data Catalog Vocabulary (DCAT) documents received by the integration daemon as data sets, distributions, deployed APIs and collection folders.
+     */
+    DCAT_CATALOGUER("868204b2-f1f8-465a-acf7-341c3f285a67",
+                    "DCATCataloguerIntegrationConnector",
+                    "Catalogs the Data Catalog Vocabulary (DCAT) documents received by the integration daemon as data sets, distributions, deployed APIs and collection folders.",
+                    DcatCataloguerIntegrationProvider.class.getName(),
+                    "DCATCataloguer",
+                    "dcatcatnpa",
+                    null,
+                    null,
+                    null,
+                    null,
+                    60,
+                    null,
+                    "a4f8e9b1-8aac-4731-b053-f9769a044b54",
+                    "DCAT Cataloguer",
+                    "Catalogs each DCAT document received by the integration daemon: datasets as data set assets with an asset for each distribution, data services as deployed APIs and catalogs as collection folders.",
+                    true,
+                    null,
+                    null,
+                    null,
+                    null,
+                    IntegrationGroupDefinition.DCAT,
+                    ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
+     * Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.
+     */
+    DCAT_PUBLISHER("3da79466-1c0d-42ce-9e2f-7028db2ff9d5",
+                   "DCATPublisherIntegrationConnector",
+                   "Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.",
+                   DcatPublisherIntegrationProvider.class.getName(),
+                   "DCATPublisher",
+                   "dcatpubnpa",
+                   null,
+                   null,
+                   "distribution-hub/dcat-catalog",
+                   getDcatPublisherConfigProperties(),
+                   60,
+                   new DeployedImplementationTypeDefinition[]{
+                           DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
+                   "82e832a0-5941-4109-99d5-e3d38e56a99f",
+                   "DCAT Publisher",
+                   "Writes the DCAT description of each asset in the DCAT Publishing Catalog collection, and of the catalog itself, to the file system whenever the description changes.",
+                   true,
+                   null,
+                   null,
+                   null,
+                   null,
+                   IntegrationGroupDefinition.DCAT,
+                   ContentPackDefinition.DCAT_CONTENT_PACK),
+
+    /**
      * Publishes open lineage events to the APIs attached as catalog targets.
      */
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
@@ -1038,6 +1146,22 @@ public enum IntegrationConnectorDefinition
                               IntegrationGroupDefinition.SMART_COLLECTIONS,
                               ContentPackDefinition.CORE_CONTENT_PACK),
     ;
+
+
+    /**
+     * Return the configuration properties for the DCAT Publisher.  It publishes the assets in the DCAT Publishing
+     * Catalog that is defined in the core content pack.
+     *
+     * @return map
+     */
+    private static Map<String, Object> getDcatPublisherConfigProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(DcatConfigurationProperty.PUBLISHING_CATALOG.getName(), DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG);
+
+        return configurationProperties;
+    }
 
 
     /**

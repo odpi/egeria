@@ -557,6 +557,34 @@ public class IntegrationDaemon
 
 
     /**
+     * Pass a Data Catalog Vocabulary (DCAT) document to the integration daemon.  It will pass it on to the integration
+     * connectors that have registered a listener for DCAT documents.
+     *
+     * @param document DCAT document in JSON-LD format.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException a problem processing the request
+     */
+    public void publishDcatDocument(String document) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        final String methodName        = "publishDcatDocument";
+        final String documentParameter = "document";
+        final String urlTemplate       = "/servers/{0}/open-metadata/integration-daemon/publish-dcat-document?delegatingUserId={1}";
+
+        invalidParameterHandler.validateObject(document, documentParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        document,
+                                        serverName,
+                                        delegatingUserId);
+    }
+
+
+    /**
      * Pass an Open Data Product Standard (ODPS) data product to the integration daemon.  It will pass it on to the integration
      * connectors that have registered a listener for Bitol documents.
      *

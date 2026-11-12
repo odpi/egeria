@@ -71,6 +71,16 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet
                          "No action is required. This is part of the normal operation of the service.",
                          "https://egeria-project.org/services/omvs/asset-catalog/overview/"),
 
+    /**
+     * OMVS-ASSET-CATALOG-0006 The Asset Catalog Open Metadata View Service (OMVS) was not able to catalog everything in a DCAT document supplied by user {0}: {1}
+     */
+    DCAT_MAPPING_WARNING("OMVS-ASSET-CATALOG-0006",
+                         AuditLogRecordSeverityLevel.ERROR,
+                         "The Asset Catalog Open Metadata View Service (OMVS) was not able to catalog everything in a DCAT document supplied by user {0}: {1}",
+                         "The rest of the document has been catalogued and the unique identifiers of the resulting elements have been returned to the caller.",
+                         "Use the message to locate the part of the document that needs to be corrected, then send the document again.  The elements that were catalogued are updated rather than duplicated.",
+                         "https://egeria-project.org/services/omvs/asset-catalog/overview/"),
+
     ;
 
     private final String                      logMessageId;

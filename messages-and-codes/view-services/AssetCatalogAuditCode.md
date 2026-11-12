@@ -9,7 +9,7 @@ The AssetCatalogAuditCode is used to define the message content for the OMRS Aud
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 5 |
+| **Number of messages** | 6 |
 | **Message identifiers begin** | `OMVS-ASSET-CATALOG-` |
 | **Java class** | `org.odpi.openmetadata.viewservices.assetcatalog.ffdc.AssetCatalogAuditCode` |
 | **Module** | [open-metadata-implementation/view-services/asset-catalog/asset-catalog-server](../../open-metadata-implementation/view-services/asset-catalog/asset-catalog-server) |
@@ -26,6 +26,7 @@ The AssetCatalogAuditCode is used to define the message content for the OMRS Aud
 | [OMVS-ASSET-CATALOG-0003](#omvs-asset-catalog-0003) | SHUTDOWN | The Asset Catalog Open Metadata View Service (OMVS) is shutting down |
 | [OMVS-ASSET-CATALOG-0004](#omvs-asset-catalog-0004) | EXCEPTION | The Asset Catalog Open Metadata View Service (OMVS) cannot initialize a new instance; error message is {0} |
 | [OMVS-ASSET-CATALOG-0005](#omvs-asset-catalog-0005) | SHUTDOWN | The Asset Catalog Open Metadata View Service (OMVS) is shutting down server instance {0} |
+| [OMVS-ASSET-CATALOG-0006](#omvs-asset-catalog-0006) | ERROR | The Asset Catalog Open Metadata View Service (OMVS) was not able to catalog everything in a DCAT document supplied by user {0}: {1} |
 
 ----
 
@@ -130,6 +131,27 @@ The local handler has requested shut down of the Asset Catalog OMVS.
 **User action**
 
 No action is required. This is part of the normal operation of the service.
+
+
+----
+
+### OMVS-ASSET-CATALOG-0006
+
+> The Asset Catalog Open Metadata View Service (OMVS) was not able to catalog everything in a DCAT document supplied by user {0}: {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `AssetCatalogAuditCode.DCAT_MAPPING_WARNING` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The rest of the document has been catalogued and the unique identifiers of the resulting elements have been returned to the caller.
+
+**User action**
+
+Use the message to locate the part of the document that needs to be corrected, then send the document again.  The elements that were catalogued are updated rather than duplicated.
 
 
 ----

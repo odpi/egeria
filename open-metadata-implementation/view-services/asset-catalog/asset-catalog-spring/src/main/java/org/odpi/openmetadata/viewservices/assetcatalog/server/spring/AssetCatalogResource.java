@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.DcatDocumentResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -182,5 +183,90 @@ public class AssetCatalogResource
     {
         return restAPI.getAssetsByMetadataCollectionId(serverName, metadataCollectionId, requestBody);
     }
-}
 
+
+    /**
+     * Pass a Data Catalog Vocabulary (DCAT) document to an integration daemon.  The integration daemon passes it on to
+     * the integration connectors that have registered a listener for DCAT documents, such as the DCAT Cataloguer.
+     *
+     * @param serverName name of the server to route the request to
+     * @param serverGUID unique identifier of the integration daemon's software server asset
+     * @param document DCAT document in JSON-LD format
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/dcat/publish-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="publishDcatDocument",
+            description="Send a Data Catalog Vocabulary (DCAT) document, in JSON-LD, to an integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for DCAT documents, such as the DCAT Cataloguer, which catalogs the datasets, data services and catalogs that the document describes.",
+            externalDocs=@ExternalDocumentation(description="Data Catalog Vocabulary (DCAT)",
+                    url="https://www.w3.org/TR/vocab-dcat-3/"))
+
+    public VoidResponse publishDcatDocument(@PathVariable String serverName,
+                                            @PathVariable String serverGUID,
+                                            @RequestBody  String document)
+    {
+        return restAPI.publishDcatDocument(serverName, serverGUID, document);
+    }
+
+
+    /**
+     * Catalog a Data Catalog Vocabulary (DCAT) document directly in open metadata.  Each dataset becomes a data set
+     * asset with an asset for each of its distributions, each data service becomes a deployed API and each catalog
+     * becomes a collection folder.  Sending the same description again updates the elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param document DCAT document in JSON-LD format
+     * @return unique identifiers of the elements that represent the catalogs, datasets, dataset series and data
+     * services described in the document or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assets/dcat/import-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="importDcatDocument",
+            description="Catalog the resources described in a Data Catalog Vocabulary (DCAT) document, supplied in JSON-LD.  Each dataset becomes a data set asset with an asset for each of its" +
+                    " distributions, each data service becomes a deployed API and each catalog becomes a collection folder.  The response lists the unique identifiers of these elements." +
+                    "  Sending the same description again updates the elements rather than creating new ones.",
+            externalDocs=@ExternalDocumentation(description="Data Catalog Vocabulary (DCAT)",
+                    url="https://www.w3.org/TR/vocab-dcat-3/"))
+
+    public GUIDListResponse importDcatDocument(@PathVariable String serverName,
+                                               @RequestBody  String document)
+    {
+        return restAPI.importDcatDocument(serverName, document);
+    }
+
+
+    /**
+     * Return the description of an asset in the Data Catalog Vocabulary (DCAT).  A deployed API is described as a
+     * data service; any other type of asset is described as a dataset.  The description is a JSON-LD document.
+     *
+     * @param serverName name of the server to route the request to
+     * @param assetGUID unique identifier of the asset
+     * @return DCAT description or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/assets/{assetGUID}/dcat-document")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getAssetAsDcat",
+            description="Return the description of an asset in the Data Catalog Vocabulary (DCAT).  A deployed API is described as a dcat:DataService.  Any other type of asset is described as a" +
+                    " dcat:Dataset; a data set's distributions are the assets that supply its data.  The document property of the response is a complete JSON-LD document, including its context.",
+            externalDocs=@ExternalDocumentation(description="Data Catalog Vocabulary (DCAT)",
+                    url="https://www.w3.org/TR/vocab-dcat-3/"))
+
+    public DcatDocumentResponse getAssetAsDcat(@PathVariable String serverName,
+                                               @PathVariable String assetGUID)
+    {
+        return restAPI.getAssetAsDcat(serverName, assetGUID);
+    }
+}

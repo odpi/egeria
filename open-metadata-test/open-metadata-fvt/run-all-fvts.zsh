@@ -55,6 +55,7 @@ SUITES=(auth-fvt:runAuthFvt
         postgres-fvt:runPostgresFvt
         files-fvt:runFilesFvt
         bitol-fvt:runBitolFvt
+        dcat-fvt:runDcatFvt
         openlineage-fvt:runOpenLineageFvt
         unity-catalog-fvt:runUnityCatalogFvt
         subscription-fvt:runSubscriptionFvt)

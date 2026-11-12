@@ -11,11 +11,18 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.OpenMetadataRootElementResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentFormatter;
+import org.odpi.openmetadata.frameworks.integration.dcat.properties.DcatDataService;
+import org.odpi.openmetadata.frameworks.integration.dcat.properties.DcatDataset;
+import org.odpi.openmetadata.frameworks.integration.dcat.properties.DcatDistribution;
+import org.odpi.openmetadata.frameworks.integration.dcat.properties.DcatDocument;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphRelationship;
@@ -27,11 +34,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlow
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -53,6 +62,8 @@ public class AssetCatalogFVT
 {
     private static final ViewServiceClient assetCatalog  = new ViewServiceClient(ViewServiceDescription.ASSET_CATALOG);
     private static final ViewServiceClient lineageLinker = new ViewServiceClient(ViewServiceDescription.LINEAGE_LINKER);
+    private static final ViewServiceClient collectionManager = new ViewServiceClient(ViewServiceDescription.COLLECTION_MANAGER);
+    private static final ViewServiceClient assetMaker        = new ViewServiceClient(ViewServiceDescription.ASSET_MAKER);
 
     private static String sourceGUID      = null;
     private static String destinationGUID = null;
@@ -67,6 +78,13 @@ public class AssetCatalogFVT
     private static String loopBackGUID    = null;
     private static String viewGUID        = null;
     private static String viewContentGUID = null;
+
+    private static final String DCAT_BASE      = "https://data.example.gov/" + OMAGPlatformExtension.RUN_ID;
+    private static final String DCAT_PUBLISHER = "Environment Agency " + OMAGPlatformExtension.RUN_ID;
+
+    private static String dcatDatasetGUID = null;
+    private static String dcatServiceGUID = null;
+    private static String dcatCatalogGUID = null;
 
 
     @Test
@@ -409,6 +427,315 @@ public class AssetCatalogFVT
     }
 
 
+    /* =====================================================================================================================
+     * Data Catalog Vocabulary (DCAT)
+     */
+
+    /**
+     * Build a DCAT document that describes a catalog listing a dataset with distributions and the data service that
+     * serves it.  The IRIs carry the run's marker so that a run against a repository that still holds a previous
+     * run's elements does not find them.
+     *
+     * @param description description of the dataset
+     * @param withAPIDistribution should the dataset have its second distribution?
+     * @return JSON-LD document
+     */
+    private static String dcatDocument(String  description,
+                                       boolean withAPIDistribution)
+    {
+        String apiDistribution = withAPIDistribution ? """
+                    ,
+                    {
+                      "@type": "dcat:Distribution",
+                      "dct:title": "Air quality (API)",
+                      "dcat:accessURL": { "@id": "%1$s/api/air-quality/v1" }
+                    }
+                """.formatted(DCAT_BASE) : "";
+
+        return """
+                {
+                  "@context": {
+                    "dcat": "http://www.w3.org/ns/dcat#",
+                    "dct": "http://purl.org/dc/terms/",
+                    "foaf": "http://xmlns.com/foaf/0.1/",
+                    "vcard": "http://www.w3.org/2006/vcard/ns#"
+                  },
+                  "@graph": [
+                    {
+                      "@id": "%1$s/catalog",
+                      "@type": "dcat:Catalog",
+                      "dct:title": "FVT open data catalog",
+                      "dcat:dataset": { "@id": "%1$s/dataset/air-quality" },
+                      "dcat:service": { "@id": "%1$s/service/air-quality-api" }
+                    },
+                    {
+                      "@id": "%1$s/dataset/air-quality",
+                      "@type": "dcat:Dataset",
+                      "dct:title": [ { "@value": "Air quality measurements", "@language": "en" }, { "@value": "Mesures de la qualité de l'air", "@language": "fr" } ],
+                      "dct:description": "%2$s",
+                      "dct:identifier": "air-quality",
+                      "dct:modified": { "@type": "http://www.w3.org/2001/XMLSchema#date", "@value": "2025-11-02" },
+                      "dct:publisher": { "@type": "foaf:Organization", "foaf:name": "%3$s" },
+                      "dcat:contactPoint": { "@type": "vcard:Organization", "vcard:fn": "Open Data Helpdesk", "vcard:hasEmail": { "@id": "mailto:opendata@example.gov" } },
+                      "dcat:keyword": [ "air quality", "pollution" ],
+                      "dcat:theme": { "@id": "http://publications.europa.eu/resource/authority/data-theme/ENVI" },
+                      "dct:license": { "@id": "%1$s/licence/open" },
+                      "dct:conformsTo": { "@id": "%1$s/standard/observations" },
+                      "foaf:page": { "@id": "%1$s/docs/air-quality" },
+                      "dcat:landingPage": { "@id": "%1$s/air-quality" },
+                      "dcat:version": "2.1",
+                      "http://data.europa.eu/r5r/applicableLegislation": { "@id": "http://data.europa.eu/eli/reg_impl/2023/138/oj" },
+                      "dcat:distribution": [
+                        {
+                          "@type": "dcat:Distribution",
+                          "dct:title": "Air quality (CSV)",
+                          "dcat:downloadURL": { "@id": "%1$s/files/air-quality.csv" },
+                          "dct:format": "CSV",
+                          "dcat:byteSize": 5242880
+                        }%4$s
+                      ]
+                    },
+                    {
+                      "@id": "%1$s/service/air-quality-api",
+                      "@type": "dcat:DataService",
+                      "dct:title": "Air quality API",
+                      "dcat:endpointURL": { "@id": "%1$s/api/air-quality/v1" },
+                      "dcat:servesDataset": { "@id": "%1$s/dataset/air-quality" }
+                    }
+                  ]
+                }
+                """.formatted(DCAT_BASE, description, DCAT_PUBLISHER, apiDistribution);
+    }
+
+
+    /**
+     * Retrieve the DCAT description of an asset.  The response bean lives in the asset-catalog-server module, so it
+     * is read as JSON; its document is a JSON-LD document that is read with the DCAT formatter.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @return description
+     */
+    private static DcatDocument dcatDescription(String assetGUID) throws IOException
+    {
+        JsonNode response = dcatResponse(assetGUID);
+
+        assertEquals(200, response.path("relatedHTTPCode").asInt(), "getAssetAsDcat failed: " + response.path("exceptionErrorMessage").asText());
+        assertTrue(response.path("document").has("@context"), "the DCAT description does not embed its context: " + response.path("document"));
+
+        return DcatDocumentFormatter.parseDocument(response.path("document").toString());
+    }
+
+
+    /**
+     * Call getAssetAsDcat.
+     *
+     * @param elementGUID unique identifier of an element
+     * @return response
+     */
+    private static JsonNode dcatResponse(String elementGUID)
+    {
+        JsonNode response = new RestTemplate().getForObject(OMAGPlatformExtension.getPlatformURLRoot() + "/servers/" +
+                                                                    OMAGPlatformExtension.VIEW_SERVER_NAME +
+                                                                    "/api/open-metadata/" + ViewServiceDescription.ASSET_CATALOG.getViewServiceURLMarker() +
+                                                                    "/assets/" + elementGUID + "/dcat-document",
+                                                            JsonNode.class);
+
+        assertNotNull(response);
+
+        return response;
+    }
+
+
+    /**
+     * importDcatDocument catalogs the dataset, the data service and the catalog, and returns their GUIDs in that
+     * order.
+     */
+    @Test
+    @Order(11)
+    void importDcatDocument()
+    {
+        List<String> guids = assetCatalog.post("/assets/dcat/import-document", dcatDocument("Hourly readings from the monitoring network.", true), GUIDListResponse.class).getGUIDs();
+
+        assertNotNull(guids, "importDcatDocument returned no GUIDs");
+        assertEquals(3, guids.size(), "importDcatDocument should catalog a dataset, a data service and a catalog: " + guids);
+
+        dcatDatasetGUID = guids.get(0);
+        dcatServiceGUID = guids.get(1);
+        dcatCatalogGUID = guids.get(2);
+
+        /*
+         * The dataset is a data set whose content is its two distributions and the API that serves it.
+         */
+        OpenMetadataRootElement dataset = assetCatalog.post("/assets/" + dcatDatasetGUID + "/as-graph", new ResultsRequestBody(), OpenMetadataRootElementResponse.class).getElement();
+
+        assertEquals(OpenMetadataType.DATA_SET.typeName, dataset.getElementHeader().getType().getTypeName());
+        assertNotNull(dataset.getDataSetContent(), "the data set has no content");
+        assertEquals(3, dataset.getDataSetContent().size(), "the data set should be linked to two distributions and a data service");
+
+        Set<String> contentTypeNames = new HashSet<>();
+
+        for (RelatedMetadataElementSummary content : dataset.getDataSetContent())
+        {
+            contentTypeNames.add(content.getRelatedElement().getElementHeader().getType().getTypeName());
+        }
+
+        assertEquals(Set.of(OpenMetadataType.DATA_FILE.typeName, OpenMetadataType.DATA_STORE.typeName, OpenMetadataType.DEPLOYED_API.typeName), contentTypeNames);
+        assertNotNull(dataset.getSearchKeywords(), "the data set has no search keywords");
+        assertEquals(2, dataset.getSearchKeywords().size());
+        assertNotNull(dataset.getLicenses(), "the data set has no licence");
+        assertNotNull(dataset.getContactDetails(), "the data set has no contact details");
+        assertNotNull(dataset.getExternalReferences(), "the data set has no external references");
+        assertEquals(2, dataset.getExternalReferences().size());
+        assertNotNull(dataset.getMemberOfCollections(), "the data set is not a member of the catalog's collection");
+        assertEquals(dcatCatalogGUID, dataset.getMemberOfCollections().get(0).getRelatedElement().getElementHeader().getGUID());
+    }
+
+
+    /**
+     * getAssetAsDcat gives back the description that was imported.
+     */
+    @Test
+    @Order(12)
+    void dcatDescriptionOfImportedAssets() throws IOException
+    {
+        DcatDocument document = dcatDescription(dcatDatasetGUID);
+
+        assertNull(document.getCatalogs());
+        assertNull(document.getDataServices());
+        assertEquals(1, document.getDatasets().size());
+
+        DcatDataset dataset = document.getDatasets().get(0);
+
+        assertEquals(DCAT_BASE + "/dataset/air-quality", dataset.getIri());
+        assertEquals("Air quality measurements", dataset.getTitle());
+        assertEquals("Mesures de la qualité de l'air", dataset.getTitleTranslations().get("fr"));
+        assertEquals("Hourly readings from the monitoring network.", dataset.getDescription());
+        assertEquals(List.of("air-quality"), dataset.getIdentifiers());
+        assertEquals("2025-11-02", dataset.getModified());
+        assertEquals(DCAT_PUBLISHER, dataset.getPublisher().getName());
+        assertEquals("Open Data Helpdesk", dataset.getContactPoints().get(0).getName());
+        assertEquals("opendata@example.gov", dataset.getContactPoints().get(0).getEmail());
+        assertEquals(Set.of("air quality", "pollution"), new HashSet<>(dataset.getKeywords()));
+        assertEquals("http://publications.europa.eu/resource/authority/data-theme/ENVI", dataset.getThemes().get(0).getIri());
+        assertEquals(DCAT_BASE + "/licence/open", dataset.getLicense().getIri());
+        assertEquals(List.of(DCAT_BASE + "/standard/observations"), dataset.getConformsTo());
+        assertEquals(List.of(DCAT_BASE + "/docs/air-quality"), dataset.getDocumentation());
+        assertEquals(DCAT_BASE + "/air-quality", dataset.getLandingPage());
+        assertEquals("2.1", dataset.getVersion());
+        assertEquals(List.of("http://data.europa.eu/eli/reg_impl/2023/138/oj"), dataset.getOtherProperties().get("http://data.europa.eu/r5r/applicableLegislation"));
+
+        assertEquals(2, dataset.getDistributions().size(), "the dataset should have its two distributions: " + dataset.getDistributions());
+
+        Map<String, DcatDistribution> distributions = new HashMap<>();
+
+        for (DcatDistribution distribution : dataset.getDistributions())
+        {
+            distributions.put(distribution.getTitle(), distribution);
+        }
+
+        assertEquals(DCAT_BASE + "/files/air-quality.csv", distributions.get("Air quality (CSV)").getDownloadURL());
+        assertEquals("CSV", distributions.get("Air quality (CSV)").getFormat());
+        assertEquals(Long.valueOf(5242880L), distributions.get("Air quality (CSV)").getByteSize());
+        assertEquals(DCAT_BASE + "/api/air-quality/v1", distributions.get("Air quality (API)").getAccessURL());
+        assertNull(distributions.get("Air quality (API)").getDownloadURL());
+
+        /*
+         * The data service is described as a data service that serves the dataset.
+         */
+        document = dcatDescription(dcatServiceGUID);
+
+        assertNull(document.getDatasets());
+        assertEquals(1, document.getDataServices().size());
+
+        DcatDataService dataService = document.getDataServices().get(0);
+
+        assertEquals(DCAT_BASE + "/service/air-quality-api", dataService.getIri());
+        assertEquals("Air quality API", dataService.getTitle());
+        assertEquals(List.of(DCAT_BASE + "/api/air-quality/v1"), dataService.getEndpointURLs());
+        assertEquals(List.of(DCAT_BASE + "/dataset/air-quality"), dataService.getServesDatasets());
+    }
+
+
+    /**
+     * Importing a changed description updates the same elements: the description changes, the distribution that
+     * has gone is removed and nothing is duplicated.
+     */
+    @Test
+    @Order(13)
+    void reimportDcatDocument() throws IOException
+    {
+        List<String> guids = assetCatalog.post("/assets/dcat/import-document", dcatDocument("Daily readings from the monitoring network.", false), GUIDListResponse.class).getGUIDs();
+
+        assertEquals(List.of(dcatDatasetGUID, dcatServiceGUID, dcatCatalogGUID), guids, "importing the document again should update the same elements");
+
+        DcatDataset dataset = dcatDescription(dcatDatasetGUID).getDatasets().get(0);
+
+        assertEquals("Daily readings from the monitoring network.", dataset.getDescription());
+        assertEquals(1, dataset.getDistributions().size(), "the distribution that was removed from the description is still catalogued: " + dataset.getDistributions());
+        assertEquals("Air quality (CSV)", dataset.getDistributions().get(0).getTitle());
+        assertEquals(2, dataset.getKeywords().size(), "the keywords were duplicated: " + dataset.getKeywords());
+        assertEquals(1, dataset.getContactPoints().size(), "the contact point was duplicated");
+        assertEquals(1, dataset.getConformsTo().size(), "the standard was duplicated");
+    }
+
+
+    /**
+     * An asset that did not come from a DCAT description is described as a dataset that is identified by its GUID.
+     * A data set's distributions are the assets that supply its data.
+     */
+    @Test
+    @Order(14)
+    void dcatDescriptionOfNativeAssets() throws IOException
+    {
+        DcatDataset dataset = dcatDescription(sourceGUID).getDatasets().get(0);
+
+        assertEquals("urn:uuid:" + sourceGUID, dataset.getIri());
+        assertEquals("Catalog source", dataset.getTitle());
+        assertNotNull(dataset.getIssued(), "a native asset should be issued when it was created");
+        assertNotNull(dataset.getModified(), "a native asset should have a modified date");
+        assertNull(dataset.getDistributions(), "a data set with no content has no distributions");
+    }
+
+
+    /**
+     * Documents that are not DCAT, and elements that are not assets, are refused.
+     */
+    @Test
+    @Order(15)
+    void dcatRefusals()
+    {
+        JsonNode response = assetCatalog.postForFailure("/assets/dcat/import-document", "@prefix dcat: <http://www.w3.org/ns/dcat#> .");
+
+        assertTrue(response.path("exceptionErrorMessageId").asText().contains("OIF-CONNECTOR-400-007"), "a document that is not JSON-LD was refused for the wrong reason: " + response);
+
+        response = assetCatalog.postForFailure("/assets/dcat/import-document", "{\"@context\": {\"schema\": \"http://schema.org/\"}, \"@type\": \"schema:Person\", \"schema:name\": \"Nobody\"}");
+
+        assertTrue(response.path("exceptionErrorMessageId").asText().contains("OIF-CONNECTOR-400-008"), "a document with no DCAT resources was refused for the wrong reason: " + response);
+
+        /*
+         * The provisioning process is a governance definition, not an asset.
+         */
+        response = dcatResponse(processGUID);
+
+        assertTrue(response.path("exceptionErrorMessageId").asText().contains("OIF-CONNECTOR-400-006"), "the DCAT description of a governance definition was not refused: " + response);
+    }
+
+
+    /**
+     * publishDcatDocument passes the document to an integration daemon.  This suite runs no integration daemon, so
+     * the request is sent to an element that is not one - the source data set - and must be refused rather than
+     * reporting that the document was published.
+     */
+    @Test
+    @Order(16)
+    void publishingDcatNeedsAnIntegrationDaemon()
+    {
+        JsonNode response = assetCatalog.postForFailure("/integration-daemons/" + sourceGUID + "/dcat/publish-document", dcatDocument("Not published.", false));
+
+        assertFalse(response.path("exceptionErrorMessage").asText().isEmpty(), "a refused publish did not say why: " + response);
+    }
+
+
     @AfterAll
     static void cleanUp()
     {
@@ -427,6 +754,23 @@ public class AssetCatalogFVT
         ClassificationExplorerFvtFixtures.deleteAsset(loopOtherGUID);
         ClassificationExplorerFvtFixtures.deleteAsset(viewGUID);
         ClassificationExplorerFvtFixtures.deleteGovernanceDefinition(processGUID);
+
+        /*
+         * The catalog's collection has members, so its delete has to be cascaded, which deletes the members too.
+         * The distributions, endpoint and contact details are anchored to the assets that they describe, so they
+         * are deleted with them.
+         */
+        if (dcatCatalogGUID != null)
+        {
+            DeleteElementRequestBody cascadedDelete = new DeleteElementRequestBody();
+
+            cascadedDelete.setCascadedDelete(true);
+
+            collectionManager.call("/collections/" + dcatCatalogGUID + "/delete", cascadedDelete);
+
+            ViewServicesFvtTestSupport.assertGone(assetMaker, "/assets/" + dcatDatasetGUID + "/retrieve");
+            ViewServicesFvtTestSupport.assertGone(assetMaker, "/assets/" + dcatServiceGUID + "/retrieve");
+        }
     }
 
 

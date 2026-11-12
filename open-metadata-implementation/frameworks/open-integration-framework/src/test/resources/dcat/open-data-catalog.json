@@ -1,0 +1,37 @@
+{
+  "@context": "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld",
+  "@id": "https://agency.example.gov/data.json",
+  "@type": "dcat:Catalog",
+  "conformsTo": "https://project-open-data.cio.gov/v1.1/schema",
+  "dataset": [
+    {
+      "@type": "dcat:Dataset",
+      "title": "Farmers market directory",
+      "description": "Locations and opening hours of registered farmers markets.",
+      "keyword": [ "farmers markets", "food" ],
+      "modified": "2025-06-30",
+      "publisher": { "@type": "org:Organization", "name": "Agricultural Marketing Service" },
+      "contactPoint": { "@type": "vcard:Contact", "fn": "Jane Doe", "hasEmail": "mailto:jane.doe@agency.example.gov" },
+      "identifier": "https://agency.example.gov/id/farmers-markets",
+      "accessLevel": "public",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "distribution": [
+        {
+          "@type": "dcat:Distribution",
+          "downloadURL": "https://agency.example.gov/files/farmers-markets.csv",
+          "mediaType": "text/csv"
+        }
+      ]
+    },
+    {
+      "@type": "dcat:Dataset",
+      "title": "Crop yield statistics",
+      "description": "Annual crop yields by county.",
+      "keyword": [ "crops" ],
+      "modified": "2025-03-01",
+      "publisher": { "@type": "org:Organization", "name": "Agricultural Marketing Service" },
+      "identifier": "crop-yields",
+      "accessLevel": "public"
+    }
+  ]
+}

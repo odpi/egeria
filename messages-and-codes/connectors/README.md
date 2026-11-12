@@ -12,11 +12,11 @@ Return to the [messages and codes index](../README.md).
 |---|---|---|---|
 | [Data Manager Connectors](data-manager-connectors) | 15 | 93 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](data-store-connectors) | 5 | 27 | These connectors provide access to the contents of files, folders and databases. |
-| [Integration Connectors](integration-connectors) | 14 | 94 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
+| [Integration Connectors](integration-connectors) | 15 | 107 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](system-connectors) | 13 | 80 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
 | [Repository Services Connectors](repository-services-connectors) | 7 | 34 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](event-bus-connectors) | 2 | 22 | These connectors send and receive events over the event bus - typically Apache Kafka. |
-| [Governance Action Connectors](governance-action-connectors) | 2 | 58 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
+| [Governance Action Connectors](governance-action-connectors) | 2 | 64 | These governance services run in an engine host to make changes to the open metadata ecosystem and the resources it describes. |
 | [File Survey Connectors](file-survey-connectors) | 1 | 5 | These survey action services analyse the content of files and folders and record what they find in a survey report. |
 | [Nanny Connectors](nanny-connectors) | 17 | 141 | The nanny connectors look after the open metadata ecosystem itself, recording its activity and deriving insight from it so that the operation of Egeria can be analysed. |
 | [Lovelace Insights](lovelace-insights) | 2 | 13 | These are the analytical governance services orchestrated by the Babbage Analytical Engine.  Each analyses the open metadata ecosystem, or a store of observations about it such as an OpenLineage log store, and records what it finds as classifications or survey reports on the appropriate open metadata elements. |

@@ -72,6 +72,33 @@ public enum OIFErrorCode implements ExceptionMessageSet
                                 "The caller has asked for a Bitol document for the wrong kind of element.  Pass a digital product for an ODPS document, or a data sharing agreement for an ODCS document.",
                                 "https://egeria-project.org/frameworks/oif/overview/"),
 
+    /**
+     * OIF-CONNECTOR-400-006 - Element {0} passed to method {1} is of type {2}, but a DCAT description can only be generated from an element of type {3}
+     */
+    WRONG_ELEMENT_TYPE_FOR_DCAT_DOCUMENT(400, "OIF-CONNECTOR-400-006",
+                                "Element {0} passed to method {1} is of type {2}, but a DCAT description can only be generated from an element of type {3}",
+                                "No DCAT description is generated and the request fails with this exception.",
+                                "The caller has asked for a DCAT description of the wrong kind of element.  Pass an asset for the description of a dataset or data service, or a collection for the description of a catalog.",
+                                "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-400-007 - The DCAT document supplied can not be read as JSON-LD: {0}
+     */
+    INVALID_DCAT_DOCUMENT(400, "OIF-CONNECTOR-400-007",
+                          "The DCAT document supplied can not be read as JSON-LD: {0}",
+                          "The request fails because the document can not be parsed.  Nothing is catalogued.",
+                          "Correct the document and retry the request.  Other serializations of DCAT, such as Turtle and RDF/XML, are not supported and need to be converted to JSON-LD first.",
+                          "https://egeria-project.org/frameworks/oif/overview/"),
+
+    /**
+     * OIF-CONNECTOR-400-008 - The JSON-LD document supplied does not describe a DCAT catalog, dataset, dataset series or data service
+     */
+    EMPTY_DCAT_DOCUMENT(400, "OIF-CONNECTOR-400-008",
+                        "The JSON-LD document supplied does not describe a DCAT catalog, dataset, dataset series or data service",
+                        "The request fails because there is nothing in the document to catalog.",
+                        "Check that the resources in the document are typed as dcat:Catalog, dcat:Dataset, dcat:DatasetSeries or dcat:DataService, and that the document either embeds its JSON-LD context or uses the standard names for the DCAT terms.  Egeria does not retrieve a context from the network.",
+                        "https://egeria-project.org/frameworks/oif/overview/"),
+
 
     /**
      * OIF-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}

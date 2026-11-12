@@ -9,7 +9,7 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 54 |
+| **Number of messages** | 60 |
 | **Message identifiers begin** | `GOVERNANCE-ACTION-CONNECTORS-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/governance-action-connectors](../../../open-metadata-implementation/adapters/open-connectors/governance-action-connectors) |
@@ -74,6 +74,12 @@ The GovernanceActionConnectorsAuditCode is used to define the message content fo
 | [GOVERNANCE-ACTION-CONNECTORS-0053](#governance-action-connectors-0053) | INFO | The {0} governance action service is checking the governance zones held in the Anchors classifications of {1} |
 | [GOVERNANCE-ACTION-CONNECTORS-0054](#governance-action-connectors-0054) | INFO | The {0} governance action service has corrected the governance zones in {1} Anchors classifications |
 | [GOVERNANCE-ACTION-CONNECTORS-0055](#governance-action-connectors-0055) | ERROR | The {0} governance action service could not check or correct every Anchors classification of {1}: {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0056](#governance-action-connectors-0056) | INFO | The {0} watchdog action service is waiting for {1} to dos to finish: {2} |
+| [GOVERNANCE-ACTION-CONNECTORS-0057](#governance-action-connectors-0057) | INFO | The {0} watchdog action service has detected that every to do it was waiting for has been completed: {1} |
+| [GOVERNANCE-ACTION-CONNECTORS-0058](#governance-action-connectors-0058) | INFO | The {0} watchdog action service has detected that every to do it was waiting for has finished, but these were not completed: {1} |
+| [GOVERNANCE-ACTION-CONNECTORS-0059](#governance-action-connectors-0059) | INFO | The {0} watchdog action service has not been supplied with any to dos to wait for |
+| [GOVERNANCE-ACTION-CONNECTORS-0060](#governance-action-connectors-0060) | ERROR | The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name |
+| [GOVERNANCE-ACTION-CONNECTORS-0061](#governance-action-connectors-0061) | INFO | The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3} |
 
 ----
 
@@ -1261,6 +1267,138 @@ The service carries on with any remaining action targets, and completes with the
 **User action**
 
 The metadata access server's audit log has an OMAG-GENERIC-HANDLERS-0001 message for each element it could not correct, with the cause.  Correct each cause, for example by connecting the cohort member that owns the classification, then run the service again.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0056
+
+> The {0} watchdog action service is waiting for {1} to dos to finish: {2}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.WAITING_FOR_TO_DOS` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/to-do/> |
+
+**System action**
+
+The watchdog action service listens for changes to these to dos.  It completes when each of them has a finished activity status or has been deleted.
+
+**User action**
+
+No action is required.  The stewards assigned to the to dos need to complete them.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0057
+
+> The {0} watchdog action service has detected that every to do it was waiting for has been completed: {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.TO_DOS_COMPLETED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/to-do/> |
+
+**System action**
+
+The watchdog action service returns an ACTIONED completion status with the to-dos-completed guard.
+
+**User action**
+
+No action is required.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0058
+
+> The {0} watchdog action service has detected that every to do it was waiting for has finished, but these were not completed: {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.TO_DOS_NOT_COMPLETED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/to-do/> |
+
+**System action**
+
+The watchdog action service returns an ACTIONED completion status with the to-dos-not-completed guard.  A to do that was abandoned, cancelled, ignored, failed, marked invalid or deleted is not completed.
+
+**User action**
+
+Review the to dos that were not completed to understand why the stewards did not complete them, and validate that the governance action process is responding to the to-dos-not-completed guard as expected.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0059
+
+> The {0} watchdog action service has not been supplied with any to dos to wait for
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.NO_TO_DOS` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/concepts/to-do/> |
+
+**System action**
+
+The watchdog action service returns an ACTIONED completion status with the no-to-dos guard.  The to dos are the action targets named stewardAction and any other action targets that are ToDo elements.
+
+**User action**
+
+If to dos were expected, check that the previous step in the governance action process passed them on as action targets.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0060
+
+> The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.NO_QUALIFIED_NAME` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service returns an INVALID completion status with the invalid-action-target-type guard without searching for duplicates.
+
+**User action**
+
+Check that the action target passed to the governance action service is a Referenceable element with a qualified name, and then rerun the request.
+
+
+----
+
+### GOVERNANCE-ACTION-CONNECTORS-0061
+
+> The {0} governance action service has linked element {1} to its peer duplicate {2} because they both have the qualified name {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `GovernanceActionConnectorsAuditCode.PEER_DUPLICATE_LINKED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/governance-action-service/> |
+
+**System action**
+
+The governance action service has created a PeerDuplicateLink relationship between the elements and has set the KnownDuplicate classification on both of them.
+
+**User action**
+
+Validate that the elements describe the same thing, and remove the PeerDuplicateLink relationship if they do not.
 
 
 ----

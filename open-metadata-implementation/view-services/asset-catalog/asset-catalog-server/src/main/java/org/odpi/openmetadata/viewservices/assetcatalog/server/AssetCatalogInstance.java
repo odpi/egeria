@@ -5,7 +5,10 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -13,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.TypeDefList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.Type;
 
@@ -20,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * AssetCatalogInstance caches references to objects it needs for a specific server.
@@ -30,9 +35,12 @@ public class AssetCatalogInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ASSET_CATALOG;
 
-    private final AssetHandler       assetHandler;
-    private final OpenMetadataClient openMetadataClient;
-    private final List<Type>         supportedAssetTypes;
+    private final AssetHandler         assetHandler;
+    private final OpenMetadataClient   openMetadataClient;
+    private final ConnectedAssetClient connectedAssetClient;
+    private final AuditLog             auditLog;
+    private final int                  maxPageSize;
+    private final List<Type>           supportedAssetTypes;
 
 
     /**
@@ -72,9 +80,20 @@ public class AssetCatalogInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        this.auditLog    = auditLog;
+        this.maxPageSize = maxPageSize;
+
         this.openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerSecretsStoreProvider, localServerSecretsStoreLocation, localServerSecretsStoreCollection, maxPageSize, auditLog);
 
         this.assetHandler = new AssetHandler(serverName, auditLog, myDescription.getViewServiceFullName(), openMetadataClient);
+
+        this.connectedAssetClient = new EgeriaConnectedAssetClient(remoteServerName,
+                                                                   remoteServerURL,
+                                                                   localServerSecretsStoreProvider,
+                                                                   localServerSecretsStoreLocation,
+                                                                   localServerSecretsStoreCollection,
+                                                                   maxPageSize,
+                                                                   auditLog);
 
         this.supportedAssetTypes = this.setupSupportedAssetTypes(supportedAssetTypeNames);
     }
@@ -200,6 +219,44 @@ public class AssetCatalogInstance extends OMVSServiceInstance
     public List<Type> getSupportedAssetTypes()
     {
         return supportedAssetTypes;
+    }
+
+
+    /**
+     * Return a connector context for the calling user.  This is the object that the Open Integration Framework's
+     * DCAT mapper and generator work through; it gives them the same clients that an integration connector has.
+     *
+     * @param userId calling user
+     * @return connector context
+     */
+    public ConnectorContextBase getConnectorContext(String userId)
+    {
+        return new ConnectorContextBase(serverName,
+                                        myDescription.getViewServiceFullName(),
+                                        null,
+                                        null,
+                                        UUID.randomUUID().toString(),
+                                        myDescription.getViewServiceFullName(),
+                                        userId,
+                                        null,
+                                        false,
+                                        openMetadataClient,
+                                        auditLog,
+                                        maxPageSize,
+                                        DeleteMethod.SOFT_DELETE);
+    }
+
+
+    /**
+     * Return the connected asset client.  This client is from the Open Connector Framework (OCF) and is used to create
+     * connectors to the assets catalogued in open metadata - in particular the integration daemons that distribute
+     * DCAT documents.
+     *
+     * @return client
+     */
+    public ConnectedAssetClient getConnectedAssetClient()
+    {
+        return connectedAssetClient;
     }
 
 

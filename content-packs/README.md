@@ -52,6 +52,11 @@ the events in a PostgreSQL schema and removes them after a configurable number o
 files and Apache Kafka topics; catalog them as data sharing agreements and digital products; and generate and store
 the documents describing the digital products and data sharing agreements defined in open metadata.
 
+* **DCATContentPack** - receive descriptions of catalogs, datasets and data services written in the W3C
+[Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) from files and Apache Kafka topics; catalog
+them as assets; and publish the DCAT descriptions of the assets that are members of the *DCAT Publishing Catalog*
+collection (which is supplied by the CoreContentPack).
+
 * **[OrganizationInsightContentPack](https://egeria-project.org/content-packs/observability-content-pack/overview)** -
 monitoring, analysis and capture of insight into organization activity and effectiveness.  This content pack is
 designed to load a PostgreSQL database with key observations that can be used for building a dashboard.
