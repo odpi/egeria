@@ -11,7 +11,6 @@ import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplem
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMSecretsFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.bitol.*;
 import org.odpi.openmetadata.adapters.connectors.integration.dcat.*;
-import org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.DcatConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.jacquard.solutionblueprint.ProductSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.liskov.DataSharingHubManagerProvider;
@@ -769,24 +768,24 @@ public enum IntegrationConnectorDefinition
                     ContentPackDefinition.DCAT_CONTENT_PACK),
 
     /**
-     * Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.
+     * Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the collections attached as catalog targets as JSON-LD files in the directory named in its endpoint.
      */
     DCAT_PUBLISHER("3da79466-1c0d-42ce-9e2f-7028db2ff9d5",
                    "DCATPublisherIntegrationConnector",
-                   "Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.",
+                   "Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the collections attached as catalog targets as JSON-LD files in the directory named in its endpoint.",
                    DcatPublisherIntegrationProvider.class.getName(),
                    "DCATPublisher",
                    "dcatpubnpa",
                    null,
                    null,
                    "distribution-hub/dcat-catalog",
-                   getDcatPublisherConfigProperties(),
+                   null,
                    60,
                    new DeployedImplementationTypeDefinition[]{
                            DeployedImplementationType.FILE_SYSTEM_DIRECTORY},
                    "82e832a0-5941-4109-99d5-e3d38e56a99f",
                    "DCAT Publisher",
-                   "Writes the DCAT description of each asset in the DCAT Publishing Catalog collection, and of the catalog itself, to the file system whenever the description changes.",
+                   "Writes a DCAT catalog for each collection attached as a catalog target, along with the DCAT description of each asset in the collection, to the file system whenever the descriptions change.",
                    true,
                    null,
                    null,
@@ -1146,22 +1145,6 @@ public enum IntegrationConnectorDefinition
                               IntegrationGroupDefinition.SMART_COLLECTIONS,
                               ContentPackDefinition.CORE_CONTENT_PACK),
     ;
-
-
-    /**
-     * Return the configuration properties for the DCAT Publisher.  It publishes the assets in the DCAT Publishing
-     * Catalog that is defined in the core content pack.
-     *
-     * @return map
-     */
-    private static Map<String, Object> getDcatPublisherConfigProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(DcatConfigurationProperty.PUBLISHING_CATALOG.getName(), DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG);
-
-        return configurationProperties;
-    }
 
 
     /**

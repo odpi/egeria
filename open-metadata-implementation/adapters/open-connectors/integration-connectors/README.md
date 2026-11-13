@@ -14,7 +14,7 @@ Details of Egeria's integration connectors are found in the
 * **[dcat-integration-connectors](dcat-integration-connectors)** exchange descriptions of data assets in the W3C
   [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/): receivers pick up DCAT documents from file
   directories and Apache Kafka topics, a cataloguer turns the datasets, distributions and data services they describe
-  into assets, and a publisher writes the DCAT descriptions of the assets in the *DCAT Publishing Catalog* collection.
+  into assets, and a publisher writes the DCAT descriptions of the assets in the collections attached to it as catalog targets.
 
 * **[bitol-integration-connectors](bitol-integration-connectors)** receive, catalog, generate and store
   [Bitol](https://bitol.io) Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS) documents:

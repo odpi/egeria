@@ -275,7 +275,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      */
     private int allocateFreePort()
     {
-        try (ServerSocket socket = new ServerSocket(0))
+        try (ServerSocket socket = new ServerSocket(0, 50, java.net.InetAddress.getLoopbackAddress()))
         {
             return socket.getLocalPort();
         }
@@ -375,6 +375,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         Map<String, Object> properties = new HashMap<>();
 
         properties.put("server.port", Integer.toString(port));
+
+        properties.put("server.address", "127.0.0.1");
         properties.put("platform.name", "server-fvt OMAG Server Platform");
         properties.put("platform.description", "Hermetic, in-process platform started by the server-fvt functional verification test suite.");
         properties.put("platform.organization.name", "Egeria server-fvt");

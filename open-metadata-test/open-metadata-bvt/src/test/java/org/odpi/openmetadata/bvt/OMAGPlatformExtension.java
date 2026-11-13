@@ -89,6 +89,14 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     {
         Map<String, Object> properties = new HashMap<>();
         properties.put("server.port", "0");
+        /*
+         * Bind to the loopback address, not the wildcard.  Tomcat sets SO_REUSEADDR, and on macOS that lets a
+         * wildcard bind share a port another process already holds on 127.0.0.1.  Calls to localhost then
+         * reach that other process, because the more specific binding wins - a full build once failed with
+         * getPlatformOrigin returning "404 not found" from an unrelated local app on the port Tomcat was given.
+         * Binding to 127.0.0.1 itself makes the kernel choose a port that is genuinely free on that address.
+         */
+        properties.put("server.address", "127.0.0.1");
         properties.put("platform.configstore.provider", "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider");
         properties.put("platform.configstore.endpoint", "build/bvt-data/servers/{0}/config/{0}.config");
         properties.put("startup.server.list", "");

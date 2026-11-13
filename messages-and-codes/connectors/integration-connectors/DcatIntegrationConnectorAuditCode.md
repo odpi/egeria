@@ -9,7 +9,7 @@ The DcatIntegrationConnectorAuditCode is used to define the message content for 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 13 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `DCAT-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.DcatIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/dcat-integration-connectors](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/dcat-integration-connectors) |
@@ -27,13 +27,16 @@ The DcatIntegrationConnectorAuditCode is used to define the message content for 
 | [DCAT-INTEGRATION-CONNECTOR-0004](#dcat-integration-connector-0004) | ERROR | The {0} integration connector is unable to use directory {1} (from {2}): {3} |
 | [DCAT-INTEGRATION-CONNECTOR-0005](#dcat-integration-connector-0005) | INFO | The {0} integration connector {1} element {2} ({3}) for DCAT {4} {5} |
 | [DCAT-INTEGRATION-CONNECTOR-0006](#dcat-integration-connector-0006) | ERROR | The {0} integration connector was not able to catalog everything in a DCAT document: {1} |
-| [DCAT-INTEGRATION-CONNECTOR-0007](#dcat-integration-connector-0007) | ERROR | The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property |
+| [DCAT-INTEGRATION-CONNECTOR-0007](#dcat-integration-connector-0007) | INFO | The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish |
 | [DCAT-INTEGRATION-CONNECTOR-0008](#dcat-integration-connector-0008) | ERROR | The {0} integration connector has no directory to publish DCAT descriptions to |
 | [DCAT-INTEGRATION-CONNECTOR-0009](#dcat-integration-connector-0009) | INFO | The {0} integration connector published the DCAT description of {1} {2} ({3}) to file {4} |
 | [DCAT-INTEGRATION-CONNECTOR-0010](#dcat-integration-connector-0010) | INFO | The {0} integration connector published the DCAT catalog for collection {1} to file {2}; it describes {3} dataset(s) and {4} data service(s) |
-| [DCAT-INTEGRATION-CONNECTOR-0011](#dcat-integration-connector-0011) | INFO | The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog |
+| [DCAT-INTEGRATION-CONNECTOR-0011](#dcat-integration-connector-0011) | INFO | The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published |
 | [DCAT-INTEGRATION-CONNECTOR-0012](#dcat-integration-connector-0012) | ERROR | The {0} integration connector was not able to generate the DCAT description of element {1}; the {2} exception had message: {3} |
 | [DCAT-INTEGRATION-CONNECTOR-0013](#dcat-integration-connector-0013) | EXCEPTION | The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3} |
+| [DCAT-INTEGRATION-CONNECTOR-0014](#dcat-integration-connector-0014) | ERROR | The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection |
+| [DCAT-INTEGRATION-CONNECTOR-0015](#dcat-integration-connector-0015) | EXCEPTION | The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3} |
+| [DCAT-INTEGRATION-CONNECTOR-0016](#dcat-integration-connector-0016) | INFO | The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target |
 
 ----
 
@@ -165,21 +168,21 @@ Use the message to locate the part of the document that needs to be corrected, t
 
 ### DCAT-INTEGRATION-CONNECTOR-0007
 
-> The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property
+> The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish
 
 |  |  |
 |---|---|
-| **Java constant** | `DcatIntegrationConnectorAuditCode.PUBLISHING_CATALOG_NOT_FOUND` |
-| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
-| **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Java constant** | `DcatIntegrationConnectorAuditCode.NO_PUBLISHING_CATALOGS` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}` |
 
 **System action**
 
-No DCAT descriptions are published.  The connector looks for the collection again on its next refresh.
+No DCAT descriptions are published.  The connector looks for its catalog targets again on its next refresh.
 
 **User action**
 
-Either load the content pack that defines the collection (the default collection is supplied by the Core Content Pack), or set the configuration property to the qualified name or display name of the collection whose member assets are to be published.
+Attach each collection that lists the assets to publish to the connector as a catalog target.  The DCAT Content Pack attaches the DCAT Publishing Catalog collection.
 
 
 ----
@@ -196,11 +199,11 @@ Either load the content pack that defines the collection (the default collection
 
 **System action**
 
-No DCAT descriptions are published.  The connector looks for its destination directories again on its next refresh.
+No DCAT descriptions are published.
 
 **User action**
 
-Either set the network address of the endpoint in the connector's connection to the name of the destination directory, or attach one or more file folders to the connector as catalog targets.
+Set the network address of the endpoint in the connector's connection to the name of the destination directory, and restart the connector.
 
 
 ----
@@ -217,7 +220,7 @@ Either set the network address of the endpoint in the connector's connection to 
 
 **System action**
 
-The asset is a member of the publishing catalog and its DCAT description is new, or has changed since it was last published, so the file has been written.
+The asset is a member of a collection that is published as a DCAT catalog and its DCAT description is new, or has changed since it was last published, so the file has been written.
 
 **User action**
 
@@ -249,7 +252,7 @@ No specific action is required.  The catalog file is the one to give to a portal
 
 ### DCAT-INTEGRATION-CONNECTOR-0011
 
-> The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog
+> The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published
 
 |  |  |
 |---|---|
@@ -259,11 +262,11 @@ No specific action is required.  The catalog file is the one to give to a portal
 
 **System action**
 
-The file was written by an earlier refresh for an asset that has since been removed from the publishing catalog, or deleted, or renamed.
+The file was written by an earlier refresh for an asset that has since been removed from the collection, or deleted, or renamed.
 
 **User action**
 
-No specific action is required.  Add the asset to the publishing catalog again if it was removed by mistake.
+No specific action is required.  Add the asset to the collection again if it was removed by mistake.
 
 
 ----
@@ -280,7 +283,7 @@ No specific action is required.  Add the asset to the publishing catalog again i
 
 **System action**
 
-The element is left out of the published catalog.  The connector carries on with the other members of the publishing catalog and tries this one again on its next refresh.
+The element is left out of the published catalog.  The connector carries on with the other members of the collection and tries this one again on its next refresh.
 
 **User action**
 
@@ -306,6 +309,69 @@ The connector is unable to complete the request it was processing.
 **User action**
 
 Use the details from the error message to determine the cause of the error and retry the request once it is resolved.
+
+
+----
+
+### DCAT-INTEGRATION-CONNECTOR-0014
+
+> The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection
+
+|  |  |
+|---|---|
+| **Java constant** | `DcatIntegrationConnectorAuditCode.CATALOG_TARGET_NOT_COLLECTION` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+Only collections can be published as DCAT catalogs.  The connector publishes its other catalog targets.
+
+**User action**
+
+Remove the catalog target relationship and attach the collection that lists the assets to publish instead.  The directory to publish to is set in the network address of the endpoint in the connector's connection.
+
+
+----
+
+### DCAT-INTEGRATION-CONNECTOR-0015
+
+> The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `DcatIntegrationConnectorAuditCode.CATALOG_NOT_PUBLISHED` |
+| **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector carries on with its other catalog targets and tries this collection again on its next refresh.  No published catalogs are withdrawn on this refresh.
+
+**User action**
+
+Use the message from the exception to determine what is wrong with the collection.  A common cause is that the connector's userId is not permitted to read it.
+
+
+----
+
+### DCAT-INTEGRATION-CONNECTOR-0016
+
+> The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target
+
+|  |  |
+|---|---|
+| **Java constant** | `DcatIntegrationConnectorAuditCode.CATALOG_WITHDRAWN` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The directory was written by an earlier refresh for a collection that has since been detached from the connector, or deleted, or renamed.
+
+**User action**
+
+No specific action is required.  Attach the collection to the connector as a catalog target again if it was removed by mistake.
 
 
 ----

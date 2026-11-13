@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.Product
 import org.odpi.openmetadata.contentpacks.core.*;
 import org.odpi.openmetadata.contentpacks.core.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.DcatConfigurationProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolAuthoritativeDefinitionType;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportScope;
@@ -85,11 +84,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add the root digital product catalog.
          */
         addDigitalProductCatalogDefinition(ContentPackDefinition.CORE_CONTENT_PACK);
-
-        /*
-         * Add the root collection that lists the assets to publish in the Data Catalog Vocabulary (DCAT).
-         */
-        addDcatPublishingCatalog();
 
         /*
          * Write exception types used by Egeria's connectors.
@@ -1638,36 +1632,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             System.exit(-1);
         }
     }
-
-    /**
-     * Add the DCAT Publishing Catalog.  This is the root collection that an organization uses to choose which of its
-     * assets are described to the outside world using the W3C Data Catalog Vocabulary (DCAT).  It is empty: an asset is
-     * published when it is made a member of this collection, or of a collection folder nested in it.  The collection is
-     * in the core content pack, rather than the DCAT content pack, so that assets can be chosen for publication before
-     * the connector that publishes them is set up.  The DCAT Publisher integration connector locates it through its
-     * qualified name, which is the default value of the connector's publishingCatalog configuration property.
-     */
-    private void addDcatPublishingCatalog()
-    {
-        final String dcatPublishingCatalogGUID = "9b07a6ef-4d24-40a8-bf7a-c6fda6b360a8";
-
-        archiveHelper.setGUID(DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG, dcatPublishingCatalogGUID);
-
-        archiveHelper.addCollection(OpenMetadataType.ROOT_COLLECTION.typeName,
-                                    dcatPublishingCatalogGUID,
-                                    OpenMetadataType.ROOT_COLLECTION.typeName,
-                                    OpenMetadataType.COLLECTION.typeName,
-                                    null,
-                                    null,
-                                    DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG,
-                                    "DCAT Publishing Catalog",
-                                    "The assets that are published using the W3C Data Catalog Vocabulary (DCAT).  Add an asset to this collection, or to a collection folder nested in it, and the DCAT Publisher integration connector writes its DCAT description, along with a DCAT catalog that lists every published asset, to its destination directories.  Remove the asset from the collection and its description is withdrawn.",
-                                    null,
-                                    null,
-                                    null,
-                                    null);
-    }
-
 
     /**
      * Register the vocabularies of the Bitol Open Data Contract Standard (ODCS) and Open Data Product Standard (ODPS)

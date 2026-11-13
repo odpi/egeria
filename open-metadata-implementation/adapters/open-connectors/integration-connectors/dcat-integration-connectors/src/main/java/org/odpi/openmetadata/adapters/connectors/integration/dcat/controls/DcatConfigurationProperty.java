@@ -16,15 +16,6 @@ import java.util.List;
 public enum DcatConfigurationProperty
 {
     /**
-     * The collection whose member assets are published.
-     */
-    PUBLISHING_CATALOG("publishingCatalog",
-                       "The qualified name (or, failing that, the display name) of the collection that lists the assets to publish.  An asset is published if it is a member of this collection, or of a collection folder nested in it.  The default is the DCAT Publishing Catalog supplied by the Core Content Pack.",
-                       DataType.STRING.getDisplayName(),
-                       "Egeria::DCATPublishingCatalog",
-                       false),
-
-    /**
      * The publisher to name in the description of an asset that is not linked to a publishing organization.
      */
     DEFAULT_PUBLISHER("defaultPublisher",
@@ -34,12 +25,6 @@ public enum DcatConfigurationProperty
                       false),
 
     ;
-
-    /**
-     * The qualified name of the collection used when the publishingCatalog configuration property is not set.  It is
-     * defined in the Core Content Pack.
-     */
-    public static final String DEFAULT_PUBLISHING_CATALOG = "Egeria::DCATPublishingCatalog";
 
     public final String  name;
     public final String  description;

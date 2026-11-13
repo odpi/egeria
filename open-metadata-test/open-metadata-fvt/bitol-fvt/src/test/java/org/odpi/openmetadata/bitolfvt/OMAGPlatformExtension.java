@@ -275,7 +275,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(OMAGServerPlatform.class);
 
-        builder.properties(Map.of("server.port", Integer.toString(allocateFreePort())));
+        builder.properties(Map.of("server.port", Integer.toString(allocateFreePort()), "server.address", "127.0.0.1"));
         builder.web(WebApplicationType.SERVLET);
 
         platformContext = builder.run();
@@ -293,7 +293,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
      */
     private static int allocateFreePort()
     {
-        try (ServerSocket socket = new ServerSocket(0))
+        try (ServerSocket socket = new ServerSocket(0, 50, java.net.InetAddress.getLoopbackAddress()))
         {
             return socket.getLocalPort();
         }
