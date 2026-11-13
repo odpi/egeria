@@ -171,8 +171,9 @@ public class TemplateOptions extends NewElementOptions
 
 
     /**
-     * Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
-     * qualified name (default is false).
+     * Return whether an existing element may be returned instead of creating a new one (true), or a new element
+     * must always be created (false).  The match is done on the qualified name that the new element would have.
+     * The default is true.
      *
      * @return boolean
      */
@@ -183,8 +184,9 @@ public class TemplateOptions extends NewElementOptions
 
 
     /**
-     * Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
-     * qualified name (default is false).
+     * Set up whether an existing element may be returned instead of creating a new one (true), or a new element
+     * must always be created (false).  The match is done on the qualified name that the new element would have.
+     * The default is true.
      *
      * @param allowRetrieve boolean
      */

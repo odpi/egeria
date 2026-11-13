@@ -145,6 +145,34 @@ public class MonitoredResourceChangeFilterTest
 
 
     /**
+     * A change that has to wait is sent just after the interval ends - not at the next refresh - and the wait
+     * is never negative.
+     */
+    @Test
+    public void testDeferredDeliveryDelay()
+    {
+        Date                       lastNotification = new Date(1_794_000_000_000L);
+        NotificationTypeProperties properties       = new NotificationTypeProperties();
+
+        properties.setMinimumNotificationInterval(30L);
+        properties.setLastNotification(lastNotification);
+
+        long delay = BaudotSubscriptionManagementConnector.getDeferredDeliveryDelay(properties, new Date(lastNotification.getTime() + 10 * 60 * 1000));
+
+        assertTrue(delay > 20 * 60 * 1000, "the change should wait until the interval ends");
+        assertTrue(delay <= 20 * 60 * 1000 + 5000, "the change should be sent as soon as the interval ends");
+
+        long lateDelay = BaudotSubscriptionManagementConnector.getDeferredDeliveryDelay(properties, new Date(lastNotification.getTime() + 31 * 60 * 1000));
+
+        assertTrue((lateDelay > 0) && (lateDelay <= 5000), "a change after the interval should be sent straight away");
+
+        properties.setMinimumNotificationInterval(0L);
+
+        assertTrue(BaudotSubscriptionManagementConnector.getDeferredDeliveryDelay(properties, lastNotification) > 0);
+    }
+
+
+    /**
      * Build DataScope classification properties as they appear in a change event.
      *
      * @param start data collection start time

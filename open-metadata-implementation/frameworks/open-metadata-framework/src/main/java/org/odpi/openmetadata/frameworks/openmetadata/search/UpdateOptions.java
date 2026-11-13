@@ -60,8 +60,11 @@ public class UpdateOptions extends MetadataSourceOptions
 
 
     /**
-     * Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     * the individual properties specified on the request.  The default is false.
+     * Return flag to indicate whether to merge the supplied properties with the existing properties (true), or
+     * completely replace the existing properties with the supplied properties (false).  With a merge update, each
+     * supplied property replaces the existing value of that property - a map or array property is replaced in full,
+     * not merged with its existing entries - and properties that are not supplied keep their current values.
+     * The default is true.
      *
      * @return boolean
      */
@@ -72,8 +75,11 @@ public class UpdateOptions extends MetadataSourceOptions
 
 
     /**
-     * Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     * the individual properties specified on the request.  The default is false.
+     * Set up flag to indicate whether to merge the supplied properties with the existing properties (true), or
+     * completely replace the existing properties with the supplied properties (false).  With a merge update, each
+     * supplied property replaces the existing value of that property - a map or array property is replaced in full,
+     * not merged with its existing entries - and properties that are not supplied keep their current values.
+     * The default is true.
      *
      * @param mergeUpdate boolean
      */

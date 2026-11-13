@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc;
 
+import org.odpi.openmetadata.adapters.connectors.controls.DuckDBDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.MSSQLDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.OracleDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadata;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
@@ -34,6 +38,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -84,6 +89,12 @@ class RelationalDatabaseCataloguer extends AuditLoggingBase
      * The one schema being catalogued, as the database names it, or null when the whole database is.
      */
     private String scopedSchemaName;
+
+    /*
+     * The technology type given to each schema catalogued below the database - see
+     * getSchemaDeployedImplementationType.
+     */
+    private String schemaDeployedImplementationType = DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA.getDeployedImplementationType();
 
     private final AssetClient           dataAssetClient;
     private final AssetClient           databaseSchemaClient;
@@ -142,6 +153,16 @@ class RelationalDatabaseCataloguer extends AuditLoggingBase
 
         this.rootQualifiedName = databaseQualifiedName;
         this.scopedSchemaName  = null;
+
+        String databaseDeployedImplementationType = null;
+
+        if (databaseElement.getProperties() instanceof AssetProperties databaseProperties)
+        {
+            databaseDeployedImplementationType = databaseProperties.getDeployedImplementationType();
+        }
+
+        this.schemaDeployedImplementationType = getSchemaDeployedImplementationType(databaseDeployedImplementationType,
+                                                                                    jdbcMetadata.getDatabaseProductName());
 
         catalogTablesAndViews(databaseElement, databaseQualifiedName, databaseGUID, null);
         catalogForeignKeysForTables(databaseElement, null);
@@ -249,6 +270,16 @@ class RelationalDatabaseCataloguer extends AuditLoggingBase
 
             if (existingSchema != null)
             {
+                /*
+                 * The update replaces every property, so a technology type that someone else gave the schema is
+                 * carried over rather than replaced by the one worked out here.
+                 */
+                if ((existingSchema.getProperties() instanceof AssetProperties existingProperties)
+                            && (existingProperties.getDeployedImplementationType() != null))
+                {
+                    schemaProperties.setDeployedImplementationType(existingProperties.getDeployedImplementationType());
+                }
+
                 databaseSchemaClient.updateAsset(existingSchema.getElementHeader().getGUID(),
                                                  databaseSchemaClient.getUpdateOptions(false),
                                                  schemaProperties);
@@ -277,6 +308,56 @@ class RelationalDatabaseCataloguer extends AuditLoggingBase
     }
 
 
+    /**
+     * Return the technology type for the schemas of a database.
+     * <br><br>
+     * A schema catalogued without one is reported by every service that works out what to do with an asset from
+     * its technology type - the data sharing hub manager logs NO_TECHNOLOGY_TYPE for each of them, for example.
+     * The schema's type follows its database's: a PostgreSQL Relational Database holds PostgreSQL Relational
+     * Database Schemas.  A database whose type is not one of the known ones - this connector gives the databases
+     * it creates the JDBC driver's product name - is matched on the product name instead, and anything else is a
+     * JDBC Relational Database Schema.
+     *
+     * @param databaseDeployedImplementationType technology type of the database - may be null
+     * @param databaseProductName product name reported by the JDBC driver - may be null
+     * @return technology type for the database's schemas
+     */
+    static String getSchemaDeployedImplementationType(String databaseDeployedImplementationType,
+                                                      String databaseProductName)
+    {
+        String[][] databaseToSchemaTypes = {
+                {PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                        PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(), "PostgreSQL"},
+                {OracleDeployedImplementationType.ORACLE_DATABASE.getDeployedImplementationType(),
+                        OracleDeployedImplementationType.ORACLE_DATABASE_SCHEMA.getDeployedImplementationType(), "Oracle"},
+                {MSSQLDeployedImplementationType.MSSQL_DATABASE.getDeployedImplementationType(),
+                        MSSQLDeployedImplementationType.MSSQL_DATABASE_SCHEMA.getDeployedImplementationType(), "Microsoft SQL Server"},
+                {DuckDBDeployedImplementationType.DUCKDB_DATABASE.getDeployedImplementationType(),
+                        DuckDBDeployedImplementationType.DUCKDB_DATABASE_SCHEMA.getDeployedImplementationType(), "DuckDB"}};
+
+        for (String[] databaseToSchemaType : databaseToSchemaTypes)
+        {
+            if (databaseToSchemaType[0].equals(databaseDeployedImplementationType))
+            {
+                return databaseToSchemaType[1];
+            }
+        }
+
+        if (databaseProductName != null)
+        {
+            for (String[] databaseToSchemaType : databaseToSchemaTypes)
+            {
+                if (databaseToSchemaType[2].equalsIgnoreCase(databaseProductName.trim()))
+                {
+                    return databaseToSchemaType[1];
+                }
+            }
+        }
+
+        return DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA.getDeployedImplementationType();
+    }
+
+
     private DeployedDatabaseSchemaProperties buildSchemaProperties(JdbcSchema jdbcSchema, String qualifiedName)
     {
         Map<String, String> additionalProperties = new HashMap<>();
@@ -286,6 +367,7 @@ class RelationalDatabaseCataloguer extends AuditLoggingBase
         DeployedDatabaseSchemaProperties properties = new DeployedDatabaseSchemaProperties();
         properties.setDisplayName(jdbcSchema.getTableSchem());
         properties.setQualifiedName(qualifiedName);
+        properties.setDeployedImplementationType(schemaDeployedImplementationType);
         properties.setAdditionalProperties(additionalProperties);
 
         return properties;

@@ -51,6 +51,14 @@ public class OracleTabularColumn implements OracleColumn
             {
                 return ColumnType.DATE;
             }
+            case LOCAL_DATE ->
+            {
+                return ColumnType.LOCAL_DATE;
+            }
+            case LOCAL_DATE_TIME ->
+            {
+                return ColumnType.DATE;
+            }
             default ->
             {
                 return ColumnType.STRING;

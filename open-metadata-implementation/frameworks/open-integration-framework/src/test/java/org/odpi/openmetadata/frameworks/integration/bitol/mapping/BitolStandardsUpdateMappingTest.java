@@ -96,7 +96,8 @@ public class BitolStandardsUpdateMappingTest
         DataContract vectors = BitolDocumentFormatter.parseDataContract(readResource("bitol/odcs/vector.odcs.yaml"));
         DataFieldProperties embedding = mapper.getDataFieldProperties(property(vectors, "body_embedding"), "qn", "1.0.0");
 
-        assertEquals(embedding.getDataType(), "vector");
+        assertEquals(embedding.getDataType(), "Other", "a vector has no data type of its own");
+        assertEquals(embedding.getAdditionalProperties().get("bitol.logicalType"), "vector", "the logical type is kept");
         assertEquals(embedding.getAdditionalProperties().get("bitol.dimensions"), "1536");
         assertEquals(embedding.getAdditionalProperties().get("bitol.normalized"), "true");
         assertEquals(embedding.getAdditionalProperties().get("bitol.embeddingModel"), "openai/text-embedding-3-small");

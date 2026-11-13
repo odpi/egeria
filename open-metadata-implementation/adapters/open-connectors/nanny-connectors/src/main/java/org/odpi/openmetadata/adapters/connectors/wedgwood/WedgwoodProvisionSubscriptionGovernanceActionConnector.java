@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
@@ -17,13 +18,30 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBas
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
+import java.math.BigDecimal;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * WedgwoodProvisionSubscriptionGovernanceActionConnector copies data from one tabular data set to another.
@@ -316,11 +334,17 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
          * that need not exist - and a destination that has never been delivered to is exactly the
          * normal case for a new subscription.
          */
-        destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
+        List<TabularColumnDescription> columnDescriptions = sourceConnector.getColumnDescriptions();
+
+        destinationConnector.setColumnDescriptions(columnDescriptions);
 
         long destinationRecordCount = destinationConnector.getRecordCount();
 
-        long changedRecordCount = copyRecords(sourceConnector, sourceRecordCount, destinationConnector, destinationRecordCount);
+        long changedRecordCount = copyRecords(sourceConnector,
+                                              sourceRecordCount,
+                                              destinationConnector,
+                                              destinationRecordCount,
+                                              columnDescriptions);
 
         super.logRecord(methodName, GovernanceActionConnectorsAuditCode.TABLE_PROVISIONED.getMessageDefinition(governanceServiceName,
                                                                                                                 Long.toString(sourceRecordCount),
@@ -343,37 +367,254 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
 
 
     /**
-     * Make the destination's records match the source's.  Where the destination can be read back, a record is
-     * only written if it differs from the one already there: a subscription is delivered again each time its
-     * product changes, and rewriting every record of an unchanged table on each delivery was most of the cost.
-     * Once the destination is current, a delivery writes nothing.
+     * Return the positions of the columns that identify a record.
+     *
+     * @param columnDescriptions the source's columns - may be null
+     * @return positions, empty when no column identifies a record
+     */
+    static List<Integer> getIdentifierColumnPositions(List<TabularColumnDescription> columnDescriptions)
+    {
+        List<Integer> identifierColumnPositions = new ArrayList<>();
+
+        if (columnDescriptions != null)
+        {
+            for (int columnNumber = 0; columnNumber < columnDescriptions.size(); columnNumber++)
+            {
+                TabularColumnDescription columnDescription = columnDescriptions.get(columnNumber);
+
+                if ((columnDescription != null) && (columnDescription.isIdentifier()))
+                {
+                    identifierColumnPositions.add(columnNumber);
+                }
+            }
+        }
+
+        return identifierColumnPositions;
+    }
+
+
+    /**
+     * Make the destination's records match the source's.
+     * <br>
+     * Where the destination can be read back, only the differences are written.  A subscription is delivered
+     * again each time its product changes, so most deliveries find the destination almost current.
+     * <br>
+     * Records are matched by identity, not position.  Comparing the record at position n on each side meant a
+     * single record added or removed early in the table shifted every later record, so the whole tail looked
+     * changed.  Each mismatch was a write, and each write threw away the destination's read-ahead, so the next
+     * read re-ran an {@code OFFSET n} query.  A 43,600-row table cost tens of thousands of statements on every
+     * delivery, quadratic in its size.  It also gave the wrong answer: a keyed destination upserts rather than
+     * overwriting by position, so a record removed from the middle of the source was never removed, and the
+     * last record was deleted in its place.
+     * <br>
+     * A record's identity is the values of its identifying columns.  Where no column identifies a record, the
+     * whole record is its identity: a record either matches one in the destination or it does not, and a
+     * changed one is a deletion plus an addition.
+     * <br>
+     * The two sides are read in step, a record from each at a time, and each record is matched against the
+     * records of the other side that have not found a partner yet.  Both sides are normally in the same order -
+     * by their identifying columns - so a record's partner is read at about the same time as it is, and what is
+     * held in memory is little more than the differences.  Indexing the whole destination first held every one
+     * of its records.  Nothing depends on the order, though: two sides that are ordered differently (two
+     * databases with different collations, say) still match correctly, they just hold more while they do.
+     * <br>
+     * The destination is read once, from start to finish, before anything is written, so its reads are never
+     * interrupted by a write.  The changes are then made in an order that keeps every row number valid for
+     * a destination that works by position: deletions, at their positions before any is deleted, then
+     * overwrites at their positions adjusted for those deletions, then additions on the end in source order.
+     * A destination that works by identity ignores the row numbers and gets the same result.  Each kind of change
+     * is passed to the destination together, so one that can write many records at once does.
+     * <br>
+     * Records are matched and compared in their comparable form - see {@link #getComparableRecord} - so that a
+     * number the destination writes differently, such as {@code 1.50} for {@code 1.5}, is not taken for a change.
+     * The values written are always the source's own.
      *
      * @param sourceConnector where the records come from
      * @param sourceRecordCount number of records in the source
      * @param destinationConnector where they go - its table has already been selected and described
      * @param destinationRecordCount number of records already in the destination
+     * @param columnDescriptions the source's columns - may be null when they are not known
      * @return number of records written, appended or deleted
      * @throws ConnectorCheckedException problem reading or writing
      */
-    static long copyRecords(ReadableTabularDataSource sourceConnector,
-                            long                      sourceRecordCount,
-                            WritableTabularDataSource destinationConnector,
-                            long                      destinationRecordCount) throws ConnectorCheckedException
+    static long copyRecords(ReadableTabularDataSource      sourceConnector,
+                            long                           sourceRecordCount,
+                            WritableTabularDataSource      destinationConnector,
+                            long                           destinationRecordCount,
+                            List<TabularColumnDescription> columnDescriptions) throws ConnectorCheckedException
     {
-        ReadableTabularDataSource readableDestination = (destinationConnector instanceof ReadableTabularDataSource readable) ? readable : null;
+        if (! (destinationConnector instanceof ReadableTabularDataSource readableDestination))
+        {
+            return overwriteRecords(sourceConnector, sourceRecordCount, destinationConnector, destinationRecordCount);
+        }
 
+        List<Integer> identifierColumnPositions = getIdentifierColumnPositions(columnDescriptions);
+
+        /*
+         * The records of each side still waiting for a partner, by identity.  More than one record can share an
+         * identity when the whole record is the identity, so each identity keeps a queue of them, in the order
+         * they were read.
+         */
+        Map<List<String>, ArrayDeque<DestinationRecord>> unmatchedDestinationRecords = new HashMap<>();
+        Map<List<String>, ArrayDeque<SourceRecord>>      unmatchedSourceRecords      = new HashMap<>();
+
+        /*
+         * Only the records that need writing are kept beyond the unmatched ones.
+         */
+        Map<Long, List<String>> changedRecords = new TreeMap<>();
+
+        long sourceRowNumber      = 0;
+        long destinationRowNumber = 0;
+
+        while ((sourceRowNumber < sourceRecordCount) || (destinationRowNumber < destinationRecordCount))
+        {
+            SourceRecord      sourceRecord        = null;
+            List<String>      sourceIdentity      = null;
+            DestinationRecord destinationRecord   = null;
+            List<String>      destinationIdentity = null;
+
+            if (sourceRowNumber < sourceRecordCount)
+            {
+                List<String> dataValues = sourceConnector.readRecord(sourceRowNumber);
+
+                sourceRecord   = new SourceRecord(sourceRowNumber, dataValues, getComparableRecord(dataValues, columnDescriptions));
+                sourceIdentity = getRecordIdentity(sourceRecord.comparableValues(), identifierColumnPositions, columnDescriptions);
+                sourceRowNumber++;
+            }
+
+            if (destinationRowNumber < destinationRecordCount)
+            {
+                destinationRecord   = new DestinationRecord(destinationRowNumber,
+                                                            getComparableRecord(readableDestination.readRecord(destinationRowNumber), columnDescriptions));
+                destinationIdentity = getRecordIdentity(destinationRecord.dataValues(), identifierColumnPositions, columnDescriptions);
+                destinationRowNumber++;
+            }
+
+            if ((sourceRecord != null) && (destinationRecord != null) && (Objects.equals(sourceIdentity, destinationIdentity))
+                        && (! unmatchedDestinationRecords.containsKey(destinationIdentity))
+                        && (! unmatchedSourceRecords.containsKey(sourceIdentity)))
+            {
+                /*
+                 * The usual case: the two sides are level with each other.
+                 */
+                matchRecords(sourceRecord, destinationRecord, columnDescriptions, changedRecords);
+                continue;
+            }
+
+            if (sourceRecord != null)
+            {
+                DestinationRecord partner = takeFirst(unmatchedDestinationRecords, sourceIdentity);
+
+                if (partner == null)
+                {
+                    unmatchedSourceRecords.computeIfAbsent(sourceIdentity, identity -> new ArrayDeque<>()).add(sourceRecord);
+                }
+                else
+                {
+                    matchRecords(sourceRecord, partner, columnDescriptions, changedRecords);
+                }
+            }
+
+            if (destinationRecord != null)
+            {
+                SourceRecord partner = takeFirst(unmatchedSourceRecords, destinationIdentity);
+
+                if (partner == null)
+                {
+                    unmatchedDestinationRecords.computeIfAbsent(destinationIdentity, identity -> new ArrayDeque<>()).add(destinationRecord);
+                }
+                else
+                {
+                    matchRecords(partner, destinationRecord, columnDescriptions, changedRecords);
+                }
+            }
+        }
+
+        /*
+         * Every destination record left unmatched is not in the source any more, and every source record left
+         * unmatched is new.
+         */
+        List<Long> deletedRowNumbers = new ArrayList<>();
+
+        for (ArrayDeque<DestinationRecord> unmatched : unmatchedDestinationRecords.values())
+        {
+            for (DestinationRecord unmatchedRecord : unmatched)
+            {
+                deletedRowNumbers.add(unmatchedRecord.rowNumber());
+            }
+        }
+
+        Collections.sort(deletedRowNumbers);
+
+        List<SourceRecord> newSourceRecords = new ArrayList<>();
+
+        for (ArrayDeque<SourceRecord> unmatched : unmatchedSourceRecords.values())
+        {
+            newSourceRecords.addAll(unmatched);
+        }
+
+        newSourceRecords.sort(Comparator.comparingLong(SourceRecord::rowNumber));
+
+        List<List<String>> newRecords = new ArrayList<>(newSourceRecords.size());
+
+        for (SourceRecord newSourceRecord : newSourceRecords)
+        {
+            newRecords.add(newSourceRecord.dataValues());
+        }
+
+        /*
+         * Each changed record has moved up by one for each deleted record that was in front of it.
+         */
+        Map<Long, List<String>> overwrittenRecords = new TreeMap<>();
+
+        for (Map.Entry<Long, List<String>> changedRecord : changedRecords.entrySet())
+        {
+            int deletedInFront = Collections.binarySearch(deletedRowNumbers, changedRecord.getKey());
+
+            overwrittenRecords.put(changedRecord.getKey() - (-deletedInFront - 1), changedRecord.getValue());
+        }
+
+        if (! deletedRowNumbers.isEmpty())
+        {
+            destinationConnector.deleteRecords(deletedRowNumbers);
+        }
+
+        if (! overwrittenRecords.isEmpty())
+        {
+            destinationConnector.writeRecords(overwrittenRecords);
+        }
+
+        if (! newRecords.isEmpty())
+        {
+            destinationConnector.appendRecords(newRecords);
+        }
+
+        return deletedRowNumbers.size() + changedRecords.size() + newRecords.size();
+    }
+
+
+    /**
+     * Make a destination that cannot be read back hold the source's records, by writing every one of them.
+     *
+     * @param sourceConnector where the records come from
+     * @param sourceRecordCount number of records in the source
+     * @param destinationConnector where they go
+     * @param destinationRecordCount number of records already in the destination
+     * @return number of records written, appended or deleted
+     * @throws ConnectorCheckedException problem reading or writing
+     */
+    private static long overwriteRecords(ReadableTabularDataSource sourceConnector,
+                                         long                      sourceRecordCount,
+                                         WritableTabularDataSource destinationConnector,
+                                         long                      destinationRecordCount) throws ConnectorCheckedException
+    {
         long changedRecordCount = 0;
         long overlappingRecords = Math.min(sourceRecordCount, destinationRecordCount);
 
         for (long rowNumber = 0; rowNumber < overlappingRecords; rowNumber++)
         {
-            List<String> sourceRecord = sourceConnector.readRecord(rowNumber);
-
-            if ((readableDestination == null) || (! Objects.equals(sourceRecord, readableDestination.readRecord(rowNumber))))
-            {
-                destinationConnector.writeRecord(rowNumber, sourceRecord);
-                changedRecordCount++;
-            }
+            destinationConnector.writeRecord(rowNumber, sourceConnector.readRecord(rowNumber));
+            changedRecordCount++;
         }
 
         for (long rowNumber = destinationRecordCount; rowNumber < sourceRecordCount; rowNumber++)
@@ -393,6 +634,447 @@ public class WedgwoodProvisionSubscriptionGovernanceActionConnector extends Gene
         }
 
         return changedRecordCount;
+    }
+
+
+    /**
+     * Return the values that identify a record: those of its identifying columns, or the whole record when
+     * there are none.  A point in time with an offset is identified by the instant it names, written in UTC, so
+     * that the same instant identifies the same record whichever offset each side writes it with.
+     *
+     * @param dataValues the record, in its comparable form
+     * @param identifierColumnPositions positions of the identifying columns
+     * @param columnDescriptions the source's columns - may be null
+     * @return identity
+     */
+    private static List<String> getRecordIdentity(List<String>                   dataValues,
+                                                  List<Integer>                  identifierColumnPositions,
+                                                  List<TabularColumnDescription> columnDescriptions)
+    {
+        if (dataValues == null)
+        {
+            return null;
+        }
+
+        List<String> identity = new ArrayList<>();
+
+        if (identifierColumnPositions.isEmpty())
+        {
+            for (int columnPosition = 0; columnPosition < dataValues.size(); columnPosition++)
+            {
+                identity.add(getIdentityValue(dataValues, columnPosition, columnDescriptions));
+            }
+        }
+        else
+        {
+            for (int columnPosition : identifierColumnPositions)
+            {
+                identity.add(getIdentityValue(dataValues, columnPosition, columnDescriptions));
+            }
+        }
+
+        return identity;
+    }
+
+
+    /**
+     * Return one value of a record's identity.
+     *
+     * @param dataValues the record, in its comparable form
+     * @param columnPosition position of the value
+     * @param columnDescriptions the source's columns - may be null
+     * @return value
+     */
+    private static String getIdentityValue(List<String>                   dataValues,
+                                           int                            columnPosition,
+                                           List<TabularColumnDescription> columnDescriptions)
+    {
+        String dataValue = (columnPosition < dataValues.size()) ? dataValues.get(columnPosition) : null;
+
+        if ((dataValue != null) && (isDate(columnDescriptions, columnPosition)))
+        {
+            OffsetDateTime instant = parseOffsetDateTime(dataValue);
+
+            if (instant != null)
+            {
+                return instant.withOffsetSameInstant(ZoneOffset.UTC).toLocalDateTime().toString();
+            }
+        }
+
+        return dataValue;
+    }
+
+
+    /**
+     * Return whether a source record, and the destination record with the same identity, hold the same values.
+     * Both are in their comparable form, so numbers already read alike; points in time are compared as
+     * described in {@link #isSameTime}.
+     *
+     * @param sourceRecord the source's record
+     * @param destinationRecord the destination's record
+     * @param columnDescriptions the source's columns - may be null
+     * @return true if nothing needs writing
+     */
+    static boolean recordsMatch(List<String>                   sourceRecord,
+                                List<String>                   destinationRecord,
+                                List<TabularColumnDescription> columnDescriptions)
+    {
+        if (Objects.equals(sourceRecord, destinationRecord))
+        {
+            return true;
+        }
+
+        if ((sourceRecord == null) || (destinationRecord == null) || (sourceRecord.size() != destinationRecord.size()))
+        {
+            return false;
+        }
+
+        for (int columnPosition = 0; columnPosition < sourceRecord.size(); columnPosition++)
+        {
+            String sourceValue      = sourceRecord.get(columnPosition);
+            String destinationValue = destinationRecord.get(columnPosition);
+
+            if (! Objects.equals(sourceValue, destinationValue))
+            {
+                if ((sourceValue == null) || (destinationValue == null) || (! isDate(columnDescriptions, columnPosition))
+                            || (! isSameTime(sourceValue, destinationValue)))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Return whether two points in time, in their comparable form, are the same.
+     * <ul>
+     *     <li>When both carry an offset they are the same if they name the same instant: a destination writes
+     *         an instant with its own session's offset, so {@code 11:20+05:30} comes back as
+     *         {@code 05:50+00}.</li>
+     *     <li>When only one carries an offset they are the same if they show the same date and time.  A value
+     *         without an offset that is written into a column with a time zone is taken to be in the session's
+     *         time zone and comes back in it, with that offset added, so its date and time are kept.  Going the
+     *         other way, a column without a time zone keeps the date and time of a value and drops its
+     *         offset.</li>
+     *     <li>When neither carries an offset they are the same if they show the same date and time.  They
+     *         would already have compared equal unless one of them was written differently - a date that came
+     *         back as midnight on that date, for example.</li>
+     * </ul>
+     *
+     * @param sourceValue the source's value
+     * @param destinationValue the destination's value
+     * @return true if they are the same point in time
+     */
+    private static boolean isSameTime(String sourceValue,
+                                      String destinationValue)
+    {
+        OffsetDateTime sourceInstant      = parseOffsetDateTime(sourceValue);
+        OffsetDateTime destinationInstant = parseOffsetDateTime(destinationValue);
+
+        if ((sourceInstant != null) && (destinationInstant != null))
+        {
+            return sourceInstant.isEqual(destinationInstant);
+        }
+
+        LocalDateTime sourceDateTime      = (sourceInstant != null) ? sourceInstant.toLocalDateTime() : parseLocalDateTime(sourceValue);
+        LocalDateTime destinationDateTime = (destinationInstant != null) ? destinationInstant.toLocalDateTime() : parseLocalDateTime(destinationValue);
+
+        return (sourceDateTime != null) && (sourceDateTime.equals(destinationDateTime));
+    }
+
+
+    /**
+     * Return whether a column holds dates or times.
+     *
+     * @param columnDescriptions the source's columns - may be null
+     * @param columnPosition position of the column
+     * @return true for a date or time column
+     */
+    private static boolean isDate(List<TabularColumnDescription> columnDescriptions,
+                                  int                            columnPosition)
+    {
+        return (columnDescriptions != null) && (columnPosition < columnDescriptions.size())
+                       && (columnDescriptions.get(columnPosition) != null)
+                       && (isDate(columnDescriptions.get(columnPosition).columnDataType()));
+    }
+
+
+    /**
+     * Return whether a data type holds dates or times: a point in time, a date and time without a time zone,
+     * or a calendar date.  Their values are compared the same way.  A destination created from the source's
+     * columns holds the same kind, so most values compare equal as written; the rules in {@link #isSameTime}
+     * cover a destination that holds a different kind - one created before the kinds were told apart, say.
+     *
+     * @param dataType the column's type - may be null
+     * @return true for the date and time types
+     */
+    private static boolean isDate(DataType dataType)
+    {
+        return (dataType == DataType.DATE) || (dataType == DataType.LOCAL_DATE_TIME) || (dataType == DataType.LOCAL_DATE);
+    }
+
+
+    /**
+     * Return a record in the form it is matched and compared in.  The value of a numeric column is written as
+     * its number in plain notation with no trailing zeros, so the same number reads the same whichever side it
+     * came from: a destination column with a fixed scale returns {@code 1.50} for a source's {@code 1.5}, and
+     * one holding text keeps whatever form the value arrived in.  Without this, every such record looked
+     * changed on every delivery, and the destination was rewritten to no effect.
+     * <br>
+     * The value of a date column is written in ISO form - a date and time, with its offset when it has one - so
+     * that the many ways of writing a point in time ({@code 2026-06-15 11:20:00+00}, {@code 2026-06-15T11:20Z})
+     * read alike, and a date on its own reads as midnight on that date.  Whether two of them are the same point
+     * in time is then decided by {@link #isSameTime}, since a destination may write the same instant with a
+     * different offset.
+     * <br>
+     * A value that does not parse as a number or a point in time is left as it is, as is every value of a column
+     * of another type, or of any column when the columns are not known.
+     *
+     * @param dataValues the record - may be null
+     * @param columnDescriptions the source's columns - may be null
+     * @return the record to compare; the original when nothing needs changing
+     */
+    static List<String> getComparableRecord(List<String>                   dataValues,
+                                            List<TabularColumnDescription> columnDescriptions)
+    {
+        if ((dataValues == null) || (columnDescriptions == null))
+        {
+            return dataValues;
+        }
+
+        List<String> comparableRecord = null;
+
+        for (int columnNumber = 0; (columnNumber < dataValues.size()) && (columnNumber < columnDescriptions.size()); columnNumber++)
+        {
+            TabularColumnDescription columnDescription = columnDescriptions.get(columnNumber);
+            String                   dataValue         = dataValues.get(columnNumber);
+            String                   comparableValue   = null;
+
+            if ((dataValue != null) && (columnDescription != null))
+            {
+                if (isNumeric(columnDescription.columnDataType()))
+                {
+                    comparableValue = getComparableNumber(dataValue);
+                }
+                else if (isDate(columnDescription.columnDataType()))
+                {
+                    comparableValue = getComparableTime(dataValue);
+                }
+            }
+
+            if (comparableValue != null)
+            {
+                if (! comparableValue.equals(dataValue))
+                {
+                    if (comparableRecord == null)
+                    {
+                        comparableRecord = new ArrayList<>(dataValues);
+                    }
+
+                    comparableRecord.set(columnNumber, comparableValue);
+                }
+            }
+        }
+
+        return (comparableRecord == null) ? dataValues : comparableRecord;
+    }
+
+
+    /**
+     * Return whether a column holds numbers.
+     *
+     * @param dataType the column's type - may be null
+     * @return true for the numeric types
+     */
+    private static boolean isNumeric(DataType dataType)
+    {
+        return (dataType == DataType.INT)        || (dataType == DataType.LONG)
+            || (dataType == DataType.SHORT)      || (dataType == DataType.BYTE)
+            || (dataType == DataType.BIGINTEGER) || (dataType == DataType.BIGDECIMAL)
+            || (dataType == DataType.FLOAT)      || (dataType == DataType.DOUBLE);
+    }
+
+
+    /**
+     * Return a number in plain notation with no trailing zeros, or the value as it is when it is not a number
+     * that can be written that way - {@code NaN} and {@code Infinity}, for example.
+     *
+     * @param dataValue the value
+     * @return comparable form
+     */
+    private static String getComparableNumber(String dataValue)
+    {
+        try
+        {
+            return new BigDecimal(dataValue.trim()).stripTrailingZeros().toPlainString();
+        }
+        catch (NumberFormatException notANumber)
+        {
+            return dataValue;
+        }
+    }
+
+
+    /*
+     * Reads a point in time as databases write it: a date, optionally followed - after a space or a T - by a
+     * time with any fraction of a second, optionally followed by an offset such as +00, +05:30 or Z.
+     */
+    private static final DateTimeFormatter LENIENT_TIME_FORMAT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE)
+            .optionalStart()
+                .optionalStart().appendLiteral(' ').optionalEnd()
+                .optionalStart().appendLiteral('T').optionalEnd()
+                .append(DateTimeFormatter.ISO_LOCAL_TIME)
+            .optionalEnd()
+            .optionalStart().appendOffset("+HH:mm", "Z").optionalEnd()
+            .toFormatter();
+
+
+    /**
+     * Return a point in time in ISO form - with its offset when it has one - or the value as it is when it
+     * cannot be read as a point in time ({@code infinity}, for example).
+     *
+     * @param dataValue the value
+     * @return comparable form
+     */
+    private static String getComparableTime(String dataValue)
+    {
+        try
+        {
+            TemporalAccessor parsed   = LENIENT_TIME_FORMAT.parse(dataValue.trim());
+            LocalDate        date     = LocalDate.from(parsed);
+            LocalTime        time     = parsed.isSupported(ChronoField.HOUR_OF_DAY) ? LocalTime.from(parsed) : LocalTime.MIDNIGHT;
+            LocalDateTime    dateTime = LocalDateTime.of(date, time);
+
+            if (parsed.isSupported(ChronoField.OFFSET_SECONDS))
+            {
+                return OffsetDateTime.of(dateTime, ZoneOffset.from(parsed)).toString();
+            }
+
+            return dateTime.toString();
+        }
+        catch (DateTimeException notATime)
+        {
+            return dataValue;
+        }
+    }
+
+
+    /**
+     * Return a point in time, in its comparable form, as an instant - or null if it has no offset or is not a
+     * point in time.
+     *
+     * @param comparableValue value from {@link #getComparableTime}
+     * @return instant or null
+     */
+    private static OffsetDateTime parseOffsetDateTime(String comparableValue)
+    {
+        try
+        {
+            return OffsetDateTime.parse(comparableValue);
+        }
+        catch (DateTimeException noOffset)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Return a point in time without an offset, in its comparable form, as a date and time - or null if it is
+     * not one.
+     *
+     * @param comparableValue value from {@link #getComparableTime}
+     * @return date and time or null
+     */
+    private static LocalDateTime parseLocalDateTime(String comparableValue)
+    {
+        try
+        {
+            return LocalDateTime.parse(comparableValue);
+        }
+        catch (DateTimeException notATime)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * A source record and the row it is at.
+     *
+     * @param rowNumber position of the record in the source
+     * @param dataValues the record's values, as they are written
+     * @param comparableValues the record's values in comparable form, as they are matched
+     */
+    private record SourceRecord(long rowNumber, List<String> dataValues, List<String> comparableValues)
+    {
+    }
+
+
+    /**
+     * Note that a source record and the destination record with the same identity are partners, and keep the
+     * source's values for writing at the destination's position if the two differ.
+     *
+     * @param sourceRecord the source's record
+     * @param destinationRecord its partner in the destination, in comparable form
+     * @param columnDescriptions the source's columns - may be null
+     * @param changedRecords destination row number to the source values to write there
+     */
+    private static void matchRecords(SourceRecord                   sourceRecord,
+                                     DestinationRecord              destinationRecord,
+                                     List<TabularColumnDescription> columnDescriptions,
+                                     Map<Long, List<String>>        changedRecords)
+    {
+        if (! recordsMatch(sourceRecord.comparableValues(), destinationRecord.dataValues(), columnDescriptions))
+        {
+            changedRecords.put(destinationRecord.rowNumber(), sourceRecord.dataValues());
+        }
+    }
+
+
+    /**
+     * Remove and return the first record waiting with the requested identity, dropping the identity once no
+     * record is waiting with it so that the map holds only what is unmatched.
+     *
+     * @param unmatchedRecords records waiting for a partner, by identity
+     * @param identity identity wanted
+     * @return record, or null if none is waiting
+     * @param <T> kind of record
+     */
+    private static <T> T takeFirst(Map<List<String>, ArrayDeque<T>> unmatchedRecords,
+                                   List<String>                     identity)
+    {
+        ArrayDeque<T> candidates = unmatchedRecords.get(identity);
+
+        if (candidates == null)
+        {
+            return null;
+        }
+
+        T candidate = candidates.poll();
+
+        if (candidates.isEmpty())
+        {
+            unmatchedRecords.remove(identity);
+        }
+
+        return candidate;
+    }
+
+
+    /**
+     * A record in the destination and the row it is at.
+     *
+     * @param rowNumber position of the record when the delivery began
+     * @param dataValues the record's values, in comparable form
+     */
+    private record DestinationRecord(long rowNumber, List<String> dataValues)
+    {
     }
 
 

@@ -14,7 +14,9 @@ import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDescription;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalType;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalTypeOptions;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractSchemaMap;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityRule;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractRelationship;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractRole;
@@ -54,6 +56,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Securit
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ConfidentialityLevel;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CriticalityLevel;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.IOException;
@@ -715,6 +718,159 @@ public class DataContractMapper extends BitolMapperBase
 
 
     /**
+     * Return the Egeria data type for a schema property - one of the {@link DataType} values that are the valid
+     * values of a data field's dataType.  The property's own logical and physical types are kept in the field's
+     * additional properties, so a contract generated from the field gives them back unchanged.
+     * <ul>
+     *     <li>A logical type is mapped to the data type that holds its values.  An ODCS {@code date} is a
+     *         calendar date ({@code localdate}).  A {@code timestamp} is a point in time ({@code date}), unless
+     *         its options say it has no time zone ({@code localdatetime}).  An {@code integer} is a
+     *         {@code long} and a {@code number} a {@code bigdecimal}, so no value is too big or loses
+     *         precision.  A {@code time} of day, which has no data type of its own, is a {@code string}.  An
+     *         array or map takes the type of its items or values where there is a data type for that, and
+     *         anything else that is not a single value - an object, a vector, an array of objects - is
+     *         {@code Other}.</li>
+     *     <li>Without a logical type, a physical type that is already a data type's name is used, and one that
+     *         is an ODCS logical type is mapped as above.</li>
+     *     <li>Otherwise - a database's own type name, say - there is no data type.</li>
+     * </ul>
+     *
+     * @param property property from the document
+     * @return data type name or null
+     */
+    static String getDataType(DataContractSchemaProperty property)
+    {
+        if (property == null)
+        {
+            return null;
+        }
+
+        DataType dataType = null;
+
+        if (property.getLogicalType() != null)
+        {
+            dataType = getDataType(property, DataContractLogicalType.fromValue(property.getLogicalType().trim()));
+        }
+        else if (property.getPhysicalType() != null)
+        {
+            String physicalType = property.getPhysicalType().trim();
+
+            for (DataType candidate : DataType.values())
+            {
+                if (candidate.getDisplayName().equalsIgnoreCase(physicalType))
+                {
+                    dataType = candidate;
+                    break;
+                }
+            }
+
+            if (dataType == null)
+            {
+                dataType = getDataType(property, DataContractLogicalType.fromValue(physicalType));
+            }
+        }
+
+        return (dataType == null) ? null : dataType.getDisplayName();
+    }
+
+
+    /**
+     * Return the Egeria data type that holds the values of an ODCS logical type.
+     *
+     * @param property property from the document, for the options, items and map that refine the logical type
+     * @param logicalType logical type - may be null
+     * @return data type, or null when there is no logical type
+     */
+    private static DataType getDataType(DataContractSchemaProperty property,
+                                        DataContractLogicalType    logicalType)
+    {
+        if (logicalType == null)
+        {
+            return null;
+        }
+
+        return switch (logicalType)
+        {
+            case STRING, TIME -> DataType.STRING;
+            case DATE -> DataType.LOCAL_DATE;
+            case TIMESTAMP -> ((property.getLogicalTypeOptions() != null) && (Boolean.FALSE.equals(property.getLogicalTypeOptions().getTimezone())))
+                                      ? DataType.LOCAL_DATE_TIME : DataType.DATE;
+            case INTEGER -> DataType.LONG;
+            case NUMBER -> DataType.BIGDECIMAL;
+            case BOOLEAN -> DataType.BOOLEAN;
+            case ARRAY -> getArrayDataType(property.getItems());
+            case MAP -> getMapDataType(property.getMap());
+            case OBJECT, VECTOR -> DataType.OBJECT;
+        };
+    }
+
+
+    /**
+     * Return the data type of an array, from the logical type of its items.
+     *
+     * @param items description of the items - may be null
+     * @return data type
+     */
+    private static DataType getArrayDataType(DataContractSchemaProperty items)
+    {
+        DataContractLogicalType itemType = (items == null) ? null : DataContractLogicalType.fromValue(items.getLogicalType());
+
+        if (itemType == DataContractLogicalType.STRING)
+        {
+            return DataType.ARRAY_STRING;
+        }
+        else if (itemType == DataContractLogicalType.INTEGER)
+        {
+            return DataType.ARRAY_INT;
+        }
+
+        return DataType.OBJECT;
+    }
+
+
+    /**
+     * Return the data type of a map, from the logical types of its keys and values.  The maps that have data
+     * types are those with string keys.
+     *
+     * @param map description of the keys and values - may be null
+     * @return data type
+     */
+    private static DataType getMapDataType(DataContractSchemaMap map)
+    {
+        if (map == null)
+        {
+            return DataType.MAP_STRING_OBJECT;
+        }
+
+        DataContractLogicalType keyType = (map.getKey() == null) ? null : DataContractLogicalType.fromValue(map.getKey().getLogicalType());
+
+        if ((keyType != null) && (keyType != DataContractLogicalType.STRING))
+        {
+            return DataType.OBJECT;
+        }
+
+        DataContractSchemaProperty value     = map.getValue();
+        DataContractLogicalType    valueType = (value == null) ? null : DataContractLogicalType.fromValue(value.getLogicalType());
+
+        if (valueType == null)
+        {
+            return DataType.MAP_STRING_OBJECT;
+        }
+
+        return switch (valueType)
+        {
+            case STRING, TIME -> DataType.MAP_STRING_STRING;
+            case BOOLEAN -> DataType.MAP_STRING_BOOLEAN;
+            case INTEGER -> DataType.MAP_STRING_LONG;
+            case NUMBER -> DataType.MAP_STRING_DOUBLE;
+            case DATE, TIMESTAMP -> DataType.MAP_STRING_DATE;
+            case ARRAY -> (getArrayDataType(value.getItems()) == DataType.ARRAY_STRING) ? DataType.MAP_STRING_ARRAY_STRING : DataType.MAP_STRING_OBJECT;
+            case OBJECT, MAP, VECTOR -> DataType.MAP_STRING_OBJECT;
+        };
+    }
+
+
+    /**
      * Build the properties of a DataField from a schema property.
      *
      * @param property property from the document
@@ -733,7 +889,7 @@ public class DataContractMapper extends BitolMapperBase
         properties.setDescription(property.getDescription());
         properties.setVersionIdentifier(version);
         properties.setNamePatterns(getNamePatterns(property.getName(), property.getPhysicalName()));
-        properties.setDataType((property.getLogicalType() != null) ? property.getLogicalType() : property.getPhysicalType());
+        properties.setDataType(getDataType(property));
         properties.setIsNullable(! Boolean.TRUE.equals(property.getRequired()));
         properties.setAllowsDuplicateValues(! Boolean.TRUE.equals(property.getUnique()));
         properties.setIsPartitionKey(Boolean.TRUE.equals(property.getPartitioned()));

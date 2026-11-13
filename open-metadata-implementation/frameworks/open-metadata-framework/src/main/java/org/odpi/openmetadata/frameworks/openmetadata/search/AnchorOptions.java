@@ -90,7 +90,8 @@ public class AnchorOptions extends MetadataSourceOptions
 
 
     /**
-     * Return whether this element should be classified as its own anchor or not.  The default is false.
+     * Return whether this element should be classified as its own anchor or not.  It is only used when anchorGUID is null.
+     * The default is true.
      *
      * @return boolean
      */
@@ -101,7 +102,8 @@ public class AnchorOptions extends MetadataSourceOptions
 
 
     /**
-     * Set up whether this element should be classified as its own anchor or not.  The default is false.
+     * Set up whether this element should be classified as its own anchor or not.  It is only used when anchorGUID is null.
+     * The default is true.
      *
      * @param ownAnchor boolean
      */

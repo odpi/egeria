@@ -35,7 +35,9 @@ public enum DataType implements OpenMetadataEnum
     LONG(2, "12a9bac1-f3bc-49a4-968a-997053a7ebf7", "long", "Long", false),
 
     /**
-     * Date
+     * Date - a point in time: an instant, such as {@code java.util.Date} holds, which a database stores as a
+     * timestamp with a time zone.  A calendar date on its own is {@link #LOCAL_DATE}, and a date and time of
+     * day without a time zone is {@link #LOCAL_DATE_TIME}.
      */
     DATE(3, "7e1c7d05-3c17-423b-a66c-7bab8fd67813", "date", "Date", false),
 
@@ -130,6 +132,18 @@ public enum DataType implements OpenMetadataEnum
     MAP_STRING_ARRAY_STRING(19, "f5fb27f1-06c7-4ea5-98c6-c45a37231b35", "map<string, array<string>>", "A map from string value to an array of strings", false),
 
     /**
+     * A calendar date with no time of day and no time zone, such as a date of birth - a database's
+     * {@code date} column.
+     */
+    LOCAL_DATE(20, "f48773f5-fa7d-47d2-bb4d-1a50eecfa263", "localdate", "A calendar date with no time of day or time zone.", false),
+
+    /**
+     * A date and time of day with no time zone - a database's {@code timestamp without time zone} column.  It
+     * names the same clock time wherever it is read, rather than one instant.
+     */
+    LOCAL_DATE_TIME(21, "602e67ea-3097-4845-bb7b-b44a0d71bfe5", "localdatetime", "A date and time of day with no time zone.", false),
+
+    /**
      * A generic data type.
      */
     OBJECT(99, "0441e0c1-96f0-4887-a038-72c7437628a1", "Other", "An unknown data type.", false),
@@ -219,13 +233,14 @@ public enum DataType implements OpenMetadataEnum
 
 
     /**
-     * Return the qualified name for this value.
+     * Return the qualified name of this value's valid metadata value in the core content pack.  It is not tied
+     * to any one type, since many types have a dataType property.
      *
      * @return string
      */
     public String getQualifiedName()
     {
-        return constructValidValueQualifiedName("DataType",
+        return constructValidValueQualifiedName(null,
                                                 OpenMetadataProperty.DATA_TYPE.name,
                                                 null,
                                                 name);

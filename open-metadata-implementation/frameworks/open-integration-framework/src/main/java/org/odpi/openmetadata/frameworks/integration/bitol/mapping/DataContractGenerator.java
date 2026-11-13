@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentFormatter
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolCustomProperty;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContract;
+import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalType;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalTypeOptions;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractPricing;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityRule;
@@ -42,6 +43,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Associa
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ConfidentialityLevel;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CriticalityLevel;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -385,7 +387,7 @@ public class DataContractGenerator extends BitolGeneratorBase
         property.setBusinessName(fieldProperties.getDisplayName());
         property.setDescription(fieldProperties.getDescription());
         property.setPhysicalName(getBitolValue(additionalProperties, "physicalName"));
-        property.setLogicalType((getBitolValue(additionalProperties, "logicalType") != null) ? getBitolValue(additionalProperties, "logicalType") : fieldProperties.getDataType());
+        property.setLogicalType((getBitolValue(additionalProperties, "logicalType") != null) ? getBitolValue(additionalProperties, "logicalType") : getLogicalType(fieldProperties.getDataType()));
         property.setPhysicalType((getBitolValue(additionalProperties, "physicalType") != null) ? getBitolValue(additionalProperties, "physicalType") : fieldProperties.getDataType());
         property.setRequired(! OpenMetadataProperty.IS_NULLABLE.booleanValueOrDefault(fieldProperties.getIsNullable()));
         property.setUnique(! OpenMetadataProperty.ALLOWS_DUPLICATE_VALUES.booleanValueOrDefault(fieldProperties.getAllowsDuplicateValues()));
@@ -645,6 +647,70 @@ public class DataContractGenerator extends BitolGeneratorBase
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the ODCS logical type for a data field's data type, for a field that has no logical type recorded
+     * from an ODCS document it was imported from.  Copying the data type across unchanged gave values that ODCS
+     * does not define - a column catalogued from a database has data types such as {@code localdatetime} or
+     * {@code bigdecimal}.
+     * <ul>
+     *     <li>An Egeria data type is mapped to the logical type that holds its values.  Egeria's {@code date}
+     *         is a point in time, so it is an ODCS {@code timestamp}; a calendar date is
+     *         {@code localdate}.</li>
+     *     <li>Any other value that is already an ODCS logical type is kept.</li>
+     *     <li>Anything else - a database's own type name, say - has no logical type, so none is given.  The data
+     *         type is still written as the physical type, so nothing is lost.</li>
+     * </ul>
+     *
+     * @param dataType the field's data type - may be null
+     * @return logical type or null
+     */
+    static String getLogicalType(String dataType)
+    {
+        if (dataType == null)
+        {
+            return null;
+        }
+
+        String trimmedDataType = dataType.trim();
+
+        for (DataType egeriaDataType : DataType.values())
+        {
+            if (egeriaDataType.getDisplayName().equalsIgnoreCase(trimmedDataType))
+            {
+                return getLogicalType(egeriaDataType).getValue();
+            }
+        }
+
+        DataContractLogicalType logicalType = DataContractLogicalType.fromValue(trimmedDataType);
+
+        return (logicalType == null) ? null : logicalType.getValue();
+    }
+
+
+    /**
+     * Return the ODCS logical type that holds the values of an Egeria data type.
+     *
+     * @param dataType Egeria data type
+     * @return logical type
+     */
+    private static DataContractLogicalType getLogicalType(DataType dataType)
+    {
+        return switch (dataType)
+        {
+            case STRING, CHAR -> DataContractLogicalType.STRING;
+            case INT, LONG, SHORT, BYTE, BIGINTEGER -> DataContractLogicalType.INTEGER;
+            case FLOAT, DOUBLE, BIGDECIMAL -> DataContractLogicalType.NUMBER;
+            case BOOLEAN -> DataContractLogicalType.BOOLEAN;
+            case DATE, LOCAL_DATE_TIME -> DataContractLogicalType.TIMESTAMP;
+            case LOCAL_DATE -> DataContractLogicalType.DATE;
+            case ARRAY_STRING, ARRAY_INT -> DataContractLogicalType.ARRAY;
+            case MAP_STRING_STRING, MAP_STRING_BOOLEAN, MAP_STRING_INT, MAP_STRING_LONG, MAP_STRING_DOUBLE,
+                 MAP_STRING_DATE, MAP_STRING_OBJECT, MAP_STRING_ARRAY_STRING -> DataContractLogicalType.MAP;
+            case OBJECT -> DataContractLogicalType.OBJECT;
+        };
     }
 
 

@@ -12,6 +12,17 @@ public enum ColumnType
 {
     STRING(Types.VARCHAR, "text", "nvarchar(max)", "VARCHAR2(4000)", "VARCHAR(4000)"),
     DATE(Types.TIMESTAMP, "timestamp(6) without time zone", "datetime2(6)", "TIMESTAMP(6)", "TIMESTAMP(6)"),
+    /*
+     * A point in time that keeps its time zone offset.  Writing a value with an offset into a DATE column loses
+     * the offset - PostgreSQL silently ignores it - so '11:20+05:30' is stored as 11:20, five and a half hours
+     * out.  Data copied from a source whose times carry offsets needs this type instead.  Db2 for Linux, UNIX
+     * and Windows has no time zone type, so it falls back to TIMESTAMP(6) there.
+     */
+    TIMESTAMP_WITH_TIME_ZONE(Types.TIMESTAMP_WITH_TIMEZONE, "timestamp(6) with time zone", "datetimeoffset(6)", "TIMESTAMP(6) WITH TIME ZONE", "TIMESTAMP(6)"),
+    /*
+     * A calendar date with no time of day.  Oracle's DATE also holds a time of day, which is left at midnight.
+     */
+    LOCAL_DATE(Types.DATE, "date", "date", "DATE", "DATE"),
     LONG(Types.BIGINT, "bigint", "bigint", "NUMBER(19)", "BIGINT"),
     INT(Types.INTEGER, "integer", "int", "NUMBER(10)", "INTEGER"),
     /*
