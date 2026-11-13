@@ -5,7 +5,10 @@ package org.odpi.openmetadata.frameworks.connectors.tabulardatasets;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * WritableTabularDataSource defines the specific connector api for working with
@@ -63,4 +66,74 @@ public interface WritableTabularDataSource
      * @throws ConnectorCheckedException a problem occurred accessing the data.
      */
     void deleteRecord(long rowNumber) throws ConnectorCheckedException;
+
+
+    /**
+     * Write several data records, each at its row number.  A data source that can write many records more
+     * cheaply together than one at a time - in one transaction, say - overrides this; by default each record is
+     * written with {@link #writeRecord}, in the map's order.
+     *
+     * @param dataRecords map of row number to the values of the record to write there
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    default void writeRecords(Map<Long, List<String>> dataRecords) throws ConnectorCheckedException
+    {
+        if (dataRecords != null)
+        {
+            for (Map.Entry<Long, List<String>> dataRecord : dataRecords.entrySet())
+            {
+                this.writeRecord(dataRecord.getKey(), dataRecord.getValue());
+            }
+        }
+    }
+
+
+    /**
+     * Write several data records to the end of the data source, in the order supplied.  By default each record
+     * is written with {@link #appendRecord}.
+     *
+     * @param dataRecords values of each record to append
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    default void appendRecords(List<List<String>> dataRecords) throws ConnectorCheckedException
+    {
+        if (dataRecords != null)
+        {
+            for (List<String> dataValues : dataRecords)
+            {
+                this.appendRecord(dataValues);
+            }
+        }
+    }
+
+
+    /**
+     * Remove several data records.  Each row number is the record's position before any of them is removed.
+     * By default they are removed with {@link #deleteRecord} from the highest row number down, so that each
+     * removal leaves the positions of those still to go unchanged.
+     *
+     * @param rowNumbers positions of the records to remove; the same position listed twice is removed once
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    default void deleteRecords(List<Long> rowNumbers) throws ConnectorCheckedException
+    {
+        if (rowNumbers != null)
+        {
+            List<Long> sortedRowNumbers = new ArrayList<>(rowNumbers);
+
+            sortedRowNumbers.sort(Collections.reverseOrder());
+
+            Long previousRowNumber = null;
+
+            for (Long rowNumber : sortedRowNumbers)
+            {
+                if ((rowNumber != null) && (! rowNumber.equals(previousRowNumber)))
+                {
+                    this.deleteRecord(rowNumber);
+                }
+
+                previousRowNumber = rowNumber;
+            }
+        }
+    }
 }

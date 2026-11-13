@@ -64,7 +64,7 @@ public class DataContractMapperTest
 
         assertEquals(field.getQualifiedName(), "DataContract::x::1.1.0::Schema::tbl::transaction_reference_date");
         assertEquals(field.getDisplayName(), "transaction reference date", "business name preferred");
-        assertEquals(field.getDataType(), "date", "logical type preferred");
+        assertEquals(field.getDataType(), "localdate", "an ODCS date is a calendar date");
         assertEquals(field.getNamePatterns(), List.of("transaction_reference_date", "txn_ref_dt"));
         assertEquals(field.getIsNullable(), Boolean.TRUE, "required=false means nullable");
         assertEquals(field.getAllowsDuplicateValues(), Boolean.TRUE);

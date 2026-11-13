@@ -30,6 +30,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -42,11 +46,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * <ul>
  *     <li>Welcome, one-time and periodic notifications are sent when the integration daemon refreshes this
  *         connector, which happens on the configured interval and whenever a refresh is requested through the
- *         integration daemon's REST API.  The daemon's schedule is therefore the only clock here; this
- *         connector keeps no timers of its own.</li>
+ *         integration daemon's REST API.</li>
  *     <li>Notifications about changes to a notification type's monitored resources are sent as the change
  *         events arrive on the metadata access server's out topic.  The refresh keeps a cache of which
- *         notification types monitor which resources; the event listener consults it.</li>
+ *         notification types monitor which resources; the event listener consults it.  A change that arrives
+ *         while its notification type is inside its minimum notification interval is held back and sent
+ *         the moment the interval ends, by a timer this connector keeps for that alone.</li>
  * </ul>
  * This connector was previously a watchdog governance action service that slept between refreshes on a
  * schedule of its own.  Moving it to the integration daemon puts the refresh interval in configuration, and
@@ -59,11 +64,31 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
     /*
      * Changes that arrived while their notification type was inside its minimum notification interval, by
-     * notification type GUID.  Each is sent by the first refresh after the interval has passed.  Only the latest
-     * change is kept for each notification type: a subscriber is told that the resource has changed, and the
-     * delivery that follows picks up all the changes made since the last one.
+     * notification type GUID.  Each is sent when the interval ends.  Only the latest change is kept for each
+     * notification type: a subscriber is told that the resource has changed, and the delivery that follows
+     * picks up all the changes made since the last one.
      */
     private final Map<String, DeferredChange> deferredChanges = new ConcurrentHashMap<>();
+
+    /*
+     * The pending send of each notification type's deferred change, by notification type GUID.
+     * <br>
+     * Leaving deferred changes to the next refresh made the wait the interval plus up to a whole refresh
+     * interval, and the refresh interval has nothing to do with the notification type.  With a five-minute
+     * notification interval and a ten-minute refresh, a change could wait fifteen minutes, so a notification
+     * type's interval had to be set well below what its service level objective allowed - which is what made
+     * the busiest subscriptions deliver many times an hour.  Sending when the interval ends makes the
+     * interval the longest wait, so it can be set to what the objective allows.
+     */
+    private final Map<String, ScheduledFuture<?>> scheduledDeliveries = new ConcurrentHashMap<>();
+
+    /*
+     * Margin added to the end of an interval before a deferred change is sent, so that the notification type
+     * is certainly outside its interval when it is read again.
+     */
+    private static final long DEFERRED_DELIVERY_MARGIN_MILLIS = 1000;
+
+    private ScheduledExecutorService deliveryScheduler = null;
 
     /**
      * A change to a monitored resource that has not been sent yet.
@@ -91,6 +116,14 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         logRecord(methodName, BaudotAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
                                                                                       integrationContext.getMetadataAccessServer(),
                                                                                       integrationContext.getMetadataAccessServerPlatformURLRoot()));
+
+        deliveryScheduler = Executors.newSingleThreadScheduledExecutor(runnable ->
+        {
+            Thread thread = new Thread(runnable, connectorName + " deferred deliveries");
+
+            thread.setDaemon(true);
+            return thread;
+        });
 
         /*
          * Listening starts now, before the first refresh, rather than being left to the base class - which
@@ -140,8 +173,9 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         final String methodName = "refresh";
 
         /*
-         * Send the changes that had to wait for their notification type's minimum interval to pass.  One that is
-         * still too early stays deferred.
+         * Deferred changes are normally sent by their own timer when their interval ends.  Any still waiting -
+         * one whose timer could not be set, say - are tried here too.  One that is still too early stays
+         * deferred.
          */
         for (String notificationTypeGUID : new ArrayList<>(deferredChanges.keySet()))
         {
@@ -280,6 +314,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
                      */
                     monitoredResources.removeMonitoredNotificationType(event.getEndTwoElementHeader().getGUID());
                     deferredChanges.remove(event.getEndTwoElementHeader().getGUID());
+                    this.cancelDeferredDelivery(event.getEndTwoElementHeader().getGUID());
                 }
             }
         }
@@ -297,14 +332,17 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
     /**
      * Tell a notification type's subscribers that one of its monitored resources has changed.  If the
-     * notification type is still within its minimum notification interval, the change is deferred to the first
-     * refresh after the interval has passed rather than dropped: otherwise the last change in a burst would
-     * never reach the subscribers, and a subscription would stay out of date until the resource next changed.
+     * notification type is still within its minimum notification interval, the change is deferred until the
+     * interval ends rather than dropped: otherwise the last change in a burst would never reach the
+     * subscribers, and a subscription would stay out of date until the resource next changed.
+     * <br>
+     * It is called from the event listener, the refresh and the deferred delivery timer, so it is synchronized:
+     * two of them deciding at the same moment that the interval has passed would each notify the subscribers.
      *
      * @param monitoredResource the notification type's interest in the changed resource
      * @param changedElementGUID the element that the change event was for
      */
-    private void notifyMonitoredResourceChanged(MonitoredResource monitoredResource,
+    private synchronized void notifyMonitoredResourceChanged(MonitoredResource monitoredResource,
                                                 String            changedElementGUID)
     {
         final String methodName = "notifyMonitoredResourceChanged";
@@ -326,13 +364,17 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
 
             if ((notificationType != null) && (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties))
             {
-                if (isWithinMinimumInterval(notificationTypeProperties, new Date()))
+                Date now = new Date();
+
+                if (isWithinMinimumInterval(notificationTypeProperties, now))
                 {
                     deferredChanges.put(notificationTypeGUID, new DeferredChange(monitoredResource, changedElementGUID));
+                    this.scheduleDeferredDelivery(notificationTypeGUID, getDeferredDeliveryDelay(notificationTypeProperties, now));
                     return;
                 }
 
                 deferredChanges.remove(notificationTypeGUID);
+                this.cancelDeferredDelivery(notificationTypeGUID);
 
                 long                  notificationCount = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
                 List<NewActionTarget> newActionTargets  = new ArrayList<>();
@@ -354,6 +396,7 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
             else
             {
                 deferredChanges.remove(notificationTypeGUID);
+                this.cancelDeferredDelivery(notificationTypeGUID);
 
                 logRecord(methodName,
                           BaudotAuditCode.UNREADABLE_NOTIFICATION_TYPE.getMessageDefinition(connectorName,
@@ -371,6 +414,107 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
                                                                                                      error.getMessage()),
                                error);
         }
+    }
+
+
+    /**
+     * Arrange for a notification type's deferred change to be sent when its interval ends.  A notification type
+     * that already has a send pending keeps it: the deferred change it will send is whichever is latest by then.
+     *
+     * @param notificationTypeGUID unique identifier of the notification type
+     * @param delayMillis how long to wait
+     */
+    private void scheduleDeferredDelivery(String notificationTypeGUID,
+                                          long   delayMillis)
+    {
+        final String methodName = "scheduleDeferredDelivery";
+
+        ScheduledExecutorService scheduler = deliveryScheduler;
+
+        if ((scheduler == null) || (scheduler.isShutdown()))
+        {
+            return;
+        }
+
+        try
+        {
+            scheduledDeliveries.compute(notificationTypeGUID,
+                                        (guid, pending) -> ((pending != null) && (! pending.isDone())) ? pending :
+                                                scheduler.schedule(() -> this.sendDeferredChange(guid), delayMillis, TimeUnit.MILLISECONDS));
+        }
+        catch (Exception error)
+        {
+            /*
+             * The change stays deferred, and the next refresh sends it instead.
+             */
+            logExceptionRecord(methodName,
+                               BaudotAuditCode.EVENT_PROCESSING_FAILED.getMessageDefinition(connectorName,
+                                                                                            error.getClass().getName(),
+                                                                                            notificationTypeGUID,
+                                                                                            error.getMessage()),
+                               error);
+        }
+    }
+
+
+    /**
+     * Send a notification type's deferred change, if it still has one.  Called by the timer set in
+     * {@link #scheduleDeferredDelivery}.
+     *
+     * @param notificationTypeGUID unique identifier of the notification type
+     */
+    private void sendDeferredChange(String notificationTypeGUID)
+    {
+        scheduledDeliveries.remove(notificationTypeGUID);
+
+        DeferredChange deferredChange = deferredChanges.get(notificationTypeGUID);
+
+        if ((deferredChange != null) && (this.isActive()))
+        {
+            this.notifyMonitoredResourceChanged(deferredChange.monitoredResource(), deferredChange.changedElementGUID());
+        }
+    }
+
+
+    /**
+     * Cancel the pending send of a notification type's deferred change, if there is one.
+     *
+     * @param notificationTypeGUID unique identifier of the notification type
+     */
+    private void cancelDeferredDelivery(String notificationTypeGUID)
+    {
+        ScheduledFuture<?> pending = scheduledDeliveries.remove(notificationTypeGUID);
+
+        if (pending != null)
+        {
+            pending.cancel(false);
+        }
+    }
+
+
+    /**
+     * Return how long to wait before sending a change that arrived inside a notification type's minimum
+     * notification interval: until the interval ends, plus a small margin so that the notification type is
+     * certainly outside it when read again.
+     *
+     * @param notificationTypeProperties properties of the notification type
+     * @param now the time the change arrived
+     * @return delay in milliseconds - never negative
+     */
+    static long getDeferredDeliveryDelay(NotificationTypeProperties notificationTypeProperties,
+                                         Date                       now)
+    {
+        Date lastNotification = notificationTypeProperties.getLastNotification();
+        long minimumInterval  = OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval());
+
+        if ((lastNotification == null) || (minimumInterval <= 0))
+        {
+            return DEFERRED_DELIVERY_MARGIN_MILLIS;
+        }
+
+        long intervalEnds = lastNotification.getTime() + (minimumInterval * 60 * 1000);
+
+        return Math.max(intervalEnds - now.getTime(), 0) + DEFERRED_DELIVERY_MARGIN_MILLIS;
     }
 
 
@@ -437,6 +581,13 @@ public class BaudotSubscriptionManagementConnector extends DynamicIntegrationCon
         final String methodName = "disconnect";
 
         logRecord(methodName, BaudotAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
+
+        if (deliveryScheduler != null)
+        {
+            deliveryScheduler.shutdownNow();
+        }
+
+        scheduledDeliveries.clear();
 
         super.disconnect();
     }

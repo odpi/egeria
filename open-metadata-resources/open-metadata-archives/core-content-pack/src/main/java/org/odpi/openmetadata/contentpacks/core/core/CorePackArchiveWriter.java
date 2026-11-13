@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolDocument;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportScope;
 import org.odpi.openmetadata.frameworks.integration.bitol.common.BitolSupportTool;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractComparisonOperator;
-import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractLogicalType;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityDimension;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualityMetric;
 import org.odpi.openmetadata.frameworks.integration.bitol.odcs.DataContractQualitySeverity;
@@ -702,6 +701,14 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       TermRelationshipStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(TermRelationshipStatus.values())));
 
+        /*
+         * Add the valid metadata values for dataType.
+         */
+        for (DataType dataType : DataType.values())
+        {
+            this.addDataType(dataType);
+        }
+
 
         /*
          * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map
@@ -875,6 +882,40 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();
+    }
+
+
+    /**
+     * Add a valid metadata value for the dataType property.
+     * <br>
+     * DataType is not an enum type in the repository: dataType is a string property, and it holds the data
+     * type's display name ({@code string}, {@code localdate}, {@code map<string,string>}), so that is the
+     * preferred value rather than the Java constant's name that {@link #addOpenMetadataEnumValidNames} uses.
+     * The value is not tied to any one type, because many types have a dataType property - schema attributes,
+     * data fields, data classes and valid values among them.  The values that a Bitol data contract's data
+     * fields use are added separately, for DataField alone.
+     *
+     * @param dataType data type to add
+     */
+    private void addDataType(DataType dataType)
+    {
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        additionalProperties.put(OpenMetadataProperty.IS_DEFAULT_VALUE.name, Boolean.toString(dataType.isDefault()));
+        additionalProperties.put("descriptionGUID", dataType.getDescriptionGUID());
+
+        super.addValidMetadataValue(null,
+                                    dataType.getDisplayName(),
+                                    dataType.getDescription(),
+                                    OpenMetadataProperty.DATA_TYPE.name,
+                                    DataType.STRING.getDisplayName(),
+                                    null,
+                                    null,
+                                    dataType.getDisplayName(),
+                                    dataType.getOrdinal(),
+                                    dataType.isDefault(),
+                                    true,
+                                    additionalProperties);
     }
 
 
@@ -1672,12 +1713,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         /*
-         * Data fields created from ODCS schema properties: the logical types and the semantic role.
+         * Data fields created from ODCS schema properties: the semantic role.  A data field's dataType takes
+         * the DataType values added with the other open metadata enums; an ODCS logical type is kept in the
+         * field's additional properties, and the data contract generator maps a dataType to a logical type for
+         * a field that has none.
          */
-        for (DataContractLogicalType value : DataContractLogicalType.values())
-        {
-            this.addValidMetadataValue(value.getValue(), value.getDescription(), OpenMetadataProperty.DATA_TYPE.name, DataType.STRING.getDisplayName(), OpenMetadataType.DATA_FIELD.typeName, null, value.getValue(), value.ordinal());
-        }
 
         this.addValidMetadataValue(bitolPrefix + "semanticType", "The semantic role that the ODCS schema property plays: column, measure or dimension.", OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, OpenMetadataType.DATA_FIELD.typeName, null, bitolPrefix + "semanticType");
 

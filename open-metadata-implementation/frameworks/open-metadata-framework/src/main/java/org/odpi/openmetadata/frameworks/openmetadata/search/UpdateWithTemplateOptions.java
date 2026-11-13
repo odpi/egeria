@@ -71,7 +71,10 @@ public class UpdateWithTemplateOptions extends UpdateOptions
 
 
     /**
-     * Return whether  the classification be merged or replace the target entity?e (default is true).
+     * Return whether the classifications from the template are merged with the target element's classifications
+     * (true), or replace them (false).  When false, classifications that the target element has but the template does
+     * not are removed.  The Anchors, Template, TemplateSubstitute and Memento classifications are never changed.
+     * The default is true.
      *
      * @return boolean
      */
@@ -82,8 +85,10 @@ public class UpdateWithTemplateOptions extends UpdateOptions
 
 
     /**
-     * Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
-     * qualified name (default is false).
+     * Set up whether the classifications from the template are merged with the target element's classifications
+     * (true), or replace them (false).  When false, classifications that the target element has but the template does
+     * not are removed.  The Anchors, Template, TemplateSubstitute and Memento classifications are never changed.
+     * The default is true.
      *
      * @param mergeClassifications boolean
      */

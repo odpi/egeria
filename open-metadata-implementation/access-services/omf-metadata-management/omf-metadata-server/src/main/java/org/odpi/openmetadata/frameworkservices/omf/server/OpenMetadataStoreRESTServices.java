@@ -4749,9 +4749,9 @@ public class OpenMetadataStoreRESTServices
     /**
      * Delete a relationship between two metadata elements.  The deleteMethod in the request body determines how
      * the delete is actioned: SOFT_DELETE soft-deletes the relationship; PURGE permanently removes it (only
-     * valid if the relationship has already been soft-deleted).  ARCHIVE and LOOK_FOR_LINEAGE do not make sense
-     * for a relationship (there is no relationship equivalent of the Memento classification used to archive a
-     * metadata element), so those - and any other value - result in an InvalidParameterException.
+     * valid if the relationship has already been soft-deleted).  There is no relationship equivalent of the Memento
+     * classification used to archive a metadata element, so ARCHIVE and LOOK_FOR_LINEAGE also soft-delete the
+     * relationship.  Any other value results in an InvalidParameterException.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId

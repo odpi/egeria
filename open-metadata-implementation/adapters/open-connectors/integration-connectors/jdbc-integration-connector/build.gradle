@@ -30,6 +30,7 @@ dependencies {
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     testImplementation project(':open-metadata-implementation:frameworks:open-integration-framework')
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors')
 
     compileOnly 'org.apache.commons:commons-lang3'
     compileOnly 'org.apache.commons:commons-collections4'

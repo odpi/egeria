@@ -49,6 +49,18 @@ public class PostgresTabularColumn implements PostgreSQLColumn
             }
             case DATE ->
             {
+                /*
+                 * A DATE is a point in time.  A column without a time zone would silently drop the offset of a
+                 * value written to it, storing the wrong time.
+                 */
+                return ColumnType.TIMESTAMP_WITH_TIME_ZONE;
+            }
+            case LOCAL_DATE ->
+            {
+                return ColumnType.LOCAL_DATE;
+            }
+            case LOCAL_DATE_TIME ->
+            {
                 return ColumnType.DATE;
             }
             default ->

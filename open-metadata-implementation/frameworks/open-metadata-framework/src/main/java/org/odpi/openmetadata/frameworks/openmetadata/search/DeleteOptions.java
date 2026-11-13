@@ -72,8 +72,11 @@ public class DeleteOptions extends MetadataSourceOptions
 
 
     /**
-     * Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     * the individual properties specified on the request.  The default is false.
+     * Return flag to indicate whether the delete extends to related elements.  For a soft delete, false (the default)
+     * means the delete fails if the element has dependent elements that are not anchored to it (such as the members of a
+     * collection), and true means those dependent elements are deleted too.  For a purge, true means the elements
+     * anchored to the element are purged with it, and false means only the element itself is purged.  Elements
+     * anchored to the element are always deleted or archived with it, whatever this flag's value.
      *
      * @return boolean
      */
@@ -84,8 +87,11 @@ public class DeleteOptions extends MetadataSourceOptions
 
 
     /**
-     * Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
-     * the individual properties specified on the request.  The default is false.
+     * Set up flag to indicate whether the delete extends to related elements.  For a soft delete, false (the default)
+     * means the delete fails if the element has dependent elements that are not anchored to it (such as the members of a
+     * collection), and true means those dependent elements are deleted too.  For a purge, true means the elements
+     * anchored to the element are purged with it, and false means only the element itself is purged.  Elements
+     * anchored to the element are always deleted or archived with it, whatever this flag's value.
      *
      * @param cascadedDelete boolean
      */

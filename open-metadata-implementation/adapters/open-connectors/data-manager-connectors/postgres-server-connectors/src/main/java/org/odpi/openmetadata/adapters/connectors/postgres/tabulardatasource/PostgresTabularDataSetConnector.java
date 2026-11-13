@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
@@ -28,6 +29,7 @@ import java.sql.Types;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -176,7 +178,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
             String columnName = databaseColumnDescriptions.get(columnNumber).columnName();
 
             columnNames.add(columnName);
-            literals.add(this.getSQLLiteral(dataValues.get(columnNumber)));
+            literals.add(getSQLLiteral(dataValues.get(columnNumber)));
 
             if (! identifierColumns.contains(columnName))
             {
@@ -226,7 +228,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
      * @param dataValue value to write, may be null
      * @return literal for the statement
      */
-    private String getSQLLiteral(String dataValue)
+    private static String getSQLLiteral(String dataValue)
     {
         if (dataValue == null)
         {
@@ -501,7 +503,19 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
 
             if ((readAheadRecords == null) || (rowNumber < readAheadStart) || (rowNumber >= readAheadStart + readAheadRecords.size()))
             {
-                readAheadRecords = this.fetchRecords(rowNumber);
+                /*
+                 * A read that carries on from the end of a full window - which is every read of a copy - starts
+                 * the next window after the last record of this one.
+                 */
+                List<String> previousRecord = null;
+
+                if ((readAheadRecords != null) && (readAheadRecords.size() == READ_AHEAD_RECORDS)
+                            && (rowNumber == readAheadStart + readAheadRecords.size()))
+                {
+                    previousRecord = readAheadRecords.get(readAheadRecords.size() - 1);
+                }
+
+                readAheadRecords = this.fetchRecords(rowNumber, previousRecord);
                 readAheadStart   = rowNumber;
             }
 
@@ -543,23 +557,138 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
 
 
     /**
+     * Return the columns for a query that reads records: the described columns, in their described order.
+     * <br>
+     * When this connector is the destination of a copy, its column descriptions are the ones supplied to
+     * {@link #setColumnDescriptions}, and the table may hold more columns than that - a subscriber's staging
+     * table adds its own processing columns, for example.  Reading every column with {@code SELECT *} returned
+     * records that were longer than the columns described, so a destination record never equalled the source
+     * record it came from.  Every delivery then rewrote every record, and reported all of them as changed, even
+     * though the upserts changed nothing.  Reading only the described columns keeps a record the same shape as
+     * {@link #getColumnDescriptions} and {@link #writeRecord}.
+     *
+     * @param columnDescriptions columns as the database names them - may be null or empty
+     * @return comma-separated column names, or {@code *} when no columns are described
+     */
+    static String getSelectList(List<TabularColumnDescription> columnDescriptions)
+    {
+        if ((columnDescriptions == null) || (columnDescriptions.isEmpty()))
+        {
+            return "*";
+        }
+
+        List<String> columnNames = new ArrayList<>(columnDescriptions.size());
+
+        for (TabularColumnDescription columnDescription : columnDescriptions)
+        {
+            if ((columnDescription == null) || (columnDescription.columnName() == null))
+            {
+                return "*";
+            }
+
+            columnNames.add(columnDescription.columnName());
+        }
+
+        return String.join(", ", columnNames);
+    }
+
+
+    /**
+     * Return the condition that selects the records after the supplied one, in the order that gives each record
+     * its position - for a table ordered by the columns that identify a record.
+     * <br>
+     * Fetching a window with {@code OFFSET n} makes the database step through the n records in front of it, so
+     * reading a whole table that way is still quadratic in its size, just with a smaller constant.  Starting the
+     * window after the last record already read lets the database go straight to it through the primary key's
+     * index.  The comparison uses the same columns, in the same order, as the {@code ORDER BY} - and the
+     * database's own collation for both - so the window starts exactly where the last one ended.
+     *
+     * @param columnDescriptions the columns read, as the database names them
+     * @param previousRecord the last record read, in the same column order
+     * @return SQL condition, or null when the records are not ordered by identifying columns, or the record does
+     * not hold a value for each of them
+     */
+    static String getKeysetCondition(List<TabularColumnDescription> columnDescriptions,
+                                     List<String>                   previousRecord)
+    {
+        if ((previousRecord == null) || ("*".equals(getSelectList(columnDescriptions)))
+                    || (previousRecord.size() != columnDescriptions.size()))
+        {
+            return null;
+        }
+
+        List<String> columnNames = new ArrayList<>();
+        List<String> literals    = new ArrayList<>();
+
+        for (int columnNumber = 0; columnNumber < columnDescriptions.size(); columnNumber++)
+        {
+            if (columnDescriptions.get(columnNumber).isIdentifier())
+            {
+                String dataValue = previousRecord.get(columnNumber);
+
+                if (dataValue == null)
+                {
+                    return null;
+                }
+
+                columnNames.add(columnDescriptions.get(columnNumber).columnName());
+                literals.add(getSQLLiteral(dataValue));
+            }
+        }
+
+        if (columnNames.isEmpty())
+        {
+            return null;
+        }
+
+        if (columnNames.size() == 1)
+        {
+            return columnNames.get(0) + " > " + literals.get(0);
+        }
+
+        return "(" + String.join(", ", columnNames) + ") > (" + String.join(", ", literals) + ")";
+    }
+
+
+    /**
      * Fetch the window of records that starts at the requested record, in the order that gives each record its
      * position.  The window is shorter than {@link #READ_AHEAD_RECORDS} at the end of the table, and empty when
      * the requested record is beyond it.
+     * <br>
+     * When the window follows on from one already read, it is fetched as the records after that window's last
+     * record - see {@link #getKeysetCondition}.  Otherwise, and for a table without identifying columns, it is
+     * fetched by position.
      *
      * @param firstRowNumber position of the first record in the window
+     * @param previousRecord the record just before the window, or null if it has not been read
      * @return records, each as its values in column order
      * @throws Exception problem accessing the database
      */
-    private List<List<String>> fetchRecords(long firstRowNumber) throws Exception
+    private List<List<String>> fetchRecords(long         firstRowNumber,
+                                            List<String> previousRecord) throws Exception
     {
         /*
-         * The column descriptions are loaded first so that the record order is known.
+         * The column descriptions are loaded first so that the record order is known, and so that only the
+         * described columns are read.
          */
-        this.getDatabaseColumnDescriptions();
+        List<TabularColumnDescription> columnDescriptions = this.getDatabaseColumnDescriptions();
 
-        String sqlQuery = "SELECT * FROM " + tableName + " ORDER BY " + this.getRecordOrder()
-                                  + " OFFSET " + firstRowNumber + " LIMIT " + READ_AHEAD_RECORDS;
+        String keysetCondition = getKeysetCondition(columnDescriptions, previousRecord);
+        String sqlQuery;
+
+        if (keysetCondition == null)
+        {
+            sqlQuery = "SELECT " + getSelectList(columnDescriptions) + " FROM " + tableName
+                               + " ORDER BY " + this.getRecordOrder()
+                               + " OFFSET " + firstRowNumber + " LIMIT " + READ_AHEAD_RECORDS;
+        }
+        else
+        {
+            sqlQuery = "SELECT " + getSelectList(columnDescriptions) + " FROM " + tableName
+                               + " WHERE " + keysetCondition
+                               + " ORDER BY " + this.getRecordOrder()
+                               + " LIMIT " + READ_AHEAD_RECORDS;
+        }
 
         List<List<String>> records = new ArrayList<>();
 
@@ -632,7 +761,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
                         String columnName = resultSetMetaData.getColumnName(columnNumber);
 
                         columnDescriptions.add(new TabularColumnDescription(columnName,
-                                                                            this.getDataType(resultSetMetaData.getColumnType(columnNumber)),
+                                                                            getDataType(resultSetMetaData.getColumnType(columnNumber), resultSetMetaData.getColumnTypeName(columnNumber)),
                                                                             null,
                                                                             resultSetMetaData.isNullable(columnNumber) != ResultSetMetaData.columnNoNulls,
                                                                             primaryKeyColumns.contains(columnName)));
@@ -792,23 +921,52 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
      * Return the data type that describes a column of the given SQL type.  The mapping is the inverse of the one
      * {@link PostgresTabularColumn} uses to create the table, widened to the other types a table that this
      * connector did not create may have; anything else is presented as text, which is how the values are read.
+     * <br>
+     * The three kinds of time are kept apart, so that a copy creates the same kind of column it was read from: a
+     * {@code date} is a {@link DataType#LOCAL_DATE}, a {@code timestamp} without a time zone a
+     * {@link DataType#LOCAL_DATE_TIME}, and a {@code timestamptz} - a point in time - a {@link DataType#DATE}.
+     * The PostgreSQL driver reports both kinds of timestamp as {@code Types.TIMESTAMP}, so they are told apart by
+     * the database's own name for the type.
      *
      * @param sqlType type from java.sql.Types
+     * @param sqlTypeName the database's name for the type - may be null
      * @return data type
      */
-    private DataType getDataType(int sqlType)
+    static DataType getDataType(int    sqlType,
+                                String sqlTypeName)
     {
         return switch (sqlType)
         {
             case Types.INTEGER, Types.SMALLINT, Types.TINYINT -> DataType.INT;
             case Types.BIGINT -> DataType.LONG;
-            case Types.DATE, Types.TIMESTAMP, Types.TIMESTAMP_WITH_TIMEZONE -> DataType.DATE;
+            case Types.DATE -> DataType.LOCAL_DATE;
+            case Types.TIMESTAMP_WITH_TIMEZONE -> DataType.DATE;
+            case Types.TIMESTAMP -> isTimeZoneTypeName(sqlTypeName) ? DataType.DATE : DataType.LOCAL_DATE_TIME;
             case Types.BOOLEAN, Types.BIT -> DataType.BOOLEAN;
             case Types.REAL, Types.FLOAT -> DataType.FLOAT;
             case Types.DOUBLE -> DataType.DOUBLE;
             case Types.NUMERIC, Types.DECIMAL -> DataType.BIGDECIMAL;
             default -> DataType.STRING;
         };
+    }
+
+
+    /**
+     * Return whether the database's name for a timestamp type is one with a time zone.
+     *
+     * @param sqlTypeName type name, such as {@code timestamptz} - may be null
+     * @return true for a timestamp with a time zone
+     */
+    private static boolean isTimeZoneTypeName(String sqlTypeName)
+    {
+        if (sqlTypeName == null)
+        {
+            return false;
+        }
+
+        String typeName = sqlTypeName.toLowerCase();
+
+        return typeName.equals("timestamptz") || typeName.contains("with time zone");
     }
 
 
@@ -939,7 +1097,7 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
                 firstRecord = false;
             }
 
-            stringBuilder.append(this.getSQLLiteral(dataValue));
+            stringBuilder.append(getSQLLiteral(dataValue));
         }
 
         stringBuilder.append(");");
@@ -1034,6 +1192,179 @@ public class PostgresTabularDataSetConnector extends ConnectorBase implements Re
                                                 methodName,
                                                 exception);
         }
+    }
+
+
+    /**
+     * The number of statements sent to the database in one JDBC batch by {@link #writeRecords} and
+     * {@link #appendRecords}.
+     */
+    private static final int WRITE_BATCH_SIZE = 1000;
+
+
+    /**
+     * Write several records in one transaction.  Each is written as {@link #writeRecord} would write it - the
+     * row numbers are not used - but the statements go to the database in batches on one connection, and are
+     * committed once.  Writing them one at a time took a connection and a commit for each record.
+     *
+     * @param dataRecords map of row number to the values of the record to write there
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    @Override
+    public void writeRecords(Map<Long, List<String>> dataRecords) throws ConnectorCheckedException
+    {
+        if (dataRecords != null)
+        {
+            this.issueSQLWriteStatements(new ArrayList<>(dataRecords.values()), "writeRecords");
+        }
+    }
+
+
+    /**
+     * Write several records to the table in one transaction - see {@link #writeRecords}.
+     *
+     * @param dataRecords values of each record to append
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    @Override
+    public void appendRecords(List<List<String>> dataRecords) throws ConnectorCheckedException
+    {
+        this.issueSQLWriteStatements(dataRecords, "appendRecords");
+    }
+
+
+    /**
+     * Issue the statement that writes each record, in batches on one connection, committing once at the end.
+     * Nothing is written if any of them fails.
+     *
+     * @param dataRecords values of each record to write
+     * @param methodName calling method
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    private void issueSQLWriteStatements(List<List<String>> dataRecords,
+                                         String             methodName) throws ConnectorCheckedException
+    {
+        this.discardReadAhead();
+
+        if ((dataRecords == null) || (dataRecords.isEmpty()))
+        {
+            return;
+        }
+
+        try
+        {
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                try (Statement statement = databaseConnection.createStatement())
+                {
+                    int batchedStatements = 0;
+
+                    for (List<String> dataValues : dataRecords)
+                    {
+                        statement.addBatch(buildSQLWriteStatement(dataValues));
+                        batchedStatements++;
+
+                        if (batchedStatements == WRITE_BATCH_SIZE)
+                        {
+                            statement.executeBatch();
+                            batchedStatements = 0;
+                        }
+                    }
+
+                    if (batchedStatements > 0)
+                    {
+                        statement.executeBatch();
+                    }
+
+                    databaseConnection.commit();
+                }
+                catch (Exception exception)
+                {
+                    databaseConnection.rollback();
+                    throw exception;
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            throw this.getUnexpectedException(exception, methodName);
+        }
+    }
+
+
+    /**
+     * Remove several records in one statement.  Each row number is the record's position, in the order that
+     * {@link #readRecord} gives them, before any of them is removed; the records are numbered by that order
+     * and the ones at the requested positions removed together.  Removing them one at a time took a query for
+     * each, stepping through the table to the record's offset.
+     *
+     * @param rowNumbers positions of the records to remove
+     * @throws ConnectorCheckedException a problem occurred accessing the data.
+     */
+    @Override
+    public void deleteRecords(List<Long> rowNumbers) throws ConnectorCheckedException
+    {
+        final String methodName = "deleteRecords";
+
+        this.discardReadAhead();
+
+        if ((rowNumbers == null) || (rowNumbers.isEmpty()))
+        {
+            return;
+        }
+
+        String sqlCommand = "DELETE FROM " + tableName + " WHERE ctid IN (SELECT ctid FROM (SELECT ctid, row_number() OVER (ORDER BY "
+                                    + this.getRecordOrder() + ") - 1 AS record_position FROM " + tableName
+                                    + ") AS numbered_records WHERE record_position = ANY (?))";
+
+        try
+        {
+            try (java.sql.Connection databaseConnection = jdbcResourceConnector.getDataSource().getConnection())
+            {
+                try (PreparedStatement preparedStatement = databaseConnection.prepareStatement(sqlCommand))
+                {
+                    preparedStatement.setArray(1, databaseConnection.createArrayOf("bigint", rowNumbers.toArray(new Long[0])));
+                    preparedStatement.executeUpdate();
+                    databaseConnection.commit();
+                }
+                catch (Exception exception)
+                {
+                    databaseConnection.rollback();
+                    throw exception;
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            throw this.getUnexpectedException(exception, methodName);
+        }
+    }
+
+
+    /**
+     * Log an unexpected exception and return the exception to throw for it.
+     *
+     * @param exception what went wrong
+     * @param methodName calling method
+     * @return exception to throw
+     */
+    private ConnectorCheckedException getUnexpectedException(Exception exception,
+                                                             String    methodName)
+    {
+        super.logExceptionRecord(methodName,
+                                 PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                             exception.getClass().getName(),
+                                                                                             methodName,
+                                                                                             exception.getMessage()),
+                                 exception);
+
+        return new ConnectorCheckedException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
+                                                                                                         exception.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         exception.getMessage()),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             exception);
     }
 
 
