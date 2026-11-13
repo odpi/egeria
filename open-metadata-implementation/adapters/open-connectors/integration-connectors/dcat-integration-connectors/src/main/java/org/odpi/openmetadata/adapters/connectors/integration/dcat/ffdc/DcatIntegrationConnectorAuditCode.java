@@ -82,14 +82,14 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
                              "https://egeria-project.org/concepts/asset/"),
 
     /**
-     * DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property
+     * DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish
      */
-    PUBLISHING_CATALOG_NOT_FOUND("DCAT-INTEGRATION-CONNECTOR-0007",
-                                 AuditLogRecordSeverityLevel.ERROR,
-                                 "The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property",
-                                 "No DCAT descriptions are published.  The connector looks for the collection again on its next refresh.",
-                                 "Either load the content pack that defines the collection (the default collection is supplied by the Core Content Pack), or set the configuration property to the qualified name or display name of the collection whose member assets are to be published.",
-                                 "https://egeria-project.org/concepts/asset/"),
+    NO_PUBLISHING_CATALOGS("DCAT-INTEGRATION-CONNECTOR-0007",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish",
+                           "No DCAT descriptions are published.  The connector looks for its catalog targets again on its next refresh.",
+                           "Attach each collection that lists the assets to publish to the connector as a catalog target.  The DCAT Content Pack attaches the DCAT Publishing Catalog collection.",
+                           "https://egeria-project.org/concepts/asset/"),
 
     /**
      * DCAT-INTEGRATION-CONNECTOR-0008 - The {0} integration connector has no directory to publish DCAT descriptions to
@@ -97,8 +97,8 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
     NO_DESTINATION("DCAT-INTEGRATION-CONNECTOR-0008",
                    AuditLogRecordSeverityLevel.ERROR,
                    "The {0} integration connector has no directory to publish DCAT descriptions to",
-                   "No DCAT descriptions are published.  The connector looks for its destination directories again on its next refresh.",
-                   "Either set the network address of the endpoint in the connector's connection to the name of the destination directory, or attach one or more file folders to the connector as catalog targets.",
+                   "No DCAT descriptions are published.",
+                   "Set the network address of the endpoint in the connector's connection to the name of the destination directory, and restart the connector.",
                    "https://egeria-project.org/concepts/asset/"),
 
     /**
@@ -107,7 +107,7 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
     RESOURCE_STORED("DCAT-INTEGRATION-CONNECTOR-0009",
                     AuditLogRecordSeverityLevel.INFO,
                     "The {0} integration connector published the DCAT description of {1} {2} ({3}) to file {4}",
-                    "The asset is a member of the publishing catalog and its DCAT description is new, or has changed since it was last published, so the file has been written.",
+                    "The asset is a member of a collection that is published as a DCAT catalog and its DCAT description is new, or has changed since it was last published, so the file has been written.",
                     "No specific action is required.  This message records what has been published and where.",
                     "https://egeria-project.org/concepts/asset/"),
 
@@ -122,13 +122,13 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
                    "https://egeria-project.org/concepts/asset/"),
 
     /**
-     * DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog
+     * DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published
      */
     RESOURCE_WITHDRAWN("DCAT-INTEGRATION-CONNECTOR-0011",
                        AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog",
-                       "The file was written by an earlier refresh for an asset that has since been removed from the publishing catalog, or deleted, or renamed.",
-                       "No specific action is required.  Add the asset to the publishing catalog again if it was removed by mistake.",
+                       "The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published",
+                       "The file was written by an earlier refresh for an asset that has since been removed from the collection, or deleted, or renamed.",
+                       "No specific action is required.  Add the asset to the collection again if it was removed by mistake.",
                        "https://egeria-project.org/concepts/asset/"),
 
     /**
@@ -137,7 +137,7 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
     RESOURCE_NOT_PUBLISHED("DCAT-INTEGRATION-CONNECTOR-0012",
                            AuditLogRecordSeverityLevel.ERROR,
                            "The {0} integration connector was not able to generate the DCAT description of element {1}; the {2} exception had message: {3}",
-                           "The element is left out of the published catalog.  The connector carries on with the other members of the publishing catalog and tries this one again on its next refresh.",
+                           "The element is left out of the published catalog.  The connector carries on with the other members of the collection and tries this one again on its next refresh.",
                            "Use the message from the exception to determine what is wrong with the element.  A common cause is that the connector's userId is not permitted to read the element or something attached to it.",
                            "https://egeria-project.org/concepts/asset/"),
 
@@ -150,6 +150,36 @@ public enum DcatIntegrationConnectorAuditCode implements AuditLogMessageSet
                          "The connector is unable to complete the request it was processing.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.",
                          "https://egeria-project.org/concepts/asset/"),
+
+    /**
+     * DCAT-INTEGRATION-CONNECTOR-0014 - The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection
+     */
+    CATALOG_TARGET_NOT_COLLECTION("DCAT-INTEGRATION-CONNECTOR-0014",
+                                  AuditLogRecordSeverityLevel.ERROR,
+                                  "The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection",
+                                  "Only collections can be published as DCAT catalogs.  The connector publishes its other catalog targets.",
+                                  "Remove the catalog target relationship and attach the collection that lists the assets to publish instead.  The directory to publish to is set in the network address of the endpoint in the connector's connection.",
+                                  "https://egeria-project.org/concepts/asset/"),
+
+    /**
+     * DCAT-INTEGRATION-CONNECTOR-0015 - The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}
+     */
+    CATALOG_NOT_PUBLISHED("DCAT-INTEGRATION-CONNECTOR-0015",
+                          AuditLogRecordSeverityLevel.EXCEPTION,
+                          "The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}",
+                          "The connector carries on with its other catalog targets and tries this collection again on its next refresh.  No published catalogs are withdrawn on this refresh.",
+                          "Use the message from the exception to determine what is wrong with the collection.  A common cause is that the connector's userId is not permitted to read it.",
+                          "https://egeria-project.org/concepts/asset/"),
+
+    /**
+     * DCAT-INTEGRATION-CONNECTOR-0016 - The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target
+     */
+    CATALOG_WITHDRAWN("DCAT-INTEGRATION-CONNECTOR-0016",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target",
+                      "The directory was written by an earlier refresh for a collection that has since been detached from the connector, or deleted, or renamed.",
+                      "No specific action is required.  Attach the collection to the connector as a catalog target again if it was removed by mistake.",
+                      "https://egeria-project.org/concepts/asset/"),
 
     ;
 

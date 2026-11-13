@@ -159,7 +159,8 @@ class SecondPlatform
                                                             classpath,
                                                             "org.odpi.openmetadata.platformchassis.springboot.OMAGServerPlatform",
                                                             "--spring.config.location=classpath:/platform-b.properties",
-                                                            "--server.port=" + port);
+                                                            "--server.port=" + port,
+                                                            "--server.address=127.0.0.1");
 
         processBuilder.redirectErrorStream(true);
         processBuilder.redirectOutput(logFile);
@@ -552,7 +553,7 @@ class SecondPlatform
      */
     private static int allocateFreePort()
     {
-        try (java.net.ServerSocket socket = new java.net.ServerSocket(0))
+        try (java.net.ServerSocket socket = new java.net.ServerSocket(0, 50, java.net.InetAddress.getLoopbackAddress()))
         {
             socket.setReuseAddress(true);
             return socket.getLocalPort();

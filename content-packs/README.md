@@ -54,8 +54,9 @@ the documents describing the digital products and data sharing agreements define
 
 * **DCATContentPack** - receive descriptions of catalogs, datasets and data services written in the W3C
 [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) from files and Apache Kafka topics; catalog
-them as assets; and publish the DCAT descriptions of the assets that are members of the *DCAT Publishing Catalog*
-collection (which is supplied by the CoreContentPack).
+them as assets; and publish the DCAT descriptions of the assets that are members of the collections attached to the
+DCAT Publisher as catalog targets.  The content pack supplies the *DCAT Publishing Catalog* collection and attaches it
+to the publisher.
 
 * **[OrganizationInsightContentPack](https://egeria-project.org/content-packs/observability-content-pack/overview)** -
 monitoring, analysis and capture of insight into organization activity and effectiveness.  This content pack is

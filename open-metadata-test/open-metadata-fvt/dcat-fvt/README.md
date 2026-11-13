@@ -5,7 +5,7 @@
 
 This suite tests the **DCAT connectors** - the integration connectors that receive, catalog and publish descriptions of
 data assets in the W3C [Data Catalog Vocabulary (DCAT)](https://www.w3.org/TR/vocab-dcat-3/) - together with the
-**DCAT content pack** that defines them and the **DCAT Publishing Catalog** collection from the Core content pack.
+**DCAT content pack** that defines them and the **DCAT Publishing Catalog** collection that it attaches to the publisher.
 
 Like [bitol-fvt](../bitol-fvt), it does not call the connectors directly.  It stands up the deployment they are
 designed to run in and drives them the way an operator would.
@@ -58,8 +58,10 @@ the test JVM.  Both directories are emptied at the start of each run and are ign
 * **[PublisherFVT](src/test/java/org/odpi/openmetadata/dcatfvt/PublisherFVT.java)** - a data set catalogued from a
   DCAT description is added to the DCAT Publishing Catalog and a data set created directly in open metadata is added
   to a collection folder nested in it.  The publisher writes `catalog.jsonld` describing both, and a file for each
-  in `datasets`; a second refresh leaves the files alone; and removing a data set from the catalog removes its file
-  and its entry in the catalog.
+  in `datasets`, to the catalog's subdirectory; a second refresh leaves the files alone; and removing a data set from
+  the catalog removes its file and its entry in the catalog.  A second test attaches an ordinary (not root)
+  collection to the publisher as a catalog target, checks that it is published to its own subdirectory, and that
+  detaching it removes that subdirectory.
 
 The mapping between DCAT and open metadata is also exercised, in both directions, through the Asset Catalog OMVS by
 `AssetCatalogFVT` in [view-services-fvt](../view-services-fvt).

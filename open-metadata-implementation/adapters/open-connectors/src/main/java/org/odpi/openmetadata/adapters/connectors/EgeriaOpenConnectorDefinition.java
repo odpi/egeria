@@ -1677,7 +1677,7 @@ public enum EgeriaOpenConnectorDefinition implements OpenConnectorDefinition
                                          "ec4e1e39-49a4-4e78-9e79-338a48ced7a7",
                                          "Egeria::IntegrationConnector::DCAT::Publisher",
                                          "DCAT Publisher Integration Connector",
-                                         "Connector that writes the Data Catalog Vocabulary (DCAT) descriptions of the assets in a publishing catalog collection, and the catalog itself, to the file system as JSON-LD.",
+                                         "Connector that writes a Data Catalog Vocabulary (DCAT) catalog for each collection attached as a catalog target, along with the DCAT descriptions of the assets in the collection, to the file system as JSON-LD.",
                                          "https://github.com/odpi/egeria/tree/main/open-metadata-implementation/adapters/open-connectors/integration-connectors/dcat-integration-connectors",
                                          "org.odpi.openmetadata.adapters.connectors.integration.dcat.DcatPublisherIntegrationProvider",
                                          ComponentDevelopmentStatus.STABLE,

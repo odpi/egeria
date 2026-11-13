@@ -26,7 +26,7 @@ This is enough to read the `data.json` catalogs published by US government agenc
 | **DCAT Files Receiver** (`DcatFilesReceiverIntegrationConnector`) | Scans directories for `.jsonld` and `.json` files that describe DCAT resources and publishes new and changed documents to the DCAT listeners in the integration daemon. | `loading-bay/dcat`, plus the file folders attached as `directoryToMonitor` catalog targets |
 | **DCAT Event Receiver** (`DcatEventReceiverIntegrationConnector`) | Publishes each event received from an Apache Kafka topic as a DCAT document to the DCAT listeners in the integration daemon. | The topics attached as `topicToMonitor` catalog targets |
 | **DCAT Cataloguer** (`DcatCataloguerIntegrationConnector`) | Listens for DCAT documents and catalogs what they describe. | |
-| **DCAT Publisher** (`DcatPublisherIntegrationConnector`) | Writes the DCAT description of each asset in the publishing catalog, and of the catalog itself. | `distribution-hub/dcat-catalog`, plus the file folders attached as `publishDirectory` catalog targets |
+| **DCAT Publisher** (`DcatPublisherIntegrationConnector`) | Writes a DCAT catalog for each collection attached as a `publishingCatalog` catalog target, along with the DCAT description of each asset in the collection. | `distribution-hub/dcat-catalog` (the network address of its endpoint) |
 
 A DCAT document can also be sent to the cataloguer through the integration daemon's `publish-dcat-document` REST API,
 and through the Asset Catalog OMVS (`/integration-daemons/{serverGUID}/dcat/publish-document`).  The Asset Catalog
@@ -61,17 +61,24 @@ the `dcat.otherProperties` additional property and written out again when the as
 
 ## Publishing
 
-The DCAT Publisher is told which assets to publish through a collection: the **publishing catalog**.  An asset is
-published if it is a member of this collection, or of a collection folder nested in it.  By default, the publishing
-catalog is the *DCAT Publishing Catalog* root collection (`Egeria::DCATPublishingCatalog`) that is supplied by the Core
-Content Pack.  To publish an asset, add it to this collection; to withdraw it, remove it.
+The DCAT Publisher is told which assets to publish through the collections attached to it as catalog targets (with
+the catalog target name `publishingCatalog`).  Each collection is published as a separate DCAT catalog.  An asset is
+published if it is a member of one of these collections, or of a collection folder nested in it.  Any type of
+collection can be used; it does not need to be a root collection.  The DCAT Content Pack supplies the *DCAT Publishing
+Catalog* root collection (`Egeria::DCATPublishingCatalog`) and attaches it to the publisher.  To publish an asset, add
+it to a collection; to withdraw it, remove it.
 
-On each refresh, the publisher writes the following files to each of its destination directories.  A file is only
-written when its content has changed.
+The publisher writes to the directory named in the network address of the endpoint in its connection.  Each catalog
+has its own subdirectory, named after the collection and the first eight characters of its unique identifier (for
+example, `DCAT-Publishing-Catalog-9b07a6ef`).  On each refresh, the publisher writes the following files to each
+catalog's subdirectory.  A file is only written when its content has changed.
 
-* `catalog.jsonld` - the publishing catalog as a `dcat:Catalog`, along with the description of every published asset.
+* `catalog.jsonld` - the collection as a `dcat:Catalog`, along with the description of every published asset.
 * `datasets/<name>.jsonld` - one file for each asset published as a `dcat:Dataset`.
 * `data-services/<name>.jsonld` - one file for each asset published as a `dcat:DataService`.
+
+The file of an asset that has been removed from the collection is deleted.  When a collection is detached from the
+publisher, its subdirectory is deleted.
 
 A `DeployedAPI` asset is published as a data service.  A `DataSet` asset is published as a dataset whose distributions
 are the assets that supply its data.  Any other type of asset is published as a dataset with a single distribution.
@@ -80,7 +87,6 @@ An asset that was catalogued from a DCAT description keeps its original IRI; any
 
 | Configuration property | Description |
 | --- | --- |
-| `publishingCatalog` | The qualified name (or display name) of the collection that lists the assets to publish.  The default is `Egeria::DCATPublishingCatalog`. |
 | `defaultPublisher` | The name of the organization to show as the publisher of an asset that is not linked to an organization. |
 
 ----

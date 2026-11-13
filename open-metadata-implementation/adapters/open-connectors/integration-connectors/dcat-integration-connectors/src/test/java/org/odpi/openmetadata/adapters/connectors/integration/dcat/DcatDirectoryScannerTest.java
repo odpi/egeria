@@ -131,6 +131,8 @@ public class DcatDirectoryScannerTest
                      "Air-quality-measurements-2025-0a743555.jsonld");
         assertEquals(DcatPublisherIntegrationConnector.getFileName(null, "0a743555-c7db-4efb-91b5-affe0149a5ba"), "0a743555.jsonld");
         assertEquals(DcatPublisherIntegrationConnector.getFileName("???", "short"), "short.jsonld");
+        assertEquals(DcatPublisherIntegrationConnector.getDirectoryName("DCAT Publishing Catalog", "9b07a6ef-4d24-40a8-bf7a-c6fda6b360a8"), "DCAT-Publishing-Catalog-9b07a6ef");
+        assertEquals(DcatPublisherIntegrationConnector.getDirectoryName(null, "9b07a6ef-4d24-40a8-bf7a-c6fda6b360a8"), "9b07a6ef");
 
         Path directory = Files.createTempDirectory("dcat-publisher-test");
 

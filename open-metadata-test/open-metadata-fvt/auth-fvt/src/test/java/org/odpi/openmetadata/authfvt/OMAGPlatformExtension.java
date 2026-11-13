@@ -170,6 +170,8 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         Map<String, Object> properties = new HashMap<>();
 
         properties.put("server.port", "0");
+
+        properties.put("server.address", "127.0.0.1");
         properties.put("platform.configstore.provider", "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider");
         properties.put("platform.configstore.endpoint", "build/auth-fvt-data/servers/{0}/config/{0}.config");
         properties.put("startup.server.list", "");

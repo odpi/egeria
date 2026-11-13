@@ -17,13 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
@@ -37,30 +31,31 @@ import java.util.Set;
 
 /**
  * DcatPublisherIntegrationConnector publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets that have
- * been chosen for publication.  An asset is chosen by making it a member of the publishing catalog - a collection that
- * is named in the connector's publishingCatalog configuration property - or of a collection folder nested in it.
+ * been chosen for publication.  An asset is chosen by making it a member of a collection that is attached to the
+ * connector as a catalog target, or of a collection folder nested in such a collection.  Any type of collection may
+ * be used - it does not need to be a root collection.
  * <p>
- * On each refresh the connector writes the following JSON-LD files to each of its destination directories:
+ * Each catalog target collection is published as a separate DCAT catalog in its own subdirectory of the directory
+ * named in the network address of the endpoint in the connector's connection.  The subdirectory is named after the
+ * collection, and on each refresh the connector writes the following JSON-LD files to it:
  * <ul>
- *     <li>catalog.jsonld - the publishing catalog as a dcat:Catalog, along with the description of every published
- *     asset.  This is the file to give to a portal that harvests DCAT catalogs.</li>
+ *     <li>catalog.jsonld - the collection as a dcat:Catalog, along with the description of every published asset.
+ *     This is the file to give to a portal that harvests DCAT catalogs.</li>
  *     <li>datasets/&lt;name&gt;.jsonld - the description of each asset that is published as a dcat:Dataset.</li>
  *     <li>data-services/&lt;name&gt;.jsonld - the description of each asset that is published as a dcat:DataService.</li>
  * </ul>
- * A file is only written if its content has changed, and the file for an asset that is no longer in the publishing
- * catalog is removed.  The destination directories are the network address of the endpoint in the connector's
- * connection, and the file folders attached to the connector as catalog targets.
+ * A file is only written if its content has changed.  The file for an asset that is no longer in the collection is
+ * removed, as is the subdirectory of a collection that is no longer a catalog target.
  */
 public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
 {
-    static final String CATALOG_FILE_NAME      = "catalog.jsonld";
-    static final String DATASETS_FOLDER        = "datasets";
-    static final String DATA_SERVICES_FOLDER   = "data-services";
+    static final String CATALOG_FILE_NAME       = "catalog.jsonld";
+    static final String DATASETS_FOLDER         = "datasets";
+    static final String DATA_SERVICES_FOLDER    = "data-services";
     static final String DOCUMENT_FILE_EXTENSION = ".jsonld";
 
-    private DcatGenerator generator             = null;
-    private String        publishingCatalogName = DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG;
-    private String        endpointDirectory     = null;
+    private DcatGenerator generator         = null;
+    private String        endpointDirectory = null;
 
 
     /**
@@ -82,14 +77,6 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
     {
         super.start();
 
-        String configuredCatalogName = super.getStringConfigurationProperty(DcatConfigurationProperty.PUBLISHING_CATALOG.getName(),
-                                                                            connectionBean.getConfigurationProperties());
-
-        if ((configuredCatalogName != null) && (! configuredCatalogName.isBlank()))
-        {
-            publishingCatalogName = configuredCatalogName;
-        }
-
         Endpoint endpoint = connectionBean.getEndpoint();
 
         if ((endpoint != null) && (endpoint.getNetworkAddress() != null) && (! endpoint.getNetworkAddress().isBlank()))
@@ -107,7 +94,7 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
 
 
     /**
-     * Publish the DCAT descriptions of the assets in the publishing catalog.
+     * Publish the DCAT descriptions of the assets in each of the collections attached as catalog targets.
      *
      * @throws ConnectorCheckedException a problem with the connector.  It is not able to refresh the metadata.
      * @throws UserNotAuthorizedException the connector was disconnected before/during refresh
@@ -122,56 +109,55 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
             return;
         }
 
+        if (endpointDirectory == null)
+        {
+            logRecord(methodName, DcatIntegrationConnectorAuditCode.NO_DESTINATION.getMessageDefinition(connectorName));
+            return;
+        }
+
         try
         {
-            List<String> destinationDirectories = getDestinationDirectories();
+            List<String> publishingCatalogGUIDs = getPublishingCatalogGUIDs();
 
-            if (destinationDirectories.isEmpty())
+            if (publishingCatalogGUIDs.isEmpty())
             {
-                logRecord(methodName, DcatIntegrationConnectorAuditCode.NO_DESTINATION.getMessageDefinition(connectorName));
-                return;
+                logRecord(methodName, DcatIntegrationConnectorAuditCode.NO_PUBLISHING_CATALOGS.getMessageDefinition(connectorName));
             }
 
-            String publishingCatalogGUID = getPublishingCatalogGUID();
+            File      rootDirectory      = new File(endpointDirectory);
+            Set<File> catalogDirectories = new HashSet<>();
+            boolean   allPublished       = true;
 
-            if (publishingCatalogGUID == null)
+            for (String publishingCatalogGUID : publishingCatalogGUIDs)
             {
-                logRecord(methodName,
-                          DcatIntegrationConnectorAuditCode.PUBLISHING_CATALOG_NOT_FOUND.getMessageDefinition(connectorName,
-                                                                                                              publishingCatalogName,
-                                                                                                              DcatConfigurationProperty.PUBLISHING_CATALOG.getName()));
-                return;
-            }
-
-            /*
-             * The assets are kept in the order that they are found, so that the catalog file only changes when the
-             * metadata does.
-             */
-            Map<String, DcatResource> resources = new LinkedHashMap<>();
-
-            collectResources(publishingCatalogGUID, new HashSet<>(), resources);
-
-            List<DcatResource> resourceList = new ArrayList<>(resources.values());
-            DcatCatalog        catalog      = generator.generateCatalog(publishingCatalogGUID, resourceList);
-            String             catalogJSON  = DcatDocumentFormatter.toJSONLD(generator.getDocument(catalog, resourceList));
-
-            int dataServiceCount = 0;
-
-            for (DcatResource resource : resourceList)
-            {
-                if (resource instanceof DcatDataService)
+                try
                 {
-                    dataServiceCount++;
+                    catalogDirectories.add(publishCatalog(publishingCatalogGUID, rootDirectory));
+                }
+                catch (UserNotAuthorizedException error)
+                {
+                    throw error;
+                }
+                catch (Exception error)
+                {
+                    allPublished = false;
+
+                    logExceptionRecord(methodName,
+                                       DcatIntegrationConnectorAuditCode.CATALOG_NOT_PUBLISHED.getMessageDefinition(connectorName,
+                                                                                                                    publishingCatalogGUID,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                       error);
                 }
             }
 
-            for (String destinationDirectory : destinationDirectories)
+            /*
+             * The directory of a catalog that failed is not known, so nothing is withdrawn until every catalog
+             * publishes cleanly.
+             */
+            if (allPublished)
             {
-                publishToDirectory(new File(destinationDirectory),
-                                   resources,
-                                   catalogJSON,
-                                   resourceList.size() - dataServiceCount,
-                                   dataServiceCount);
+                removeWithdrawnCatalogs(rootDirectory, catalogDirectories);
             }
         }
         catch (UserNotAuthorizedException error)
@@ -191,37 +177,135 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
 
 
     /**
-     * Locate the publishing catalog.  The configured name is tried as a qualified name first and then as a name.
+     * Return the unique identifiers of the collections attached to this connector as catalog targets.  Catalog
+     * targets that are not collections are reported and ignored.
      *
-     * @return unique identifier of the collection, or null if it does not exist
+     * @return list of collection GUIDs, in the order that they are retrieved
      * @throws Exception problem accessing open metadata
      */
-    private String getPublishingCatalogGUID() throws Exception
+    private List<String> getPublishingCatalogGUIDs() throws Exception
     {
-        OpenMetadataElement collection = integrationContext.getOpenMetadataStore().getMetadataElementByUniqueName(publishingCatalogName,
-                                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name);
+        final String methodName = "getPublishingCatalogGUIDs";
 
-        if ((collection != null) && (propertyHelper.isTypeOf(collection, OpenMetadataType.COLLECTION.typeName)))
+        List<String> publishingCatalogGUIDs = new ArrayList<>();
+
+        if (integrationContext.getIntegrationConnectorGUID() == null)
         {
-            return collection.getElementGUID();
+            return publishingCatalogGUIDs;
         }
 
-        CollectionClient              collectionClient = integrationContext.getCollectionClient();
-        List<OpenMetadataRootElement> collections      = collectionClient.getCollectionsByName(publishingCatalogName,
-                                                                                               collectionClient.getQueryOptions(0, integrationContext.getMaxPageSize()));
+        AssetClient assetClient = integrationContext.getAssetClient();
+        int         startFrom   = 0;
+        int         pageSize    = integrationContext.getMaxPageSize();
 
-        if (collections != null)
+        if (pageSize <= 0)
         {
-            for (OpenMetadataRootElement namedCollection : collections)
+            pageSize = 100;
+        }
+
+        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                     getCatalogTargetQueryOptions(assetClient, startFrom, pageSize));
+
+        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
+        {
+            for (OpenMetadataRootElement catalogTarget : catalogTargets)
             {
-                if ((namedCollection != null) && (namedCollection.getElementHeader() != null))
+                if ((catalogTarget == null) || (catalogTarget.getElementHeader() == null))
                 {
-                    return namedCollection.getElementHeader().getGUID();
+                    continue;
                 }
+
+                String catalogTargetGUID = catalogTarget.getElementHeader().getGUID();
+
+                if (! propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.COLLECTION.typeName))
+                {
+                    logRecord(methodName,
+                              DcatIntegrationConnectorAuditCode.CATALOG_TARGET_NOT_COLLECTION.getMessageDefinition(connectorName,
+                                                                                                                   catalogTarget.getElementHeader().getType().getTypeName(),
+                                                                                                                   catalogTargetGUID));
+                }
+                else if (! publishingCatalogGUIDs.contains(catalogTargetGUID))
+                {
+                    publishingCatalogGUIDs.add(catalogTargetGUID);
+                }
+            }
+
+            if (catalogTargets.size() < pageSize)
+            {
+                break;
+            }
+
+            startFrom      = startFrom + pageSize;
+            catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                           getCatalogTargetQueryOptions(assetClient, startFrom, pageSize));
+        }
+
+        return publishingCatalogGUIDs;
+    }
+
+
+    /**
+     * Return the options for retrieving the catalog targets.  Only the catalog target elements themselves are needed.
+     *
+     * @param assetClient client
+     * @param startFrom paging start
+     * @param pageSize paging size
+     * @return query options
+     */
+    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
+                                                      int         startFrom,
+                                                      int         pageSize)
+    {
+        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, pageSize);
+
+        queryOptions.setGraphQueryDepth(0);
+
+        return queryOptions;
+    }
+
+
+    /**
+     * Publish one collection as a DCAT catalog in its own subdirectory of the destination directory.
+     *
+     * @param publishingCatalogGUID unique identifier of the collection
+     * @param rootDirectory the directory named in the connector's endpoint
+     * @return the subdirectory that the catalog was published to
+     * @throws Exception problem accessing open metadata
+     */
+    private File publishCatalog(String publishingCatalogGUID,
+                                File   rootDirectory) throws Exception
+    {
+        /*
+         * The assets are kept in the order that they are found, so that the catalog file only changes when the
+         * metadata does.
+         */
+        Map<String, DcatResource> resources = new LinkedHashMap<>();
+
+        collectResources(publishingCatalogGUID, new HashSet<>(), resources);
+
+        List<DcatResource> resourceList = new ArrayList<>(resources.values());
+        DcatCatalog        catalog      = generator.generateCatalog(publishingCatalogGUID, resourceList);
+        String             catalogJSON  = DcatDocumentFormatter.toJSONLD(generator.getDocument(catalog, resourceList));
+        int                dataServiceCount = 0;
+
+        for (DcatResource resource : resourceList)
+        {
+            if (resource instanceof DcatDataService)
+            {
+                dataServiceCount++;
             }
         }
 
-        return null;
+        File catalogDirectory = new File(rootDirectory, getDirectoryName(catalog.getTitle(), publishingCatalogGUID));
+
+        publishToDirectory(catalogDirectory,
+                           catalog.getTitle(),
+                           resources,
+                           catalogJSON,
+                           resourceList.size() - dataServiceCount,
+                           dataServiceCount);
+
+        return catalogDirectory;
     }
 
 
@@ -324,12 +408,14 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
      * written if their content has changed.  The files for assets that are no longer published are removed.
      *
      * @param destinationDirectory directory to write to
+     * @param catalogTitle name of the collection being published
      * @param resources descriptions of the published assets, keyed by the unique identifier of the asset
      * @param catalogJSON content of the catalog file
      * @param datasetCount number of datasets described in the catalog
      * @param dataServiceCount number of data services described in the catalog
      */
     private void publishToDirectory(File                      destinationDirectory,
+                                    String                    catalogTitle,
                                     Map<String, DcatResource> resources,
                                     String                    catalogJSON,
                                     int                       datasetCount,
@@ -371,7 +457,7 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
             {
                 logRecord(methodName,
                           DcatIntegrationConnectorAuditCode.CATALOG_STORED.getMessageDefinition(connectorName,
-                                                                                                publishingCatalogName,
+                                                                                                catalogTitle,
                                                                                                 catalogFile.getPath(),
                                                                                                 Integer.toString(datasetCount),
                                                                                                 Integer.toString(dataServiceCount)));
@@ -382,7 +468,7 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
             logRecord(methodName,
                       DcatIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
                                                                                                       destinationDirectory.getPath(),
-                                                                                                      "the connector's endpoint or catalog targets",
+                                                                                                      "the connector's endpoint",
                                                                                                       error.getClass().getName() + ": " + error.getMessage()));
         }
     }
@@ -460,157 +546,58 @@ public class DcatPublisherIntegrationConnector extends IntegrationConnectorBase
 
 
     /**
-     * Return the directories to publish to: the directory named in the connection's endpoint and the file folders
-     * attached to the connector as catalog targets.
+     * Return the name of the subdirectory for a published catalog.  It includes part of the collection's unique
+     * identifier so that collections with the same name are published to different directories.
      *
-     * @return list of directory names
-     * @throws Exception problem accessing open metadata
+     * @param title display name of the collection
+     * @param collectionGUID unique identifier of the collection
+     * @return directory name
      */
-    private List<String> getDestinationDirectories() throws Exception
+    static String getDirectoryName(String title,
+                                   String collectionGUID)
     {
-        List<String> destinationDirectories = new ArrayList<>();
+        String fileName = getFileName(title, collectionGUID);
 
-        if (endpointDirectory != null)
+        return fileName.substring(0, fileName.length() - DOCUMENT_FILE_EXTENSION.length());
+    }
+
+
+    /**
+     * Remove the subdirectories of catalogs that are no longer published.  Only subdirectories that contain a
+     * catalog file are removed, so that anything else stored in the destination directory is left alone.
+     *
+     * @param rootDirectory the directory named in the connector's endpoint
+     * @param catalogDirectories the subdirectories of the catalogs that are currently published
+     */
+    private void removeWithdrawnCatalogs(File      rootDirectory,
+                                         Set<File> catalogDirectories)
+    {
+        final String methodName = "removeWithdrawnCatalogs";
+
+        File[] directories = rootDirectory.listFiles(File::isDirectory);
+
+        if (directories != null)
         {
-            destinationDirectories.add(endpointDirectory);
-        }
-
-        if (integrationContext.getIntegrationConnectorGUID() == null)
-        {
-            return destinationDirectories;
-        }
-
-        AssetClient                   assetClient    = integrationContext.getAssetClient();
-        int                           startFrom      = 0;
-        int                           maxPageSize    = integrationContext.getMaxPageSize();
-        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                     this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
-
-        while ((catalogTargets != null) && (! catalogTargets.isEmpty()))
-        {
-            for (OpenMetadataRootElement catalogTarget : catalogTargets)
+            for (File directory : directories)
             {
-                if (catalogTarget != null)
+                if ((! catalogDirectories.contains(directory)) && (new File(directory, CATALOG_FILE_NAME).isFile()))
                 {
-                    String directoryName = getDirectoryName(catalogTarget, assetClient);
-
-                    if ((directoryName != null) && (! destinationDirectories.contains(directoryName)))
+                    try
                     {
-                        destinationDirectories.add(directoryName);
+                        FileUtils.deleteDirectory(directory);
+
+                        logRecord(methodName, DcatIntegrationConnectorAuditCode.CATALOG_WITHDRAWN.getMessageDefinition(connectorName, directory.getPath()));
                     }
-                }
-            }
-
-            if ((maxPageSize <= 0) || (catalogTargets.size() < maxPageSize))
-            {
-                break;
-            }
-
-            startFrom      = startFrom + maxPageSize;
-            catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                           this.getCatalogTargetQueryOptions(assetClient, startFrom, maxPageSize));
-        }
-
-        return destinationDirectories;
-    }
-
-
-    /**
-     * Return the options for retrieving the catalog targets, along with the connections and endpoints that locate them.
-     *
-     * @param assetClient client
-     * @param startFrom paging start
-     * @param pageSize paging size
-     * @return query options
-     */
-    private QueryOptions getCatalogTargetQueryOptions(AssetClient assetClient,
-                                                      int         startFrom,
-                                                      int         pageSize)
-    {
-        QueryOptions queryOptions = assetClient.getQueryOptions(startFrom, pageSize);
-
-        queryOptions.setGraphQueryDepth(1);
-        queryOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.RESOURCE_CONNECTION_RELATIONSHIP.typeName,
-                                                         OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-
-        return queryOptions;
-    }
-
-
-    /**
-     * Work out the directory that a catalog target represents.  The catalog target may be a file folder, an endpoint,
-     * a connection, or an asset with a connection.
-     *
-     * @param catalogTarget element attached to the connector as a catalog target
-     * @param assetClient client
-     * @return directory name or null if the catalog target does not identify a directory
-     * @throws Exception problem accessing open metadata
-     */
-    private String getDirectoryName(OpenMetadataRootElement catalogTarget,
-                                    AssetClient             assetClient) throws Exception
-    {
-        if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ENDPOINT.typeName))
-        {
-            if ((catalogTarget.getProperties() instanceof EndpointProperties endpointProperties) && (endpointProperties.getNetworkAddress() != null))
-            {
-                return DcatFilesReceiverIntegrationConnector.stripFilePrefix(endpointProperties.getNetworkAddress());
-            }
-        }
-        else if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.CONNECTION.typeName))
-        {
-            return getEndpointAddress(catalogTarget);
-        }
-        else if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.FILE_FOLDER.typeName))
-        {
-            if ((catalogTarget.getProperties() instanceof FileFolderProperties folderProperties) && (folderProperties.getPathName() != null))
-            {
-                return DcatFilesReceiverIntegrationConnector.stripFilePrefix(folderProperties.getPathName());
-            }
-        }
-        else if ((propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ASSET.typeName)) && (catalogTarget.getConnections() != null))
-        {
-            for (RelatedMetadataElementSummary connection : catalogTarget.getConnections())
-            {
-                if ((connection != null) && (connection.getRelatedElement() != null))
-                {
-                    GetOptions getOptions = assetClient.getGetOptions();
-
-                    getOptions.setGraphQueryDepth(1);
-                    getOptions.setIncludeOnlyRelationships(List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
-
-                    OpenMetadataRootElement connectionElement = integrationContext.getConnectionClient().getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                             getOptions);
-                    String directoryName = getEndpointAddress(connectionElement);
-
-                    if (directoryName != null)
+                    catch (Exception error)
                     {
-                        return directoryName;
+                        logRecord(methodName,
+                                  DcatIntegrationConnectorAuditCode.DIRECTORY_NOT_ACCESSIBLE.getMessageDefinition(connectorName,
+                                                                                                                  directory.getPath(),
+                                                                                                                  "the connector's endpoint",
+                                                                                                                  error.getClass().getName() + ": " + error.getMessage()));
                     }
                 }
             }
         }
-
-        return null;
-    }
-
-
-    /**
-     * Return the network address of the endpoint attached to a connection.
-     *
-     * @param connectionElement connection
-     * @return directory name or null
-     */
-    private String getEndpointAddress(OpenMetadataRootElement connectionElement)
-    {
-        if ((connectionElement != null) && (connectionElement.getEndpoint() != null) && (connectionElement.getEndpoint().getRelatedElement() != null))
-        {
-            if ((connectionElement.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties) &&
-                (endpointProperties.getNetworkAddress() != null))
-            {
-                return DcatFilesReceiverIntegrationConnector.stripFilePrefix(endpointProperties.getNetworkAddress());
-            }
-        }
-
-        return null;
     }
 }
