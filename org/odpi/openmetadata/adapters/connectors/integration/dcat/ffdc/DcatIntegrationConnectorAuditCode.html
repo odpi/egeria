@@ -129,56 +129,68 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/AuditLogMessa
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CATALOG_STORED" class="member-name-link">CATALOG_STORED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_NOT_PUBLISHED" class="member-name-link">CATALOG_NOT_PUBLISHED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0015 - The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_STORED" class="member-name-link">CATALOG_STORED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0010 - The {0} integration connector published the DCAT catalog for collection {1} to file {2}; it describes {3} dataset(s) and {4} data service(s)</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DIRECTORY_MONITORED" class="member-name-link">DIRECTORY_MONITORED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_TARGET_NOT_COLLECTION" class="member-name-link">CATALOG_TARGET_NOT_COLLECTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0014 - The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_WITHDRAWN" class="member-name-link">CATALOG_WITHDRAWN</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0016 - The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DIRECTORY_MONITORED" class="member-name-link">DIRECTORY_MONITORED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0002 - The {0} integration connector is monitoring directory {1} (from {2}) for DCAT documents</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DIRECTORY_NOT_ACCESSIBLE" class="member-name-link">DIRECTORY_NOT_ACCESSIBLE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DIRECTORY_NOT_ACCESSIBLE" class="member-name-link">DIRECTORY_NOT_ACCESSIBLE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0004 - The {0} integration connector is unable to use directory {1} (from {2}): {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DOCUMENT_MAPPING_WARNING" class="member-name-link">DOCUMENT_MAPPING_WARNING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#DOCUMENT_MAPPING_WARNING" class="member-name-link">DOCUMENT_MAPPING_WARNING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0006 - The {0} integration connector was not able to catalog everything in a DCAT document: {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DOCUMENT_PUBLISHED" class="member-name-link">DOCUMENT_PUBLISHED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DOCUMENT_PUBLISHED" class="member-name-link">DOCUMENT_PUBLISHED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0003 - The {0} integration connector published the DCAT document from file {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_DESTINATION" class="member-name-link">NO_DESTINATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_DESTINATION" class="member-name-link">NO_DESTINATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0008 - The {0} integration connector has no directory to publish DCAT descriptions to</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PUBLISHING_CATALOG_NOT_FOUND" class="member-name-link">PUBLISHING_CATALOG_NOT_FOUND</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#RESOURCE_CATALOGUED" class="member-name-link">RESOURCE_CATALOGUED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_PUBLISHING_CATALOGS" class="member-name-link">NO_PUBLISHING_CATALOGS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#RESOURCE_CATALOGUED" class="member-name-link">RESOURCE_CATALOGUED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0005 - The {0} integration connector {1} element {2} ({3}) for DCAT {4} {5}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RESOURCE_NOT_PUBLISHED" class="member-name-link">RESOURCE_NOT_PUBLISHED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RESOURCE_NOT_PUBLISHED" class="member-name-link">RESOURCE_NOT_PUBLISHED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0012 - The {0} integration connector was not able to generate the DCAT description of element {1}; the {2} exception had message: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RESOURCE_STORED" class="member-name-link">RESOURCE_STORED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#RESOURCE_STORED" class="member-name-link">RESOURCE_STORED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0009 - The {0} integration connector published the DCAT description of {1} {2} ({3}) to file {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RESOURCE_WITHDRAWN" class="member-name-link">RESOURCE_WITHDRAWN</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#TOPIC_RECEIVER_CONFIGURATION" class="member-name-link">TOPIC_RECEIVER_CONFIGURATION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#RESOURCE_WITHDRAWN" class="member-name-link">RESOURCE_WITHDRAWN</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TOPIC_RECEIVER_CONFIGURATION" class="member-name-link">TOPIC_RECEIVER_CONFIGURATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0001 - The {0} integration connector is monitoring topic {1} with connection: {2} for DCAT documents</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0013 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -284,10 +296,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PUBLISHING_CATALOG_NOT_FOUND">
-<h3>PUBLISHING_CATALOG_NOT_FOUND</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">PUBLISHING_CATALOG_NOT_FOUND</span></div>
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property</div>
+<section class="detail" id="NO_PUBLISHING_CATALOGS">
+<h3>NO_PUBLISHING_CATALOGS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">NO_PUBLISHING_CATALOGS</span></div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish</div>
 </section>
 </li>
 <li>
@@ -315,7 +327,7 @@ the order they are declared.</div>
 <section class="detail" id="RESOURCE_WITHDRAWN">
 <h3>RESOURCE_WITHDRAWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">RESOURCE_WITHDRAWN</span></div>
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog</div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published</div>
 </section>
 </li>
 <li>
@@ -330,6 +342,27 @@ the order they are declared.</div>
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">DCAT-INTEGRATION-CONNECTOR-0013 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_TARGET_NOT_COLLECTION">
+<h3>CATALOG_TARGET_NOT_COLLECTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CATALOG_TARGET_NOT_COLLECTION</span></div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0014 - The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_NOT_PUBLISHED">
+<h3>CATALOG_NOT_PUBLISHED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CATALOG_NOT_PUBLISHED</span></div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0015 - The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_WITHDRAWN">
+<h3>CATALOG_WITHDRAWN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></span>&nbsp;<span class="element-name">CATALOG_WITHDRAWN</span></div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0016 - The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target</div>
 </section>
 </li>
 </ul>

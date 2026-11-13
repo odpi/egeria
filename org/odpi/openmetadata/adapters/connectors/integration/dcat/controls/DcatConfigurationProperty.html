@@ -124,10 +124,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The publisher to name in the description of an asset that is not linked to a publishing organization.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PUBLISHING_CATALOG" class="member-name-link">PUBLISHING_CATALOG</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The collection whose member assets are published.</div>
-</div>
 </div>
 </section>
 </li>
@@ -143,23 +139,18 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#dataType" class="member-name-link">dataType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#DEFAULT_PUBLISHING_CATALOG" class="member-name-link">DEFAULT_PUBLISHING_CATALOG</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The qualified name of the collection used when the publishingCatalog configuration property is not set.</div>
-</div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
+<div class="col-second even-row-color"><code><a href="#example" class="member-name-link">example</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#example" class="member-name-link">example</a></code></div>
+<div class="col-first odd-row-color"><code>final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isPlaceholder" class="member-name-link">isPlaceholder</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isPlaceholder" class="member-name-link">isPlaceholder</a></code></div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -246,13 +237,6 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="PUBLISHING_CATALOG">
-<h3>PUBLISHING_CATALOG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.controls">DcatConfigurationProperty</a></span>&nbsp;<span class="element-name">PUBLISHING_CATALOG</span></div>
-<div class="block">The collection whose member assets are published.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="DEFAULT_PUBLISHER">
 <h3>DEFAULT_PUBLISHER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DcatConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.controls">DcatConfigurationProperty</a></span>&nbsp;<span class="element-name">DEFAULT_PUBLISHER</span></div>
@@ -267,22 +251,6 @@ the order they are declared.</div>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="DEFAULT_PUBLISHING_CATALOG">
-<h3>DEFAULT_PUBLISHING_CATALOG</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">DEFAULT_PUBLISHING_CATALOG</span></div>
-<div class="block">The qualified name of the collection used when the publishingCatalog configuration property is not set.  It is
- defined in the Core Content Pack.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.DcatConfigurationProperty.DEFAULT_PUBLISHING_CATALOG">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="name">
 <h3>name</h3>

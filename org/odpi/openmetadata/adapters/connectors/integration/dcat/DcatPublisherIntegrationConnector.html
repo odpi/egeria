@@ -103,19 +103,21 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DcatPublisherIntegrationConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></span></div>
 <div class="block">DcatPublisherIntegrationConnector publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets that have
- been chosen for publication.  An asset is chosen by making it a member of the publishing catalog - a collection that
- is named in the connector's publishingCatalog configuration property - or of a collection folder nested in it.
+ been chosen for publication.  An asset is chosen by making it a member of a collection that is attached to the
+ connector as a catalog target, or of a collection folder nested in such a collection.  Any type of collection may
+ be used - it does not need to be a root collection.
  <p>
- On each refresh the connector writes the following JSON-LD files to each of its destination directories:
+ Each catalog target collection is published as a separate DCAT catalog in its own subdirectory of the directory
+ named in the network address of the endpoint in the connector's connection.  The subdirectory is named after the
+ collection, and on each refresh the connector writes the following JSON-LD files to it:
  <ul>
-     <li>catalog.jsonld - the publishing catalog as a dcat:Catalog, along with the description of every published
-     asset.  This is the file to give to a portal that harvests DCAT catalogs.</li>
+     <li>catalog.jsonld - the collection as a dcat:Catalog, along with the description of every published asset.
+     This is the file to give to a portal that harvests DCAT catalogs.</li>
      <li>datasets/&lt;name&gt;.jsonld - the description of each asset that is published as a dcat:Dataset.</li>
      <li>data-services/&lt;name&gt;.jsonld - the description of each asset that is published as a dcat:DataService.</li>
  </ul>
- A file is only written if its content has changed, and the file for an asset that is no longer in the publishing
- catalog is removed.  The destination directories are the network address of the endpoint in the connector's
- connection, and the file folders attached to the connector as catalog targets.</div>
+ A file is only written if its content has changed.  The file for an asset that is no longer in the collection is
+ removed, as is the subdirectory of a collection that is no longer a catalog target.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -169,7 +171,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Publish the DCAT descriptions of the assets in the publishing catalog.</div>
+<div class="block">Publish the DCAT descriptions of the assets in each of the collections attached as catalog targets.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
@@ -244,7 +246,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
              throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Publish the DCAT descriptions of the assets in the publishing catalog.</div>
+<div class="block">Publish the DCAT descriptions of the assets in each of the collections attached as catalog targets.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem with the connector.  It is not able to refresh the metadata.</dd>

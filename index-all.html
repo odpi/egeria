@@ -11765,6 +11765,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogSurveyRequestParameter.html#CATALOG_NAME" class="member-name-link">CATALOG_NAME</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/controls/UnityCatalogSurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogSurveyRequestParameter</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#CATALOG_NOT_PUBLISHED" class="member-name-link">CATALOG_NOT_PUBLISHED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
+<dd>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0015 - The {0} integration connector was not able to publish collection {1} as a DCAT catalog; the {2} exception had message: {3}</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html#CATALOG_OMAG_SERVER_PLATFORM" class="member-name-link">CATALOG_OMAG_SERVER_PLATFORM</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">RequestTypeDefinition</a></dt>
 <dd>
 <div class="block">catalog-omag-server-platform</div>
@@ -11887,11 +11891,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationProvider.html#CATALOG_TARGET_NAME" class="member-name-link">CATALOG_TARGET_NAME</a> - Static variable in class org.odpi.openmetadata.adapters.connectors.integration.dcat.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.dcat">DcatPublisherIntegrationProvider</a></dt>
 <dd>
-<div class="block">The name of the catalog target that identifies a directory to publish to.</div>
+<div class="block">The name of the catalog target that identifies a collection whose member assets are published as a DCAT catalog.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/postgres/PostgresOpenLineageLogStoreProvider.html#CATALOG_TARGET_NAME" class="member-name-link">CATALOG_TARGET_NAME</a> - Static variable in class org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres.<a href="org/odpi/openmetadata/adapters/connectors/integration/openlineage/postgres/PostgresOpenLineageLogStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.postgres">PostgresOpenLineageLogStoreProvider</a></dt>
 <dd>
 <div class="block">Name of the catalog target relationship for a database schema.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#CATALOG_TARGET_NOT_COLLECTION" class="member-name-link">CATALOG_TARGET_NOT_COLLECTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
+<dd>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0014 - The {0} integration connector is ignoring catalog target {1} {2} because it is not a collection</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html#CATALOG_TARGET_RELATIONSHIP" class="member-name-link">CATALOG_TARGET_RELATIONSHIP</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></dt>
 <dd>
@@ -11908,6 +11916,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/ffdc/UCAuditCode.html#CATALOG_UPDATE" class="member-name-link">CATALOG_UPDATE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/ffdc/UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></dt>
 <dd>
 <div class="block">UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but cannot update the catalog in Unity Catalog (UC) at {2}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#CATALOG_WITHDRAWN" class="member-name-link">CATALOG_WITHDRAWN</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
+<dd>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0016 - The {0} integration connector removed directory {1} because the collection it describes is no longer a catalog target</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DirectoryToMonitor.html#catalogClassifiedFiles" class="member-name-link">catalogClassifiedFiles</a> - Variable in class org.odpi.openmetadata.adapters.connectors.integration.basicfiles.<a href="org/odpi/openmetadata/adapters/connectors/integration/basicfiles/DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></dt>
 <dd>
@@ -25531,7 +25543,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html#DCAT_PUBLISHER" class="member-name-link">DCAT_PUBLISHER</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">IntegrationConnectorDefinition</a></dt>
 <dd>
-<div class="block">Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the DCAT Publishing Catalog as JSON-LD files in the directories attached as catalog targets.</div>
+<div class="block">Publishes the Data Catalog Vocabulary (DCAT) descriptions of the assets in the collections attached as catalog targets as JSON-LD files in the directory named in its endpoint.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html#DCAT_PUBLISHER_INTEGRATION_CONNECTOR" class="member-name-link">DCAT_PUBLISHER_INTEGRATION_CONNECTOR</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.<a href="org/odpi/openmetadata/adapters/connectors/EgeriaOpenConnectorDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors">EgeriaOpenConnectorDefinition</a></dt>
 <dd>&nbsp;</dd>
@@ -26133,9 +26145,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The publisher to name in the description of an asset that is not linked to a publishing organization.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/controls/DcatConfigurationProperty.html#DEFAULT_PUBLISHING_CATALOG" class="member-name-link">DEFAULT_PUBLISHING_CATALOG</a> - Static variable in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/controls/DcatConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.controls">DcatConfigurationProperty</a></dt>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationProvider.html#DEFAULT_PUBLISHING_CATALOG" class="member-name-link">DEFAULT_PUBLISHING_CATALOG</a> - Static variable in class org.odpi.openmetadata.adapters.connectors.integration.dcat.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.dcat">DcatPublisherIntegrationProvider</a></dt>
 <dd>
-<div class="block">The qualified name of the collection used when the publishingCatalog configuration property is not set.</div>
+<div class="block">The qualified name of the DCAT Publishing Catalog collection that the DCAT Content Pack attaches to the
+ connector as its catalog target.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/restclients/RESTClientConnector.html#DEFAULT_REQUEST_TIMEOUT_SECONDS" class="member-name-link">DEFAULT_REQUEST_TIMEOUT_SECONDS</a> - Static variable in class org.odpi.openmetadata.adapters.connectors.restclients.<a href="org/odpi/openmetadata/adapters/connectors/restclients/RESTClientConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.restclients">RESTClientConnector</a></dt>
 <dd>
@@ -117005,6 +117018,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">OMRS-REPOSITORY-400-029 - Properties have been proposed for a new metadata instance of category {0} and type {1}; properties not supported for this type in open metadata repository {2}</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#NO_PUBLISHING_CATALOGS" class="member-name-link">NO_PUBLISHING_CATALOGS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
+<dd>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector has no collections attached as catalog targets, so there are no DCAT catalogs to publish</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html#NO_QUALIFIED_NAME" class="member-name-link">NO_QUALIFIED_NAME</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/ffdc/GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></dt>
 <dd>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0060 - The {0} governance action service can not look for duplicates of action target {1} because it does not have a qualified name</div>
@@ -135328,14 +135345,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Publish an Open Data Product Standard (ODPS) data product that was generated from open metadata.</div>
 </dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/controls/DcatConfigurationProperty.html#PUBLISHING_CATALOG" class="member-name-link">PUBLISHING_CATALOG</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.controls.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/controls/DcatConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.controls">DcatConfigurationProperty</a></dt>
-<dd>
-<div class="block">The collection whose member assets are published.</div>
-</dd>
-<dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#PUBLISHING_CATALOG_NOT_FOUND" class="member-name-link">PUBLISHING_CATALOG_NOT_FOUND</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
-<dd>
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0007 - The {0} integration connector is unable to find a collection called {1}, which is named in its {2} configuration property</div>
-</dd>
 <dt><a href="org/odpi/openmetadata/frameworkservices/omf/ffdc/OMFServicesAuditCode.html#PUBLISHING_SHUTDOWN" class="member-name-link">PUBLISHING_SHUTDOWN</a> - Enum constant in enum class org.odpi.openmetadata.frameworkservices.omf.ffdc.<a href="org/odpi/openmetadata/frameworkservices/omf/ffdc/OMFServicesAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.omf.ffdc">OMFServicesAuditCode</a></dt>
 <dd>
 <div class="block">OMF-SERVICES-0007 The Open Metadata Store is no longer publishing events to topic {0}</div>
@@ -137320,7 +137329,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationConnector.html#refresh()" class="member-name-link">refresh()</a> - Method in class org.odpi.openmetadata.adapters.connectors.integration.dcat.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/DcatPublisherIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.dcat">DcatPublisherIntegrationConnector</a></dt>
 <dd>
-<div class="block">Publish the DCAT descriptions of the assets in the publishing catalog.</div>
+<div class="block">Publish the DCAT descriptions of the assets in each of the collections attached as catalog targets.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/jdbc/JDBCIntegrationCatalogTargetProcessor.html#refresh()" class="member-name-link">refresh()</a> - Method in class org.odpi.openmetadata.adapters.connectors.integration.jdbc.<a href="org/odpi/openmetadata/adapters/connectors/integration/jdbc/JDBCIntegrationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc">JDBCIntegrationCatalogTargetProcessor</a></dt>
 <dd>
@@ -145439,7 +145448,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html#RESOURCE_WITHDRAWN" class="member-name-link">RESOURCE_WITHDRAWN</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/integration/dcat/ffdc/DcatIntegrationConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.dcat.ffdc">DcatIntegrationConnectorAuditCode</a></dt>
 <dd>
-<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the publishing catalog</div>
+<div class="block">DCAT-INTEGRATION-CONNECTOR-0011 - The {0} integration connector removed file {1} because the asset it describes is no longer in the collection being published</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/connections/ResourceConnectionProperties.html" class="type-name-link" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ResourceConnectionProperties</a> - Class in <a href="org/odpi/openmetadata/frameworks/openmetadata/properties/connections/package-summary.html">org.odpi.openmetadata.frameworks.openmetadata.properties.connections</a></dt>
 <dd>
