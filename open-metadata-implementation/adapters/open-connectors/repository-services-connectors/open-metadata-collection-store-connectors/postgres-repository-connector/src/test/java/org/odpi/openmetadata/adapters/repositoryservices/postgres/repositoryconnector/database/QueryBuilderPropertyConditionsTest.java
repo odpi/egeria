@@ -143,6 +143,53 @@ public class QueryBuilderPropertyConditionsTest
 
 
     /**
+     * A NONE search by match properties (findEntitiesByProperty) is negated once, by the match criteria.  The
+     * conversion to property conditions used to set NEQ as well, so "not (property != value)" returned only the
+     * instances that matched.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testNoneMatchPropertiesAreNegatedOnce() throws Exception
+    {
+        String sql = this.getMatchPropertiesWhereClause(MatchCriteria.NONE, "qualifiedName", "A::B");
+
+        assertTrue(sql.contains(" not ( exists (select 1 from entity_attribute_value"), sql);
+        assertTrue(sql.contains("property_value = 'A::B'"), sql);
+        assertFalse(sql.contains("property_value !="), sql);
+        assertFalse(sql.contains("property_value <>"), sql);
+
+        String any = this.getMatchPropertiesWhereClause(MatchCriteria.ANY, "qualifiedName", "A::B");
+
+        assertEquals(sql.replace(" not ( ", " ( "), any, sql + " / " + any);
+    }
+
+
+    /**
+     * An effective time in the match properties becomes a condition with the date as its value.  The value used
+     * to be built but never attached to the condition.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testEffectiveTimeMatchPropertyCarriesItsValue() throws Exception
+    {
+        InstanceProperties matchProperties = new InstanceProperties();
+
+        matchProperties.setEffectiveFromTime(new java.util.Date(0));
+
+        QueryBuilder queryBuilder = new QueryBuilder("entity", "entity_attribute_value", null, "TestRepository");
+
+        queryBuilder.setMatchProperties(matchProperties, MatchCriteria.ALL);
+
+        String sql = queryBuilder.getAsOfTimeWhereClause().replaceAll("\\s+", " ");
+
+        assertTrue(sql.contains("(entity.effective_from_time = '1970-01-0"), sql);
+        assertFalse(sql.contains("effective_from_time is null"), sql);
+    }
+
+
+    /**
      * An entity's classifications share its guid, so a classification's attribute rows have to be matched on
      * its name as well as its guid and version.  Without it, a condition on one classification is tested against
      * the properties of another at the same version - the zone filter's Anchors condition on zoneMembership was
@@ -264,6 +311,24 @@ public class QueryBuilderPropertyConditionsTest
         condition.setValue(listValue);
 
         return condition;
+    }
+
+
+    private String getMatchPropertiesWhereClause(MatchCriteria matchCriteria, String name, String value) throws Exception
+    {
+        InstanceProperties     matchProperties = new InstanceProperties();
+        PrimitivePropertyValue propertyValue   = new PrimitivePropertyValue();
+
+        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        propertyValue.setTypeName("string");
+        propertyValue.setPrimitiveValue(value);
+        matchProperties.setProperty(name, propertyValue);
+
+        QueryBuilder queryBuilder = new QueryBuilder("entity", "entity_attribute_value", null, "TestRepository");
+
+        queryBuilder.setMatchProperties(matchProperties, matchCriteria);
+
+        return queryBuilder.getAsOfTimeWhereClause().replaceAll("\\s+", " ");
     }
 
 

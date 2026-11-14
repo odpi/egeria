@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -25,12 +26,31 @@ public class RepositoryBatchRetrievalTest
         final         List<Integer> pageSizes  = new ArrayList<>();
         final         List<Integer> startFroms = new ArrayList<>();
 
+        private final int           hiddenFrom;
+        private final int           hiddenTo;
+
         TestRepository(int instanceCount)
+        {
+            this(instanceCount, 0, 0);
+        }
+
+        /**
+         * A repository whose instances in positions hiddenFrom (inclusive) to hiddenTo (exclusive) are retrieved but
+         * filtered out before they are returned - as the security verifier does in the local repository.
+         *
+         * @param instanceCount number of instances
+         * @param hiddenFrom first hidden position
+         * @param hiddenTo position after the last hidden one
+         */
+        TestRepository(int instanceCount, int hiddenFrom, int hiddenTo)
         {
             for (int i = 0; i < instanceCount; i++)
             {
                 instances.add(i);
             }
+
+            this.hiddenFrom = hiddenFrom;
+            this.hiddenTo   = hiddenTo;
         }
 
         @Override
@@ -45,7 +65,11 @@ public class RepositoryBatchRetrievalTest
                 return null;
             }
 
-            return new ArrayList<>(instances.subList(batchStartingFrom, Math.min(instances.size(), batchStartingFrom + batchPageSize)));
+            List<Integer> batch = new ArrayList<>(instances.subList(batchStartingFrom, Math.min(instances.size(), batchStartingFrom + batchPageSize)));
+
+            batch.removeIf(instance -> (instance >= hiddenFrom) && (instance < hiddenTo));
+
+            return batch;
         }
     }
 
@@ -140,5 +164,60 @@ public class RepositoryBatchRetrievalTest
     {
         assertNull(RepositoryHandler.retrieveInBatches(0, 0, 100, new TestRepository(0)));
         assertNull(RepositoryHandler.retrieveInBatches(0, 500, 100, new TestRepository(0)));
+    }
+
+
+    /**
+     * A batch whose instances were all filtered out comes back as an empty list.  It is not the end of the
+     * instances, so the retrieval moves on to the next batch.
+     *
+     * @throws Exception problem in the test repository
+     */
+    @Test public void testFilteredBatchDoesNotEndTheRetrieval() throws Exception
+    {
+        TestRepository repository = new TestRepository(250, 0, 100);
+
+        List<Integer> page = RepositoryHandler.retrieveInBatches(0, 0, 100, repository);
+
+        assertEquals(page.size(), 150);
+        assertEquals(page.get(0).intValue(), 100);
+        assertEquals(repository.startFroms, List.of(0, 100, 200));
+    }
+
+
+    /**
+     * A page whose batches were all filtered out is an empty list, not null, so the caller asks for the next
+     * page.  The positions scanned stop at the end of the requested page.
+     *
+     * @throws Exception problem in the test repository
+     */
+    @Test public void testFilteredPageIsEmptyNotNull() throws Exception
+    {
+        TestRepository repository = new TestRepository(1000, 0, 200);
+
+        List<Integer> page = RepositoryHandler.retrieveInBatches(0, 200, 100, repository);
+
+        assertNotNull(page);
+        assertTrue(page.isEmpty());
+        assertEquals(repository.startFroms, List.of(0, 100));
+
+        List<Integer> nextPage = RepositoryHandler.retrieveInBatches(200, 200, 100, repository);
+
+        assertEquals(nextPage.size(), 200);
+        assertEquals(nextPage.get(0).intValue(), 200);
+    }
+
+
+    /**
+     * A single-batch page that was filtered empty is passed through as an empty list.
+     *
+     * @throws Exception problem in the test repository
+     */
+    @Test public void testFilteredSmallPageIsEmptyNotNull() throws Exception
+    {
+        List<Integer> page = RepositoryHandler.retrieveInBatches(0, 10, 100, new TestRepository(50, 0, 10));
+
+        assertNotNull(page);
+        assertTrue(page.isEmpty());
     }
 }

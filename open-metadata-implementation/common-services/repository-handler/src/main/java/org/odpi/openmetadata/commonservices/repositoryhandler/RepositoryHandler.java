@@ -7067,13 +7067,19 @@ public class RepositoryHandler
      * Retrieve a page of instances from the repositories in batches.  A page that fits in one batch is a single
      * call.  Otherwise, batches are retrieved one after another until the page is full or a batch comes back short,
      * which means there are no more instances.
+     * <br><br>
+     * The repositories return null when there are no more instances, and an empty list when they retrieved
+     * instances for a batch but filtered them all out.  An empty batch therefore moves on to the next batch rather
+     * than ending the page, and the page returned is empty (rather than null) if every batch was filtered empty.
+     * The positions scanned never go beyond the requested page, so the caller's next page starts where this one
+     * stopped.
      *
      * @param startingFrom position of the first instance requested
      * @param pageSize maximum number of instances requested - zero means all of them
      * @param batchSize maximum number of instances to request in one call
      * @param retriever call to the repositories
      * @param <T> type of instance
-     * @return instances or null if there are none
+     * @return instances, an empty list if the instances retrieved were all filtered out, or null if there are none
      * @throws Exception problem with the repository
      */
     static <T> List<T> retrieveInBatches(int                         startingFrom,
@@ -7093,14 +7099,14 @@ public class RepositoryHandler
         {
             int batchPageSize = batchSize;
 
-            if ((pageSize > 0) && (instances != null))
+            if (pageSize > 0)
             {
-                batchPageSize = Math.min(batchSize, pageSize - instances.size());
+                batchPageSize = Math.min(batchSize, pageSize - (batchStartingFrom - startingFrom));
             }
 
             List<T> batch = retriever.retrieve(batchStartingFrom, batchPageSize);
 
-            if ((batch == null) || (batch.isEmpty()))
+            if (batch == null)
             {
                 return instances;
             }
@@ -7110,10 +7116,25 @@ public class RepositoryHandler
                 instances = new ArrayList<>();
             }
 
-            instances.addAll(batch);
-            batchStartingFrom = batchStartingFrom + batch.size();
+            if (batch.isEmpty())
+            {
+                /*
+                 * Every instance in this batch was filtered out - move past it.
+                 */
+                batchStartingFrom = batchStartingFrom + batchPageSize;
+            }
+            else
+            {
+                instances.addAll(batch);
+                batchStartingFrom = batchStartingFrom + batch.size();
 
-            if ((batch.size() < batchPageSize) || ((pageSize > 0) && (instances.size() >= pageSize)))
+                if (batch.size() < batchPageSize)
+                {
+                    return instances;
+                }
+            }
+
+            if ((pageSize > 0) && ((instances.size() >= pageSize) || (batchStartingFrom - startingFrom >= pageSize)))
             {
                 return instances;
             }
