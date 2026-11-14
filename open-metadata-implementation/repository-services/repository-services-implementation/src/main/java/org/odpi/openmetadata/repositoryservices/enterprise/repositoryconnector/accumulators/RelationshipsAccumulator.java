@@ -25,6 +25,14 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
     // (see the equivalent comment in EntitiesAccumulator).
     private final Map<String, Relationship> accumulatedRelationships   = new LinkedHashMap<>();
 
+    /*
+     * Set when at least one repository returned a list (possibly empty) rather than null.  A repository returns
+     * null when it has no more matching instances, and an empty list when it retrieved instances for the page but
+     * they were all filtered out (for example, by the security verifier).  The difference is preserved in
+     * getResults() so that a caller paging through the results does not stop early.
+     */
+    private boolean pageRetrieved = false;
+
 
     /**
      * Construct a relationship accumulator.  Its base class manages the common variables needed to
@@ -90,6 +98,8 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
     {
         if (relationships != null)
         {
+            pageRetrieved = true;
+
             for (Relationship relationship : relationships)
             {
                 this.addRelationship(relationship, metadataCollectionId);
@@ -116,12 +126,18 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
      * their request(s).
      *
      * @param repositoryConnector enterprise connector
-     * @return list of relationships
+     * @return list of relationships; null means no more matching relationships, and an empty list means the
+     *         repositories retrieved relationships for this page but they were all filtered out
      */
     public synchronized List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
         if (accumulatedRelationships.isEmpty())
         {
+            if (pageRetrieved)
+            {
+                return new ArrayList<>();
+            }
+
             return null;
         }
         else
