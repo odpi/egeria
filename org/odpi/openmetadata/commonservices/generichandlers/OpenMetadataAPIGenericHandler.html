@@ -4807,7 +4807,9 @@ loadScripts(document, 'script');</script>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.</dd>
+<dd>a list of elements matching the supplied criteria; null means no more matching elements in the metadata
+         store.  An empty list means every element retrieved for this page was filtered out (for example, a Memento
+         when forLineage is false) and the caller should request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters is invalid</dd>
 <dd><code><a href="../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>

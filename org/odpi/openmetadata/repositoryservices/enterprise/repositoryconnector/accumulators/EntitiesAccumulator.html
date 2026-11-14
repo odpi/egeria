@@ -291,7 +291,8 @@ loadScripts(document, 'script');</script>
 <dd><code>repositoryConnector</code> - enterprise connector</dd>
 <dd><code>metadataCollection</code> - enterprise metadata collection</dd>
 <dt>Returns:</dt>
-<dd>list of entities</dd>
+<dd>list of entities; null means no more matching entities, and an empty list means the repositories
+         retrieved entities for this page but they were all filtered out</dd>
 </dl>
 </section>
 </li>

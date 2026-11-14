@@ -1073,7 +1073,8 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>list of matching metadata elements (or null if no elements match the name)</dd>
+<dd>list of matching metadata elements.  Null means no more matching elements.  An empty list means every
+         element retrieved for this page was filtered out and the caller should request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
@@ -1225,7 +1226,9 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.</dd>
+<dd>a list of elements matching the supplied criteria; null means no more matching elements in the metadata
+         store.  An empty list means every element retrieved for this page was filtered out and the caller should
+         request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
@@ -1279,7 +1282,9 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.</dd>
+<dd>a list of elements matching the supplied criteria; null means no more matching elements in the metadata
+         store.  An empty list means every element retrieved for this page was filtered out and the caller should
+         request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
@@ -1508,7 +1513,8 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>a list of relationships.  Null means no matching relationships.</dd>
+<dd>a list of relationships.  Null means no more matching relationships.  An empty list means every
+         relationship retrieved for this page was filtered out and the caller should request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
@@ -1614,7 +1620,8 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Returns:</dt>
-<dd>list of matching metadata elements (or null if no elements match the name)</dd>
+<dd>list of matching relationships.  Null means no more matching relationships.  An empty list means every
+         relationship retrieved for this page was filtered out and the caller should request the next page.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
 <dd><code><a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
