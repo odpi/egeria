@@ -150,8 +150,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMergeUpdate()" class="member-name-link">getMergeUpdate</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Return flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -161,8 +161,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMergeUpdate(boolean)" class="member-name-link">setMergeUpdate</a><wbr>(boolean&nbsp;mergeUpdate)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Set up flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -233,8 +233,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMergeUpdate()">
 <h3>getMergeUpdate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getMergeUpdate</span>()</div>
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.  The default is false.</div>
+<div class="block">Return flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).  With a merge update, each
+ supplied property replaces the existing value of that property - a map or array property is replaced in full,
+ not merged with its existing entries - and properties that are not supplied keep their current values.
+ The default is true.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
@@ -245,8 +248,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setMergeUpdate(boolean)">
 <h3>setMergeUpdate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMergeUpdate</span><wbr><span class="parameters">(boolean&nbsp;mergeUpdate)</span></div>
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.  The default is false.</div>
+<div class="block">Set up flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).  With a merge update, each
+ supplied property replaces the existing value of that property - a map or array property is replaced in full,
+ not merged with its existing entries - and properties that are not supplied keep their current values.
+ The default is true.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>mergeUpdate</code> - boolean</dd>

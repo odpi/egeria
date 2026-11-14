@@ -176,9 +176,19 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTa
 <div class="block">Write the requested data record to the end of the data source.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRecord(long)" class="member-name-link">deleteRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#appendRecords(java.util.List)" class="member-name-link">appendRecords</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;dataRecords)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Write several records to the table in one transaction - see <a href="#writeRecords(java.util.Map)"><code>writeRecords(java.util.Map&lt;java.lang.Long, java.util.List&lt;java.lang.String&gt;&gt;)</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRecord(long)" class="member-name-link">deleteRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the requested data record.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRecords(java.util.List)" class="member-name-link">deleteRecords</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;rowNumbers)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove several records in one statement.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
@@ -245,6 +255,11 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTa
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write the requested data record.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeRecords(java.util.Map)" class="member-name-link">writeRecords</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;dataRecords)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Write several records in one transaction.</div>
 </div>
 </div>
 </div>
@@ -544,6 +559,59 @@ implements <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTa
 <dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecord(long)">deleteRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>rowNumber</code> - long</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writeRecords(java.util.Map)">
+<h3>writeRecords</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeRecords</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;dataRecords)</span>
+                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Write several records in one transaction.  Each is written as <a href="#writeRecord(long,java.util.List)"><code>writeRecord(long, java.util.List&lt;java.lang.String&gt;)</code></a> would write it - the
+ row numbers are not used - but the statements go to the database in batches on one connection, and are
+ committed once.  Writing them one at a time took a connection and a commit for each record.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#writeRecords(java.util.Map)">writeRecords</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>dataRecords</code> - map of row number to the values of the record to write there</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="appendRecords(java.util.List)">
+<h3>appendRecords</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">appendRecords</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;dataRecords)</span>
+                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Write several records to the table in one transaction - see <a href="#writeRecords(java.util.Map)"><code>writeRecords(java.util.Map&lt;java.lang.Long, java.util.List&lt;java.lang.String&gt;&gt;)</code></a>.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#appendRecords(java.util.List)">appendRecords</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>dataRecords</code> - values of each record to append</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteRecords(java.util.List)">
+<h3>deleteRecords</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRecords</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;rowNumbers)</span>
+                   throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Remove several records in one statement.  Each row number is the record's position, in the order that
+ <a href="#readRecord(long)"><code>readRecord(long)</code></a> gives them, before any of them is removed; the records are numbered by that order
+ and the ones at the requested positions removed together.  Removing them one at a time took a query for
+ each, stepping through the table to the record's offset.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecords(java.util.List)">deleteRecords</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>rowNumbers</code> - positions of the records to remove</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - a problem occurred accessing the data.</dd>
 </dl>

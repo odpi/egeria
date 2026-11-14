@@ -166,8 +166,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCascadedDelete()" class="member-name-link">getCascadedDelete</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Return flag to indicate whether the delete extends to related elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeleteMethod()" class="member-name-link">getDeleteMethod</a>()</code></div>
@@ -198,8 +197,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCascadedDelete(boolean)" class="member-name-link">setCascadedDelete</a><wbr>(boolean&nbsp;cascadedDelete)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Set up flag to indicate whether the delete extends to related elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeleteMethod(org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod)" class="member-name-link">setDeleteMethod</a><wbr>(<a href="../enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod)</code></div>
@@ -275,8 +273,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCascadedDelete()">
 <h3>getCascadedDelete</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getCascadedDelete</span>()</div>
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.  The default is false.</div>
+<div class="block">Return flag to indicate whether the delete extends to related elements.  For a soft delete, false (the default)
+ means the delete fails if the element has dependent elements that are not anchored to it (such as the members of a
+ collection), and true means those dependent elements are deleted too.  For a purge, true means the elements
+ anchored to the element are purged with it, and false means only the element itself is purged.  Elements
+ anchored to the element are always deleted or archived with it, whatever this flag's value.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
@@ -287,8 +288,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setCascadedDelete(boolean)">
 <h3>setCascadedDelete</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCascadedDelete</span><wbr><span class="parameters">(boolean&nbsp;cascadedDelete)</span></div>
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.  The default is false.</div>
+<div class="block">Set up flag to indicate whether the delete extends to related elements.  For a soft delete, false (the default)
+ means the delete fails if the element has dependent elements that are not anchored to it (such as the members of a
+ collection), and true means those dependent elements are deleted too.  For a purge, true means the elements
+ anchored to the element are purged with it, and false means only the element itself is purged.  Elements
+ anchored to the element are always deleted or archived with it, whatever this flag's value.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>cascadedDelete</code> - boolean</dd>

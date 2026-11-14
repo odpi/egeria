@@ -160,8 +160,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllowRetrieve()" class="member-name-link">getAllowRetrieve</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Return whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeepCopy()" class="member-name-link">getDeepCopy</a>()</code></div>
@@ -196,8 +196,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowRetrieve(boolean)" class="member-name-link">setAllowRetrieve</a><wbr>(boolean&nbsp;allowRetrieve)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeepCopy(boolean)" class="member-name-link">setDeepCopy</a><wbr>(boolean&nbsp;deepCopy)</code></div>
@@ -400,8 +400,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAllowRetrieve()">
 <h3>getAllowRetrieve</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getAllowRetrieve</span>()</div>
-<div class="block">Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Return whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).  The match is done on the qualified name that the new element would have.
+ The default is true.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
@@ -412,8 +413,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setAllowRetrieve(boolean)">
 <h3>setAllowRetrieve</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAllowRetrieve</span><wbr><span class="parameters">(boolean&nbsp;allowRetrieve)</span></div>
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).  The match is done on the qualified name that the new element would have.
+ The default is true.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>allowRetrieve</code> - boolean</dd>

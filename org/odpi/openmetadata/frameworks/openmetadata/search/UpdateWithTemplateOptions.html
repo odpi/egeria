@@ -156,7 +156,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMergeClassifications()" class="member-name-link">getMergeClassifications</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether  the classification be merged or replace the target entity?e (default is true).</div>
+<div class="block">Return whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -166,8 +167,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMergeClassifications(boolean)" class="member-name-link">setMergeClassifications</a><wbr>(boolean&nbsp;mergeClassifications)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -252,7 +253,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMergeClassifications()">
 <h3>getMergeClassifications</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getMergeClassifications</span>()</div>
-<div class="block">Return whether  the classification be merged or replace the target entity?e (default is true).</div>
+<div class="block">Return whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).  When false, classifications that the target element has but the template does
+ not are removed.  The Anchors, Template, TemplateSubstitute and Memento classifications are never changed.
+ The default is true.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>boolean</dd>
@@ -263,8 +267,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setMergeClassifications(boolean)">
 <h3>setMergeClassifications</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMergeClassifications</span><wbr><span class="parameters">(boolean&nbsp;mergeClassifications)</span></div>
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).  When false, classifications that the target element has but the template does
+ not are removed.  The Anchors, Template, TemplateSubstitute and Memento classifications are never changed.
+ The default is true.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>mergeClassifications</code> - boolean</dd>

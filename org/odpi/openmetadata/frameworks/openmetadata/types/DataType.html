@@ -150,7 +150,8 @@ implements <a href="../enums/OpenMetadataEnum.html" title="interface in org.odpi
 </div>
 <div class="col-first odd-row-color"><code><a href="#DATE" class="member-name-link">DATE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Date</div>
+<div class="block">Date - a point in time: an instant, such as <code>java.util.Date</code> holds, which a database stores as a
+ timestamp with a time zone.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#DOUBLE" class="member-name-link">DOUBLE</a></code></div>
 <div class="col-last even-row-color">
@@ -163,6 +164,15 @@ implements <a href="../enums/OpenMetadataEnum.html" title="interface in org.odpi
 <div class="col-first even-row-color"><code><a href="#INT" class="member-name-link">INT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Integer</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LOCAL_DATE" class="member-name-link">LOCAL_DATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">A calendar date with no time of day and no time zone, such as a date of birth - a database's
+ <code>date</code> column.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#LOCAL_DATE_TIME" class="member-name-link">LOCAL_DATE_TIME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">A date and time of day with no time zone - a database's <code>timestamp without time zone</code> column.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#LONG" class="member-name-link">LONG</a></code></div>
 <div class="col-last odd-row-color">
@@ -249,7 +259,7 @@ implements <a href="../enums/OpenMetadataEnum.html" title="interface in org.odpi
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name for this value.</div>
+<div class="block">Return the qualified name of this value's valid metadata value in the core content pack.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDefault()" class="member-name-link">isDefault</a>()</code></div>
@@ -320,7 +330,9 @@ the order they are declared.</div>
 <section class="detail" id="DATE">
 <h3>DATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></span>&nbsp;<span class="element-name">DATE</span></div>
-<div class="block">Date</div>
+<div class="block">Date - a point in time: an instant, such as <code>java.util.Date</code> holds, which a database stores as a
+ timestamp with a time zone.  A calendar date on its own is <a href="#LOCAL_DATE"><code>LOCAL_DATE</code></a>, and a date and time of
+ day without a time zone is <a href="#LOCAL_DATE_TIME"><code>LOCAL_DATE_TIME</code></a>.</div>
 </section>
 </li>
 <li>
@@ -450,6 +462,22 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="LOCAL_DATE">
+<h3>LOCAL_DATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></span>&nbsp;<span class="element-name">LOCAL_DATE</span></div>
+<div class="block">A calendar date with no time of day and no time zone, such as a date of birth - a database's
+ <code>date</code> column.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LOCAL_DATE_TIME">
+<h3>LOCAL_DATE_TIME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></span>&nbsp;<span class="element-name">LOCAL_DATE_TIME</span></div>
+<div class="block">A date and time of day with no time zone - a database's <code>timestamp without time zone</code> column.  It
+ names the same clock time wherever it is read, rather than one instant.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="OBJECT">
 <h3>OBJECT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></span>&nbsp;<span class="element-name">OBJECT</span></div>
@@ -564,7 +592,8 @@ not permitted.)</div>
 <section class="detail" id="getQualifiedName()">
 <h3>getQualifiedName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
-<div class="block">Return the qualified name for this value.</div>
+<div class="block">Return the qualified name of this value's valid metadata value in the core content pack.  It is not tied
+ to any one type, since many types have a dataType property.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>

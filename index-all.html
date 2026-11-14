@@ -6067,6 +6067,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Write the requested data record to the end of the data source.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html#appendRecords(java.util.List)" class="member-name-link">appendRecords(List&lt;List&lt;String&gt;&gt;)</a> - Method in class org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.<a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetConnector</a></dt>
+<dd>
+<div class="block">Write several records to the table in one transaction - see <a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html#writeRecords(java.util.Map)"><code>PostgresTabularDataSetConnector.writeRecords(java.util.Map&lt;java.lang.Long, java.util.List&lt;java.lang.String&gt;&gt;)</code></a>.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#appendRecords(java.util.List)" class="member-name-link">appendRecords(List&lt;List&lt;String&gt;&gt;)</a> - Method in interface org.odpi.openmetadata.frameworks.connectors.tabulardatasets.<a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></dt>
+<dd>
+<div class="block">Write several data records to the end of the data source, in the order supplied.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationType.html#APPLICATION" class="member-name-link">APPLICATION</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.refdata.<a href="org/odpi/openmetadata/frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a></dt>
 <dd>
 <div class="block">Software supporting a business function.</div>
@@ -25141,7 +25149,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html#DATE" class="member-name-link">DATE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></dt>
 <dd>
-<div class="block">Date</div>
+<div class="block">Date - a point in time: an instant, such as <code>java.util.Date</code> holds, which a database stores as a
+ timestamp with a time zone.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/samples/archiveutilities/clinicaltrialtemplates/GlossaryTermDefinition.html#DATE_OF_BIRTH" class="member-name-link">DATE_OF_BIRTH</a> - Enum constant in enum class org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates.<a href="org/odpi/openmetadata/samples/archiveutilities/clinicaltrialtemplates/GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></dt>
 <dd>
@@ -27323,6 +27332,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecord(long)" class="member-name-link">deleteRecord(long)</a> - Method in interface org.odpi.openmetadata.frameworks.connectors.tabulardatasets.<a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></dt>
 <dd>
 <div class="block">Remove the requested data record.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html#deleteRecords(java.util.List)" class="member-name-link">deleteRecords(List&lt;Long&gt;)</a> - Method in class org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.<a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetConnector</a></dt>
+<dd>
+<div class="block">Remove several records in one statement.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecords(java.util.List)" class="member-name-link">deleteRecords(List&lt;Long&gt;)</a> - Method in interface org.odpi.openmetadata.frameworks.connectors.tabulardatasets.<a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></dt>
+<dd>
+<div class="block">Remove several data records.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/resource/OSSUnityCatalogResourceConnector.html#deleteRegisteredModel(java.lang.String)" class="member-name-link">deleteRegisteredModel(String)</a> - Method in class org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a></dt>
 <dd>
@@ -47075,8 +47092,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/TemplateOptions.html#getAllowRetrieve()" class="member-name-link">getAllowRetrieve()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></dt>
 <dd>
-<div class="block">Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Return whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html#getAllowsDuplicateValues()" class="member-name-link">getAllowsDuplicateValues()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassProperties</a></dt>
 <dd>
@@ -50108,8 +50125,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html#getCascadedDelete()" class="member-name-link">getCascadedDelete()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a></dt>
 <dd>
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Return flag to indicate whether the delete extends to related elements.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html#getCatalog()" class="member-name-link">getCatalog()</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractServer</a></dt>
 <dd>
@@ -69533,12 +69549,13 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateWithTemplateOptions.html#getMergeClassifications()" class="member-name-link">getMergeClassifications()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateWithTemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateWithTemplateOptions</a></dt>
 <dd>
-<div class="block">Return whether  the classification be merged or replace the target entity?e (default is true).</div>
+<div class="block">Return whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateOptions.html#getMergeUpdate()" class="member-name-link">getMergeUpdate()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a></dt>
 <dd>
-<div class="block">Return flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Return flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/rest/ConnectorConfigPropertiesRequestBody.html#getMergeUpdate()" class="member-name-link">getMergeUpdate()</a> - Method in class org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/rest/ConnectorConfigPropertiesRequestBody.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest">ConnectorConfigPropertiesRequestBody</a></dt>
 <dd>
@@ -80045,7 +80062,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html#getQualifiedName()" class="member-name-link">getQualifiedName()</a> - Method in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></dt>
 <dd>
-<div class="block">Return the qualified name for this value.</div>
+<div class="block">Return the qualified name of this value's valid metadata value in the core content pack.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/PropertyCategory.html#getQualifiedName()" class="member-name-link">getQualifiedName()</a> - Method in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/PropertyCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">PropertyCategory</a></dt>
 <dd>
@@ -110833,6 +110850,17 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/conformance/ffdc/ConformanceSuiteAuditCode.html#LOCAL_CONNECTOR_IN_COHORT" class="member-name-link">LOCAL_CONNECTOR_IN_COHORT</a> - Enum constant in enum class org.odpi.openmetadata.conformance.ffdc.<a href="org/odpi/openmetadata/conformance/ffdc/ConformanceSuiteAuditCode.html" title="enum class in org.odpi.openmetadata.conformance.ffdc">ConformanceSuiteAuditCode</a></dt>
 <dd>
 <div class="block">CONFORMANCE-SUITE-0015 - The Open Metadata Conformance Suite has access to the local repository with metadata collection id {0}</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/properties/ColumnType.html#LOCAL_DATE" class="member-name-link">LOCAL_DATE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/properties/ColumnType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">ColumnType</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html#LOCAL_DATE" class="member-name-link">LOCAL_DATE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></dt>
+<dd>
+<div class="block">A calendar date with no time of day and no time zone, such as a date of birth - a database's
+ <code>date</code> column.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html#LOCAL_DATE_TIME" class="member-name-link">LOCAL_DATE_TIME</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a></dt>
+<dd>
+<div class="block">A date and time of day with no time zone - a database's <code>timestamp without time zone</code> column.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html#LOCAL_ENTITY_PROXY" class="member-name-link">LOCAL_ENTITY_PROXY</a> - Enum constant in enum class org.odpi.openmetadata.repositoryservices.ffdc.<a href="org/odpi/openmetadata/repositoryservices/ffdc/OMRSErrorCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSErrorCode</a></dt>
 <dd>
@@ -151911,8 +151939,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/TemplateOptions.html#setAllowRetrieve(boolean)" class="member-name-link">setAllowRetrieve(boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/TemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">TemplateOptions</a></dt>
 <dd>
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether an existing element may be returned instead of creating a new one (true), or a new element
+ must always be created (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html#setAllowsDuplicateValues(java.lang.Boolean)" class="member-name-link">setAllowsDuplicateValues(Boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/datadictionaries/DataClassProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries">DataClassProperties</a></dt>
 <dd>
@@ -153242,8 +153270,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html#setCascadedDelete(boolean)" class="member-name-link">setCascadedDelete(boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/DeleteOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">DeleteOptions</a></dt>
 <dd>
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Set up flag to indicate whether the delete extends to related elements.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html#setCatalog(java.lang.String)" class="member-name-link">setCatalog(String)</a> - Method in class org.odpi.openmetadata.frameworks.integration.bitol.odcs.<a href="org/odpi/openmetadata/frameworks/integration/bitol/odcs/DataContractServer.html" title="class in org.odpi.openmetadata.frameworks.integration.bitol.odcs">DataContractServer</a></dt>
 <dd>
@@ -161591,13 +161618,13 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateWithTemplateOptions.html#setMergeClassifications(boolean)" class="member-name-link">setMergeClassifications(boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateWithTemplateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateWithTemplateOptions</a></dt>
 <dd>
-<div class="block">Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
- qualified name (default is false).</div>
+<div class="block">Set up whether the classifications from the template are merged with the target element's classifications
+ (true), or replace them (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateOptions.html#setMergeUpdate(boolean)" class="member-name-link">setMergeUpdate(boolean)</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.search.<a href="org/odpi/openmetadata/frameworks/openmetadata/search/UpdateOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">UpdateOptions</a></dt>
 <dd>
-<div class="block">Set up flag to indicate whether to completely replace the existing properties with the new properties, or just update
- the individual properties specified on the request.</div>
+<div class="block">Set up flag to indicate whether to merge the supplied properties with the existing properties (true), or
+ completely replace the existing properties with the supplied properties (false).</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/rest/ConnectorConfigPropertiesRequestBody.html#setMergeUpdate(boolean)" class="member-name-link">setMergeUpdate(boolean)</a> - Method in class org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.<a href="org/odpi/openmetadata/governanceservers/integrationdaemonservices/rest/ConnectorConfigPropertiesRequestBody.html" title="class in org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest">ConnectorConfigPropertiesRequestBody</a></dt>
 <dd>
@@ -178620,6 +178647,8 @@ loadScripts(document, 'script');</script>
 <div class="block">A date and time, optionally with a timezone.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/ColumnTypeName.html#TIMESTAMP_NTZ" class="member-name-link">TIMESTAMP_NTZ</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="org/odpi/openmetadata/adapters/connectors/unitycatalog/properties/ColumnTypeName.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ColumnTypeName</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/properties/ColumnType.html#TIMESTAMP_WITH_TIME_ZONE" class="member-name-link">TIMESTAMP_WITH_TIME_ZONE</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.<a href="org/odpi/openmetadata/adapters/connectors/resource/jdbc/properties/ColumnType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">ColumnType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/dcat/DcatVocabulary.html#TITLE" class="member-name-link">TITLE</a> - Static variable in class org.odpi.openmetadata.frameworks.integration.dcat.<a href="org/odpi/openmetadata/frameworks/integration/dcat/DcatVocabulary.html" title="class in org.odpi.openmetadata.frameworks.integration.dcat">DcatVocabulary</a></dt>
 <dd>&nbsp;</dd>
@@ -203734,6 +203763,14 @@ the order they are declared.</div>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/OpenLineageRunHistory.WriteRecord.html#%3Cinit%3E(java.util.Date,java.lang.String,org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.OpenLineageRunHistory.Key,java.lang.String,java.lang.Long,java.lang.Long,java.lang.Long,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">WriteRecord(Date, String, OpenLineageRunHistory.Key, String, Long, Long, Long, String, String, String)</a> - Constructor for record class org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.<a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/OpenLineageRunHistory.WriteRecord.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.WriteRecord</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>WriteRecord</code> record class.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html#writeRecords(java.util.Map)" class="member-name-link">writeRecords(Map&lt;Long, List&lt;String&gt;&gt;)</a> - Method in class org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.<a href="org/odpi/openmetadata/adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetConnector</a></dt>
+<dd>
+<div class="block">Write several records in one transaction.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#writeRecords(java.util.Map)" class="member-name-link">writeRecords(Map&lt;Long, List&lt;String&gt;&gt;)</a> - Method in interface org.odpi.openmetadata.frameworks.connectors.tabulardatasets.<a href="org/odpi/openmetadata/frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></dt>
+<dd>
+<div class="block">Write several data records, each at its row number.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/OpenLineageRunHistory.DataSetHistory.html#writes" class="member-name-link">writes</a> - Variable in class org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage.<a href="org/odpi/openmetadata/adapters/connectors/lineageinsight/openlineage/OpenLineageRunHistory.DataSetHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.DataSetHistory</a></dt>
 <dd>&nbsp;</dd>

@@ -114,11 +114,12 @@ implements <a href="../../../frameworks/openmetadata/events/OpenMetadataEventLis
  <ul>
      <li>Welcome, one-time and periodic notifications are sent when the integration daemon refreshes this
          connector, which happens on the configured interval and whenever a refresh is requested through the
-         integration daemon's REST API.  The daemon's schedule is therefore the only clock here; this
-         connector keeps no timers of its own.</li>
+         integration daemon's REST API.</li>
      <li>Notifications about changes to a notification type's monitored resources are sent as the change
          events arrive on the metadata access server's out topic.  The refresh keeps a cache of which
-         notification types monitor which resources; the event listener consults it.</li>
+         notification types monitor which resources; the event listener consults it.  A change that arrives
+         while its notification type is inside its minimum notification interval is held back and sent
+         the moment the interval ends, by a timer this connector keeps for that alone.</li>
  </ul>
  This connector was previously a watchdog governance action service that slept between refreshes on a
  schedule of its own.  Moving it to the integration daemon puts the refresh interval in configuration, and

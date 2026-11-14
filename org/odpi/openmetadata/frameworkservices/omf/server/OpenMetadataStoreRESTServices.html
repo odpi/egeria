@@ -2148,9 +2148,9 @@ loadScripts(document, 'script');</script>
  <a href="../rest/OpenMetadataDeleteRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataDeleteRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Delete a relationship between two metadata elements.  The deleteMethod in the request body determines how
  the delete is actioned: SOFT_DELETE soft-deletes the relationship; PURGE permanently removes it (only
- valid if the relationship has already been soft-deleted).  ARCHIVE and LOOK_FOR_LINEAGE do not make sense
- for a relationship (there is no relationship equivalent of the Memento classification used to archive a
- metadata element), so those - and any other value - result in an InvalidParameterException.</div>
+ valid if the relationship has already been soft-deleted).  There is no relationship equivalent of the Memento
+ classification used to archive a metadata element, so ARCHIVE and LOOK_FOR_LINEAGE also soft-delete the
+ relationship.  Any other value results in an InvalidParameterException.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
