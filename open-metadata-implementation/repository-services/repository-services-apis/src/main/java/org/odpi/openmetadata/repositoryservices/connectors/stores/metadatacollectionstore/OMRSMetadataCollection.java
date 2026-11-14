@@ -1089,8 +1089,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * @return a list of entities matching the supplied criteria; null means no more matching entities in the metadata
+     * collection from the requested starting element onwards.  An empty list means entities were retrieved for this
+     * page but none of them could be returned (for example, they were filtered out), so the caller should request
+     * the next page.  An implementation must never return an empty list when there are no more matching entities,
+     * or a caller paging through the results will not stop.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1158,8 +1161,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * @return a list of entities matching the supplied criteria; null means no more matching entities in the metadata
+     * collection from the requested starting element onwards.  An empty list means entities were retrieved for this
+     * page but none of them could be returned (for example, they were filtered out), so the caller should request
+     * the next page.  An implementation must never return an empty list when there are no more matching entities,
+     * or a caller paging through the results will not stop.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1334,8 +1340,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * @return a list of entities matching the supplied criteria; null means no more matching entities in the metadata
+     * collection from the requested starting element onwards.  An empty list means entities were retrieved for this
+     * page but none of them could be returned (for example, they were filtered out), so the caller should request
+     * the next page.  An implementation must never return an empty list when there are no more matching entities,
+     * or a caller paging through the results will not stop.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1389,8 +1398,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * @return a list of entities matching the supplied criteria; null means no more matching entities in the metadata
+     * collection from the requested starting element onwards.  An empty list means entities were retrieved for this
+     * page but none of them could be returned (for example, they were filtered out), so the caller should request
+     * the next page.  An implementation must never return an empty list when there are no more matching entities,
+     * or a caller paging through the results will not stop.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1448,8 +1460,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder              Enum defining how the results should be ordered.
      * @param pageSize                     the maximum number of result entities that can be returned on this request.  Zero means
      *                                     unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
+     * @return a list of entities matching the supplied criteria; null means no more matching entities in the metadata
+     * collection from the requested starting element onwards.  An empty list means entities were retrieved for this
+     * page but none of them could be returned (for example, they were filtered out), so the caller should request
+     * the next page.  An implementation must never return an empty list when there are no more matching entities,
+     * or a caller paging through the results will not stop.
      * @throws InvalidParameterException     a parameter is invalid or null.
      * @throws TypeErrorException            the type guid passed on the request is not known by the
      *                                       metadata collection.
@@ -1615,7 +1630,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of relationships.  Null means no matching relationships.
+     * @return a list of relationships.  Null means no more matching relationships from the requested starting
+     * element onwards.  An empty list means relationships were retrieved for this page but none of them could be
+     * returned (for example, they were filtered out), so the caller should request the next page.  An
+     * implementation must never return an empty list when there are no more matching relationships, or a caller
+     * paging through the results will not stop.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1703,7 +1722,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of relationships.  Null means no matching relationships.
+     * @return a list of relationships.  Null means no more matching relationships from the requested starting
+     * element onwards.  An empty list means relationships were retrieved for this page but none of them could be
+     * returned (for example, they were filtered out), so the caller should request the next page.  An
+     * implementation must never return an empty list when there are no more matching relationships, or a caller
+     * paging through the results will not stop.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1910,7 +1933,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of relationships.  Null means no matching relationships.
+     * @return a list of relationships.  Null means no more matching relationships from the requested starting
+     * element onwards.  An empty list means relationships were retrieved for this page but none of them could be
+     * returned (for example, they were filtered out), so the caller should request the next page.  An
+     * implementation must never return an empty list when there are no more matching relationships, or a caller
+     * paging through the results will not stop.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -1965,7 +1992,11 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param sequencingOrder         Enum defining how the results should be ordered.
      * @param pageSize                the maximum number of result relationships that can be returned on this request.  Zero means
      *                                unrestricted return results size.
-     * @return a list of relationships.  Null means no matching relationships.
+     * @return a list of relationships.  Null means no more matching relationships from the requested starting
+     * element onwards.  An empty list means relationships were retrieved for this page but none of them could be
+     * returned (for example, they were filtered out), so the caller should request the next page.  An
+     * implementation must never return an empty list when there are no more matching relationships, or a caller
+     * paging through the results will not stop.
      * @throws InvalidParameterException     one of the parameters is invalid or null.
      * @throws TypeErrorException            the type guid passed on the request is not known by the
      *                                       metadata collection.

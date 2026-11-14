@@ -36,6 +36,14 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
     private final Map<String, List<Classification>> accumulatedClassifications = new HashMap<>();
     private final Map<String, List<String>>         accumulatedEntitySources   = new HashMap<>();
 
+    /*
+     * Set when at least one repository returned a list (possibly empty) rather than null.  A repository returns
+     * null when it has no more matching instances, and an empty list when it retrieved instances for the page but
+     * they were all filtered out (for example, by the security verifier).  The difference is preserved in
+     * getResults() so that a caller paging through the results does not stop early.
+     */
+    private boolean pageRetrieved = false;
+
 
     /**
      * Construct an entity accumulator.  Its base class manages the common variables needed to
@@ -119,6 +127,8 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
     {
         if (entities != null)
         {
+            pageRetrieved = true;
+
             for (EntityDetail entity : entities)
             {
                 this.addEntity(entity, metadataCollectionId);
@@ -250,13 +260,19 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
      *
      * @param repositoryConnector enterprise connector
      * @param metadataCollection enterprise metadata collection
-     * @return list of entities
+     * @return list of entities; null means no more matching entities, and an empty list means the repositories
+     *         retrieved entities for this page but they were all filtered out
      */
     public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
                                                       OMRSMetadataCollection            metadataCollection)
     {
         if (accumulatedEntities.isEmpty())
         {
+            if (pageRetrieved)
+            {
+                return new ArrayList<>();
+            }
+
             return null;
         }
         else

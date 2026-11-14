@@ -422,17 +422,15 @@ public class QueryBuilder
 
             if (matchProperties.getEffectiveFromTime() != null)
             {
-                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(matchCriteria,
-                                                                                             OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
-                                                                                             matchProperties.getEffectiveFromTime());
+                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
+                                                                                            matchProperties.getEffectiveFromTime());
                 propertyConditions.add(propertyCondition);
             }
 
             if (matchProperties.getEffectiveToTime() != null)
             {
-                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(matchCriteria,
-                                                                                             OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
-                                                                                             matchProperties.getEffectiveToTime());
+                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
+                                                                                            matchProperties.getEffectiveToTime());
                 propertyConditions.add(propertyCondition);
             }
 
@@ -448,14 +446,12 @@ public class QueryBuilder
                     propertyCondition.setProperty(propertyName);
                     propertyCondition.setValue(instancePropertyValue);
 
-                    if (matchCriteria == MatchCriteria.NONE)
-                    {
-                        propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
-                    }
-                    else
-                    {
-                        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
-                    }
+                    /*
+                     * Always EQ: NONE is expressed by the match criteria, which negates the "or" of the conditions.
+                     * Setting NEQ here as well negated it twice, so a NONE search returned only the matching
+                     * instances.
+                     */
+                    propertyCondition.setOperator(PropertyComparisonOperator.EQ);
 
                     propertyConditions.add(propertyCondition);
                 }
@@ -473,27 +469,21 @@ public class QueryBuilder
      * Return an encoding of an effective time - this stores the value as a date rather than the usual long for
      * date attributes.
      *
-     * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
      * @param propertyName name of property
      * @param dateValue value to use
      * @return property condition
      */
-    private PropertyCondition getEffectiveTimePropertyCondition(MatchCriteria matchCriteria,
-                                                                String        propertyName,
-                                                                Date          dateValue)
+    private PropertyCondition getEffectiveTimePropertyCondition(String propertyName,
+                                                                Date   dateValue)
     {
         PropertyCondition propertyCondition = new PropertyCondition();
 
         propertyCondition.setProperty(propertyName);
 
-        if (matchCriteria == MatchCriteria.NONE)
-        {
-            propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
-        }
-        else
-        {
-            propertyCondition.setOperator(PropertyComparisonOperator.EQ);
-        }
+        /*
+         * Always EQ: NONE is expressed by the match criteria (see setMatchProperties).
+         */
+        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
@@ -502,6 +492,7 @@ public class QueryBuilder
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
         primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
         primitivePropertyValue.setPrimitiveValue(dateValue);
+        propertyCondition.setValue(primitivePropertyValue);
 
         return propertyCondition;
     }
