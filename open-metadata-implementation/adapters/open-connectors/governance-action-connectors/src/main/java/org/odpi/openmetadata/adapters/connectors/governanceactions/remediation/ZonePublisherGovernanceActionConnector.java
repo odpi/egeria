@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -22,17 +21,18 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import java.util.*;
 
 /**
- * ZonePublisherGovernanceActionConnector sets the supplied governance zone names into the assets supplied as action targets.
- * If there is at least one asset, their zones are updated, and the output guard is set to zone-assigned.
- * If no Assets are passed as action targets the output guard is no-targets-detected.
+ * ZonePublisherGovernanceActionConnector sets the supplied governance zone names into the elements supplied as
+ * newAsset (or "*") action targets.  The zones come from the publishZones configuration property of the service's
+ * connection, and the publishZones request parameter overrides it.  Either may be a comma separated list, and the
+ * configuration property may also be a list of zone names.
+ * If at least one element is updated, the output guard is zones-assigned.
+ * If no zones are supplied, the AssetZoneMembership classification is removed from the elements and the output
+ * guard is no-zones-detected.
+ * If there are no newAsset (or "*") action targets, the output guard is no-targets-detected.
+ * If an element can not be updated, the output guard is zone-publishing-failed.
  */
 public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceActionService
 {
-    /**
-     * Value used to set up the zones.
-     */
-    private List<String> publishZones = null;
-
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
@@ -48,103 +48,56 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
 
         super.start();
 
-        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
-
-        /*
-         * Retrieve the configuration properties from the Connection object.  These properties affect all requests to this connector.
-         */
-        if (configurationProperties != null)
-        {
-            Object publishZonesOption = configurationProperties.get(ZonePublisherRequestParameter.PUBLISH_ZONES.getName());
-
-            if (publishZonesOption != null)
-            {
-                publishZones = getZoneArrayFromString(publishZonesOption.toString());
-            }
-        }
-
-        /*
-         * Retrieve the zones to set in the assets.  This may override the value set in the configuration properties.
-         */
-        if (governanceContext.getRequestParameters() != null)
-        {
-            Map<String, String> requestParameters = governanceContext.getRequestParameters();
-
-            for (String requestParameterName : requestParameters.keySet())
-            {
-                if (requestParameterName != null)
-                {
-                    if (ZonePublisherRequestParameter.PUBLISH_ZONES.getName().equals(requestParameterName))
-                    {
-                        publishZones = getZoneArrayFromString(requestParameters.get(requestParameterName));
-                    }
-                }
-            }
-        }
-
         List<String>              outputGuards = new ArrayList<>();
         CompletionStatus          completionStatus;
         AuditLogMessageDefinition messageDefinition = null;
 
         try
         {
-            if (governanceContext.getActionTargetElements() == null)
+            List<String>              publishZones = this.getPublishZones();
+            List<OpenMetadataElement> elements     = this.getTargetElements(governanceContext.getActionTargetElements());
+
+            if (elements.isEmpty())
             {
                 messageDefinition = GovernanceActionConnectorsAuditCode.NO_TARGETS.getMessageDefinition(governanceServiceName);
 
-                completionStatus = Guard.NO_TARGETS_DETECTED.getCompletionStatus();
-                outputGuards.add(Guard.NO_TARGETS_DETECTED.getName());
+                completionStatus = ZonePublisherGuard.NO_TARGETS.getCompletionStatus();
+                outputGuards.add(ZonePublisherGuard.NO_TARGETS.getName());
             }
-            else if ((publishZones == null) || (publishZones.isEmpty()))
+            else if (publishZones == null)
             {
-                for (ActionTargetElement actionTarget : governanceContext.getActionTargetElements())
+                for (OpenMetadataElement element : elements)
                 {
-                    if ((actionTarget != null) &&
-                            (actionTarget.getTargetElement() != null) &&
-                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName)))
-                    {
-                        OpenMetadataElement element = actionTarget.getTargetElement();
+                    logRecord(methodName,
+                              GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                     element.getElementGUID(),
+                                                                                                     "<null>"));
 
-                        logRecord(methodName,
-                                  GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
-                                                                                                         element.getElementGUID(),
-                                                                                                         "<null>"));
-
-                        governanceContext.getOpenMetadataStore().declassifyMetadataElementInStore(element.getElementGUID(),
-                                                                                                  OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                  governanceContext.getOpenMetadataStore().getMetadataSourceOptions());
-                    }
+                    governanceContext.getOpenMetadataStore().declassifyMetadataElementInStore(element.getElementGUID(),
+                                                                                              OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                              governanceContext.getOpenMetadataStore().getMetadataSourceOptions());
                 }
 
                 messageDefinition = GovernanceActionConnectorsAuditCode.NO_ZONES.getMessageDefinition(governanceServiceName);
+
                 completionStatus = ZonePublisherGuard.NO_ZONES_DETECTED.getCompletionStatus();
                 outputGuards.add(ZonePublisherGuard.NO_ZONES_DETECTED.getName());
             }
             else
             {
-                ElementProperties properties = this.getZoneProperties();
+                ElementProperties properties = this.getZoneProperties(publishZones);
 
-                for (ActionTargetElement actionTarget : governanceContext.getActionTargetElements())
+                for (OpenMetadataElement element : elements)
                 {
-                    if ((actionTarget != null) &&
-                            (actionTarget.getTargetElement() != null) &&
-                            ((ActionTarget.NEW_ASSET.getName().equals(actionTarget.getActionTargetName()) ||
-                                    (ActionTarget.ANY_ELEMENT.getName().equals(actionTarget.getActionTargetName()))) &&
-                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.OPEN_METADATA_ROOT.typeName))))
-                    {
-                        OpenMetadataElement element = actionTarget.getTargetElement();
+                    logRecord(methodName,
+                              GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                     element.getElementGUID(),
+                                                                                                     publishZones.toString()));
 
-
-                        logRecord(methodName,
-                                  GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
-                                                                                                         element.getElementGUID(),
-                                                                                                         publishZones.toString()));
-
-                        governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
-                                                                                                OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                                                                                governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
-                                                                                                new NewElementProperties(properties));
-                    }
+                    governanceContext.getOpenMetadataStore().classifyMetadataElementInStore(element.getElementGUID(),
+                                                                                            OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                                                            governanceContext.getOpenMetadataStore().getMetadataSourceOptions(),
+                                                                                            new NewElementProperties(properties));
                 }
 
                 completionStatus = ZonePublisherGuard.ZONE_ASSIGNED.getCompletionStatus();
@@ -160,10 +113,14 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
         }
         catch (OMFCheckedExceptionBase error)
         {
+            this.recordFailure(error);
+
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
         catch (Exception error)
         {
+            this.recordFailure(error);
+
             throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
                                                                                                                               error.getClass().getName(),
                                                                                                                               error.getMessage()),
@@ -175,38 +132,104 @@ public class ZonePublisherGovernanceActionConnector extends GeneralGovernanceAct
 
 
     /**
+     * Return the zones to publish from the request parameters or, if they are not set there, the configuration
+     * properties.  The value may be a comma separated list or, in the configuration properties, a list of values.
+     * A request parameter that is present overrides the configuration property, even if it is empty.
+     *
+     * @return list of zone names or null if no zones are supplied
+     */
+    private List<String> getPublishZones()
+    {
+        final String propertyName = ZonePublisherRequestParameter.PUBLISH_ZONES.getName();
+
+        Map<String, String> requestParameters       = governanceContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
+
+        List<String> publishZones = null;
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            publishZones = getArrayValue(requestParameters.get(propertyName));
+        }
+        else if (configurationProperties != null)
+        {
+            publishZones = getArrayValue(configurationProperties.get(propertyName));
+        }
+
+        if ((publishZones == null) || (publishZones.isEmpty()))
+        {
+            return null;
+        }
+
+        return publishZones;
+    }
+
+
+    /**
+     * Return the elements supplied as newAsset or "*" action targets.  These are the elements to update.
+     *
+     * @param actionTargets action targets passed to the service
+     * @return list of elements (may be empty)
+     */
+    private List<OpenMetadataElement> getTargetElements(List<ActionTargetElement> actionTargets)
+    {
+        List<OpenMetadataElement> elements = new ArrayList<>();
+
+        if (actionTargets != null)
+        {
+            for (ActionTargetElement actionTarget : actionTargets)
+            {
+                if ((actionTarget != null) &&
+                        (actionTarget.getTargetElement() != null) &&
+                        ((ActionTarget.NEW_ASSET.getName().equals(actionTarget.getActionTargetName())) ||
+                                (ActionTarget.ANY_ELEMENT.getName().equals(actionTarget.getActionTargetName()))) &&
+                        (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.OPEN_METADATA_ROOT.typeName)))
+                {
+                    elements.add(actionTarget.getTargetElement());
+                }
+            }
+        }
+
+        return elements;
+    }
+
+
+    /**
      * Return the new zones in a property.
      *
+     * @param publishZones zones to set
      * @return element properties for the AssetZoneMembership classification
      */
-    private ElementProperties getZoneProperties()
+    private ElementProperties getZoneProperties(List<String> publishZones)
     {
         return propertyHelper.addStringArrayProperty(null, OpenMetadataProperty.ZONE_MEMBERSHIP.name, publishZones);
     }
 
 
     /**
-     * Return the supplied zones as an array.
+     * Record that the service failed, so that a governance action process can follow the failure guard.
      *
-     * @param zones comma separated list of zone names
-     * @return string array with a zone name in each element
+     * @param error the exception that stopped the service
      */
-    private List<String> getZoneArrayFromString(String  zones)
+    private void recordFailure(Exception error)
     {
-        List<String>    zoneArray       = new ArrayList<>();
-        StringTokenizer stringTokenizer = new StringTokenizer(zones, ",");
-
-        while (stringTokenizer.hasMoreTokens())
+        try
         {
-            String zone = stringTokenizer.nextToken();
-            String trimmedZone = zone.trim();
+            List<String> outputGuards = new ArrayList<>();
 
-            if (! trimmedZone.isEmpty())
-            {
-                zoneArray.add(trimmedZone);
-            }
+            outputGuards.add(ZonePublisherGuard.ZONE_PUBLISHING_FAILED.getName());
+
+            governanceContext.recordCompletionStatus(ZonePublisherGuard.ZONE_PUBLISHING_FAILED.getCompletionStatus(),
+                                                     outputGuards,
+                                                     null,
+                                                     null,
+                                                     error.getMessage());
         }
-
-        return zoneArray;
+        catch (Exception recordError)
+        {
+            /*
+             * The exception from the service is more important, and is thrown by the caller.
+             */
+        }
     }
 }

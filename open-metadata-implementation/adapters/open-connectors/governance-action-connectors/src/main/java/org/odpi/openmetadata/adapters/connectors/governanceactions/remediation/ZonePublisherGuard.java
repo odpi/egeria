@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 
@@ -19,6 +20,9 @@ public enum ZonePublisherGuard
     ZONE_ASSIGNED("zones-assigned", CompletionStatus.ACTIONED,  "The requested published zones have been added to the AssetZoneMembership classification for the asset."),
     NO_ZONES_DETECTED("no-zones-detected", CompletionStatus.ACTIONED, "The requested published zones are null so any AssetZoneMembership classification attached to the asset has been removed so the asset is now visible to all."),
     ZONE_PUBLISHING_FAILED("zone-publishing-failed", CompletionStatus.FAILED, "An unexpected exception occurred while assigning zones to the action target asset(s)."),
+    NO_TARGETS(Guard.NO_TARGETS_DETECTED.getName(),
+               Guard.NO_TARGETS_DETECTED.getCompletionStatus(),
+               Guard.NO_TARGETS_DETECTED.getDescription()),
     ;
 
 
