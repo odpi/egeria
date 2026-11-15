@@ -104,10 +104,14 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RetentionClassifierGovernanceActionConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/opengovernance/GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GeneralGovernanceActionService</a></span></div>
-<div class="block">RetentionClassifierGovernanceActionConnector sets a Retention classification on the elements supplied as action
- targets, recording the retention basis, status and (optionally) the time to archive and time to delete.
- If there is at least one action target, the output guard is set to classification-assigned.
- If no action targets are passed the output guard is no-targets-detected.</div>
+<div class="block">RetentionClassifierGovernanceActionConnector sets a Retention classification on the assets supplied as newAsset
+ action targets, recording the steward supplied as the steward action target, the retention basis and status, and
+ the dates to archive and delete the asset's data.  The values come from the configuration properties of the
+ service's connection, and a request parameter overrides the configuration property of the same name.
+ If at least one asset is classified, the output guard is classification-assigned.
+ If no steward is supplied, the output guard is missing-steward and no asset is changed.
+ If there are no newAsset action targets that are assets, the output guard is no-targets-detected.
+ If a value can not be used, or an asset can not be classified, the output guard is classification-failed.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
