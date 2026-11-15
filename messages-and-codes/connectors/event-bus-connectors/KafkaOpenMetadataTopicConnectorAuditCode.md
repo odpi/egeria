@@ -9,7 +9,7 @@ The KafkaOpenMetadataTopicConnectorAuditCode is used to define the message conte
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 21 |
+| **Number of messages** | 23 |
 | **Message identifiers begin** | `OCF-KAFKA-TOPIC-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector](../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector) |
@@ -42,6 +42,8 @@ The KafkaOpenMetadataTopicConnectorAuditCode is used to define the message conte
 | [OCF-KAFKA-TOPIC-CONNECTOR-0019](#ocf-kafka-topic-connector-0019) | EXCEPTION | Egeria encountered an exception when attempting to connect the message producer to the kafka topic {0} |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0020](#ocf-kafka-topic-connector-0020) | ERROR | The send buffer for topic {0} is full with {1} events; {2} events have been discarded so far and {3} events have been sent |
 | [OCF-KAFKA-TOPIC-CONNECTOR-0021](#ocf-kafka-topic-connector-0021) | EXCEPTION | Apache Kafka failed to deliver an event on topic {0}; {1} events have failed and {2} have been sent.  Error {3} returned with message {4} |
+| [OCF-KAFKA-TOPIC-CONNECTOR-0022](#ocf-kafka-topic-connector-0022) | ERROR | The Apache Kafka consumer for topic {0} has been waiting {1} seconds for Apache Kafka to assign it a partition; it is in consumer group {2} and is not receiving any events |
+| [OCF-KAFKA-TOPIC-CONNECTOR-0023](#ocf-kafka-topic-connector-0023) | INFO | The Apache Kafka consumer for topic {0} in consumer group {1} has now been assigned a partition and is receiving events again |
 
 ----
 
@@ -482,6 +484,48 @@ The Kafka client gave up on the event after its own retries (bounded by the deli
 **User action**
 
 Review the operational status of Apache Kafka and the error message to determine the cause.  Check that the topic exists and that this server is authorized to write to it.
+
+
+----
+
+### OCF-KAFKA-TOPIC-CONNECTOR-0022
+
+> The Apache Kafka consumer for topic {0} has been waiting {1} seconds for Apache Kafka to assign it a partition; it is in consumer group {2} and is not receiving any events
+
+|  |  |
+|---|---|
+| **Java constant** | `KafkaOpenMetadataTopicConnectorAuditCode.NO_PARTITION_ASSIGNED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+The consumer has asked to join its consumer group but the Apache Kafka broker has not given it a partition of the topic to read, so no events are being received from this topic.  This server keeps polling, and events published in the meantime are read once a partition is assigned.  This message is repeated while the consumer has no partition.
+
+**User action**
+
+This is normally a problem at the Apache Kafka broker rather than in this server.  Check the broker's log for errors that name the consumer group - for example, a group coordinator that reports COORDINATOR\_NOT\_AVAILABLE, or that it is repeatedly preparing to rebalance the group, cannot store the group's assignment and needs the broker to be restarted.  Also check that no other running server uses the same consumer group for this topic, since only one member of a group is given each partition, and that the topic exists.
+
+
+----
+
+### OCF-KAFKA-TOPIC-CONNECTOR-0023
+
+> The Apache Kafka consumer for topic {0} in consumer group {1} has now been assigned a partition and is receiving events again
+
+|  |  |
+|---|---|
+| **Java constant** | `KafkaOpenMetadataTopicConnectorAuditCode.PARTITION_ASSIGNED_AFTER_WAIT` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The consumer was reported as waiting for a partition and Apache Kafka has now assigned it one.  It reads the events from where the consumer group last committed.
+
+**User action**
+
+No action is required unless the wait keeps recurring, in which case check the health of the Apache Kafka broker.
 
 
 ----

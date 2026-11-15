@@ -237,6 +237,40 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
 
     /**
+     * Return the governance zones to set on an element that the user is withdrawing.  The element's zones are
+     * replaced by the list returned; null or empty means the element is to have no zones.  With no security
+     * connector the current zones are returned and the element is unchanged.
+     *
+     * @param currentZones the zones that the element is in now
+     * @param userId calling user
+     * @param typeName type of the element
+     * @param methodName name of the called service
+     *
+     * @return list of zones for a withdrawn element
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem from the verifier
+     * @throws UserNotAuthorizedException user not recognized, or no default zones are defined for the user
+     */
+    public List<String> getWithdrawZones(List<String> currentZones,
+                                         String       userId,
+                                         String       typeName,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        if (userSecurityConnector != null)
+        {
+            return userSecurityConnector.getWithdrawZonesForUser(currentZones,
+                                                                 typeName,
+                                                                 methodName,
+                                                                 userId);
+        }
+
+        return currentZones;
+    }
+
+
+    /**
      * Check that the calling user is authorized to issue a (any) request to the OMAG Server Platform.
      *
      * @param userId calling user

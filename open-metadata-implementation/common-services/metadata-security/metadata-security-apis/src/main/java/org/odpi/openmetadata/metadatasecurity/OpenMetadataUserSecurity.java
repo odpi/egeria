@@ -137,18 +137,23 @@ public interface OpenMetadataUserSecurity
 
 
     /**
-     * Determine the appropriate setting for the zones depending on the user and the
-     * current zones set up for the element.  This is called whenever an element is published.
+     * Return the governance zones to set on an element that the user is publishing.  This is called whenever
+     * an element is published, and the element's zones are replaced by the list returned.  A null or empty
+     * list means that the element is to have no zones, which makes it visible to all users.
+     * <br><br>
+     * An implementation that does not manage publish zones returns the current zones, so that the element is
+     * unchanged.  One that does, and finds no publish zones defined for the user, throws
+     * UserNotAuthorizedException rather than guess whether the element should be left alone or opened up.
      *
-     * @param currentZones default setting of the published zones
+     * @param currentZones the zones that the element is in now
      * @param typeName type of the element
      * @param serviceName name of the called service
      * @param userId name of the user
      *
-     * @return list of published zones for the user
+     * @return list of published zones for the user - null or empty to remove all zones
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException a problem calculating the zones
-     * @throws UserNotAuthorizedException unknown user
+     * @throws UserNotAuthorizedException unknown user, or no publish zones are defined for the user
      */
     List<String> getPublishZonesForUser(List<String>  currentZones,
                                         String        typeName,
@@ -156,4 +161,31 @@ public interface OpenMetadataUserSecurity
                                         String        userId) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException;
+
+
+    /**
+     * Return the governance zones to set on an element that the user is withdrawing.  This is called whenever
+     * an element is withdrawn, and the element's zones are replaced by the list returned.  A null or empty
+     * list means that the element is to have no zones, which makes it visible to all users.
+     * <br><br>
+     * An implementation that does not manage default zones returns the current zones, so that the element is
+     * unchanged.  One that does, and finds no default zones defined for the user, throws
+     * UserNotAuthorizedException rather than guess whether the element should be left alone or opened up.
+     *
+     * @param currentZones the zones that the element is in now
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of zones for a withdrawn element - null or empty to remove all zones
+     * @throws InvalidParameterException one of the parameter values is invalid
+     * @throws PropertyServerException a problem calculating the zones
+     * @throws UserNotAuthorizedException unknown user, or no default zones are defined for the user
+     */
+    List<String> getWithdrawZonesForUser(List<String>  currentZones,
+                                         String        typeName,
+                                         String        serviceName,
+                                         String        userId) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException;
 }

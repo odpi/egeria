@@ -1614,7 +1614,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
-     * Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+     * Update the zone membership to increase its visibility.  The publishZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define publishZones.
      *
      * @param metadataElementGUID    unique identifier of the metadata element to update
      * @param metadataSourceOptions  options to control access to open metadata
@@ -1633,7 +1633,7 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
-     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define defaultZones.
      *
      * @param metadataElementGUID    unique identifier of the metadata element to update
      * @param metadataSourceOptions  options to control access to open metadata

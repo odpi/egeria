@@ -199,7 +199,7 @@ Content-Type: application/json
 
 ###
 # @name publishMetadataElement
-# Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.
+# Update the zone membership to increase its visibility.  The publishZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define publishZones.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/publish
 Authorization: Bearer {{token}}
@@ -217,7 +217,7 @@ Content-Type: application/json
 
 ###
 # @name withdrawMetadataElement
-# Update the zone membership to decrease its visibility.  The defaultZones are defined in the user directory.
+# Update the zone membership to decrease its visibility.  The defaultZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define defaultZones.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/withdraw
 Authorization: Bearer {{token}}

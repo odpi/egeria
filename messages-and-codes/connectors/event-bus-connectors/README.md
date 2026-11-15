@@ -6,14 +6,14 @@
 
 These connectors send and receive events over the event bus - typically Apache Kafka.
 
-This directory documents 22 messages in 2 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 24 messages in 2 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
 
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
-| [KafkaOpenMetadataTopicConnectorAuditCode](KafkaOpenMetadataTopicConnectorAuditCode.md) | Audit log messages | `OCF-KAFKA-TOPIC-CONNECTOR-` | 21 | <https://egeria-project.org/concepts/open-metadata-topic-connector/> |
+| [KafkaOpenMetadataTopicConnectorAuditCode](KafkaOpenMetadataTopicConnectorAuditCode.md) | Audit log messages | `OCF-KAFKA-TOPIC-CONNECTOR-` | 23 | <https://egeria-project.org/concepts/open-metadata-topic-connector/> |
 | [KafkaOpenMetadataTopicConnectorErrorCode](KafkaOpenMetadataTopicConnectorErrorCode.md) | Exception messages | `OCF-KAFKA-TOPIC-CONNECTOR-400-` | 1 | <https://egeria-project.org/concepts/open-metadata-topic-connector/> |
 
 

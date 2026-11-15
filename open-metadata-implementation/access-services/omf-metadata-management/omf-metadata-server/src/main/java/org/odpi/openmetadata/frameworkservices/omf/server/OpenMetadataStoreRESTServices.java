@@ -3741,7 +3741,7 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.
+     * Update the zone membership to reduce its visibility.  The defaultZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define defaultZones.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId

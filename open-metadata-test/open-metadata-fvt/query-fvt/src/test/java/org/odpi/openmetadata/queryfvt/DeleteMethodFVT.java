@@ -52,6 +52,29 @@ public class DeleteMethodFVT
     private static final String NOTHING_MEANS_NULL =
             ".  A search that matches nothing returns null, not an empty list";
 
+    /**
+     * The exception to the rule above is a search that matched an element which was then filtered out of the
+     * results - an archived element (a Memento) on a request that is not for lineage, say.  The page was
+     * filtered, so the paging contract has it come back as an empty list, telling the caller to keep paging;
+     * a repository that filters in its query returns null instead.  Either way the page holds nothing.
+     */
+    private static final String FILTERED_MEANS_EMPTY =
+            ".  A page whose only matches were filtered out is an empty list or null, never the filtered element";
+
+
+    /**
+     * Assert that a page of results holds no elements.  It is used where the search matched an element that
+     * is then filtered out, which the paging contract returns as an empty list rather than null.
+     *
+     * @param page the page returned
+     * @param message what was expected
+     */
+    private static void assertFilteredOut(List<OpenMetadataElement> page,
+                                          String                    message)
+    {
+        assertTrue((page == null) || (page.isEmpty()), message + FILTERED_MEANS_EMPTY + " - found " + page);
+    }
+
 
     @Test
     void archiveMethodClassifiesElementAsMementoAndHidesFromDefaultSearch() throws Exception
@@ -94,8 +117,8 @@ public class DeleteMethodFVT
 
             List<OpenMetadataElement> afterArchiveDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-            assertNull(afterArchiveDefault,
-                       "A default (non-lineage) query should no longer find an archived element" + NOTHING_MEANS_NULL);
+            assertFilteredOut(afterArchiveDefault,
+                              "A default (non-lineage) query should no longer find an archived element");
 
             QueryOptions lineageOptions = new QueryOptions();
             lineageOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);
@@ -170,9 +193,9 @@ public class DeleteMethodFVT
 
                 List<OpenMetadataElement> afterDeleteDefault = openMetadataStore.findMetadataElements(searchProperties, null, defaultOptions);
 
-                assertNull(afterDeleteDefault,
-                           "A default (non-lineage) query should no longer find the element once LOOK_FOR_LINEAGE has "
-                                   + "archived it" + NOTHING_MEANS_NULL);
+                assertFilteredOut(afterDeleteDefault,
+                                  "A default (non-lineage) query should no longer find the element once LOOK_FOR_LINEAGE has "
+                                          + "archived it");
 
                 QueryOptions lineageOptions = new QueryOptions();
                 lineageOptions.setMetadataElementTypeName(OpenMetadataType.COLLECTION.typeName);

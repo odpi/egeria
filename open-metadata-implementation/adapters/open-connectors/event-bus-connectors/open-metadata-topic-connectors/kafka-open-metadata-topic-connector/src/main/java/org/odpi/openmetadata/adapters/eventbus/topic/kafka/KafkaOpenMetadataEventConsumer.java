@@ -55,6 +55,16 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
     // Keep track of when an initial rebalance is done
     private boolean initialPartitionAssignment = true;
 
+    /*
+     * A consumer that Apache Kafka never assigns a partition to receives nothing and, without this, says nothing.
+     * It is reported after a minute without one, and every ten minutes after that.
+     */
+    private static final long NO_PARTITION_FIRST_REPORT_MS  = 60_000L;
+    private static final long NO_PARTITION_REPEAT_REPORT_MS = 600_000L;
+
+    private final PartitionAssignmentMonitor partitionAssignmentMonitor;
+    private final String                     consumerGroupId;
+
     
     //If we get close enough to the consumer timeout timestamp, force a poll so that
     //we do not exceed the timeout.  This parameter controls how close we can get
@@ -105,6 +115,10 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
         this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
         this.connector = connector;
         this.localServerId = localServerId;
+        this.consumerGroupId = kafkaConsumerProperties.getProperty("group.id");
+        this.partitionAssignmentMonitor = new PartitionAssignmentMonitor(System.currentTimeMillis(),
+                                                                         NO_PARTITION_FIRST_REPORT_MS,
+                                                                         NO_PARTITION_REPEAT_REPORT_MS);
 
         final String           actionDescription = "initialize";
 
@@ -182,7 +196,9 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
 
                 final Duration pollDuration = Duration.ofMillis(pollTimeout);
                 final ConsumerRecords<String, String> records = consumer.poll(pollDuration);
-                
+
+                reportPartitionAssignment();
+
                 log.debug("Found records: {}", records.count());
                 for (ConsumerRecord<String, String> consumerRecord : records)
                 {
@@ -312,6 +328,38 @@ public class KafkaOpenMetadataEventConsumer extends AuditLoggingBase implements 
         log.info("Exiting main loop for topic {} & cleaning up", this.topicToSubscribe);
 
     }
+
+    /**
+     * Say so if this consumer has gone too long without a partition of its topic, and again when it gets one.
+     * It is called on the consumer's own thread, after a poll, because the Kafka consumer may only be used by
+     * one thread.
+     */
+    private void reportPartitionAssignment()
+    {
+        final String actionDescription = "reportPartitionAssignment";
+
+        long now = System.currentTimeMillis();
+
+        PartitionAssignmentMonitor.Report report = partitionAssignmentMonitor.check(! consumer.assignment().isEmpty(), now);
+
+        if (report == PartitionAssignmentMonitor.Report.STILL_UNASSIGNED)
+        {
+            log.warn("No partition assigned for topic {} in consumer group {} after {} seconds",
+                     topicToSubscribe, consumerGroupId, partitionAssignmentMonitor.getSecondsUnassigned(now));
+
+            logRecord(actionDescription,
+                      KafkaOpenMetadataTopicConnectorAuditCode.NO_PARTITION_ASSIGNED.getMessageDefinition(topicToSubscribe,
+                                                                                                          Long.toString(partitionAssignmentMonitor.getSecondsUnassigned(now)),
+                                                                                                          consumerGroupId));
+        }
+        else if (report == PartitionAssignmentMonitor.Report.NOW_ASSIGNED)
+        {
+            logRecord(actionDescription,
+                      KafkaOpenMetadataTopicConnectorAuditCode.PARTITION_ASSIGNED_AFTER_WAIT.getMessageDefinition(topicToSubscribe,
+                                                                                                                  consumerGroupId));
+        }
+    }
+
 
     private void addUnprocessedEvent(int partition, String topic, KafkaIncomingEvent event) {
         if (isAutoCommitEnabled) {

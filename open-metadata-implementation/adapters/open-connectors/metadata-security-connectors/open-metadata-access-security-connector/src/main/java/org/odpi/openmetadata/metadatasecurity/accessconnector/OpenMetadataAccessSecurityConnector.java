@@ -43,6 +43,13 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                                                   OpenMetadataUserSecurity
 {
     /*
+     * The properties of a user account (in its otherProperties) that list the governance zones for the elements
+     * the user creates and withdraws, and for the elements the user publishes.
+     */
+    static final String DEFAULT_ZONES_PROPERTY_NAME = "defaultZones";
+    static final String PUBLISH_ZONES_PROPERTY_NAME = "publishZones";
+
+    /*
      * Standard group names
      */
     private String allUsersGroup            = OpenMetadataSecurityConfigurationProperty.ALL_USERS_GROUP.getDefaultValue();
@@ -1059,22 +1066,26 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                            InvalidParameterException,
                                                                            PropertyServerException
     {
-        return this.getZonesForUser(initialZones, "defaultZones", userId);
+        return this.getZonesForUser(initialZones, DEFAULT_ZONES_PROPERTY_NAME, userId);
     }
 
 
     /**
-     * Determine the appropriate setting for the default zones depending on the user and the
-     * default publish zones set up for the service.  This is called whenever an element is published.
+     * Return the governance zones to set on an element that the user is publishing.  They are the zones listed
+     * in the publishZones property of the user's account, and they replace the element's current zones.
+     * An account with a publishZones property that is empty (or null) removes all of the element's zones,
+     * making it visible to everyone.  An account with no publishZones property at all does not say what
+     * publishing means for this user, and the request is refused.
      *
-     * @param currentZones default setting of the published zones
+     * @param currentZones the zones that the element is in now - they are not relevant
      * @param typeName type of the element
      * @param serviceName name of the called service
      * @param userId name of the user
      *
-     * @return list of published zones for the user
+     * @return list of published zones for the user - an empty list to remove all zones
      * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request, or their
+     *                                    account does not define the publish zones.
      * @throws PropertyServerException unable to retrieve necessary information to make the decision.
      */
     @Override
@@ -1085,10 +1096,95 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
                                                                            InvalidParameterException,
                                                                            PropertyServerException
     {
+        return this.getDefinedZonesForUser(PUBLISH_ZONES_PROPERTY_NAME, "publish", typeName, userId);
+    }
+
+
+    /**
+     * Return the governance zones to set on an element that the user is withdrawing.  They are the zones listed
+     * in the defaultZones property of the user's account - the zones that the user's new elements are created
+     * in - and they replace the element's current zones.  An account with a defaultZones property that is empty
+     * (or null) removes all of the element's zones.  An account with no defaultZones property at all does not
+     * say what withdrawing means for this user, and the request is refused.
+     *
+     * @param currentZones the zones that the element is in now - they are not relevant
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of zones for a withdrawn element - an empty list to remove all zones
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request, or their
+     *                                    account does not define the default zones.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    @Override
+    public List<String> getWithdrawZonesForUser(List<String> currentZones,
+                                                String       typeName,
+                                                String       serviceName,
+                                                String       userId) throws UserNotAuthorizedException,
+                                                                            InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        return this.getDefinedZonesForUser(DEFAULT_ZONES_PROPERTY_NAME, "withdraw", typeName, userId);
+    }
+
+
+    /**
+     * Return the list of zones held in a named property of the user's account.  The property must be present:
+     * its absence is not taken to mean "no zones", because removing an element's zones opens it to everyone.
+     * A property that is present with no value, or with an empty list, does mean "no zones".
+     *
+     * @param propertyName name of the property in the account's otherProperties
+     * @param requestName what the user is trying to do - for the error message
+     * @param typeName type of the element
+     * @param userId name of the user
+     *
+     * @return list of zones - an empty list if the property says there are none
+     * @throws InvalidParameterException  one of the elements is invisible to the requesting user.
+     * @throws UserNotAuthorizedException the user has no active account, or the account does not have the property.
+     * @throws PropertyServerException unable to retrieve necessary information to make the decision.
+     */
+    private List<String> getDefinedZonesForUser(String propertyName,
+                                                String requestName,
+                                                String typeName,
+                                                String userId) throws UserNotAuthorizedException,
+                                                                      InvalidParameterException,
+                                                                      PropertyServerException
+    {
+        final String methodName = "getDefinedZonesForUser";
+
         /*
-         * The current zones are not relevant.
+         * The user must have a valid account.
          */
-        return this.getZonesForUser(null, "publishZones", userId);
+        OpenMetadataUserAccount userAccount = this.getActiveUserAccount(userId, methodName);
+
+        if ((userAccount == null) ||
+                (userAccount.getOtherProperties() == null) ||
+                (! userAccount.getOtherProperties().containsKey(propertyName)))
+        {
+            throwUndefinedZonesForUser(userId, requestName, typeName, propertyName, methodName);
+
+            return null; // not reached
+        }
+
+        /*
+         * The order the zones are listed in is kept, and a zone listed twice is returned once.
+         */
+        Set<String> zones = new LinkedHashSet<>();
+
+        if (userAccount.getOtherProperties().get(propertyName) instanceof List<?> zoneList)
+        {
+            for (Object zoneName : zoneList)
+            {
+                if ((zoneName instanceof String zoneNameString) && (! zoneNameString.isBlank()))
+                {
+                    zones.add(zoneNameString);
+                }
+            }
+        }
+
+        return new ArrayList<>(zones);
     }
 
     /*============================================================================
