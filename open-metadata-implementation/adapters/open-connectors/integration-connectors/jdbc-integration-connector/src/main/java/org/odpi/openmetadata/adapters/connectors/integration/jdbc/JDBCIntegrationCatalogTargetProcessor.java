@@ -237,6 +237,19 @@ public class JDBCIntegrationCatalogTargetProcessor extends CatalogTargetProcesso
     {
         final String methodName = "JDBCIntegrationConnector.refreshDatabaseSchema";
 
+        if (jdbcResourceConnector == null)
+        {
+            /*
+             * The schema asset has no connection to reach the database through.  A schema discovered by
+             * cataloguing its database has none, and is refreshed with the database instead.
+             */
+            logRecord(methodName,
+                      JDBCIntegrationConnectorAuditCode.SCHEMA_TARGET_WITHOUT_CONNECTION.getMessageDefinition(connectorName,
+                                                                                                              schemaElement.getElementHeader().getGUID(),
+                                                                                                              schemaName));
+            return;
+        }
+
         String jdbcSchemaName = this.getJDBCSchemaName(jdbcResourceConnector, schemaElement, configurationProperties);
 
         if (jdbcSchemaName == null)
