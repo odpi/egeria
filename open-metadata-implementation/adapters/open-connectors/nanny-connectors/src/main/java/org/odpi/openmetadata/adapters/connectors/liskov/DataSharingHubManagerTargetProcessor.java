@@ -46,6 +46,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.Vali
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
@@ -1246,7 +1247,9 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      * Request that the contents of the supplied element are catalogued, if this is not already happening.  The
      * cataloguing governance action type links the element to an integration connector that maintains the
      * description of its contents.  Therefore, cataloguing is already enabled if the element is a catalog target
-     * of that integration connector.
+     * of that integration connector - or if the database that holds it is, since cataloguing a database
+     * catalogues each of its schemas.  A schema found that way has no connection of its own, so making it a
+     * catalog target as well left the connector a target it could not connect to, on every refresh.
      *
      * @param assetElement      element to catalog
      * @param assetProperties   properties of the element to catalog
@@ -1291,9 +1294,14 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                         (predefinedTarget.getRelationshipProperties() instanceof TargetForGovernanceActionProperties targetForGovernanceActionProperties) &&
                         (ActionTarget.INTEGRATION_CONNECTOR.getName().equals(targetForGovernanceActionProperties.getActionTargetName())))
                 {
-                    if (getCatalogTargetGUIDs(predefinedTarget.getRelatedElement().getElementHeader().getGUID()).contains(assetGUID))
+                    Set<String> catalogTargetGUIDs = getCatalogTargetGUIDs(predefinedTarget.getRelatedElement().getElementHeader().getGUID());
+
+                    for (String cataloguedGUID : getCataloguingScopeGUIDs(assetElement, propertyHelper))
                     {
-                        return;
+                        if (catalogTargetGUIDs.contains(cataloguedGUID))
+                        {
+                            return;
+                        }
                     }
 
                     enablesCatalogTarget = true;
@@ -1315,6 +1323,38 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                                                             assetProperties.getDisplayName(),
                                                                             assetGUID,
                                                                             governanceActionTypeProperties.getQualifiedName()));
+    }
+
+
+    /**
+     * Return the elements whose cataloguing catalogues the supplied element: the element itself, and any database
+     * that holds it.
+     *
+     * @param assetElement element to catalog
+     * @param propertyHelper helper that walks the element types' supertypes
+     * @return unique identifiers, the element's first
+     */
+    static List<String> getCataloguingScopeGUIDs(OpenMetadataRootElement assetElement,
+                                                 PropertyHelper          propertyHelper)
+    {
+        List<String> scopeGUIDs = new ArrayList<>();
+
+        scopeGUIDs.add(assetElement.getElementHeader().getGUID());
+
+        if (assetElement.getDataSetContent() != null)
+        {
+            for (RelatedMetadataElementSummary dataStore : assetElement.getDataSetContent())
+            {
+                if ((dataStore != null) && (dataStore.getRelatedElement() != null)
+                            && (dataStore.getRelatedElement().getElementHeader() != null)
+                            && (propertyHelper.isTypeOf(dataStore.getRelatedElement().getElementHeader(), OpenMetadataType.DATABASE.typeName)))
+                {
+                    scopeGUIDs.add(dataStore.getRelatedElement().getElementHeader().getGUID());
+                }
+            }
+        }
+
+        return scopeGUIDs;
     }
 
 
