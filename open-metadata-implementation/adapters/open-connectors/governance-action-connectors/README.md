@@ -36,8 +36,11 @@ The remaining governance action services, grouped by category, are:
     an action target to determine its duplicates.  Each element of the same type with the same qualified name is
     linked to the action target with a PeerDuplicateLink relationship, and both are given the KnownDuplicate
     classification.  Duplicates that are already linked are not linked again, so the service can be rerun safely.
-  * **RetentionClassifierGovernanceActionConnector** - sets a Retention classification on the elements supplied
-    as action targets.
+  * **RetentionClassifierGovernanceActionConnector** - sets a Retention classification on the assets supplied
+    as `newAsset` action targets, recording the steward supplied as the `steward` action target.  The
+    `statusIdentifier`, `basisIdentifier`, `timeToArchive` and `timeToDelete` values come from its configuration
+    properties and request parameters, and default to a validated, regulated lifetime that archives the data
+    after five years and deletes it after fifteen.
 * **Stewardship**
   * **CatalogTargetAssetGovernanceActionConnector** - creates a catalog target between the supplied integration
     connector and the supplied asset.
