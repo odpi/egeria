@@ -9,12 +9,11 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 |  |  |
 |---|---|
 | **Type of message** | Exception messages |
-| **Number of messages** | 21 |
+| **Number of messages** | 22 |
 | **Message identifiers begin** | `OPEN-METADATA-SECURITY-` |
 | **Java class** | `org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode` |
 | **Module** | [open-metadata-implementation/common-services/metadata-security/metadata-security-apis](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis) |
 | **Source** | [OpenMetadataSecurityErrorCode.java](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis/src/main/java/org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityErrorCode.java) |
-| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 
 ## Messages
@@ -41,6 +40,7 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 | [OPEN-METADATA-SECURITY-403-020](#open-metadata-security-403-020) | 403 | User {0} is not authorized to issue an operation {1} on {2} element {3} |
 | [OPEN-METADATA-SECURITY-403-025](#open-metadata-security-403-025) | 403 | Security access control {0} is not recognized |
 | [OPEN-METADATA-SECURITY-403-026](#open-metadata-security-403-026) | 403 | Exception {0} occurred when retrieving security access control {1}; the exception message was {2} |
+| [OPEN-METADATA-SECURITY-403-027](#open-metadata-security-403-027) | 403 | User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property |
 | [OPEN-METADATA-SECURITY-500-002](#open-metadata-security-500-002) | 500 | Element {0} is not visible to user {1}; it has been filtered from the search results |
 
 ----
@@ -54,6 +54,7 @@ The OpenMetadataSecurityErrorCode is used to define first failure data capture (
 | **Java constant** | `OpenMetadataSecurityErrorCode.BAD_PLATFORM_SECURITY_CONNECTION` |
 | **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -75,6 +76,7 @@ Review the error message to determine the cause of the problem and correct the c
 | **Java constant** | `OpenMetadataSecurityErrorCode.BAD_SERVER_SECURITY_CONNECTION` |
 | **HTTP error code** | 400 - Bad Request - the caller has supplied invalid parameters |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -96,6 +98,7 @@ Review the error message to determine the cause of the problem and correct the c
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_PLATFORM_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -117,6 +120,7 @@ Determine if this is a configuration error, a mistake or the platform is under a
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVER_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -138,6 +142,7 @@ Determine whether the user should have access to the server.  If they should hav
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -159,6 +164,7 @@ Determine whether the user should have access to the requested service. If they 
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -180,6 +186,7 @@ Determine whether the user should be able to issue this operation on the request
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_ADD_FEEDBACK` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -201,6 +208,7 @@ Using information about the element and the user, determine if this result is ex
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_ZONE_CHANGE` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -222,6 +230,7 @@ Using information about the element, the zones and the user, determine if this r
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_ANCHOR_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -243,6 +252,7 @@ Using knowledge about the user and the element, determine if this is the correct
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_CREATE` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -264,6 +274,7 @@ Using knowledge about the user and the element, determine if this is the correct
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -285,6 +296,7 @@ Determine if the user should be allowed access to the type information or not.  
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_TYPE_CHANGE` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -306,6 +318,7 @@ The ability to change types is typically limited to a restricted group of users.
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -327,6 +340,7 @@ Determine if the user should have access to this metadata instance and if they s
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_INSTANCE_CHANGE` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -348,6 +362,7 @@ Determine if the user should have access to this metadata instance and if they s
 | **Java constant** | `OpenMetadataSecurityErrorCode.NO_CONNECTIONS_ALLOWED` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -369,6 +384,7 @@ No action is required if this user should not have access to the connection.  To
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNKNOWN_USER` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -390,6 +406,7 @@ Track down the source of the request and either add the user to the user directo
 | **Java constant** | `OpenMetadataSecurityErrorCode.FAILED_TO_RETRIEVE_USER` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -411,6 +428,7 @@ Use the information in the exception to determine the cause of this error.  The 
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNAUTHORIZED_ELEMENT_ACCESS` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -432,6 +450,7 @@ Review the security policies and settings to determine if this access to the ele
 | **Java constant** | `OpenMetadataSecurityErrorCode.UNKNOWN_CONTROL` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -453,6 +472,7 @@ Track down the source of the request and correct the name of the control - or ad
 | **Java constant** | `OpenMetadataSecurityErrorCode.FAILED_TO_RETRIEVE_CONTROL` |
 | **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -461,6 +481,28 @@ An exception occurred when the security service tried to retrieve a security acc
 **User action**
 
 Use the information in the exception to determine the cause of this error.  The control will not be returned to the calling user.
+
+
+----
+
+### OPEN-METADATA-SECURITY-403-027
+
+> User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenMetadataSecurityErrorCode.UNDEFINED_ZONES_FOR_USER` |
+| **HTTP error code** | 403 - Forbidden - the caller is not authorized to perform this request |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/governance-zoning/overview/> |
+
+**System action**
+
+The request changes the governance zones of the element to the list of zones in the named property of the calling user's account in the user directory.  The account does not have this property, so the system cannot tell which zones the user is permitted to move the element to.  The element is not changed and the request fails with a UserNotAuthorizedException exception.
+
+**User action**
+
+If this user should be able to make this request, add the named property to the otherProperties of their user account in the user directory.  Its value is the list of governance zones to set on the element.  An empty list (for example publishZones: []) means that all of the element's governance zones are removed, which makes the element visible to all users.
 
 
 ----
@@ -474,6 +516,7 @@ Use the information in the exception to determine the cause of this error.  The 
 | **Java constant** | `OpenMetadataSecurityErrorCode.FILTERED_ELEMENT` |
 | **HTTP error code** | 500 - Internal Server Error - an unexpected error occurred inside Egeria |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 

@@ -60,12 +60,28 @@ public class LineageVisibilityFVT
     private static final String CATEGORY = "LineageVisibility";
 
     /**
-     * Appended to the assertions that check a search found nothing.  Null is the end of a result set;
-     * an empty list means only that this batch was filtered out, so a caller that honours the paging
-     * contract keeps asking.  Accepting either here would let a regression from one to the other pass unnoticed.
+     * Appended to the assertions that check a search did not return a hidden element.  The search matched the
+     * element and it was then filtered out of the results - it is a Memento or Promise and the request is not
+     * for lineage.  The page was filtered, so the paging contract has it come back as an empty list, telling
+     * the caller to keep paging; a repository that filters in its query returns null instead.  Either way the
+     * page holds nothing.
      */
-    private static final String NOTHING_MEANS_NULL =
-            ".  A search that matches nothing returns null, not an empty list";
+    private static final String FILTERED_MEANS_EMPTY =
+            ".  A page whose only matches were filtered out is an empty list or null, never the filtered element";
+
+
+    /**
+     * Assert that a page of results holds no elements.  It is used where the search matched an element that
+     * is then filtered out, which the paging contract returns as an empty list rather than null.
+     *
+     * @param page the page returned
+     * @param message what was expected
+     */
+    private static void assertFilteredOut(List<OpenMetadataElement> page,
+                                          String                    message)
+    {
+        assertTrue((page == null) || (page.isEmpty()), message + FILTERED_MEANS_EMPTY + " - found " + page);
+    }
 
 
     @Test
@@ -290,8 +306,8 @@ public class LineageVisibilityFVT
         /*
          * Ordinary requests: the element is invisible by every route.
          */
-        assertNull(this.findByQualifiedName(openMetadataStore, testElements.qualifiedName, false),
-                   "A property search without forLineage should not find an element classified as " + classificationName + NOTHING_MEANS_NULL);
+        assertFilteredOut(this.findByQualifiedName(openMetadataStore, testElements.qualifiedName, false),
+                          "A property search without forLineage should not find an element classified as " + classificationName);
 
         assertNull(this.getByUniqueName(openMetadataStore, testElements.qualifiedName, false),
                    "A lookup by unique name without forLineage should not find an element classified as " + classificationName);

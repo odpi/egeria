@@ -9,7 +9,7 @@ The JDBCIntegrationConnectorAuditCode is used to define the message content for 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 13 |
+| **Number of messages** | 14 |
 | **Message identifiers begin** | `JDBC-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/jdbc-integration-connector](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/jdbc-integration-connector) |
@@ -34,6 +34,7 @@ The JDBCIntegrationConnectorAuditCode is used to define the message content for 
 | [JDBC-INTEGRATION-CONNECTOR-0015](#jdbc-integration-connector-0015) | ERROR | Connector {0} found {1} elements in the metadata access server with a qualified name of {2}; expecting to find at most one |
 | [JDBC-INTEGRATION-CONNECTOR-0017](#jdbc-integration-connector-0017) | INFO | Connector {0} is preparing to extract metadata from schema {1} of database {2} |
 | [JDBC-INTEGRATION-CONNECTOR-0018](#jdbc-integration-connector-0018) | ERROR | Connector {0} cannot tell which database schema the catalog target {1} ({2}) refers to, so it is skipping it |
+| [JDBC-INTEGRATION-CONNECTOR-0019](#jdbc-integration-connector-0019) | ERROR | Connector {0} cannot connect to the database schema catalog target {1} ({2}) because it has no connection, so it is skipping it |
 
 ----
 
@@ -306,6 +307,27 @@ The catalog target is a database schema asset, but nothing on it names the schem
 **User action**
 
 Set the databaseSchema configuration property to the schema's name, either on the catalog target or on the schema asset's connection.  The database vendors' content packs set it on the connection built from their schema template.
+
+
+----
+
+### JDBC-INTEGRATION-CONNECTOR-0019
+
+> Connector {0} cannot connect to the database schema catalog target {1} ({2}) because it has no connection, so it is skipping it
+
+|  |  |
+|---|---|
+| **Java constant** | `JDBCIntegrationConnectorAuditCode.SCHEMA_TARGET_WITHOUT_CONNECTION` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}` |
+
+**System action**
+
+A database schema is catalogued through its own connection when it is a catalog target on its own.  This schema asset has none - a schema discovered by cataloguing its database is given no connection, because its contents are refreshed through the database's.
+
+**User action**
+
+If the schema's database is already a catalog target of this connector, remove this catalog target: the schema is catalogued with its database.  Otherwise, give the schema asset a connection, as the database vendors' schema templates do.
 
 
 ----

@@ -293,6 +293,16 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                   "Make sure this control is no longer needed.",
                   "https://egeria-project.org/features/metadata-security/overview/"),
 
+    /**
+     * OPEN-METADATA-SECURITY-0031 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property
+     */
+    UNDEFINED_ZONES_FOR_USER("OPEN-METADATA-SECURITY-0031",
+                             AuditLogRecordSeverityLevel.SECURITY,
+                             "User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property",
+                             "The request changes the governance zones of the element to the list of zones in the named property of the calling user's account.  The account does not have this property, so the element is not changed and the request fails.",
+                             "If this user should be able to make this request, add the named property to the otherProperties of their user account in the user directory.  Its value is the list of governance zones to set on the element; an empty list removes all of the element's governance zones.",
+                             "https://egeria-project.org/features/governance-zoning/overview/"),
+
     ;
 
     private final String                      logMessageId;

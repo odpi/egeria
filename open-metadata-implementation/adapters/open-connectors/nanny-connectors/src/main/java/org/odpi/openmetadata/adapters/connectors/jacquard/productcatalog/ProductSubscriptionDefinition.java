@@ -22,27 +22,31 @@ public enum ProductSubscriptionDefinition
                             ProductGlossaryTermDefinition.EVALUATION_SUBSCRIPTION),
 
     /**
-     * This subscription delivers the data to the target destination once a day.
+     * This subscription delivers the data to the target destination once a day, starting from the time of the
+     * subscription.  It is a periodic subscription: deliveries follow the schedule whether or not the data has
+     * changed, so the product's asset is not monitored for changes.
      */
     DAILY_REFRESH_SUBSCRIPTION("DAILY-REFRESH-SUBSCRIPTION",
                                "Daily refresh subscription",
                                "This subscription delivers the data to the target destination once a day.",
                                null,
                                ProductGovernanceDefinition.DAILY_REFRESH_SLO,
-                               true,
+                               false,
                                true,
                                24 * 60,
                                ProductGlossaryTermDefinition.DAILY_REFRESH_SUBSCRIPTION),
 
     /**
-     * This subscription delivers the data to the target destination once a week.
+     * This subscription delivers the data to the target destination once a week, starting from the time of the
+     * subscription.  It is a periodic subscription: deliveries follow the schedule whether or not the data has
+     * changed, so the product's asset is not monitored for changes.
      */
     WEEKLY_REFRESH_SUBSCRIPTION("WEEKLY-REFRESH-SUBSCRIPTION",
                                "Weekly refresh subscription",
                                "This subscription delivers the data to the target destination once a week.",
                                null,
                                ProductGovernanceDefinition.WEEKLY_REFRESH_SLO,
-                                true,
+                                false,
                                 true,
                                 7 * 24 * 60,
                                 ProductGlossaryTermDefinition.WEEKLY_REFRESH_SUBSCRIPTION),

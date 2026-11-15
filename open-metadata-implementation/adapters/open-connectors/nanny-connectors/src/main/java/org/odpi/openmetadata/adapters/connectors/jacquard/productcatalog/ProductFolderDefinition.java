@@ -99,13 +99,13 @@ public enum ProductFolderDefinition
                     null),
 
     /**
-     * Open Metadata Digital Product Catalog
+     * Open Metadata Digital Products
      */
-    PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
+    PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName,
              null,
              TOP_LEVEL,
              "Open Metadata Digital Products",
-             "Digital Products",
+             "Digital Products derived from Open Metadata",
              "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostGreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
              null),
 

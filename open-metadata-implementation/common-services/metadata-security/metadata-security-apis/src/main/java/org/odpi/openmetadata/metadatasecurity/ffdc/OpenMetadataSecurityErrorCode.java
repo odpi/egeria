@@ -242,6 +242,18 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                "https://egeria-project.org/features/metadata-security/overview/"),
 
     /**
+     * OPEN-METADATA-SECURITY-403-027 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property
+     */
+    UNDEFINED_ZONES_FOR_USER(403, "OPEN-METADATA-SECURITY-403-027",
+                             "User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property",
+                             "The request changes the governance zones of the element to the list of zones in the named property of the calling user's account in the user directory.  " +
+                                     "The account does not have this property, so the system cannot tell which zones the user is permitted to move the element to.  " +
+                                     "The element is not changed and the request fails with a UserNotAuthorizedException exception.",
+                             "If this user should be able to make this request, add the named property to the otherProperties of their user account in the user directory.  " +
+                                     "Its value is the list of governance zones to set on the element.  An empty list (for example publishZones: []) means that all of the element's governance zones are removed, which makes the element visible to all users.",
+                             "https://egeria-project.org/features/governance-zoning/overview/"),
+
+    /**
      * OPEN-METADATA-SECURITY-500-002 - Element {1} is not visible to user {0}; it has been filtered from the search results
      */
     FILTERED_ELEMENT(500, "OPEN-METADATA-SECURITY-500-002",

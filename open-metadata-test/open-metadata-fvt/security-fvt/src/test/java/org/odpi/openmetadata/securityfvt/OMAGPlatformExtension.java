@@ -87,8 +87,12 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
     public static final String INVESTIGATOR_USER_ID = "secfvtinvestigator";
     /** A member of the stewards group, which the zones grant their DEFAULT operations to. */
     public static final String STEWARD_USER_ID      = "secfvtsteward";
-    /** Also a steward, but with a defaultZones setting on the account. */
+    /** Also a steward, but with defaultZones (the restricted zone) and publishZones (the open zone) settings on the account. */
     public static final String CURATOR_USER_ID      = "secfvtcurator";
+    /** A steward whose account has defaultZones of the restricted zone and publishZones set to an empty list. */
+    public static final String RELEASER_USER_ID     = "secfvtreleaser";
+    /** A steward whose account has defaultZones and publishZones properties with no value (null). */
+    public static final String OPENER_USER_ID       = "secfvtopener";
     /** An ordinary employee with no roles, no groups and no zone settings. */
     public static final String EMPLOYEE_USER_ID     = "secfvtemployee";
     /** A digital (non-personal) account, admitted to the server and service but not an employee. */
@@ -307,7 +311,11 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         appendUser(yaml, STEWARD_USER_ID, "Security FVT Steward", UserAccountType.EMPLOYEE, UserAccountStatus.AVAILABLE,
                    null, List.of(STEWARDS_GROUP), null);
         appendUser(yaml, CURATOR_USER_ID, "Security FVT Curator", UserAccountType.EMPLOYEE, UserAccountStatus.AVAILABLE,
-                   null, List.of(STEWARDS_GROUP), List.of(RESTRICTED_ZONE));
+                   null, List.of(STEWARDS_GROUP), List.of(RESTRICTED_ZONE), "\n            - " + OPEN_ZONE);
+        appendUser(yaml, RELEASER_USER_ID, "Security FVT Releaser", UserAccountType.EMPLOYEE, UserAccountStatus.AVAILABLE,
+                   null, List.of(STEWARDS_GROUP), List.of(RESTRICTED_ZONE), " []");
+        appendUser(yaml, OPENER_USER_ID, "Security FVT Opener", UserAccountType.EMPLOYEE, UserAccountStatus.AVAILABLE,
+                   null, List.of(STEWARDS_GROUP), null, "");
         appendUser(yaml, EMPLOYEE_USER_ID, "Security FVT Employee", UserAccountType.EMPLOYEE, UserAccountStatus.AVAILABLE,
                    null, null, null);
         appendUser(yaml, DIGITAL_USER_ID, "Security FVT Automated Process", UserAccountType.DIGITAL, UserAccountStatus.AVAILABLE,
@@ -382,6 +390,7 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
          * token - the same path every real Egeria client takes.
          */
         for (String userId : List.of(ADMIN_USER_ID, OPERATOR_USER_ID, INVESTIGATOR_USER_ID, STEWARD_USER_ID, CURATOR_USER_ID,
+                                     RELEASER_USER_ID, OPENER_USER_ID,
                                      EMPLOYEE_USER_ID, DIGITAL_USER_ID, CONTRACTOR_USER_ID, EXTERNAL_USER_ID, SERVER_USER_ID))
         {
             appendTokenCollection(yaml, userId, urlRoot);
@@ -481,6 +490,37 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
                                    List<String>      groups,
                                    List<String>      defaultZones)
     {
+        appendUser(yaml, userId, userName, type, status, roles, groups, defaultZones, null);
+    }
+
+
+    /**
+     * Append one user account to the directory, with the settings that decide what publishing and withdrawing
+     * an element mean for the user.  The publish zones are given as the YAML to follow "publishZones:" so that
+     * each way of writing "no zones" can be set up: " []" is an empty list, and an empty string leaves the
+     * property with no value, which YAML reads as null.  When the publish zones are given and there are no
+     * default zones, defaultZones is written with no value too.
+     *
+     * @param yaml buffer
+     * @param userId account name
+     * @param userName display name
+     * @param type account type - this is what the dynamic groups such as employeeUsers are built from
+     * @param status account status
+     * @param roles security roles, or null
+     * @param groups security groups, or null
+     * @param defaultZones zones to add to any element the user creates, and to set on one the user withdraws, or null
+     * @param publishZonesYaml the YAML value of publishZones, or null to leave the property out
+     */
+    private static void appendUser(StringBuilder     yaml,
+                                   String            userId,
+                                   String            userName,
+                                   UserAccountType   type,
+                                   UserAccountStatus status,
+                                   List<String>      roles,
+                                   List<String>      groups,
+                                   List<String>      defaultZones,
+                                   String            publishZonesYaml)
+    {
         yaml.append("      ").append(userId).append(":\n");
         yaml.append("        userAccountStatus: ").append(status.name()).append('\n');
         yaml.append("        userAccountType: ").append(type.name()).append('\n');
@@ -489,10 +529,23 @@ public class OMAGPlatformExtension implements BeforeAllCallback, ExtensionContex
         appendList(yaml, "        ", "securityRoles", roles);
         appendList(yaml, "        ", "securityGroups", groups);
 
-        if (defaultZones != null)
+        if ((defaultZones != null) || (publishZonesYaml != null))
         {
             yaml.append("        otherProperties:\n");
-            appendList(yaml, "          ", "defaultZones", defaultZones);
+
+            if (defaultZones != null)
+            {
+                appendList(yaml, "          ", "defaultZones", defaultZones);
+            }
+            else
+            {
+                yaml.append("          defaultZones:\n");
+            }
+
+            if (publishZonesYaml != null)
+            {
+                yaml.append("          publishZones:").append(publishZonesYaml).append('\n');
+            }
         }
 
         yaml.append("        secrets:\n");

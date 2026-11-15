@@ -262,6 +262,16 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                     "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
     /**
+     * JACQUARD-HARVESTER-0032 - The {0} integration connector has removed digital product {1} called {2} from product catalog folder {3} because its definition no longer places it there
+     */
+    PRODUCT_REMOVED_FROM_FOLDER("JACQUARD-HARVESTER-0032",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The {0} integration connector has removed digital product {1} called {2} from product catalog folder {3} because its definition no longer places it there",
+                                "The product's definition has moved it to a different folder, or into a product family.  The product itself is unchanged, so it keeps its subscription processes, notification types and subscribers; only its link to the folder it used to be in has been removed.",
+                                "No action is required.  This message appears once for each folder a product has been moved out of.",
+                                "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
+    /**
      * JACQUARD-HARVESTER-0030 - The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4}
      */
     PRODUCT_ASSET_RETYPED("JACQUARD-HARVESTER-0030",

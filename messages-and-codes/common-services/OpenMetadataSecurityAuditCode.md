@@ -9,12 +9,11 @@ The OpenMetadataSecurityAuditCode is used to define the message content for the 
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 27 |
+| **Number of messages** | 28 |
 | **Message identifiers begin** | `OPEN-METADATA-SECURITY-` |
 | **Java class** | `org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode` |
 | **Module** | [open-metadata-implementation/common-services/metadata-security/metadata-security-apis](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis) |
 | **Source** | [OpenMetadataSecurityAuditCode.java](../../open-metadata-implementation/common-services/metadata-security/metadata-security-apis/src/main/java/org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 
 ## Messages
@@ -48,6 +47,7 @@ The OpenMetadataSecurityAuditCode is used to define the message content for the 
 | [OPEN-METADATA-SECURITY-0028](#open-metadata-security-0028) | SECURITY | Removing user {0} from the platform user directory |
 | [OPEN-METADATA-SECURITY-0029](#open-metadata-security-0029) | SECURITY | Adding security access control {0} to the platform user directory |
 | [OPEN-METADATA-SECURITY-0030](#open-metadata-security-0030) | SECURITY | Removing security access control {0} from the platform user directory |
+| [OPEN-METADATA-SECURITY-0031](#open-metadata-security-0031) | SECURITY | User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property |
 
 ----
 
@@ -60,6 +60,7 @@ The OpenMetadataSecurityAuditCode is used to define the message content for the 
 | **Java constant** | `OpenMetadataSecurityAuditCode.PLATFORM_INITIALIZING` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -81,6 +82,7 @@ No action is required.  This is part of the normal start up of the OMAG Server P
 | **Java constant** | `OpenMetadataSecurityAuditCode.PLATFORM_SHUTDOWN` |
 | **Severity** | SHUTDOWN - An existing component is shutting down. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -102,6 +104,7 @@ No action is required.  This is part of the normal shut down of the OMAG Server 
 | **Java constant** | `OpenMetadataSecurityAuditCode.SERVICE_INITIALIZING` |
 | **Severity** | STARTUP - A new component is starting up. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -123,6 +126,7 @@ No action is required.  This is part of the normal start up of the server.
 | **Java constant** | `OpenMetadataSecurityAuditCode.SERVICE_SHUTDOWN` |
 | **Severity** | SHUTDOWN - An existing component is shutting down. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -144,6 +148,7 @@ No action is required.  This is part of the normal shut down of the server.
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -165,6 +170,7 @@ Review the security policies and settings to determine if this access should be 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVER_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -186,6 +192,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -207,6 +214,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_OPERATION_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -228,6 +236,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_ADD_FEEDBACK` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -249,6 +258,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_ZONE_CHANGE` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -270,6 +280,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_ANCHOR_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -291,6 +302,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -312,6 +324,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_TYPE_CHANGE` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -333,6 +346,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CREATE` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -354,6 +368,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -375,6 +390,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_INSTANCE_CHANGE` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -396,6 +412,7 @@ Review the security policies and settings to determine whether this user should 
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNAUTHORIZED_ELEMENT_ACCESS` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -417,6 +434,7 @@ Review the security policies and settings to determine if this access to the ele
 | **Java constant** | `OpenMetadataSecurityAuditCode.FILTERED_ELEMENT` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -438,6 +456,7 @@ The element is filtered from the results.
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNKNOWN_USER` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -459,6 +478,7 @@ Track down the source of the request and either add the user to the user directo
 | **Java constant** | `OpenMetadataSecurityAuditCode.FAILED_TO_RETRIEVE_USER` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -480,6 +500,7 @@ Use the information in the exception to determine the cause of this error.  The 
 | **Java constant** | `OpenMetadataSecurityAuditCode.EXPIRED_USER` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -501,6 +522,7 @@ Track down the source of the request and encourage the used to rest their creden
 | **Java constant** | `OpenMetadataSecurityAuditCode.UNKNOWN_CONTROL` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -522,6 +544,7 @@ Track down the source of the request and correct the name of the control - or ad
 | **Java constant** | `OpenMetadataSecurityAuditCode.FAILED_TO_RETRIEVE_CONTROL` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -543,6 +566,7 @@ Use the information in the exception to determine the cause of this error.  The 
 | **Java constant** | `OpenMetadataSecurityAuditCode.ADDING_USER` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -564,6 +588,7 @@ Make sure this user is valid and has the correct permissions.
 | **Java constant** | `OpenMetadataSecurityAuditCode.REMOVING_USER` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -585,6 +610,7 @@ Make sure this user is no longer needed.
 | **Java constant** | `OpenMetadataSecurityAuditCode.ADDING_CONTROL` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -606,6 +632,7 @@ Make sure this control is valid and has the correct permissions.
 | **Java constant** | `OpenMetadataSecurityAuditCode.REMOVING_CONTROL` |
 | **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
 | **Message inserts** | `{0}` |
+| **Further reading** | <https://egeria-project.org/features/metadata-security/overview/> |
 
 **System action**
 
@@ -614,6 +641,28 @@ A security access control is removed from the platform's user directory.
 **User action**
 
 Make sure this control is no longer needed.
+
+
+----
+
+### OPEN-METADATA-SECURITY-0031
+
+> User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenMetadataSecurityAuditCode.UNDEFINED_ZONES_FOR_USER` |
+| **Severity** | SECURITY - Unauthorized access to a service or metadata instance has been attempted. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/features/governance-zoning/overview/> |
+
+**System action**
+
+The request changes the governance zones of the element to the list of zones in the named property of the calling user's account.  The account does not have this property, so the element is not changed and the request fails.
+
+**User action**
+
+If this user should be able to make this request, add the named property to the otherProperties of their user account in the user directory.  Its value is the list of governance zones to set on the element; an empty list removes all of the element's governance zones.
 
 
 ----

@@ -519,6 +519,39 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
+     * Write an audit log message and throw an exception to record that the user's account does not say which
+     * governance zones an element is to be moved to.
+     *
+     * @param userId calling user
+     * @param requestName what the user is trying to do to the element - publish or withdraw
+     * @param elementTypeName type of the element being changed
+     * @param propertyName name of the property that is missing from the user's account
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the zones are not defined
+     */
+    protected void throwUndefinedZonesForUser(String userId,
+                                              String requestName,
+                                              String elementTypeName,
+                                              String propertyName,
+                                              String methodName) throws UserNotAuthorizedException
+    {
+        logRecord(methodName,
+                  OpenMetadataSecurityAuditCode.UNDEFINED_ZONES_FOR_USER.getMessageDefinition(userId,
+                                                                                              requestName,
+                                                                                              elementTypeName,
+                                                                                              propertyName));
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNDEFINED_ZONES_FOR_USER.getMessageDefinition(userId,
+                                                                                                                         requestName,
+                                                                                                                         elementTypeName,
+                                                                                                                         propertyName),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
      * Write an audit log message and throw an exception to record
      * unauthorized access.
      *
@@ -722,18 +755,19 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Determine the appropriate setting for the zones depending on the user and the
-     * current zones set up for the element.  This is called whenever an element is published.
+     * Return the governance zones to set on an element that the user is publishing.  This is called whenever
+     * an element is published, and the element's zones are replaced by the list returned.  This implementation
+     * does not manage publish zones, so it returns the current zones and the element is unchanged.
      *
-     * @param currentZones default setting of the published zones
+     * @param currentZones the zones that the element is in now
      * @param typeName type of the element
      * @param serviceName name of the called service
      * @param userId name of the user
      *
-     * @return list of published zones for the user
+     * @return list of published zones for the user - null or empty to remove all zones
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException a problem calculating the zones
-     * @throws UserNotAuthorizedException unknown user
+     * @throws UserNotAuthorizedException unknown user, or no publish zones are defined for the user
      */
     public List<String> getPublishZonesForUser(List<String>  currentZones,
                                                String        typeName,
@@ -741,6 +775,32 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                String        userId) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
+    {
+        return currentZones;
+    }
+
+
+    /**
+     * Return the governance zones to set on an element that the user is withdrawing.  This is called whenever
+     * an element is withdrawn, and the element's zones are replaced by the list returned.  This implementation
+     * does not manage default zones, so it returns the current zones and the element is unchanged.
+     *
+     * @param currentZones the zones that the element is in now
+     * @param typeName type of the element
+     * @param serviceName name of the called service
+     * @param userId name of the user
+     *
+     * @return list of zones for a withdrawn element - null or empty to remove all zones
+     * @throws InvalidParameterException one of the parameter values is invalid
+     * @throws PropertyServerException a problem calculating the zones
+     * @throws UserNotAuthorizedException unknown user, or no default zones are defined for the user
+     */
+    public List<String> getWithdrawZonesForUser(List<String>  currentZones,
+                                                String        typeName,
+                                                String        serviceName,
+                                                String        userId) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         return currentZones;
     }

@@ -69,6 +69,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
@@ -758,6 +759,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * a product being moved into the security zone - must reach a product that is already catalogued.
              */
             this.applyZoneMembership(productElement.getElementHeader().getGUID(), productDefinition);
+
+            /*
+             * A product's place in the catalog's folders follows its definition, so a product that the definition
+             * has moved - into a family, say - does not stay in the folder it was first catalogued in as well.
+             */
+            this.applyFolderMembership(productElement.getElementHeader().getGUID(), productDefinition);
 
             /*
              * An existing product's membership of its families is re-checked because a family that could not be
@@ -1950,6 +1957,11 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
      * Only the notification types that decide when to notify by watching a resource are linked.  The ones that
      * notify on a fixed interval do not look at a resource at all, so giving them one would say something
      * about the notification that is not true.
+     * <br>
+     * A family may itself belong to a family.  A subscription to the outer family delivers the nested family's
+     * products too, so the member's asset is linked to every family above it, not just the ones it names.
+     * The nested family's own asset is not linked to anything: it is a view that never changes, so it would
+     * never trigger a notification.
      *
      * @param productDefinition description of the member product
      * @param productAssetGUID the member's asset, or null if it does not have one
@@ -1964,16 +1976,37 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        if (productAssetGUID == null)
+        if ((productAssetGUID == null) || (OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(productDefinition.getTypeName())))
         {
             return;
+        }
+
+        /*
+         * Collect the families the member names, and the families those belong to, each once.
+         */
+        List<ProductDefinition> productFamilies = new ArrayList<>(productDefinition.getProductFamilies());
+        Set<String>             familyNames     = new HashSet<>();
+
+        for (int i = 0; i < productFamilies.size(); i++)
+        {
+            ProductDefinition productFamily = productFamilies.get(i);
+
+            if ((familyNames.add(productFamily.getQualifiedName())) && (productFamily.getProductFamilies() != null))
+            {
+                productFamilies.addAll(productFamily.getProductFamilies());
+            }
         }
 
         ProductManagerClient  productManagerClient  = integrationContext.getProductManagerClient();
         MetadataSourceOptions metadataSourceOptions = productManagerClient.getMetadataSourceOptions();
 
-        for (ProductDefinition productFamily : productDefinition.getProductFamilies())
+        for (ProductDefinition productFamily : productFamilies)
         {
+            if (! familyNames.remove(productFamily.getQualifiedName()))
+            {
+                continue;
+            }
+
             String productFamilyGUID = products.get(productFamily.getQualifiedName());
 
             if ((productFamilyGUID == null) || (productFamily.getSubscriptionTypes() == null))
@@ -4738,6 +4771,103 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                        currentTypeName,
                                                                                        wantedTypeName));
             }
+        }
+    }
+
+
+    /**
+     * Make the product catalog folders that an existing product is linked to match its definition.  A product is
+     * placed in its folder when it is created, so a definition that later moves the product to another folder,
+     * or takes it out of the folders to sit in a product family, would otherwise leave it where it was.
+     * The product is removed from every product catalog folder its definition does not name, and added to the
+     * one it does name if it is not already there.  Only Jacquard's own folders are considered: a membership of
+     * a family, or of a collection someone else has put the product in, is left alone.
+     *
+     * @param productGUID unique identifier of the product
+     * @param productDefinition definition of the product
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void applyFolderMembership(String            productGUID,
+                                       ProductDefinition productDefinition) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "applyFolderMembership";
+
+        if ((productGUID == null) || (productFolders == null))
+        {
+            return;
+        }
+
+        CollectionClient             collectionClient             = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        String definedFolderGUID = null;
+
+        if (productDefinition.getFolder() != null)
+        {
+            definedFolderGUID = productFolders.get(productDefinition.getFolder().getQualifiedName());
+        }
+
+        /*
+         * A folder is never a member of a product, so any of the catalog's folders found at the other end of a
+         * collection membership relationship is a folder the product is in.
+         */
+        List<OpenMetadataRootElement> collections = classificationExplorerClient.getRelatedRootElements(productGUID,
+                                                                                                         0,
+                                                                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                         this.headerAndPropertiesQuery(classificationExplorerClient));
+
+        boolean inDefinedFolder = false;
+
+        if (collections != null)
+        {
+            for (OpenMetadataRootElement collection : collections)
+            {
+                if ((collection == null) || (collection.getElementHeader() == null))
+                {
+                    continue;
+                }
+
+                String collectionGUID = collection.getElementHeader().getGUID();
+
+                if (collectionGUID.equals(definedFolderGUID))
+                {
+                    inDefinedFolder = true;
+                }
+                else if (productFolders.containsValue(collectionGUID))
+                {
+                    collectionClient.removeFromCollection(collectionGUID,
+                                                          productGUID,
+                                                          new DeleteOptions(collectionClient.getMetadataSourceOptions()));
+
+                    String folderName = collectionGUID;
+
+                    if ((collection.getProperties() instanceof ReferenceableProperties referenceableProperties) &&
+                            (referenceableProperties.getQualifiedName() != null))
+                    {
+                        folderName = referenceableProperties.getQualifiedName();
+                    }
+
+                    logRecord(methodName,
+                              JacquardAuditCode.PRODUCT_REMOVED_FROM_FOLDER.getMessageDefinition(connectorName,
+                                                                                                 productGUID,
+                                                                                                 productDefinition.getProductName(),
+                                                                                                 folderName));
+                }
+            }
+        }
+
+        if ((definedFolderGUID != null) && (! inDefinedFolder))
+        {
+            collectionClient.addToCollection(definedFolderGUID,
+                                             productGUID,
+                                             new MakeAnchorOptions(collectionClient.getMetadataSourceOptions()),
+                                             null);
         }
     }
 

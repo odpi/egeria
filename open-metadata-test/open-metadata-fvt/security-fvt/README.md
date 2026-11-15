@@ -73,7 +73,9 @@ a test is unclear. In outline:
 | `secfvtoperator` | employee | operator, investigator | may start servers but not configure them |
 | `secfvtinvestigator` | employee | investigator | may look but not change |
 | `secfvtsteward` | employee | stewards group | the zones grant their `DEFAULT` operations to this group |
-| `secfvtcurator` | employee | stewards group, plus a `defaultZones` setting | shows default zones being applied |
+| `secfvtcurator` | employee | stewards group, plus `defaultZones` and `publishZones` settings | shows default zones being applied, and publish/withdraw moving an element between zones |
+| `secfvtreleaser` | employee | stewards group, `defaultZones` set and `publishZones: []` | shows an empty publish zones list removing all zones |
+| `secfvtopener` | employee | stewards group, `defaultZones` and `publishZones` with no value | shows a null setting removing all zones |
 | `secfvtemployee` | employee | none | an ordinary user; also has a personal zone named after it |
 | `secfvtnpa` | digital | none | admitted like the employee, but a different account type |
 | `secfvtcontractor` | contractor | none | admitted to the server, refused the store service |
@@ -131,6 +133,15 @@ through the generic handlers, so what is tested is the decision as a user meets 
 * the `newMaintainer` group follows the element's `maintainedBy` history: the creator is refused an update,
   a new user is permitted once and refused the second time
 * an account's `defaultZones` are applied to what it creates, and are added to the zones it asks for
+
+[PublishWithdrawFVT](src/test/java/org/odpi/openmetadata/securityfvt/PublishWithdrawFVT.java) -
+`publishMetadataElement` and `withdrawMetadataElement`, whose zones come from the caller's account.
+
+* publishing replaces the element's zones with the account's `publishZones`; withdrawing replaces them with
+  its `defaultZones`
+* an empty list, or a property with no value, removes all of the element's zones
+* an account that does not define the property is refused (`OPEN-METADATA-SECURITY-403-027`) and the element
+  is left as it was
 
 [AccessControlManagementFVT](src/test/java/org/odpi/openmetadata/securityfvt/AccessControlManagementFVT.java) -
 the management half of `OpenMetadataUserSecurity`, through the platform.

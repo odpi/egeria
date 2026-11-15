@@ -2947,6 +2947,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
     /**
      * Update the zones for a specific anchor element to the list set up in the user's publish zones.
+     * The request fails if the user directory is in use and does not define publish zones for the user.
      *
      * @param userId calling user
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
@@ -2993,22 +2994,95 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            OpenMetadataAPIGenericBuilder builder = new OpenMetadataAPIGenericBuilder(originalEntity.getType().getTypeDefGUID(),
-                                                                                      originalEntity.getType().getTypeDefName(),
-                                                                                      repositoryHelper,
-                                                                                      serviceName,
-                                                                                      serverName);
-
+            /*
+             * The security verifier decides which zones the element moves to.  It throws
+             * UserNotAuthorizedException if the user directory does not define them for this user.
+             */
             List<String> elementZones = securityVerifier.getPublishZones(this.getEntityZones(originalEntity),
                                                                          userId,
                                                                          originalEntity.getType().getTypeDefName(),
                                                                          methodName);
+
+            this.replaceElementZones(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     originalEntity,
+                                     entityGUIDParameterName,
+                                     elementZones,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
+                                     methodName);
+        }
+    }
+
+
+    /**
+     * Replace the governance zones of an element.  A list of zones is set in the element's ZoneMembership
+     * classification; no zones at all removes the classification, which makes the element visible to all users.
+     * Either way the zones in the Anchors classifications of the element and its members are brought up to date,
+     * and nothing is changed if the element is already in exactly these zones.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID      unique identifier of the software capability that owns this element
+     * @param externalSourceName      unique name of the software capability that owns this element
+     * @param entity the element to update
+     * @param entityGUIDParameterName parameter name supplying the element's unique identifier
+     * @param elementZones the new zones - null or empty for none
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException guid or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void replaceElementZones(String       userId,
+                                     String       externalSourceGUID,
+                                     String       externalSourceName,
+                                     EntityDetail entity,
+                                     String       entityGUIDParameterName,
+                                     List<String> elementZones,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
+                                     Date         effectiveTime,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        if ((elementZones == null) || (elementZones.isEmpty()))
+        {
+            if (this.getExistingClassification(entity, OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName) != null)
+            {
+                this.removeClassificationFromRepository(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        entity.getGUID(),
+                                                        entityGUIDParameterName,
+                                                        entity.getType().getTypeDefName(),
+                                                        OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeGUID,
+                                                        OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+            }
+        }
+        else
+        {
+            OpenMetadataAPIGenericBuilder builder = new OpenMetadataAPIGenericBuilder(entity.getType().getTypeDefGUID(),
+                                                                                      entity.getType().getTypeDefName(),
+                                                                                      repositoryHelper,
+                                                                                      serviceName,
+                                                                                      serverName);
+
             this.setClassificationInRepository(userId,
                                                externalSourceGUID,
                                                externalSourceName,
-                                               originalEntity.getGUID(),
+                                               entity.getGUID(),
                                                entityGUIDParameterName,
-                                               originalEntity.getType().getTypeDefName(),
+                                               entity.getType().getTypeDefName(),
                                                OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeGUID,
                                                OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
                                                builder.getZoneMembershipProperties(elementZones, methodName),
@@ -3017,17 +3091,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                forDuplicateProcessing,
                                                effectiveTime,
                                                methodName);
-
-            /*
-             * Setting the ZoneMembership classification also brings the zones in the Anchors classifications
-             * of the element and its members up to date.
-             */
         }
     }
 
 
     /**
-     * Update the zones for a specific asset to the list set up in default zones.
+     * Update the zones for a specific element to the list set up in the user's default zones.
+     * The request fails if the user directory is in use and does not define default zones for the user.
      *
      * @param userId calling user
      * @param externalSourceGUID      unique identifier of the software capability that owns this element
@@ -3074,35 +3144,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            OpenMetadataAPIGenericBuilder builder = new OpenMetadataAPIGenericBuilder(originalEntity.getType().getTypeDefGUID(),
-                                                                                      originalEntity.getType().getTypeDefName(),
-                                                                                      repositoryHelper,
-                                                                                      serviceName,
-                                                                                      serverName);
-
-            List<String> elementZones = securityVerifier.getDefaultZones(this.getEntityZones(originalEntity),
+            /*
+             * The security verifier decides which zones the element moves to.  It throws
+             * UserNotAuthorizedException if the user directory does not define them for this user.
+             */
+            List<String> elementZones = securityVerifier.getWithdrawZones(this.getEntityZones(originalEntity),
                                                                          userId,
                                                                          originalEntity.getType().getTypeDefName(),
                                                                          methodName);
-            this.setClassificationInRepository(userId,
-                                               externalSourceGUID,
-                                               externalSourceName,
-                                               originalEntity.getGUID(),
-                                               entityGUIDParameterName,
-                                               originalEntity.getType().getTypeDefName(),
-                                               OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeGUID,
-                                               OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName,
-                                               builder.getZoneMembershipProperties(elementZones, methodName),
-                                               true,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
 
-            /*
-             * Setting the ZoneMembership classification also brings the zones in the Anchors classifications
-             * of the element and its members up to date.
-             */
+            this.replaceElementZones(userId,
+                                     externalSourceGUID,
+                                     externalSourceName,
+                                     originalEntity,
+                                     entityGUIDParameterName,
+                                     elementZones,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
+                                     methodName);
         }
     }
 

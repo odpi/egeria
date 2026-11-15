@@ -177,6 +177,25 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
                           "Review the operational status of Apache Kafka and the error message to determine the cause.  " +
                                   "Check that the topic exists and that this server is authorized to write to it.",
                           "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
+
+    NO_PARTITION_ASSIGNED("OCF-KAFKA-TOPIC-CONNECTOR-0022",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The Apache Kafka consumer for topic {0} has been waiting {1} seconds for Apache Kafka to assign it a partition; it is in consumer group {2} and is not receiving any events",
+                          "The consumer has asked to join its consumer group but the Apache Kafka broker has not given it a partition of the topic to read, so no events are being received from this topic.  " +
+                                  "This server keeps polling, and events published in the meantime are read once a partition is assigned.  " +
+                                  "This message is repeated while the consumer has no partition.",
+                          "This is normally a problem at the Apache Kafka broker rather than in this server.  Check the broker's log for errors that name the consumer group - " +
+                                  "for example, a group coordinator that reports COORDINATOR_NOT_AVAILABLE, or that it is repeatedly preparing to rebalance the group, cannot store the group's assignment and needs the broker to be restarted.  " +
+                                  "Also check that no other running server uses the same consumer group for this topic, since only one member of a group is given each partition, " +
+                                  "and that the topic exists.",
+                          "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
+
+    PARTITION_ASSIGNED_AFTER_WAIT("OCF-KAFKA-TOPIC-CONNECTOR-0023",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The Apache Kafka consumer for topic {0} in consumer group {1} has now been assigned a partition and is receiving events again",
+                                  "The consumer was reported as waiting for a partition and Apache Kafka has now assigned it one.  It reads the events from where the consumer group last committed.",
+                                  "No action is required unless the wait keeps recurring, in which case check the health of the Apache Kafka broker.",
+                                  "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
     ;
 
     private final String                      logMessageId;

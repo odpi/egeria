@@ -73,6 +73,7 @@ final class SecurityFvtTestSupport
     static final String UNAUTHORIZED_INSTANCE_CREATE = "OPEN-METADATA-SECURITY-403-008";
     static final String UNKNOWN_USER                 = "OPEN-METADATA-SECURITY-403-017";
     static final String UNAUTHORIZED_ELEMENT_ACCESS  = "OPEN-METADATA-SECURITY-403-020";
+    static final String UNDEFINED_ZONES_FOR_USER     = "OPEN-METADATA-SECURITY-403-027";
 
     private static final String SOURCE_NAME = "security-fvt";
 

@@ -6,7 +6,7 @@
 
 The common services provide the shared function - such as parameter validation, metadata security and the generic metadata handlers - that the rest of the Egeria services call.  Their messages surface through whichever service is running at the time.
 
-This directory documents 194 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
+This directory documents 196 messages in 11 message sets.  Return to the [messages and codes index](../README.md).
 
 
 ## Message sets
@@ -20,8 +20,8 @@ This directory documents 194 messages in 11 message sets.  Return to the [messag
 | [OMAGServerInstanceAuditCode](OMAGServerInstanceAuditCode.md) | Audit log messages | `OMAG-MULTI-TENANT-` | 2 | <https://egeria-project.org/services/multi-tenant/> |
 | [OMAGServerInstanceErrorCode](OMAGServerInstanceErrorCode.md) | Exception messages | `OMAG-MULTI-TENANT-` | 12 | <https://egeria-project.org/services/multi-tenant/> |
 | [OpenMetadataObservabilityAuditCode](OpenMetadataObservabilityAuditCode.md) | Audit log messages | `METADATA-OBSERVABILITY-` | 11 |  |
-| [OpenMetadataSecurityAuditCode](OpenMetadataSecurityAuditCode.md) | Audit log messages | `OPEN-METADATA-SECURITY-` | 27 | <https://egeria-project.org/features/metadata-security/overview/> |
-| [OpenMetadataSecurityErrorCode](OpenMetadataSecurityErrorCode.md) | Exception messages | `OPEN-METADATA-SECURITY-` | 21 | <https://egeria-project.org/features/metadata-security/overview/> |
+| [OpenMetadataSecurityAuditCode](OpenMetadataSecurityAuditCode.md) | Audit log messages | `OPEN-METADATA-SECURITY-` | 28 |  |
+| [OpenMetadataSecurityErrorCode](OpenMetadataSecurityErrorCode.md) | Exception messages | `OPEN-METADATA-SECURITY-` | 22 |  |
 | [RepositoryHandlerAuditCode](RepositoryHandlerAuditCode.md) | Audit log messages | `OMAG-REPOSITORY-HANDLER-` | 10 | <https://egeria-project.org/services/repository-handler/> |
 | [RepositoryHandlerErrorCode](RepositoryHandlerErrorCode.md) | Exception messages | `OMAG-REPOSITORY-HANDLER-` | 26 | <https://egeria-project.org/services/repository-handler/> |
 
