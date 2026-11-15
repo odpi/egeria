@@ -10894,7 +10894,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @return a list of elements matching the supplied criteria; null means no more matching elements in the metadata
+     *         store.  An empty list means every element retrieved for this page was filtered out (for example, a Memento
+     *         when forLineage is false) and the caller should request the next page.
      * @throws InvalidParameterException one of the search parameters is invalid
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException a problem accessing the metadata store
@@ -10947,10 +10949,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                 }
             }
 
-            if (! results.isEmpty())
-            {
-                return results;
-            }
+            /*
+             * An empty list is returned when the repository returned elements for this page but they were all
+             * filtered out.  Null is reserved for "no more elements" so that callers paging through the results
+             * do not stop early.
+             */
+            return results;
         }
 
         return null;

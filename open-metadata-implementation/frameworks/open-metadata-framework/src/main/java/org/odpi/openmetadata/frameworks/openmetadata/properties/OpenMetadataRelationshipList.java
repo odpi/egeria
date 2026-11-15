@@ -51,7 +51,10 @@ public class OpenMetadataRelationshipList
 
 
     /**
-     * Return the list of metadata elements.
+     * Return the list of relationships.  An empty list is returned as an empty list: it means every
+     * relationship on this page was filtered out, so the caller keeps paging.  Null means there are no more.
+     * This getter used to turn an empty list into null, and since it is also what Jackson serializes, a
+     * filtered page reached the caller as the end of the results.
      *
      * @return result object
      */
@@ -61,14 +64,8 @@ public class OpenMetadataRelationshipList
         {
             return null;
         }
-        else if (relationships.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(relationships);
-        }
+
+        return new ArrayList<>(relationships);
     }
 
 

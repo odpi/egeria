@@ -81,7 +81,7 @@ It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-pro
 ## Implementation scenarios
 
 For further information on implementing can be found in the
-[Developer's Guide](https://egeria-project.org/guides/developer/overview).
+[Developer's Guide](https://egeria-project.org/guides/developer).
 
 
 ## Open Metadata Types

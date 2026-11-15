@@ -195,6 +195,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             List<TestSupportedExternalInstances> externalInstanceTestCases = new ArrayList<>();
             List<TestSupportedEffectivityConditions> effectivityConditionTestCases = new ArrayList<>();
             List<TestSupportedRelationshipEffectivityConditions> relationshipEffectivityConditionTestCases = new ArrayList<>();
+            List<TestSupportedEntityPaging> entityPagingTestCases = new ArrayList<>();
+            List<TestSupportedRelationshipPaging> relationshipPagingTestCases = new ArrayList<>();
 
             Map<String, EntityDef> entityDefs = typeDefGalleryTestCase.getEntityDefs();
             List<RelationshipDef> relationshipDefs = typeDefGalleryTestCase.getRelationshipDefs();
@@ -319,6 +321,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
                     TestSupportedEffectivityConditions testEffectivityConditions = new TestSupportedEffectivityConditions(workPad, entityDef);
                     effectivityConditionTestCases.add(testEffectivityConditions);
+
+                    TestSupportedEntityPaging testEntityPaging = new TestSupportedEntityPaging(workPad, entityDef);
+                    entityPagingTestCases.add(testEntityPaging);
                 }
             }
 
@@ -349,6 +354,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     TestSupportedRelationshipEffectivityConditions testRelationshipEffectivityConditions =
                             new TestSupportedRelationshipEffectivityConditions(workPad, entityDefs, relationshipDef);
                     relationshipEffectivityConditionTestCases.add(testRelationshipEffectivityConditions);
+
+                    TestSupportedRelationshipPaging testRelationshipPaging = new TestSupportedRelationshipPaging(workPad, entityDefs, relationshipDef);
+                    relationshipPagingTestCases.add(testRelationshipPaging);
 
                     relationshipDefsByName.put(relationshipDef.getName(), relationshipDef);
                 }
@@ -475,6 +483,12 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 testCase.cleanTest();
             }
 
+            for (TestSupportedRelationshipPaging testCase : relationshipPagingTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
             for (Map.Entry<String, List<ClassificationDef>> entry : classificationsByEntity.entrySet())
             {
                 entityClassificationSearchTestCases.add(
@@ -527,6 +541,12 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             }
 
             for (TestSupportedEffectivityConditions testCase : effectivityConditionTestCases)
+            {
+                testCase.executeTest();
+                testCase.cleanTest();
+            }
+
+            for (TestSupportedEntityPaging testCase : entityPagingTestCases)
             {
                 testCase.executeTest();
                 testCase.cleanTest();

@@ -130,6 +130,16 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                             "Set the databaseSchema configuration property to the schema's name, either on the catalog target or on the schema asset's connection.  The database vendors' content packs set it on the connection built from their schema template.",
                             "https://egeria-project.org/concepts/integration-connector/"),
 
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0019 - Connector {0} cannot connect to the database schema catalog target {1} ({2}) because it has no connection, so it is skipping it
+     */
+    SCHEMA_TARGET_WITHOUT_CONNECTION("JDBC-INTEGRATION-CONNECTOR-0019",
+                                     AuditLogRecordSeverityLevel.ERROR,
+                                     "Connector {0} cannot connect to the database schema catalog target {1} ({2}) because it has no connection, so it is skipping it",
+                                     "A database schema is catalogued through its own connection when it is a catalog target on its own.  This schema asset has none - a schema discovered by cataloguing its database is given no connection, because its contents are refreshed through the database's.",
+                                     "If the schema's database is already a catalog target of this connector, remove this catalog target: the schema is catalogued with its database.  Otherwise, give the schema asset a connection, as the database vendors' schema templates do.",
+                                     "https://egeria-project.org/concepts/integration-connector/"),
+
     ;
 
 
