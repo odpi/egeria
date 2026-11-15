@@ -554,10 +554,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * Organization Structure
      */
     ORGANIZATION_STRUCTURE(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
-                           null,
+                           new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
                            "Organization Structure",
                            "ORGANIZATION-STRUCTURE-FAMILY",
-                           ProductFolderDefinition.PRODUCTS,
+                           null,
                            "Organization Structure",
                            "Each product in this folder describes the shape of the business: the business capabilities it delivers, the departments it is organized into (the teams that are part of an organization's reporting structure), and which departments deliver each business capability.  Subscribing to the family delivers all three as related tables that join on the business capability and department unique identifiers.",
                            ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
@@ -1342,10 +1342,10 @@ public enum ProductDefinitionEnum implements ProductDefinition
      * Organization Observability
      */
     ORGANIZATION_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
-                               null,
+                               new ProductDefinition[]{ProductDefinitionEnum.ACTOR_PLACES_PRODUCTS},
                                "Organization Observability",
                                "ORGANIZATION-OBSERVABILITY",
-                               ProductFolderDefinition.PRODUCTS,
+                               null,
                                "Organization Observability",
                                "Each product in this folder publishes insights about the activity of the organization observed through the open metadata ecosystem.  The latest insight is published to subscribers on a regular basis.  Subscribers can maintain a history of the insight publications, or treat each one as a trigger to perform specific processing.",
                                ProductCategoryDefinition.INSIGHT_NOTIFICATIONS.getPreferredValue(),

@@ -6,7 +6,7 @@
 
 The nanny connectors look after the open metadata ecosystem itself, recording its activity and deriving insight from it so that the operation of Egeria can be analysed.
 
-This directory documents 141 messages in 17 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 142 messages in 17 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -19,7 +19,7 @@ This directory documents 141 messages in 17 message sets.  Return to the [messag
 | [BaudotNotificationMessageSet](BaudotNotificationMessageSet.md) | Notification messages | `BAUDOT-SUBSCRIPTION-MANAGEMENT-` | 5 | <https://egeria-project.org/concepts/notification/> |
 | [DarwinAuditCode](DarwinAuditCode.md) | Audit log messages | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-` | 20 |  |
 | [DarwinErrorCode](DarwinErrorCode.md) | Exception messages | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/digital-product/> |
-| [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 25 |  |
+| [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 26 |  |
 | [JacquardErrorCode](JacquardErrorCode.md) | Exception messages | `JACQUARD-HARVESTER-` | 2 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
 | [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 13 | <https://egeria-project.org/concepts/data-sharing-hub/> |
 | [LiskovErrorCode](LiskovErrorCode.md) | Exception messages | `LISKOV-DATA-HUB-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/data-sharing-hub/> |
