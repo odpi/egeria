@@ -140,7 +140,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationship</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships()" class="member-name-link">getRelationships</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of metadata elements.</div>
+<div class="block">Return the list of relationships.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -209,7 +209,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRelationships()">
 <h3>getRelationships</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getRelationships</span>()</div>
-<div class="block">Return the list of metadata elements.</div>
+<div class="block">Return the list of relationships.  An empty list is returned as an empty list: it means every
+ relationship on this page was filtered out, so the caller keeps paging.  Null means there are no more.
+ This getter used to turn an empty list into null, and since it is also what Jackson serializes, a
+ filtered page reached the caller as the end of the results.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>result object</dd>
