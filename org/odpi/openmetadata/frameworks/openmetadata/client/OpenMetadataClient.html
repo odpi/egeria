@@ -2529,7 +2529,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
                                      throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the zone membership to increase its visibility.  The publishZones are defined in the user directory.</div>
+<div class="block">Update the zone membership to increase its visibility.  The publishZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define publishZones.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/MetadataElementInterface.html#publishMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">publishMetadataElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code></dd>
@@ -2553,7 +2553,7 @@ implements <a href="../api/OpenMetadataTypesInterface.html" title="interface in 
                                       throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
-<div class="block">Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.</div>
+<div class="block">Update the zone membership to reduce its visibility.  The defaultZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define defaultZones.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/MetadataElementInterface.html#withdrawMetadataElement(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions)">withdrawMetadataElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.api">MetadataElementInterface</a></code></dd>

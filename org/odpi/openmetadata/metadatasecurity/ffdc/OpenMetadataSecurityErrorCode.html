@@ -212,12 +212,16 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-SECURITY-403-005 - User {0} is not authorized to change the zone membership for element {1} from {2} to {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_CONTROL" class="member-name-link">UNKNOWN_CONTROL</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNDEFINED_ZONES_FOR_USER" class="member-name-link">UNDEFINED_ZONES_FOR_USER</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-SECURITY-403-027 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_CONTROL" class="member-name-link">UNKNOWN_CONTROL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-SECURITY-403-025 - Security access control {0} is not recognized</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNKNOWN_USER" class="member-name-link">UNKNOWN_USER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_USER" class="member-name-link">UNKNOWN_USER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-SECURITY-403-017 - User {0} is not recognized</div>
 </div>
 </div>
@@ -418,6 +422,13 @@ the order they are declared.</div>
 <h3>FAILED_TO_RETRIEVE_CONTROL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">FAILED_TO_RETRIEVE_CONTROL</span></div>
 <div class="block">OPEN-METADATA-SECURITY-403-026 - Exception {0} occurred when retrieving security access control {1}; the exception message was {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNDEFINED_ZONES_FOR_USER">
+<h3>UNDEFINED_ZONES_FOR_USER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNDEFINED_ZONES_FOR_USER</span></div>
+<div class="block">OPEN-METADATA-SECURITY-403-027 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property</div>
 </section>
 </li>
 <li>

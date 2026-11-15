@@ -1762,7 +1762,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../../commonservices/ffdc/rest/MetadataSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Update the zone membership to reduce its visibility.  The defaultZones are defined in the user directory.</div>
+<div class="block">Update the zone membership to reduce its visibility.  The defaultZones are defined in the caller's account in the user directory and replace the element's current zones; an empty list removes all zones.  The request fails with UserNotAuthorizedException if the account does not define defaultZones.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>

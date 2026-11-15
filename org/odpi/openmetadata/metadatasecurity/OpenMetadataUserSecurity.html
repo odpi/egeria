@@ -133,8 +133,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Determine the appropriate setting for the zones depending on the user and the
- current zones set up for the element.</div>
+<div class="block">Return the governance zones to set on an element that the user is publishing.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="properties/OpenMetadataSecurityAccessControl.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataSecurityAccessControl</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getSecurityAccessControl(java.lang.String)" class="member-name-link">getSecurityAccessControl</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlName)</code></div>
@@ -152,14 +151,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of defined users.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setSecurityAccessControl(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl)" class="member-name-link">setSecurityAccessControl</a><wbr>(<a href="properties/OpenMetadataSecurityAccessControl.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataSecurityAccessControl</a>&nbsp;securityAccessControl)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getWithdrawZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getWithdrawZonesForUser</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;currentZones,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Create/update information about a specific security access control.</div>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setUserAccount(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">setUserAccount</a><wbr>(<a href="properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a>&nbsp;userAccount)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setSecurityAccessControl(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataSecurityAccessControl)" class="member-name-link">setSecurityAccessControl</a><wbr>(<a href="properties/OpenMetadataSecurityAccessControl.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataSecurityAccessControl</a>&nbsp;securityAccessControl)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Create/update information about a specific security access control.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setUserAccount(org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount)" class="member-name-link">setUserAccount</a><wbr>(<a href="properties/OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a>&nbsp;userAccount)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create/update information about a specific user.</div>
 </div>
 </div>
@@ -347,20 +354,57 @@ loadScripts(document, 'script');</script>
                              throws <span class="exceptions"><a href="../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Determine the appropriate setting for the zones depending on the user and the
- current zones set up for the element.  This is called whenever an element is published.</div>
+<div class="block">Return the governance zones to set on an element that the user is publishing.  This is called whenever
+ an element is published, and the element's zones are replaced by the list returned.  A null or empty
+ list means that the element is to have no zones, which makes it visible to all users.
+ <br><br>
+ An implementation that does not manage publish zones returns the current zones, so that the element is
+ unchanged.  One that does, and finds no publish zones defined for the user, throws
+ UserNotAuthorizedException rather than guess whether the element should be left alone or opened up.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>currentZones</code> - default setting of the published zones</dd>
+<dd><code>currentZones</code> - the zones that the element is in now</dd>
 <dd><code>typeName</code> - type of the element</dd>
 <dd><code>serviceName</code> - name of the called service</dd>
 <dd><code>userId</code> - name of the user</dd>
 <dt>Returns:</dt>
-<dd>list of published zones for the user</dd>
+<dd>list of published zones for the user - null or empty to remove all zones</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameter values is invalid</dd>
 <dd><code><a href="../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem calculating the zones</dd>
-<dd><code><a href="../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - unknown user</dd>
+<dd><code><a href="../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - unknown user, or no publish zones are defined for the user</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getWithdrawZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)">
+<h3>getWithdrawZonesForUser</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getWithdrawZonesForUser</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;currentZones,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</span>
+                              throws <span class="exceptions"><a href="../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.  This is called whenever
+ an element is withdrawn, and the element's zones are replaced by the list returned.  A null or empty
+ list means that the element is to have no zones, which makes it visible to all users.
+ <br><br>
+ An implementation that does not manage default zones returns the current zones, so that the element is
+ unchanged.  One that does, and finds no default zones defined for the user, throws
+ UserNotAuthorizedException rather than guess whether the element should be left alone or opened up.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>currentZones</code> - the zones that the element is in now</dd>
+<dd><code>typeName</code> - type of the element</dd>
+<dd><code>serviceName</code> - name of the called service</dd>
+<dd><code>userId</code> - name of the user</dd>
+<dt>Returns:</dt>
+<dd>list of zones for a withdrawn element - null or empty to remove all zones</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameter values is invalid</dd>
+<dd><code><a href="../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - a problem calculating the zones</dd>
+<dd><code><a href="../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - unknown user, or no default zones are defined for the user</dd>
 </dl>
 </section>
 </li>

@@ -22631,7 +22631,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductSubscriptionDefinition.html#DAILY_REFRESH_SUBSCRIPTION" class="member-name-link">DAILY_REFRESH_SUBSCRIPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></dt>
 <dd>
-<div class="block">This subscription delivers the data to the target destination once a day.</div>
+<div class="block">This subscription delivers the data to the target destination once a day, starting from the time of the
+ subscription.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html#DARK_BLUE" class="member-name-link">DARK_BLUE</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.mermaid.<a href="org/odpi/openmetadata/frameworks/openmetadata/mermaid/Colour.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">Colour</a></dt>
 <dd>&nbsp;</dd>
@@ -79767,18 +79768,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html#getPublishZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getPublishZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.accessconnector.<a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.accessconnector">OpenMetadataAccessSecurityConnector</a></dt>
 <dd>
-<div class="block">Determine the appropriate setting for the default zones depending on the user and the
- default publish zones set up for the service.</div>
+<div class="block">Return the governance zones to set on an element that the user is publishing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html#getPublishZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getPublishZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataSecurityConnector</a></dt>
 <dd>
-<div class="block">Determine the appropriate setting for the zones depending on the user and the
- current zones set up for the element.</div>
+<div class="block">Return the governance zones to set on an element that the user is publishing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataUserSecurity.html#getPublishZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getPublishZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in interface org.odpi.openmetadata.metadatasecurity.<a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataUserSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataUserSecurity</a></dt>
 <dd>
-<div class="block">Determine the appropriate setting for the zones depending on the user and the
- current zones set up for the element.</div>
+<div class="block">Return the governance zones to set on an element that the user is publishing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworks/integration/openlineage/OpenLineageSourceCodeLocationJobFacet.html#getPullRequestNumber()" class="member-name-link">getPullRequestNumber()</a> - Method in class org.odpi.openmetadata.frameworks.integration.openlineage.<a href="org/odpi/openmetadata/frameworks/integration/openlineage/OpenLineageSourceCodeLocationJobFacet.html" title="class in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageSourceCodeLocationJobFacet</a></dt>
 <dd>
@@ -94005,6 +94003,22 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html#getWithdrawDate()" class="member-name-link">getWithdrawDate()</a> - Method in class org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.<a href="org/odpi/openmetadata/frameworks/openmetadata/properties/digitalbusiness/DigitalProductProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness">DigitalProductProperties</a></dt>
 <dd>
 <div class="block">Return the date when the product is being withdrawn.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/server/OpenMetadataServerSecurityVerifier.html#getWithdrawZones(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getWithdrawZones(List&lt;String&gt;, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.server.<a href="org/odpi/openmetadata/metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a></dt>
+<dd>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html#getWithdrawZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getWithdrawZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.accessconnector.<a href="org/odpi/openmetadata/metadatasecurity/accessconnector/OpenMetadataAccessSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.accessconnector">OpenMetadataAccessSecurityConnector</a></dt>
+<dd>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html#getWithdrawZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getWithdrawZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataSecurityConnector</a></dt>
+<dd>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataUserSecurity.html#getWithdrawZonesForUser(java.util.List,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getWithdrawZonesForUser(List&lt;String&gt;, String, String, String)</a> - Method in interface org.odpi.openmetadata.metadatasecurity.<a href="org/odpi/openmetadata/metadatasecurity/OpenMetadataUserSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataUserSecurity</a></dt>
+<dd>
+<div class="block">Return the governance zones to set on an element that the user is withdrawing.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/conformance/beans/OpenMetadataConformanceWorkbenchStatus.html#getWorkbenchComplete()" class="member-name-link">getWorkbenchComplete()</a> - Method in class org.odpi.openmetadata.conformance.beans.<a href="org/odpi/openmetadata/conformance/beans/OpenMetadataConformanceWorkbenchStatus.html" title="class in org.odpi.openmetadata.conformance.beans">OpenMetadataConformanceWorkbenchStatus</a></dt>
 <dd>
@@ -117038,6 +117052,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html#NO_OWNER" class="member-name-link">NO_OWNER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.verification.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyAssetGuard</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/eventbus/topic/kafka/KafkaOpenMetadataTopicConnectorAuditCode.html#NO_PARTITION_ASSIGNED" class="member-name-link">NO_PARTITION_ASSIGNED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.eventbus.topic.kafka.<a href="org/odpi/openmetadata/adapters/eventbus/topic/kafka/KafkaOpenMetadataTopicConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.eventbus.topic.kafka">KafkaOpenMetadataTopicConnectorAuditCode</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html#NO_PROCESS_IMPLEMENTATION" class="member-name-link">NO_PROCESS_IMPLEMENTATION</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.generichandlers.ffdc.<a href="org/odpi/openmetadata/commonservices/generichandlers/ffdc/GenericHandlersErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.generichandlers.ffdc">GenericHandlersErrorCode</a></dt>
 <dd>
 <div class="block">OMAG-GENERIC-HANDLERS-400-007 - Unable to initiate an instance of the {0} governance action process because there is no first governance action process step defined</div>
@@ -129726,6 +129742,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/samples/archiveutilities/governanceengines/SolutionComponentActor.html#PARTICIPATING_HOSPITAL_TO_HOSPITAL" class="member-name-link">PARTICIPATING_HOSPITAL_TO_HOSPITAL</a> - Enum constant in enum class org.odpi.openmetadata.samples.archiveutilities.governanceengines.<a href="org/odpi/openmetadata/samples/archiveutilities/governanceengines/SolutionComponentActor.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponentActor</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="org/odpi/openmetadata/adapters/eventbus/topic/kafka/KafkaOpenMetadataTopicConnectorAuditCode.html#PARTITION_ASSIGNED_AFTER_WAIT" class="member-name-link">PARTITION_ASSIGNED_AFTER_WAIT</a> - Enum constant in enum class org.odpi.openmetadata.adapters.eventbus.topic.kafka.<a href="org/odpi/openmetadata/adapters/eventbus/topic/kafka/KafkaOpenMetadataTopicConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.eventbus.topic.kafka">KafkaOpenMetadataTopicConnectorAuditCode</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html#PARTITION_KEY_POSITION" class="member-name-link">PARTITION_KEY_POSITION</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.openmetadata.types.<a href="org/odpi/openmetadata/frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a></dt>
 <dd>
 <div class="block">Position of the data field in the partition key, starting from 1.</div>
@@ -133718,6 +133736,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Display name of the product.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html#PRODUCT_REMOVED_FROM_FOLDER" class="member-name-link">PRODUCT_REMOVED_FROM_FOLDER</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></dt>
+<dd>
+<div class="block">JACQUARD-HARVESTER-0032 - The {0} integration connector has removed digital product {1} called {2} from product catalog folder {3} because its definition no longer places it there</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html#PRODUCT_RENAMED" class="member-name-link">PRODUCT_RENAMED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/ffdc/JacquardAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.ffdc">JacquardAuditCode</a></dt>
 <dd>
 <div class="block">JACQUARD-HARVESTER-0031 - The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3}</div>
@@ -133924,7 +133946,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductFolderDefinition.html#PRODUCTS" class="member-name-link">PRODUCTS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductFolderDefinition</a></dt>
 <dd>
-<div class="block">Open Metadata Digital Product Catalog</div>
+<div class="block">Open Metadata Digital Products</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/contentpacks/core/ContentPackDefinition.html#PRODUCTS_CONTENT_PACK" class="member-name-link">PRODUCTS_CONTENT_PACK</a> - Enum constant in enum class org.odpi.openmetadata.contentpacks.core.<a href="org/odpi/openmetadata/contentpacks/core/ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.contentpacks.core">ContentPackDefinition</a></dt>
 <dd>
@@ -178488,6 +178510,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Write an audit log message and throw an exception to record
  unauthorized access.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html#throwUndefinedZonesForUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwUndefinedZonesForUser(String, String, String, String, String)</a> - Method in class org.odpi.openmetadata.metadatasecurity.connectors.<a href="org/odpi/openmetadata/metadatasecurity/connectors/OpenMetadataSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataSecurityConnector</a></dt>
+<dd>
+<div class="block">Write an audit log message and throw an exception to record that the user's account does not say which
+ governance zones an element is to be moved to.</div>
+</dd>
 <dt><a href="org/odpi/openmetadata/adminservices/registration/AccessServiceAdmin.html#throwUnexpectedInitializationException(java.lang.String,java.lang.String,java.lang.Exception)" class="member-name-link">throwUnexpectedInitializationException(String, String, Exception)</a> - Method in class org.odpi.openmetadata.adminservices.registration.<a href="org/odpi/openmetadata/adminservices/registration/AccessServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">AccessServiceAdmin</a></dt>
 <dd>
 <div class="block">Log that an unexpected exception was received during start up.</div>
@@ -189025,6 +189052,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="org/odpi/openmetadata/commonservices/multitenant/ffdc/OMAGServerInstanceErrorCode.html#UNCONFIGURED_URL_MARKER" class="member-name-link">UNCONFIGURED_URL_MARKER</a> - Enum constant in enum class org.odpi.openmetadata.commonservices.multitenant.ffdc.<a href="org/odpi/openmetadata/commonservices/multitenant/ffdc/OMAGServerInstanceErrorCode.html" title="enum class in org.odpi.openmetadata.commonservices.multitenant.ffdc">OMAGServerInstanceErrorCode</a></dt>
 <dd>
 <div class="block">OMAG-MULTI-TENANT-400-006 - Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityAuditCode.html#UNDEFINED_ZONES_FOR_USER" class="member-name-link">UNDEFINED_ZONES_FOR_USER</a> - Enum constant in enum class org.odpi.openmetadata.metadatasecurity.ffdc.<a href="org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></dt>
+<dd>
+<div class="block">OPEN-METADATA-SECURITY-0031 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property</div>
+</dd>
+<dt><a href="org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityErrorCode.html#UNDEFINED_ZONES_FOR_USER" class="member-name-link">UNDEFINED_ZONES_FOR_USER</a> - Enum constant in enum class org.odpi.openmetadata.metadatasecurity.ffdc.<a href="org/odpi/openmetadata/metadatasecurity/ffdc/OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></dt>
+<dd>
+<div class="block">OPEN-METADATA-SECURITY-403-027 - User {0} is not able to {1} an element of type {2} because their user account does not define the {3} property</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/conformance/workbenches/repository/RepositoryConformanceProfileRequirement.html#UNDELETE_INSTANCE" class="member-name-link">UNDELETE_INSTANCE</a> - Enum constant in enum class org.odpi.openmetadata.conformance.workbenches.repository.<a href="org/odpi/openmetadata/conformance/workbenches/repository/RepositoryConformanceProfileRequirement.html" title="enum class in org.odpi.openmetadata.conformance.workbenches.repository">RepositoryConformanceProfileRequirement</a></dt>
 <dd>
@@ -203259,7 +203294,8 @@ the order they are declared.</div>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductSubscriptionDefinition.html#WEEKLY_REFRESH_SUBSCRIPTION" class="member-name-link">WEEKLY_REFRESH_SUBSCRIPTION</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog.<a href="org/odpi/openmetadata/adapters/connectors/jacquard/productcatalog/ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.jacquard.productcatalog">ProductSubscriptionDefinition</a></dt>
 <dd>
-<div class="block">This subscription delivers the data to the target destination once a week.</div>
+<div class="block">This subscription delivers the data to the target destination once a week, starting from the time of the
+ subscription.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/samples/archiveutilities/clinicaltrialtemplates/GlossaryTermDefinition.html#WEIGHT" class="member-name-link">WEIGHT</a> - Enum constant in enum class org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates.<a href="org/odpi/openmetadata/samples/archiveutilities/clinicaltrialtemplates/GlossaryTermDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates">GlossaryTermDefinition</a></dt>
 <dd>
@@ -203381,7 +203417,7 @@ the order they are declared.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericHandler.html#withdrawElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">withdrawElement(String, String, String, String, String, String, boolean, boolean, Date, String)</a> - Method in class org.odpi.openmetadata.commonservices.generichandlers.<a href="org/odpi/openmetadata/commonservices/generichandlers/OpenMetadataAPIGenericHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericHandler</a></dt>
 <dd>
-<div class="block">Update the zones for a specific asset to the list set up in default zones.</div>
+<div class="block">Update the zones for a specific element to the list set up in the user's default zones.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/frameworkservices/omf/handlers/MetadataElementHandler.html#withdrawMetadataElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">withdrawMetadataElement(String, String, String, String, boolean, boolean, Date, String)</a> - Method in class org.odpi.openmetadata.frameworkservices.omf.handlers.<a href="org/odpi/openmetadata/frameworkservices/omf/handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.frameworkservices.omf.handlers">MetadataElementHandler</a></dt>
 <dd>
