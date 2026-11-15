@@ -17,9 +17,9 @@ import java.util.List;
  */
 public enum RetentionClassifierGuard
 {
-    CLASSIFICATION_ASSIGNED("classification-assigned", CompletionStatus.ACTIONED,  "The requested published zones have been added to the AssetZoneMembership classification for the asset."),
+    CLASSIFICATION_ASSIGNED("classification-assigned", CompletionStatus.ACTIONED,  "The Retention classification has been set on the assets supplied as newAsset action targets."),
     MISSING_STEWARD("missing-steward", CompletionStatus.INVALID, "No steward has been provided in the action targets."),
-    CLASSIFICATION_FAILED("classification-failed", CompletionStatus.FAILED, "An unexpected exception occurred while assigning zones to the action target asset(s)."),
+    CLASSIFICATION_FAILED("classification-failed", CompletionStatus.FAILED, "A retention value could not be used, or an unexpected exception occurred while setting the Retention classification on the asset(s)."),
     NO_TARGETS(Guard.NO_TARGETS_DETECTED.getName(),
                Guard.NO_TARGETS_DETECTED.getCompletionStatus(),
                Guard.NO_TARGETS_DETECTED.getDescription()),
