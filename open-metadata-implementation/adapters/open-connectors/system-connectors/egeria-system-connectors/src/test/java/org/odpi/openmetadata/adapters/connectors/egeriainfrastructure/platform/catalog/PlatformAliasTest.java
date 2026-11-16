@@ -21,7 +21,7 @@ public class PlatformAliasTest
     private static final String LOCAL_ADDRESS    = "https://localhost:9443";
     private static final String EXTERNAL_ADDRESS = "https://host.docker.internal:9443";
     private static final String OTHER_ADDRESS    = "https://other-host:9443";
-    private static final String ORIGIN           = "Egeria OMAG Server Platform (version 6.3-SNAPSHOT)";
+    private static final String ORIGIN           = "Egeria OMAG Server Platform (version 6.4-SNAPSHOT)";
 
     private static final PlatformAliasCheck.PlatformIdentity QUICKSTART =
             new PlatformAliasCheck.PlatformIdentity(ORIGIN, new Date(1_760_000_000_000L));

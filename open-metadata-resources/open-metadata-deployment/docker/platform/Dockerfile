@@ -23,7 +23,7 @@
 # OpenJDK reads its trust store from ca-certificates, so don't pin anything older than this.
 FROM registry.access.redhat.com/ubi9/openjdk-21@sha256:c8fcb7571677a9f6f1f2f3325c9765103ecc2834ff13ce20eb5ee6d1088f7e12
 
-ARG version=6.3-SNAPSHOT
+ARG version=6.4-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

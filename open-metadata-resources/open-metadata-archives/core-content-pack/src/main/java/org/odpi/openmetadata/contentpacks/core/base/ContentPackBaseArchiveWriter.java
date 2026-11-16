@@ -310,7 +310,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a data asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
-                                                                    "V6.3-SNAPSHOT",
+                                                                    "V6.4-SNAPSHOT",
                                                                     null, methodName));
 
         classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
@@ -1063,7 +1063,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
-                                                                    "6.3-SNAPSHOT",
+                                                                    "6.4-SNAPSHOT",
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
@@ -1157,7 +1157,7 @@ public abstract class  ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWri
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
-                                                                    "6.3-SNAPSHOT",
+                                                                    "6.4-SNAPSHOT",
                                                                     null, methodName));
 
         if (softwareCapabilityProperties != null)

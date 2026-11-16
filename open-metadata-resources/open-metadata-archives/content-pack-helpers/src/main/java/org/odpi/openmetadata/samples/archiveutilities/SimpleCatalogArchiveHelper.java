@@ -422,7 +422,7 @@ public class SimpleCatalogArchiveHelper
                 this.addTemplateClassification(blueprintGUID,
                                                "Standard Solution Blueprint Template",
                                                null,
-                                               "6.3-SNAPSHOT",
+                                               "6.4-SNAPSHOT",
                                                null,
                                                methodName);
 
