@@ -153,7 +153,7 @@ public enum CSVFileTemplateType implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "6.3-SNAPSHOT";
+        return "6.4-SNAPSHOT";
     }
 
 
