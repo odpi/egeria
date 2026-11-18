@@ -157,8 +157,16 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
         if ((notificationType != null) &&
                 (notificationType.getProperties() instanceof NotificationTypeProperties notificationTypeProperties) &&
-                (notificationPermitted(requester, notificationTypeProperties)))
+                (notificationTypeActive(requester, notificationTypeProperties)))
         {
+            /*
+             * The minimum notification interval spaces out the rounds of notifications sent to the existing
+             * subscribers.  It does not hold back a new subscriber: they receive their first notification on
+             * the first pass after they subscribe, rather than waiting for the next round - which is a day away
+             * for a daily subscription.
+             */
+            boolean notificationRoundDue = notificationIntervalElapsed(notificationTypeProperties);
+
             boolean multipleNotificationsPermitted = OpenMetadataProperty.MULTIPLE_NOTIFICATIONS_PERMITTED.booleanValueOrDefault(notificationTypeProperties.getMultipleNotificationsPermitted());
             long    nextNotificationCount          = OpenMetadataProperty.NOTIFICATION_COUNT.longValueOrDefault(notificationTypeProperties.getNotificationCount()) + 1;
             long    minimumNotificationInterval    = OpenMetadataProperty.MINIMUM_NOTIFICATION_INTERVAL.longValueOrDefault(notificationTypeProperties.getMinimumNotificationInterval());
@@ -179,6 +187,14 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                     if ((subscriber != null) &&
                         (subscriber.getRelationshipProperties() instanceof NotificationSubscriberProperties notificationSubscriberProperties))
                     {
+                        if ((! notificationRoundDue) && (notificationSubscriberProperties.getLastNotification() != null))
+                        {
+                            /*
+                             * An existing subscriber waits for the next round.
+                             */
+                            continue;
+                        }
+
                         /*
                          * Determine which message to use.
                          */
@@ -241,6 +257,37 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                         }
                     }
                 }
+            }
+
+            if (! notificationRoundDue)
+            {
+                /*
+                 * Only new subscribers were considered, so this was not a round of notifications.  The
+                 * notification type's lastNotification and nextScheduledNotification are left alone, because
+                 * moving them would postpone the next round for every existing subscriber.  The count is still
+                 * advanced when a new subscriber was notified, since it numbers the notifications sent.
+                 */
+                if (subscriberNotified)
+                {
+                    NotificationTypeProperties countedNotificationTypeProperties = new NotificationTypeProperties(notificationTypeProperties);
+
+                    countedNotificationTypeProperties.setNotificationCount(nextNotificationCount);
+
+                    UpdateOptions countUpdateOptions = new UpdateOptions();
+
+                    countUpdateOptions.setExternalSourceGUID(externalSourceGUID);
+                    countUpdateOptions.setExternalSourceName(externalSourceName);
+                    countUpdateOptions.setMergeUpdate(true);
+
+                    this.updateElement(userId,
+                                       notificationTypeGUID,
+                                       notificationTypeGUIDParameterName,
+                                       countUpdateOptions,
+                                       countedNotificationTypeProperties,
+                                       methodName);
+                }
+
+                return;
             }
 
             boolean completed = (notificationTypeProperties.getPlannedCompletionDate() != null) && (new Date().after(notificationTypeProperties.getPlannedCompletionDate()));
@@ -307,9 +354,9 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
 
     /**
-     * Only notify subscribers if the notification type properties allow.  The notification type must be active,
-     * its planned start date (if any) must have passed, and its minimumNotificationInterval (if any) must have
-     * passed since its last notification.  Package-private for unit testing.
+     * Only notify existing subscribers if the notification type properties allow.  The notification type must
+     * be active, its planned start date (if any) must have passed, and its minimumNotificationInterval (if any)
+     * must have passed since its last notification.  Package-private for unit testing.
      *
      * @param requester name of the calling service, for the audit log
      * @param notificationTypeProperties notification type properties
@@ -318,7 +365,22 @@ public class NotificationHandler extends GovernanceDefinitionHandler
     boolean notificationPermitted(String                     requester,
                                   NotificationTypeProperties notificationTypeProperties)
     {
-        final String methodName = "notificationPermitted";
+        return notificationTypeActive(requester, notificationTypeProperties) && notificationIntervalElapsed(notificationTypeProperties);
+    }
+
+
+    /**
+     * Is the notification type in a state to notify anyone?  The notification type must be active, and its
+     * planned start date (if any) must have passed.  Package-private for unit testing.
+     *
+     * @param requester name of the calling service, for the audit log
+     * @param notificationTypeProperties notification type properties
+     * @return true if the notification type is sending notifications
+     */
+    boolean notificationTypeActive(String                     requester,
+                                   NotificationTypeProperties notificationTypeProperties)
+    {
+        final String methodName = "notificationTypeActive";
 
         if (notificationTypeProperties.getContentStatus() != ContentStatus.ACTIVE)
         {
@@ -337,6 +399,20 @@ public class NotificationHandler extends GovernanceDefinitionHandler
             return false;
         }
 
+        return true;
+    }
+
+
+    /**
+     * Is the next round of notifications to the existing subscribers due?  It is if the notification type has
+     * never notified anyone, has no minimumNotificationInterval, or that interval has passed since its last
+     * notification.  Package-private for unit testing.
+     *
+     * @param notificationTypeProperties notification type properties
+     * @return true if the existing subscribers are due a notification
+     */
+    boolean notificationIntervalElapsed(NotificationTypeProperties notificationTypeProperties)
+    {
         if (notificationTypeProperties.getLastNotification() == null)
         {
             return true;
@@ -355,7 +431,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
     /**
      * Create a notification/action for the supplied subscriber, providing it is in the IN_PROGRESS state and the
-     * subscriber is of the appropriate type.
+     * subscriber is of the appropriate type.  Package-private for unit testing.
      *
      * @param userId               caller's userId
      * @param subscriberGUID unique identifier of subscriber
@@ -374,22 +450,22 @@ public class NotificationHandler extends GovernanceDefinitionHandler
      * @throws UserNotAuthorizedException the user is not authorized to continue
      * @throws PropertyServerException    a problem connecting to the metadata store
      */
-    private boolean notifySubscriber(String                                userId,
-                                    String                                subscriberGUID,
-                                    ElementControlHeader                  subscriberHeader,
-                                    String                                notificationSubscriberGUID,
-                                    NotificationSubscriberProperties      notificationSubscriberProperties,
-                                    long                                  notificationCount,
-                                    Map<String, ClassificationProperties> initialClassifications,
-                                    NotificationProperties                outboundNotificationProperties,
-                                    String                                notificationTypeGUID,
-                                    Map<String, String>                   requestParameters,
-                                    String                                actionRequesterGUID,
-                                    List<NewActionTarget>                 actionTargets,
-                                    long                                  minimumNotificationInterval,
-                                    ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    boolean notifySubscriber(String                                userId,
+                            String                                subscriberGUID,
+                            ElementControlHeader                  subscriberHeader,
+                            String                                notificationSubscriberGUID,
+                            NotificationSubscriberProperties      notificationSubscriberProperties,
+                            long                                  notificationCount,
+                            Map<String, ClassificationProperties> initialClassifications,
+                            NotificationProperties                outboundNotificationProperties,
+                            String                                notificationTypeGUID,
+                            Map<String, String>                   requestParameters,
+                            String                                actionRequesterGUID,
+                            List<NewActionTarget>                 actionTargets,
+                            long                                  minimumNotificationInterval,
+                            ActivityStatus                        newSubscriberStatus) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName = "notifySubscriber";
 

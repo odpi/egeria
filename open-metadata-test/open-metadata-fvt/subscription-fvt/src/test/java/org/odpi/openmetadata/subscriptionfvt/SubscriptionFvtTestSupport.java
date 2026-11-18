@@ -18,6 +18,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -96,6 +97,13 @@ final class SubscriptionFvtTestSupport
      * anything.
      */
     static final String PRODUCT_MANAGER_SOURCE_PURPOSE = "product-manager-source";
+
+    /**
+     * The destination label for the subscription that is taken out in order to be cancelled - see
+     * SubscriptionCancellationFVT.  It has a destination of its own so that cancelling it takes nothing away
+     * from the subscriptions the other tests share.
+     */
+    static final String CANCELLATION_DESTINATION_PURPOSE = "cancellation";
 
     /**
      * Whether the catalogue has been built during this run - see {@link #ensureCatalogueBuilt()}.
@@ -421,8 +429,9 @@ final class SubscriptionFvtTestSupport
 
     /**
      * Return every schema this suite creates on the server under test: one per subscription type for the
-     * product subscriptions, one for the product family subscription, and two for the product built through
-     * the product manager client - its source and its destination.
+     * product subscriptions, one for the product family subscription, two for the product built through
+     * the product manager client - its source and its destination - and one for the subscription that is
+     * cancelled.
      *
      * @return schema names
      */
@@ -438,6 +447,7 @@ final class SubscriptionFvtTestSupport
         schemaNames.add(destinationSchemaName(FAMILY_DESTINATION_PURPOSE));
         schemaNames.add(destinationSchemaName(PRODUCT_MANAGER_DESTINATION_PURPOSE));
         schemaNames.add(destinationSchemaName(PRODUCT_MANAGER_SOURCE_PURPOSE));
+        schemaNames.add(destinationSchemaName(CANCELLATION_DESTINATION_PURPOSE));
 
         return schemaNames;
     }
@@ -1188,6 +1198,32 @@ final class SubscriptionFvtTestSupport
      * =====================================================================================================
      * Assertions shared by more than one test
      */
+
+
+    /**
+     * Is this element still in the repository, as far as an ordinary reader is concerned?
+     * <br>
+     * A soft-deleted element is still stored, but it cannot be read: asking for it by its unique identifier is
+     * rejected as an invalid parameter rather than answered with nothing.  Both outcomes mean the same thing
+     * to a consumer - it is gone - so both are reported that way here.
+     *
+     * @param openMetadataStore store to read through
+     * @param elementGUID element to look for
+     * @return true if the element can be read
+     * @throws Exception problem communicating with the server
+     */
+    static boolean elementExists(OpenMetadataStore openMetadataStore,
+                                 String            elementGUID) throws Exception
+    {
+        try
+        {
+            return openMetadataStore.getMetadataElementByGUID(elementGUID) != null;
+        }
+        catch (InvalidParameterException notKnown)
+        {
+            return false;
+        }
+    }
 
 
     /**

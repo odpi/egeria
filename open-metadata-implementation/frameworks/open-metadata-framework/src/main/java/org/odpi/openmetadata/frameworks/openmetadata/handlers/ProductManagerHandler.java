@@ -1268,6 +1268,12 @@ public class ProductManagerHandler extends CollectionHandler
 
         if (existingProcess != null)
         {
+            /*
+             * A process that was set up before its product had a license has no license type to grant, and a
+             * subscription taken out through it fails.  The license type is added once the product has one.
+             */
+            this.addMissingLicenseType(userId, metadataSourceOptions, existingProcess.getElementGUID(), productContext.licenseTypeGUID());
+
             return existingProcess.getElementGUID();
         }
 
@@ -1337,6 +1343,62 @@ public class ProductManagerHandler extends CollectionHandler
                                                         relationshipBuilder.getNewElementProperties(resourceListProperties));
 
         return governanceActionProcessGUID;
+    }
+
+
+    /**
+     * Add the license type to an existing governance action process if it does not already have one.  A license
+     * type that is already there is left alone, even if it is different, because it may have been chosen
+     * deliberately.
+     *
+     * @param userId calling user
+     * @param metadataSourceOptions options to control access to open metadata
+     * @param governanceActionProcessGUID unique identifier of the process
+     * @param licenseTypeGUID unique identifier of the license type granted to subscribers (may be null)
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private void addMissingLicenseType(String                userId,
+                                       MetadataSourceOptions metadataSourceOptions,
+                                       String                governanceActionProcessGUID,
+                                       String                licenseTypeGUID) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "addMissingLicenseType";
+
+        if (licenseTypeGUID == null)
+        {
+            return;
+        }
+
+        RelatedMetadataElementList actionTargets = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                 governanceActionProcessGUID,
+                                                                                                 1,
+                                                                                                 OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                                                 new QueryOptions(metadataSourceOptions));
+
+        if ((actionTargets != null) && (actionTargets.getElementList() != null))
+        {
+            for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
+            {
+                if (actionTarget != null)
+                {
+                    String actionTargetName = propertyHelper.getStringProperty(localServiceName,
+                                                                               OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                               actionTarget.getRelationshipProperties(),
+                                                                               methodName);
+
+                    if (LICENSE_TYPE_ACTION_TARGET.equals(actionTargetName))
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        this.addActionTarget(userId, metadataSourceOptions, governanceActionProcessGUID, licenseTypeGUID, LICENSE_TYPE_ACTION_TARGET, new ArrayList<>());
     }
 
 

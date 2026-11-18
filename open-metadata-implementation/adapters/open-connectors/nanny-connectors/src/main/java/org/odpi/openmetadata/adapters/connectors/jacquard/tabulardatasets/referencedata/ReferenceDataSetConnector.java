@@ -66,6 +66,33 @@ public class ReferenceDataSetConnector extends DynamicOpenMetadataDataSetConnect
 
 
     /**
+     * Return the table name for this data source.  It is the canonical name from the connection.  A connection
+     * written before the canonical name was recorded in it has none, and this connector then has no table to
+     * present: saying so here leaves the product out of a delivery, rather than asking the subscriber's
+     * destination to create a table called null.  The connector is still created from such a connection, so
+     * that Jacquard can refresh the product and, with it, the connection.
+     *
+     * @return string
+     * @throws ConnectorCheckedException no canonical name in the connection
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        final String methodName = "getTableName";
+
+        if (canonicalName == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    TabularDataSetConfigurationProperty.CANONICAL_NAME.getName(),
+                                                    methodName);
+        }
+
+        return super.getTableName();
+    }
+
+
+    /**
      * Refresh any cached values.
      *
      * @throws ConnectorCheckedException unable to refresh

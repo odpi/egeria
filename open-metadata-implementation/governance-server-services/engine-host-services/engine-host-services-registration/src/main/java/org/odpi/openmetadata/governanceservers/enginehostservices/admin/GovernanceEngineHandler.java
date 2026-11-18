@@ -703,7 +703,30 @@ public abstract class GovernanceEngineHandler
 
         try
         {
-            EngineActionElement latestEngineActionElement = engineActionClient.getEngineAction(engineUserId, engineActionGUID);
+            EngineActionElement latestEngineActionElement;
+
+            try
+            {
+                latestEngineActionElement = engineActionClient.getEngineAction(engineUserId, engineActionGUID);
+            }
+            catch (InvalidParameterException noLongerThere)
+            {
+                /*
+                 * The engine action has been deleted since the event about it was sent.  That is normal: an
+                 * engine action is deleted with the element it is anchored to - cancelling a subscription
+                 * deletes the engine action that cancelled it - and finished engine actions are cleared away.
+                 * Every engine in the engine host hears each event, so reporting this as an error wrote one
+                 * error for each engine each time.  There is nothing to run.
+                 */
+                log.debug("Engine action " + engineActionGUID + " for engine " + governanceEngineName +
+                                  " was not started: it is no longer available (" + noLongerThere.getMessage() + ")");
+                return;
+            }
+
+            if (latestEngineActionElement == null)
+            {
+                return;
+            }
 
             /*
              * Is this engine action for this engine?

@@ -6,6 +6,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.testng.annotations.BeforeMethod;
@@ -152,5 +154,43 @@ public class MissedEngineActionSweepTest
         governanceEngineHandler.startMissedEngineActions();
 
         verify(engineActionClient, never()).getApprovedEngineActions(anyString(), anyString(), anyInt(), anyInt());
+    }
+
+
+    /**
+     * An event about an engine action can arrive after the engine action has been deleted - it is deleted with
+     * the element it is anchored to.  There is nothing to run and nothing wrong, so no error is logged.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testDeletedEngineActionIsNotAnError() throws Exception
+    {
+        when(engineActionClient.getEngineAction(anyString(), anyString()))
+                .thenThrow(new InvalidParameterException(OMFErrorCode.NULL_OBJECT.getMessageDefinition("engineAction", "getEngineAction"),
+                                                         this.getClass().getName(),
+                                                         "getEngineAction",
+                                                         "engineActionGUID"));
+
+        governanceEngineHandler.executeEngineAction("deleted-engine-action-guid");
+
+        verify(auditLog, never()).logException(anyString(), any(AuditLogMessageDefinition.class), any(Throwable.class));
+        verify(engineActionClient, never()).claimEngineAction(anyString(), anyString());
+    }
+
+
+    /**
+     * Any other failure to read an engine action is still reported.
+     *
+     * @throws Exception unexpected
+     */
+    @Test
+    public void testUnreadableEngineActionIsStillAnError() throws Exception
+    {
+        when(engineActionClient.getEngineAction(anyString(), anyString())).thenThrow(new IllegalStateException("metadata store unavailable"));
+
+        governanceEngineHandler.executeEngineAction("engine-action-guid");
+
+        verify(auditLog, times(1)).logException(anyString(), any(AuditLogMessageDefinition.class), any(Throwable.class));
     }
 }

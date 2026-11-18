@@ -65,8 +65,12 @@ public class RelationalDataManagerMeasurementsTabularDataSetConnector extends Su
                 putValue(values, ProductDataFieldDefinition.ROWS_INSERTED, measurement.getRowsInserted());
                 putValue(values, ProductDataFieldDefinition.ROWS_UPDATED, measurement.getRowsUpdated());
                 putValue(values, ProductDataFieldDefinition.ROWS_DELETED, measurement.getRowsDeleted());
-                putValue(values, ProductDataFieldDefinition.SESSION_TIME, measurement.getSessionTime());
-                putValue(values, ProductDataFieldDefinition.ACTIVE_TIME, measurement.getActiveTime());
+                /*
+                 * The survey measures these times as doubles (milliseconds, with a fraction), but the product's
+                 * columns are whole numbers: "2689672.292" is not a value that a bigint column accepts.
+                 */
+                putValue(values, ProductDataFieldDefinition.SESSION_TIME, Math.round(measurement.getSessionTime()));
+                putValue(values, ProductDataFieldDefinition.ACTIVE_TIME, Math.round(measurement.getActiveTime()));
                 putValue(values, ProductDataFieldDefinition.LAST_STATS_RESET, measurement.getStatsReset());
 
                 addRow(annotation, values);

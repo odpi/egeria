@@ -9,7 +9,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 26 |
+| **Number of messages** | 27 |
 | **Message identifiers begin** | `JACQUARD-HARVESTER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.jacquard.ffdc.JacquardAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
@@ -46,6 +46,7 @@ The JacquardAuditCode is used to define the message content for the Audit Log.
 | [JACQUARD-HARVESTER-0031](#jacquard-harvester-0031) | INFO | The {0} integration connector has found product {1} under its earlier qualified name of {2} and is renaming it to {3} |
 | [JACQUARD-HARVESTER-0032](#jacquard-harvester-0032) | INFO | The {0} integration connector has removed digital product {1} called {2} from product catalog folder {3} because its definition no longer places it there |
 | [JACQUARD-HARVESTER-0030](#jacquard-harvester-0030) | INFO | The {0} integration connector has changed the type of the asset {1} for digital product {2} from {3} to {4} |
+| [JACQUARD-HARVESTER-0033](#jacquard-harvester-0033) | INFO | The {0} integration connector is not creating a digital product for reference data set {1} because the reference data set has no identifier |
 
 ----
 
@@ -617,6 +618,28 @@ The product's definition now asks for a different type of asset from the one an 
 **User action**
 
 No action is required.  This message appears once for each asset created by an earlier version of the connector.
+
+
+----
+
+### JACQUARD-HARVESTER-0033
+
+> The {0} integration connector is not creating a digital product for reference data set {1} because the reference data set has no identifier
+
+|  |  |
+|---|---|
+| **Java constant** | `JacquardAuditCode.REFERENCE_DATA_SET_WITHOUT_IDENTIFIER` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+| **Further reading** | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
+
+**System action**
+
+The product for a reference data set is named after the reference data set's identifier, which also gives the product its unique name and its table name.  Without one, every such reference data set would share a single product, each overwriting the others.  The reference data set is skipped; the other reference data sets are still harvested.
+
+**User action**
+
+Add a value to the identifier property of the reference data set.  Its product is created on the connector's next refresh.
 
 
 ----
