@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -351,6 +352,105 @@ class SubscriptionDriver
         subscriptionsTakenOut.put(subscriptionKey, subscriptionGUID);
 
         return subscriptionGUID;
+    }
+
+
+    /**
+     * Return the option a subscription offers for cancelling it, the way a consumer would find it: the
+     * create-subscription service builds a cancellation process for each subscription and lists it among the
+     * subscription's resources, marked with the use it is to be put to.
+     *
+     * @param subscriptionGUID subscription to ask about
+     * @return the cancellation process, or null if the subscription does not offer one
+     * @throws Exception problem reading the repository
+     */
+    static OpenMetadataElement findCancellationProcess(String subscriptionGUID) throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
+
+        for (RelatedMetadataElement resource : SubscriptionFvtTestSupport.getRelatedElements(openMetadataStore,
+                                                                                              subscriptionGUID,
+                                                                                              OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                                              1))
+        {
+            if (ResourceUse.CANCEL_SUBSCRIPTION.getResourceUse().equals(SubscriptionFvtTestSupport.getRelationshipStringProperty(resource,
+                                                                                                                                 OpenMetadataProperty.RESOURCE_USE.name)))
+            {
+                return resource.getElement();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Ask for one subscription to be cancelled, the way a consumer would: run the cancellation process the
+     * subscription offers.  Nothing has to be supplied - the process already names the subscription, the
+     * destination it delivers to and the license that was granted with it.
+     * <br>
+     * This only <em>asks</em>.  The process that is started cannot be followed to its conclusion in the way
+     * {@link EngineActionWaiter} follows the others, because the engine action that runs the cancellation is
+     * anchored to the subscription and is deleted along with it.  The caller waits for the subscription to go
+     * instead.
+     * <br>
+     * The subscription is also forgotten here, so that a later request for the same product and type takes out
+     * a new subscription rather than being handed the one that has just been cancelled.
+     *
+     * @param productDefinition product or family the subscription is to
+     * @param subscriptionType type of subscription that was taken out
+     * @param subscriptionGUID subscription to cancel
+     * @return qualified name of the cancellation process that was run
+     * @throws Exception the cancellation could not be asked for
+     */
+    static synchronized String cancelSubscription(ProductDefinition             productDefinition,
+                                                  ProductSubscriptionDefinition subscriptionType,
+                                                  String                        subscriptionGUID) throws Exception
+    {
+        OpenMetadataElement cancellationProcess = findCancellationProcess(subscriptionGUID);
+
+        assertNotNull(cancellationProcess,
+                      "The " + subscriptionType.getIdentifier() + " subscription to " + productDefinition.getProductName()
+                              + " (" + subscriptionGUID + ") offers no way of cancelling it: none of its resources is marked '"
+                              + ResourceUse.CANCEL_SUBSCRIPTION.getResourceUse() + "'.");
+
+        String processQualifiedName = SubscriptionFvtTestSupport.getStringProperty(cancellationProcess,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        EgeriaOpenGovernanceClient openGovernanceClient = new EgeriaOpenGovernanceClient(OMAGPlatformExtension.METADATA_STORE_NAME,
+                                                                                         OMAGPlatformExtension.getPlatformURLRoot(),
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SubscriptionFvtTestSupport.MAX_PAGE_SIZE,
+                                                                                         null);
+
+        String processInstanceGUID = openGovernanceClient.initiateGovernanceActionProcess(OMAGPlatformExtension.USER_ID,
+                                                                                           processQualifiedName,
+                                                                                           null,
+                                                                                           null,
+                                                                                           null,
+                                                                                           null,
+                                                                                           null,
+                                                                                           null,
+                                                                                           null,
+                                                                                           ISC_QUALIFIED_NAME);
+
+        assertNotNull(processInstanceGUID,
+                      "Asking to cancel the " + subscriptionType.getIdentifier() + " subscription to "
+                              + productDefinition.getProductName() + " started nothing (" + processQualifiedName + ")");
+
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
+
+        OpenMetadataElement product = openMetadataStore.getMetadataElementByUniqueName(productDefinition.getQualifiedName(),
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        if (product != null)
+        {
+            subscriptionsTakenOut.remove(product.getElementGUID() + "::" + subscriptionIdentifier(productDefinition, subscriptionType));
+        }
+
+        return processQualifiedName;
     }
 
 

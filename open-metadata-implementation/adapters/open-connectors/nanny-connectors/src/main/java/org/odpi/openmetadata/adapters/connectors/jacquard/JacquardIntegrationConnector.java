@@ -460,7 +460,17 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                              * valid value sets above: a refresh of an existing product is a find, and it keeps
                              * the product's connection current.
                              */
-                            if (referenceDataSetGUID != null)
+                            if ((referenceDataSetGUID != null) && ((identifier == null) || (identifier.isBlank())))
+                            {
+                                /*
+                                 * The identifier names the product, its qualified name and its table.  Reference
+                                 * data sets without one would all become the same product.
+                                 */
+                                logRecord(methodName,
+                                          JacquardAuditCode.REFERENCE_DATA_SET_WITHOUT_IDENTIFIER.getMessageDefinition(connectorName,
+                                                                                                                       referenceDataSetGUID));
+                            }
+                            else if (referenceDataSetGUID != null)
                             {
                                 try
                                 {
@@ -753,6 +763,12 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
              * perspectives they are scoped by, are refreshed when the questions are loaded at start-up.
              */
             this.addMissingQuestions(productElement.getElementHeader().getGUID(), productDefinition);
+
+            /*
+             * An existing product's license is re-checked so that a product catalogued before its definition
+             * named a license is governed by one after the next refresh.
+             */
+            this.addMissingLicense(productElement.getElementHeader().getGUID(), licenseTypeGUID);
 
             /*
              * The product's zones decide who may see it, so a change to the zones in the definition - such as
@@ -1078,6 +1094,63 @@ public class JacquardIntegrationConnector extends DynamicIntegrationConnectorBas
                                                                                  supplementaryPropertiesProperties);
             }
         }
+    }
+
+
+    /**
+     * Link an existing product to its definition's license if it is not yet governed by a license type.  The link
+     * is the same as the product manager client makes when it creates a product - GovernedBy, labelled as the
+     * subscriber's license - so a product catalogued before its definition named a license ends up
+     * indistinguishable from one created after.  A product that is already governed by a license type is left
+     * alone, even if it is a different one, because it may have been chosen deliberately.
+     *
+     * @param productGUID unique identifier of the product
+     * @param licenseTypeGUID unique identifier of the license type from the product's definition (may be null)
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addMissingLicense(String productGUID,
+                                   String licenseTypeGUID) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        if (licenseTypeGUID == null)
+        {
+            return;
+        }
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient();
+
+        OpenMetadataRootElement product = classificationExplorerClient.getRootElementByGUID(productGUID,
+                                                                                            this.withRelationships(classificationExplorerClient,
+                                                                                                                   OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName));
+
+        if ((product != null) && (product.getGovernedBy() != null))
+        {
+            for (RelatedMetadataElementSummary governanceDefinition : product.getGovernedBy())
+            {
+                if ((governanceDefinition != null) &&
+                        (governanceDefinition.getRelatedElement() != null) &&
+                        (propertyHelper.isTypeOf(governanceDefinition.getRelatedElement().getElementHeader(), OpenMetadataType.LICENSE_TYPE.typeName)))
+                {
+                    return;
+                }
+            }
+        }
+
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+        GovernedByProperties       governedByProperties       = new GovernedByProperties();
+
+        governedByProperties.setLabel("subscriber's license");
+        governedByProperties.setDescription("This is the license that a subscriber's asset will be given to access the product data.");
+
+        governanceDefinitionClient.addGovernanceDefinitionToElement(productGUID,
+                                                                    licenseTypeGUID,
+                                                                    governanceDefinitionClient.getMakeAnchorOptions(false),
+                                                                    governedByProperties);
     }
 
 

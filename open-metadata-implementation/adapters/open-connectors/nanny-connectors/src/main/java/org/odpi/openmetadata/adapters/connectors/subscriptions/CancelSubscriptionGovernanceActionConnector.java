@@ -66,8 +66,11 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
             }
             else
             {
-                governanceContext.getCollectionClient().deleteCollection(subscription.getActionTargetGUID(), null);
-
+                /*
+                 * The license granted to the subscriber's asset for this subscription is withdrawn first.  It
+                 * is found through the action targets, not through the subscription, so it does not need the
+                 * subscription to be gone.
+                 */
                 ActionTargetElement licenceType = super.getActionTarget(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName());
                 ActionTargetElement targetAsset = super.getActionTarget(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_TARGET.getName());
 
@@ -105,7 +108,17 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
 
             logRecord(methodName, messageDefinition);
 
+            /*
+             * The completion status is recorded before the subscription is deleted.  The engine action running
+             * this service is anchored to the subscription, so it is deleted with it - and once it has gone
+             * there is nothing left to record the completion status on.
+             */
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
+
+            if (subscription != null)
+            {
+                governanceContext.getCollectionClient().deleteCollection(subscription.getActionTargetGUID(), null);
+            }
         }
         catch (Exception error)
         {

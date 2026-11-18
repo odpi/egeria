@@ -35,7 +35,10 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
     {
         super(EgeriaOpenConnectorDefinition.REFERENCE_DATA_TABULAR_DATA_SET,
               connectorClassName,
-              List.of(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name));
+              List.of(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name,
+                      TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name,
+                      TabularDataSetConfigurationProperty.CANONICAL_NAME.name,
+                      TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name));
     }
 
     /**
@@ -53,11 +56,20 @@ public class ReferenceDataSetProvider extends DynamicOpenMetadataDataSetProvider
                                                   String description)
     {
         /*
-         * Create a dynamic product definition and ass it to the open metadata ecosystem.
+         * Create a dynamic product definition and add it to the open metadata ecosystem.
+         * The configuration properties enable the connector to rebuild the product definition when it runs.
+         * Without the canonical name, the connector has no table name to present.
          */
         Map<String, Object> configurationProperties = new HashMap<>();
 
         configurationProperties.put(TabularDataSetConfigurationProperty.STARTING_ELEMENT_GUID.name, referenceDataSetGUID);
+        configurationProperties.put(TabularDataSetConfigurationProperty.IDENTIFIER_PROPERTY_VALUE.name, identifier);
+        configurationProperties.put(TabularDataSetConfigurationProperty.CANONICAL_NAME.name, canonicalName);
+
+        if (description != null)
+        {
+            configurationProperties.put(TabularDataSetConfigurationProperty.PRODUCT_DESCRIPTION.name, description);
+        }
 
         return new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
                                          new ProductDefinition[]{ProductDefinitionEnum.REFERENCE_DATA_SETS},

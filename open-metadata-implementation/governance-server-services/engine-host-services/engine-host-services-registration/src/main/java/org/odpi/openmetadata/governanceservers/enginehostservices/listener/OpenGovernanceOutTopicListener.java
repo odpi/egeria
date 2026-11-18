@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -93,6 +94,14 @@ public class OpenGovernanceOutTopicListener implements OpenMetadataEventListener
             else if (propertyHelper.isTypeOf(event.getElementHeader(), OpenMetadataType.ENGINE_ACTION.typeName))
             {
                 final String actionDescription = "processEngineActionEvent";
+
+                /*
+                 * A deleted engine action has nothing to run, and can no longer be read to find out.
+                 */
+                if (event.getEventType() == OpenMetadataEventType.ELEMENT_DELETED)
+                {
+                    return;
+                }
 
                 try
                 {

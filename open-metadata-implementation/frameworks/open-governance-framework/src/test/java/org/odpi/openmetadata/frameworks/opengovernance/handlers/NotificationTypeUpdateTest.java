@@ -4,11 +4,15 @@ package org.odpi.openmetadata.frameworks.opengovernance.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
@@ -20,6 +24,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -42,7 +47,8 @@ public class NotificationTypeUpdateTest
     private static class RecordingNotificationHandler extends NotificationHandler
     {
         private final OpenMetadataRootElement          notificationType;
-        private final List<OpenMetadataRootProperties> updates = new ArrayList<>();
+        private final List<OpenMetadataRootProperties> updates             = new ArrayList<>();
+        private final List<String>                     notifiedSubscribers = new ArrayList<>();
 
         RecordingNotificationHandler(OpenMetadataRootElement notificationType)
         {
@@ -73,6 +79,26 @@ public class NotificationTypeUpdateTest
                                         String                     methodName)
         {
             updates.add(properties);
+            return true;
+        }
+
+        @Override
+        boolean notifySubscriber(String                                userId,
+                                 String                                subscriberGUID,
+                                 ElementControlHeader                  subscriberHeader,
+                                 String                                notificationSubscriberGUID,
+                                 NotificationSubscriberProperties      notificationSubscriberProperties,
+                                 long                                  notificationCount,
+                                 Map<String, ClassificationProperties> initialClassifications,
+                                 NotificationProperties                outboundNotificationProperties,
+                                 String                                notificationTypeGUID,
+                                 Map<String, String>                   requestParameters,
+                                 String                                actionRequesterGUID,
+                                 List<NewActionTarget>                 actionTargets,
+                                 long                                  minimumNotificationInterval,
+                                 ActivityStatus                        newSubscriberStatus)
+        {
+            notifiedSubscribers.add(subscriberGUID);
             return true;
         }
     }
@@ -108,12 +134,30 @@ public class NotificationTypeUpdateTest
      */
     private RelatedMetadataElementSummary notifiedSubscriber()
     {
+        return subscriber("subscriber-guid", new Date(System.currentTimeMillis() - ONE_HOUR));
+    }
+
+
+    /**
+     * A subscriber that has never been notified.
+     *
+     * @return subscriber
+     */
+    private RelatedMetadataElementSummary newSubscriber()
+    {
+        return subscriber("new-subscriber-guid", null);
+    }
+
+
+    private RelatedMetadataElementSummary subscriber(String subscriberGUID,
+                                                     Date   lastNotification)
+    {
         NotificationSubscriberProperties subscriberProperties = new NotificationSubscriberProperties();
 
-        subscriberProperties.setLastNotification(new Date(System.currentTimeMillis() - ONE_HOUR));
+        subscriberProperties.setLastNotification(lastNotification);
 
         ElementHeader subscriberHeader = new ElementHeader();
-        subscriberHeader.setGUID("subscriber-guid");
+        subscriberHeader.setGUID(subscriberGUID);
 
         MetadataElementSummary subscriberElement = new MetadataElementSummary();
         subscriberElement.setElementHeader(subscriberHeader);
@@ -195,5 +239,93 @@ public class NotificationTypeUpdateTest
         assertEquals(handler.updates.size(), 1);
         assertTrue(handler.updates.get(0) instanceof NotificationTypeProperties);
         assertEquals(((NotificationTypeProperties) handler.updates.get(0)).getContentStatus(), ContentStatus.OBSOLETE);
+    }
+
+
+    /**
+     * A daily notification type that notified its subscribers an hour ago.
+     *
+     * @param subscribers its subscribers
+     * @return notification type
+     */
+    private OpenMetadataRootElement dailyNotificationType(List<RelatedMetadataElementSummary> subscribers)
+    {
+        OpenMetadataRootElement element = notificationType(true, null, subscribers);
+
+        ((NotificationTypeProperties) element.getProperties()).setMinimumNotificationInterval(1440L);
+
+        return element;
+    }
+
+
+    /**
+     * A new subscriber to a daily notification type is notified straight away, even though the last round of
+     * notifications was only an hour ago; the existing subscriber waits for the next round.  The next round is
+     * not postponed: only the notification count changes on the notification type.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void testNewSubscriberIsNotifiedBetweenRounds() throws Exception
+    {
+        OpenMetadataRootElement    notificationType   = dailyNotificationType(List.of(notifiedSubscriber(), newSubscriber()));
+        NotificationTypeProperties originalProperties = (NotificationTypeProperties) notificationType.getProperties();
+        Date                       lastNotification   = originalProperties.getLastNotification();
+
+        RecordingNotificationHandler handler = new RecordingNotificationHandler(notificationType);
+
+        notifySubscribers(handler);
+
+        assertEquals(handler.notifiedSubscribers, List.of("new-subscriber-guid"));
+        assertEquals(handler.updates.size(), 1);
+
+        NotificationTypeProperties update = (NotificationTypeProperties) handler.updates.get(0);
+
+        assertEquals(update.getNotificationCount(), Long.valueOf(8L));
+        assertEquals(update.getLastNotification(), lastNotification);
+        assertEquals(update.getNextScheduledNotification(), originalProperties.getNextScheduledNotification());
+    }
+
+
+    /**
+     * Between rounds, a daily notification type with only existing subscribers notifies no one and is not updated.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void testExistingSubscriberWaitsForNextRound() throws Exception
+    {
+        RecordingNotificationHandler handler = new RecordingNotificationHandler(dailyNotificationType(List.of(notifiedSubscriber())));
+
+        notifySubscribers(handler);
+
+        assertTrue(handler.notifiedSubscribers.isEmpty());
+        assertTrue(handler.updates.isEmpty());
+    }
+
+
+    /**
+     * Once the interval has passed, a round notifies every subscriber and records the round on the notification type.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void testRoundNotifiesEverySubscriber() throws Exception
+    {
+        OpenMetadataRootElement notificationType = dailyNotificationType(List.of(notifiedSubscriber(), newSubscriber()));
+
+        ((NotificationTypeProperties) notificationType.getProperties()).setLastNotification(new Date(System.currentTimeMillis() - 25 * ONE_HOUR));
+
+        RecordingNotificationHandler handler = new RecordingNotificationHandler(notificationType);
+
+        notifySubscribers(handler);
+
+        assertEquals(handler.notifiedSubscribers, List.of("subscriber-guid", "new-subscriber-guid"));
+        assertEquals(handler.updates.size(), 1);
+
+        NotificationTypeProperties update = (NotificationTypeProperties) handler.updates.get(0);
+
+        assertEquals(update.getNotificationCount(), Long.valueOf(8L));
+        assertTrue(update.getLastNotification().getTime() > System.currentTimeMillis() - ONE_HOUR);
     }
 }

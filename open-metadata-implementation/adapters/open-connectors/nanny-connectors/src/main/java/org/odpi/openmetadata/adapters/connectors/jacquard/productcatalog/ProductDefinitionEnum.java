@@ -379,7 +379,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
                           ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
                           new ProductQuestionDefinition[]{
                                   ProductQuestionDefinition.MASTER_DATA},
-                          null,
+                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                           ProductCommunityDefinition.MASTER_DATA_SIG,
                           new ProductSubscriptionDefinition[]{
                                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,

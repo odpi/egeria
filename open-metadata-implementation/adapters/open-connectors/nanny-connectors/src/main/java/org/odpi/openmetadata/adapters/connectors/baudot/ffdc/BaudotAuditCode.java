@@ -62,11 +62,11 @@ public enum BaudotAuditCode implements AuditLogMessageSet
                        "https://egeria-project.org/concepts/notification-type/"),
 
     /**
-     * BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4}
+     * BAUDOT-SUBSCRIPTION-MANAGER-0005 - The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} minutes.  The connector's next scheduled refresh is at {4}
      */
     PERIODIC_NOTIFICATION_TYPE("BAUDOT-SUBSCRIPTION-MANAGER-0005",
                                AuditLogRecordSeverityLevel.INFO,
-                               "The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4}",
+                               "The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} minutes.  The connector''s next scheduled refresh is at {4}",
                                "The connector sends a notification to each new subscriber, and a further notification to each existing subscriber on every refresh that falls outside the notification type's minimum interval.  The refresh interval is part of the connector's configuration in the integration daemon.",
                                "This notification pattern was selected because multipleNotificationsPermitted is set to true and the notification type has no monitored resources. Validate that this is the intended behaviour and that the connector's refresh interval and the notification type's minimum interval are appropriate together.",
                                "https://egeria-project.org/concepts/notification-type/"),

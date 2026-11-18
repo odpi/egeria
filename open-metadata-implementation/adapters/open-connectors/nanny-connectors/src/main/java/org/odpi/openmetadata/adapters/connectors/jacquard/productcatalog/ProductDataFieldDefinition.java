@@ -2663,10 +2663,14 @@ public enum ProductDataFieldDefinition
                      false,
                      true),
 
+    /*
+     * A time in milliseconds: a database that has been open for more than 24 days does not fit in an INT.  The
+     * survey measures it as a double; the product delivers it rounded to the nearest millisecond.
+     */
     SESSION_TIME("Session Time",
                  "Session Time",
                  RelationalDatabaseMetric.SESSION_TIME.getDescription(),
-                 DataType.INT,
+                 DataType.LONG,
                  null,
                  null,
                  false,
@@ -2675,7 +2679,7 @@ public enum ProductDataFieldDefinition
     ACTIVE_TIME("Active Time",
                 "Active Time",
                 RelationalDatabaseMetric.ACTIVE_TIME.getDescription(),
-                DataType.INT,
+                DataType.LONG,
                 null,
                 null,
                 false,

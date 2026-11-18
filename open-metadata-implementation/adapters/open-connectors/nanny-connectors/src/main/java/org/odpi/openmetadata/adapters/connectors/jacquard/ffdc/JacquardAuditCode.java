@@ -281,6 +281,16 @@ public enum JacquardAuditCode implements AuditLogMessageSet
                           "No action is required.  This message appears once for each asset created by an earlier version of the connector.",
                           "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
 
+    /**
+     * JACQUARD-HARVESTER-0033 - The {0} integration connector is not creating a digital product for reference data set {1} because the reference data set has no identifier
+     */
+    REFERENCE_DATA_SET_WITHOUT_IDENTIFIER("JACQUARD-HARVESTER-0033",
+                                          AuditLogRecordSeverityLevel.INFO,
+                                          "The {0} integration connector is not creating a digital product for reference data set {1} because the reference data set has no identifier",
+                                          "The product for a reference data set is named after the reference data set's identifier, which also gives the product its unique name and its table name.  Without one, every such reference data set would share a single product, each overwriting the others.  The reference data set is skipped; the other reference data sets are still harvested.",
+                                          "Add a value to the identifier property of the reference data set.  Its product is created on the connector's next refresh.",
+                                          "https://egeria-project.org/patterns/harvest-and-publish/overview/"),
+
     ;
 
     private final String                      logMessageId;

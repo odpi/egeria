@@ -25,7 +25,7 @@ The BaudotAuditCode is used to define the message content for the Audit Log.
 | [BAUDOT-SUBSCRIPTION-MANAGER-0002](#baudot-subscription-manager-0002) | INFO | The {0} integration connector has refreshed notification type {1} ({2}) where notifications are triggered by changes to its monitored resources.  {3} monitored resources are currently registered |
 | [BAUDOT-SUBSCRIPTION-MANAGER-0003](#baudot-subscription-manager-0003) | INFO | The {0} integration connector has refreshed notification type {1} ({2}) where only one notification is sent to each subscriber |
 | [BAUDOT-SUBSCRIPTION-MANAGER-0004](#baudot-subscription-manager-0004) | SHUTDOWN | The {0} integration connector is stopping |
-| [BAUDOT-SUBSCRIPTION-MANAGER-0005](#baudot-subscription-manager-0005) | INFO | The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4} |
+| [BAUDOT-SUBSCRIPTION-MANAGER-0005](#baudot-subscription-manager-0005) | INFO | The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} minutes.  The connector''s next scheduled refresh is at {4} |
 | [BAUDOT-SUBSCRIPTION-MANAGER-0006](#baudot-subscription-manager-0006) | EXCEPTION | The {0} integration connector was unable to refresh notification type {1} ({2}); the {3} exception had message {4} |
 | [BAUDOT-SUBSCRIPTION-MANAGER-0007](#baudot-subscription-manager-0007) | EXCEPTION | The {0} integration connector received a {1} exception while processing a change event for element {2}; the message was {3} |
 | [BAUDOT-SUBSCRIPTION-MANAGER-0011](#baudot-subscription-manager-0011) | ERROR | The {0} integration connector is not monitoring notification type {1} ({2}) because it could not be retrieved, or is not a notification type |
@@ -119,7 +119,7 @@ No action is required if the integration daemon is shutting down.  Otherwise che
 
 ### BAUDOT-SUBSCRIPTION-MANAGER-0005
 
-> The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} milliseconds.  The connector's next scheduled refresh is at {4}
+> The {0} integration connector has refreshed notification type {1} ({2}) where a notification is sent to each subscriber on a regular schedule no more often than every {3} minutes.  The connector''s next scheduled refresh is at {4}
 
 |  |  |
 |---|---|

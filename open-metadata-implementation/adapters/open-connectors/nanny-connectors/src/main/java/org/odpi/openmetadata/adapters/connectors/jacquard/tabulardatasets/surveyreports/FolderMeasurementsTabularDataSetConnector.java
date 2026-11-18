@@ -60,7 +60,11 @@ public class FolderMeasurementsTabularDataSetConnector extends SurveyReportDataS
 
                 putValue(values, ProductDataFieldDefinition.PATHNAME, pathName);
                 putValue(values, ProductDataFieldDefinition.FILE_COUNT, measurement.getFileCount());
-                putValue(values, ProductDataFieldDefinition.TOTAL_FILE_SIZE, measurement.getTotalFileSize());
+                /*
+                 * The survey adds the file sizes up in a double, but the product's column is a whole number of
+                 * bytes: "0.0" is not a value that a bigint column accepts.
+                 */
+                putValue(values, ProductDataFieldDefinition.TOTAL_FILE_SIZE, Math.round(measurement.getTotalFileSize()));
                 putValue(values, ProductDataFieldDefinition.SUB_DIRECTORY_COUNT, measurement.getSubDirectoryCount());
                 putValue(values, ProductDataFieldDefinition.READABLE_FILE_COUNT, measurement.getReadableFileCount());
                 putValue(values, ProductDataFieldDefinition.WRITEABLE_FILE_COUNT, measurement.getWriteableFileCount());
