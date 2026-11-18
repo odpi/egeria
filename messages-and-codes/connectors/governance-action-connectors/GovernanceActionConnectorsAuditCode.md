@@ -470,11 +470,11 @@ This is an error in the way that the governance action service has been called.I
 
 **System action**
 
-The governance action service will remove the AssetZoneMembership from
+The governance action service will remove the AssetZoneMembership classification from the action target elements so that they are visible to all.
 
 **User action**
 
-Verify that this is the intended behaviour.  If zones are needed, the zone names are passed with as a configuration property or as a request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list(for example: zone1,zone2) that will control the visibility of the asset.
+Verify that this is the intended behaviour.  If zones are needed, the zone names are passed as a configuration property or as a request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list (for example: zone1,zone2) that will control the visibility of the asset.
 
 
 ----
