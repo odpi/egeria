@@ -40,6 +40,7 @@ public enum RequestParameter
     BUSINESS_CAPABILITY_PROPERTY_NAME ("businessCapabilityPropertyName", "Name of the property from the element used to identify the businessCapability property.", "string", "name"),
 
     ACCEPTABLE_TYPE_NAMES ("acceptableTypeNames", "The list of names of the open metadata types that an element is allowed to be.  An element is acceptable if its type, or one of its super types, is in the list.", "array<string>", "Asset,GlossaryTerm"),
+    CANDIDATE_TYPE_NAMES ("candidateTypeNames", "The ordered list of names of the open metadata types to choose from when describing an element's type.  The first type in the list that the element's type, or one of its super types, matches is chosen.", "array<string>", "DataFile,Asset"),
     ;
 
     public final String           name;
