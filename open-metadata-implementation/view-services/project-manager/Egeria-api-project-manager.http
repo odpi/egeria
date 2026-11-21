@@ -847,3 +847,50 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Project targets
+# https://egeria-project.org/types/1/0130-Projects/
+
+@targetGUID=add guid here
+
+###
+# @name setupProjectTarget
+# Attach a project to an element that the project is to work on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-targets/{{targetGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "ProjectTargetProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearProjectTarget
+# Detach a project from an element that the project was to work on.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/project-targets/{{targetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

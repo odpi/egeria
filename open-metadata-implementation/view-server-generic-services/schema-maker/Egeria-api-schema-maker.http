@@ -1416,3 +1416,54 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Process schemas
+# https://egeria-project.org/types/5/0520-Process-Schemas/
+
+@elementGUID=add guid here
+@schemaTypeGUID=add guid here
+
+###
+# @name linkSupportedVariableType
+# Attach an element (such as a process) to a schema type that describes a type of data value used to initialize/configure it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/elements/{{elementGUID}}/supported-variable-types/{{schemaTypeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "SupportedVariableTypeProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "position": 0,
+    "minCardinality": 0,
+    "maxCardinality": 1,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachSupportedVariableType
+# Detach an element (such as a process) from a schema type that describes a type of data value used to initialize/configure it.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/elements/{{elementGUID}}/supported-variable-types/{{schemaTypeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

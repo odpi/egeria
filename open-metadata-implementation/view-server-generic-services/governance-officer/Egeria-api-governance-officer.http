@@ -2078,3 +2078,346 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Decisions, their outcomes and assessments
+# https://egeria-project.org/types/0/0018-Decisions/
+
+@decisionGUID=add guid here
+@outcomeGUID=add guid here
+@elementGUID=add guid here
+@assessmentGUID=add guid here
+
+###
+# @name createDecision
+# Create a decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DecisionProperties",
+    "qualifiedName": "add unique name here",
+    "identifier" : "add identifier here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "summary": "add summary here",
+    "scope": "add scope here",
+    "usage": "add usage here",
+    "importance": "add importance here",
+    "disposition": "add disposition here",
+    "implications": ["add implication here"],
+    "notes": "add notes here",
+    "startTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "nextReviewTime": "{{$isoTimestamp}}",
+    "expiryTime": "{{$isoTimestamp}}",
+    "authors": ["add author here"],
+    "contentStatus": "DRAFT",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createDecisionFromTemplate
+# Create a new metadata element to represent a decision using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "EntityElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateDecision
+# Update the properties of a decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/{{decisionGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "DecisionProperties",
+    "qualifiedName": "add unique name here",
+    "identifier" : "add identifier here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "summary": "add summary here",
+    "scope": "add scope here",
+    "usage": "add usage here",
+    "importance": "add importance here",
+    "disposition": "add disposition here",
+    "implications": ["add implication here"],
+    "notes": "add notes here",
+    "startTime": "{{$isoTimestamp}}",
+    "lastReviewTime": "{{$isoTimestamp}}",
+    "nextReviewTime": "{{$isoTimestamp}}",
+    "expiryTime": "{{$isoTimestamp}}",
+    "authors": ["add author here"],
+    "contentStatus": "DRAFT",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteDecision
+# Delete a decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/{{decisionGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getDecisionsByName
+# Returns the list of decisions with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+###
+# @name getDecisionByGUID
+# Return the properties of a specific decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/{{decisionGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name findDecisions
+# Retrieve the list of decision metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name linkDecisionOutcome
+# Attach a decision to an element that represents an outcome of the decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/{{decisionGUID}}/outcomes/{{outcomeGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "OutcomeProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "importance": "add importance here",
+    "disposition": "add disposition here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDecisionOutcome
+# Detach a decision from an element that represents an outcome of the decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/decisions/{{decisionGUID}}/outcomes/{{outcomeGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkAssessment
+# Attach an element that has been assessed to the decision that the assessment contributes to.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{elementGUID}}/assessments/{{decisionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "AssessmentProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "assessor": "add assessor here",
+    "assessorTypeName": "add assessor type name here",
+    "assessorPropertyName": "add assessor property name here",
+    "assessmentTime": "{{$isoTimestamp}}",
+    "expiryTime": "{{$isoTimestamp}}",
+    "notes": "add notes here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateAssessment
+# Update the properties of an assessment relationship.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/assessments/{{assessmentGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "AssessmentProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "assessor": "add assessor here",
+    "assessorTypeName": "add assessor type name here",
+    "assessorPropertyName": "add assessor property name here",
+    "assessmentTime": "{{$isoTimestamp}}",
+    "expiryTime": "{{$isoTimestamp}}",
+    "notes": "add notes here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachAssessment
+# Remove an assessment relationship between an element and a decision.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/assessments/{{assessmentGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

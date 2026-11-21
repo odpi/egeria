@@ -2,6 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.AssessmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.DataValueSourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.EmbeddedDataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.OutcomeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.ProcessingVariableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssociatedSkillSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
@@ -67,6 +74,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = AssessmentProperties.class, name = "AssessmentProperties"),
+                @JsonSubTypes.Type(value = DataValueSourceProperties.class, name = "DataValueSourceProperties"),
+                @JsonSubTypes.Type(value = EmbeddedDataValueProperties.class, name = "EmbeddedDataValueProperties"),
+                @JsonSubTypes.Type(value = OutcomeProperties.class, name = "OutcomeProperties"),
+                @JsonSubTypes.Type(value = ProcessingVariableProperties.class, name = "ProcessingVariableProperties"),
+                @JsonSubTypes.Type(value = ProjectTargetProperties.class, name = "ProjectTargetProperties"),
+                @JsonSubTypes.Type(value = SupportedVariableTypeProperties.class, name = "SupportedVariableTypeProperties"),
                 @JsonSubTypes.Type(value = ActionsProperties.class, name = "ActionsProperties"),
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
                 @JsonSubTypes.Type(value = AnnotationExtensionProperties.class, name = "AnnotationExtensionProperties"),

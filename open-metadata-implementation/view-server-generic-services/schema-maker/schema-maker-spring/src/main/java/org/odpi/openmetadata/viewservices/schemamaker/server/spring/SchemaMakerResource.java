@@ -1657,4 +1657,70 @@ public class SchemaMakerResource
     {
         return restAPI.detachSchemaTypeOption(serverName, urlMarker, schemaElementGUID, schemaTypeGUID, requestBody);
     }
+
+
+    /**
+     * Attach an element (such as a process) to a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param elementGUID    unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID unique identifier of the schema type
+     * @param requestBody    properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/elements/{elementGUID}/supported-variable-types/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkSupportedVariableType",
+            description="Attach an element (such as a process) to a schema type that describes a type of data value used to initialize/configure it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0520-Process-Schemas/"))
+
+    public VoidResponse linkSupportedVariableType(@PathVariable String serverName,
+                                                  @PathVariable String urlMarker,
+                                                  @PathVariable String elementGUID,
+                                                  @PathVariable String schemaTypeGUID,
+                                                  @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkSupportedVariableType(serverName, urlMarker, elementGUID, schemaTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an element (such as a process) from a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param elementGUID    unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID unique identifier of the schema type
+     * @param requestBody    options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/elements/{elementGUID}/supported-variable-types/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachSupportedVariableType",
+            description="Detach an element (such as a process) from a schema type that describes a type of data value used to initialize/configure it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/5/0520-Process-Schemas/"))
+
+    public VoidResponse detachSupportedVariableType(@PathVariable String serverName,
+                                                    @PathVariable String urlMarker,
+                                                    @PathVariable String elementGUID,
+                                                    @PathVariable String schemaTypeGUID,
+                                                    @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachSupportedVariableType(serverName, urlMarker, elementGUID, schemaTypeGUID, requestBody);
+    }
 }

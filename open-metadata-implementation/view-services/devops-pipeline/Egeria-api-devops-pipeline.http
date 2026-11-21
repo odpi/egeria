@@ -1437,3 +1437,52 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
+###
+# =====================================================================================================================
+# Source code branches
+# https://egeria-project.org/types/2/0280-Software-Development-Assets/
+
+@elementGUID=add guid here
+
+###
+# @name setElementAsBranch
+# Classify an element to say that it holds the files for a specific branch of a source code repository.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/branch
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "properties": {
+    "class" : "BranchProperties",
+    "displayName": "add branch name here",
+    "scope": "add scope here",
+    "purpose": "add purpose here",
+    "url": "add url here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name clearElementAsBranch
+# Remove the branch designation from an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/devops-pipeline/elements/{{elementGUID}}/branch/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

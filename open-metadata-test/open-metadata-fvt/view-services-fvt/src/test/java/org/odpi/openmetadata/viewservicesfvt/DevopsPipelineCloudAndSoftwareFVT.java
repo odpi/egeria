@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteClassificationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
@@ -269,6 +270,34 @@ public class DevopsPipelineCloudAndSoftwareFVT
                                       retrieved -> (retrieved instanceof GeneratedTargetProperties generatedTargetProperties) &&
                                               "build-42".equals(generatedTargetProperties.getBuildId()) &&
                                               "Gradle".equals(generatedTargetProperties.getBuildTool()));
+    }
+
+
+    /**
+     * Branch classifies the runnable component as holding the files for a branch of a source code repository,
+     * with the branch's details, until removed.
+     */
+    @Test
+    @Order(9)
+    void branch()
+    {
+        BranchProperties properties = new BranchProperties();
+
+        properties.setDisplayName("main");
+        properties.setScope("whole repository");
+        properties.setPurpose("release");
+        properties.setURL("https://github.com/odpi/egeria/tree/main");
+
+        assertClassificationLifecycle("/elements/" + dependedOnComponentGUID + "/branch",
+                                      properties,
+                                      new MetadataSourceRequestBody(),
+                                      OpenMetadataType.BRANCH_CLASSIFICATION.typeName,
+                                      () -> asset(dependedOnComponentGUID),
+                                      retrieved -> (retrieved instanceof BranchProperties branchProperties) &&
+                                              "main".equals(branchProperties.getDisplayName()) &&
+                                              "whole repository".equals(branchProperties.getScope()) &&
+                                              "release".equals(branchProperties.getPurpose()) &&
+                                              "https://github.com/odpi/egeria/tree/main".equals(branchProperties.getURL()));
     }
 
 

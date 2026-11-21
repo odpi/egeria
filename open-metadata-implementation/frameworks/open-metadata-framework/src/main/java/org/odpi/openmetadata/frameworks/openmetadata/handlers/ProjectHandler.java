@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -1588,5 +1591,76 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                                                             projectGUID,
                                                             OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
+    }
+
+
+    /**
+     * Attach a project to an element that the project is to work on.
+     *
+     * @param userId                 calling user
+     * @param projectGUID            unique identifier of the project
+     * @param targetGUID             unique identifier of the element that the project is working on
+     * @param makeAnchorOptions      options to control access to open metadata
+     * @param relationshipProperties description of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void setupProjectTarget(String                  userId,
+                                   String                  projectGUID,
+                                   String                  targetGUID,
+                                   MakeAnchorOptions       makeAnchorOptions,
+                                   ProjectTargetProperties relationshipProperties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName               = "setupProjectTarget";
+        final String projectGUIDParameterName = "projectGUID";
+        final String targetGUIDParameterName  = "targetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, projectGUIDParameterName, methodName);
+        propertyHelper.validateGUID(targetGUID, targetGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName,
+                                                        projectGUID,
+                                                        targetGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a project from an element that the project was to work on.
+     *
+     * @param userId        calling user
+     * @param projectGUID   unique identifier of the project
+     * @param targetGUID    unique identifier of the element that the project is working on
+     * @param deleteOptions options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void clearProjectTarget(String        userId,
+                                   String        projectGUID,
+                                   String        targetGUID,
+                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        final String methodName               = "clearProjectTarget";
+        final String projectGUIDParameterName = "projectGUID";
+        final String targetGUIDParameterName  = "targetGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(projectGUID, projectGUIDParameterName, methodName);
+        propertyHelper.validateGUID(targetGUID, targetGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName,
+                                                        projectGUID,
+                                                        targetGUID,
+                                                        deleteOptions);
     }
 }

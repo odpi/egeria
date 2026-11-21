@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.governanceofficer.server;
 
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DecisionHandler;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
@@ -26,6 +27,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GOVERNANCE_OFFICER;
 
     private final ViewServiceClientMap<GovernanceDefinitionHandler>   governanceDefinitionHandlerMap;
+    private final ViewServiceClientMap<DecisionHandler>               decisionHandlerMap;
     private final ViewServiceClientMap<EgeriaOpenGovernanceClient>    openGovernanceClientMap;
     private final ViewServiceClientMap<EgeriaOpenMetadataStoreClient> openMetadataClientMap;
 
@@ -66,6 +68,14 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                          myDescription.getViewServiceURLMarker(),
                                                                          maxPageSize);
 
+        this.decisionHandlerMap = new ViewServiceClientMap<>(DecisionHandler.class,
+                                                             serverName,
+                                                             auditLog,
+                                                             activeViewServices,
+                                                             myDescription.getViewServiceFullName(),
+                                                             myDescription.getViewServiceURLMarker(),
+                                                             maxPageSize);
+
         this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
                                                                   serverName,
                                                                   auditLog,
@@ -99,6 +109,23 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                                                 PropertyServerException
     {
         return governanceDefinitionHandlerMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the handler for maintaining decisions, their outcomes and assessments.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return handler
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public DecisionHandler getDecisionHandler(String urlMarker,
+                                              String methodName) throws InvalidParameterException,
+                                                                        PropertyServerException
+    {
+        return decisionHandlerMap.getClient(urlMarker, methodName);
     }
 
 

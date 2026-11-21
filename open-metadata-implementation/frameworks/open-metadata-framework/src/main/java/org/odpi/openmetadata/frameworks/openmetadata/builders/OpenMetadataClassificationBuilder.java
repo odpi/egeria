@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.builders;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
@@ -891,6 +892,24 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SOURCE.name,
                                                                      securityLogProperties.getSource());
+            }
+            else if (properties instanceof BranchProperties branchProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                     branchProperties.getDisplayName());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.SCOPE.name,
+                                                                     branchProperties.getScope());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.PURPOSE.name,
+                                                                     branchProperties.getPurpose());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.URL.name,
+                                                                     branchProperties.getURL());
             }
             else if (properties instanceof GeneratedTargetProperties generatedTargetProperties)
             {

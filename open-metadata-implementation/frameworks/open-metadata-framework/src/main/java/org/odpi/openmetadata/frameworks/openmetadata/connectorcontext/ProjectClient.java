@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -882,5 +885,47 @@ public class ProjectClient extends ConnectorContextClientBase
         {
             parentContext.getActivityReportWriter().reportElementUpdate(projectGUID);
         }
+    }
+
+
+    /**
+     * Attach a project to an element that the project is to work on.
+     *
+     * @param projectGUID            unique identifier of the project
+     * @param targetGUID             unique identifier of the element that the project is working on
+     * @param makeAnchorOptions      options to control access to open metadata
+     * @param relationshipProperties description of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void setupProjectTarget(String                  projectGUID,
+                                   String                  targetGUID,
+                                   MakeAnchorOptions       makeAnchorOptions,
+                                   ProjectTargetProperties relationshipProperties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        projectHandler.setupProjectTarget(connectorUserId, projectGUID, targetGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a project from an element that the project was to work on.
+     *
+     * @param projectGUID   unique identifier of the project
+     * @param targetGUID    unique identifier of the element that the project is working on
+     * @param deleteOptions options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void clearProjectTarget(String        projectGUID,
+                                   String        targetGUID,
+                                   DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        projectHandler.clearProjectTarget(connectorUserId, projectGUID, targetGUID, deleteOptions);
     }
 }

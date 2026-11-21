@@ -364,6 +364,21 @@ public enum OpenMetadataProperty
     LAST_REVIEW_TIME("lastReviewTime", DataType.DATE, DataType.DATE.getDisplayName(), "The Date/time that this activity was reviewed.", null, "adac8415-11c8-43e9-8a43-92a799893555"),
 
     /**
+     * The Date/time that this element is next due to be reviewed.
+     */
+    NEXT_REVIEW_TIME("nextReviewTime", DataType.DATE, DataType.DATE.getDisplayName(), "The Date/time that this element is next due to be reviewed.", null, "82baf562-e49f-490d-bc24-3eea98ec6f34"),
+
+    /**
+     * The Date/time when this element becomes obsolete and should no longer be relied on.
+     */
+    EXPIRY_TIME("expiryTime", DataType.DATE, DataType.DATE.getDisplayName(), "The Date/time when this element becomes obsolete and should no longer be relied on.", null, "e798bb0f-c948-408e-8a3f-c531ede15158"),
+
+    /**
+     * The Date/time that the assessment was made.
+     */
+    ASSESSMENT_TIME("assessmentTime", DataType.DATE, DataType.DATE.getDisplayName(), "The Date/time that the assessment was made.", null, "ff0eba7f-b31e-44eb-8c26-036938154fba"),
+
+    /**
      * The Date/time that this activity was last paused.
      */
     LAST_PAUSE_TIME("lastPauseTime", DataType.DATE, DataType.DATE.getDisplayName(), "The Date/time that this activity was last paused.", null, "4133d47a-7644-4549-8960-6388e200c766"),
@@ -694,7 +709,7 @@ public enum OpenMetadataProperty
     /**
      * Position of the element in a collection of relationships.
      */
-    POSITION("position", DataType.INT, DataType.INT.getDisplayName(), "Position of the element in a collection of relationships.  Zero means no position set. A positive value identified the position starting from 1 for the first position.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae", "0"),
+    POSITION("position", DataType.INT, DataType.INT.getDisplayName(), "Position of the element in a collection of relationships.  Zero means no position set. A positive value identifies the position starting from 1 for the first position.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae", "0"),
 
     /**
      * Minimum length of the data value (zero means unlimited).
@@ -3150,6 +3165,21 @@ public enum OpenMetadataProperty
     LICENSED_BY_PROPERTY_NAME("licensedByPropertyName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the property from the element used to identify the licensedBy property.", null, "8e13071d-d8ca-4b12-8c56-3794117f0c4a"),
 
     /**
+     * Person or organization that made the assessment.
+     */
+    ASSESSOR("assessor", DataType.STRING, DataType.STRING.getDisplayName(), "Person or organization that made the assessment.", null, "92d99ec5-5195-4973-ae3c-ef90c5aef62b"),
+
+    /**
+     * Type of element referenced in the assessor property.
+     */
+    ASSESSOR_TYPE_NAME("assessorTypeName", DataType.STRING, DataType.STRING.getDisplayName(), "Type of element referenced in the assessor property.", null, "e1bbf564-4112-4601-b02d-ca5793808566"),
+
+    /**
+     * Name of the property from the element used to identify the assessor property.
+     */
+    ASSESSOR_PROPERTY_NAME("assessorPropertyName", DataType.STRING, DataType.STRING.getDisplayName(), "Name of the property from the element used to identify the assessor property.", null, "5550165c-004a-49dd-b723-9856abdee899"),
+
+    /**
      * The person, engine or organization that will ensure the certification/license is honored.
      */
     CUSTODIAN("custodian", DataType.STRING, DataType.STRING.getDisplayName(), "The person, engine or organization that will ensure the certification/license is honored.", null, "f87be57e-f774-46f5-8f9c-e047e9a26023"),
@@ -3315,19 +3345,39 @@ public enum OpenMetadataProperty
     FINGERPRINT("fingerprint", DataType.STRING, DataType.STRING.getDisplayName(), "A string value that represents the content of the digital resource.", null, "9d9d4a02-e209-46f5-858f-8c08f21f829b"),
 
     /**
-     * The algorithm use to generate the fingerprint.
+     * The algorithm used to generate the fingerprint.
      */
-    FINGERPRINT_ALGORITHM("fingerprintAlgorithm", DataType.STRING, DataType.STRING.getDisplayName(), "The algorithm use to generate the fingerprint.", null, "99c237ac-e55c-424e-bc45-3f375e4c261d"),
+    FINGERPRINT_ALGORITHM("fingerprintAlgorithm", DataType.STRING, DataType.STRING.getDisplayName(), "The algorithm used to generate the fingerprint.", null, "99c237ac-e55c-424e-bc45-3f375e4c261d"),
 
     /**
-     * An integer value that represents the content of the digital resource.
+     * A long value that represents the content of the digital resource.
      */
-    HASH("hash", DataType.LONG, DataType.LONG.getDisplayName(), "An long value that represents the content of the digital resource.", null, "7f62687d-482a-41a4-8f76-3ac2ec28f619", "0"),
+    HASH("hash", DataType.LONG, DataType.LONG.getDisplayName(), "A long value that represents the content of the digital resource.", null, "7f62687d-482a-41a4-8f76-3ac2ec28f619", "0"),
 
     /**
-     * The algorithm use to generate the hash.
+     * The algorithm used to generate the hash.
      */
-    HASH_ALGORITHM("hashAlgorithm", DataType.STRING, DataType.STRING.getDisplayName(), "The algorithm use to generate the hash.", null, "d838386e-e1ad-4a9c-b33c-dde3240a7c08"),
+    HASH_ALGORITHM("hashAlgorithm", DataType.STRING, DataType.STRING.getDisplayName(), "The algorithm used to generate the hash.", null, "d838386e-e1ad-4a9c-b33c-dde3240a7c08"),
+
+    /**
+     * The format of the data value.
+     */
+    DATA_FORMAT("dataFormat", DataType.STRING, DataType.STRING.getDisplayName(), "The format of the data value.", "JSON", "5696152e-23c7-4e97-8dc4-de6f3ff9e136"),
+
+    /**
+     * The data value expressed as a string.  The format used is specified in the dataFormat property.
+     */
+    DATA_VALUE("dataValue", DataType.STRING, DataType.STRING.getDisplayName(), "The data value expressed as a string.  The format used is specified in the dataFormat property.", null, "b5995fac-ebe2-43ba-8f44-0643e375f11e"),
+
+    /**
+     * The data value expressed as a list of strings.
+     */
+    DATA_VALUE_LIST("dataValueList", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getDisplayName(), "The data value expressed as a list of strings.", null, "da67434f-90ea-465d-b0b2-50525a588250"),
+
+    /**
+     * The data value expressed as a map of strings to strings.
+     */
+    DATA_VALUE_MAP("dataValueMap", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getDisplayName(), "The data value expressed as a map of strings to strings.", null, "839c550b-0156-4158-8ea9-802dc6e9b95e"),
 
     /**
      * Description of the background cause or activity.

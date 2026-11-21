@@ -482,6 +482,34 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setLicensedElements(super.getRelatedElements(OpenMetadataType.LICENSE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setAssociatedDecisions(super.getRelatedElements(OpenMetadataType.OUTCOME_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setDecisionOutcomes(super.getRelatedElements(OpenMetadataType.OUTCOME_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.OUTCOME_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setInputsToDecision(super.getRelatedElements(OpenMetadataType.ASSESSMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setAssessmentDecisions(super.getRelatedElements(OpenMetadataType.ASSESSMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.ASSESSMENT_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setWorkedOnByProjects(super.getRelatedElements(OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setProjectTargets(super.getRelatedElements(OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setDataValueUses(super.getRelatedElements(OpenMetadataType.PROCESSING_VARIABLE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setProcessingVariables(super.getRelatedElements(OpenMetadataType.PROCESSING_VARIABLE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.PROCESSING_VARIABLE_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setParentDataValues(super.getRelatedElements(OpenMetadataType.EMBEDDED_DATA_VALUE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setEmbeddedDataValues(super.getRelatedElements(OpenMetadataType.EMBEDDED_DATA_VALUE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.EMBEDDED_DATA_VALUE_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setProvidesDataValues(super.getRelatedElements(OpenMetadataType.DATA_VALUE_SOURCE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setDataValueSources(super.getRelatedElements(OpenMetadataType.DATA_VALUE_SOURCE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_VALUE_SOURCE_RELATIONSHIP.typeName);
+
+            attributedMetadataElement.setProcessVariableTypeUses(super.getRelatedElements(OpenMetadataType.SUPPORTED_VARIABLE_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            attributedMetadataElement.setProcessVariableTypes(super.getRelatedElements(OpenMetadataType.SUPPORTED_VARIABLE_TYPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            processedRelationshipTypes.add(OpenMetadataType.SUPPORTED_VARIABLE_TYPE_RELATIONSHIP.typeName);
+
             attributedMetadataElement.setCertifications(super.getRelatedElements(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setCertifiedElements(super.getRelatedElements(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);

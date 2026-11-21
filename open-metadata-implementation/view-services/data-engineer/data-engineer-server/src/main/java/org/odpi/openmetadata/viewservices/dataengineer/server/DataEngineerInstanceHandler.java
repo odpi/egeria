@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.dataengineer.server;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataValueHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
@@ -52,6 +53,34 @@ public class DataEngineerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getConnectedAssetClient();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the handler for data values.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return handler
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public DataValueHandler getDataValueHandler(String userId,
+                                                String serverName,
+                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        DataEngineerInstance instance = (DataEngineerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataValueHandler();
         }
 
         return null;

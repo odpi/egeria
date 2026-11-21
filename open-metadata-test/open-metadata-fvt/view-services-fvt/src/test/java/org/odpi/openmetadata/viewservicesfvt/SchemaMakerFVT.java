@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteClassificationRequestBody;
@@ -490,6 +494,74 @@ public class SchemaMakerFVT
                       schemaTypeRetrieve(operationGUID), OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName, requestGUID);
         linkAndDetach("/api-operations/" + operationGUID + "/api-responses/" + responseGUID,
                       schemaTypeRetrieve(operationGUID), OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName, responseGUID);
+    }
+
+
+    /**
+     * A server is configured with data values whose type is described by a schema type.  The
+     * SupportedVariableType relationship and its properties are visible from both ends until it is detached.
+     */
+    @Test
+    @Order(14)
+    void supportedVariableTypes()
+    {
+        ViewServiceClient assetMaker = new ViewServiceClient(ViewServiceDescription.ASSET_MAKER);
+        String            typeName   = OpenMetadataType.SUPPORTED_VARIABLE_TYPE_RELATIONSHIP.typeName;
+
+        SoftwareServerProperties serverProperties = new SoftwareServerProperties();
+
+        serverProperties.setQualifiedName(ViewServicesFvtTestSupport.qualifiedName("SoftwareServer", "configured-with-variables"));
+        serverProperties.setDisplayName("Configured with variables");
+
+        NewElementRequestBody newServer = new NewElementRequestBody();
+
+        newServer.setIsOwnAnchor(true);
+        newServer.setProperties(serverProperties);
+
+        String serverGUID     = assetMaker.create("/assets", newServer);
+        String serverRetrieve = "/assets/" + serverGUID + "/retrieve";
+
+        try
+        {
+            String path = "/elements/" + serverGUID + "/supported-variable-types/" + structTypeGUID;
+
+            SupportedVariableTypeProperties properties = new SupportedVariableTypeProperties();
+
+            properties.setLabel("customer");
+            properties.setDescription("The customer record passed to the server");
+            properties.setPosition(1);
+            properties.setMinCardinality(1);
+            properties.setMaxCardinality(5);
+
+            schemaMaker.call(path + "/attach", relationship(properties));
+
+            SupportedVariableTypeProperties retrieved = assertInstanceOf(SupportedVariableTypeProperties.class,
+                                                                         DesignFvtSupport.assertLinked(assetMaker, serverRetrieve, typeName, structTypeGUID).getRelationshipProperties());
+
+            assertEquals("customer", retrieved.getLabel());
+            assertEquals("The customer record passed to the server", retrieved.getDescription());
+            assertEquals(1, retrieved.getPosition());
+            assertEquals(1, retrieved.getMinCardinality());
+            assertEquals(5, retrieved.getMaxCardinality());
+
+            OpenMetadataRootElement server     = assetMaker.element(serverRetrieve, new GetRequestBody());
+            OpenMetadataRootElement schemaType = schemaMaker.element(schemaTypeRetrieve(structTypeGUID), new GetRequestBody());
+
+            assertTrue(server.getProcessVariableTypes().stream().anyMatch(summary -> structTypeGUID.equals(summary.getRelatedElement().getElementHeader().getGUID())),
+                       "the schema type is not in the server's processVariableTypes");
+            assertTrue(schemaType.getProcessVariableTypeUses().stream().anyMatch(summary -> serverGUID.equals(summary.getRelatedElement().getElementHeader().getGUID())),
+                       "the server is not in the schema type's processVariableTypeUses");
+
+            schemaMaker.call(path + "/detach", new DeleteRelationshipRequestBody());
+
+            DesignFvtSupport.assertNotLinked(assetMaker, serverRetrieve, typeName, structTypeGUID);
+            DesignFvtSupport.assertNotLinked(schemaMaker, schemaTypeRetrieve(structTypeGUID), typeName, serverGUID);
+        }
+        finally
+        {
+            assetMaker.call("/assets/" + serverGUID + "/delete", new DeleteElementRequestBody());
+            ViewServicesFvtTestSupport.assertGone(assetMaker, serverRetrieve);
+        }
     }
 
 

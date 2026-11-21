@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.schemamaker.server;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -2880,6 +2881,126 @@ public class SchemaMakerRESTServices extends TokenController
             SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachSchemaTypeOption(userId, schemaElementGUID, schemaTypeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Process schemas
+     */
+
+    /**
+     * Attach an element (such as a process) to a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param elementGUID    unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID unique identifier of the schema type
+     * @param requestBody    properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse linkSupportedVariableType(String                     serverName,
+                                                  String                     urlMarker,
+                                                  String                     elementGUID,
+                                                  String                     schemaTypeGUID,
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkSupportedVariableType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkSupportedVariableType(userId, elementGUID, schemaTypeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof SupportedVariableTypeProperties properties)
+            {
+                handler.linkSupportedVariableType(userId, elementGUID, schemaTypeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkSupportedVariableType(userId, elementGUID, schemaTypeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(SupportedVariableTypeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach an element (such as a process) from a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param elementGUID    unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID unique identifier of the schema type
+     * @param requestBody    options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse detachSupportedVariableType(String                        serverName,
+                                                    String                        urlMarker,
+                                                    String                        elementGUID,
+                                                    String                        schemaTypeGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachSupportedVariableType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachSupportedVariableType(userId, elementGUID, schemaTypeGUID, requestBody);
         }
         catch (Throwable error)
         {

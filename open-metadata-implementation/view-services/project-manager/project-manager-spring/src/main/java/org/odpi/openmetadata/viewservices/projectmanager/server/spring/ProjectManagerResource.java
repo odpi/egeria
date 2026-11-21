@@ -1205,4 +1205,64 @@ public class ProjectManagerResource
     {
         return restAPI.clearProjectKind(serverName, projectGUID, requestBody);
     }
+
+
+    /**
+     * Attach a project to an element that the project is to work on.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param targetGUID  unique identifier of the element that the project is working on
+     * @param requestBody properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-targets/{targetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setupProjectTarget",
+            description="Attach a project to an element that the project is to work on.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/1/0130-Projects/"))
+
+    public VoidResponse setupProjectTarget(@PathVariable String serverName,
+                                           @PathVariable String projectGUID,
+                                           @PathVariable String targetGUID,
+                                           @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.setupProjectTarget(serverName, projectGUID, targetGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a project from an element that the project was to work on.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param projectGUID unique identifier of the project
+     * @param targetGUID  unique identifier of the element that the project is working on
+     * @param requestBody options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/projects/{projectGUID}/project-targets/{targetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearProjectTarget",
+            description="Detach a project from an element that the project was to work on.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/1/0130-Projects/"))
+
+    public VoidResponse clearProjectTarget(@PathVariable String serverName,
+                                           @PathVariable String projectGUID,
+                                           @PathVariable String targetGUID,
+                                           @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.clearProjectTarget(serverName, projectGUID, targetGUID, requestBody);
+    }
 }

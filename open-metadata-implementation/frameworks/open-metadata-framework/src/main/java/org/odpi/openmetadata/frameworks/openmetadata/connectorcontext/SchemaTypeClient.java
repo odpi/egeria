@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -592,5 +595,49 @@ public class SchemaTypeClient extends ConnectorContextClientBase
                                                                                 UserNotAuthorizedException
     {
         schemaTypeHandler.detachSchemaTypeOption(connectorUserId, schemaElementGUID, schemaTypeGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach an element (such as a process) to a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param elementGUID            unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID         unique identifier of the schema type
+     * @param makeAnchorOptions      options to control access to open metadata
+     * @param relationshipProperties description of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void linkSupportedVariableType(String                          elementGUID,
+                                          String                          schemaTypeGUID,
+                                          MakeAnchorOptions               makeAnchorOptions,
+                                          SupportedVariableTypeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        schemaTypeHandler.linkSupportedVariableType(connectorUserId, elementGUID, schemaTypeGUID, makeAnchorOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach an element (such as a process) from a schema type that describes a type of data value used to
+     * initialize/configure it.
+     *
+     * @param elementGUID    unique identifier of the element that is configured with data values
+     * @param schemaTypeGUID unique identifier of the schema type
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void detachSupportedVariableType(String        elementGUID,
+                                            String        schemaTypeGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        schemaTypeHandler.detachSupportedVariableType(connectorUserId, elementGUID, schemaTypeGUID, deleteOptions);
     }
 }
