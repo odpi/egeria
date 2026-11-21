@@ -1919,4 +1919,59 @@ public class DevopsPipelineResource
         return restAPI.clearElementAsReusableTechnique(serverName, elementGUID, requestBody);
     }
 
+
+    /**
+     * Classify an element to say that it holds the files for a specific branch of a source code repository.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/elements/{elementGUID}/branch")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setElementAsBranch",
+            description="Classify an element to say that it holds the files for a specific branch of a source code repository.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/2/0280-Software-Development-Assets/"))
+
+    public VoidResponse setElementAsBranch(@PathVariable String serverName,
+                                           @PathVariable String elementGUID,
+                                           @RequestBody (required = false) NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setElementAsBranch(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the branch designation from an element.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/elements/{elementGUID}/branch/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="clearElementAsBranch",
+            description="Remove the branch designation from an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/2/0280-Software-Development-Assets/"))
+
+    public VoidResponse clearElementAsBranch(@PathVariable String serverName,
+                                             @PathVariable String elementGUID,
+                                             @RequestBody (required = false) MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearElementAsBranch(serverName, elementGUID, requestBody);
+    }
 }

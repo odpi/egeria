@@ -1812,4 +1812,364 @@ public class GovernanceOfficerResource
     {
         return restAPI.clearPolicyRetrievalPoint(serverName, urlMarker, elementGUID, requestBody);
     }
+
+
+    /**
+     * Create a decision.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the newly created element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createDecision",
+            description="Create a decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public GUIDResponse createDecision(@PathVariable String serverName,
+                                       @PathVariable String urlMarker,
+                                       @RequestBody (required = false) NewElementRequestBody requestBody)
+    {
+        return restAPI.createDecision(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a decision using an existing metadata element as a template.  The
+     * template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createDecisionFromTemplate",
+            description="Create a new metadata element to represent a decision using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public GUIDResponse createDecisionFromTemplate(@PathVariable String serverName,
+                                                   @PathVariable String urlMarker,
+                                                   @RequestBody (required = false) TemplateRequestBody requestBody)
+    {
+        return restAPI.createDecisionFromTemplate(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  properties for the element
+     *
+     * @return boolean - true if an update occurred or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/{decisionGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateDecision",
+            description="Update the properties of a decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public BooleanResponse updateDecision(@PathVariable String serverName,
+                                          @PathVariable String urlMarker,
+                                          @PathVariable String decisionGUID,
+                                          @RequestBody (required = false) UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateDecision(serverName, urlMarker, decisionGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/{decisionGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteDecision",
+            description="Delete a decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public VoidResponse deleteDecision(@PathVariable String serverName,
+                                       @PathVariable String urlMarker,
+                                       @PathVariable String decisionGUID,
+                                       @RequestBody (required = false) DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteDecision(serverName, urlMarker, decisionGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of decisions with a particular name.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody name to search for and the query options
+     *
+     * @return a list of elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDecisionsByName",
+            description="Returns the list of decisions with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public OpenMetadataRootElementsResponse getDecisionsByName(@PathVariable String serverName,
+                                                               @PathVariable String urlMarker,
+                                                               @RequestBody (required = false) FilterRequestBody requestBody)
+    {
+        return restAPI.getDecisionsByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  options for the retrieve
+     *
+     * @return retrieved properties or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/{decisionGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getDecisionByGUID",
+            description="Return the properties of a specific decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public OpenMetadataRootElementResponse getDecisionByGUID(@PathVariable String serverName,
+                                                             @PathVariable String urlMarker,
+                                                             @PathVariable String decisionGUID,
+                                                             @RequestBody (required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getDecisionByGUID(serverName, urlMarker, decisionGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of decision metadata elements that contain the search string.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody search string and the query options
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findDecisions",
+            description="Retrieve the list of decision metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public OpenMetadataRootElementsResponse findDecisions(@PathVariable String serverName,
+                                                          @PathVariable String urlMarker,
+                                                          @RequestBody (required = false) SearchStringRequestBody requestBody)
+    {
+        return restAPI.findDecisions(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Attach a decision to an element that represents an outcome of the decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param outcomeGUID  unique identifier of the element that is an outcome of the decision
+     * @param requestBody  properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/{decisionGUID}/outcomes/{outcomeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkDecisionOutcome",
+            description="Attach a decision to an element that represents an outcome of the decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public VoidResponse linkDecisionOutcome(@PathVariable String serverName,
+                                            @PathVariable String urlMarker,
+                                            @PathVariable String decisionGUID,
+                                            @PathVariable String outcomeGUID,
+                                            @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkDecisionOutcome(serverName, urlMarker, decisionGUID, outcomeGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a decision from an element that represents an outcome of the decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param outcomeGUID  unique identifier of the element that is an outcome of the decision
+     * @param requestBody  options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/decisions/{decisionGUID}/outcomes/{outcomeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachDecisionOutcome",
+            description="Detach a decision from an element that represents an outcome of the decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public VoidResponse detachDecisionOutcome(@PathVariable String serverName,
+                                              @PathVariable String urlMarker,
+                                              @PathVariable String decisionGUID,
+                                              @PathVariable String outcomeGUID,
+                                              @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachDecisionOutcome(serverName, urlMarker, decisionGUID, outcomeGUID, requestBody);
+    }
+
+
+    /**
+     * Attach an element that has been assessed to the decision that the assessment contributes to.  This is a
+     * multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param elementGUID  unique identifier of the element that was assessed
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/elements/{elementGUID}/assessments/{decisionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkAssessment",
+            description="Attach an element that has been assessed to the decision that the assessment contributes to.  This is a multi-link relationship so a new relationship is always created and its unique identifier is returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public GUIDResponse linkAssessment(@PathVariable String serverName,
+                                       @PathVariable String urlMarker,
+                                       @PathVariable String elementGUID,
+                                       @PathVariable String decisionGUID,
+                                       @RequestBody (required = false) NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkAssessment(serverName, urlMarker, elementGUID, decisionGUID, requestBody);
+    }
+
+
+    /**
+     * Update the properties of an assessment relationship.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param assessmentGUID unique identifier of the assessment relationship
+     * @param requestBody    properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/assessments/{assessmentGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateAssessment",
+            description="Update the properties of an assessment relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public VoidResponse updateAssessment(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String assessmentGUID,
+                                         @RequestBody (required = false) UpdateRelationshipRequestBody requestBody)
+    {
+        return restAPI.updateAssessment(serverName, urlMarker, assessmentGUID, requestBody);
+    }
+
+
+    /**
+     * Remove an assessment relationship between an element and a decision.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param assessmentGUID unique identifier of the assessment relationship
+     * @param requestBody    options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    @PostMapping(path = "/assessments/{assessmentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachAssessment",
+            description="Remove an assessment relationship between an element and a decision.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/0/0018-Decisions/"))
+
+    public VoidResponse detachAssessment(@PathVariable String serverName,
+                                         @PathVariable String urlMarker,
+                                         @PathVariable String assessmentGUID,
+                                         @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachAssessment(serverName, urlMarker, assessmentGUID, requestBody);
+    }
 }

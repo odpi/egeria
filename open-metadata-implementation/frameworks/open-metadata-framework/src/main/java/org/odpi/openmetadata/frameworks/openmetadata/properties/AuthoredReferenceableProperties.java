@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.DecisionProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SkillProperties;
@@ -42,6 +43,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DataFieldProperties.class, name = "DataFieldProperties"),
         @JsonSubTypes.Type(value = DataStructureProperties.class, name = "DataStructureProperties"),
         @JsonSubTypes.Type(value = DataValueSpecificationProperties.class, name = "DataValueSpecificationProperties"),
+        @JsonSubTypes.Type(value = DecisionProperties.class, name = "DecisionProperties"),
         @JsonSubTypes.Type(value = DesignModelElementProperties.class, name = "DesignModelElementProperties"),
         @JsonSubTypes.Type(value = DesignPatternProperties.class, name = "DesignPatternProperties"),
         @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),

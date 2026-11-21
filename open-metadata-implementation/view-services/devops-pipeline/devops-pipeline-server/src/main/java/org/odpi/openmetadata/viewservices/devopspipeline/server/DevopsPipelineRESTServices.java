@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.devopspipeline.server;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -3540,4 +3541,113 @@ public class DevopsPipelineRESTServices extends TokenController
         return response;
     }
 
+
+    /*
+     * =====================================================================================================================
+     * Source code branches
+     */
+
+    /**
+     * Classify an element to say that it holds the files for a specific branch of a source code repository.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param elementGUID unique identifier of the element
+     * @param requestBody properties for the classification
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse setElementAsBranch(String                       serverName,
+                                           String                       elementGUID,
+                                           NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setElementAsBranch";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                handler.setElementAsBranch(userId, elementGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof BranchProperties properties)
+            {
+                handler.setElementAsBranch(userId, elementGUID, properties, requestBody);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.setElementAsBranch(userId, elementGUID, null, requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(BranchProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove the branch designation from an element.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param elementGUID unique identifier of the element
+     * @param requestBody options for the request
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse clearElementAsBranch(String                    serverName,
+                                             String                    elementGUID,
+                                             MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearElementAsBranch";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SoftwareDevelopmentHandler handler = instanceHandler.getSoftwareDevelopmentHandler(userId, serverName, methodName);
+
+            handler.clearElementAsBranch(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
 }

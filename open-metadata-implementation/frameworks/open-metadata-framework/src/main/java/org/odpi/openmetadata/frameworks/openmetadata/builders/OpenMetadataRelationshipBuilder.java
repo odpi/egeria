@@ -3,6 +3,11 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.builders;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.OutcomeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.AssessmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.ProcessingVariableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.EmbeddedDataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
@@ -362,6 +367,63 @@ public class OpenMetadataRelationshipBuilder
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DESCRIPTION.name,
                                                                          referenceableFacetProperties.getDescription());
+                }
+                else if (properties instanceof OutcomeProperties outcomeProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.IMPORTANCE.name,
+                                                                         outcomeProperties.getImportance());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DISPOSITION.name,
+                                                                         outcomeProperties.getDisposition());
+                }
+                else if (properties instanceof AssessmentProperties assessmentProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ASSESSOR.name,
+                                                                         assessmentProperties.getAssessor());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ASSESSOR_TYPE_NAME.name,
+                                                                         assessmentProperties.getAssessorTypeName());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ASSESSOR_PROPERTY_NAME.name,
+                                                                         assessmentProperties.getAssessorPropertyName());
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.ASSESSMENT_TIME.name,
+                                                                       assessmentProperties.getAssessmentTime());
+                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                       OpenMetadataProperty.EXPIRY_TIME.name,
+                                                                       assessmentProperties.getExpiryTime());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.NOTES.name,
+                                                                         assessmentProperties.getNotes());
+                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                            OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                            assessmentProperties.getAdditionalProperties());
+                }
+                else if (properties instanceof ProcessingVariableProperties processingVariableProperties)
+                {
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.POSITION.name,
+                                                                      processingVariableProperties.getPosition());
+                }
+                else if (properties instanceof EmbeddedDataValueProperties embeddedDataValueProperties)
+                {
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.POSITION.name,
+                                                                      embeddedDataValueProperties.getPosition());
+                }
+                else if (properties instanceof SupportedVariableTypeProperties supportedVariableTypeProperties)
+                {
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.POSITION.name,
+                                                                      supportedVariableTypeProperties.getPosition());
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                                      supportedVariableTypeProperties.getMinCardinality());
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                                      supportedVariableTypeProperties.getMaxCardinality());
                 }
                 else if (properties instanceof ReportRunOfProperties reportRunOfProperties)
                 {

@@ -42,3 +42,331 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/tabular-d
 Authorization: Bearer {{token}}
 
 ###
+# =====================================================================================================================
+# Data values
+# https://egeria-project.org/types/2/0208-Data-Values/
+
+@dataValueGUID=add guid here
+@assetGUID=add guid here
+@elementGUID=add guid here
+@parentDataValueGUID=add guid here
+@embeddedDataValueGUID=add guid here
+
+###
+# @name createDataValue
+# Create a data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "DataValueProperties",
+    "qualifiedName": "add unique name here",
+    "identifier" : "add identifier here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "dataFormat": "add data format here",
+    "length": 0,
+    "dataType": "add data type here",
+    "usage": "add usage here",
+    "fingerprint": "add fingerprint here",
+    "fingerprintAlgorithm": "add algorithm name here",
+    "hash": 0,
+    "hashAlgorithm": "add algorithm name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name createDataValueFromTemplate
+# Create a new metadata element to represent a data value using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "TemplateRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "templateGUID": "add guid here",
+  "replacementProperties": {
+    "class": "EntityElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "placeholderPropertyValues":  {
+    "placeholder1" : "propertyValue1",
+    "placeholder2" : "propertyValue2"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name updateDataValue
+# Update the properties of a data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{dataValueGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties": {
+    "class" : "DataValueProperties",
+    "qualifiedName": "add unique name here",
+    "identifier" : "add identifier here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "dataFormat": "add data format here",
+    "length": 0,
+    "dataType": "add data type here",
+    "usage": "add usage here",
+    "fingerprint": "add fingerprint here",
+    "fingerprintAlgorithm": "add algorithm name here",
+    "hash": 0,
+    "hashAlgorithm": "add algorithm name here",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name deleteDataValue
+# Delete a data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{dataValueGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name getDataValuesByName
+# Returns the list of data values with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10
+}
+
+###
+# @name getDataValueByGUID
+# Return the properties of a specific data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{dataValueGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name findDataValues
+# Retrieve the list of data value metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name linkDataValueSource
+# Attach a data value to the asset that describes the digital resource where the data is stored.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{dataValueGUID}}/data-value-sources/{{assetGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "DataValueSourceProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataValueSource
+# Detach a data value from the asset that describes the digital resource where the data is stored.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{dataValueGUID}}/data-value-sources/{{assetGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkProcessingVariable
+# Attach an element (such as a process) to a data value that is used to configure its processing.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/elements/{{elementGUID}}/processing-variables/{{dataValueGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "ProcessingVariableProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "position": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachProcessingVariable
+# Detach an element (such as a process) from a data value that is used to configure its processing.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/elements/{{elementGUID}}/processing-variables/{{dataValueGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name linkEmbeddedDataValue
+# Embed a data value in another data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{parentDataValueGUID}}/embedded-data-values/{{embeddedDataValueGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class" : "EmbeddedDataValueProperties",
+    "label": "add label here",
+    "description": "add description here",
+    "position": 0,
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachEmbeddedDataValue
+# Remove an embedded data value from its parent data value.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-engineer/data-values/{{parentDataValueGUID}}/embedded-data-values/{{embeddedDataValueGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
