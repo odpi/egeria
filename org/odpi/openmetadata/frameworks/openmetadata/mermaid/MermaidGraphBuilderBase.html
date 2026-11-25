@@ -388,7 +388,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endSubgraph()" class="member-name-link">endSubgraph</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">End the current subgraph.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#extractAnchorInfo(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">extractAnchorInfo</a><wbr>(<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -540,16 +542,23 @@ loadScripts(document, 'script');</script>
  the purpose declared for their relationship type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startElementSubgraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">startElementSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
  <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Start a subgraph in the mermaid graph.</div>
+<div class="block">Start a subgraph in the mermaid graph that represents a metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,java.lang.String)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Start a subgraph in the mermaid graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSubgraph(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle,java.lang.String)" class="member-name-link">startSubgraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
  <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;direction)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Start a subgraph in the mermaid graph.</div>
 </div>
 </div>
@@ -1267,9 +1276,26 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="startElementSubgraph(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle)">
+<h3>startElementSubgraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startElementSubgraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;subgraphName,
+ <a href="VisualStyle.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.mermaid">VisualStyle</a>&nbsp;visualStyle)</span></div>
+<div class="block">Start a subgraph in the mermaid graph that represents a metadata element.  The subgraph is identified by the
+ element's unique identifier rather than its name, since different elements may have the same name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementGUID</code> - unique identifier of the element that the subgraph represents</dd>
+<dd><code>subgraphName</code> - name of subgraph to display</dd>
+<dd><code>visualStyle</code> - style of subgraph</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="endSubgraph()">
 <h3>endSubgraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">endSubgraph</span>()</div>
+<div class="block">End the current subgraph.</div>
 </section>
 </li>
 <li>

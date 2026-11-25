@@ -181,7 +181,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionBlueprintMermaidGraph()" class="member-name-link">getSolutionBlueprintMermaidGraph</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the graph view of the solution blueprint.</div>
+<div class="block">Return the graph view of the solution blueprint (or solution boundary).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionSubcomponentMermaidGraph()" class="member-name-link">getSolutionSubcomponentMermaidGraph</a>()</code></div>
@@ -268,7 +268,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionBlueprintMermaidGraph(java.lang.String)" class="member-name-link">setSolutionBlueprintMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintMermaidGraph)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the graph view of the solution component.</div>
+<div class="block">Set up the graph view of the solution blueprint (or solution boundary).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionSubcomponentMermaidGraph(java.lang.String)" class="member-name-link">setSolutionSubcomponentMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionSubcomponentMermaidGraph)</code></div>
@@ -525,7 +525,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getSolutionBlueprintMermaidGraph()">
 <h3>getSolutionBlueprintMermaidGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionBlueprintMermaidGraph</span>()</div>
-<div class="block">Return the graph view of the solution blueprint.  This just contains the top level components linked together.</div>
+<div class="block">Return the graph view of the solution blueprint (or solution boundary).  This contains the components and
+ roles that are members of the blueprint, linked together.  Any solution boundaries that are members are shown
+ as subgraphs with their members inside.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>mermaid markdown</dd>
@@ -536,7 +538,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setSolutionBlueprintMermaidGraph(java.lang.String)">
 <h3>setSolutionBlueprintMermaidGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionBlueprintMermaidGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintMermaidGraph)</span></div>
-<div class="block">Set up the graph view of the solution component.</div>
+<div class="block">Set up the graph view of the solution blueprint (or solution boundary).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>solutionBlueprintMermaidGraph</code> - mermaid markdown</dd>
