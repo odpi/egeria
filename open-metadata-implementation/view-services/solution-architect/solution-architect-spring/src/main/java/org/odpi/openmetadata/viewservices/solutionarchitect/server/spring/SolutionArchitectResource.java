@@ -598,6 +598,209 @@ public class SolutionArchitectResource
 
 
     /**
+     * Create a solution boundary.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the solution boundary.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-boundaries")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSolutionBoundary",
+            description="Create a solution boundary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public GUIDResponse createSolutionBoundary(@PathVariable
+                                               String                               serverName,
+                                               @RequestBody (required = false)
+                                               NewElementRequestBody requestBody)
+    {
+        return restAPI.createSolutionBoundary(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a solution boundary using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-boundaries/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createSolutionBoundaryFromTemplate",
+            description="Create a new metadata element to represent a solution boundary using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public GUIDResponse createSolutionBoundaryFromTemplate(@PathVariable
+                                                           String              serverName,
+                                                           @RequestBody (required = false)
+                                                           TemplateRequestBody requestBody)
+    {
+        return restAPI.createSolutionBoundaryFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of a solution boundary.
+     *
+     * @param serverName         name of called server.
+     * @param solutionBoundaryGUID unique identifier of the solution boundary (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return boolean or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-boundaries/{solutionBoundaryGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateSolutionBoundary",
+            description="Update the properties of a solution boundary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public BooleanResponse updateSolutionBoundary(@PathVariable
+                                                  String                                  serverName,
+                                                  @PathVariable
+                                                  String                                  solutionBoundaryGUID,
+                                                  @RequestBody (required = false)
+                                                  UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateSolutionBoundary(serverName, solutionBoundaryGUID, requestBody);
+    }
+
+
+    /**
+     * Delete a solution boundary.
+     *
+     * @param serverName         name of called server
+     * @param solutionBoundaryGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/solution-boundaries/{solutionBoundaryGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSolutionBoundary",
+            description="Delete a solution boundary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public VoidResponse deleteSolutionBoundary(@PathVariable
+                                               String                    serverName,
+                                               @PathVariable
+                                               String                    solutionBoundaryGUID,
+                                               @RequestBody (required = false)
+                                               DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteSolutionBoundary(serverName, solutionBoundaryGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of solution boundaries with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-boundaries/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSolutionBoundariesByName",
+            description="Returns the list of solution boundaries with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public OpenMetadataRootElementsResponse getSolutionBoundariesByName(@PathVariable String            serverName,
+                                                                       @RequestBody (required = false) FilterRequestBody requestBody)
+    {
+        return restAPI.getSolutionBoundariesByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific solution boundary.
+     *
+     * @param serverName name of the service to route the request to
+     * @param solutionBoundaryGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-boundaries/{solutionBoundaryGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSolutionBoundaryByGUID",
+            description="Return the properties of a specific solution boundary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public OpenMetadataRootElementResponse getSolutionBoundaryByGUID(@PathVariable
+                                                                     String             serverName,
+                                                                     @PathVariable
+                                                                     String             solutionBoundaryGUID,
+                                                                     @RequestBody (required = false)
+                                                                     GetRequestBody requestBody)
+    {
+        return restAPI.getSolutionBoundaryByGUID(serverName, solutionBoundaryGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of solution boundary metadata elements that contain the search string.  The returned boundaries include a list of the components that are associated with it.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/solution-boundaries/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findSolutionBoundaries",
+            description="Retrieve the list of solution boundary metadata elements that contain the search string.  The returned boundaries include a list of the components that are associated with it.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/solution-blueprint"))
+
+    public OpenMetadataRootElementsResponse findSolutionBoundaries(@PathVariable String                  serverName,
+                                                                  @RequestBody  (required = false)
+                                                                  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findSolutionBoundaries(serverName, requestBody);
+    }
+
+
+    /**
      * Attach a solution component to a solution role.
      *
      * @param serverName         name of called server

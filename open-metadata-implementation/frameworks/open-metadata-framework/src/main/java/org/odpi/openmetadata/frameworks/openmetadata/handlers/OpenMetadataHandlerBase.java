@@ -1640,7 +1640,30 @@ public class OpenMetadataHandlerBase
                                                                              1));
             }
             else if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
-                     (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+                     (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BOUNDARY.typeName)))
+            {
+                /*
+                 * Solution blueprints and solution boundaries are populated in the same way.  The members may
+                 * include solution boundaries, which have members of their own (including more solution boundaries),
+                 * so the collection membership relationship is followed down the hierarchy along with the
+                 * solution composition relationship.  A collection membership that leads up to another parent
+                 * collection is still returned as a side link.
+                 */
+                rootElement.setCollectionMembers(this.getMixedElementHierarchies(userId,
+                                                                                 rootElement.getCollectionMembers(),
+                                                                                 1,
+                                                                                 List.of(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName),
+                                                                                 List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                                 queryOptions,
+                                                                                 1));
+            }
+            else if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
             {
                 rootElement.setCollectionMembers(this.getElementHierarchies(userId,
                                                                             rootElement.getCollectionMembers(),
@@ -1831,7 +1854,9 @@ public class OpenMetadataHandlerBase
                 rootElement.setSpecificationMermaidGraph(specificationMermaidGraphBuilder.getMermaidGraph());
             }
 
-            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) && (rootElement.getCollectionMembers() != null))
+            if (((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
+                 (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BOUNDARY.typeName))) &&
+                (rootElement.getCollectionMembers() != null))
             {
                 SolutionBlueprintMermaidGraphBuilder solutionBlueprintMermaidGraphBuilder = new SolutionBlueprintMermaidGraphBuilder(rootElement);
 
@@ -1951,17 +1976,53 @@ public class OpenMetadataHandlerBase
                                                                                                                                  PropertyServerException,
                                                                                                                                  UserNotAuthorizedException
     {
+        return this.getMixedElementHierarchies(userId,
+                                               retrievedElements,
+                                               parentEnd,
+                                               relationshipName == null ? null : List.of(relationshipName),
+                                               sideRelationshipNames,
+                                               queryOptions,
+                                               currentDepth);
+    }
+
+
+    /**
+     * Return the nested elements to the required depth where the hierarchy is built from more than one type of relationship.
+     *
+     * @param userId calling user
+     * @param retrievedElements elements to query against
+     * @param parentEnd start at end 1 or 2?
+     * @param relationshipNames names of the relationships to iteratively follow down the hierarchy (maybe null).
+     *                          More than one is needed where the structure is built from different relationship types.
+     * @param sideRelationshipNames additional side relationships to capture (maybe null)
+     * @param queryOptions callers query options
+     * @param currentDepth how far away are we from the original element?
+     * @return the hierarchy under/over this element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected List<RelatedMetadataElementSummary> getMixedElementHierarchies(String                              userId,
+                                                                             List<RelatedMetadataElementSummary> retrievedElements,
+                                                                             int                                 parentEnd,
+                                                                             List<String>                        relationshipNames,
+                                                                             List<String>                        sideRelationshipNames,
+                                                                             QueryOptions                        queryOptions,
+                                                                             int                                 currentDepth) throws InvalidParameterException,
+                                                                                                                                      PropertyServerException,
+                                                                                                                                      UserNotAuthorizedException
+    {
         if (retrievedElements != null)
         {
             /*
              * The retrieved elements have already passed the caller's relationship filter.  The filter only
-             * decides which relationships are followed below them - if neither the hierarchy relationship nor
+             * decides which relationships are followed below them - if neither a hierarchy relationship nor
              * any side relationship is wanted, they are returned without being expanded.
              */
-            String       prunedRelationshipName      = pruneRelationshipName(relationshipName, queryOptions);
+            List<String> prunedRelationshipNames     = pruneRelationshipNames(relationshipNames, queryOptions);
             List<String> prunedSideRelationshipNames = pruneRelationshipNames(sideRelationshipNames, queryOptions);
 
-            if ((prunedRelationshipName == null) && (prunedSideRelationshipNames == null))
+            if ((prunedRelationshipNames == null) && (prunedSideRelationshipNames == null))
             {
                 return retrievedElements;
             }
@@ -1978,7 +2039,7 @@ public class OpenMetadataHandlerBase
                     results.add(getElementHierarchy(userId,
                                                     retrievedElement,
                                                     parentEnd,
-                                                    prunedRelationshipName == null ? null : List.of(prunedRelationshipName),
+                                                    prunedRelationshipNames,
                                                     prunedSideRelationshipNames,
                                                     queryOptions,
                                                     currentDepth,
@@ -2140,16 +2201,17 @@ public class OpenMetadataHandlerBase
                         if (relatedMetadataElement != null)
                         {
                             /*
-                             * Look for parent/child relationships
+                             * Look for parent/child relationships that are orientated logically down the hierarchy.
+                             * A relationship of a hierarchy type that leads back up the hierarchy is not followed.
+                             * It is only kept if its type is also listed as a side relationship.
                              */
-                            if (this.isHierarchyRelationship(relatedMetadataElement, hierarchyRelationshipNames))
+                            boolean hierarchyRelationship = this.isHierarchyRelationship(relatedMetadataElement, hierarchyRelationshipNames);
+                            boolean downHierarchy         = ((parentEnd != 2) && (! relatedMetadataElement.getElementAtEnd1())) ||
+                                                            ((parentEnd != 1) && (relatedMetadataElement.getElementAtEnd1()));
+
+                            if ((hierarchyRelationship) && ((downHierarchy) || (! this.isHierarchyRelationship(relatedMetadataElement, sideRelationshipNames))))
                             {
-                                /*
-                                 * The relationship is a parent/child relationship type.
-                                 * Is this orientated logically down the hierarchy?
-                                 */
-                                if (((parentEnd != 2) && (! relatedMetadataElement.getElementAtEnd1())) ||
-                                        ((parentEnd != 1) && (relatedMetadataElement.getElementAtEnd1())))
+                                if (downHierarchy)
                                 {
                                     /*
                                      * Check that this relationship has not been covered already.

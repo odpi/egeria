@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
@@ -24,6 +25,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBoundaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,8 +58,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link SolutionArchitectDesignModelsFVT}.
  * <br>
  * The solution role that a component interacts with is created through Actor Manager's /solution-roles requests,
- * and the ImplementedBy relationship that getSolutionComponentImplementations returns is created through
- * Governance Officer, because Solution Architect has no requests for either.
+ * the ImplementedBy relationship that getSolutionComponentImplementations returns is created through
+ * Governance Officer, and the members of a solution blueprint or solution boundary are added through
+ * Collection Manager, because Solution Architect has no requests for any of them.
  */
 @ExtendWith(OMAGPlatformExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -65,9 +69,11 @@ public class SolutionArchitectFVT
     private static final ViewServiceClient solutionArchitect = new ViewServiceClient(ViewServiceDescription.SOLUTION_ARCHITECT);
     private static final ViewServiceClient actorManager      = new ViewServiceClient(ViewServiceDescription.ACTOR_MANAGER);
     private static final ViewServiceClient governanceOfficer = new ViewServiceClient(ViewServiceDescription.GOVERNANCE_OFFICER);
+    private static final ViewServiceClient collectionManager = new ViewServiceClient(ViewServiceDescription.COLLECTION_MANAGER);
 
     private static final String ISCS       = "/information-supply-chains/";
     private static final String BLUEPRINTS = "/solution-blueprints/";
+    private static final String BOUNDARIES = "/solution-boundaries/";
     private static final String COMPONENTS = "/solution-components/";
     private static final String PORTS      = "/solution-ports/";
 
@@ -78,6 +84,7 @@ public class SolutionArchitectFVT
 
     private static String supplyChainGUID = null;
     private static String blueprintGUID   = null;
+    private static String boundaryGUID    = null;
     private static String componentGUID   = null;
     private static String portGUID        = null;
 
@@ -399,11 +406,107 @@ public class SolutionArchitectFVT
 
 
     /**
+     * Create a solution boundary, read it back, update it, find it and copy it from a template.  Then nest it in
+     * the solution blueprint with a component inside it that is wired to a component outside it.  The blueprint's
+     * graph shows the boundary as a subgraph containing its member, and the boundary has the same style of graph
+     * with its own title.
+     */
+    @Test
+    @Order(8)
+    void solutionBoundaries()
+    {
+        String qualifiedName = ViewServicesFvtTestSupport.qualifiedName("SolutionBoundary", "trusted-zone");
+
+        SolutionBoundaryProperties properties = new SolutionBoundaryProperties();
+
+        properties.setQualifiedName(qualifiedName);
+        properties.setDisplayName("Trusted zone");
+
+        boundaryGUID = create(BOUNDARIES, properties);
+
+        DesignFvtSupport.assertReadable(solutionArchitect, retrieve(BOUNDARIES, boundaryGUID), OpenMetadataType.SOLUTION_BOUNDARY.typeName, qualifiedName);
+
+        SolutionBoundaryProperties updateProperties = new SolutionBoundaryProperties();
+
+        updateProperties.setDescription("Updated by SolutionArchitectFVT");
+
+        assertTrue(solutionArchitect.post(BOUNDARIES + boundaryGUID + "/update", DesignFvtSupport.update(updateProperties), BooleanResponse.class).getFlag(),
+                   "updateSolutionBoundary reported no change");
+
+        SolutionBoundaryProperties readBack = assertInstanceOf(SolutionBoundaryProperties.class, read(BOUNDARIES, boundaryGUID).getProperties());
+
+        assertEquals("Updated by SolutionArchitectFVT", readBack.getDescription());
+        assertEquals("Trusted zone", readBack.getDisplayName(), "a merge update should keep the display name");
+
+        DesignFvtSupport.assertContains(solutionArchitect.elements("/solution-boundaries/by-name", DesignFvtSupport.byName(qualifiedName)),
+                                        boundaryGUID, "getSolutionBoundariesByName");
+        DesignFvtSupport.assertContains(solutionArchitect.elements("/solution-boundaries/by-search-string", DesignFvtSupport.runSearch()),
+                                        boundaryGUID, "findSolutionBoundaries");
+        DesignFvtSupport.assertNotContains(solutionArchitect.elements("/solution-blueprints/by-search-string", DesignFvtSupport.runSearch()),
+                                           boundaryGUID, "findSolutionBlueprints should not return a solution boundary");
+
+        SolutionBoundaryProperties copyProperties = new SolutionBoundaryProperties();
+        String                     copyName       = ViewServicesFvtTestSupport.qualifiedName("SolutionBoundary", "trusted-zone-copy");
+
+        copyProperties.setQualifiedName(copyName);
+
+        String copyGUID = createFromTemplate(BOUNDARIES, boundaryGUID, copyProperties);
+
+        DesignFvtSupport.assertReadable(solutionArchitect, retrieve(BOUNDARIES, copyGUID), OpenMetadataType.SOLUTION_BOUNDARY.typeName, copyName);
+
+        /*
+         * Blueprint -> boundary -> two inside components, and blueprint -> outside component, with a wire that
+         * crosses the boundary.  (A graph is only drawn when there are at least two nodes to show.)
+         */
+        String insideGUID      = create(COMPONENTS, componentProperties("inside-trusted-zone"));
+        String otherInsideGUID = create(COMPONENTS, componentProperties("also-in-trusted-zone"));
+        String outsideGUID     = create(COMPONENTS, componentProperties("outside-trusted-zone"));
+
+        addMember(blueprintGUID, boundaryGUID);
+        addMember(blueprintGUID, outsideGUID);
+        addMember(boundaryGUID, insideGUID);
+        addMember(boundaryGUID, otherInsideGUID);
+
+        solutionArchitect.create(COMPONENTS + insideGUID + "/wired-to/" + outsideGUID + "/attach",
+                                 DesignFvtSupport.relationship(DesignFvtSupport.labeled(new SolutionLinkingWireProperties(), "leaves the zone")));
+
+        OpenMetadataRootElement blueprint = read(BLUEPRINTS, blueprintGUID);
+        String                  graph     = blueprint.getSolutionBlueprintMermaidGraph();
+
+        assertNotNull(graph, "the blueprint has no solution blueprint graph");
+        assertTrue(graph.contains("title: Components and Roles for Solution Blueprint - "), graph);
+
+        int boundaryStart = graph.indexOf("[\"Trusted zone\"]");
+        int boundaryEnd   = graph.indexOf("\nend\n", boundaryStart);
+        int inside        = graph.indexOf("**inside-trusted-zone**");
+        int outside       = graph.indexOf("**outside-trusted-zone**");
+
+        assertTrue(boundaryStart > 0, "the solution boundary is not a subgraph of the blueprint: " + graph);
+        assertTrue((inside > boundaryStart) && (inside < boundaryEnd), "the boundary's member is not inside its subgraph: " + graph);
+        assertTrue((outside > 0) && ((outside < boundaryStart) || (outside > boundaryEnd)), "the blueprint's member is not outside the boundary: " + graph);
+        assertTrue(graph.contains("leaves the zone"), "the wire that crosses the boundary is missing: " + graph);
+
+        /*
+         * The boundary has the same graph of its own content.
+         */
+        OpenMetadataRootElement boundary      = read(BOUNDARIES, boundaryGUID);
+        String                  boundaryGraph = boundary.getSolutionBlueprintMermaidGraph();
+
+        assertNotNull(boundary.getCollectionMembers(), "the solution boundary has no members");
+        assertNotNull(boundaryGraph, "the solution boundary has no graph");
+        assertTrue(boundaryGraph.contains("title: Components and Roles for Solution Boundary - Trusted zone"), boundaryGraph);
+        assertTrue(boundaryGraph.contains("**inside-trusted-zone**"), boundaryGraph);
+        assertTrue(boundaryGraph.contains("**also-in-trusted-zone**"), boundaryGraph);
+        assertFalse(boundaryGraph.contains("**outside-trusted-zone**"), "only the boundary's own members belong in its graph: " + boundaryGraph);
+    }
+
+
+    /**
      * Create a solution port, read it back, update it, find it, copy it from a template, attach it to the
      * component and delegate it to another port.
      */
     @Test
-    @Order(8)
+    @Order(9)
     void solutionPorts()
     {
         String qualifiedName = ViewServicesFvtTestSupport.qualifiedName("SolutionPort", "customer-in");
@@ -487,6 +590,12 @@ public class SolutionArchitectFVT
                                                blueprintGUID, "findSolutionBlueprints after delete");
         }
 
+        if (boundaryGUID != null)
+        {
+            DesignFvtSupport.assertNotContains(solutionArchitect.elements("/solution-boundaries/by-search-string", DesignFvtSupport.runSearch()),
+                                               boundaryGUID, "findSolutionBoundaries after delete");
+        }
+
         if (portGUID != null)
         {
             DesignFvtSupport.assertNotContains(solutionArchitect.elements("/solution-ports/by-search-string", DesignFvtSupport.runSearch()),
@@ -517,6 +626,13 @@ public class SolutionArchitectFVT
         createdPaths.add(collection + guid);
 
         return guid;
+    }
+
+
+    private static void addMember(String collectionGUID,
+                                  String memberGUID)
+    {
+        collectionManager.call("/collections/" + collectionGUID + "/members/" + memberGUID + "/attach", new NewRelationshipRequestBody());
     }
 
 

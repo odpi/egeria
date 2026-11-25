@@ -24,6 +24,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     private final DesignPatternHandler          designPatternHandler;
     private final InformationSupplyChainHandler informationSupplyChainHandler;
     private final CollectionHandler             solutionBlueprintHandler;
+    private final CollectionHandler             solutionBoundaryHandler;
     private final SolutionComponentHandler      solutionComponentHandler;
     private final SolutionPortHandler           solutionPortHandler;
     private final ConceptModelElementHandler    conceptModelElementHandler;
@@ -85,6 +86,12 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
                                                          openMetadataClient,
                                                          OpenMetadataType.SOLUTION_BLUEPRINT.typeName);
 
+        solutionBoundaryHandler = new CollectionHandler(serverName,
+                                                        auditLog,
+                                                        myDescription.getViewServiceFullName(),
+                                                        openMetadataClient,
+                                                        OpenMetadataType.SOLUTION_BOUNDARY.typeName);
+
         informationSupplyChainHandler = new InformationSupplyChainHandler(serverName,
                                                                 auditLog,
                                                                 myDescription.getViewServiceFullName(),
@@ -133,6 +140,17 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
     public CollectionHandler getSolutionBlueprintHandler()
     {
         return solutionBlueprintHandler;
+    }
+
+
+    /**
+     * Return the solution boundary handler.
+     *
+     * @return client
+     */
+    public CollectionHandler getSolutionBoundaryHandler()
+    {
+        return solutionBoundaryHandler;
     }
 
 

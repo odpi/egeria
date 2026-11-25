@@ -6,7 +6,13 @@ import org.mockito.ArgumentCaptor;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MatchCriteria;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyCondition;
@@ -28,7 +34,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertThrows;
 
@@ -354,5 +362,159 @@ public class OpenMetadataHandlerBaseTest
 
         assertSame(results, performsRoles, "the role appointments were dropped by the relationship filter");
         verify(openMetadataClient, never()).getRelatedMetadataElements(anyString(), anyString(), anyInt(), any(), any());
+    }
+
+
+    /**
+     * The members of a solution blueprint are expanded down both the solution composition and the collection
+     * membership relationships, so that the members of a solution boundary nested in the blueprint are returned
+     * as its nested elements, and are expanded in turn to pick up their solution linking wires.
+     * <br><br>
+     * A collection membership that leads back up to a parent collection is not part of the hierarchy below the
+     * member.  It is returned as a side link because CollectionMembership is also listed as a side relationship.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void membersOfANestedCollectionAreNestedElementsAndParentCollectionsAreSideLinks() throws Exception
+    {
+        final String blueprintGUID = "blueprint-guid";
+        final String boundaryGUID  = "boundary-guid";
+        final String insideGUID    = "inside-component-guid";
+        final String outsideGUID   = "outside-component-guid";
+
+        /*
+         * The boundary is a member of the blueprint and has one member of its own.
+         */
+        when(openMetadataClient.getRelatedMetadataElements(anyString(), eq(boundaryGUID), anyInt(), any(), any()))
+                .thenReturn(related(relationship("blueprint-to-boundary", OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, blueprintGUID, OpenMetadataType.SOLUTION_BLUEPRINT.typeName, true),
+                                    relationship("boundary-to-inside", OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, insideGUID, OpenMetadataType.SOLUTION_COMPONENT.typeName, false)));
+
+        /*
+         * The component inside the boundary is wired to the component outside it.
+         */
+        when(openMetadataClient.getRelatedMetadataElements(anyString(), eq(insideGUID), anyInt(), any(), any()))
+                .thenReturn(related(relationship("boundary-to-inside", OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, boundaryGUID, OpenMetadataType.SOLUTION_BOUNDARY.typeName, true),
+                                    relationship("wire", OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName, outsideGUID, OpenMetadataType.SOLUTION_COMPONENT.typeName, false)));
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        List<RelatedMetadataElementSummary> results = handler.getMixedElementHierarchies(USER_ID,
+                                                                                         List.of(member("blueprint-to-boundary", boundaryGUID)),
+                                                                                         1,
+                                                                                         List.of(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName),
+                                                                                         List.of(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName),
+                                                                                         queryOptions,
+                                                                                         1);
+
+        assertEquals(results.size(), 1);
+
+        RelatedMetadataHierarchySummary boundary = (RelatedMetadataHierarchySummary) results.get(0);
+
+        assertNotNull(boundary.getNestedElements(), "the boundary's member was not followed");
+        assertEquals(boundary.getNestedElements().size(), 1);
+        assertEquals(boundary.getSideLinks().size(), 1, "the membership of the parent blueprint is a side link, as it is for a component");
+        assertEquals(boundary.getSideLinks().get(0).getRelatedElement().getElementHeader().getGUID(), blueprintGUID);
+
+        RelatedMetadataHierarchySummary inside = (RelatedMetadataHierarchySummary) boundary.getNestedElements().get(0);
+
+        assertEquals(inside.getRelatedElement().getElementHeader().getGUID(), insideGUID);
+        assertNull(inside.getNestedElements());
+        assertNotNull(inside.getSideLinks(), "the wires of a component inside a boundary are needed to draw the blueprint");
+        assertEquals(inside.getSideLinks().size(), 2, "the membership of the boundary and the wire");
+        assertEquals(inside.getSideLinks().get(0).getRelatedElement().getElementHeader().getGUID(), boundaryGUID);
+        assertEquals(inside.getSideLinks().get(1).getRelationshipHeader().getGUID(), "wire");
+        assertFalse(inside.getSideLinks().get(1).getRelatedElementAtEnd1());
+    }
+
+
+    /**
+     * A member of a solution blueprint that is also a member of another collection keeps that membership as a side link.
+     *
+     * @throws Exception not expected
+     */
+    @Test
+    public void aMembershipOfAnotherCollectionIsASideLink() throws Exception
+    {
+        final String componentGUID = "component-guid";
+
+        when(openMetadataClient.getRelatedMetadataElements(anyString(), eq(componentGUID), anyInt(), any(), any()))
+                .thenReturn(related(relationship("blueprint-to-component", OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, "blueprint-guid", OpenMetadataType.SOLUTION_BLUEPRINT.typeName, true),
+                                    relationship("other-to-component", OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, "other-blueprint-guid", OpenMetadataType.SOLUTION_BLUEPRINT.typeName, true),
+                                    relationship("parent-to-component", OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName, "parent-component-guid", OpenMetadataType.SOLUTION_COMPONENT.typeName, true)));
+
+        List<RelatedMetadataElementSummary> results = handler.getMixedElementHierarchies(USER_ID,
+                                                                                         List.of(member("blueprint-to-component", componentGUID)),
+                                                                                         1,
+                                                                                         List.of(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName),
+                                                                                         List.of(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName),
+                                                                                         new QueryOptions(),
+                                                                                         1);
+
+        RelatedMetadataHierarchySummary component = (RelatedMetadataHierarchySummary) results.get(0);
+
+        assertNull(component.getNestedElements(), "nothing is below the component");
+        assertEquals(component.getSideLinks().size(), 2, "both collection memberships are side links; the parent component is not");
+    }
+
+
+    private RelatedMetadataElementSummary member(String relationshipGUID,
+                                                 String elementGUID)
+    {
+        ElementHeader relationshipHeader = new ElementHeader();
+        relationshipHeader.setGUID(relationshipGUID);
+
+        ElementHeader elementHeader = new ElementHeader();
+        elementHeader.setGUID(elementGUID);
+
+        MetadataElementSummary element = new MetadataElementSummary();
+        element.setElementHeader(elementHeader);
+
+        RelatedMetadataElementSummary member = new RelatedMetadataElementSummary();
+        member.setRelationshipHeader(relationshipHeader);
+        member.setRelatedElement(element);
+
+        return member;
+    }
+
+
+    private RelatedMetadataElement relationship(String  relationshipGUID,
+                                                String  relationshipTypeName,
+                                                String  elementGUID,
+                                                String  elementTypeName,
+                                                boolean elementAtEnd1)
+    {
+        OpenMetadataElement element = new OpenMetadataElement();
+        element.setElementGUID(elementGUID);
+        element.setType(type(elementTypeName));
+
+        RelatedMetadataElement relatedMetadataElement = new RelatedMetadataElement();
+        relatedMetadataElement.setRelationshipGUID(relationshipGUID);
+        relatedMetadataElement.setType(type(relationshipTypeName));
+        relatedMetadataElement.setElement(element);
+        relatedMetadataElement.setElementAtEnd1(elementAtEnd1);
+
+        return relatedMetadataElement;
+    }
+
+
+    private ElementType type(String typeName)
+    {
+        ElementType elementType = new ElementType();
+        elementType.setTypeName(typeName);
+
+        return elementType;
+    }
+
+
+    private RelatedMetadataElementList related(RelatedMetadataElement... relatedMetadataElements)
+    {
+        RelatedMetadataElementList relatedMetadataElementList = new RelatedMetadataElementList();
+        relatedMetadataElementList.setElementList(List.of(relatedMetadataElements));
+
+        return relatedMetadataElementList;
     }
 }
