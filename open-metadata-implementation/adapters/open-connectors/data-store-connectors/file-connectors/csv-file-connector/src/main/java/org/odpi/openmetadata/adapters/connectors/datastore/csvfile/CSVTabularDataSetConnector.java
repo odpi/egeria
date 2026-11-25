@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -61,17 +61,17 @@ public class CSVTabularDataSetConnector extends ConnectorBase implements Readabl
 
         fileStoreConnector = this.getFileStoreConnector();
 
-        directoryPathName = super.getStringConfigurationProperty(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.getName(),
+        directoryPathName = super.getStringConfigurationProperty(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.getName(),
                                                                  connectionBean.getConfigurationProperties(),
                                                                  directoryPathName);
 
-        tableName = super.getStringConfigurationProperty(CSVFileConfigurationProperty.TABLE_NAME.getName(),
+        tableName = super.getStringConfigurationProperty(TabularFileConfigurationProperty.TABLE_NAME.getName(),
                                                          connectionBean.getConfigurationProperties(),
                                                          tableName);
 
         this.setFileStoreName(tableName);
 
-        tableDescription = super.getStringConfigurationProperty(CSVFileConfigurationProperty.TABLE_DESCRIPTION.getName(),
+        tableDescription = super.getStringConfigurationProperty(TabularFileConfigurationProperty.TABLE_DESCRIPTION.getName(),
                                                                 connectionBean.getConfigurationProperties(),
                                                                 tableDescription);
     }

@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ActionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
@@ -102,14 +103,24 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                     "meet all three tests is referred to a steward instead.";
 
     /*
+     * Recorded in the notes of every link this connector validates because the two elements describe the same
+     * place in a file system.
+     */
+    private static final String pathNameMatchExplanation =
+            "Validated automatically: the two elements are both files, or both folders, and they have the same " +
+                    "pathName - so they describe the same thing in the file system.  A pairing that does not meet " +
+                    "both tests, and does not share a type and qualifiedName either, is referred to a steward instead.";
+
+    /*
      * Recorded in the notes of every link this connector withdraws, replacing the grounds it recorded when it
      * validated the link.
      */
     private static final String withdrawnExplanation =
-            "Withdrawn automatically: this connector validated the link because the two elements were of exactly " +
-                    "the same type, that type is a Referenceable, and they had the same qualifiedName.  That is no " +
-                    "longer true, so the grounds for the decision have gone.  A steward who believes the elements are " +
-                    "duplicates can validate the link again; this connector reconsiders only its own decisions.";
+            "Withdrawn automatically: this connector validated the link because the two elements were either of " +
+                    "exactly the same Referenceable type with the same qualifiedName, or were both files (or both " +
+                    "folders) with the same pathName.  Neither is true any longer, so the grounds for the decision " +
+                    "have gone.  A steward who believes the elements are duplicates can validate the link again; " +
+                    "this connector reconsiders only its own decisions.";
 
     private static final String stewardRoleName          = "DuplicateMetadataSteward";
     private static final String stewardRoleQualifiedName = OpenMetadataType.PERSON_ROLE.typeName + "::" + stewardRoleName;
@@ -506,9 +517,12 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
             return;
         }
 
-        if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
+        String grounds = this.getCloseMatchGrounds(endOne, endTwo);
+
+        if (grounds != null)
         {
             this.validateDuplicates(duplicateLink.getRelationshipGUID(),
+                                    grounds,
                                     duplicateLink,
                                     endOne.getGUID(),
                                     endOne,
@@ -526,13 +540,123 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
     /**
      * Determine whether the two linked elements are a close enough match for this connector to confirm that they
-     * are duplicates without a steward's involvement.
+     * are duplicates without a steward's involvement, and if they are, on what grounds.  There are two: the
+     * elements are of exactly the same type and share a qualified name, or they are both files (or both folders)
+     * and share a path name.
+     *
+     * @param endOne element at end one of the duplicate link
+     * @param endTwo element at end two of the duplicate link
+     * @return the explanation to record on the duplicate link, or null if the decision belongs to a steward
+     * @throws Exception the elements could not be retrieved - reported by the caller
+     */
+    private String getCloseMatchGrounds(OpenMetadataElementStub endOne,
+                                        OpenMetadataElementStub endTwo) throws Exception
+    {
+        if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
+        {
+            return closeMatchExplanation;
+        }
+
+        if (this.isPathNameMatch(endOne, endTwo))
+        {
+            return pathNameMatchExplanation;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Determine whether the two linked elements describe the same file, or the same folder, because they have
+     * the same path name.
+     * <p>
+     * A path name identifies one place in a file system, so two files (or two folders) that share one are
+     * descriptions of the same thing however they came to be catalogued - by hand under the name a machine knows
+     * the file by, and again by a cataloguer under its canonical name, is the usual way.  Their types need not be
+     * identical: one description may know only that it is a data file and the other that it is a CSV file.  A file
+     * and a folder with the same path name contradict one another, and that is for a steward.
+     *
+     * @param endOne element at end one of the duplicate link
+     * @param endTwo element at end two of the duplicate link
+     * @return flag - true means the elements can be combined automatically
+     * @throws Exception the elements could not be retrieved - reported by the caller
+     */
+    private boolean isPathNameMatch(OpenMetadataElementStub endOne,
+                                    OpenMetadataElementStub endTwo) throws Exception
+    {
+        if ((endOne.getType() == null) || (endTwo.getType() == null))
+        {
+            return false;
+        }
+
+        boolean bothFiles   = (propertyHelper.isTypeOf(endOne, OpenMetadataType.DATA_FILE.typeName)) &&
+                                      (propertyHelper.isTypeOf(endTwo, OpenMetadataType.DATA_FILE.typeName));
+        boolean bothFolders = (propertyHelper.isTypeOf(endOne, OpenMetadataType.FILE_FOLDER.typeName)) &&
+                                      (propertyHelper.isTypeOf(endTwo, OpenMetadataType.FILE_FOLDER.typeName));
+
+        if ((! bothFiles) && (! bothFolders))
+        {
+            return false;
+        }
+
+        return isSamePathName(this.getPathName(endOne.getGUID()), this.getPathName(endTwo.getGUID()));
+    }
+
+
+    /**
+     * Determine whether two path names identify the same place in a file system.
+     *
+     * @param pathNameOne path name of one element
+     * @param pathNameTwo path name of the other element
+     * @return flag - true means both are set and they are the same
+     */
+    static boolean isSamePathName(String pathNameOne,
+                                  String pathNameTwo)
+    {
+        return (pathNameOne != null) && (! pathNameOne.isBlank()) && (pathNameOne.equals(pathNameTwo));
+    }
+
+
+    /**
+     * Retrieve the path name of a file or folder, as it is stored rather than combined with its duplicates.
+     *
+     * @param elementGUID unique identifier of the file or folder
+     * @return path name or null
+     * @throws Exception the element could not be retrieved - reported by the caller
+     */
+    private String getPathName(String elementGUID) throws Exception
+    {
+        final String methodName = "getPathName";
+
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+        GetOptions        getOptions        = openMetadataStore.getGetOptions();
+
+        getOptions.setForDuplicateProcessing(true);
+
+        OpenMetadataElement element = openMetadataStore.getMetadataElementByGUID(elementGUID, getOptions);
+
+        if (element == null)
+        {
+            return null;
+        }
+
+        return propertyHelper.getStringProperty(connectorName,
+                                                OpenMetadataProperty.PATH_NAME.name,
+                                                element.getElementProperties(),
+                                                methodName);
+    }
+
+
+    /**
+     * Determine whether the two linked elements are a close enough match, on the strength of their type and
+     * qualified name, for this connector to confirm that they are duplicates without a steward's involvement.
      * <p>
      * The elements are a close match when they are of exactly the same type, that type is a Referenceable, and they
      * have the same qualified name.  A qualified name is intended to be unique for a type of element, so two
      * Referenceables of the same type that share one are describing the same thing.  Any other combination - a
      * different type at each end, a match on some other property, or a subtype relationship between the two types -
-     * is a judgement call that belongs to a steward.
+     * is a judgement call that belongs to a steward, unless the elements are files or folders with the same
+     * path name.
      *
      * @param endOne element at end one of the duplicate link
      * @param endOneQualifiedName qualified name of the element at end one
@@ -576,14 +700,19 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
      * processing combines the elements.
      *
      * @param duplicateLinkGUID unique identifier of the duplicate link
+     * @param grounds explanation of why the elements are duplicates, recorded on the duplicate link
+     * @param duplicateLinkHeader header of the duplicate link
      * @param endOneGUID unique identifier of the element at end one of the duplicate link
+     * @param endOneHeader header of the element at end one of the duplicate link
      * @param endOneKnownDuplicate is the element at end one already classified?
      * @param endTwoGUID unique identifier of the element at end two of the duplicate link
+     * @param endTwoHeader header of the element at end two of the duplicate link
      * @param endTwoKnownDuplicate is the element at end two already classified?
      *
      * @throws Exception the update failed - reported by the caller
      */
     private void validateDuplicates(String               duplicateLinkGUID,
+                                    String               grounds,
                                     ElementControlHeader duplicateLinkHeader,
                                     String               endOneGUID,
                                     ElementControlHeader endOneHeader,
@@ -626,7 +755,7 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
 
         properties = propertyHelper.addStringProperty(properties,
                                                        OpenMetadataProperty.NOTES.name,
-                                                       closeMatchExplanation);
+                                                       grounds);
 
         UpdateOptions updateOptions = openMetadataStore.getUpdateOptions(true);
 
@@ -790,16 +919,16 @@ public class MendelAutomatedDuplicateManagerConnector extends IntegrationConnect
                 continue;
             }
 
-            if (this.isCloseMatch(endOne, endOne.getUniqueName(), endTwo, endTwo.getUniqueName()))
-            {
-                /*
-                 * The grounds still hold.
-                 */
-                continue;
-            }
-
             try
             {
+                if (this.getCloseMatchGrounds(endOne, endTwo) != null)
+                {
+                    /*
+                     * The grounds still hold.
+                     */
+                    continue;
+                }
+
                 this.retireDuplicateLink(duplicateLink);
 
                 logRecord(methodName,

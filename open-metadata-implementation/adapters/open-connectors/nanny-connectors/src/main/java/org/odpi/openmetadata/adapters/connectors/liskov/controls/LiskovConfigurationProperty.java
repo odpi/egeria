@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.liskov.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
@@ -41,6 +42,24 @@ public enum LiskovConfigurationProperty
                                  DataType.INT.getDisplayName(),
                                  "7",
                                  false),
+
+    /**
+     * The root part of a folder's path name that is defined by the mount point on this machine.
+     */
+    LOCAL_MOUNT_POINT(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getName(),
+                      "The root part of a folder's path name that is defined by the mount point on the machine where this connector runs.  It is used to convert the path name of a file folder that is a member of a data sharing hub into the canonical path name that its files are catalogued under.  It is only used for a folder that is not linked to a file system with mount points (directly, or through one of the folders above it) and that the folder cataloguer has not been set up to catalogue yet: once the folder is a catalog target, the mount points come from that catalog target's configuration properties, or from the file system named as its metadata source, which is where the cataloguer gets them.  The default is the directory that the connector is running in.",
+                      DataType.STRING.getDisplayName(),
+                      FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample(),
+                      false),
+
+    /**
+     * The value that replaces the local mount point in a canonical path name.
+     */
+    CANONICAL_MOUNT_POINT(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName(),
+                          "The value that replaces the localMountPoint part of a folder's path name to give its canonical path name.  As with localMountPoint, the catalog target that makes the folder a target of the folder cataloguer takes precedence.",
+                          DataType.STRING.getDisplayName(),
+                          FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getExample(),
+                          false),
 
     ;
 

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.contentpacks.core.files;
 
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyParquetAnnotationType;
 import org.odpi.openmetadata.contentpacks.core.ContentPackDefinition;
 import org.odpi.openmetadata.contentpacks.core.DataAssetTemplateDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationGroupDefinition;
@@ -60,6 +61,10 @@ public class FilesArchiveWriter extends ContentPackBaseArchiveWriter
             this.addAnnotationType(annotationType);
         }
         for (SurveyFolderAnnotationType annotationType : SurveyFolderAnnotationType.values())
+        {
+            this.addAnnotationType(annotationType);
+        }
+        for (SurveyParquetAnnotationType annotationType : SurveyParquetAnnotationType.values())
         {
             this.addAnnotationType(annotationType);
         }

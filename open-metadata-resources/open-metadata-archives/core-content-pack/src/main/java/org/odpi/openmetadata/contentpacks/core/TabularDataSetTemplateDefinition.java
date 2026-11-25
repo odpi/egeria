@@ -9,8 +9,12 @@ import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplem
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileTemplateType;
+import org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.ParquetFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.ParquetTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.ParquetTabularDataSetProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.controls.ParquetFileTemplateType;
 import org.odpi.openmetadata.adapters.connectors.controls.DB2LUWDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.db2luw.controls.DB2LUWPlaceholderProperty;
@@ -259,7 +263,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                   "csv",
                                   "unicode",
                                   new CSVTabularDataSetProvider().getConnectorType().getGUID(),
-                                  getCSVTabularDataSetConfigProperties(),
+                                  getTabularDataSetConfigProperties(),
                                   new CSVFileStoreProvider().getConnectorType().getGUID(),
                                   null,
                                   null,
@@ -281,7 +285,7 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                              "csv",
                                              "unicode",
                                              new CSVTabularDataSetCollectionProvider().getConnectorType().getGUID(),
-                                             getCSVTabularDataSetCollectionConfigProperties(),
+                                             getTabularDataSetCollectionConfigProperties(),
                                              new CSVFileStoreProvider().getConnectorType().getGUID(),
                                              null,
                                              null,
@@ -292,6 +296,50 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
                                              CSVFileTemplateType.CSV_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
                                              CSVFileTemplateType.CSV_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
                                              ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    PARQUET_TABULAR_DATA_SET_TEMPLATE(ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_TEMPLATE.getTemplateGUID(),
+                                      DeployedImplementationType.PARQUET_TABULAR_DATA_SET,
+                                      PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                      PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                      DeployedImplementationType.PARQUET_TABULAR_DATA_SET.getDeployedImplementationType() + "::" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder() + "::" + PlaceholderProperty.TABLE_NAME.getPlaceholder() + "::" + PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                      null,
+                                      "parquet",
+                                      null,
+                                      new ParquetTabularDataSetProvider().getConnectorType().getGUID(),
+                                      getTabularDataSetConfigProperties(),
+                                      new ParquetFileStoreProvider().getConnectorType().getGUID(),
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_TEMPLATE.getReplacementAttributes(),
+                                      ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_TEMPLATE.getPlaceholders(),
+                                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+
+    PARQUET_TABULAR_DATA_SET_COLLECTION_TEMPLATE(ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getTemplateGUID(),
+                                                 DeployedImplementationType.PARQUET_TABULAR_DATA_SET_COLLECTION,
+                                                 PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 DeployedImplementationType.PARQUET_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType() + "::" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder() + "::" + PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                 null,
+                                                 "parquet",
+                                                 null,
+                                                 new ParquetTabularDataSetCollectionProvider().getConnectorType().getGUID(),
+                                                 getTabularDataSetCollectionConfigProperties(),
+                                                 new ParquetFileStoreProvider().getConnectorType().getGUID(),
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getReplacementAttributes(),
+                                                 ParquetFileTemplateType.PARQUET_TABULAR_DATA_SET_COLLECTION_TEMPLATE.getPlaceholders(),
+                                                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     ;
 
@@ -433,32 +481,32 @@ public enum TabularDataSetTemplateDefinition implements TemplateDefinition
 
 
     /**
-     * Build the extended properties for a CSV tabular data set.
+     * Build the configuration properties for a tabular data set held in a file (CSV or Parquet).
      *
      * @return configuration properties
      */
-    private static Map<String, Object> getCSVTabularDataSetConfigProperties()
+    private static Map<String, Object> getTabularDataSetConfigProperties()
     {
         Map<String, Object> configProperties = new HashMap<>();
 
-        configProperties.put(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
-        configProperties.put(CSVFileConfigurationProperty.TABLE_NAME.name, PlaceholderProperty.TABLE_NAME.getPlaceholder());
-        configProperties.put(CSVFileConfigurationProperty.TABLE_DESCRIPTION.name, PlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
+        configProperties.put(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
+        configProperties.put(TabularFileConfigurationProperty.TABLE_NAME.name, PlaceholderProperty.TABLE_NAME.getPlaceholder());
+        configProperties.put(TabularFileConfigurationProperty.TABLE_DESCRIPTION.name, PlaceholderProperty.TABLE_DESCRIPTION.getPlaceholder());
 
         return configProperties;
     }
 
 
     /**
-     * Build the extended properties for a CSV tabular data set collection.
+     * Build the configuration properties for a collection of tabular data sets held in files (CSV or Parquet).
      *
      * @return configuration properties
      */
-    private static Map<String, Object> getCSVTabularDataSetCollectionConfigProperties()
+    private static Map<String, Object> getTabularDataSetCollectionConfigProperties()
     {
         Map<String, Object> configProperties = new HashMap<>();
 
-        configProperties.put(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
+        configProperties.put(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
 
         return configProperties;
     }

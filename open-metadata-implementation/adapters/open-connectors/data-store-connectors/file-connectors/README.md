@@ -15,6 +15,11 @@ that have a CSV tabular format.
 * **[data-folder-connector](data-folder-connector)** provides connector to read a data set that is made up of many files
 stored within a data folder.
 
+* **[parquet-file-connector](parquet-file-connector)** provides connector to extract the schema,
+row counts, storage characteristics and column statistics from the footer of a file in the Apache Parquet format.
+It supports all versions of the Parquet format and has no dependencies on other libraries.  It also reads the rows of data
+when the DuckDB JDBC driver is available at runtime.
+
 
 ----
 Return to the [data-store-connectors](..) module.

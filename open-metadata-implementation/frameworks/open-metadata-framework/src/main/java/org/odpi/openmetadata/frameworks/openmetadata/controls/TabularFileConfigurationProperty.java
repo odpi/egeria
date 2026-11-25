@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CSVFileConfigurationProperty provides definitions for the configuration properties used with the CSV File connectors.
+ * TabularFileConfigurationProperty provides definitions for the configuration properties used with the connectors
+ * that work with files holding tabular data.  The directory, table name and table description properties are
+ * used by the tabular data set connectors for both CSV and Apache Parquet files.  The column names, delimiter
+ * character and quote character properties are specific to CSV files.
  */
-public enum CSVFileConfigurationProperty
+public enum TabularFileConfigurationProperty
 {
     /**
      * The list of column names to use for the data stored in the file.
@@ -88,7 +91,7 @@ public enum CSVFileConfigurationProperty
      * @param example example of the request parameter
      * @param isPlaceholder is this also used as a placeholder property?
      */
-    CSVFileConfigurationProperty(String  name,
+    TabularFileConfigurationProperty(String  name,
                                  String  description,
                                  String  dataType,
                                  String  example,
@@ -166,9 +169,9 @@ public enum CSVFileConfigurationProperty
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.COLUMN_NAMES.getName());
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName());
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.COLUMN_NAMES.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.DELIMITER_CHARACTER.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.QUOTE_CHARACTER.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -183,9 +186,9 @@ public enum CSVFileConfigurationProperty
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.COLUMN_NAMES.getConfigurationPropertyType());
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getConfigurationPropertyType());
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.QUOTE_CHARACTER.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.COLUMN_NAMES.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.DELIMITER_CHARACTER.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.QUOTE_CHARACTER.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
@@ -193,64 +196,64 @@ public enum CSVFileConfigurationProperty
 
 
     /**
-     * Get recognizedConfigurationProperties for the CSV tabular data set resource connector.
+     * Get recognizedConfigurationProperties for the tabular data set resource connectors that read files (CSV and Parquet).
      *
      * @return list of property names
      */
-    public static List<String> getCSVTabularDataSetConfigPropertyNames()
+    public static List<String> getTabularDataSetConfigPropertyNames()
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.getName());
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.TABLE_NAME.getName());
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.TABLE_DESCRIPTION.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.TABLE_NAME.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.TABLE_DESCRIPTION.getName());
 
         return recognizedConfigurationProperties;
     }
 
 
     /**
-     * Retrieve the defined configuration properties for the CSV tabular data set connector
+     * Retrieve the defined configuration properties for the tabular data set connectors that read files (CSV and Parquet)
      *
      * @return list of configuration property types
      */
-    public static List<ConfigurationPropertyType> getCSVTabularDataSetConfigurationPropertyTypes()
+    public static List<ConfigurationPropertyType> getTabularDataSetConfigurationPropertyTypes()
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.getConfigurationPropertyType());
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
 
 
     /**
-     * Retrieve the defined configuration properties for the CSV tabular data set collection connector
+     * Retrieve the defined configuration properties for the tabular data set collection connectors that read files (CSV and Parquet)
      *
      * @return list of configuration property types
      */
-    public static List<ConfigurationPropertyType> getCSVTabularDataSetCollectionConfigurationPropertyTypes()
+    public static List<ConfigurationPropertyType> getTabularDataSetCollectionConfigurationPropertyTypes()
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
-        configurationPropertyTypes.add(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
 
 
     /**
-     * Get recognizedConfigurationProperties for the CSV tabular data set collection resource connector.
+     * Get recognizedConfigurationProperties for the tabular data set collection resource connectors that read files (CSV and Parquet).
      *
      * @return list of property names
      */
-    public static List<String> getCSVTabularDataSetCollectionConfigPropertyNames()
+    public static List<String> getTabularDataSetCollectionConfigPropertyNames()
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
-        recognizedConfigurationProperties.add(CSVFileConfigurationProperty.DIRECTORY_PATH_NAME.getName());
+        recognizedConfigurationProperties.add(TabularFileConfigurationProperty.DIRECTORY_PATH_NAME.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -264,7 +267,7 @@ public enum CSVFileConfigurationProperty
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
-        for (CSVFileConfigurationProperty configurationProperty : CSVFileConfigurationProperty.values())
+        for (TabularFileConfigurationProperty configurationProperty : TabularFileConfigurationProperty.values())
         {
             configurationPropertyTypes.add(configurationProperty.getConfigurationPropertyType());
         }
@@ -299,6 +302,6 @@ public enum CSVFileConfigurationProperty
     @Override
     public String toString()
     {
-        return "CSVFileConfigurationProperty{ name=" + name + "}";
+        return "TabularFileConfigurationProperty{ name=" + name + "}";
     }
 }

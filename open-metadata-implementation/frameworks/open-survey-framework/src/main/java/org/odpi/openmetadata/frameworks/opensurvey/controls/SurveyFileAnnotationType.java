@@ -206,7 +206,7 @@ public enum SurveyFileAnnotationType implements AnnotationType
 
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
-        annotationTypeType.setAnalysisStepName(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+        annotationTypeType.setAnalysisStepName(analysisStep.getName());
         annotationTypeType.setDescription(summary);
         annotationTypeType.setExplanation(explanation);
 

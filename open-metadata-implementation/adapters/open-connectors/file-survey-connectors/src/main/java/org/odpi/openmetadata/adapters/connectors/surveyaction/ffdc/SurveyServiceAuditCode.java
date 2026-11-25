@@ -71,6 +71,26 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                          "If this file is of interest and you want it to be included in the survey report, use the details from the error message to determine the cause of the access error; retry the survey once it is resolved.",
                          "https://egeria-project.org/concepts/survey-action-service/"),
 
+    /**
+     * SURVEY-ACTION-SERVICE-0007 - The survey action service {0} is not counting the values in the columns of Parquet file {1} because the DuckDB JDBC driver is not available
+     */
+    PARQUET_VALUES_NOT_READ("SURVEY-ACTION-SERVICE-0007",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The survey action service {0} is not counting the values in the columns of Parquet file {1} because the DuckDB JDBC driver is not available",
+                            "The survey continues.  The profile of each column is built from the statistics in the file's footer, and so it includes the range of values, and the number of values and nulls, but not how many times each value occurs.",
+                            "If the counts of each value are needed, add the DuckDB JDBC driver (org.duckdb:duckdb_jdbc) to the class path of the engine host and rerun the survey.  It is included in the OMAG Server Platform.",
+                            "https://egeria-project.org/concepts/survey-action-service/"),
+
+    /**
+     * SURVEY-ACTION-SERVICE-0008 - The survey action service {0} was not able to count the values in column {1} of Parquet file {2}; the exception was {3} with message: {4}
+     */
+    PARQUET_VALUES_READ_FAILED("SURVEY-ACTION-SERVICE-0008",
+                               AuditLogRecordSeverityLevel.EXCEPTION,
+                               "The survey action service {0} was not able to count the values in column {1} of Parquet file {2}; the exception was {3} with message: {4}",
+                               "The survey continues.  The profile of this column is built from the statistics in the file's footer and does not include how many times each value occurs.",
+                               "Use the details from the exception to determine why the values could not be read.  The file may have been changed or removed while the survey was running, in which case rerun the survey.",
+                               "https://egeria-project.org/concepts/survey-action-service/"),
+
     ;
 
     private final String                     logMessageId;

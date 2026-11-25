@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -23,18 +24,21 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.SurveyReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDuplicateLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionExecutorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
@@ -44,6 +48,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAtt
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -53,6 +58,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -478,9 +485,10 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                 {
                     refreshFileFolder(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
                 }
-                else if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.CSV_FILE.typeName))
+                else if ((propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.CSV_FILE.typeName)) ||
+                         (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.PARQUET_FILE.typeName)))
                 {
-                    refreshCSVFile(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
+                    refreshTabularFile(dataFieldsFolderGUID, dataStructuresFolderGUID, dataStoreElement, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
                 }
                 else if (propertyHelper.isTypeOf(dataStoreElement.getElementHeader(), OpenMetadataType.DATABASE.typeName))
                 {
@@ -529,37 +537,985 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
     {
         if (dataStoreElement.getProperties() instanceof FileFolderProperties fileFolderProperties)
         {
-            ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(OpenMetadataType.CSV_FILE.typeName);
+            final String methodName = "refreshFileFolder";
 
-            int startFrom = 0;
-            SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
+            /*
+             * The folder cataloguer records each file under its canonical path name - that is, with the local
+             * mount point replaced by the canonical mount point - so that files catalogued by different runtimes
+             * line up.  Folders and files may also have been catalogued by hand with their local path names.
+             */
+            String folderPathName      = fileFolderProperties.getPathName();
+            String localMountPoint     = null;
+            String canonicalMountPoint = null;
+            String canonicalPathName;
 
-            List<OpenMetadataRootElement> csvFiles = classificationExplorerClient.findRootElements(fileFolderProperties.getPathName(), searchOptions);
-
-            while (csvFiles != null)
+            try
             {
-                for (OpenMetadataRootElement csvFile : csvFiles)
+                /*
+                 * The mount points are the ones used to catalogue this folder's files, where that is known.
+                 */
+                MountPoints mountPoints = this.getMountPoints(dataStoreElement.getElementHeader().getGUID());
+
+                localMountPoint     = mountPoints.localMountPoint();
+                canonicalMountPoint = mountPoints.canonicalMountPoint();
+
+                canonicalPathName = getCanonicalPathName(folderPathName, localMountPoint, canonicalMountPoint);
+
+                if (canonicalPathName != null)
                 {
                     /*
-                     * These files are revealed by the cataloguing of the folder.  Each of them has its own
-                     * file type specific survey.
+                     * The folder, and every folder and file catalogued beneath it, is given its canonical path
+                     * name.  The qualified names and connections are not changed, so each of them is still
+                     * known by the same unique name and is still reached through its local address.
                      */
-                    refreshAssetGovernance(csvFile);
+                    correctPathName(dataStoreElement, canonicalPathName);
+                    correctPathNamesInFolder(OpenMetadataType.FILE_FOLDER.typeName, folderPathName, canonicalPathName, localMountPoint, canonicalMountPoint);
+                    correctPathNamesInFolder(OpenMetadataType.DATA_FILE.typeName, folderPathName, canonicalPathName, localMountPoint, canonicalMountPoint);
 
-                    refreshCSVFile(dataFieldsFolderGUID, dataStructuresFolderGUID, csvFile, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
+                    /*
+                     * Giving everything its canonical path name can reveal that the same folder, or the same
+                     * file, has been catalogued more than once - by hand under its local name, and by a
+                     * cataloguer under its canonical name, for example.
+                     */
+                    linkDuplicatesInFolder(OpenMetadataType.FILE_FOLDER.typeName, canonicalPathName);
+                    linkDuplicatesInFolder(OpenMetadataType.DATA_FILE.typeName, canonicalPathName);
+                }
+            }
+            catch (IOException error)
+            {
+                /*
+                 * The path name can not be resolved on this machine, so it is used as it is.
+                 */
+                canonicalPathName = folderPathName;
+
+                logExceptionRecord(methodName,
+                                   LiskovAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                             error.getClass().getName(),
+                                                                                             methodName,
+                                                                                             error.getMessage()),
+                                   error);
+            }
+
+            if (canonicalPathName == null)
+            {
+                return;
+            }
+
+            /*
+             * These are the types of file that have a tabular schema, and so can be described by a data structure.
+             */
+            refreshFilesInFolder(OpenMetadataType.CSV_FILE.typeName, canonicalPathName, dataFieldsFolderGUID, dataStructuresFolderGUID, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
+            refreshFilesInFolder(OpenMetadataType.PARQUET_FILE.typeName, canonicalPathName, dataFieldsFolderGUID, dataStructuresFolderGUID, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
+        }
+    }
+
+
+    /**
+     * Give the folders, or the files, that are catalogued beneath a folder their canonical path names.  They
+     * are found by looking for the local forms of the folder's path name, since an element that already has
+     * its canonical path name needs no correction.
+     *
+     * @param typeName                open metadata type name of the elements to look for
+     * @param folderPathName          path name of the folder as it was catalogued
+     * @param canonicalFolderPathName canonical path name of the folder
+     * @param localMountPoint         root part of the path name on this machine
+     * @param canonicalMountPoint     value that replaces the local mount point in the catalog
+     * @throws IOException                the file system is not able to resolve a path name
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void correctPathNamesInFolder(String typeName,
+                                          String folderPathName,
+                                          String canonicalFolderPathName,
+                                          String localMountPoint,
+                                          String canonicalMountPoint) throws IOException,
+                                                                             InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        Set<String> localPathNames = new LinkedHashSet<>();
+
+        localPathNames.add(folderPathName.startsWith("file://") ? folderPathName.substring(7) : folderPathName);
+        localPathNames.add(getLocalPathName(canonicalFolderPathName, localMountPoint, canonicalMountPoint));
+        localPathNames.remove(canonicalFolderPathName);
+
+        /*
+         * The elements are collected before any of them is updated so that the updates do not disturb the paging.
+         */
+        Map<String, OpenMetadataRootElement> elementsToCorrect   = new HashMap<>();
+        Map<String, String>                  canonicalPathNames = new HashMap<>();
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(typeName);
+
+        for (String localPathName : localPathNames)
+        {
+            int startFrom = 0;
+
+            List<OpenMetadataRootElement> elements = classificationExplorerClient.findRootElements(localPathName,
+                                                                                                   classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize()));
+
+            while (elements != null)
+            {
+                for (OpenMetadataRootElement element : elements)
+                {
+                    if ((element != null) && (element.getProperties() instanceof DataStoreProperties dataStoreProperties))
+                    {
+                        String canonicalPathName = getCanonicalPathName(dataStoreProperties.getPathName(), localMountPoint, canonicalMountPoint);
+
+                        /*
+                         * The search matches any property, so check that the element really is in the folder.
+                         */
+                        if ((canonicalPathName != null) && (canonicalPathName.startsWith(canonicalFolderPathName + "/")))
+                        {
+                            elementsToCorrect.put(element.getElementHeader().getGUID(), element);
+                            canonicalPathNames.put(element.getElementHeader().getGUID(), canonicalPathName);
+                        }
+                    }
                 }
 
                 startFrom += classificationExplorerClient.getMaxPagingSize();
-                searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
-                csvFiles = classificationExplorerClient.findRootElements(fileFolderProperties.getPathName(), searchOptions);
+
+                elements = classificationExplorerClient.findRootElements(localPathName,
+                                                                         classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize()));
+            }
+        }
+
+        for (String elementGUID : elementsToCorrect.keySet())
+        {
+            correctPathName(elementsToCorrect.get(elementGUID), canonicalPathNames.get(elementGUID));
+        }
+    }
+
+
+    /**
+     * Look for folders, or files, in a folder (and the folder itself) that have the same canonical path name
+     * and link them as potential duplicates.  The link is a PeerDuplicateLink with a status of DISCOVERED,
+     * which leaves the decision on whether they really are duplicates to the duplicate manager or a steward.
+     * Elements that are already linked, whatever the status of the link, are left alone - so a decision that
+     * has been made is not reopened.
+     *
+     * @param typeName                open metadata type name of the elements to look for
+     * @param canonicalFolderPathName canonical path name of the folder
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void linkDuplicatesInFolder(String typeName,
+                                        String canonicalFolderPathName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "linkDuplicatesInFolder";
+
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(typeName);
+
+        List<String> elementGUIDs     = new ArrayList<>();
+        List<String> elementPathNames = new ArrayList<>();
+
+        int startFrom = 0;
+
+        List<OpenMetadataRootElement> elements = classificationExplorerClient.findRootElements(canonicalFolderPathName,
+                                                                                               classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize()));
+
+        while (elements != null)
+        {
+            for (OpenMetadataRootElement element : elements)
+            {
+                if ((element != null) && (element.getProperties() instanceof DataStoreProperties dataStoreProperties))
+                {
+                    String pathName = dataStoreProperties.getPathName();
+
+                    /*
+                     * The search matches any property, so check that the element really is the folder, or in it.
+                     */
+                    if ((pathName != null) &&
+                            ((pathName.equals(canonicalFolderPathName)) || (pathName.startsWith(canonicalFolderPathName + "/"))) &&
+                            (! elementGUIDs.contains(element.getElementHeader().getGUID())))
+                    {
+                        elementGUIDs.add(element.getElementHeader().getGUID());
+                        elementPathNames.add(pathName);
+                    }
+                }
+            }
+
+            startFrom += classificationExplorerClient.getMaxPagingSize();
+
+            elements = classificationExplorerClient.findRootElements(canonicalFolderPathName,
+                                                                     classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize()));
+        }
+
+        Map<String, List<String>> duplicateGroups = getDuplicateGroups(elementGUIDs, elementPathNames);
+
+        for (String pathName : duplicateGroups.keySet())
+        {
+            List<String> duplicateGUIDs = duplicateGroups.get(pathName);
+
+            /*
+             * The first element is linked to each of the others, which is enough to make them one cluster.
+             */
+            String      firstGUID     = duplicateGUIDs.get(0);
+            Set<String> existingPeers = getPeerDuplicateGUIDs(firstGUID);
+
+            for (int i = 1; i < duplicateGUIDs.size(); i++)
+            {
+                String duplicateGUID = duplicateGUIDs.get(i);
+
+                if (existingPeers.contains(duplicateGUID))
+                {
+                    continue;
+                }
+
+                PeerDuplicateLinkProperties peerDuplicateLinkProperties = new PeerDuplicateLinkProperties();
+
+                peerDuplicateLinkProperties.setStatusIdentifier(StatusIdentifier.DISCOVERED.getOrdinal());
+                peerDuplicateLinkProperties.setSource(connectorName);
+                peerDuplicateLinkProperties.setNotes("Discovered automatically: the two elements are catalogued with the same canonical path name (" + pathName + ").");
+
+                classificationExplorerClient.linkElementsAsPeerDuplicates(firstGUID,
+                                                                          duplicateGUID,
+                                                                          peerDuplicateLinkProperties,
+                                                                          classificationExplorerClient.getMakeAnchorOptions(false));
+
+                logRecord(methodName,
+                          LiskovAuditCode.POTENTIAL_DUPLICATES_LINKED.getMessageDefinition(connectorName,
+                                                                                           typeName,
+                                                                                           firstGUID,
+                                                                                           duplicateGUID,
+                                                                                           pathName));
             }
         }
     }
 
 
     /**
-     * Refreshes the metadata for a CSV File based on the provided parameters. This method extracts the data structure and
-     * data fields in a CSV File asset.
+     * Group the elements that have the same path name.
+     *
+     * @param elementGUIDs unique identifiers of the elements
+     * @param pathNames    path name of each of the elements, in the same order
+     * @return map of path name to the unique identifiers of the elements that have it, in order of unique
+     * identifier, for each path name that more than one element has
+     */
+    static Map<String, List<String>> getDuplicateGroups(List<String> elementGUIDs,
+                                                        List<String> pathNames)
+    {
+        Map<String, List<String>> groups = new TreeMap<>();
+
+        for (int i = 0; i < elementGUIDs.size(); i++)
+        {
+            if ((elementGUIDs.get(i) != null) && (pathNames.get(i) != null))
+            {
+                List<String> group = groups.get(pathNames.get(i));
+
+                if (group == null)
+                {
+                    group = new ArrayList<>();
+                    groups.put(pathNames.get(i), group);
+                }
+
+                if (! group.contains(elementGUIDs.get(i)))
+                {
+                    group.add(elementGUIDs.get(i));
+                }
+            }
+        }
+
+        Map<String, List<String>> duplicateGroups = new TreeMap<>();
+
+        for (String pathName : groups.keySet())
+        {
+            List<String> group = groups.get(pathName);
+
+            if (group.size() > 1)
+            {
+                Collections.sort(group);
+                duplicateGroups.put(pathName, group);
+            }
+        }
+
+        return duplicateGroups;
+    }
+
+
+    /**
+     * Return the elements that an element is already linked to as a peer duplicate, whatever the status of the link.
+     *
+     * @param elementGUID unique identifier of the element
+     * @return unique identifiers of its peer duplicates
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private Set<String> getPeerDuplicateGUIDs(String elementGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+        Set<String> peerGUIDs = new HashSet<>();
+
+        int startFrom = 0;
+
+        while (true)
+        {
+            QueryOptions queryOptions = new QueryOptions();
+
+            /*
+             * The links are needed as they are stored, rather than combined with the duplicates they describe.
+             */
+            queryOptions.setForDuplicateProcessing(true);
+            queryOptions.setStartFrom(startFrom);
+            queryOptions.setPageSize(integrationContext.getMaxPageSize());
+
+            RelatedMetadataElementList peers = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                            0,
+                                                                                            OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
+                                                                                            queryOptions);
+
+            if ((peers == null) || (peers.getElementList() == null) || (peers.getElementList().isEmpty()))
+            {
+                return peerGUIDs;
+            }
+
+            for (RelatedMetadataElement peer : peers.getElementList())
+            {
+                if ((peer != null) && (peer.getElement() != null))
+                {
+                    peerGUIDs.add(peer.getElement().getElementGUID());
+                }
+            }
+
+            startFrom += integrationContext.getMaxPageSize();
+        }
+    }
+
+
+    /**
+     * Set the path name of a folder or file to its canonical path name, if it is not already.  Nothing else
+     * about the element is changed.
+     *
+     * @param element           folder or file
+     * @param canonicalPathName its canonical path name
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void correctPathName(OpenMetadataRootElement element,
+                                 String                  canonicalPathName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "correctPathName";
+
+        if ((element.getProperties() instanceof DataStoreProperties dataStoreProperties) &&
+                (! canonicalPathName.equals(dataStoreProperties.getPathName())))
+        {
+            String elementTypeName = element.getElementHeader().getType().getTypeName();
+
+            DataStoreProperties canonicalProperties = new DataStoreProperties();
+
+            canonicalProperties.setTypeName(elementTypeName);
+            canonicalProperties.setPathName(canonicalPathName);
+
+            AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_STORE.typeName);
+
+            assetClient.updateAsset(element.getElementHeader().getGUID(), assetClient.getUpdateOptions(true), canonicalProperties);
+
+            logRecord(methodName,
+                      LiskovAuditCode.CANONICAL_PATH_NAME_SET.getMessageDefinition(connectorName,
+                                                                                   elementTypeName,
+                                                                                   dataStoreProperties.getDisplayName(),
+                                                                                   element.getElementHeader().getGUID(),
+                                                                                   dataStoreProperties.getPathName(),
+                                                                                   canonicalPathName));
+        }
+    }
+
+
+    /**
+     * Convert a canonical path name back into the path name that the file system on this machine knows it by.
+     *
+     * @param canonicalPathName   canonical path name
+     * @param localMountPoint     root part of the path name on this machine
+     * @param canonicalMountPoint value that replaces the local mount point in the catalog
+     * @return local path name; this is the canonical path name if it does not start with the canonical mount point
+     * @throws IOException the file system is not able to resolve the local mount point
+     */
+    static String getLocalPathName(String canonicalPathName,
+                                   String localMountPoint,
+                                   String canonicalMountPoint) throws IOException
+    {
+        if ((canonicalPathName == null) || (localMountPoint == null) || (canonicalMountPoint == null))
+        {
+            return canonicalPathName;
+        }
+
+        if ((canonicalPathName.equals(canonicalMountPoint)) || (canonicalPathName.startsWith(canonicalMountPoint + "/")))
+        {
+            return new File(localMountPoint).getCanonicalPath() + canonicalPathName.substring(canonicalMountPoint.length());
+        }
+
+        return canonicalPathName;
+    }
+
+
+    /**
+     * The mount points used to convert between the local and canonical forms of a path name.  Either may be null,
+     * in which case path names are not converted.
+     *
+     * @param localMountPoint     root part of the path name on this machine
+     * @param canonicalMountPoint value that replaces the local mount point in the catalog
+     */
+    record MountPoints(String localMountPoint, String canonicalMountPoint) {}
+
+
+    /**
+     * Work out the mount points that apply to a folder that is a member of a data sharing hub.  They need to be
+     * the ones that the folder cataloguer uses when it catalogues the folder's files, so they are taken from
+     * the same places, in the same order:
+     * <ul>
+     *     <li>The file system that the folder, or one of the folders above it, is linked to - see
+     *     {@link #getFileSystemMountPoints(String)}.</li>
+     *     <li>The file system named as the metadata source in the catalog target relationship that makes the
+     *     folder a target of the folder cataloguer.</li>
+     *     <li>The configuration properties of that catalog target relationship.</li>
+     *     <li>This connector's own configuration properties - used when the folder is not yet a catalog target.</li>
+     *     <li>The defaults.</li>
+     * </ul>
+     *
+     * @param folderGUID unique identifier of the folder
+     * @return mount points
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private MountPoints getMountPoints(String folderGUID) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "getMountPoints";
+
+        MountPoints fileSystemMountPoints = this.getFileSystemMountPoints(folderGUID);
+
+        if (fileSystemMountPoints != null)
+        {
+            return fileSystemMountPoints;
+        }
+
+        MountPoints mountPoints = new MountPoints(this.getMountPoint(LiskovConfigurationProperty.LOCAL_MOUNT_POINT),
+                                                  this.getMountPoint(LiskovConfigurationProperty.CANONICAL_MOUNT_POINT));
+
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setStartFrom(0);
+        queryOptions.setPageSize(integrationContext.getMaxPageSize());
+
+        RelatedMetadataElementList catalogTargets = openMetadataStore.getRelatedMetadataElements(folderGUID,
+                                                                                                 0,
+                                                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                                                                 queryOptions);
+
+        if ((catalogTargets == null) || (catalogTargets.getElementList() == null))
+        {
+            return mountPoints;
+        }
+
+        for (RelatedMetadataElement catalogTarget : catalogTargets.getElementList())
+        {
+            if ((catalogTarget == null) || (catalogTarget.getRelationshipProperties() == null))
+            {
+                continue;
+            }
+
+            Map<String, Object> targetConfigurationProperties = propertyHelper.getMapFromProperty(connectorName,
+                                                                                                  OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
+                                                                                                  catalogTarget.getRelationshipProperties(),
+                                                                                                  methodName);
+
+            String metadataSourceQualifiedName = propertyHelper.getStringProperty(connectorName,
+                                                                                  OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
+                                                                                  catalogTarget.getRelationshipProperties(),
+                                                                                  methodName);
+
+            boolean fileSystemFound           = false;
+            String  fileSystemLocalMountPoint = null;
+            String  fileSystemCanonicalMountPoint = null;
+
+            if (metadataSourceQualifiedName != null)
+            {
+                OpenMetadataElement metadataSource = openMetadataStore.getMetadataElementByUniqueName(metadataSourceQualifiedName,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                if ((metadataSource != null) && (propertyHelper.isTypeOf(metadataSource, OpenMetadataType.FILE_SYSTEM.typeName)))
+                {
+                    fileSystemFound               = true;
+                    fileSystemLocalMountPoint     = propertyHelper.getStringProperty(connectorName,
+                                                                                     OpenMetadataProperty.LOCAL_MOUNT_POINT.name,
+                                                                                     metadataSource.getElementProperties(),
+                                                                                     methodName);
+                    fileSystemCanonicalMountPoint = propertyHelper.getStringProperty(connectorName,
+                                                                                     OpenMetadataProperty.CANONICAL_MOUNT_POINT.name,
+                                                                                     metadataSource.getElementProperties(),
+                                                                                     methodName);
+                }
+            }
+
+            MountPoints targetMountPoints = resolveMountPoints(mountPoints,
+                                                               targetConfigurationProperties,
+                                                               fileSystemFound,
+                                                               fileSystemLocalMountPoint,
+                                                               fileSystemCanonicalMountPoint);
+
+            if (! targetMountPoints.equals(mountPoints))
+            {
+                /*
+                 * This is the catalog target that says how the folder's files are catalogued.
+                 */
+                return targetMountPoints;
+            }
+        }
+
+        return mountPoints;
+    }
+
+
+    /**
+     * A link from a file or folder to a file system that has its mount points set.
+     *
+     * @param fileSystemGUID      unique identifier of the file system
+     * @param uses                is the link one that says the file system merely uses the file or folder?
+     * @param localMountPoint     local mount point of the file system
+     * @param canonicalMountPoint canonical mount point of the file system
+     */
+    record FileSystemLink(String fileSystemGUID, boolean uses, String localMountPoint, String canonicalMountPoint) {}
+
+
+    /**
+     * Look for the file system that a file or folder belongs to, and return its mount points.  The file system
+     * is a FileSystem software capability that is linked, with a CapabilityAssetUse relationship, to the file or
+     * folder itself or to one of the folders above it in the file hierarchy (found by following the NestedFile
+     * and FolderHierarchy relationships upwards).  Only a file system that has both of its mount points set
+     * counts.  The nearest one is used: the search stops at the first level of the hierarchy that is linked to
+     * such a file system, and anything further up is not considered.
+     * <p>
+     * If that level is linked to more than one such file system, the ones that only use the file or folder
+     * (useType=USES) are set aside.  If that does not leave exactly one, there is no telling which is right, so
+     * the file systems are reported in the audit log and ignored - including any further up.
+     *
+     * @param elementGUID unique identifier of the file or folder
+     * @return mount points, or null if there is no file system to take them from
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private MountPoints getFileSystemMountPoints(String elementGUID) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "getFileSystemMountPoints";
+
+        List<FileSystemLink> fileSystemLinks = new ArrayList<>();
+        Set<String>          visitedGUIDs    = new HashSet<>();
+        List<String>         currentLevel    = new ArrayList<>();
+
+        currentLevel.add(elementGUID);
+
+        /*
+         * Each level is the element itself, then its parent folders, then their parent folders, and so on.
+         * The first level that is linked to a file system is the nearest, and the search stops there.
+         */
+        while ((! currentLevel.isEmpty()) && (fileSystemLinks.isEmpty()))
+        {
+            List<String> parentLevel = new ArrayList<>();
+
+            for (String currentGUID : currentLevel)
+            {
+                if (visitedGUIDs.add(currentGUID))
+                {
+                    this.addFileSystemLinks(currentGUID, fileSystemLinks);
+
+                    parentLevel.addAll(this.getParentFolderGUIDs(currentGUID, OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName));
+                    parentLevel.addAll(this.getParentFolderGUIDs(currentGUID, OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName));
+                }
+            }
+
+            currentLevel = parentLevel;
+        }
+
+        if (fileSystemLinks.isEmpty())
+        {
+            return null;
+        }
+
+        FileSystemLink fileSystemLink = chooseFileSystem(fileSystemLinks);
+
+        if (fileSystemLink == null)
+        {
+            Set<String> fileSystemGUIDs = new TreeSet<>();
+
+            for (FileSystemLink candidate : fileSystemLinks)
+            {
+                fileSystemGUIDs.add(candidate.fileSystemGUID());
+            }
+
+            logRecord(methodName,
+                      LiskovAuditCode.AMBIGUOUS_FILE_SYSTEMS.getMessageDefinition(connectorName,
+                                                                                  elementGUID,
+                                                                                  Integer.toString(fileSystemGUIDs.size()),
+                                                                                  fileSystemGUIDs.toString()));
+            return null;
+        }
+
+        return new MountPoints(fileSystemLink.localMountPoint(), fileSystemLink.canonicalMountPoint());
+    }
+
+
+    /**
+     * Choose the file system to take the mount points from.  If the links lead to one file system, that is it.
+     * If they lead to several, the file systems that are only linked with useType=USES are set aside, and if
+     * that leaves one file system, that is it.
+     *
+     * @param fileSystemLinks links to file systems with mount points; there is at least one
+     * @return a link to the chosen file system, or null if there is no single file system to choose
+     */
+    static FileSystemLink chooseFileSystem(List<FileSystemLink> fileSystemLinks)
+    {
+        /*
+         * A file system may be linked more than once - to a folder and to one of its parents, for example.
+         * It only uses the files if every one of its links says so.
+         */
+        Map<String, FileSystemLink> fileSystems = new TreeMap<>();
+
+        for (FileSystemLink fileSystemLink : fileSystemLinks)
+        {
+            FileSystemLink existingLink = fileSystems.get(fileSystemLink.fileSystemGUID());
+
+            if ((existingLink == null) || ((existingLink.uses()) && (! fileSystemLink.uses())))
+            {
+                fileSystems.put(fileSystemLink.fileSystemGUID(), fileSystemLink);
+            }
+        }
+
+        if (fileSystems.size() == 1)
+        {
+            return fileSystems.values().iterator().next();
+        }
+
+        FileSystemLink chosenFileSystem = null;
+
+        for (FileSystemLink fileSystemLink : fileSystems.values())
+        {
+            if (! fileSystemLink.uses())
+            {
+                if (chosenFileSystem != null)
+                {
+                    return null;
+                }
+
+                chosenFileSystem = fileSystemLink;
+            }
+        }
+
+        return chosenFileSystem;
+    }
+
+
+    /**
+     * Add the links from a file or folder to the file systems that have their mount points set.
+     *
+     * @param elementGUID     unique identifier of the file or folder
+     * @param fileSystemLinks list to add to
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void addFileSystemLinks(String               elementGUID,
+                                    List<FileSystemLink> fileSystemLinks) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "addFileSystemLinks";
+
+        for (RelatedMetadataElement capability : this.getAllRelatedElements(elementGUID, OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName))
+        {
+            /*
+             * The capability is at end 1 of the relationship.
+             */
+            if ((capability.getElementAtEnd1()) && (propertyHelper.isTypeOf(capability.getElement(), OpenMetadataType.FILE_SYSTEM.typeName)))
+            {
+                String localMountPoint     = propertyHelper.getStringProperty(connectorName,
+                                                                              OpenMetadataProperty.LOCAL_MOUNT_POINT.name,
+                                                                              capability.getElement().getElementProperties(),
+                                                                              methodName);
+                String canonicalMountPoint = propertyHelper.getStringProperty(connectorName,
+                                                                              OpenMetadataProperty.CANONICAL_MOUNT_POINT.name,
+                                                                              capability.getElement().getElementProperties(),
+                                                                              methodName);
+
+                if ((localMountPoint != null) && (! localMountPoint.isBlank()) && (canonicalMountPoint != null) && (! canonicalMountPoint.isBlank()))
+                {
+                    String useType = null;
+
+                    if ((capability.getRelationshipProperties() != null) && (capability.getRelationshipProperties().getPropertiesAsStrings() != null))
+                    {
+                        useType = capability.getRelationshipProperties().getPropertiesAsStrings().get(OpenMetadataProperty.USE_TYPE.name);
+                    }
+
+                    fileSystemLinks.add(new FileSystemLink(capability.getElement().getElementGUID(),
+                                                           CapabilityAssetUseType.USES.name().equalsIgnoreCase(useType),
+                                                           localMountPoint,
+                                                           canonicalMountPoint));
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Return the folders that a file or folder is nested in.
+     *
+     * @param elementGUID          unique identifier of the file or folder
+     * @param relationshipTypeName the type of relationship that links it to its parent folder
+     * @return unique identifiers of its parent folders
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private List<String> getParentFolderGUIDs(String elementGUID,
+                                              String relationshipTypeName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        List<String> parentFolderGUIDs = new ArrayList<>();
+
+        for (RelatedMetadataElement relatedElement : this.getAllRelatedElements(elementGUID, relationshipTypeName))
+        {
+            /*
+             * The parent folder is at end 1 of the relationship.  The folders nested in this one are at end 2.
+             */
+            if (relatedElement.getElementAtEnd1())
+            {
+                parentFolderGUIDs.add(relatedElement.getElement().getElementGUID());
+            }
+        }
+
+        return parentFolderGUIDs;
+    }
+
+
+    /**
+     * Return all the elements linked to an element by a type of relationship, at either end.
+     *
+     * @param elementGUID          unique identifier of the element
+     * @param relationshipTypeName the type of relationship
+     * @return related elements
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private List<RelatedMetadataElement> getAllRelatedElements(String elementGUID,
+                                                               String relationshipTypeName) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+
+        List<RelatedMetadataElement> allRelatedElements = new ArrayList<>();
+
+        int startFrom = 0;
+
+        while (true)
+        {
+            QueryOptions queryOptions = new QueryOptions();
+
+            queryOptions.setStartFrom(startFrom);
+            queryOptions.setPageSize(integrationContext.getMaxPageSize());
+
+            RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                                      0,
+                                                                                                      relationshipTypeName,
+                                                                                                      queryOptions);
+
+            if ((relatedElements == null) || (relatedElements.getElementList() == null) || (relatedElements.getElementList().isEmpty()))
+            {
+                return allRelatedElements;
+            }
+
+            for (RelatedMetadataElement relatedElement : relatedElements.getElementList())
+            {
+                if ((relatedElement != null) && (relatedElement.getElement() != null))
+                {
+                    allRelatedElements.add(relatedElement);
+                }
+            }
+
+            startFrom += integrationContext.getMaxPageSize();
+        }
+    }
+
+
+    /**
+     * Apply the settings of a catalog target to the mount points, in the way that the folder cataloguer does.
+     * A mount point in the catalog target's configuration properties replaces the default.  If the catalog target
+     * names a file system as its metadata source, then both mount points come from the file system - even if it
+     * does not set them, which means that path names are not converted.
+     *
+     * @param defaultMountPoints            mount points to use where the catalog target does not say
+     * @param targetConfigurationProperties configuration properties from the catalog target relationship
+     * @param fileSystemFound               does the catalog target name a file system as its metadata source?
+     * @param fileSystemLocalMountPoint     local mount point from the file system
+     * @param fileSystemCanonicalMountPoint canonical mount point from the file system
+     * @return mount points
+     */
+    static MountPoints resolveMountPoints(MountPoints         defaultMountPoints,
+                                          Map<String, Object> targetConfigurationProperties,
+                                          boolean             fileSystemFound,
+                                          String              fileSystemLocalMountPoint,
+                                          String              fileSystemCanonicalMountPoint)
+    {
+        if (fileSystemFound)
+        {
+            return new MountPoints(fileSystemLocalMountPoint, fileSystemCanonicalMountPoint);
+        }
+
+        String localMountPoint     = defaultMountPoints.localMountPoint();
+        String canonicalMountPoint = defaultMountPoints.canonicalMountPoint();
+
+        if (targetConfigurationProperties != null)
+        {
+            if (targetConfigurationProperties.get(LiskovConfigurationProperty.LOCAL_MOUNT_POINT.getName()) != null)
+            {
+                localMountPoint = targetConfigurationProperties.get(LiskovConfigurationProperty.LOCAL_MOUNT_POINT.getName()).toString();
+            }
+
+            if (targetConfigurationProperties.get(LiskovConfigurationProperty.CANONICAL_MOUNT_POINT.getName()) != null)
+            {
+                canonicalMountPoint = targetConfigurationProperties.get(LiskovConfigurationProperty.CANONICAL_MOUNT_POINT.getName()).toString();
+            }
+        }
+
+        return new MountPoints(localMountPoint, canonicalMountPoint);
+    }
+
+
+    /**
+     * Return one of the mount point configuration properties.  The default is the one used by the folder cataloguer.
+     *
+     * @param mountPointProperty which mount point
+     * @return configured value or default
+     */
+    private String getMountPoint(LiskovConfigurationProperty mountPointProperty)
+    {
+        String mountPoint = super.getStringConfigurationProperty(mountPointProperty.getName(), this.getConfigurationProperties());
+
+        if ((mountPoint == null) || (mountPoint.isBlank()))
+        {
+            return mountPointProperty.getExample();
+        }
+
+        return mountPoint;
+    }
+
+
+    /**
+     * Convert the path name of a folder into the canonical path name that the folder cataloguer records for the
+     * files it finds.  The path name is resolved by the file system, and then the local mount point at its start
+     * is replaced by the canonical mount point.  A path name that already starts with the canonical mount point
+     * is returned unchanged.
+     *
+     * @param pathName            path name from the folder asset
+     * @param localMountPoint     root part of the path name on this machine
+     * @param canonicalMountPoint value that replaces the local mount point in the catalog
+     * @return canonical path name, or null if there is no path name
+     * @throws IOException the file system is not able to resolve the path name or the local mount point
+     */
+    static String getCanonicalPathName(String pathName,
+                                       String localMountPoint,
+                                       String canonicalMountPoint) throws IOException
+    {
+        if ((pathName == null) || (pathName.isBlank()))
+        {
+            return null;
+        }
+
+        String fileSystemPathName = pathName;
+
+        if (fileSystemPathName.startsWith("file://"))
+        {
+            fileSystemPathName = fileSystemPathName.substring(7);
+        }
+
+        if ((localMountPoint == null) || (canonicalMountPoint == null))
+        {
+            return fileSystemPathName;
+        }
+
+        if ((fileSystemPathName.equals(canonicalMountPoint)) || (fileSystemPathName.startsWith(canonicalMountPoint + "/")))
+        {
+            return fileSystemPathName;
+        }
+
+        return new File(fileSystemPathName).getCanonicalPath().replace(new File(localMountPoint).getCanonicalPath(), canonicalMountPoint);
+    }
+
+
+    /**
+     * Refreshes the metadata for the files of a particular type that are catalogued under a folder.
+     *
+     * @param fileTypeName                open metadata type name of the files to look for
+     * @param folderPathName              canonical path name of the folder
+     * @param dataFieldsFolderGUID        Globally unique identifier (GUID) for the folder containing data fields.
+     * @param dataStructuresFolderGUID    Globally unique identifier (GUID) for the folder containing data structures.
+     * @param dataSharingHubGUID                 Globally unique identifier (GUID) of the data sharing hub associated with the data store.
+     * @param dataSharingHubQualifiedName        Globally unique name of the data sharing hub associated with the data store.
+     * @param dataStructures              Map of identifiers for dataFieldGUIDs in the data structures used during the refresh process.
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws UserNotAuthorizedException user is not authorized to issue this request
+     */
+    private void refreshFilesInFolder(String                   fileTypeName,
+                                      String                   folderPathName,
+                                      String                   dataFieldsFolderGUID,
+                                      String                   dataStructuresFolderGUID,
+                                      String                   dataSharingHubGUID,
+                                      String                   dataSharingHubQualifiedName,
+                                      Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        ClassificationExplorerClient classificationExplorerClient = integrationContext.getClassificationExplorerClient(fileTypeName);
+
+        int startFrom = 0;
+        SearchOptions searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
+
+        List<OpenMetadataRootElement> files = classificationExplorerClient.findRootElements(folderPathName, searchOptions);
+
+        while (files != null)
+        {
+            for (OpenMetadataRootElement file : files)
+            {
+                /*
+                 * These files are revealed by the cataloguing of the folder.  Each of them has its own
+                 * file type specific survey.
+                 */
+                refreshAssetGovernance(file);
+                refreshTabularFile(dataFieldsFolderGUID, dataStructuresFolderGUID, file, dataSharingHubGUID, dataSharingHubQualifiedName, dataStructures);
+            }
+
+            startFrom += classificationExplorerClient.getMaxPagingSize();
+            searchOptions = classificationExplorerClient.getSearchOptions(startFrom, classificationExplorerClient.getMaxPagingSize());
+
+            files = classificationExplorerClient.findRootElements(folderPathName, searchOptions);
+        }
+    }
+
+
+    /**
+     * Refreshes the metadata for a file with a tabular schema (a CSV file or an Apache Parquet file) based on the
+     * provided parameters. This method extracts the data structure and data fields from the columns that
+     * the file's survey attached to the file asset.
      *
      * @param dataFieldsFolderGUID        Globally unique identifier (GUID) for the folder containing data fields.
      * @param dataStructuresFolderGUID    Globally unique identifier (GUID) for the folder containing data structures.
@@ -571,23 +1527,23 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException user is not authorized to issue this request
      */
-    private void refreshCSVFile(String                   dataFieldsFolderGUID,
-                                String                   dataStructuresFolderGUID,
-                                OpenMetadataRootElement  dataStoreElement,
-                                String                   dataSharingHubGUID,
-                                String                   dataSharingHubQualifiedName,
-                                Map<String, Set<String>> dataStructures) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    private void refreshTabularFile(String                   dataFieldsFolderGUID,
+                                    String                   dataStructuresFolderGUID,
+                                    OpenMetadataRootElement  dataStoreElement,
+                                    String                   dataSharingHubGUID,
+                                    String                   dataSharingHubQualifiedName,
+                                    Map<String, Set<String>> dataStructures) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
-        String methodName = "refreshCSVFile(" + dataStoreElement.getElementHeader().getGUID() + ")";
+        String methodName = "refreshTabularFile(" + dataStoreElement.getElementHeader().getGUID() + ")";
 
-        if (dataStoreElement.getProperties() instanceof CSVFileProperties csvFileProperties)
+        if (dataStoreElement.getProperties() instanceof DataFileProperties dataFileProperties)
         {
             logRecord(methodName,
-                      LiskovAuditCode.REFRESHING_CSV_FILE.getMessageDefinition(connectorName,
-                                                                               csvFileProperties.getFileName(),
-                                                                               csvFileProperties.getQualifiedName(),
+                      LiskovAuditCode.REFRESHING_TABULAR_FILE.getMessageDefinition(connectorName,
+                                                                                   dataStoreElement.getElementHeader().getType().getTypeName(),
+                                                                                   dataFileProperties.getQualifiedName(),
                                                                                dataStoreElement.getElementHeader().getGUID(),
                                                                                dataSharingHubQualifiedName,
                                                                                dataSharingHubGUID));
@@ -598,7 +1554,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
                                      dataStructuresFolderGUID,
                                      dataStoreElement.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
                                      null,
-                                     csvFileProperties.getFileName(),
+                                     dataFileProperties.getFileName(),
                                      schemaType.getNestedElements(),
                                      dataSharingHubGUID,
                                      dataSharingHubQualifiedName,
@@ -721,7 +1677,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Refreshes the data structure and data fields that describe one schema element - a CSV file's schema type or
+     * Refreshes the data structure and data fields that describe one schema element - a CSV or Parquet file's schema type or
      * a database table.  A data field is maintained for each schema attribute, and a data structure for the
      * set of data fields.
      *
@@ -729,7 +1685,7 @@ public class DataSharingHubManagerTargetProcessor extends CatalogTargetProcessor
      * @param dataStructuresFolderGUID Globally unique identifier (GUID) for the folder containing data structures.
      * @param schemaGUID               unique identifier of the schema element (schema type or table) being refreshed.
      * @param schemaScopeName          name of the scope that the schema element belongs to ("database::schema" for a
-     *                                 table; null for a CSV file).  It is part of the data structure's qualified name so
+     *                                 table; null for a file).  It is part of the data structure's qualified name so
      *                                 same-named tables in different schemas and databases get different data structures.
      * @param schemaName               display name of the schema element being refreshed.
      * @param schemaAttributes         list of schema attributes.

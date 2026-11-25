@@ -393,7 +393,7 @@ No action is required unless there are errors that follow indicating that there 
 
 **System action**
 
-The connector validated this link itself, on the grounds that the two elements were of the same type and shared a qualified name.  That is no longer true, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.
+The connector validated this link itself, on the grounds that the two elements were either of the same type and shared a qualified name, or were both files (or both folders) and shared a path name.  Neither is true any longer, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.
 
 **User action**
 

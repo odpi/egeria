@@ -140,6 +140,84 @@ public class MendelDuplicateManagementFVT
 
 
     /**
+     * Two files with the same path name describe the same file, whatever their qualified names say and even
+     * if one of them is a more specific type of file than the other.  Mendel confirms them on its own
+     * authority, and records that the path name was the reason.
+     *
+     * @throws Exception any failure is a test failure
+     */
+    @Test
+    @DisplayName("Mendel validates files that have the same path name")
+    public void testPathNameMatchIsValidated() throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
+
+        OpenMetadataRelationship duplicateLink = DuplicateFvtTestSupport.getDuplicateLink(openMetadataStore,
+                                                                                           DuplicateFvtTestSupport.PATH_MATCH_GUID_ONE,
+                                                                                           DuplicateFvtTestSupport.PATH_MATCH_GUID_TWO);
+
+        assertNotNull(duplicateLink, "The path name match pair's duplicate link has disappeared");
+
+        assertEquals(StatusIdentifier.VALIDATED.getOrdinal(),
+                      DuplicateFvtTestSupport.getStatusIdentifier(duplicateLink),
+                      "Mendel should have validated the path name match pair - the two elements are both files and have the"
+                              + " same path name");
+
+        String notes = duplicateLink.getRelationshipProperties().getPropertiesAsStrings().get(OpenMetadataProperty.NOTES.name);
+
+        assertTrue((notes != null) && (notes.contains("pathName")),
+                    "Mendel validated the path name match pair but did not record the path name as its grounds: " + notes);
+
+        for (String elementGUID : List.of(DuplicateFvtTestSupport.PATH_MATCH_GUID_ONE,
+                                           DuplicateFvtTestSupport.PATH_MATCH_GUID_TWO))
+        {
+            OpenMetadataElement element = openMetadataStore.getMetadataElementByGUID(elementGUID,
+                                                                                      DuplicateFvtTestSupport.getForDuplicateProcessing());
+
+            assertNotNull(element, "Path name match element " + elementGUID + " could not be retrieved");
+            assertTrue(DuplicateFvtTestSupport.hasClassification(element, OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName),
+                        "Mendel validated the path name match pair's link but did not classify " + elementGUID + " as a KnownDuplicate.");
+        }
+    }
+
+
+    /**
+     * A folder and a file with the same path name are not two descriptions of one thing - one of them is
+     * wrong.  Mendel leaves the link alone for a steward.
+     *
+     * @throws Exception any failure is a test failure
+     */
+    @Test
+    @DisplayName("Mendel refers a folder and a file with the same path name to a steward")
+    public void testPathNameClashIsReferredToASteward() throws Exception
+    {
+        OpenMetadataStore openMetadataStore = ConnectorContextFactory.newContext().getOpenMetadataStore();
+
+        OpenMetadataRelationship duplicateLink = DuplicateFvtTestSupport.getDuplicateLink(openMetadataStore,
+                                                                                           DuplicateFvtTestSupport.PATH_CLASH_GUID_ONE,
+                                                                                           DuplicateFvtTestSupport.PATH_CLASH_GUID_TWO);
+
+        assertNotNull(duplicateLink, "The path name clash pair's duplicate link has disappeared");
+
+        assertEquals(StatusIdentifier.DISCOVERED.getOrdinal(),
+                      DuplicateFvtTestSupport.getStatusIdentifier(duplicateLink),
+                      "Mendel should have left the path name clash pair's link as DISCOVERED - a folder and a file are not"
+                              + " the same thing, even with the same path name");
+
+        for (String elementGUID : List.of(DuplicateFvtTestSupport.PATH_CLASH_GUID_ONE,
+                                           DuplicateFvtTestSupport.PATH_CLASH_GUID_TWO))
+        {
+            OpenMetadataElement element = openMetadataStore.getMetadataElementByGUID(elementGUID,
+                                                                                      DuplicateFvtTestSupport.getForDuplicateProcessing());
+
+            assertNotNull(element, "Path name clash element " + elementGUID + " could not be retrieved");
+            assertFalse(DuplicateFvtTestSupport.hasClassification(element, OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName),
+                         "Mendel classified " + elementGUID + " as a KnownDuplicate even though it referred the decision to a steward");
+        }
+    }
+
+
+    /**
      * When a steward retires the last live duplicate link on an element, the element should stop being
      * treated as a duplicate.  Mendel takes the KnownDuplicate classification off.
      *

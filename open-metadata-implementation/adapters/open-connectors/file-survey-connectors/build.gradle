@@ -12,6 +12,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:parquet-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors')
     compileOnly 'org.slf4j:slf4j-api'
@@ -28,8 +29,11 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.mockito:mockito-core'
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     testRuntimeOnly 'commons-io:commons-io'
+    testRuntimeOnly 'org.duckdb:duckdb_jdbc'
+    testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:parquet-file-connector')
 
 }
 

@@ -6,23 +6,32 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adapters.connectors.liskov.controls.LiskovConfigurationProperty;
+import org.odpi.openmetadata.contentpacks.core.DataAssetTemplateDefinition;
 import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.contentpacks.core.RequestTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.FileSystemConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.StatusIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DataSharingHubProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
@@ -70,6 +79,13 @@ public class LiskovSurveyScheduleFVT
 
     private static final RequestTypeDefinition CREATE_FILE_FOLDER = RequestTypeDefinition.CREATE_FILE_FOLDER;
     private static final RequestTypeDefinition SURVEY_FOLDER      = RequestTypeDefinition.SURVEY_FOLDER;
+    private static final RequestTypeDefinition SURVEY_PARQUET_FILE = RequestTypeDefinition.SURVEY_PARQUET_FILE;
+    private static final RequestTypeDefinition CATALOG_FILE_FOLDER = RequestTypeDefinition.CATALOG_FILE_FOLDER;
+
+    /**
+     * The CSV file that FilesFvtTestSupport writes to every folder under test.
+     */
+    private static final String CSV_FILE_NAME = "measurements.csv";
 
     /**
      * A file system directory registers four surveys.  Only one of them is under test, so the others are turned
@@ -231,6 +247,984 @@ public class LiskovSurveyScheduleFVT
 
             Files.deleteIfExists(new File(folder, "added-for-liskov.txt").toPath());
         }
+    }
+
+
+    @Test
+    @DisplayName("Liskov surveys a Parquet file that is a member of a data sharing hub with the Parquet file survey")
+    public void testParquetFileSurvey() throws Exception
+    {
+        File file = new File(FilesFvtTestSupport.folderUnderTest("template"), FilesFvtTestSupport.PARQUET_FILE_NAME);
+
+        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
+        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
+
+        String fileAssetGUID = null;
+        String hubGUID       = null;
+
+        try
+        {
+            assertTrue(file.isFile(), "The Parquet file under test was not written: " + file.getAbsolutePath());
+
+            /*
+             * The member: a Parquet file asset catalogued from the Parquet file template, so that it carries the
+             * deployedImplementationType that leads Liskov to the surveys for Parquet files.
+             */
+            TemplateOptions templateOptions = new TemplateOptions();
+
+            templateOptions.setIsOwnAnchor(true);
+
+            fileAssetGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                templateOptions,
+                                                                                DataAssetTemplateDefinition.PARQUET_FILE_TEMPLATE.getTemplateGUID(),
+                                                                                null,
+                                                                                null,
+                                                                                FilesFvtTestSupport.fileTemplatePlaceholders(file),
+                                                                                null);
+
+            assertNotNull(fileAssetGUID, "Creating a file asset from the Parquet file template returned no GUID.");
+
+            hubGUID = createDataSharingHub(connectorContext, fileAssetGUID);
+
+            addCatalogTarget(connectorContext, hubGUID, null);
+
+            /*
+             * The file has never been surveyed, so the first refresh surveys it.  Liskov finds the survey from
+             * the technology type of the file, so what matters is that it is the survey that understands Parquet
+             * files - not the general data file survey, and not none at all.
+             */
+            refreshLiskov();
+
+            final String assetGUID = fileAssetGUID;
+
+            FilesFvtTestSupport.waitFor("Liskov's survey of a Parquet file that has never been surveyed",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () ->
+                                        {
+                                            List<OpenMetadataElement> reports = getSurveyReports(openMetadataStore, assetGUID);
+
+                                            return (! reports.isEmpty()) &&
+                                                    (FilesFvtTestSupport.getStringProperty(reports.get(0), OpenMetadataProperty.COMPLETION_TIME.name) != null);
+                                        });
+
+            assertEquals(List.of(SURVEY_PARQUET_FILE.getGovernanceRequestType()),
+                         getSurveyRequestTypes(openMetadataStore, fileAssetGUID),
+                         "Liskov should have requested one survey of the Parquet file, and it should be the Parquet file survey.");
+
+            List<OpenMetadataElement> reports = getSurveyReports(openMetadataStore, fileAssetGUID);
+
+            assertEquals(1, reports.size(), "There should be one survey report for the Parquet file.");
+            assertEquals(SURVEY_PARQUET_FILE.getGovernanceRequestType(),
+                         FilesFvtTestSupport.getStringProperty(reports.get(0), OpenMetadataProperty.PURPOSE.name),
+                         "The survey report for the Parquet file was not produced by the Parquet file survey.");
+            assertTrue(getReportedAnnotationGUIDs(openMetadataStore, reports.get(0).getElementGUID()).size() > 1,
+                       "The Parquet file survey that Liskov requested did not describe the contents of the file.");
+
+            /*
+             * The survey attached the file's columns to the asset.  This refresh is where Liskov reads them to
+             * build the data structure for the hub, and it is too soon for another survey.
+             */
+            refreshLiskov();
+
+            assertEquals(List.of(SURVEY_PARQUET_FILE.getGovernanceRequestType()),
+                         getSurveyRequestTypes(openMetadataStore, fileAssetGUID),
+                         "Liskov requested another survey of the Parquet file within a day of the first.");
+        }
+        finally
+        {
+            if (hubGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, hubGUID);
+            }
+
+            if (fileAssetGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, fileAssetGUID);
+            }
+        }
+    }
+
+
+    @Test
+    @DisplayName("Liskov surveys the Parquet and CSV files in a folder that is a member of a data sharing hub, each with its own survey")
+    public void testFilesInHubFolderSurvey() throws Exception
+    {
+        File folder = FilesFvtTestSupport.folderUnderTest("hubfiles");
+
+        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
+        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
+
+        String              folderAssetGUID = null;
+        String              hubGUID         = null;
+        Map<String, String> fileAssetGUIDs  = new HashMap<>();
+        List<String>        handCataloguedGUIDs = new ArrayList<>();
+
+        try
+        {
+            assertTrue(new File(folder, FilesFvtTestSupport.PARQUET_FILE_NAME).isFile(),
+                       "The Parquet file under test was not written to " + folder.getAbsolutePath());
+
+            /*
+             * The member is the folder.  Nothing in it has been catalogued.
+             *
+             * The folder asset is created with the path name that is local to this machine, as the rest of
+             * this suite does.  The folder cataloguer records the canonical path name of each file it
+             * catalogues, by replacing the local mount point (by default, the directory the platform runs in)
+             * with the canonical mount point.  Liskov finds a folder's files by looking for the folder's
+             * path name in the catalogued files, so it has to convert the folder's path name to the canonical
+             * form first - and once that finds the files, it corrects the folder asset to match them.
+             */
+            String localMountPoint   = new File(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample()).getCanonicalPath();
+            String canonicalPathName = folder.getCanonicalPath().replace(localMountPoint, FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getExample());
+
+            assertNotEquals(folder.getCanonicalPath(), canonicalPathName,
+                            "The folder under test is not under the directory the platform runs in, so its canonical path name cannot be worked out.");
+
+            Map<String, String> folderPlaceholders = new HashMap<>(FilesFvtTestSupport.folderTemplatePlaceholders(folder));
+
+            String qualifiedName = FilesFvtTestSupport.folderAssetQualifiedName(folder);
+
+            String createActionGUID = new AutomatedCurationClient().initiateGovernanceActionType(FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER),
+                                                                                                  folderPlaceholders,
+                                                                                                  null);
+
+            new EngineActionWaiter().waitForCompletion(createActionGUID, FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER));
+
+            folderAssetGUID = FilesFvtTestSupport.waitForElement(openMetadataStore, qualifiedName, "the folder asset for Liskov's data sharing hub").getElementGUID();
+
+            /*
+             * A folder and a file beneath the hub folder that were catalogued by hand, with path names that are
+             * local to this machine.  Neither exists on disk, so the folder cataloguer does not catalogue them
+             * again.  The last one is a folder beside the hub folder whose name starts with the hub folder's name -
+             * it is not in the hub folder and so Liskov must leave it alone.
+             */
+            File subFolder     = new File(folder, "archive");
+            File archivedFile  = new File(subFolder, "notes.dat");
+            File siblingFolder = new File(folder.getParentFile(), folder.getName() + "-other");
+
+            TemplateOptions templateOptions = new TemplateOptions();
+
+            templateOptions.setIsOwnAnchor(true);
+
+            String subFolderGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                       templateOptions,
+                                                                                       DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE.getTemplateGUID(),
+                                                                                       null,
+                                                                                       null,
+                                                                                       FilesFvtTestSupport.folderTemplatePlaceholders(subFolder),
+                                                                                       null);
+            handCataloguedGUIDs.add(subFolderGUID);
+
+            String archivedFileGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                          templateOptions,
+                                                                                          DataAssetTemplateDefinition.DATA_FILE_TEMPLATE.getTemplateGUID(),
+                                                                                          null,
+                                                                                          null,
+                                                                                          FilesFvtTestSupport.fileTemplatePlaceholders(archivedFile),
+                                                                                          null);
+            handCataloguedGUIDs.add(archivedFileGUID);
+
+            String siblingFolderGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                           templateOptions,
+                                                                                           DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE.getTemplateGUID(),
+                                                                                           null,
+                                                                                           null,
+                                                                                           FilesFvtTestSupport.folderTemplatePlaceholders(siblingFolder),
+                                                                                           null);
+            handCataloguedGUIDs.add(siblingFolderGUID);
+
+            /*
+             * The same folder and file catalogued a second time, under their canonical path names - as a
+             * cataloguer on another machine would have.  Their qualified names are different from the ones
+             * catalogued by hand, so nothing stops them being created, and nothing knows they are duplicates
+             * until Liskov has given the first two their canonical path names.
+             */
+            Map<String, String> canonicalFolderPlaceholders = new HashMap<>(FilesFvtTestSupport.folderTemplatePlaceholders(subFolder));
+
+            canonicalFolderPlaceholders.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), canonicalPathName + "/" + subFolder.getName());
+
+            String canonicalSubFolderGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                                templateOptions,
+                                                                                                DataAssetTemplateDefinition.FILE_FOLDER_TEMPLATE.getTemplateGUID(),
+                                                                                                null,
+                                                                                                null,
+                                                                                                canonicalFolderPlaceholders,
+                                                                                                null);
+            handCataloguedGUIDs.add(canonicalSubFolderGUID);
+
+            Map<String, String> canonicalFilePlaceholders = new HashMap<>(FilesFvtTestSupport.fileTemplatePlaceholders(archivedFile));
+
+            canonicalFilePlaceholders.put(PlaceholderProperty.FILE_PATH_NAME.getName(), canonicalPathName + "/" + subFolder.getName() + "/" + archivedFile.getName());
+
+            String canonicalArchivedFileGUID = openMetadataStore.createMetadataElementFromTemplate(null,
+                                                                                                   templateOptions,
+                                                                                                   DataAssetTemplateDefinition.DATA_FILE_TEMPLATE.getTemplateGUID(),
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   canonicalFilePlaceholders,
+                                                                                                   null);
+            handCataloguedGUIDs.add(canonicalArchivedFileGUID);
+
+            assertEquals(subFolder.getAbsolutePath(),
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(subFolderGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "The folder catalogued by hand should start with its local path name.");
+            assertEquals(archivedFile.getAbsolutePath(),
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(archivedFileGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "The file catalogued by hand should start with its local path name.");
+
+            hubGUID = createDataSharingHub(connectorContext, folderAssetGUID);
+
+            addCatalogTarget(connectorContext, hubGUID, null);
+
+            /*
+             * 1. The first refresh asks for the folder to be catalogued.  That makes the folder a catalog target
+             *    of the folder cataloguer, which catalogues each file as an asset of the file's own type when
+             *    it next refreshes.
+             */
+            refreshLiskov();
+
+            final String folderGUID = folderAssetGUID;
+            final List<String> catalogActionGUIDs = new ArrayList<>();
+
+            FilesFvtTestSupport.waitFor("Liskov to ask for the folder in its data sharing hub to be catalogued",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () ->
+                                        {
+                                            catalogActionGUIDs.clear();
+                                            catalogActionGUIDs.addAll(getEngineActionGUIDs(openMetadataStore, folderGUID, CATALOG_FILE_FOLDER.getGovernanceRequestType()));
+                                            return ! catalogActionGUIDs.isEmpty();
+                                        });
+
+            new EngineActionWaiter().waitForCompletion(catalogActionGUIDs.get(0), FilesFvtTestSupport.governanceActionTypeQualifiedName(CATALOG_FILE_FOLDER));
+
+            OMAGPlatformExtension.getIntegrationDaemonClient().refreshConnectors();
+
+            FilesFvtTestSupport.waitFor("the folder cataloguer to catalogue the Parquet and CSV files in " + folder.getName(),
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () ->
+                                        {
+                                            fileAssetGUIDs.clear();
+                                            fileAssetGUIDs.putAll(getCataloguedFiles(openMetadataStore, folder));
+                                            return (fileAssetGUIDs.containsKey(FilesFvtTestSupport.PARQUET_FILE_NAME)) && (fileAssetGUIDs.containsKey(CSV_FILE_NAME));
+                                        });
+
+            String parquetAssetGUID = fileAssetGUIDs.get(FilesFvtTestSupport.PARQUET_FILE_NAME);
+            String csvAssetGUID     = fileAssetGUIDs.get(CSV_FILE_NAME);
+
+            /*
+             * 2. Liskov was not told about these files - it finds them by looking for the catalogued files that
+             *    are under the folder.  Each is surveyed with the survey for its own type of file.  Refreshing
+             *    twice makes sure that one refresh starts after the files were catalogued.
+             */
+            refreshLiskov();
+            refreshLiskov();
+
+            FilesFvtTestSupport.waitFor("Liskov's surveys of the Parquet and CSV files in the folder in its data sharing hub",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () -> (isSurveyComplete(openMetadataStore, parquetAssetGUID)) && (isSurveyComplete(openMetadataStore, csvAssetGUID)));
+
+            assertEquals(List.of(SURVEY_PARQUET_FILE.getGovernanceRequestType()),
+                         getSurveyRequestTypes(openMetadataStore, parquetAssetGUID),
+                         "Liskov should have requested one survey of the Parquet file in the folder, and it should be the Parquet file survey.");
+            assertEquals(List.of(RequestTypeDefinition.SURVEY_CSV_FILE.getGovernanceRequestType()),
+                         getSurveyRequestTypes(openMetadataStore, csvAssetGUID),
+                         "Liskov should have requested one survey of the CSV file in the folder, and it should be the CSV file survey.");
+
+            /*
+             * Liskov gives the hub folder, and every folder and file catalogued beneath it, its canonical path
+             * name.  The qualified names are left alone.
+             */
+            OpenMetadataElement subFolderAsset    = openMetadataStore.getMetadataElementByGUID(subFolderGUID);
+            OpenMetadataElement archivedFileAsset = openMetadataStore.getMetadataElementByGUID(archivedFileGUID);
+
+            assertEquals(canonicalPathName + "/" + subFolder.getName(),
+                         FilesFvtTestSupport.getStringProperty(subFolderAsset, OpenMetadataProperty.PATH_NAME.name),
+                         "Liskov should have set the canonical path name of the folder catalogued by hand beneath the hub folder.");
+            assertEquals(FilesFvtTestSupport.folderAssetQualifiedName(subFolder),
+                         FilesFvtTestSupport.getStringProperty(subFolderAsset, OpenMetadataProperty.QUALIFIED_NAME.name),
+                         "Liskov should not have changed the qualified name of the folder beneath the hub folder.");
+            assertEquals(canonicalPathName + "/" + subFolder.getName() + "/" + archivedFile.getName(),
+                         FilesFvtTestSupport.getStringProperty(archivedFileAsset, OpenMetadataProperty.PATH_NAME.name),
+                         "Liskov should have set the canonical path name of the file catalogued by hand beneath the hub folder.");
+            assertTrue(FilesFvtTestSupport.getStringProperty(archivedFileAsset, OpenMetadataProperty.QUALIFIED_NAME.name).contains(archivedFile.getAbsolutePath()),
+                       "Liskov should not have changed the qualified name of the file beneath the hub folder.");
+            assertEquals(siblingFolder.getAbsolutePath(),
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(siblingFolderGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "Liskov should not have changed the path name of a folder that is beside the hub folder, not in it.");
+            /*
+             * Now that they have the same path names, Liskov has linked each pair as potential duplicates.
+             * Nothing in this deployment validates the links, so they are still DISCOVERED.  The folder
+             * beside the hub folder is not linked to anything.
+             */
+            assertEquals(List.of(canonicalSubFolderGUID), getDiscoveredDuplicateGUIDs(openMetadataStore, subFolderGUID),
+                         "Liskov should have linked the two folder assets with the same canonical path name as potential duplicates.");
+            assertEquals(List.of(canonicalArchivedFileGUID), getDiscoveredDuplicateGUIDs(openMetadataStore, archivedFileGUID),
+                         "Liskov should have linked the two file assets with the same canonical path name as potential duplicates.");
+            assertEquals(List.of(), getDiscoveredDuplicateGUIDs(openMetadataStore, siblingFolderGUID),
+                         "Liskov should not have linked the folder beside the hub folder to anything.");
+            assertEquals(List.of(), getDiscoveredDuplicateGUIDs(openMetadataStore, parquetAssetGUID),
+                         "The Parquet file is catalogued once, so Liskov should not have linked it to anything.");
+
+            assertEquals(canonicalPathName + "/" + FilesFvtTestSupport.PARQUET_FILE_NAME,
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(parquetAssetGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "The Parquet file catalogued by the folder cataloguer should have its canonical path name.");
+
+            OpenMetadataElement folderAsset = openMetadataStore.getMetadataElementByGUID(folderAssetGUID);
+
+            assertEquals(canonicalPathName,
+                         FilesFvtTestSupport.getStringProperty(folderAsset, OpenMetadataProperty.PATH_NAME.name),
+                         "Liskov should have set the folder's path name to the canonical path name that matched its files.");
+            assertEquals(qualifiedName,
+                         FilesFvtTestSupport.getStringProperty(folderAsset, OpenMetadataProperty.QUALIFIED_NAME.name),
+                         "Liskov should not have changed the folder's qualified name.");
+
+            List<OpenMetadataElement> reports = getSurveyReports(openMetadataStore, parquetAssetGUID);
+
+            assertEquals(1, reports.size(), "There should be one survey report for the Parquet file.");
+            assertEquals(SURVEY_PARQUET_FILE.getGovernanceRequestType(),
+                         FilesFvtTestSupport.getStringProperty(reports.get(0), OpenMetadataProperty.PURPOSE.name),
+                         "The survey report for the Parquet file was not produced by the Parquet file survey.");
+
+            /*
+             * 3. The surveys attached each file's columns to its asset.  On the next refresh Liskov turns them
+             *    into data fields for the hub - so a data field for a column that is only in the Parquet file
+             *    shows that Liskov read the Parquet file's schema.
+             */
+            refreshLiskov();
+
+            assertEquals(List.of(canonicalArchivedFileGUID), getDiscoveredDuplicateGUIDs(openMetadataStore, archivedFileGUID),
+                         "Liskov should not link the same pair of duplicates again on a later refresh.");
+
+            String parquetOnlyColumn  = FilesFvtTestSupport.PARQUET_FILE_COLUMNS.get(1);
+            String dataSharingHubGUID = hubGUID;
+
+            FilesFvtTestSupport.waitFor("Liskov to create a data field for column " + parquetOnlyColumn + " of the Parquet file",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () -> hasDataField(openMetadataStore, dataSharingHubGUID, parquetOnlyColumn));
+
+            assertEquals(List.of(SURVEY_PARQUET_FILE.getGovernanceRequestType()),
+                         getSurveyRequestTypes(openMetadataStore, parquetAssetGUID),
+                         "Liskov requested another survey of the Parquet file within a day of the first.");
+        }
+        finally
+        {
+            if (hubGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, hubGUID);
+            }
+
+            for (String handCataloguedGUID : handCataloguedGUIDs)
+            {
+                if (handCataloguedGUID != null)
+                {
+                    FilesFvtTestSupport.purgeElement(openMetadataStore, handCataloguedGUID);
+                }
+            }
+
+            for (String fileAssetGUID : getCataloguedFiles(openMetadataStore, folder).values())
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, fileAssetGUID);
+            }
+
+            if (folderAssetGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, folderAssetGUID);
+            }
+        }
+    }
+
+
+    /**
+     * Return the engine actions with a particular request type that have an element as their action target.
+     *
+     * @param openMetadataStore store to read through
+     * @param assetGUID the element that the engine actions work on
+     * @param requestType the request type to look for
+     * @return unique identifiers of the engine actions
+     * @throws Exception problem reading from the repository
+     */
+    private List<String> getEngineActionGUIDs(OpenMetadataStore openMetadataStore,
+                                              String            assetGUID,
+                                              String            requestType) throws Exception
+    {
+        List<String> engineActionGUIDs = new ArrayList<>();
+
+        RelatedMetadataElementList engineActions = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                                                2,
+                                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                                0,
+                                                                                                FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        if ((engineActions != null) && (engineActions.getElementList() != null))
+        {
+            for (RelatedMetadataElement engineAction : engineActions.getElementList())
+            {
+                if ((engineAction != null) &&
+                        (engineAction.getElement() != null) &&
+                        (propertyHelper.isTypeOf(engineAction.getElement(), OpenMetadataType.ENGINE_ACTION.typeName)) &&
+                        (requestType.equals(FilesFvtTestSupport.getStringProperty(engineAction.getElement(), OpenMetadataProperty.REQUEST_TYPE.name))))
+                {
+                    engineActionGUIDs.add(engineAction.getElement().getElementGUID());
+                }
+            }
+        }
+
+        return engineActionGUIDs;
+    }
+
+
+    /**
+     * A folder whose files are catalogued under a canonical mount point of its own.  The folder cataloguer is
+     * told which mount point to use in the configuration properties of the catalog target relationship that
+     * makes the folder its target.  Liskov has to use the same one - its own configuration and the defaults
+     * would give a canonical path name that matches nothing.
+     *
+     * @throws Exception any failure is a test failure
+     */
+    @Test
+    @DisplayName("Liskov uses the mount points that a hub folder is catalogued with")
+    public void testHubFolderWithItsOwnMountPoints() throws Exception
+    {
+        final String sharedMountPoint = "/files-fvt-shared";
+
+        File folder = FilesFvtTestSupport.folderUnderTest("hubmounts");
+
+        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
+        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
+
+        String              folderAssetGUID = null;
+        String              hubGUID         = null;
+        Map<String, String> fileAssetGUIDs  = new HashMap<>();
+
+        try
+        {
+            String localMountPoint   = new File(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample()).getCanonicalPath();
+            String canonicalPathName = folder.getCanonicalPath().replace(localMountPoint, sharedMountPoint);
+
+            assertNotEquals(folder.getCanonicalPath(), canonicalPathName,
+                            "The folder under test is not under the directory the platform runs in, so its canonical path name cannot be worked out.");
+
+            /*
+             * The folder asset has its local path name.
+             */
+            String qualifiedName = FilesFvtTestSupport.folderAssetQualifiedName(folder);
+
+            String createActionGUID = new AutomatedCurationClient().initiateGovernanceActionType(FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER),
+                                                                                                  new HashMap<>(FilesFvtTestSupport.folderTemplatePlaceholders(folder)),
+                                                                                                  null);
+
+            new EngineActionWaiter().waitForCompletion(createActionGUID, FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER));
+
+            folderAssetGUID = FilesFvtTestSupport.waitForElement(openMetadataStore, qualifiedName, "the folder asset for Liskov's data sharing hub").getElementGUID();
+
+            /*
+             * The folder is made a target of the folder cataloguer, which is told to catalogue its files
+             * under the shared mount point.
+             */
+            AssetClient assetClient = connectorContext.getAssetClient();
+
+            CatalogTargetProperties cataloguerTargetProperties = new CatalogTargetProperties();
+
+            cataloguerTargetProperties.setCatalogTargetName(FilesFvtTestSupport.TEST_MARKER + "-hubmounts");
+
+            Map<String, Object> cataloguerConfigurationProperties = new HashMap<>();
+
+            cataloguerConfigurationProperties.put(FileSystemConfigurationProperty.CANONICAL_MOUNT_POINT.getName(), sharedMountPoint);
+
+            cataloguerTargetProperties.setConfigurationProperties(cataloguerConfigurationProperties);
+
+            assetClient.addCatalogTarget(IntegrationConnectorDefinition.GENERAL_FOLDER_CATALOGUER.getGUID(),
+                                         folderAssetGUID,
+                                         new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
+                                         cataloguerTargetProperties);
+
+            hubGUID = createDataSharingHub(connectorContext, folderAssetGUID);
+
+            addCatalogTarget(connectorContext, hubGUID, null);
+
+            OMAGPlatformExtension.getIntegrationDaemonClient().refreshConnectors();
+
+            FilesFvtTestSupport.waitFor("the folder cataloguer to catalogue the CSV file in " + folder.getName(),
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () ->
+                                        {
+                                            fileAssetGUIDs.clear();
+                                            fileAssetGUIDs.putAll(getCataloguedFiles(openMetadataStore, folder));
+                                            return fileAssetGUIDs.containsKey(CSV_FILE_NAME);
+                                        });
+
+            String csvAssetGUID = fileAssetGUIDs.get(CSV_FILE_NAME);
+
+            assertEquals(canonicalPathName + "/" + CSV_FILE_NAME,
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(csvAssetGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "The folder cataloguer should have catalogued the CSV file under the shared mount point.");
+
+            /*
+             * Liskov finds the CSV file - and so surveys it - only if it converts the folder's path name with
+             * the shared mount point.
+             */
+            refreshLiskov();
+            refreshLiskov();
+
+            FilesFvtTestSupport.waitFor("Liskov's survey of the CSV file catalogued under the shared mount point",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () -> isSurveyComplete(openMetadataStore, csvAssetGUID));
+
+            assertEquals(canonicalPathName,
+                         FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(folderAssetGUID), OpenMetadataProperty.PATH_NAME.name),
+                         "Liskov should have given the folder the canonical path name that uses the folder's own mount point.");
+
+            assertEquals(List.of(),
+                         getEngineActionGUIDs(openMetadataStore, folderAssetGUID, CATALOG_FILE_FOLDER.getGovernanceRequestType()),
+                         "The folder is already a target of the folder cataloguer, so Liskov should not have asked for it to be catalogued.");
+        }
+        finally
+        {
+            if (hubGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, hubGUID);
+            }
+
+            for (String fileAssetGUID : getCataloguedFiles(openMetadataStore, folder).values())
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, fileAssetGUID);
+            }
+
+            if (folderAssetGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, folderAssetGUID);
+            }
+        }
+    }
+
+
+    /**
+     * A folder that belongs to a file system.  The file system that owns it is linked to the folder above it,
+     * and has mount points of its own; a second file system that merely uses the files is linked to the same
+     * folder, and a third is linked to the folder above that.  Liskov has to walk up the folder hierarchy,
+     * stop at the nearest folder that is linked to a file system, set aside the file system that only uses the
+     * files, and take the mount points from the owner in preference to everything else.
+     *
+     * @throws Exception any failure is a test failure
+     */
+    @Test
+    @DisplayName("Liskov takes the mount points from the file system that a hub folder belongs to")
+    public void testHubFolderWithFileSystem() throws Exception
+    {
+        final String fileSystemMountPoint = "/files-fvt-filesystem";
+
+        File folder       = FilesFvtTestSupport.folderUnderTest("hubfilesystem");
+        File parentFolder = folder.getParentFile();
+
+        ConnectorContextBase connectorContext  = ConnectorContextFactory.newContext(DeleteMethod.PURGE);
+        OpenMetadataStore    openMetadataStore = connectorContext.getOpenMetadataStore();
+
+        String       folderAssetGUID = null;
+        String       hubGUID         = null;
+        List<String> otherGUIDs      = new ArrayList<>();
+
+        try
+        {
+            String localMountPoint   = new File(FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample()).getCanonicalPath();
+            String canonicalPathName = folder.getCanonicalPath().replace(localMountPoint, fileSystemMountPoint);
+
+            assertNotEquals(folder.getCanonicalPath(), canonicalPathName,
+                            "The folder under test is not under the directory the platform runs in, so its canonical path name cannot be worked out.");
+
+            String qualifiedName = FilesFvtTestSupport.folderAssetQualifiedName(folder);
+
+            String createActionGUID = new AutomatedCurationClient().initiateGovernanceActionType(FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER),
+                                                                                                  new HashMap<>(FilesFvtTestSupport.folderTemplatePlaceholders(folder)),
+                                                                                                  null);
+
+            new EngineActionWaiter().waitForCompletion(createActionGUID, FilesFvtTestSupport.governanceActionTypeQualifiedName(CREATE_FILE_FOLDER));
+
+            folderAssetGUID = FilesFvtTestSupport.waitForElement(openMetadataStore, qualifiedName, "the folder asset for Liskov's data sharing hub").getElementGUID();
+
+            /*
+             * The folder above, with the hub folder nested in it.
+             */
+            ElementProperties parentProperties = propertyHelper.addStringProperty(null,
+                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                  OpenMetadataType.FILE_FOLDER.typeName + "::" + FilesFvtTestSupport.TEST_MARKER + "::hubfilesystem-parent");
+
+            parentProperties = propertyHelper.addStringProperty(parentProperties, OpenMetadataProperty.DISPLAY_NAME.name, FilesFvtTestSupport.TEST_MARKER + " parent folder");
+            parentProperties = propertyHelper.addStringProperty(parentProperties, OpenMetadataProperty.PATH_NAME.name, parentFolder.getAbsolutePath());
+
+            String parentFolderGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.FILE_FOLDER.typeName, null, null, parentProperties);
+
+            otherGUIDs.add(parentFolderGUID);
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName, parentFolderGUID, folderAssetGUID, null, null, null);
+
+            /*
+             * The folder above that.  The file system linked to it also owns its files, but it is further
+             * away than the ones linked to the parent folder, so it is not the one to use.
+             */
+            ElementProperties grandparentProperties = propertyHelper.addStringProperty(null,
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                       OpenMetadataType.FILE_FOLDER.typeName + "::" + FilesFvtTestSupport.TEST_MARKER + "::hubfilesystem-grandparent");
+
+            grandparentProperties = propertyHelper.addStringProperty(grandparentProperties, OpenMetadataProperty.DISPLAY_NAME.name, FilesFvtTestSupport.TEST_MARKER + " grandparent folder");
+            grandparentProperties = propertyHelper.addStringProperty(grandparentProperties, OpenMetadataProperty.PATH_NAME.name, parentFolder.getParentFile().getAbsolutePath());
+
+            String grandparentFolderGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.FILE_FOLDER.typeName, null, null, grandparentProperties);
+
+            otherGUIDs.add(grandparentFolderGUID);
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName, grandparentFolderGUID, parentFolderGUID, null, null, null);
+
+            String distantFileSystemGUID = createFileSystem(openMetadataStore, "distant", "/files-fvt-too-far-away");
+            otherGUIDs.add(distantFileSystemGUID);
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
+                                                           distantFileSystemGUID,
+                                                           grandparentFolderGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addEnumProperty(null,
+                                                                                          OpenMetadataProperty.USE_TYPE.name,
+                                                                                          CapabilityAssetUseType.getOpenTypeName(),
+                                                                                          CapabilityAssetUseType.OWNS.name()));
+
+            /*
+             * The file system that owns the files, and the one that only uses them, are both linked to the
+             * parent folder.  They have different canonical mount points.
+             */
+            String owningFileSystemGUID = createFileSystem(openMetadataStore, "owner", fileSystemMountPoint);
+            otherGUIDs.add(owningFileSystemGUID);
+
+            String usingFileSystemGUID = createFileSystem(openMetadataStore, "user", "/files-fvt-not-this-one");
+            otherGUIDs.add(usingFileSystemGUID);
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
+                                                           owningFileSystemGUID,
+                                                           parentFolderGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addEnumProperty(null,
+                                                                                          OpenMetadataProperty.USE_TYPE.name,
+                                                                                          CapabilityAssetUseType.getOpenTypeName(),
+                                                                                          CapabilityAssetUseType.OWNS.name()));
+
+            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
+                                                           usingFileSystemGUID,
+                                                           parentFolderGUID,
+                                                           null,
+                                                           null,
+                                                           propertyHelper.addEnumProperty(null,
+                                                                                          OpenMetadataProperty.USE_TYPE.name,
+                                                                                          CapabilityAssetUseType.getOpenTypeName(),
+                                                                                          CapabilityAssetUseType.USES.name()));
+
+            hubGUID = createDataSharingHub(connectorContext, folderAssetGUID);
+
+            addCatalogTarget(connectorContext, hubGUID, null);
+
+            refreshLiskov();
+
+            final String folderGUID = folderAssetGUID;
+
+            FilesFvtTestSupport.waitFor("Liskov to give the folder the canonical path name that uses its file system's mount point",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () -> canonicalPathName.equals(FilesFvtTestSupport.getStringProperty(openMetadataStore.getMetadataElementByGUID(folderGUID), OpenMetadataProperty.PATH_NAME.name)));
+
+            /*
+             * Liskov also asked for the folder to be catalogued.  Let that finish so nothing is left running.
+             */
+            final List<String> catalogActionGUIDs = new ArrayList<>();
+
+            FilesFvtTestSupport.waitFor("Liskov to ask for the folder in its data sharing hub to be catalogued",
+                                        "files.fvt.refresh.timeout.seconds",
+                                        180,
+                                        () ->
+                                        {
+                                            catalogActionGUIDs.clear();
+                                            catalogActionGUIDs.addAll(getEngineActionGUIDs(openMetadataStore, folderGUID, CATALOG_FILE_FOLDER.getGovernanceRequestType()));
+                                            return ! catalogActionGUIDs.isEmpty();
+                                        });
+
+            new EngineActionWaiter().waitForCompletion(catalogActionGUIDs.get(0), FilesFvtTestSupport.governanceActionTypeQualifiedName(CATALOG_FILE_FOLDER));
+        }
+        finally
+        {
+            if (hubGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, hubGUID);
+            }
+
+            for (String fileAssetGUID : getCataloguedFiles(openMetadataStore, folder).values())
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, fileAssetGUID);
+            }
+
+            if (folderAssetGUID != null)
+            {
+                FilesFvtTestSupport.purgeElement(openMetadataStore, folderAssetGUID);
+            }
+
+            for (String otherGUID : otherGUIDs)
+            {
+                if (otherGUID != null)
+                {
+                    FilesFvtTestSupport.purgeElement(openMetadataStore, otherGUID);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Create a file system with mount points.
+     *
+     * @param openMetadataStore client for the open metadata store
+     * @param role what the file system is to the folder under test - makes its name unique
+     * @param canonicalMountPoint its canonical mount point; the local one is the directory the platform runs in
+     * @return unique identifier of the file system
+     * @throws Exception the file system could not be created
+     */
+    private String createFileSystem(OpenMetadataStore openMetadataStore,
+                                    String            role,
+                                    String            canonicalMountPoint) throws Exception
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        OpenMetadataType.FILE_SYSTEM.typeName + "::" + FilesFvtTestSupport.TEST_MARKER + "::" + role);
+
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, FilesFvtTestSupport.TEST_MARKER + " " + role + " file system");
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.LOCAL_MOUNT_POINT.name, FileSystemConfigurationProperty.LOCAL_MOUNT_POINT.getExample());
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.CANONICAL_MOUNT_POINT.name, canonicalMountPoint);
+
+        String fileSystemGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.FILE_SYSTEM.typeName, null, null, properties);
+
+        assertNotNull(fileSystemGUID, "The " + role + " file system was not created.");
+
+        return fileSystemGUID;
+    }
+
+
+    /**
+     * Return the elements that an element is linked to as a potential duplicate, checking that each link is
+     * still waiting for a decision.
+     *
+     * @param openMetadataStore client for the open metadata store
+     * @param elementGUID unique identifier of the element
+     * @return unique identifiers of the elements at the other end of its PeerDuplicateLink relationships
+     * @throws Exception the links could not be read, or one of them is not DISCOVERED
+     */
+    private List<String> getDiscoveredDuplicateGUIDs(OpenMetadataStore openMetadataStore,
+                                                     String            elementGUID) throws Exception
+    {
+        List<String> duplicateGUIDs = new ArrayList<>();
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setForDuplicateProcessing(true);
+        queryOptions.setPageSize(FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        RelatedMetadataElementList peers = openMetadataStore.getRelatedMetadataElements(elementGUID,
+                                                                                        0,
+                                                                                        OpenMetadataType.PEER_DUPLICATE_LINK.typeName,
+                                                                                        queryOptions);
+
+        if ((peers != null) && (peers.getElementList() != null))
+        {
+            for (RelatedMetadataElement peer : peers.getElementList())
+            {
+                assertEquals(Integer.toString(StatusIdentifier.DISCOVERED.getOrdinal()),
+                             peer.getRelationshipProperties().getPropertiesAsStrings().get(OpenMetadataProperty.STATUS_IDENTIFIER.name),
+                             "A duplicate link that Liskov creates should have a status of DISCOVERED.");
+
+                duplicateGUIDs.add(peer.getElement().getElementGUID());
+            }
+        }
+
+        return duplicateGUIDs;
+    }
+
+
+    /**
+     * Return the file assets that have been catalogued for the files in a folder.
+     *
+     * @param openMetadataStore store to read through
+     * @param folder folder whose files are being catalogued
+     * @return file name to unique identifier of its asset
+     * @throws Exception problem reading from the repository
+     */
+    private Map<String, String> getCataloguedFiles(OpenMetadataStore openMetadataStore,
+                                                   File              folder) throws Exception
+    {
+        Map<String, String> fileAssetGUIDs = new HashMap<>();
+
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        folder.getName() + "/",
+                                                                        PropertyComparisonOperator.LIKE));
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setMetadataElementTypeName(OpenMetadataType.DATA_FILE.typeName);
+        queryOptions.setPageSize(FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
+
+        if (found != null)
+        {
+            for (OpenMetadataElement element : found)
+            {
+                String elementQualifiedName = FilesFvtTestSupport.getStringProperty(element, OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                if (elementQualifiedName != null)
+                {
+                    fileAssetGUIDs.put(elementQualifiedName.substring(elementQualifiedName.lastIndexOf('/') + 1), element.getElementGUID());
+                }
+            }
+        }
+
+        return fileAssetGUIDs;
+    }
+
+
+    /**
+     * Has the latest survey of an element completed?
+     *
+     * @param openMetadataStore store to read through
+     * @param assetGUID the element that is being surveyed
+     * @return true if there is a survey report and it has a completion time
+     * @throws Exception problem reading from the repository
+     */
+    private boolean isSurveyComplete(OpenMetadataStore openMetadataStore,
+                                     String            assetGUID) throws Exception
+    {
+        List<OpenMetadataElement> reports = getSurveyReports(openMetadataStore, assetGUID);
+
+        return (! reports.isEmpty()) &&
+                (FilesFvtTestSupport.getStringProperty(reports.get(0), OpenMetadataProperty.COMPLETION_TIME.name) != null);
+    }
+
+
+    /**
+     * Has Liskov created a data field with this name for a data sharing hub?  The hub's unique identifier
+     * is part of the qualified name of each of its data fields.
+     *
+     * @param openMetadataStore store to read through
+     * @param hubGUID unique identifier of the data sharing hub
+     * @param columnName name of the column that the data field describes
+     * @return true if the data field exists
+     * @throws Exception problem reading from the repository
+     */
+    private boolean hasDataField(OpenMetadataStore openMetadataStore,
+                                 String            hubGUID,
+                                 String            columnName) throws Exception
+    {
+        SearchProperties searchProperties = new SearchProperties();
+
+        searchProperties.setConditions(propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        hubGUID,
+                                                                        PropertyComparisonOperator.LIKE));
+
+        QueryOptions queryOptions = new QueryOptions();
+
+        queryOptions.setMetadataElementTypeName(OpenMetadataType.DATA_FIELD.typeName);
+        queryOptions.setPageSize(FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        List<OpenMetadataElement> found = openMetadataStore.findMetadataElements(searchProperties, null, queryOptions);
+
+        if (found != null)
+        {
+            for (OpenMetadataElement element : found)
+            {
+                if (columnName.equals(FilesFvtTestSupport.getStringProperty(element, OpenMetadataProperty.DISPLAY_NAME.name)))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return every survey report for an element, whichever survey produced it, most recent first.
+     *
+     * @param openMetadataStore store to read through
+     * @param assetGUID the element that was surveyed
+     * @return survey reports
+     * @throws Exception problem reading from the repository
+     */
+    private List<OpenMetadataElement> getSurveyReports(OpenMetadataStore openMetadataStore,
+                                                       String            assetGUID) throws Exception
+    {
+        List<OpenMetadataElement> reports = new ArrayList<>();
+
+        RelatedMetadataElementList relatedReports = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                                                 1,
+                                                                                                 OpenMetadataType.REPORT_SUBJECT_RELATIONSHIP.typeName,
+                                                                                                 0,
+                                                                                                 FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        if ((relatedReports != null) && (relatedReports.getElementList() != null))
+        {
+            for (RelatedMetadataElement relatedReport : relatedReports.getElementList())
+            {
+                if ((relatedReport != null) && (relatedReport.getElement() != null))
+                {
+                    reports.add(relatedReport.getElement());
+                }
+            }
+        }
+
+        reports.sort((report1, report2) -> report2.getVersions().getCreateTime().compareTo(report1.getVersions().getCreateTime()));
+
+        return reports;
+    }
+
+
+    /**
+     * Return the request type of every engine action that has an element as its action target.
+     *
+     * @param openMetadataStore store to read through
+     * @param assetGUID the element that the engine actions work on
+     * @return request types
+     * @throws Exception problem reading from the repository
+     */
+    private List<String> getSurveyRequestTypes(OpenMetadataStore openMetadataStore,
+                                               String            assetGUID) throws Exception
+    {
+        List<String> requestTypes = new ArrayList<>();
+
+        RelatedMetadataElementList engineActions = openMetadataStore.getRelatedMetadataElements(assetGUID,
+                                                                                                2,
+                                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                                                                0,
+                                                                                                FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+        if ((engineActions != null) && (engineActions.getElementList() != null))
+        {
+            for (RelatedMetadataElement engineAction : engineActions.getElementList())
+            {
+                if ((engineAction != null) &&
+                        (engineAction.getElement() != null) &&
+                        (propertyHelper.isTypeOf(engineAction.getElement(), OpenMetadataType.ENGINE_ACTION.typeName)))
+                {
+                    requestTypes.add(FilesFvtTestSupport.getStringProperty(engineAction.getElement(), OpenMetadataProperty.REQUEST_TYPE.name));
+                }
+            }
+        }
+
+        return requestTypes;
     }
 
 

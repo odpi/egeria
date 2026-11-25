@@ -652,6 +652,27 @@ public enum RequestTypeDefinition
                     ContentPackDefinition.FILES_CONTENT_PACK),
 
     /**
+     * survey-parquet-file
+     */
+    SURVEY_PARQUET_FILE("survey-parquet-file",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
+                        GovernanceServiceDefinition.PARQUET_FILE_SURVEY,
+                        "53a3cf09-d108-4cca-a53e-07355ddc163c",
+                        GovernanceDomain.DATA.getOrdinal(),
+                        DeployedImplementationType.PARQUET_FILE.getQualifiedName(),
+                        "5dbb72ae-b494-4adf-9e2e-7c9ee4369904",
+                        "Survey Parquet File",
+                        "Create a survey report about a requested Apache Parquet file, including extracting information about the file's characteristics, the columns inside and the range of values in each column.  The information comes from the file's footer and so the survey supports all versions of the Parquet format and takes the same time whatever the size of the file.",
+                        DeployedImplementationType.PARQUET_FILE,
+                        null,
+                        true,
+                        ContentCollectionDefinition.SURVEY_ACTIONS,
+                        ContentPackDefinition.FILES_CONTENT_PACK),
+
+    /**
      * survey-data-file
      */
     SURVEY_DATA_FILE("survey-data-file",

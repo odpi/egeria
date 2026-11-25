@@ -9,12 +9,11 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 13 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `LISKOV-DATA-HUB-MANAGER-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.liskov.ffdc.LiskovAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/nanny-connectors](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors) |
 | **Source** | [LiskovAuditCode.java](../../../open-metadata-implementation/adapters/open-connectors/nanny-connectors/src/main/java/org/odpi/openmetadata/adapters/connectors/liskov/ffdc/LiskovAuditCode.java) |
-| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 
 ## Messages
@@ -30,10 +29,13 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 | [LISKOV-DATA-HUB-MANAGER-0016](#liskov-data-hub-manager-0016) | INFO | The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5}) |
 | [LISKOV-DATA-HUB-MANAGER-0017](#liskov-data-hub-manager-0017) | INFO | The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2}) |
 | [LISKOV-DATA-HUB-MANAGER-0018](#liskov-data-hub-manager-0018) | INFO | The {0} integration connector has created a new data structure {1} ({2}) for data sharing hub {3} ({4}) |
-| [LISKOV-DATA-HUB-MANAGER-0019](#liskov-data-hub-manager-0019) | INFO | The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5}) |
+| [LISKOV-DATA-HUB-MANAGER-0019](#liskov-data-hub-manager-0019) | INFO | The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5}) |
 | [LISKOV-DATA-HUB-MANAGER-0020](#liskov-data-hub-manager-0020) | INFO | The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5} |
 | [LISKOV-DATA-HUB-MANAGER-0021](#liskov-data-hub-manager-0021) | INFO | The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5} because {6} |
 | [LISKOV-DATA-HUB-MANAGER-0022](#liskov-data-hub-manager-0022) | INFO | The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4}) |
+| [LISKOV-DATA-HUB-MANAGER-0023](#liskov-data-hub-manager-0023) | INFO | The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5} |
+| [LISKOV-DATA-HUB-MANAGER-0024](#liskov-data-hub-manager-0024) | INFO | The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4} |
+| [LISKOV-DATA-HUB-MANAGER-0025](#liskov-data-hub-manager-0025) | ACTION | The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3} |
 
 ----
 
@@ -46,6 +48,7 @@ The LiskovAuditCode is used to define the message content for the Audit Log.
 | **Java constant** | `LiskovAuditCode.UNEXPECTED_EXCEPTION` |
 | **Severity** | EXCEPTION - An unexpected exception occurred. Details of the exception and stack trace are included in the log record. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -67,6 +70,7 @@ Use the details from the error message to determine the cause of the error and r
 | **Java constant** | `LiskovAuditCode.CONNECTOR_STOPPING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -88,6 +92,7 @@ No action is required unless there are errors that follow indicating that there 
 | **Java constant** | `LiskovAuditCode.STARTING_CONNECTOR` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -109,6 +114,7 @@ Monitor the data dictionaries for these data sharing hubs are being maintained s
 | **Java constant** | `LiskovAuditCode.NEW_DATA_HUB` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -130,6 +136,7 @@ No action is required.  This message is for monitoring the set up of the data sh
 | **Java constant** | `LiskovAuditCode.NEW_DATA_DICTIONARY` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -151,6 +158,7 @@ No action is required.  This message is for monitoring the set up of the data sh
 | **Java constant** | `LiskovAuditCode.NEW_DATA_FIELD` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -172,6 +180,7 @@ No action is required.  This message is for monitoring the set up of the data sh
 | **Java constant** | `LiskovAuditCode.REFRESHING_DATA_HUB_STORE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -193,6 +202,7 @@ No action is required.  This message is for monitoring the activity of the data 
 | **Java constant** | `LiskovAuditCode.RETRIEVING_DATA_FIELDS` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -214,6 +224,7 @@ No action is required.  This message is for monitoring the progress of the data 
 | **Java constant** | `LiskovAuditCode.NEW_DATA_STRUCTURE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -228,21 +239,22 @@ No action is required.  This message is for monitoring the set up of the data sh
 
 ### LISKOV-DATA-HUB-MANAGER-0019
 
-> The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})
+> The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5})
 
 |  |  |
 |---|---|
-| **Java constant** | `LiskovAuditCode.REFRESHING_CSV_FILE` |
+| **Java constant** | `LiskovAuditCode.REFRESHING_TABULAR_FILE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
-The connector is reading the data fields from a CSV file so that it can refresh a data sharing hub.
+The connector is reading the data fields from the columns of a file with a tabular schema, such as a CSV file or an Apache Parquet file, so that it can refresh a data sharing hub.
 
 **User action**
 
-No action is required.  This message identifies the CSV file that the data fields are being read from.
+No action is required.  This message identifies the type of file, and the file, that the data fields are being read from.
 
 
 ----
@@ -256,6 +268,7 @@ No action is required.  This message identifies the CSV file that the data field
 | **Java constant** | `LiskovAuditCode.ENABLING_CATALOGUING` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -277,6 +290,7 @@ No action is required.  This message is for monitoring the set up of the catalog
 | **Java constant** | `LiskovAuditCode.STARTING_SURVEY` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}`, `{6}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -298,6 +312,7 @@ No action is required.  This message is for monitoring the surveying of the memb
 | **Java constant** | `LiskovAuditCode.NO_TECHNOLOGY_TYPE` |
 | **Severity** | INFO - The server is providing information about its normal operation. |
 | **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
 
 **System action**
 
@@ -306,6 +321,72 @@ The connector is not able to determine which cataloguing and survey governance a
 **User action**
 
 If this element should be catalogued and surveyed, check that its deployedImplementationType property is set to a technology type that is defined in the content packs loaded into this metadata store.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0023
+
+> The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5}
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.CANONICAL_PATH_NAME_SET` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}`, `{5}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
+
+**System action**
+
+The folder or file is a member of a data sharing hub, or is catalogued beneath a folder that is, and it was catalogued with a path name that is local to one machine.  The connector has replaced the local mount point in its path name with the canonical mount point, so that it lines up with the folders and files catalogued by other runtimes.  Its qualified name and its connection are not changed.
+
+**User action**
+
+No action is required unless the canonical path name is wrong.  In that case, correct the mount points and restore the path name.  The mount points come from the file system linked to the folder or one of the folders above it; then from the catalog target relationship that makes the folder a target of the folder cataloguer - its configuration properties, or the file system named as its metadata source - and otherwise from the localMountPoint and canonicalMountPoint configuration properties of this connector.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0024
+
+> The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4}
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.POTENTIAL_DUPLICATES_LINKED` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}`, `{4}` |
+| **Further reading** | <https://egeria-project.org/features/duplicate-management/overview/> |
+
+**System action**
+
+The two elements are in a folder that is a member of a data sharing hub and, now that they have their canonical path names, they turn out to describe the same folder or file.  The connector has linked them with a PeerDuplicateLink relationship whose status is DISCOVERED.  They are not combined on retrieval until the link is validated.
+
+**User action**
+
+No action is required if the Mendel Automated Duplicate Manager is running, since it validates links between files, or folders, that have the same path name.  Otherwise a steward needs to decide whether the elements are duplicates.
+
+
+----
+
+### LISKOV-DATA-HUB-MANAGER-0025
+
+> The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `LiskovAuditCode.AMBIGUOUS_FILE_SYSTEMS` |
+| **Severity** | ACTION - Action is required by the administrator. At a minimum, the situation needs to be investigated and if necessary, corrective action taken. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+| **Further reading** | <https://egeria-project.org/concepts/data-sharing-hub/> |
+
+**System action**
+
+The file folder is a member of a data sharing hub.  The connector takes the mount points for the folder from the FileSystem that the folder, or one of the folders above it, is linked to with a CapabilityAssetUse relationship.  The nearest file systems are used - the ones linked to the folder itself or, failing that, to the closest level of folders above it that has any.  More than one was found at that level, even after setting aside the ones whose useType is USES, so there is no telling which one's mount points apply.  The connector carries on as if the folder had no file system, taking the mount points from the folder's catalog target, its own configuration properties or the defaults.
+
+**User action**
+
+Review the CapabilityAssetUse relationships that link the listed file systems to the folder, or to the nearest folders above it.  Remove the ones that are wrong, or set their useType to USES, so that a single file system is left.
 
 
 ----

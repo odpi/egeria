@@ -6,7 +6,7 @@
 
 The nanny connectors look after the open metadata ecosystem itself, recording its activity and deriving insight from it so that the operation of Egeria can be analysed.
 
-This directory documents 143 messages in 17 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 146 messages in 17 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -21,7 +21,7 @@ This directory documents 143 messages in 17 message sets.  Return to the [messag
 | [DarwinErrorCode](DarwinErrorCode.md) | Exception messages | `DARWIN-PRODUCT-DEPENDENCY-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/digital-product/> |
 | [JacquardAuditCode](JacquardAuditCode.md) | Audit log messages | `JACQUARD-HARVESTER-` | 27 |  |
 | [JacquardErrorCode](JacquardErrorCode.md) | Exception messages | `JACQUARD-HARVESTER-` | 2 | <https://egeria-project.org/patterns/harvest-and-publish/overview/> |
-| [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 13 | <https://egeria-project.org/concepts/data-sharing-hub/> |
+| [LiskovAuditCode](LiskovAuditCode.md) | Audit log messages | `LISKOV-DATA-HUB-MANAGER-` | 16 |  |
 | [LiskovErrorCode](LiskovErrorCode.md) | Exception messages | `LISKOV-DATA-HUB-MANAGER-500-` | 1 | <https://egeria-project.org/concepts/data-sharing-hub/> |
 | [MendelAuditCode](MendelAuditCode.md) | Audit log messages | `MENDEL-DUPLICATE-MANAGER-` | 21 | <https://egeria-project.org/features/duplicate-management/overview/> |
 | [MendelErrorCode](MendelErrorCode.md) | Exception messages | `MENDEL-DUPLICATE-MANAGER-500-` | 1 | <https://egeria-project.org/features/duplicate-management/overview/> |

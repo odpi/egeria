@@ -140,6 +140,8 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
         this.addRetiredPair();
         this.addWithdrawnPair();
         this.addConsolidatedRetirementCluster();
+        this.addPathNameMatchPair();
+        this.addPathNameClashPair();
 
         File parentDirectory = archiveFile.getParentFile();
 
@@ -309,6 +311,61 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
      * @param knownDuplicate should the KnownDuplicate classification be attached?
      * @return the new entity, for use as the end of a duplicate link
      */
+    /**
+     * Set 10 - a data file and a CSV file that have different qualified names and the same path name, linked
+     * as discovered duplicates.  Mendel validates these because a path name identifies one file.
+     */
+    private void addPathNameMatchPair()
+    {
+        EntityDetail elementOne = this.addFileSystemElement(OpenMetadataType.DATA_FILE.typeName, DuplicateFvtTestSupport.PATH_MATCH_GUID_ONE, DuplicateFvtTestSupport.PATH_MATCH_QUALIFIED_NAME_ONE, "Path match 1", DuplicateFvtTestSupport.PATH_MATCH_PATH_NAME);
+        EntityDetail elementTwo = this.addFileSystemElement(OpenMetadataType.CSV_FILE.typeName, DuplicateFvtTestSupport.PATH_MATCH_GUID_TWO, DuplicateFvtTestSupport.PATH_MATCH_QUALIFIED_NAME_TWO, "Path match 2", DuplicateFvtTestSupport.PATH_MATCH_PATH_NAME);
+
+        this.addDuplicateLink(DuplicateFvtTestSupport.PATH_MATCH_LINK_GUID, elementOne, elementTwo, StatusIdentifier.DISCOVERED.getOrdinal());
+    }
+
+
+    /**
+     * Set 11 - a folder and a file that have the same path name, linked as discovered duplicates.  One of
+     * them is wrong, and Mendel is not entitled to decide which.
+     */
+    private void addPathNameClashPair()
+    {
+        EntityDetail elementOne = this.addFileSystemElement(OpenMetadataType.FILE_FOLDER.typeName, DuplicateFvtTestSupport.PATH_CLASH_GUID_ONE, DuplicateFvtTestSupport.PATH_CLASH_QUALIFIED_NAME_ONE, "Path clash 1", DuplicateFvtTestSupport.PATH_CLASH_PATH_NAME);
+        EntityDetail elementTwo = this.addFileSystemElement(OpenMetadataType.DATA_FILE.typeName, DuplicateFvtTestSupport.PATH_CLASH_GUID_TWO, DuplicateFvtTestSupport.PATH_CLASH_QUALIFIED_NAME_TWO, "Path clash 2", DuplicateFvtTestSupport.PATH_CLASH_PATH_NAME);
+
+        this.addDuplicateLink(DuplicateFvtTestSupport.PATH_CLASH_LINK_GUID, elementOne, elementTwo, StatusIdentifier.DISCOVERED.getOrdinal());
+    }
+
+
+    /**
+     * Add a file or a folder to the archive.
+     *
+     * @param typeName open metadata type of the element
+     * @param guid unique identifier
+     * @param qualifiedName unique name
+     * @param displayName display name
+     * @param pathName path name in the file system
+     * @return the entity
+     */
+    private EntityDetail addFileSystemElement(String typeName,
+                                              String guid,
+                                              String qualifiedName,
+                                              String displayName,
+                                              String pathName)
+    {
+        InstanceProperties properties = this.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
+
+        properties = this.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName);
+        properties = this.addStringProperty(properties, OpenMetadataProperty.PATH_NAME.name, pathName);
+
+        EntityDetail entity = archiveHelper.getEntityDetail(typeName, guid, properties, InstanceStatus.ACTIVE, null);
+
+        archiveBuilder.addEntity(entity);
+
+        return entity;
+    }
+
+
     private EntityDetail addElement(String  guid,
                                     String  qualifiedName,
                                     String  displayName,
