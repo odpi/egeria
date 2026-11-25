@@ -17,10 +17,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * LovelaceOpenLineageDataQualitySummaryService analyses the data quality assertions and tests reported in an
@@ -40,6 +42,18 @@ public class LovelaceOpenLineageDataQualitySummaryService extends LovelaceOpenLi
      */
     public LovelaceOpenLineageDataQualitySummaryService()
     {
+    }
+
+
+    /**
+     * Return the parts of the history that the analysis uses: the assertions against each dataset and the tests reported by each job.
+     *
+     * @return parts of the history to read
+     */
+    @Override
+    protected Set<OpenLineageRunHistory.Content> getRequiredContent()
+    {
+        return EnumSet.of(OpenLineageRunHistory.Content.ASSERTIONS, OpenLineageRunHistory.Content.TESTS);
     }
 
 

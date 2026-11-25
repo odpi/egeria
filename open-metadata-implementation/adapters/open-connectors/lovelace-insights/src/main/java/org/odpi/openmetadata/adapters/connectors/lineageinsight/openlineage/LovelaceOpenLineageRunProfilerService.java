@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,18 @@ public class LovelaceOpenLineageRunProfilerService extends LovelaceOpenLineageAn
      */
     public LovelaceOpenLineageRunProfilerService()
     {
+    }
+
+
+    /**
+     * Return the parts of the history that the analysis uses: the runs of each job and the volumes they read and wrote.
+     *
+     * @return parts of the history to read
+     */
+    @Override
+    protected Set<OpenLineageRunHistory.Content> getRequiredContent()
+    {
+        return EnumSet.of(OpenLineageRunHistory.Content.RUNS);
     }
 
 

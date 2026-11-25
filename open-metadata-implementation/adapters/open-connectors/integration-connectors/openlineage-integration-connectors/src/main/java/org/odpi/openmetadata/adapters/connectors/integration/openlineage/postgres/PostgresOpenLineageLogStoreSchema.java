@@ -419,6 +419,48 @@ public class PostgresOpenLineageLogStoreSchema
 
 
     /**
+     * The number of different jobs that had a run with an event in the window.  It lets a reader that does not
+     * need the runs report how many jobs the window covers without reading a row for each run.
+     *
+     * @return SQL
+     */
+    public String getJobCountInWindowSQL()
+    {
+        return "SELECT count(*) FROM (SELECT DISTINCT job_namespace, job_name FROM " + table(RUN_TABLE) +
+                " WHERE last_event_time >= ? AND first_event_time <= ?) AS jobs";
+    }
+
+
+    /**
+     * The number of different datasets read or written by the runs that had an event in the window.  It lets a
+     * reader that does not need the reads and writes report how many datasets the window covers without reading a
+     * row for each of them.
+     *
+     * @return SQL
+     */
+    public String getDatasetCountInWindowSQL()
+    {
+        return "SELECT count(*) FROM (SELECT DISTINCT d.dataset_namespace, d.dataset_name " +
+                "FROM " + table(RUN_DATASET_TABLE) + " d JOIN " + table(RUN_TABLE) + " r ON r.run_id = d.run_id " +
+                "WHERE r.last_event_time >= ? AND r.first_event_time <= ?) AS datasets";
+    }
+
+
+    /**
+     * The egeria_governanceAction facet of each job's latest run that has one, for the jobs that had a run with an
+     * event in the window: one row for each job that is a step of a governance action process.
+     *
+     * @return SQL
+     */
+    public String getJobGovernanceActionsInWindowSQL()
+    {
+        return "SELECT DISTINCT ON (job_namespace, job_name) job_namespace, job_name, governance_action " +
+                "FROM " + table(RUN_TABLE) + " WHERE last_event_time >= ? AND first_event_time <= ? AND governance_action IS NOT NULL " +
+                "ORDER BY job_namespace, job_name, first_event_time DESC";
+    }
+
+
+    /**
      * Namespaces are optional in an event but part of the key in the digest tables, which can not hold null.
      * A missing namespace is stored as an empty string.
      *

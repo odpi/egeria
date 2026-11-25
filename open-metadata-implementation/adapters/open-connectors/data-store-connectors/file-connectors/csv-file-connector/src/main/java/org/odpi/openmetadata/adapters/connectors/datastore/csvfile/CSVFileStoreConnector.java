@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -55,9 +55,9 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
         if (configurationProperties != null)
         {
-            Object  columnNamesProperty   = configurationProperties.get(CSVFileConfigurationProperty.COLUMN_NAMES.getName());
-            Object  delimiterCharProperty = configurationProperties.get(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName());
-            Object  quoteCharProperty     = configurationProperties.get(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName());
+            Object  columnNamesProperty   = configurationProperties.get(TabularFileConfigurationProperty.COLUMN_NAMES.getName());
+            Object  delimiterCharProperty = configurationProperties.get(TabularFileConfigurationProperty.DELIMITER_CHARACTER.getName());
+            Object  quoteCharProperty     = configurationProperties.get(TabularFileConfigurationProperty.QUOTE_CHARACTER.getName());
 
             if (columnNamesProperty != null)
             {

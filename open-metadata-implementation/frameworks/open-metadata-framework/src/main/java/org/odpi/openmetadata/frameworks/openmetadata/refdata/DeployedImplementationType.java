@@ -271,7 +271,11 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                  OpenMetadataType.PARQUET_FILE.typeName,
                  null,
                  OpenMetadataType.PARQUET_FILE.description,
-                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                 "28cc2019-6ea4-4b90-b54f-857e7506e55b",
+                 SolutionComponentType.DATA_STORAGE.getSolutionComponentType(),
+                 "PARQUET-FILE",
+                 null),
 
 
     /**
@@ -642,6 +646,28 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                          null,
                          "A CSV file accessed as a tabular data set.",
                          OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
+     * An Apache Parquet file accessed as a tabular data set.
+     */
+    PARQUET_TABULAR_DATA_SET("b66c6e60-e023-4385-b88a-b0ca3ba6676a",
+                             "Parquet Tabular Data Set",
+                             DeployedImplementationType.TABULAR_DATA_SET,
+                             OpenMetadataType.TABULAR_DATA_SET.typeName,
+                             null,
+                             "An Apache Parquet file accessed as a tabular data set.",
+                             OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
+     * A collection of logically related Apache Parquet files each representing a tabular data set.
+     */
+    PARQUET_TABULAR_DATA_SET_COLLECTION("ba69c117-6602-4f20-85d5-e9f6bf797ff5",
+                                        "Parquet Tabular Data Set Collection",
+                                        DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                        OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                        null,
+                                        "A collection of logically related Apache Parquet files each representing a tabular data set.",
+                                        OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
 
     /**
      * A database hosted on a relational database server callable through a JDBC Driver.

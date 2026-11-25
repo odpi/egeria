@@ -64,6 +64,7 @@ public enum ContentPackSolutionBlueprint
                        new DeployedImplementationTypeDefinition[]{
                                DeployedImplementationType.FILE_SYSTEM_DIRECTORY,
                                DeployedImplementationType.CSV_FILE,
+                               DeployedImplementationType.PARQUET_FILE,
                                DeployedImplementationType.FILE
                        },
                        ContentPackDefinition.FILES_CONTENT_PACK),

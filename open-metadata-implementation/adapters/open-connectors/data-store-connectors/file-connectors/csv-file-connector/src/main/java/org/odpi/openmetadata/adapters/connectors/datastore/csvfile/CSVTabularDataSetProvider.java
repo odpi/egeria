@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
@@ -32,12 +32,12 @@ public class CSVTabularDataSetProvider extends OpenConnectorProviderBase
     {
         super(EgeriaOpenConnectorDefinition.CSV_TABULAR_DATA_SET_CONNECTOR,
               connectorClass,
-              CSVFileConfigurationProperty.getCSVTabularDataSetConfigPropertyNames(),
+              TabularFileConfigurationProperty.getTabularDataSetConfigPropertyNames(),
               List.of(ReadableTabularDataSource.class.getName(),
                       WritableTabularDataSource.class.getName()),
               expectedDataFormat);
 
-        super.supportedConfigurationProperties = CSVFileConfigurationProperty.getCSVTabularDataSetConfigurationPropertyTypes();
+        super.supportedConfigurationProperties = TabularFileConfigurationProperty.getTabularDataSetConfigurationPropertyTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.CSV_TABULAR_DATA_SET});
     }
 }

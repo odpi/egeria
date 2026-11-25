@@ -6,14 +6,14 @@
 
 These survey action services analyse the content of files and folders and record what they find in a survey report.
 
-This directory documents 5 messages in 1 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 7 messages in 1 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
 
 | Message set | Type | Message identifiers | Messages | Further reading |
 |---|---|---|---|---|
-| [SurveyServiceAuditCode](SurveyServiceAuditCode.md) | Audit log messages | `SURVEY-ACTION-SERVICE-` | 5 | <https://egeria-project.org/concepts/survey-action-service/> |
+| [SurveyServiceAuditCode](SurveyServiceAuditCode.md) | Audit log messages | `SURVEY-ACTION-SERVICE-` | 7 | <https://egeria-project.org/concepts/survey-action-service/> |
 
 
 ----

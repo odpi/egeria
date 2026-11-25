@@ -96,6 +96,10 @@ dependencies {
     // needed at runtime whether or not a test names them.
     testImplementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+    testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:parquet-file-connector')
+    // The Parquet connector reads rows of data through DuckDB, which it calls through java.sql and so does not
+    // depend on.  The OMAG Server Platform supplies the driver; this in-process platform has to be given it.
+    testRuntimeOnly 'org.duckdb:duckdb_jdbc'
     testRuntimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
     // DeployedImplementationType - the technology types the pack is organised around - lives in the shared
     // open-connectors module rather than in any one connector module.

@@ -82,9 +82,12 @@ type would not exercise that choice at all.
   annotations on it. A survey that dies on a null connector still produces an engine action, so a test that
   only checked the action existed would pass while the thing under test was broken.
 
-* **[FileSurveyFVT](src/test/java/org/odpi/openmetadata/filesfvt/FileSurveyFVT.java)** - `survey-csv-file`
-  and `survey-data-file`, each against a file of the kind it is meant for, as separate cases so that a failure
-  names which service broke. The file assets are created straight from their catalog templates because the
+* **[FileSurveyFVT](src/test/java/org/odpi/openmetadata/filesfvt/FileSurveyFVT.java)** - `survey-csv-file`,
+  `survey-parquet-file` and `survey-data-file`, each against a file of the kind it is meant for, as separate
+  cases so that a failure names which service broke. The two surveys that look inside the file are also checked
+  to have attached the file's columns to the asset as its schema, and to have counted the values in them - which
+for Parquet is what shows the DuckDB driver was found and the data was read. The Parquet file is binary, so it is copied
+  from the suite's resources rather than written from a string like the others. The file assets are created straight from their catalog templates because the
   Files pack ships no create-file action: files are meant to reach the catalogue through a cataloguer, which
   is the next test.
 

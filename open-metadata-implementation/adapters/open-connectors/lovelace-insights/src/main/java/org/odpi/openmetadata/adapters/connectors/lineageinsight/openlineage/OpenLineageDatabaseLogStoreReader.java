@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.Set;
 
 
 /**
@@ -24,6 +26,12 @@ import java.util.Date;
  * The history differs from the one built by OpenLineageLogStoreReader in one respect: a run that had an event in
  * the window is read whole, so a run that started before the window and finished inside it has its start time,
  * and so its duration.
+ * </p>
+ * <p>
+ * A log store can hold millions of these rows, for a few hundred jobs and datasets.  The caller says which parts of
+ * the history it needs, and only the tables that hold those parts are read; the rows of a job or dataset share one
+ * key.  When the runs or the dataset activity are not read, the history holds only the jobs and datasets that the
+ * other parts mention, and the number of jobs and datasets in the window is counted by the database instead.
  * </p>
  */
 public class OpenLineageDatabaseLogStoreReader
@@ -48,6 +56,27 @@ public class OpenLineageDatabaseLogStoreReader
                                       Date       windowStart,
                                       Date       windowEnd) throws SQLException
     {
+        return read(dataSource, schemaName, windowStart, windowEnd, EnumSet.allOf(OpenLineageRunHistory.Content.class));
+    }
+
+
+    /**
+     * Build the parts of the history for a window that an analysis needs.
+     *
+     * @param dataSource source of database connections
+     * @param schemaName name of the database schema holding the log store
+     * @param windowStart start of the window (null for no lower bound)
+     * @param windowEnd end of the window (null for no upper bound)
+     * @param content parts of the history to keep
+     * @return history
+     * @throws SQLException problem reading the database
+     */
+    public OpenLineageRunHistory read(DataSource                         dataSource,
+                                      String                             schemaName,
+                                      Date                               windowStart,
+                                      Date                               windowEnd,
+                                      Set<OpenLineageRunHistory.Content> content) throws SQLException
+    {
         PostgresOpenLineageLogStoreSchema schema  = new PostgresOpenLineageLogStoreSchema(schemaName);
         OpenLineageRunHistory             history = new OpenLineageRunHistory();
         Timestamp                         start   = (windowStart == null) ? EARLIEST : new Timestamp(windowStart.getTime());
@@ -62,10 +91,45 @@ public class OpenLineageDatabaseLogStoreReader
             connection.setReadOnly(true);
 
             readEventSummary(connection, schema, start, end, history);
-            readRuns(connection, schema, start, end, history);
-            readRunDatasets(connection, schema, start, end, history);
-            readAssertions(connection, schema, start, end, history);
-            readTests(connection, schema, start, end, history);
+            boolean keepRuns     = content.contains(OpenLineageRunHistory.Content.RUNS);
+            boolean keepActivity = content.contains(OpenLineageRunHistory.Content.DATASET_ACTIVITY);
+
+            if (keepRuns)
+            {
+                readRuns(connection, schema, start, end, history);
+            }
+
+            if ((keepRuns) || (keepActivity))
+            {
+                readRunDatasets(connection, schema, start, end, history, keepRuns, keepActivity);
+            }
+
+            if (content.contains(OpenLineageRunHistory.Content.ASSERTIONS))
+            {
+                readAssertions(connection, schema, start, end, history);
+            }
+
+            if (content.contains(OpenLineageRunHistory.Content.TESTS))
+            {
+                readTests(connection, schema, start, end, history);
+            }
+
+            /*
+             * Without the runs, the history holds only the jobs that the other parts mention.  They still need
+             * their governance action facet, and the number of jobs in the window comes from a count.  The same
+             * goes for the number of datasets when no run's datasets were read.
+             */
+            if (! keepRuns)
+            {
+                readJobGovernanceActions(connection, schema, start, end, history);
+
+                history.recordJobCount(readCount(connection, schema.getJobCountInWindowSQL(), start, end));
+
+                if (! keepActivity)
+                {
+                    history.recordDataSetCount(readCount(connection, schema.getDatasetCountInWindowSQL(), start, end));
+                }
+            }
 
             connection.rollback();
         }
@@ -122,12 +186,12 @@ public class OpenLineageDatabaseLogStoreReader
         {
             while (resultSet.next())
             {
-                OpenLineageRunHistory.Key        jobKey     = jobKey(resultSet, "job_namespace", "job_name");
+                OpenLineageRunHistory.Key        jobKey     = key(history, resultSet, "job_namespace", "job_name");
                 OpenLineageRunHistory.JobHistory jobHistory = history.getJob(jobKey);
                 String                           runId      = resultSet.getString("run_id");
                 OpenLineageRunHistory.RunRecord  run        = new OpenLineageRunHistory.RunRecord(runId, jobKey);
 
-                run.status         = resultSet.getString("status");
+                run.status         = history.shared(resultSet.getString("status"));
                 run.startTime      = toDate(resultSet.getTimestamp("start_time"));
                 run.endTime        = toDate(resultSet.getTimestamp("end_time"));
                 run.firstEventTime = toDate(resultSet.getTimestamp("first_event_time"));
@@ -157,55 +221,70 @@ public class OpenLineageDatabaseLogStoreReader
      * @param start window start
      * @param end window end
      * @param history history to update
+     * @param keepVolumes whether to record the volumes on each run (the runs must have been read)
+     * @param keepActivity whether to keep each read and write of a dataset
      * @throws SQLException problem reading the database
      */
     private void readRunDatasets(Connection                        connection,
                                  PostgresOpenLineageLogStoreSchema schema,
                                  Timestamp                         start,
                                  Timestamp                         end,
-                                 OpenLineageRunHistory             history) throws SQLException
+                                 OpenLineageRunHistory             history,
+                                 boolean                           keepVolumes,
+                                 boolean                           keepActivity) throws SQLException
     {
         try (PreparedStatement statement = prepare(connection, schema.getRunDatasetsInWindowSQL(), start, end);
              ResultSet         resultSet = statement.executeQuery())
         {
             while (resultSet.next())
             {
-                OpenLineageRunHistory.Key            jobKey         = jobKey(resultSet, "job_namespace", "job_name");
-                OpenLineageRunHistory.Key            datasetKey     = jobKey(resultSet, "dataset_namespace", "dataset_name");
+                OpenLineageRunHistory.Key            jobKey         = key(history, resultSet, "job_namespace", "job_name");
+                OpenLineageRunHistory.Key            datasetKey     = key(history, resultSet, "dataset_namespace", "dataset_name");
                 OpenLineageRunHistory.DataSetHistory datasetHistory = history.getDataSet(datasetKey);
-                OpenLineageRunHistory.RunRecord      run            = history.getJob(jobKey).runs.get(resultSet.getString("run_id"));
-                String                               runId          = resultSet.getString("run_id");
-                Date                                 eventTime      = toDate(resultSet.getTimestamp("event_time"));
-                Long                                 rowCount       = getLong(resultSet, "row_count");
-                Long                                 size           = getLong(resultSet, "size_bytes");
-                long[]                               volume         = new long[]{(rowCount == null) ? 0 : rowCount, (size == null) ? 0 : size};
+                OpenLineageRunHistory.JobHistory     jobHistory     = history.getJob(jobKey);
 
-                if (PostgresOpenLineageLogStoreSchema.INPUT_DIRECTION.equals(resultSet.getString("direction")))
+                String                          storedRunId = resultSet.getString("run_id");
+                OpenLineageRunHistory.RunRecord run         = keepVolumes ? jobHistory.runs.get(storedRunId) : null;
+                String                          runId       = (run != null) ? run.runId : storedRunId;
+                Long                            rowCount    = getLong(resultSet, "row_count");
+                Long                            size        = getLong(resultSet, "size_bytes");
+                boolean                         input       = PostgresOpenLineageLogStoreSchema.INPUT_DIRECTION.equals(resultSet.getString("direction"));
+
+                if (run != null)
                 {
-                    if (run != null)
+                    long[] volume = new long[]{(rowCount == null) ? 0 : rowCount, (size == null) ? 0 : size};
+
+                    if (input)
                     {
                         run.inputVolumes.put(datasetKey, volume);
                     }
-
-                    datasetHistory.reads.add(new OpenLineageRunHistory.ReadRecord(eventTime, runId, jobKey, rowCount, size));
-                }
-                else
-                {
-                    if (run != null)
+                    else
                     {
                         run.outputVolumes.put(datasetKey, volume);
                     }
+                }
 
-                    datasetHistory.writes.add(new OpenLineageRunHistory.WriteRecord(eventTime,
-                                                                                    runId,
-                                                                                    jobKey,
-                                                                                    resultSet.getString("event_type"),
-                                                                                    rowCount,
-                                                                                    size,
-                                                                                    getLong(resultSet, "file_count"),
-                                                                                    resultSet.getString("lifecycle_state_change"),
-                                                                                    resultSet.getString("subset_type"),
-                                                                                    resultSet.getString("dataset_version")));
+                if (keepActivity)
+                {
+                    Date eventTime = toDate(resultSet.getTimestamp("event_time"));
+
+                    if (input)
+                    {
+                        datasetHistory.reads.add(new OpenLineageRunHistory.ReadRecord(eventTime, runId, jobKey, rowCount, size));
+                    }
+                    else
+                    {
+                        datasetHistory.writes.add(new OpenLineageRunHistory.WriteRecord(eventTime,
+                                                                                        runId,
+                                                                                        jobKey,
+                                                                                        history.shared(resultSet.getString("event_type")),
+                                                                                        rowCount,
+                                                                                        size,
+                                                                                        getLong(resultSet, "file_count"),
+                                                                                        history.shared(resultSet.getString("lifecycle_state_change")),
+                                                                                        history.shared(resultSet.getString("subset_type")),
+                                                                                        resultSet.getString("dataset_version")));
+                    }
                 }
             }
         }
@@ -233,10 +312,10 @@ public class OpenLineageDatabaseLogStoreReader
         {
             while (resultSet.next())
             {
-                history.getDataSet(jobKey(resultSet, "dataset_namespace", "dataset_name")).assertions.add(
+                history.getDataSet(key(history, resultSet, "dataset_namespace", "dataset_name")).assertions.add(
                         new OpenLineageRunHistory.AssertionRecord(toDate(resultSet.getTimestamp("event_time")),
                                                                   resultSet.getString("run_id"),
-                                                                  jobKey(resultSet, "job_namespace", "job_name"),
+                                                                  key(history, resultSet, "job_namespace", "job_name"),
                                                                   resultSet.getString("assertion"),
                                                                   resultSet.getString("column_name"),
                                                                   resultSet.getBoolean("success"),
@@ -268,7 +347,7 @@ public class OpenLineageDatabaseLogStoreReader
         {
             while (resultSet.next())
             {
-                history.getJob(jobKey(resultSet, "job_namespace", "job_name")).tests.add(
+                history.getJob(key(history, resultSet, "job_namespace", "job_name")).tests.add(
                         new OpenLineageRunHistory.TestRecord(toDate(resultSet.getTimestamp("event_time")),
                                                              resultSet.getString("run_id"),
                                                              resultSet.getString("test_name"),
@@ -276,6 +355,67 @@ public class OpenLineageDatabaseLogStoreReader
                                                              resultSet.getString("test_type"),
                                                              resultSet.getString("severity")));
             }
+        }
+    }
+
+
+    /**
+     * Give each job already in the history the governance action facet of its latest run that has one.  It is used
+     * when the runs are not read, so that the jobs of a governance action process are still recognised.
+     *
+     * @param connection database connection
+     * @param schema log store definitions
+     * @param start window start
+     * @param end window end
+     * @param history history to update
+     * @throws SQLException problem reading the database
+     */
+    private void readJobGovernanceActions(Connection                        connection,
+                                          PostgresOpenLineageLogStoreSchema schema,
+                                          Timestamp                         start,
+                                          Timestamp                         end,
+                                          OpenLineageRunHistory             history) throws SQLException
+    {
+        if (history.getJobs().isEmpty())
+        {
+            return;
+        }
+
+        try (PreparedStatement statement = prepare(connection, schema.getJobGovernanceActionsInWindowSQL(), start, end);
+             ResultSet         resultSet = statement.executeQuery())
+        {
+            while (resultSet.next())
+            {
+                OpenLineageRunHistory.JobHistory jobHistory = history.getJobs().get(key(history, resultSet, "job_namespace", "job_name"));
+
+                if (jobHistory != null)
+                {
+                    jobHistory.governanceAction = toGovernanceAction(resultSet.getString("governance_action"));
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Run a window query that returns a single count.
+     *
+     * @param connection database connection
+     * @param sql query with window start and end parameters
+     * @param start window start
+     * @param end window end
+     * @return count
+     * @throws SQLException problem reading the database
+     */
+    private int readCount(Connection connection,
+                          String     sql,
+                          Timestamp  start,
+                          Timestamp  end) throws SQLException
+    {
+        try (PreparedStatement statement = prepare(connection, sql, start, end);
+             ResultSet         resultSet = statement.executeQuery())
+        {
+            return resultSet.next() ? resultSet.getInt(1) : 0;
         }
     }
 
@@ -306,20 +446,22 @@ public class OpenLineageDatabaseLogStoreReader
 
 
     /**
-     * Build a key from a namespace and name column.
+     * Return the history's key for a namespace and name column.
      *
+     * @param history history that holds the keys
      * @param resultSet current row
      * @param namespaceColumn namespace column
      * @param nameColumn name column
-     * @return key
+     * @return key shared by every record of the job or dataset
      * @throws SQLException problem reading the row
      */
-    private static OpenLineageRunHistory.Key jobKey(ResultSet resultSet,
-                                                    String    namespaceColumn,
-                                                    String    nameColumn) throws SQLException
+    private static OpenLineageRunHistory.Key key(OpenLineageRunHistory history,
+                                                 ResultSet             resultSet,
+                                                 String                namespaceColumn,
+                                                 String                nameColumn) throws SQLException
     {
-        return new OpenLineageRunHistory.Key(PostgresOpenLineageLogStoreSchema.fromStoredNamespace(resultSet.getString(namespaceColumn)),
-                                             resultSet.getString(nameColumn));
+        return history.key(PostgresOpenLineageLogStoreSchema.fromStoredNamespace(resultSet.getString(namespaceColumn)),
+                           resultSet.getString(nameColumn));
     }
 
 
