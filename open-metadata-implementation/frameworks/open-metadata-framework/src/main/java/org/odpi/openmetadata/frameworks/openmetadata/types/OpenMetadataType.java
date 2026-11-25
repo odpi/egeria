@@ -6190,6 +6190,16 @@ public enum OpenMetadataType
                  DesignModelProperties.class),
 
     /**
+     * A collection of design model boundaries and design model elements that organizes a design model into a hierarchical structure.
+     */
+    DESIGN_MODEL_BOUNDARY("7c732860-9d80-4fc6-8203-73be1a862fb9",
+                          "DesignModelBoundary",
+                          OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
+                          "455b00e2-2e3c-4aa1-b60f-177555b96f57",
+                          "A collection of design model boundaries and design model elements that organizes a design model into a hierarchical structure.",
+                          DesignModelBoundaryProperties.class),
+
+    /**
      * Identifies the element from a metadata model that this element embodies.
      */
     METAMODEL_INSTANCE_CLASSIFICATION("07bd0820-6b14-43b0-a625-2c89f2beb93a",
@@ -7180,6 +7190,16 @@ public enum OpenMetadataType
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
                        "Collection of solution components that make up a solution for digital services such as digital products.",
                        SolutionBlueprintProperties.class),
+
+    /**
+     * Collection of solution components and roles that are grouped together within a solution blueprint to help understanding.
+     */
+    SOLUTION_BOUNDARY("54ede817-8583-4e17-9df1-1956a381a378",
+                      "SolutionBoundary",
+                      OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                      "841c3c77-78b6-4df7-b384-01624e267bb9",
+                      "Collection of solution components and roles that are grouped together within a solution blueprint to help understanding.",
+                      SolutionBoundaryProperties.class),
 
     /**
      * Relationship identifying the solution blueprint for a digital service such as a digital product.

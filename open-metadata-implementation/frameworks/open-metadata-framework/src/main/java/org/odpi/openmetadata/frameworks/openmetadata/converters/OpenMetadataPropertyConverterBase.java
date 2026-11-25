@@ -18013,6 +18013,17 @@ public class OpenMetadataPropertyConverterBase
                             }
 
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_MODEL_BOUNDARY.typeName))
+                        {
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_BOUNDARY.typeName))
+                            {
+                                beanProperties = new SolutionBoundaryProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new DesignModelBoundaryProperties();
+                            }
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))

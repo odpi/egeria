@@ -260,7 +260,9 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
-     * Return the graph view of the solution blueprint.  This just contains the top level components linked together.
+     * Return the graph view of the solution blueprint (or solution boundary).  This contains the components and
+     * roles that are members of the blueprint, linked together.  Any solution boundaries that are members are shown
+     * as subgraphs with their members inside.
      *
      * @return mermaid markdown
      */
@@ -271,7 +273,7 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
-     * Set up the graph view of the solution component.
+     * Set up the graph view of the solution blueprint (or solution boundary).
      *
      * @param solutionBlueprintMermaidGraph mermaid markdown
      */

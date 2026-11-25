@@ -1059,6 +1059,378 @@ public class SolutionArchitectRESTServices extends TokenController
 
 
     /**
+     * Create a solution boundary.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the solution boundary.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createSolutionBoundary(String                serverName,
+                                               NewElementRequestBody requestBody)
+    {
+        final String methodName = "createSolutionBoundary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof SolutionBoundaryProperties properties)
+                {
+                    response.setGUID(handler.createCollection(userId,
+                                                              requestBody,
+                                                              requestBody.getInitialClassifications(),
+                                                              properties,
+                                                              requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBoundaryProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+
+    /**
+     * Create a new metadata element to represent a solution boundary using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createSolutionBoundaryFromTemplate(String              serverName,
+                                                           TemplateRequestBody requestBody)
+    {
+        final String methodName = "createSolutionBoundaryFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollectionFromTemplate(userId,
+                                                                      requestBody,
+                                                                      requestBody.getTemplateGUID(),
+                                                                      requestBody.getReplacementProperties(),
+                                                                      requestBody.getReplacementClassifications(),
+                                                                      requestBody.getPlaceholderPropertyValues(),
+                                                                      requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a solution boundary.
+     *
+     * @param serverName         name of called server.
+     * @param solutionBoundaryGUID unique identifier of the solution boundary (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return boolean or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public BooleanResponse updateSolutionBoundary(String                   serverName,
+                                                  String                   solutionBoundaryGUID,
+                                                  UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateSolutionBoundary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof SolutionBoundaryProperties properties)
+                {
+                    response.setFlag(handler.updateCollection(userId, solutionBoundaryGUID, requestBody, properties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBoundaryProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a solution boundary.
+     *
+     * @param serverName         name of called server
+     * @param solutionBoundaryGUID  unique identifier of the element to delete
+     * @param requestBody  description of the delete method.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteSolutionBoundary(String                   serverName,
+                                               String                   solutionBoundaryGUID,
+                                               DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteSolutionBoundary";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+            handler.deleteCollection(userId, solutionBoundaryGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of solution boundary metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSolutionBoundariesByName(String            serverName,
+                                                                       FilterRequestBody requestBody)
+    {
+        final String methodName = "getSolutionBoundariesByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getCollectionsByName(userId,
+                                                                  requestBody.getFilter(),
+                                                                  requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of solution boundary metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param solutionBoundaryGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getSolutionBoundaryByGUID(String         serverName,
+                                                                     String         solutionBoundaryGUID,
+                                                                     GetRequestBody requestBody)
+    {
+        final String methodName = "getSolutionBoundaryByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getCollectionByGUID(userId,
+                                                            solutionBoundaryGUID,
+                                                            requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of solution boundary metadata elements that contain the search string.  The returned boundaries include a list of the components that are associated with it.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSolutionBoundaries(String                  serverName,
+                                                                  SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSolutionBoundaries";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getSolutionBoundaryHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findCollections(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findCollections(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
      * Attach a solution component to a solution role.
      *
      * @param serverName         name of called server

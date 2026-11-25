@@ -162,6 +162,8 @@ public class OpenMetadataTypesArchive
         add0208DataValues();
         update0280SoftwareDevelopmentAssets();
         add0520ProcessSchemas();
+        add0565DesignModelBoundaries();
+        add0740SolutionBoundaries();
     }
 
     /*
@@ -729,4 +731,53 @@ public class OpenMetadataTypesArchive
     }
 
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * A design model boundary organizes the content of a design model into a hierarchical structure.
+     */
+    private void add0565DesignModelBoundaries()
+    {
+        this.archiveBuilder.addEntityDef(getDesignModelBoundaryEntity());
+    }
+
+
+    /**
+     * DesignModelBoundary is a collection of design model boundaries and design model elements.
+     *
+     * @return entity definition
+     */
+    private EntityDef getDesignModelBoundaryEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DESIGN_MODEL_BOUNDARY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * A solution boundary organizes the components and roles of a solution blueprint into a hierarchical structure.
+     */
+    private void add0740SolutionBoundaries()
+    {
+        this.archiveBuilder.addEntityDef(getSolutionBoundaryEntity());
+    }
+
+
+    /**
+     * SolutionBoundary is a collection of solution boundaries, solution components and roles.
+     *
+     * @return entity definition
+     */
+    private EntityDef getSolutionBoundaryEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_BOUNDARY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_BOUNDARY.typeName));
+    }
 }
