@@ -100,6 +100,12 @@ loadScripts(document, 'script');</script>
  The history differs from the one built by OpenLineageLogStoreReader in one respect: a run that had an event in
  the window is read whole, so a run that started before the window and finished inside it has its start time,
  and so its duration.
+ </p>
+ <p>
+ A log store can hold millions of these rows, for a few hundred jobs and datasets.  The caller says which parts of
+ the history it needs, and only the tables that hold those parts are read; the rows of a job or dataset share one
+ key.  When the runs or the dataset activity are not read, the history holds only the jobs and datasets that the
+ other parts mention, and the number of jobs and datasets in the window is counted by the database instead.
  </p></div>
 </section>
 <section class="summary">
@@ -135,6 +141,15 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;windowEnd)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Build the history for a window.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OpenLineageRunHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read(javax.sql.DataSource,java.lang.String,java.util.Date,java.util.Date,java.util.Set)" class="member-name-link">read</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;windowStart,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;windowEnd,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="OpenLineageRunHistory.Content.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Content</a>&gt;&nbsp;content)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Build the parts of the history for a window that an analysis needs.</div>
 </div>
 </div>
 </div>
@@ -182,6 +197,30 @@ loadScripts(document, 'script');</script>
 <dd><code>schemaName</code> - name of the database schema holding the log store</dd>
 <dd><code>windowStart</code> - start of the window (null for no lower bound)</dd>
 <dd><code>windowEnd</code> - end of the window (null for no upper bound)</dd>
+<dt>Returns:</dt>
+<dd>history</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - problem reading the database</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="read(javax.sql.DataSource,java.lang.String,java.util.Date,java.util.Date,java.util.Set)">
+<h3>read</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OpenLineageRunHistory.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory</a></span>&nbsp;<span class="element-name">read</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a>&nbsp;dataSource,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;windowStart,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;windowEnd,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="OpenLineageRunHistory.Content.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Content</a>&gt;&nbsp;content)</span>
+                           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
+<div class="block">Build the parts of the history for a window that an analysis needs.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>dataSource</code> - source of database connections</dd>
+<dd><code>schemaName</code> - name of the database schema holding the log store</dd>
+<dd><code>windowStart</code> - start of the window (null for no lower bound)</dd>
+<dd><code>windowEnd</code> - end of the window (null for no upper bound)</dd>
+<dd><code>content</code> - parts of the history to keep</dd>
 <dt>Returns:</dt>
 <dd>history</dd>
 <dt>Throws:</dt>

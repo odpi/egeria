@@ -129,6 +129,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#AMBIGUOUS_FILE_SYSTEMS" class="member-name-link">AMBIGUOUS_FILE_SYSTEMS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0025 - The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CANONICAL_PATH_NAME_SET" class="member-name-link">CANONICAL_PATH_NAME_SET</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0023 - The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0009 - The {0} integration connector has stopped its monitoring of data sharing hubs from server {1} on platform {2} and is shutting down</div>
@@ -157,28 +165,32 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0022 - The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REFRESHING_CSV_FILE" class="member-name-link">REFRESHING_CSV_FILE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#POTENTIAL_DUPLICATES_LINKED" class="member-name-link">POTENTIAL_DUPLICATES_LINKED</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})</div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0024 - The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#REFRESHING_DATA_HUB_STORE" class="member-name-link">REFRESHING_DATA_HUB_STORE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0016 - The {0} integration connector is refreshing data fields from {1} data store {2} ({3}) for data sharing hub {4} ({5})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RETRIEVING_DATA_FIELDS" class="member-name-link">RETRIEVING_DATA_FIELDS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#REFRESHING_TABULAR_FILE" class="member-name-link">REFRESHING_TABULAR_FILE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#RETRIEVING_DATA_FIELDS" class="member-name-link">RETRIEVING_DATA_FIELDS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0017 - The {0} integration connector is retrieving known data dictionary definitions for data sharing hub {1} ({2})</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#STARTING_CONNECTOR" class="member-name-link">STARTING_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0011 - The {0} integration connector is starting its monitoring of data sharing hubs from server {1} on platform {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_SURVEY" class="member-name-link">STARTING_SURVEY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STARTING_SURVEY" class="member-name-link">STARTING_SURVEY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0021 - The {0} integration connector has started engine action {1} to survey {2} {3} ({4}) using governance action type {5}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">LISKOV-DATA-HUB-MANAGER-0001 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -305,10 +317,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="REFRESHING_CSV_FILE">
-<h3>REFRESHING_CSV_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">REFRESHING_CSV_FILE</span></div>
-<div class="block">LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})</div>
+<section class="detail" id="REFRESHING_TABULAR_FILE">
+<h3>REFRESHING_TABULAR_FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">REFRESHING_TABULAR_FILE</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5})</div>
 </section>
 </li>
 <li>
@@ -330,6 +342,27 @@ the order they are declared.</div>
 <h3>NO_TECHNOLOGY_TYPE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">NO_TECHNOLOGY_TYPE</span></div>
 <div class="block">LISKOV-DATA-HUB-MANAGER-0022 - The {0} integration connector is unable to locate a technology type called {1} for {2} {3} ({4})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CANONICAL_PATH_NAME_SET">
+<h3>CANONICAL_PATH_NAME_SET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">CANONICAL_PATH_NAME_SET</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0023 - The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="POTENTIAL_DUPLICATES_LINKED">
+<h3>POTENTIAL_DUPLICATES_LINKED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">POTENTIAL_DUPLICATES_LINKED</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0024 - The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="AMBIGUOUS_FILE_SYSTEMS">
+<h3>AMBIGUOUS_FILE_SYSTEMS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="LiskovAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.liskov.ffdc">LiskovAuditCode</a></span>&nbsp;<span class="element-name">AMBIGUOUS_FILE_SYSTEMS</span></div>
+<div class="block">LISKOV-DATA-HUB-MANAGER-0025 - The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3}</div>
 </section>
 </li>
 </ul>

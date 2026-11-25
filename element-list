@@ -33,6 +33,12 @@ org.odpi.openmetadata.adapters.connectors.datastore.csvfile
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.controls
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.data
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.ffdc
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.footer
+org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.properties
 org.odpi.openmetadata.adapters.connectors.db2luw.catalog
 org.odpi.openmetadata.adapters.connectors.db2luw.controls
 org.odpi.openmetadata.adapters.connectors.db2luw.ffdc
@@ -169,6 +175,7 @@ org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
+org.odpi.openmetadata.adapters.connectors.surveyaction.surveyparquet
 org.odpi.openmetadata.adapters.connectors.unitycatalog.controls
 org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc
 org.odpi.openmetadata.adapters.connectors.unitycatalog.properties

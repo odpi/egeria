@@ -177,6 +177,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Describe what the service produces.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="OpenLineageRunHistory.Content.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Content</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequiredContent()" class="member-name-link">getRequiredContent</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the parts of the history that the analysis uses: the assertions against each dataset and the tests reported by each job.</div>
+</div>
 </div>
 </div>
 </div>
@@ -224,6 +229,19 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getRequiredContent()">
+<h3>getRequiredContent</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="OpenLineageRunHistory.Content.html" title="enum class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">OpenLineageRunHistory.Content</a>&gt;</span>&nbsp;<span class="element-name">getRequiredContent</span>()</div>
+<div class="block">Return the parts of the history that the analysis uses: the assertions against each dataset and the tests reported by each job.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="LovelaceOpenLineageAnalysisServiceBase.html#getRequiredContent()">getRequiredContent</a></code>&nbsp;in class&nbsp;<code><a href="LovelaceOpenLineageAnalysisServiceBase.html" title="class in org.odpi.openmetadata.adapters.connectors.lineageinsight.openlineage">LovelaceOpenLineageAnalysisServiceBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>parts of the history to read</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getAnalysisDescription()">
 <h3>getAnalysisDescription</h3>

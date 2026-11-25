@@ -137,6 +137,14 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last odd-row-color">
 <div class="block">SURVEY-ACTION-SERVICE-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#PARQUET_VALUES_NOT_READ" class="member-name-link">PARQUET_VALUES_NOT_READ</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">SURVEY-ACTION-SERVICE-0007 - The survey action service {0} is not counting the values in the columns of Parquet file {1} because the DuckDB JDBC driver is not available</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PARQUET_VALUES_READ_FAILED" class="member-name-link">PARQUET_VALUES_READ_FAILED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">SURVEY-ACTION-SERVICE-0008 - The survey action service {0} was not able to count the values in column {1} of Parquet file {2}; the exception was {3} with message: {4}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#PROGRESS_REPORT" class="member-name-link">PROGRESS_REPORT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">SURVEY-ACTION-SERVICE-0003 - The survey action service {0} is has surveyed {1} files and folders (directories)</div>
@@ -242,6 +250,20 @@ the order they are declared.</div>
 <h3>FILE_IO_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc">SurveyServiceAuditCode</a></span>&nbsp;<span class="element-name">FILE_IO_ERROR</span></div>
 <div class="block">SURVEY-ACTION-SERVICE-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PARQUET_VALUES_NOT_READ">
+<h3>PARQUET_VALUES_NOT_READ</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc">SurveyServiceAuditCode</a></span>&nbsp;<span class="element-name">PARQUET_VALUES_NOT_READ</span></div>
+<div class="block">SURVEY-ACTION-SERVICE-0007 - The survey action service {0} is not counting the values in the columns of Parquet file {1} because the DuckDB JDBC driver is not available</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PARQUET_VALUES_READ_FAILED">
+<h3>PARQUET_VALUES_READ_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyServiceAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc">SurveyServiceAuditCode</a></span>&nbsp;<span class="element-name">PARQUET_VALUES_READ_FAILED</span></div>
+<div class="block">SURVEY-ACTION-SERVICE-0008 - The survey action service {0} was not able to count the values in column {1} of Parquet file {2}; the exception was {3} with message: {4}</div>
 </section>
 </li>
 </ul>
