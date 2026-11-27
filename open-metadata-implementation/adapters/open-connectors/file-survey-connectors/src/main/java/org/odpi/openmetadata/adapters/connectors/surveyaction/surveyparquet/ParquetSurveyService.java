@@ -459,12 +459,29 @@ public class ParquetSurveyService extends SurveyActionServiceConnector
                 /*
                  * This is an exact count, which replaces any count from the footer.
                  */
-                annotation.getProfileCounts().put(ParquetColumnMetric.DISTINCT_COUNT.displayName, (long) valueCounts.size());
+                Map<String, Long> profileCounts = new HashMap<>();
 
-                if (! annotation.getProfilePropertyNames().contains(ParquetColumnMetric.DISTINCT_COUNT.displayName))
+                if (annotation.getProfileCounts() != null)
                 {
-                    annotation.getProfilePropertyNames().add(ParquetColumnMetric.DISTINCT_COUNT.displayName);
+                    profileCounts.putAll(annotation.getProfileCounts());
                 }
+
+                profileCounts.put(ParquetColumnMetric.DISTINCT_COUNT.displayName, (long) valueCounts.size());
+                annotation.setProfileCounts(profileCounts);
+
+                List<String> profilePropertyNames = new ArrayList<>();
+
+                if (annotation.getProfilePropertyNames() != null)
+                {
+                    profilePropertyNames.addAll(annotation.getProfilePropertyNames());
+                }
+
+                if (! profilePropertyNames.contains(ParquetColumnMetric.DISTINCT_COUNT.displayName))
+                {
+                    profilePropertyNames.add(ParquetColumnMetric.DISTINCT_COUNT.displayName);
+                }
+
+                annotation.setProfilePropertyNames(profilePropertyNames);
             }
         }
         catch (Exception error)

@@ -303,15 +303,6 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Add one element to the archive.
-     *
-     * @param guid unique identifier to give it - fixed, so that the tests can refer to it directly
-     * @param qualifiedName qualified name - deliberately shared with another element in most of the sets
-     * @param displayName something to tell the elements apart by in a failure message
-     * @param knownDuplicate should the KnownDuplicate classification be attached?
-     * @return the new entity, for use as the end of a duplicate link
-     */
-    /**
      * Set 10 - a data file and a CSV file that have different qualified names and the same path name, linked
      * as discovered duplicates.  Mendel validates these because a path name identifies one file.
      */
@@ -366,6 +357,15 @@ class DuplicateArchiveWriter extends OMRSArchiveWriter
     }
 
 
+    /**
+     * Add one element to the archive.
+     *
+     * @param guid unique identifier to give it - fixed, so that the tests can refer to it directly
+     * @param qualifiedName qualified name - deliberately shared with another element in most of the sets
+     * @param displayName something to tell the elements apart by in a failure message
+     * @param knownDuplicate should the KnownDuplicate classification be attached?
+     * @return the new entity, for use as the end of a duplicate link
+     */
     private EntityDetail addElement(String  guid,
                                     String  qualifiedName,
                                     String  displayName,
