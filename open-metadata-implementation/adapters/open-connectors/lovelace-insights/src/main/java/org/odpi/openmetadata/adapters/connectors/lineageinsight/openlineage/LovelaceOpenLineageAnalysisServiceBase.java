@@ -128,18 +128,33 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         final String methodName = "start";
 
         Connector logStoreConnector = null;
-        boolean   historyLockHeld   = false;
+
+        /*
+         * Wait for any other analysis service that is working with a history to finish.  The analysis time,
+         * and so the analysis window, is set once the wait is over, so that the window ends when the log store
+         * is read rather than when the service was started.
+         */
+        try
+        {
+            HISTORY_LOCK.lockInterruptibly();
+        }
+        catch (InterruptedException error)
+        {
+            /*
+             * The engine is shutting the service down.  The interrupt is passed on to the caller's thread.
+             */
+            Thread.currentThread().interrupt();
+
+            throw new ConnectorCheckedException(LovelaceInsightErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
 
         try
         {
-            /*
-             * Wait for any other analysis service that is working with a history to finish.  The analysis time,
-             * and so the analysis window, is set once the wait is over, so that the window ends when the log store
-             * is read rather than when the service was started.
-             */
-            HISTORY_LOCK.lockInterruptibly();
-            historyLockHeld = true;
-
             analysisTime = new Date();
 
             /*
@@ -284,10 +299,7 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         }
         finally
         {
-            if (historyLockHeld)
-            {
-                HISTORY_LOCK.unlock();
-            }
+            HISTORY_LOCK.unlock();
 
             if (logStoreConnector != null)
             {

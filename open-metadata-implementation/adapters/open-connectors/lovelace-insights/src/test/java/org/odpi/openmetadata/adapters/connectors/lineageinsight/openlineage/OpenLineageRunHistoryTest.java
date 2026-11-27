@@ -23,8 +23,8 @@ public class OpenLineageRunHistoryTest
     {
         OpenLineageRunHistory history = new OpenLineageRunHistory();
 
-        OpenLineageRunHistory.Key first  = history.key(new String("airflow://prod"), new String("load_orders"));
-        OpenLineageRunHistory.Key second = history.key(new String("airflow://prod"), new String("load_orders"));
+        OpenLineageRunHistory.Key first  = history.key(distinct("airflow://prod"), distinct("load_orders"));
+        OpenLineageRunHistory.Key second = history.key(distinct("airflow://prod"), distinct("load_orders"));
 
         assertSame(second, first);
         assertEquals(first, new OpenLineageRunHistory.Key("airflow://prod", "load_orders"));
@@ -73,11 +73,11 @@ public class OpenLineageRunHistoryTest
     {
         OpenLineageRunHistory history = new OpenLineageRunHistory();
 
-        String first = history.shared(new String("COMPLETE"));
+        String first = history.shared(distinct("COMPLETE"));
 
         assertEquals(first, "COMPLETE");
-        assertSame(history.shared(new String("COMPLETE")), first);
-        assertNotSame(history.shared(new String("FAIL")), first);
+        assertSame(history.shared(distinct("COMPLETE")), first);
+        assertNotSame(history.shared(distinct("FAIL")), first);
         assertNull(history.shared(null));
     }
 
@@ -108,5 +108,18 @@ public class OpenLineageRunHistoryTest
         assertEquals(history.getDataSetCount(), 1212);
         assertEquals(history.getJobs().size(), 1);
         assertEquals(history.getDataSets().size(), 2);
+    }
+
+
+    /**
+     * Return a new string object with the same characters as the one supplied.  The tests need equal strings
+     * that are different objects - which is what a parser produces - to show that the history shares them.
+     *
+     * @param value string to copy
+     * @return a different object with the same value
+     */
+    private String distinct(String value)
+    {
+        return new String(value.toCharArray());
     }
 }
