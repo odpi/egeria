@@ -315,6 +315,21 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <div class="block">Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
  for this service.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)" class="member-name-link">unregisterDcatListener</a><wbr>(<a href="../dcat/DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a listener, so that it receives no more DCAT documents.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)" class="member-name-link">unregisterListener</a><wbr>(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a listener, so that it receives no more Bitol documents.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)" class="member-name-link">unregisterListener</a><wbr>(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a listener, so that it receives no more open lineage events.</div>
+</div>
 </div>
 </div>
 </div>
@@ -587,6 +602,19 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 </section>
 </li>
 <li>
+<section class="detail" id="unregisterListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">
+<h3>unregisterListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterListener</span><wbr><span class="parameters">(<a href="../openlineage/OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</span></div>
+<div class="block">Remove a listener, so that it receives no more open lineage events.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../openlineage/OpenLineageListenerManager.html#unregisterListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">unregisterListener</a></code>&nbsp;in interface&nbsp;<code><a href="../openlineage/OpenLineageListenerManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageListenerManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to remove</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="publishOpenLineageRunEvent(java.lang.String)">
 <h3>publishOpenLineageRunEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOpenLineageRunEvent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span></div>
@@ -659,6 +687,19 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 </section>
 </li>
 <li>
+<section class="detail" id="unregisterDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)">
+<h3>unregisterDcatListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterDcatListener</span><wbr><span class="parameters">(<a href="../dcat/DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</span></div>
+<div class="block">Remove a listener, so that it receives no more DCAT documents.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../dcat/DcatDocumentManager.html#unregisterDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)">unregisterDcatListener</a></code>&nbsp;in interface&nbsp;<code><a href="../dcat/DcatDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to remove</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="publishDcatDocument(java.lang.String)">
 <h3>publishDcatDocument</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishDcatDocument</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawDocument)</span></div>
@@ -683,6 +724,19 @@ implements <a href="../openlineage/OpenLineageListenerManager.html" title="inter
 <dd><code><a href="../bitol/BitolDocumentManager.html#registerListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">registerListener</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="unregisterListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">
+<h3>unregisterListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterListener</span><wbr><span class="parameters">(<a href="../bitol/BitolDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentListener</a>&nbsp;listener)</span></div>
+<div class="block">Remove a listener, so that it receives no more Bitol documents.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../bitol/BitolDocumentManager.html#unregisterListener(org.odpi.openmetadata.frameworks.integration.bitol.BitolDocumentListener)">unregisterListener</a></code>&nbsp;in interface&nbsp;<code><a href="../bitol/BitolDocumentManager.html" title="interface in org.odpi.openmetadata.frameworks.integration.bitol">BitolDocumentManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to remove</dd>
 </dl>
 </section>
 </li>

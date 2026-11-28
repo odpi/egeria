@@ -101,7 +101,8 @@ loadScripts(document, 'script');</script>
 <div class="block">OpenLineageCataloguerConfigurationProperty provides some standard definitions for configuration properties used to
  control the amount of metadata that the Open Lineage Cataloguer integration connector creates as it receives
  OpenLineage events.  Each property is a boolean that switches a class of metadata on or off.  The lineage
- (processes, data assets and the data flows between them) and the run metrics on the processes are always catalogued.</div>
+ (processes, data assets and the data flows between them) and the run metrics on the processes are always catalogued.
+ The catalog templates used for new processes and data assets are described in <a href="OpenLineageCataloguerTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls"><code>OpenLineageCataloguerTemplateType</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,16 +131,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Capture input/output statistics and data quality metrics as annotations in a survey report.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CATALOG_RUNS" class="member-name-link">CATALOG_RUNS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_RUN_LINEAGE" class="member-name-link">CATALOG_RUN_LINEAGE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Link each run element to the datasets that the run read and wrote, as well as linking them to the job's process.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_RUNS" class="member-name-link">CATALOG_RUNS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Create a TransientEmbeddedProcess element for each run of a job (linked to the job's process via ProcessHierarchy).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CATALOG_SCHEMAS" class="member-name-link">CATALOG_SCHEMAS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CATALOG_SCHEMAS" class="member-name-link">CATALOG_SCHEMAS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Create a schema (TabularSchemaType and TabularColumns) for a data asset from the schema dataset facet.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UPDATE_DATA_SCOPE" class="member-name-link">UPDATE_DATA_SCOPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UPDATE_DATA_SCOPE" class="member-name-link">UPDATE_DATA_SCOPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Maintain the DataScope classification on data assets written by the runs.</div>
 </div>
 </div>
@@ -264,6 +269,13 @@ the order they are declared.</div>
 <h3>CATALOG_RUNS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageCataloguerConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls">OpenLineageCataloguerConfigurationProperty</a></span>&nbsp;<span class="element-name">CATALOG_RUNS</span></div>
 <div class="block">Create a TransientEmbeddedProcess element for each run of a job (linked to the job's process via ProcessHierarchy).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_RUN_LINEAGE">
+<h3>CATALOG_RUN_LINEAGE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenLineageCataloguerConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls">OpenLineageCataloguerConfigurationProperty</a></span>&nbsp;<span class="element-name">CATALOG_RUN_LINEAGE</span></div>
+<div class="block">Link each run element to the datasets that the run read and wrote, as well as linking them to the job's process.</div>
 </section>
 </li>
 <li>

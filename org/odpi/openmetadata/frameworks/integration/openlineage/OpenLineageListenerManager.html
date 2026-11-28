@@ -133,6 +133,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">The listener is implemented by the integration connector to receive OpenLineage events.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#unregisterListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)" class="member-name-link">unregisterListener</a><wbr>(<a href="OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Remove a listener, so that it receives no more OpenLineage events.</div>
+</div>
 </div>
 </div>
 </div>
@@ -156,6 +161,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener to register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="unregisterListener(org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener)">
+<h3>unregisterListener</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">unregisterListener</span><wbr><span class="parameters">(<a href="OpenLineageEventListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.openlineage">OpenLineageEventListener</a>&nbsp;listener)</span></div>
+<div class="block">Remove a listener, so that it receives no more OpenLineage events.  This is called when the integration
+ connector that registered it is disconnected - otherwise a connector that has been restarted would carry
+ on receiving events through the instance it replaced.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to remove</dd>
 </dl>
 </section>
 </li>

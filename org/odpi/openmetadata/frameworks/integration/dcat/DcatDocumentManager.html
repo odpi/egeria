@@ -117,6 +117,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">The listener is implemented by the integration connector.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#unregisterDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)" class="member-name-link">unregisterDcatListener</a><wbr>(<a href="DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Remove a listener, so that it receives no more DCAT documents.</div>
+</div>
 </div>
 </div>
 </div>
@@ -140,6 +145,18 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>listener</code> - listener to call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="unregisterDcatListener(org.odpi.openmetadata.frameworks.integration.dcat.DcatDocumentListener)">
+<h3>unregisterDcatListener</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">unregisterDcatListener</span><wbr><span class="parameters">(<a href="DcatDocumentListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.dcat">DcatDocumentListener</a>&nbsp;listener)</span></div>
+<div class="block">Remove a listener, so that it receives no more DCAT documents.  This is called when the integration
+ connector that registered it is disconnected.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to remove</dd>
 </dl>
 </section>
 </li>

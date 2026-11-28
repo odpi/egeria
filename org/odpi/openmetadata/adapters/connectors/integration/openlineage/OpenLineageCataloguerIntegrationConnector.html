@@ -107,14 +107,14 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
  catalogues what they describe in open metadata:
  <ul>
      <li>Each OpenLineage <b>job</b> is matched to an existing process by namespace and resource name, or becomes a
-     new process (DeployedSoftwareComponent).  Its documentation, sql,
+     new process (DeployedSoftwareComponent) created from the catalog template for its jobType facet.  Its documentation, sql,
      sourceCode, sourceCodeLocation, jobType, ownership and tags facets populate the process's properties.</li>
      <li>The <b>parent</b> and <b>root</b> jobs from the parent run facet become processes that own the job's process
      (OWNED ProcessHierarchy relationships, with the parent as the anchor of a newly created child).  Job dependencies (jobDependencies run facet and the JOB entries of the
      lineage job facet) become ControlFlow relationships between processes.</li>
      <li>Each <b>input and output dataset</b> is matched to an existing data asset by namespace and resource name,
-     or becomes a new data asset whose open metadata type is chosen from the dataset's namespace and datasetType
-     facet (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
+     or becomes a new data asset created from the catalog template for the technology in the dataset's namespace
+     (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
      hierarchy, ownership and tags facets populate the asset.  The schema facet creates a tabular schema for the asset
      (optional).</li>
      <li>Inputs are linked to the process, and the process to the outputs, with lineage relationships.
@@ -124,13 +124,17 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
      relationship carries the information supply chain's qualified name when the run event supplies one.</li>
      <li>Run counts, timings and data volumes are always maintained in the RunMetrics classification of the job's process.  Each <b>run</b> can
      optionally also become a TransientEmbeddedProcess owned by the job's process, recording the run's status,
-     timing and run facets.</li>
+     timing and run facets.  The run can optionally be linked to the datasets that it read and wrote with the same
+     lineage relationships that link them to the job's process.</li>
      <li>The inputStatistics, outputStatistics, dataQualityMetrics, dataQualityAssertions and test facets are optionally
      captured as annotations in a SurveyReport created for the run, and the <b>DataScope</b> classification of the
      output data assets is optionally maintained from the times and statistics of the writes.</li>
  </ul>
  The optional behaviours are controlled by the configuration properties defined in
- <a href="controls/OpenLineageCataloguerConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls"><code>OpenLineageCataloguerConfigurationProperty</code></a>.</div>
+ <a href="controls/OpenLineageCataloguerConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls"><code>OpenLineageCataloguerConfigurationProperty</code></a>.  The catalog templates are chosen using the names defined in
+ <a href="controls/OpenLineageCataloguerTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls"><code>OpenLineageCataloguerTemplateType</code></a>, which also defines the default template for each name.  The templates
+ property of the connector's catalog targets can replace the default template for a name, or supply a template
+ for a name that has no default.  (The element that a catalog target points to is not used by this connector.)</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -403,7 +407,8 @@ implements <a href="../../../../frameworks/integration/openlineage/OpenLineageEv
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
  as well as any external REST API calls to explicitly refresh the connector.
  The lineage is catalogued as the events arrive.  The refresh writes the RunMetrics and DataScope
- classifications that the events have changed since the last refresh.</div>
+ classifications that the events have changed since the last refresh, and picks up changes to the templates
+ supplied by the connector's catalog targets.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#refresh()">refresh</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
