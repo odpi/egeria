@@ -11,18 +11,30 @@ import org.odpi.openmetadata.adapters.connectors.controls.DatabaseTableTemplateT
 import org.odpi.openmetadata.adapters.connectors.controls.DataWarehouseDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.FileStoreDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.controls.FileStoreTemplateType;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerTemplateType;
+import org.odpi.openmetadata.contentpacks.core.IntegrationConnectorDefinition;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageInputDataSet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobFacets;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageJobTypeJobFacet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageOutputDataSet;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Verifies that datasets and jobs that are not catalogued yet are created from the catalog templates for their
  * technology: a Snowflake table and an Amazon S3 object from the templates their namespaces name, a dataset from an
  * unknown technology as a generic DataStore, and an Apache Airflow task (identified by its jobType facet) with its
- * parent job as an Apache Airflow DAG.
+ * parent job as an Apache Airflow DAG.  It also verifies that the templates property of a catalog target of the
+ * cataloguer replaces the default template for a name and supplies templates for names that have no default.
  */
 @ExtendWith(OMAGPlatformExtension.class)
 public class OpenLineageTemplateFVT
@@ -47,6 +60,24 @@ public class OpenLineageTemplateFVT
     private static final String S3_OBJECT         = "landing/orders.csv";
     private static final String UNKNOWN_NS        = "mystery://openlineage-fvt:1234";
     private static final String UNKNOWN_NAME      = "orders_summary";
+
+    /*
+     * For the templates supplied by a catalog target.  The schemes and the integration are used by no other test in
+     * the suite, since the templates stay in force for the rest of the run.
+     */
+    private static final String CUSTOM_TEMPLATE_QN      = "OpenLineageFVT::CustomTableTemplate::openlineage-fvt";
+    private static final String CUSTOM_TECHNOLOGY_TYPE  = "OpenLineage FVT Table";
+    private static final String CUSTOM_JOB_NAME         = "catalog_target_template_job";
+    private static final String CUSTOM_INTEGRATION      = "FVTENGINE";
+    private static final String NEW_SCHEME              = "fvtstore";
+    private static final String NEW_SCHEME_NS           = NEW_SCHEME + "://openlineage-fvt-host";
+    private static final String NEW_SCHEME_NAME         = "custom_orders";
+    private static final String REPLACED_SCHEME         = "teradata";
+    private static final String REPLACED_SCHEME_NS      = REPLACED_SCHEME + "://openlineage-fvt-host";
+    private static final String REPLACED_SCHEME_NAME    = "SALES.ORDERS";
+    private static final String BORROWED_SCHEME         = "fvtwarehouse";
+    private static final String BORROWED_SCHEME_NS      = BORROWED_SCHEME + "://openlineage-fvt-host";
+    private static final String BORROWED_SCHEME_NAME    = "WAREHOUSE.ORDERS";
 
 
     @Test
@@ -138,6 +169,116 @@ public class OpenLineageTemplateFVT
                    "The Snowflake table should flow into the task");
         assertTrue(OpenLineageFvtTestSupport.areLinked(task.getElementHeader().getGUID(), unknown.getElementHeader().getGUID(), OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName),
                    "The task should flow into the unknown dataset");
+    }
+
+
+    @Test
+    @DisplayName("The templates of a catalog target replace the default templates and add templates for new names")
+    void catalogTargetTemplatesOverrideTheDefaults() throws Exception
+    {
+        ConnectorContextBase connectorContext = ConnectorContextFactory.newContext();
+        AssetClient          assetClient      = connectorContext.getAssetClient();
+
+        /*
+         * A template that is not from the content packs.
+         */
+        DataSetProperties customTemplateProperties = new DataSetProperties();
+
+        customTemplateProperties.setTypeName(OpenMetadataType.DATA_SET.typeName);
+        customTemplateProperties.setQualifiedName(CUSTOM_TEMPLATE_QN);
+        customTemplateProperties.setDisplayName("Custom table template");
+        customTemplateProperties.setDeployedImplementationType(CUSTOM_TECHNOLOGY_TYPE);
+
+        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(true);
+
+        String customTemplateGUID = assetClient.createAsset(newElementOptions, null, customTemplateProperties, null);
+
+        TemplateProperties templateClassification = new TemplateProperties();
+
+        templateClassification.setDisplayName("Custom table template");
+
+        connectorContext.getTemplateClient().addTemplateClassification(customTemplateGUID, templateClassification, new MetadataSourceOptions());
+
+        /*
+         * The catalog target supplies the custom template for a scheme that has no default and in place of the
+         * default for teradata, a content pack template for another scheme that has no default, and a content pack
+         * template for an integration that has no default.  The element that the catalog target points to is not
+         * used by the cataloguer.
+         */
+        Map<String, String> templates = new HashMap<>();
+
+        templates.put(OpenLineageCataloguerTemplateType.dataSetName(NEW_SCHEME, null), customTemplateGUID);
+        templates.put(OpenLineageCataloguerTemplateType.dataSetName(REPLACED_SCHEME, null), customTemplateGUID);
+        templates.put(OpenLineageCataloguerTemplateType.dataSetName(BORROWED_SCHEME, null), DatabaseTableTemplateType.SNOWFLAKE_TABLE_TEMPLATE.getTemplateGUID());
+        templates.put(OpenLineageCataloguerTemplateType.jobName(CUSTOM_INTEGRATION, null), DataPipelineTemplateType.APACHE_SPARK_JOB_TEMPLATE.getTemplateGUID());
+
+        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+
+        catalogTargetProperties.setCatalogTargetName("openlineage-fvt templates");
+        catalogTargetProperties.setTemplates(templates);
+
+        assetClient.addCatalogTarget(IntegrationConnectorDefinition.OPEN_LINEAGE_CATALOGUER.getGUID(),
+                                     customTemplateGUID,
+                                     new MakeAnchorOptions(assetClient.getMetadataSourceOptions()),
+                                     catalogTargetProperties);
+
+        /*
+         * The cataloguer reads its catalog targets when it refreshes.
+         */
+        OpenLineageFvtTestSupport.refreshCataloguer();
+
+        OpenLineageRunEvent event = OpenLineageEventFactory.runEvent("COMPLETE", Instant.now(), UUID.randomUUID(), CUSTOM_JOB_NAME);
+
+        OpenLineageJobTypeJobFacet jobType = new OpenLineageJobTypeJobFacet();
+
+        jobType.setProcessingType("BATCH");
+        jobType.setIntegration(CUSTOM_INTEGRATION);
+        jobType.setJobType("JOB");
+
+        event.getJob().getFacets().setJobType(jobType);
+
+        OpenLineageInputDataSet newSchemeDataSet = new OpenLineageInputDataSet();
+
+        newSchemeDataSet.setNamespace(NEW_SCHEME_NS);
+        newSchemeDataSet.setName(NEW_SCHEME_NAME);
+
+        OpenLineageInputDataSet replacedSchemeDataSet = new OpenLineageInputDataSet();
+
+        replacedSchemeDataSet.setNamespace(REPLACED_SCHEME_NS);
+        replacedSchemeDataSet.setName(REPLACED_SCHEME_NAME);
+
+        OpenLineageOutputDataSet borrowedSchemeDataSet = new OpenLineageOutputDataSet();
+
+        borrowedSchemeDataSet.setNamespace(BORROWED_SCHEME_NS);
+        borrowedSchemeDataSet.setName(BORROWED_SCHEME_NAME);
+
+        event.setInputs(List.of(newSchemeDataSet, replacedSchemeDataSet));
+        event.setOutputs(List.of(borrowedSchemeDataSet));
+
+        OpenLineageFvtTestSupport.publish(event);
+
+        OpenMetadataRootElement job      = OpenLineageFvtTestSupport.waitForAsset(OpenLineageFvtTestSupport.processQualifiedName(OpenLineageEventFactory.JOB_NAMESPACE, CUSTOM_JOB_NAME), "the job with a template from the catalog target");
+        OpenMetadataRootElement newOne   = OpenLineageFvtTestSupport.waitForAsset(OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, NEW_SCHEME_NS, NEW_SCHEME_NAME), "the dataset from a scheme with no default template");
+        OpenMetadataRootElement replaced = OpenLineageFvtTestSupport.waitForAsset(OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, REPLACED_SCHEME_NS, REPLACED_SCHEME_NAME), "the dataset whose default template is replaced");
+        OpenMetadataRootElement borrowed = OpenLineageFvtTestSupport.waitForAsset(OpenLineageFvtTestSupport.assetQualifiedName(OpenMetadataType.DATA_SET.typeName, BORROWED_SCHEME_NS, BORROWED_SCHEME_NAME), "the dataset using a content pack template for another technology");
+
+        assertEquals(CUSTOM_TECHNOLOGY_TYPE, technologyType(newOne), "The dataset should have the technology type of the template from the catalog target");
+        assertEquals(NEW_SCHEME_NAME, ((AssetProperties) newOne.getProperties()).getResourceName(), "The dataset should carry its OpenLineage name");
+        assertEquals(NEW_SCHEME_NS, ((AssetProperties) newOne.getProperties()).getNamespacePath(), "The dataset should carry its OpenLineage namespace");
+        assertSourcedFrom(newOne, customTemplateGUID);
+
+        assertEquals(CUSTOM_TECHNOLOGY_TYPE, technologyType(replaced), "The template from the catalog target should replace the default Teradata Table template");
+        assertSourcedFrom(replaced, customTemplateGUID);
+
+        assertEquals(DataWarehouseDeployedImplementationType.SNOWFLAKE_TABLE.getDeployedImplementationType(), technologyType(borrowed),
+                     "The dataset should be created from the Snowflake Table template named by the catalog target");
+        assertSourcedFrom(borrowed, DatabaseTableTemplateType.SNOWFLAKE_TABLE_TEMPLATE.getTemplateGUID());
+
+        assertEquals(DataPipelineTemplateType.APACHE_SPARK_JOB_TEMPLATE.getDeployedImplementationType().getDeployedImplementationType(), technologyType(job),
+                     "The job should be created from the Apache Spark Job template named by the catalog target");
+        assertSourcedFrom(job, DataPipelineTemplateType.APACHE_SPARK_JOB_TEMPLATE.getTemplateGUID());
     }
 
 

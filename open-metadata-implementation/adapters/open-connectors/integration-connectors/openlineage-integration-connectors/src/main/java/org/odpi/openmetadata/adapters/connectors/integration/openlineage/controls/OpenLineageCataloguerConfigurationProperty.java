@@ -12,6 +12,7 @@ import java.util.List;
  * control the amount of metadata that the Open Lineage Cataloguer integration connector creates as it receives
  * OpenLineage events.  Each property is a boolean that switches a class of metadata on or off.  The lineage
  * (processes, data assets and the data flows between them) and the run metrics on the processes are always catalogued.
+ * The catalog templates used for new processes and data assets are described in {@link OpenLineageCataloguerTemplateType}.
  */
 public enum OpenLineageCataloguerConfigurationProperty
 {
@@ -26,6 +27,19 @@ public enum OpenLineageCataloguerConfigurationProperty
                  "boolean",
                  "false",
                  false),
+
+    /**
+     * Link each run element to the datasets that the run read and wrote, as well as linking them to the job's process.
+     */
+    CATALOG_RUN_LINEAGE("catalogRunLineage",
+                        "Create a TransientEmbeddedProcess element for each run of a job (as for catalogRuns) and link it to the datasets that the run " +
+                                "read and wrote with the same lineage relationships that link the datasets to the job's process.  " +
+                                "The lineage is still maintained on the job's process, so the job shows every dataset that any of its runs has used, " +
+                                "and each run shows the datasets that it used.  This is off by default because it creates a metadata element, " +
+                                "and a set of lineage relationships, for every run.",
+                        "boolean",
+                        "false",
+                        false),
 
     /**
      * Create a schema (TabularSchemaType and TabularColumns) for a data asset from the schema dataset facet.

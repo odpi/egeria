@@ -116,6 +116,7 @@ public class AutomatedCurationFVT
 
         assertNotNull(report, "getTechnologyTypeDetail returned nothing for " + DATA_FILE_TECHNOLOGY_TYPE);
         assertEquals(DATA_FILE_TECHNOLOGY_TYPE_QN, report.getQualifiedName());
+        assertNotNull(report.getURL(), "the Data File technology type report has no url linking to its documentation");
         assertNotNull(report.getCatalogTemplates(), "the Data File technology type report has no catalog templates");
 
         boolean templateListed = false;

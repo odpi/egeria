@@ -123,6 +123,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
     private static final String assertionMsg41 = " relationship versions are ordered FORWARDS as requested ";
     private static final String assertion42    = testCaseId + "-42";
     private static final String assertionMsg42 = " relationship is known when deleted ";
+    private static final String assertion43    = testCaseId + "-43";
+    private static final String assertionMsg43 = " second undo of relationship reinstates the update that the first undo reversed.";
+    private static final String assertion44    = testCaseId + "-44";
+    private static final String assertionMsg44 = " relationship after second undo version number is ";
 
     private final RepositoryConformanceWorkPad  workPad;
     private final String                        metadataCollectionId;
@@ -779,7 +783,33 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                 RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
                                 RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
 
+                /*
+                 * A second undo reverses the first.  Undo always returns to the version before the current one, and the
+                 * first undo left the update that it reversed (the min properties) as the previous version.  So the
+                 * second undo reinstates the min properties - it does not step back a further version - and, since
+                 * history only goes forward, it does so in another new version.
+                 */
                 nextVersion = undoneRelationship.getVersion() + 1;
+
+                start = System.currentTimeMillis();
+                Relationship redoneRelationship = metadataCollection.undoRelationshipUpdate(workPad.getLocalServerUserId(), newRelationship.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
+
+                verifyCondition(((redoneRelationship != null) && doPropertiesMatch(minRelationshipProps, redoneRelationship.getProperties())),
+                                assertion43,
+                                testTypeName + assertionMsg43,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId(),
+                                "undoRelationshipUpdate",
+                                elapsedTime);
+
+                verifyCondition(((redoneRelationship != null) && (redoneRelationship.getVersion() >= nextVersion)),
+                                assertion44,
+                                testTypeName + assertionMsg44 + nextVersion,
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
+
+                nextVersion = redoneRelationship.getVersion() + 1;
             }
             catch (AssertionFailureException exception)
             {

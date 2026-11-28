@@ -118,6 +118,10 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertionMsg43 = " entity is known when deleted ";
     private static final String assertion44    = testCaseId + "-44";
     private static final String assertionMsg44 = " property stored with no value is returned with no value ";
+    private static final String assertion45    = testCaseId + "-45";
+    private static final String assertionMsg45 = " second undo of entity reinstates the update that the first undo reversed.";
+    private static final String assertion46    = testCaseId + "-46";
+    private static final String assertionMsg46 = " entity after second undo version number is ";
 
 
     private final String              metadataCollectionId;
@@ -880,7 +884,33 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                     throw new Exception(msg, exc);
                 }
 
+                /*
+                 * A second undo reverses the first.  Undo always returns to the version before the current one, and the
+                 * first undo left the update that it reversed (the min properties) as the previous version.  So the
+                 * second undo reinstates the min properties - it does not step back a further version - and, since
+                 * history only goes forward, it does so in another new version.
+                 */
                 nextVersion = undoneEntity.getVersion() + 1;
+
+                start = System.currentTimeMillis();
+                EntityDetail redoneEntity = metadataCollection.undoEntityUpdate(workPad.getLocalServerUserId(), newEntity.getGUID());
+                elapsedTime = System.currentTimeMillis() - start;
+
+                assertCondition(((redoneEntity != null) && doPropertiesMatch(minEntityProps, redoneEntity.getProperties())),
+                                assertion45,
+                                testTypeName + assertionMsg45,
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId(),
+                                "undoEntityUpdate",
+                                elapsedTime);
+
+                assertCondition(((redoneEntity != null) && (redoneEntity.getVersion() >= nextVersion)),
+                                assertion46,
+                                testTypeName + assertionMsg46 + nextVersion,
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getProfileId(),
+                                RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_UNDO.getRequirementId());
+
+                nextVersion = redoneEntity.getVersion() + 1;
             }
             catch (FunctionNotSupportedException exception)
             {
