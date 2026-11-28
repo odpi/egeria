@@ -241,9 +241,9 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
     NO_ZONES("GOVERNANCE-ACTION-CONNECTORS-0019",
              AuditLogRecordSeverityLevel.INFO,
                                 "The {0} governance action service has publishZones set to null",
-                                "The governance action service will remove the AssetZoneMembership from ",
-                                "Verify that this is the intended behaviour.  If zones are needed, the zone names are passed with as a configuration property or as a " +
-                                        "request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list" +
+                                "The governance action service will remove the AssetZoneMembership classification from the action target elements so that they are visible to all.",
+                                "Verify that this is the intended behaviour.  If zones are needed, the zone names are passed as a configuration property or as a " +
+                                        "request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list " +
                                         "(for example: zone1,zone2) that will control the visibility of the asset.",
                                         "https://egeria-project.org/concepts/governance-action-service/"),
 
