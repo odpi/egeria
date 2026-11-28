@@ -5,6 +5,7 @@
 # Origin Seeker Governance Action Service
     
 An asset may have an origin classification attached that documents various properties about its origin.  The *Origin Seeker* Governance Action Service sets up the origin classification on an asset by navigating backwards through the lineage relationships to locate origin classifications attached to the assets in the lineage graph.  
+It follows the *LineageMapping*, *DataFlow*, *ControlFlow* and *ProcessCall* relationships that are attached directly to the asset and to each element upstream of it.  Lineage between the ports and schema elements of the assets is not followed.
 
 ![Figure 1](origin-seeker-remediation-governance-action-service.svg)
 > **Figure 1:** Operation of the Origin Seeker governance action service
@@ -60,7 +61,7 @@ Origin seeker does not specifically recognize any request types or request param
 
 #### Action Targets
 
-The asset that needs an origin classification is linked to the governance action as an action target.  The unique identifier (guid) can be passed as a parameter when the governance action or governance action process is initiated.
+The asset that needs an origin classification is linked to the governance action as the `newAsset` action target.  The unique identifier (guid) can be passed as a parameter when the governance action or governance action process is initiated.  Action targets with other names are ignored.
 
 #### Completion Status and Guards
 
@@ -68,10 +69,11 @@ These are the responses that origin seeker produces:
 
 - `CompletionStatus.ACTIONED` with guard `origin-assigned` if a single origin is detected in all branches of the lineage graph.
 - `CompletionStatus.ACTIONED` with guard `origin-already-assigned` if the asset already has an origin set up.
-- `CompletionStatus.INVALID` with guard `multiple-origins-detected` if multiple, different origins are detected in the lineage graph.
+- `CompletionStatus.INVALID` with guard `multiple-origins-detected` if multiple, different origins are detected in the lineage graph.  The origins that were found are passed on as a JSON array in the `detectedOrigins` request parameter so that a steward can choose between them.
 - `CompletionStatus.INVALID` with guard `no-origins-detected` if no origin classifications are found in the lineage graph. 
-- `CompletionStatus.INVALID` with guard `no-targets-detected` if there is no asset set up as an action target.
-- `CompletionStatus.INVALID` with guard `multiple-targets-detected` if there are multiple assets set up as action targets.
+- `CompletionStatus.INVALID` with guard `no-targets-detected` if there is no `newAsset` action target.
+- `CompletionStatus.INVALID` with guard `multiple-targets-detected` if there are multiple `newAsset` action targets.
+- `CompletionStatus.INVALID` with guard `target-not-asset` if the `newAsset` action target is not an asset.
 - `CompletionStatus.FAILED` with guard `origin-seeking-failed` for an unrecoverable error such as a not authorized response from the metadata repository.
 
 

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CompletionStatus;
 
@@ -10,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Guard enum describes some common guards that can be used when implementing governance services.
- * Using the common guard names where possible saves time when coding the provider class and improves the
- * ability of the service to be incorporated into governance action processes.
+ * OriginSeekerGuard describes the guards produced by the Origin Seeker Governance Action Service.
+ * The guards for the action target use the common guard names from the Open Governance Framework (OGF)
+ * to make it easier to incorporate the service into governance action processes.
  */
 public enum OriginSeekerGuard
 {
@@ -21,7 +22,15 @@ public enum OriginSeekerGuard
     MULTIPLE_ORIGINS_DETECTED("multiple-origins-detected", CompletionStatus.INVALID, "The lineage graph showed that the data in the asset came from multiple origins.  A steward needs to assign the AssetOrigin because it is not obvious which values to use."),
     NO_ORIGINS_DETECTED( "no-origins-detected", CompletionStatus.INVALID, "None of the assets in the lineage graph have an AssetOrigin classification."),
     ORIGIN_SEEKING_FAILED("origin-seeking-failed", CompletionStatus.FAILED, "An unexpected error occurred during the origin seeking process.  Check the audit log for reported errors."),
-
+    NO_TARGETS(Guard.NO_TARGETS_DETECTED.getName(),
+               Guard.NO_TARGETS_DETECTED.getCompletionStatus(),
+               Guard.NO_TARGETS_DETECTED.getDescription()),
+    MULTIPLE_TARGETS(Guard.MULTIPLE_TARGETS_DETECTED.getName(),
+                     Guard.MULTIPLE_TARGETS_DETECTED.getCompletionStatus(),
+                     Guard.MULTIPLE_TARGETS_DETECTED.getDescription()),
+    TARGET_NOT_ASSET(Guard.TARGET_NOT_ASSET.getName(),
+                     Guard.TARGET_NOT_ASSET.getCompletionStatus(),
+                     Guard.TARGET_NOT_ASSET.getDescription()),
     ;
 
 
