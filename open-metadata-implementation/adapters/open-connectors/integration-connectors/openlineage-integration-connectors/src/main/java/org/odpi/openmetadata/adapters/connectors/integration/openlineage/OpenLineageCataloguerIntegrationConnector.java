@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.VirtualRelationalTableProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerTemplateType;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -31,7 +32,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
@@ -47,6 +47,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.RunMetricsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.SurveyReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnershipProperties;
@@ -86,6 +87,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
@@ -95,14 +98,14 @@ import java.util.Set;
  * catalogues what they describe in open metadata:
  * <ul>
  *     <li>Each OpenLineage <b>job</b> is matched to an existing process by namespace and resource name, or becomes a
- *     new process (DeployedSoftwareComponent).  Its documentation, sql,
+ *     new process (DeployedSoftwareComponent) created from the catalog template for its jobType facet.  Its documentation, sql,
  *     sourceCode, sourceCodeLocation, jobType, ownership and tags facets populate the process's properties.</li>
  *     <li>The <b>parent</b> and <b>root</b> jobs from the parent run facet become processes that own the job's process
  *     (OWNED ProcessHierarchy relationships, with the parent as the anchor of a newly created child).  Job dependencies (jobDependencies run facet and the JOB entries of the
  *     lineage job facet) become ControlFlow relationships between processes.</li>
  *     <li>Each <b>input and output dataset</b> is matched to an existing data asset by namespace and resource name,
- *     or becomes a new data asset whose open metadata type is chosen from the dataset's namespace and datasetType
- *     facet (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
+ *     or becomes a new data asset created from the catalog template for the technology in the dataset's namespace
+ *     (ambiguous or wrong-typed matches are linked to it as peer duplicates).  Its documentation, dataSource, storage, catalog, version, symlinks,
  *     hierarchy, ownership and tags facets populate the asset.  The schema facet creates a tabular schema for the asset
  *     (optional).</li>
  *     <li>Inputs are linked to the process, and the process to the outputs, with lineage relationships.
@@ -112,13 +115,17 @@ import java.util.Set;
  *     relationship carries the information supply chain's qualified name when the run event supplies one.</li>
  *     <li>Run counts, timings and data volumes are always maintained in the RunMetrics classification of the job's process.  Each <b>run</b> can
  *     optionally also become a TransientEmbeddedProcess owned by the job's process, recording the run's status,
- *     timing and run facets.</li>
+ *     timing and run facets.  The run can optionally be linked to the datasets that it read and wrote with the same
+ *     lineage relationships that link them to the job's process.</li>
  *     <li>The inputStatistics, outputStatistics, dataQualityMetrics, dataQualityAssertions and test facets are optionally
  *     captured as annotations in a SurveyReport created for the run, and the <b>DataScope</b> classification of the
  *     output data assets is optionally maintained from the times and statistics of the writes.</li>
  * </ul>
  * The optional behaviours are controlled by the configuration properties defined in
- * {@link OpenLineageCataloguerConfigurationProperty}.
+ * {@link OpenLineageCataloguerConfigurationProperty}.  The catalog templates are chosen using the names defined in
+ * {@link OpenLineageCataloguerTemplateType}, which also defines the default template for each name.  The templates
+ * property of the connector's catalog targets can replace the default template for a name, or supply a template
+ * for a name that has no default.  (The element that a catalog target points to is not used by this connector.)
  */
 public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnectorBase implements OpenLineageEventListener
 {
@@ -166,10 +173,23 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /*
+     * Values from the jobType facet of jobs run by Apache Airflow.
+     */
+    private static final String AIRFLOW_INTEGRATION  = "AIRFLOW";
+    private static final String AIRFLOW_DAG_JOB_TYPE = "DAG";
+
+    /*
+     * The kinds of element that are created from catalog templates.
+     */
+    private static final String JOB_KIND      = OpenLineageCataloguerTemplateType.JOB_PREFIX;
+    private static final String DATA_SET_KIND = OpenLineageCataloguerTemplateType.DATA_SET_PREFIX;
+
     protected String             destinationName = "Unknown";
     protected IntegrationContext myContext       = null;
 
     private boolean catalogRuns          = false;
+    private boolean catalogRunLineage    = false;
     private boolean catalogSchemas       = true;
     private boolean captureStatistics    = true;
     private boolean captureDataQuality   = true;
@@ -197,6 +217,18 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private final Map<String, Boolean> loadedTemplates = new ConcurrentHashMap<>();
 
     /**
+     * The templates supplied by the connector's catalog targets (lower case template name to template GUID).  These
+     * are used in place of the default templates.  The map is replaced, never updated, on each refresh.
+     */
+    private volatile Map<String, String> catalogTargetTemplates = Collections.emptyMap();
+
+    /**
+     * Details of the templates supplied by the catalog targets (kind of element and template GUID to details -
+     * empty for a template that can not be used).  Cleared on each refresh.
+     */
+    private final Map<String, Optional<CatalogTemplate>> catalogTargetTemplateDetails = new ConcurrentHashMap<>();
+
+    /**
      * The changes to the RunMetrics classifications of processes (and process steps), and to the DataScope
      * classifications of datasets, that have arrived since the last refresh, keyed by element GUID.  The events are
      * queued as they arrive and replayed on each refresh onto the classification as it is then, so that each
@@ -220,6 +252,39 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     record PendingDataScopeChange(OpenLineageRunEvent      event,
                                   OpenLineageOutputDataSet output)
     {
+    }
+
+
+    /**
+     * The catalog template for a new process or data asset.
+     *
+     * @param templateGUID unique identifier of the template
+     * @param typeName open metadata type of the element that the template creates
+     * @param propertiesTypeName the open metadata type that determines the properties bean for the new element
+     *                           (the same as typeName, or one of its super types)
+     * @param deployedImplementationType technology type of the element that the template creates (may be null)
+     * @param definition definition of the template if it is one of the templates from the content packs; null for
+     *                   any other template supplied by a catalog target
+     */
+    private record CatalogTemplate(String             templateGUID,
+                                   String             typeName,
+                                   String             propertiesTypeName,
+                                   String             deployedImplementationType,
+                                   TemplateDefinition definition)
+    {
+        /**
+         * Constructor for a template from the content packs.
+         *
+         * @param definition definition of the template
+         */
+        CatalogTemplate(TemplateDefinition definition)
+        {
+            this(definition.getTemplateGUID(),
+                 definition.getDeployedImplementationType().getAssociatedTypeName(),
+                 definition.getDeployedImplementationType().getAssociatedTypeName(),
+                 definition.getDeployedImplementationType().getDeployedImplementationType(),
+                 definition);
+        }
     }
 
 
@@ -293,10 +358,19 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
 
             catalogRuns          = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.CATALOG_RUNS.getName(), configurationProperties, false);
+            catalogRunLineage    = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.CATALOG_RUN_LINEAGE.getName(), configurationProperties, false);
             catalogSchemas       = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.CATALOG_SCHEMAS.getName(), configurationProperties, true);
             captureStatistics    = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.CAPTURE_STATISTICS.getName(), configurationProperties, true);
             captureDataQuality   = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.CAPTURE_DATA_QUALITY.getName(), configurationProperties, true);
             updateDataScope      = getBooleanConfigurationProperty(OpenLineageCataloguerConfigurationProperty.UPDATE_DATA_SCOPE.getName(), configurationProperties, true);
+
+            /*
+             * The lineage of a run is attached to the run's element, so the runs must be catalogued.
+             */
+            if (catalogRunLineage)
+            {
+                catalogRuns = true;
+            }
         }
 
         myContext = integrationContext;
@@ -305,6 +379,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         {
             resolver                 = new OpenLineageDataSetResolver(myContext, connectorName);
             governanceActionResolver = new OpenLineageGovernanceActionResolver(myContext, connectorName);
+
+            /*
+             * The templates from the catalog targets are needed before the first event arrives.
+             */
+            refreshCatalogTargetTemplates();
 
             myContext.registerOpenLineageListener(this);
         }
@@ -337,12 +416,99 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      * The lineage is catalogued as the events arrive.  The refresh writes the RunMetrics and DataScope
-     * classifications that the events have changed since the last refresh.
+     * classifications that the events have changed since the last refresh, and picks up changes to the templates
+     * supplied by the connector's catalog targets.
      */
     @Override
     public void refresh()
     {
+        refreshCatalogTargetTemplates();
         writeCachedClassifications();
+    }
+
+
+    /**
+     * Read the templates supplied by the connector's catalog targets.  The templates property of each catalog
+     * target relationship maps the template names defined in OpenLineageCataloguerTemplateType to the unique
+     * identifiers of the templates to use in place of the defaults.  Only the relationships are read: the elements
+     * that the catalog targets point to are not used, and no connectors to them are created.
+     */
+    private void refreshCatalogTargetTemplates()
+    {
+        final String methodName = "refreshCatalogTargetTemplates";
+
+        if ((myContext == null) || (myContext.getIntegrationConnectorGUID() == null))
+        {
+            return;
+        }
+
+        try
+        {
+            AssetClient         assetClient = myContext.getAssetClient();
+            Map<String, String> templates   = new TreeMap<>();
+            int                 startFrom   = 0;
+            int                 pageSize    = myContext.getMaxPageSize();
+
+            List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(myContext.getIntegrationConnectorGUID(),
+                                                                                         elementOnly(assetClient.getQueryOptions(startFrom, pageSize)));
+
+            while (catalogTargets != null)
+            {
+                for (OpenMetadataRootElement catalogTarget : catalogTargets)
+                {
+                    if ((catalogTarget != null) &&
+                        (catalogTarget.getRelatedBy() != null) &&
+                        (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties) &&
+                        (catalogTargetProperties.getTemplates() != null))
+                    {
+                        for (Map.Entry<String, String> template : catalogTargetProperties.getTemplates().entrySet())
+                        {
+                            if ((template.getKey() != null) && (template.getValue() != null) && (! template.getValue().isBlank()))
+                            {
+                                templates.put(template.getKey().trim().toLowerCase(), template.getValue().trim());
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * A page size of zero means everything was returned in the first page.
+                 */
+                if (pageSize <= 0)
+                {
+                    break;
+                }
+
+                startFrom      = startFrom + pageSize;
+                catalogTargets = assetClient.getCatalogTargets(myContext.getIntegrationConnectorGUID(),
+                                                               elementOnly(assetClient.getQueryOptions(startFrom, pageSize)));
+            }
+
+            /*
+             * A template that could not be used is tried again, in case it has been loaded or corrected.
+             */
+            catalogTargetTemplateDetails.clear();
+
+            if (! templates.equals(catalogTargetTemplates))
+            {
+                catalogTargetTemplates = templates;
+
+                logRecord(methodName, OpenLineageIntegrationConnectorAuditCode.CATALOG_TARGET_TEMPLATES.getMessageDefinition(connectorName,
+                                                                                                                             templates.toString()));
+            }
+        }
+        catch (Exception error)
+        {
+            /*
+             * The templates from the last successful refresh (or the defaults) are still used.
+             */
+            logExceptionRecord(methodName,
+                               OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                               error);
+        }
     }
 
 
@@ -665,6 +831,11 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
             if ((catalogRuns) && (governanceAction == null))
             {
                 runProcess = syncRun(event, jobProcess, eventDescription);
+
+                if ((catalogRunLineage) && (runProcess != null))
+                {
+                    syncRunLineage(runProcess, inputAssets, outputAssets, iscQualifiedNames, eventDescription);
+                }
             }
 
             if (metricsElement != null)
@@ -836,7 +1007,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
     private CataloguedElement syncJob(String               namespace,
                                       String               name,
                                       OpenLineageJobFacets facets,
-                                      TemplateDefinition   template,
+                                      CatalogTemplate      template,
                                       CataloguedElement    parentProcess,
                                       String               eventDescription) throws InvalidParameterException,
                                                                                     PropertyServerException,
@@ -922,7 +1093,18 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             if (template != null)
             {
-                processProperties.setDeployedImplementationType(template.getDeployedImplementationType().getDeployedImplementationType());
+                if (template.deployedImplementationType() != null)
+                {
+                    processProperties.setDeployedImplementationType(template.deployedImplementationType());
+                }
+
+                /*
+                 * A template supplied by a catalog target may create a more specific type of process.
+                 */
+                if (template.definition() == null)
+                {
+                    processProperties.setTypeName(template.typeName());
+                }
             }
 
             TemplateOptions            newElementOptions   = new TemplateOptions(processClient.getMetadataSourceOptions());
@@ -959,7 +1141,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
             addOwnership(processGUID, (facets == null) ? null : facets.getOwnership(), null);
 
-            logElementCatalogued(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName, qualifiedName, processGUID, "job", name);
+            logElementCatalogued(processProperties.getTypeName(), qualifiedName, processGUID, "job", name);
 
             process = new CataloguedElement(processGUID, qualifiedName, null);
 
@@ -1189,13 +1371,18 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         OpenLineageParentRunFacet parent = run.getFacets().getParent();
 
         /*
-         * The parent of an Apache Airflow task is its DAG.
+         * The parent run facet does not say what type of job the parent is.  The parent of an Apache Airflow task
+         * is its DAG; any other parent is just a job.
          */
-        TemplateDefinition parentTemplate = null;
+        CatalogTemplate parentTemplate;
 
-        if ((job != null) && (getJobTemplate(job.getFacets()) == DataPipelineTemplateType.APACHE_AIRFLOW_TASK_TEMPLATE))
+        if (isAirflowTask(job))
         {
-            parentTemplate = DataPipelineTemplateType.APACHE_AIRFLOW_DAG_TEMPLATE;
+            parentTemplate = getJobTemplate(AIRFLOW_INTEGRATION, AIRFLOW_DAG_JOB_TYPE);
+        }
+        else
+        {
+            parentTemplate = getJobTemplate(null, null);
         }
 
         CataloguedElement rootProcess   = null;
@@ -1528,6 +1715,45 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         }
 
         return null;
+    }
+
+
+    /**
+     * Link a run to the datasets that it read and wrote, with the same lineage relationships that link the datasets
+     * to the job's process (DataFlow for an asset; DataMapping for a table, plus a DataFlow to the table's asset).
+     * The lineage on the job's process shows every dataset that any of its runs has used; this shows the datasets
+     * that this run used.
+     *
+     * @param runProcess catalogued run
+     * @param inputAssets catalogued input datasets (may include nulls)
+     * @param outputAssets catalogued output datasets (may include nulls)
+     * @param iscQualifiedNames qualified names of the information supply chains for the lineage (may be empty)
+     * @param eventDescription description of the event for logging
+     */
+    private void syncRunLineage(CataloguedElement       runProcess,
+                                List<CataloguedElement> inputAssets,
+                                List<CataloguedElement> outputAssets,
+                                List<String>            iscQualifiedNames,
+                                String                  eventDescription)
+    {
+        final String methodName = "syncRunLineage";
+
+        try
+        {
+            for (CataloguedElement inputAsset : inputAssets)
+            {
+                ensureDataLineage(inputAsset, runProcess, null, DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS, iscQualifiedNames);
+            }
+
+            for (CataloguedElement outputAsset : outputAssets)
+            {
+                ensureDataLineage(runProcess, outputAsset, null, DERIVED_FROM_RUN_INPUTS_AND_OUTPUTS, iscQualifiedNames);
+            }
+        }
+        catch (Exception error)
+        {
+            logOptionalMetadataFailed(methodName, "run lineage", eventDescription, error);
+        }
     }
 
 
@@ -1936,7 +2162,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         }
 
         AssetClient         assetClient      = myContext.getAssetClient();
-        TemplateDefinition  template         = getDataSetTemplate(namespace, name);
+        CatalogTemplate     template         = getDataSetTemplate(namespace, name);
         DataAssetProperties assetProperties  = getDataSetProperties(template, namespace, name, facets);
         String              expectedTypeName = assetProperties.getTypeName();
         String              qualifiedName    = assetProperties.getQualifiedName();
@@ -2622,7 +2848,7 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
     /**
      * Create an asset from its catalog template, or directly from its properties if there is no template or the
-     * template is not loaded (the templates for some technologies are in optional content packs - for example the
+     * template is not loaded (the default templates for some technologies are in optional content packs - for example the
      * PostgreSQL Table template is in the Postgres content pack).  The properties set the asset's type, names,
      * technology type and OpenLineage identity either way.
      *
@@ -2639,17 +2865,20 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      */
     private String createAsset(AssetClient                   assetClient,
                                TemplateOptions               options,
-                               TemplateDefinition            template,
+                               CatalogTemplate               template,
                                AssetProperties               properties,
                                Map<String, String>           placeholderProperties,
                                ProcessHierarchyProperties    parentRelationshipProperties) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        if ((template != null) && (isTemplateLoaded(assetClient, template)))
+        /*
+         * A template supplied by a catalog target that is not from the content packs was retrieved when it was chosen.
+         */
+        if ((template != null) && ((template.definition() == null) || (isTemplateLoaded(assetClient, template.definition()))))
         {
             return assetClient.createAssetFromTemplate(options,
-                                                       template.getTemplateGUID(),
+                                                       template.templateGUID(),
                                                        properties,
                                                        null,
                                                        placeholderProperties,
@@ -2701,30 +2930,52 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param facets job facets (may be null)
      * @return template, or null for a generic DeployedSoftwareComponent
      */
-    private TemplateDefinition getJobTemplate(OpenLineageJobFacets facets)
+    private CatalogTemplate getJobTemplate(OpenLineageJobFacets facets)
     {
-        if ((facets == null) || (facets.getJobType() == null) || (facets.getJobType().getIntegration() == null))
+        if ((facets == null) || (facets.getJobType() == null))
         {
-            return null;
+            return getJobTemplate(null, null);
         }
 
-        String integration = facets.getJobType().getIntegration().toUpperCase();
-        String jobType     = (facets.getJobType().getJobType() == null) ? "" : facets.getJobType().getJobType().toUpperCase();
+        return getJobTemplate(facets.getJobType().getIntegration(), facets.getJobType().getJobType());
+    }
 
-        switch (integration)
+
+    /**
+     * Choose the catalog template for a job that is not catalogued yet.
+     *
+     * @param integration integration from the jobType facet (may be null)
+     * @param jobType jobType from the jobType facet (may be null)
+     * @return template, or null for a generic DeployedSoftwareComponent
+     */
+    private CatalogTemplate getJobTemplate(String integration,
+                                           String jobType)
+    {
+        return getTemplate(JOB_KIND, OpenLineageCataloguerTemplateType.getJobTemplateNames(integration, jobType));
+    }
+
+
+    /**
+     * Is the job a task run by Apache Airflow (rather than an Airflow DAG)?
+     *
+     * @param job job from the event (may be null)
+     * @return boolean
+     */
+    private boolean isAirflowTask(OpenLineageJob job)
+    {
+        if ((job == null) || (job.getFacets() == null) || (job.getFacets().getJobType() == null))
         {
-            case "AIRFLOW" -> { return ("DAG".equals(jobType)) ? DataPipelineTemplateType.APACHE_AIRFLOW_DAG_TEMPLATE : DataPipelineTemplateType.APACHE_AIRFLOW_TASK_TEMPLATE; }
-            case "SPARK" -> { return DataPipelineTemplateType.APACHE_SPARK_JOB_TEMPLATE; }
-            case "DEBEZIUM" -> { return DataPipelineTemplateType.DEBEZIUM_TASK_TEMPLATE; }
-            case "SQL" -> { return DataPipelineTemplateType.SQL_JOB_TEMPLATE; }
-            default -> { return ("QUERY".equals(jobType)) ? DataPipelineTemplateType.SQL_JOB_TEMPLATE : null; }
+            return false;
         }
+
+        return (AIRFLOW_INTEGRATION.equalsIgnoreCase(job.getFacets().getJobType().getIntegration())) &&
+               (! AIRFLOW_DAG_JOB_TYPE.equalsIgnoreCase(job.getFacets().getJobType().getJobType()));
     }
 
 
     /**
      * Choose the catalog template for a dataset that is not catalogued yet, from the technology in its namespace's
-     * URI scheme (see https://openlineage.io/docs/spec/naming).  The templates create just the asset (see the
+     * URI scheme (see https://openlineage.io/docs/spec/naming).  The default templates create just the asset (see the
      * DatabaseTable, NoSQL, FileStore, DocumentManagement, EventStream and DataPipeline template types), apart from
      * the Apache Kafka topic template, which also creates the topic's connection.
      *
@@ -2732,64 +2983,230 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param name dataset name
      * @return template, or null if the technology is not known (the dataset becomes a generic DataStore)
      */
-    private TemplateDefinition getDataSetTemplate(String namespace,
-                                                  String name)
+    private CatalogTemplate getDataSetTemplate(String namespace,
+                                               String name)
     {
-        String  rawScheme = getRawNamespaceScheme(namespace);
-        String  scheme    = getNamespaceScheme(namespace);
-        boolean isFolder  = name.endsWith("/");
+        return getTemplate(DATA_SET_KIND,
+                           OpenLineageCataloguerTemplateType.getDataSetTemplateNames(getRawNamespaceScheme(namespace),
+                                                                                     getNamespaceScheme(namespace),
+                                                                                     name));
+    }
 
-        if (scheme == null)
+
+    /**
+     * Choose the catalog template for a job or dataset.  The template names are tried from the most specific to
+     * the least specific.  For each name, the template supplied by a catalog target is used if there is one,
+     * and the default template if not.
+     *
+     * @param elementKind job or dataset
+     * @param templateNames template names for the job or dataset, most specific first
+     * @return template, or null if none of the names has a template
+     */
+    private CatalogTemplate getTemplate(String       elementKind,
+                                        List<String> templateNames)
+    {
+        Map<String, String> suppliedTemplates = catalogTargetTemplates;
+
+        for (String templateName : templateNames)
         {
-            return null;
+            String suppliedTemplateGUID = suppliedTemplates.get(templateName.toLowerCase());
+
+            if (suppliedTemplateGUID != null)
+            {
+                CatalogTemplate suppliedTemplate = getCatalogTargetTemplate(elementKind, templateName, suppliedTemplateGUID);
+
+                if (suppliedTemplate != null)
+                {
+                    return suppliedTemplate;
+                }
+            }
+
+            TemplateDefinition defaultTemplate = OpenLineageCataloguerTemplateType.getDefaultTemplate(templateName);
+
+            if (defaultTemplate != null)
+            {
+                return new CatalogTemplate(defaultTemplate);
+            }
         }
 
-        switch (scheme)
+        return null;
+    }
+
+
+    /**
+     * Return the details of a template supplied by a catalog target.  If it is one of the templates from the
+     * content packs, its definition supplies the details.  Any other template is retrieved to find the type of
+     * element it creates.  The answer is remembered until the next refresh.
+     *
+     * @param elementKind job or dataset
+     * @param templateName name that the template was supplied for
+     * @param templateGUID unique identifier of the template
+     * @return template, or null if the template can not be used
+     */
+    private CatalogTemplate getCatalogTargetTemplate(String elementKind,
+                                                     String templateName,
+                                                     String templateGUID)
+    {
+        final String methodName = "getCatalogTargetTemplate";
+
+        String cacheKey = elementKind + "|" + templateGUID;
+
+        Optional<CatalogTemplate> knownTemplate = catalogTargetTemplateDetails.get(cacheKey);
+
+        if (knownTemplate != null)
         {
-            case "postgres" -> { return DatabaseTableTemplateType.POSTGRESQL_TABLE_TEMPLATE; }
-            case "mssql" -> { return ("sqlserver".equals(rawScheme)) ? DatabaseTableTemplateType.AZURE_SYNAPSE_TABLE_TEMPLATE : DatabaseTableTemplateType.MSSQL_TABLE_TEMPLATE; }
-            case "oracle" -> { return DatabaseTableTemplateType.ORACLE_TABLE_TEMPLATE; }
-            case "db2" -> { return DatabaseTableTemplateType.DB2LUW_TABLE_TEMPLATE; }
-            case "awsathena" -> { return DatabaseTableTemplateType.AMAZON_ATHENA_TABLE_TEMPLATE; }
-            case "arn" -> { return DatabaseTableTemplateType.AWS_GLUE_TABLE_TEMPLATE; }
-            case "azurekusto" -> { return DatabaseTableTemplateType.AZURE_DATA_EXPLORER_TABLE_TEMPLATE; }
-            case "bigquery" -> { return DatabaseTableTemplateType.GOOGLE_BIGQUERY_TABLE_TEMPLATE; }
-            case "fabric-warehouse" -> { return DatabaseTableTemplateType.MICROSOFT_FABRIC_WAREHOUSE_TABLE_TEMPLATE; }
-            case "mysql" -> { return DatabaseTableTemplateType.MYSQL_TABLE_TEMPLATE; }
-            case "crate" -> { return DatabaseTableTemplateType.CRATEDB_TABLE_TEMPLATE; }
-            case "hive" -> { return DatabaseTableTemplateType.APACHE_HIVE_TABLE_TEMPLATE; }
-            case "oceanbase" -> { return DatabaseTableTemplateType.OCEANBASE_TABLE_TEMPLATE; }
-            case "teradata" -> { return DatabaseTableTemplateType.TERADATA_TABLE_TEMPLATE; }
-            case "redshift" -> { return DatabaseTableTemplateType.AMAZON_REDSHIFT_TABLE_TEMPLATE; }
-            case "snowflake" -> { return DatabaseTableTemplateType.SNOWFLAKE_TABLE_TEMPLATE; }
-            case "spanner" -> { return DatabaseTableTemplateType.GOOGLE_SPANNER_TABLE_TEMPLATE; }
-            case "trino" -> { return DatabaseTableTemplateType.TRINO_TABLE_TEMPLATE; }
-            case "unitycatalog" -> { return DatabaseTableTemplateType.UNITY_CATALOG_TABLE_TEMPLATE; }
-            case "cassandra" -> { return NoSQLTemplateType.APACHE_CASSANDRA_TABLE_TEMPLATE; }
-            case "azurecosmos" -> { return NoSQLTemplateType.AZURE_COSMOS_DB_COLLECTION_TEMPLATE; }
-            case "milvus" -> { return NoSQLTemplateType.MILVUS_COLLECTION_TEMPLATE; }
-            case "s3" -> { return isFolder ? FileStoreTemplateType.AMAZON_S3_FOLDER_TEMPLATE : FileStoreTemplateType.AMAZON_S3_OBJECT_TEMPLATE; }
-            case "gs" -> { return isFolder ? FileStoreTemplateType.GOOGLE_CLOUD_STORAGE_FOLDER_TEMPLATE : FileStoreTemplateType.GOOGLE_CLOUD_STORAGE_OBJECT_TEMPLATE; }
-            case "wasb", "wasbs" -> { return isFolder ? FileStoreTemplateType.AZURE_BLOB_STORAGE_FOLDER_TEMPLATE : FileStoreTemplateType.AZURE_BLOB_STORAGE_OBJECT_TEMPLATE; }
-            case "abfs", "abfss" -> { return isFolder ? FileStoreTemplateType.AZURE_DATA_LAKE_STORAGE_DIRECTORY_TEMPLATE : FileStoreTemplateType.AZURE_DATA_LAKE_STORAGE_FILE_TEMPLATE; }
-            case "hdfs" -> { return isFolder ? FileStoreTemplateType.HDFS_DIRECTORY_TEMPLATE : FileStoreTemplateType.HDFS_FILE_TEMPLATE; }
-            case "dbfs" -> { return isFolder ? FileStoreTemplateType.DATABRICKS_FILE_SYSTEM_DIRECTORY_TEMPLATE : FileStoreTemplateType.DATABRICKS_FILE_SYSTEM_FILE_TEMPLATE; }
-            case "file" -> { return isFolder ? FileStoreTemplateType.LOCAL_FOLDER_TEMPLATE : FileStoreTemplateType.LOCAL_FILE_TEMPLATE; }
-            case "box" -> { return DocumentManagementTemplateType.BOX_FILE_TEMPLATE; }
-            case "filenet" -> { return DocumentManagementTemplateType.IBM_FILENET_DOCUMENT_TEMPLATE; }
-            case "mssharepoint" -> { return DocumentManagementTemplateType.MICROSOFT_SHAREPOINT_DOCUMENT_TEMPLATE; }
-            case "pubsub" -> { return (name.startsWith("subscription:")) ? EventStreamTemplateType.GOOGLE_PUBSUB_SUBSCRIPTION_TEMPLATE : EventStreamTemplateType.GOOGLE_PUBSUB_TOPIC_TEMPLATE; }
-            case "kafka" -> { return KafkaTemplateType.KAFKA_TOPIC_TEMPLATE; }
-            case "inmemory" -> { return DataPipelineTemplateType.IN_MEMORY_DATA_SET_TEMPLATE; }
-            default -> { return null; }
+            return knownTemplate.orElse(null);
         }
+
+        CatalogTemplate template     = null;
+        String          ignoreReason = null;
+
+        try
+        {
+            TemplateDefinition definition = OpenLineageCataloguerTemplateType.getDefaultTemplateByGUID(templateGUID);
+            String             typeName   = null;
+
+            if (definition != null)
+            {
+                /*
+                 * One of the templates from the content packs, used for a different name.
+                 */
+                typeName = definition.getDeployedImplementationType().getAssociatedTypeName();
+
+                if (isDefaultTemplateFor(elementKind, templateGUID))
+                {
+                    template = new CatalogTemplate(definition);
+                }
+            }
+            else
+            {
+                AssetClient             assetClient     = myContext.getAssetClient();
+                OpenMetadataRootElement templateElement = assetClient.getAssetByGUID(templateGUID, elementOnly(assetClient.getGetOptions()));
+
+                if (templateElement == null)
+                {
+                    ignoreReason = "it is not a known asset";
+                }
+                else
+                {
+                    String propertiesTypeName;
+
+                    typeName = templateElement.getElementHeader().getType().getTypeName();
+
+                    if (JOB_KIND.equals(elementKind))
+                    {
+                        propertiesTypeName = (propertyHelper.isTypeOf(templateElement.getElementHeader(), OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName)) ? OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName : null;
+                    }
+                    else
+                    {
+                        propertiesTypeName = getDataSetPropertiesTypeName(templateElement);
+                    }
+
+                    if (propertiesTypeName != null)
+                    {
+                        String deployedImplementationType = null;
+
+                        if (templateElement.getProperties() instanceof AssetProperties templateProperties)
+                        {
+                            deployedImplementationType = templateProperties.getDeployedImplementationType();
+                        }
+
+                        template = new CatalogTemplate(templateGUID, typeName, propertiesTypeName, deployedImplementationType, null);
+                    }
+                }
+            }
+
+            if ((template == null) && (ignoreReason == null))
+            {
+                if (JOB_KIND.equals(elementKind))
+                {
+                    ignoreReason = "it creates a " + typeName + " element and a job needs a template for a " + OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName;
+                }
+                else
+                {
+                    ignoreReason = "it creates a " + typeName + " element and a dataset needs a template for a data asset";
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            ignoreReason = "it could not be retrieved; the " + error.getClass().getName() + " exception message was: " + error.getMessage();
+        }
+
+        if (template == null)
+        {
+            logRecord(methodName, OpenLineageIntegrationConnectorAuditCode.CATALOG_TARGET_TEMPLATE_IGNORED.getMessageDefinition(connectorName,
+                                                                                                                                templateGUID,
+                                                                                                                                templateName,
+                                                                                                                                ignoreReason));
+        }
+
+        catalogTargetTemplateDetails.put(cacheKey, Optional.ofNullable(template));
+
+        return template;
+    }
+
+
+    /**
+     * Is the template one of the default templates for this kind of element?
+     *
+     * @param elementKind job or dataset
+     * @param templateGUID unique identifier of a template
+     * @return boolean
+     */
+    private boolean isDefaultTemplateFor(String elementKind,
+                                         String templateGUID)
+    {
+        for (OpenLineageCataloguerTemplateType templateType : OpenLineageCataloguerTemplateType.values())
+        {
+            if ((templateType.getTemplateName().startsWith(elementKind + ":")) &&
+                (templateType.getDefaultTemplate().getTemplateGUID().equals(templateGUID)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Work out which properties bean describes the data asset that a template creates.
+     *
+     * @param templateElement template supplied by a catalog target
+     * @return type that determines the properties bean, or null if the template does not create a data asset
+     */
+    private String getDataSetPropertiesTypeName(OpenMetadataRootElement templateElement)
+    {
+        /*
+         * The more specific types come before their super types.
+         */
+        final String[] propertiesTypeNames = { OpenMetadataType.DATA_FOLDER.typeName,
+                                               OpenMetadataType.DOCUMENT.typeName,
+                                               OpenMetadataType.DATA_FILE.typeName,
+                                               OpenMetadataType.TOPIC.typeName,
+                                               OpenMetadataType.DATA_FEED.typeName,
+                                               OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
+                                               OpenMetadataType.DATA_SET.typeName,
+                                               OpenMetadataType.DATA_STORE.typeName };
+
+        for (String propertiesTypeName : propertiesTypeNames)
+        {
+            if (propertyHelper.isTypeOf(templateElement.getElementHeader(), propertiesTypeName))
+            {
+                return propertiesTypeName;
+            }
+        }
+
+        return null;
     }
 
 
     /**
      * Return the properties for a new dataset asset: a bean of the template's open metadata type (or DataStore if
      * there is no template), named with this connector's convention and carrying the OpenLineage identity.  The
-     * properties replace the template's values.
+     * properties replace the template's values, so an asset created from a template supplied by a catalog target
+     * is named in the same way as one created from a default template.
      *
      * @param template catalog template (may be null)
      * @param namespace dataset namespace
@@ -2797,48 +3214,49 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * @param facets dataset facets (may be null)
      * @return properties bean
      */
-    private DataAssetProperties getDataSetProperties(TemplateDefinition       template,
+    private DataAssetProperties getDataSetProperties(CatalogTemplate          template,
                                                      String                   namespace,
                                                      String                   name,
                                                      OpenLineageDataSetFacets facets)
     {
-        String              typeName   = (template == null) ? OpenMetadataType.DATA_STORE.typeName : template.getDeployedImplementationType().getAssociatedTypeName();
+        String              typeName           = (template == null) ? OpenMetadataType.DATA_STORE.typeName : template.typeName();
+        String              propertiesTypeName = (template == null) ? OpenMetadataType.DATA_STORE.typeName : template.propertiesTypeName();
         DataAssetProperties properties;
 
-        if (OpenMetadataType.DATA_FOLDER.typeName.equals(typeName))
+        if (OpenMetadataType.DATA_FOLDER.typeName.equals(propertiesTypeName))
         {
             DataFolderProperties folderProperties = new DataFolderProperties();
 
             folderProperties.setPathName(name);
             properties = folderProperties;
         }
-        else if (OpenMetadataType.DOCUMENT.typeName.equals(typeName))
+        else if (OpenMetadataType.DOCUMENT.typeName.equals(propertiesTypeName))
         {
             DocumentProperties documentProperties = new DocumentProperties();
 
             documentProperties.setPathName(name);
             properties = documentProperties;
         }
-        else if (OpenMetadataType.DATA_FILE.typeName.equals(typeName))
+        else if (OpenMetadataType.DATA_FILE.typeName.equals(propertiesTypeName))
         {
             DataFileProperties fileProperties = new DataFileProperties();
 
             fileProperties.setPathName(name);
             properties = fileProperties;
         }
-        else if (OpenMetadataType.TOPIC.typeName.equals(typeName))
+        else if (OpenMetadataType.TOPIC.typeName.equals(propertiesTypeName))
         {
             properties = new TopicProperties();
         }
-        else if (OpenMetadataType.DATA_FEED.typeName.equals(typeName))
+        else if (OpenMetadataType.DATA_FEED.typeName.equals(propertiesTypeName))
         {
             properties = new DataFeedProperties();
         }
-        else if (OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName.equals(typeName))
+        else if (OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName.equals(propertiesTypeName))
         {
             properties = new VirtualRelationalTableProperties();
         }
-        else if (OpenMetadataType.DATA_SET.typeName.equals(typeName))
+        else if (OpenMetadataType.DATA_SET.typeName.equals(propertiesTypeName))
         {
             properties = new DataSetProperties();
         }
@@ -2858,12 +3276,12 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
 
         if (template != null)
         {
-            properties.setDeployedImplementationType(template.getDeployedImplementationType().getDeployedImplementationType());
+            properties.setDeployedImplementationType(template.deployedImplementationType());
 
             /*
              * A local file's format says more than the generic data file technology type.
              */
-            if (template == FileStoreTemplateType.LOCAL_FILE_TEMPLATE)
+            if (template.definition() == FileStoreTemplateType.LOCAL_FILE_TEMPLATE)
             {
                 String fileFormat = ((facets != null) && (facets.getStorage() != null)) ? facets.getStorage().getFileFormat() : null;
 
@@ -2882,13 +3300,13 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
      * of the template's values; the placeholders fill the rest (for example the connection and endpoint that the
      * Apache Kafka topic template creates).
      *
-     * @param template catalog template
+     * @param template catalog template (may be null)
      * @param namespace dataset or job namespace
      * @param name dataset or job name
      * @param description description (may be null)
      * @return map of placeholder name to value
      */
-    private Map<String, String> getPlaceholderProperties(TemplateDefinition template,
+    private Map<String, String> getPlaceholderProperties(CatalogTemplate    template,
                                                          String             namespace,
                                                          String             name,
                                                          String             description)
@@ -2903,9 +3321,18 @@ public class OpenLineageCataloguerIntegrationConnector extends IntegrationConnec
         placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), name);
         placeholderProperties.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), name);
 
-        if (template == KafkaTemplateType.KAFKA_TOPIC_TEMPLATE)
+        /*
+         * The Apache Kafka topic template describes where the topic is.  A template supplied by a catalog target
+         * that is not from the content packs may do the same, so it is given the same values.
+         */
+        if ((template != null) && ((template.definition() == null) || (template.definition() == KafkaTemplateType.KAFKA_TOPIC_TEMPLATE)))
         {
             OpenLineageNamespace location = OpenLineageNamespace.fromNamespace(namespace);
+
+            if (location == null)
+            {
+                return placeholderProperties;
+            }
 
             placeholderProperties.put(PlaceholderProperty.HOST_IDENTIFIER.getName(), location.host());
             placeholderProperties.put(PlaceholderProperty.PORT_NUMBER.getName(), location.port());

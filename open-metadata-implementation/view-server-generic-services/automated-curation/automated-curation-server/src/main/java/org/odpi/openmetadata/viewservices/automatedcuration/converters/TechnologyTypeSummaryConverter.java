@@ -64,6 +64,7 @@ public class TechnologyTypeSummaryConverter<B> extends AutomatedCurationConverte
                     bean.setQualifiedName(this.removeQualifiedName(elementProperties));
                     bean.setCategory(this.removeCategory(elementProperties));
                     bean.setDescription(this.removeDescription(elementProperties));
+                    bean.setURL(this.removeURL(elementProperties));
                 }
                 else
                 {

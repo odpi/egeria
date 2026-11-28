@@ -39,8 +39,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * IntegrationContextManager is the base class for the context manager that is implemented by each integration service.
@@ -69,9 +69,14 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectWriter                   OBJECT_WRITER            = OBJECT_MAPPER.writer();
     private static final ObjectReader                   OBJECT_READER            = OBJECT_MAPPER.reader();
-    private final        List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
-    private final        List<BitolDocumentListener>    registeredBitolListeners = new ArrayList<>();
-    private final        List<DcatDocumentListener>     registeredDcatListeners  = new ArrayList<>();
+
+    /*
+     * Listeners are added and removed as connectors start and stop, while events are being delivered on other
+     * threads, so the lists are copied on each change.
+     */
+    private final        List<OpenLineageEventListener> registeredEventListeners = new CopyOnWriteArrayList<>();
+    private final        List<BitolDocumentListener>    registeredBitolListeners = new CopyOnWriteArrayList<>();
+    private final        List<DcatDocumentListener>     registeredDcatListeners  = new CopyOnWriteArrayList<>();
 
     /**
      * Default constructor
@@ -276,6 +281,18 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     public synchronized  void registerListener(OpenLineageEventListener listener)
     {
         registeredEventListeners.add(listener);
+    }
+
+
+    /**
+     * Remove a listener, so that it receives no more open lineage events.
+     *
+     * @param listener listener to remove
+     */
+    @Override
+    public synchronized void unregisterListener(OpenLineageEventListener listener)
+    {
+        registeredEventListeners.remove(listener);
     }
 
     /**
@@ -486,6 +503,18 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
 
 
     /**
+     * Remove a listener, so that it receives no more DCAT documents.
+     *
+     * @param listener listener to remove
+     */
+    @Override
+    public synchronized void unregisterDcatListener(DcatDocumentListener listener)
+    {
+        registeredDcatListeners.remove(listener);
+    }
+
+
+    /**
      * Publish a DCAT document.  The document is parsed and passed to each of the registered listeners.  A document that can not be
      * parsed, or that describes no catalogs, datasets or data services, is reported in the audit log and discarded.
      *
@@ -559,6 +588,18 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     public synchronized void registerListener(BitolDocumentListener listener)
     {
         registeredBitolListeners.add(listener);
+    }
+
+
+    /**
+     * Remove a listener, so that it receives no more Bitol documents.
+     *
+     * @param listener listener to remove
+     */
+    @Override
+    public synchronized void unregisterListener(BitolDocumentListener listener)
+    {
+        registeredBitolListeners.remove(listener);
     }
 
 

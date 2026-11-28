@@ -9,7 +9,7 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 |  |  |
 |---|---|
 | **Type of message** | Audit log messages |
-| **Number of messages** | 14 |
+| **Number of messages** | 16 |
 | **Message identifiers begin** | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` |
 | **Java class** | `org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode` |
 | **Module** | [open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors](../../../open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors) |
@@ -30,6 +30,8 @@ The OpenLineageIntegrationConnectorAuditCode is used to define the message conte
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0025](#open-lineage-integration-connector-0025) | INFO | The {0} integration connector has removed asset {1} ({2}) using delete method {3} following open lineage {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0023](#open-lineage-integration-connector-0023) | ERROR | The {0} integration connector was unable to record {1} for open lineage event {2}; the {3} exception message was: {4} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0026](#open-lineage-integration-connector-0026) | INFO | The {0} integration connector has applied the run events received since its last refresh to the RunMetrics and DataScope classifications of {1} elements |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0027](#open-lineage-integration-connector-0027) | INFO | The {0} integration connector is using the templates supplied by its catalog targets in place of its default templates for these names: {1} |
+| [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0028](#open-lineage-integration-connector-0028) | ERROR | The {0} integration connector is ignoring template {1} supplied for {2} by a catalog target because {3} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030](#open-lineage-integration-connector-0030) | INFO | The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0031](#open-lineage-integration-connector-0031) | INFO | The {0} integration connector has deleted {1} open lineage events, {2} runs, {3} data quality assertions and {4} tests recorded before {5} from database schema {6} |
 | [OPEN-LINEAGE-INTEGRATION-CONNECTOR-0032](#open-lineage-integration-connector-0032) | ERROR | The {0} integration connector is not able to store open lineage events in catalog target {1} because {2} |
@@ -223,6 +225,48 @@ The run metrics of processes and the data scope of datasets are gathered from th
 **User action**
 
 No specific action is required.  The interval between refreshes sets how up to date these classifications are.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0027
+
+> The {0} integration connector is using the templates supplied by its catalog targets in place of its default templates for these names: {1}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.CATALOG_TARGET_TEMPLATES` |
+| **Severity** | INFO - The server is providing information about its normal operation. |
+| **Message inserts** | `{0}`, `{1}` |
+
+**System action**
+
+The templates property of the connector's catalog targets maps the names that the connector builds from the open lineage events to the unique identifiers of catalog templates.  These templates are used for the jobs and datasets that are not catalogued yet.  The connector reads its catalog targets on each refresh and writes this message when the templates change.
+
+**User action**
+
+No specific action is required.  Check that the list of names and templates is the one that is expected.
+
+
+----
+
+### OPEN-LINEAGE-INTEGRATION-CONNECTOR-0028
+
+> The {0} integration connector is ignoring template {1} supplied for {2} by a catalog target because {3}
+
+|  |  |
+|---|---|
+| **Java constant** | `OpenLineageIntegrationConnectorAuditCode.CATALOG_TARGET_TEMPLATE_IGNORED` |
+| **Severity** | ERROR - An error occurred. This may restrict some of the server's operations. |
+| **Message inserts** | `{0}`, `{1}`, `{2}`, `{3}` |
+
+**System action**
+
+The connector uses its default template for the job or dataset, or creates the element without a template if there is no default.
+
+**User action**
+
+Correct the unique identifier of the template in the templates property of the catalog target.  A template for a job must be a DeployedSoftwareComponent and a template for a dataset must be a data asset.  The connector tries the template again after its next refresh.
 
 
 ----
