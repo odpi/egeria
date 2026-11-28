@@ -18,14 +18,14 @@ public enum VerifyAssetGuard
 {
     NO_ZONES                     ( "no-zones", CompletionStatus.ACTIONED, "There are no governance zones assigned to this Asset"),
     NO_OWNER                     ( "no-owner", CompletionStatus.ACTIONED, "There is no owner assigned to this Asset"),
-    NO_ORIGIN                    ( "no-origin", CompletionStatus.FAILED, "There are no origin properties assigned to this Asset"),
+    NO_ORIGIN                    ( "no-origin", CompletionStatus.ACTIONED, "There are no origin properties assigned to this Asset"),
     ZONES_ASSIGNED               ( "zones-assigned", CompletionStatus.ACTIONED, "Governance zones are assigned to this asset."),
     OWNER_ASSIGNED               ( "owner-assigned", CompletionStatus.ACTIONED, "An owner is assigned to this asset."),
     ORIGIN_ASSIGNED              ( "origin-assigned", CompletionStatus.ACTIONED, "Origin properties are assigned to this asset."),
     VERIFICATION_FAILED          ( "verification-failed", CompletionStatus.FAILED, "An unexpected error occurred during the verification process."),
     NO_TARGETS_DETECTED          ( "no-targets-detected", CompletionStatus.INVALID, "There is no supplied action target and so the governance service does not know which asset to work on."),
     TARGET_NOT_ASSET             ( "target-not-asset", CompletionStatus.INVALID, "The action target is not an asset."),
-    MULTIPLE_TARGETS_DETECTED    ( "multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the origin search could be different for each action target making it difficult to automate the response."),
+    MULTIPLE_TARGETS_DETECTED    ( "multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the verification could be different for each action target making it difficult to automate the response."),
 
     ;
 
