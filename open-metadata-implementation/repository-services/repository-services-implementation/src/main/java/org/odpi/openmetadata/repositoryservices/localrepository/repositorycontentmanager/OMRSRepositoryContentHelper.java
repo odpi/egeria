@@ -2280,11 +2280,6 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             return null;
         }
 
-        if (pageSize == 0)
-        {
-            return fullResults;
-        }
-
         int fullResultsSize = fullResults.size();
 
         if (fromElement >= fullResultsSize)
@@ -2331,12 +2326,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                              });
         }
 
-        if ((fromElement == 0) && (pageSize > fullResultsSize))
+        if ((fromElement == 0) && (pageSize == 0 || pageSize > fullResultsSize))
         {
             return fullResults;
         }
+        int toIndex = fullResultsSize;
 
-        int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        if (pageSize != 0)
+        {
+            toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        }
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
     }
 
@@ -2662,7 +2661,33 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
          }
          else if (!o1PropertyTypeName.equals(o2PropertyTypeName))
          {
+             /*
+              * The two values have different primitive types so they cannot be compared by value,
+              * but they must not compare as equal either: a comparator that reports mixed-type
+              * pairs as equal while ordering same-type pairs strictly is not transitive, and
+              * TimSort then aborts the find request with "Comparison method violates its general
+              * contract!".  Order the values by their type name to keep the sort a total order.
+              */
+             sortResult = o1PropertyTypeName.compareTo(o2PropertyTypeName);
+         }
+         else if (o1PropertyValue == null && o2PropertyValue == null)
+         {
+             /*
+              * Both values are unset (a defined but empty primitive, as serialised by a remote
+              * repository).  Order by the GUID tie-break below.
+              */
              sortResult = 0;
+         }
+         else if (o1PropertyValue != null && o2PropertyValue == null)
+         {
+             /*
+              * An unset value sorts first, matching the way a missing property is handled above.
+              */
+             sortResult = 1;
+         }
+         else if (o1PropertyValue == null)
+         {
+             sortResult = -1;
          }
          else
          {
