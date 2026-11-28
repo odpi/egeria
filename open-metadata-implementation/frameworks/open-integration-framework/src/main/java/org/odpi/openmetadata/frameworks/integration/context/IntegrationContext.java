@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,13 @@ public class IntegrationContext extends ConnectorContextBase
 {
     protected final OpenMetadataEventClient    openMetadataEventClient;
     private final   OpenLineageListenerManager openLineageListenerManager;
+
+    /*
+     * The listeners registered through this context, so that they can be removed when the connector is disconnected.
+     */
+    private final List<OpenLineageEventListener> openLineageListeners = new ArrayList<>();
+    private final List<BitolDocumentListener>    bitolListeners       = new ArrayList<>();
+    private final List<DcatDocumentListener>     dcatListeners        = new ArrayList<>();
     private final   BitolDocumentManager       bitolDocumentManager;
     private final   DcatDocumentManager        dcatDocumentManager;
 
@@ -224,9 +232,44 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param listener listener to call
      */
-    public void registerOpenLineageListener(OpenLineageEventListener listener)
+    public synchronized void registerOpenLineageListener(OpenLineageEventListener listener)
     {
         openLineageListenerManager.registerListener(listener);
+        openLineageListeners.add(listener);
+    }
+
+
+    /**
+     * Remove the listeners that the connector registered for open lineage events, Bitol documents and DCAT
+     * documents, and then disconnect the context.  Without this, a connector that is restarted (for example
+     * because its configuration properties have been updated) carries on receiving events through the instance
+     * that was replaced, as well as through the new one.
+     */
+    @Override
+    public synchronized void disconnect()
+    {
+        for (OpenLineageEventListener listener : openLineageListeners)
+        {
+            openLineageListenerManager.unregisterListener(listener);
+        }
+
+        openLineageListeners.clear();
+
+        for (BitolDocumentListener listener : bitolListeners)
+        {
+            bitolDocumentManager.unregisterListener(listener);
+        }
+
+        bitolListeners.clear();
+
+        for (DcatDocumentListener listener : dcatListeners)
+        {
+            dcatDocumentManager.unregisterDcatListener(listener);
+        }
+
+        dcatListeners.clear();
+
+        super.disconnect();
     }
 
 
@@ -277,9 +320,10 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param listener listener to call
      */
-    public void registerDcatListener(DcatDocumentListener listener)
+    public synchronized void registerDcatListener(DcatDocumentListener listener)
     {
         dcatDocumentManager.registerDcatListener(listener);
+        dcatListeners.add(listener);
     }
 
 
@@ -305,9 +349,10 @@ public class IntegrationContext extends ConnectorContextBase
      *
      * @param listener listener to call
      */
-    public void registerBitolListener(BitolDocumentListener listener)
+    public synchronized void registerBitolListener(BitolDocumentListener listener)
     {
         bitolDocumentManager.registerListener(listener);
+        bitolListeners.add(listener);
     }
 
 

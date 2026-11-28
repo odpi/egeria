@@ -17,6 +17,15 @@ public interface DcatDocumentManager
 
 
     /**
+     * Remove a listener, so that it receives no more DCAT documents.  This is called when the integration
+     * connector that registered it is disconnected.
+     *
+     * @param listener listener to remove
+     */
+    void unregisterDcatListener(DcatDocumentListener listener);
+
+
+    /**
      * Publish a DCAT document.  The document is parsed and passed to each of the registered listeners.
      *
      * @param rawDocument document in JSON-LD format

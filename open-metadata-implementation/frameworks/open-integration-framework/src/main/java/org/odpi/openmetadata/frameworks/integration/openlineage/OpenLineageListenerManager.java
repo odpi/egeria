@@ -18,6 +18,16 @@ public interface OpenLineageListenerManager
 
 
     /**
+     * Remove a listener, so that it receives no more OpenLineage events.  This is called when the integration
+     * connector that registered it is disconnected - otherwise a connector that has been restarted would carry
+     * on receiving events through the instance it replaced.
+     *
+     * @param listener listener to remove
+     */
+    void unregisterListener(OpenLineageEventListener listener);
+
+
+    /**
      * Called each time an OpenLineage event is published to the integration daemon as a JSON string.  The event is
      * parsed into the appropriate bean (run event, job event or dataset event, determined by the properties present)
      * and delivered to each of the registered listeners.  If the event cannot be parsed it is delivered to the run

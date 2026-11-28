@@ -24,6 +24,7 @@ public class TechnologyTypeSummary
     private String displayName        = null;
     private String description        = null;
     private String category           = null;
+    private String url                = null;
 
 
     public TechnologyTypeSummary()
@@ -40,6 +41,7 @@ public class TechnologyTypeSummary
             displayName   = template.getDisplayName();
             description   = template.getDescription();
             category = template.getCategory();
+            url = template.getURL();
         }
     }
 
@@ -96,6 +98,28 @@ public class TechnologyTypeSummary
 
 
     /**
+     * Return the link to the documentation for this technology.
+     *
+     * @return string url
+     */
+    public String getURL()
+    {
+        return url;
+    }
+
+
+    /**
+     * Set up the link to the documentation for this technology.
+     *
+     * @param url string url
+     */
+    public void setURL(String url)
+    {
+        this.url = url;
+    }
+
+
+    /**
      * Generate a string containing the properties.
      *
      * @return string value
@@ -109,6 +133,7 @@ public class TechnologyTypeSummary
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

@@ -284,4 +284,32 @@ public class IntegrationContextManagerBitolTest
         assertEquals(store.contracts.size(), 2);
         assertEquals(store.products.size(), 2);
     }
+
+
+    /**
+     * A listener that has been removed (because its connector was disconnected) receives nothing more, while the
+     * other listeners carry on.
+     *
+     * @throws IOException problem reading the examples
+     */
+    @Test public void testUnregisteredListenerReceivesNothing() throws IOException
+    {
+        String contract = readResource("bitol/odcs/full-example.odcs.yaml");
+
+        TestContextManager manager   = new TestContextManager();
+        RecordingListener  stopped   = new RecordingListener();
+        RecordingListener  remaining = new RecordingListener();
+
+        manager.registerListener(stopped);
+        manager.registerListener(remaining);
+
+        manager.publishDataContract(contract);
+
+        manager.unregisterListener(stopped);
+
+        manager.publishDataContract(contract);
+
+        assertEquals(stopped.contracts.size(), 1, "nothing is delivered after the listener is removed");
+        assertEquals(remaining.contracts.size(), 2);
+    }
 }
