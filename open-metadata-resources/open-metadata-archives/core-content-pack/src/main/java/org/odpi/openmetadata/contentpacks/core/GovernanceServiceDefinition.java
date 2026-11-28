@@ -23,6 +23,7 @@ import org.odpi.openmetadata.adapters.connectors.securityinsight.zoneprofile.Lov
 import org.odpi.openmetadata.adapters.connectors.usageinsight.popularity.LovelacePopularityProfilerServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.subscriptions.CreateSubscriptionGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.TypeCasterGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.TypeDetectorGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericElementWatchdogGovernanceActionProvider;
@@ -277,6 +278,17 @@ public enum GovernanceServiceDefinition
                   ResourceUse.CHOOSE_PATH,
                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                   ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Output the type of the action target as a guard.
+     */
+    TYPE_CASTER("f230fdfa-d909-42b1-847c-0eb737866c76",
+                "type-caster-governance-action-service",
+                "Cast the Type of an Element Governance Action Service",
+                new TypeCasterGovernanceActionProvider(),
+                ResourceUse.CHOOSE_PATH,
+                DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers columns within a CSV File.
