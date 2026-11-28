@@ -58,6 +58,10 @@ The remaining governance action services, grouped by category, are:
     the configured template.  The request parameters fill out the template and the other action targets are attached to the to do.
   * **WriteAuditLogMessageGovernanceActionConnector** - writes requested messages to the audit log.
 * **Verification**
+  * **TypeCasterGovernanceActionConnector** - outputs the type of its single action target as its guard, so that a
+    governance action process can branch down different paths depending on the type of the element.  If the
+    `candidateTypeNames` property is set in its configuration properties or request parameters, the guard is the first
+    of these types that the element's type, or one of its super types, matches, or `type-not-listed` if there is none.
   * **TypeDetectorGovernanceActionConnector** - checks that the elements supplied as action targets are of an
     acceptable type, and outputs a guard so that a governance action process can filter out the wrong types.
   * **VerifyAssetGovernanceActionConnector** - evaluates an asset to be sure it has zones, an origin and an owner.
