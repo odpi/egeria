@@ -3,6 +3,10 @@
 package org.odpi.openmetadata.viewservices.governanceofficer.server;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.AssessmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.DecisionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.OutcomeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DecisionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -3285,6 +3289,676 @@ public class GovernanceOfficerRESTServices extends TokenController
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearPolicyRetrievalPoint(userId, elementGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /*
+     * =====================================================================================================================
+     * Decisions, their outcomes and assessments
+     */
+
+    /**
+     * Create a decision.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the newly created element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public GUIDResponse createDecision(String                serverName,
+                                       String                urlMarker,
+                                       NewElementRequestBody requestBody)
+    {
+        final String methodName = "createDecision";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DecisionProperties properties)
+                {
+                    response.setGUID(handler.createDecision(userId, requestBody, requestBody.getInitialClassifications(), properties, requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DecisionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a decision using an existing metadata element as a template.  The
+     * template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public GUIDResponse createDecisionFromTemplate(String              serverName,
+                                                   String              urlMarker,
+                                                   TemplateRequestBody requestBody)
+    {
+        final String methodName = "createDecisionFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDecisionFromTemplate(userId, requestBody, requestBody.getTemplateGUID(), requestBody.getReplacementProperties(), requestBody.getReplacementClassifications(), requestBody.getPlaceholderPropertyValues(), requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of a decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  properties for the element
+     *
+     * @return boolean - true if an update occurred or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public BooleanResponse updateDecision(String                   serverName,
+                                          String                   urlMarker,
+                                          String                   decisionGUID,
+                                          UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateDecision";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DecisionProperties properties)
+                {
+                    response.setFlag(handler.updateDecision(userId, decisionGUID, requestBody, properties));
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    response.setFlag(handler.updateDecision(userId, decisionGUID, requestBody, null));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DecisionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Delete a decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse deleteDecision(String                   serverName,
+                                       String                   urlMarker,
+                                       String                   decisionGUID,
+                                       DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteDecision";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteDecision(userId, decisionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Returns the list of decisions with a particular name.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody name to search for and the query options
+     *
+     * @return a list of elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public OpenMetadataRootElementsResponse getDecisionsByName(String            serverName,
+                                                               String            urlMarker,
+                                                               FilterRequestBody requestBody)
+    {
+        final String methodName = "getDecisionsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getDecisionsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.getDecisionsByName(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Return the properties of a specific decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  options for the retrieve
+     *
+     * @return retrieved properties or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public OpenMetadataRootElementResponse getDecisionByGUID(String         serverName,
+                                                             String         urlMarker,
+                                                             String         decisionGUID,
+                                                             GetRequestBody requestBody)
+    {
+        final String methodName = "getDecisionByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            response.setElement(handler.getDecisionByGUID(userId, decisionGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of decision metadata elements that contain the search string.
+     *
+     * @param serverName  name of the server to route the request to
+     * @param urlMarker   view service URL marker
+     * @param requestBody search string and the query options
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public OpenMetadataRootElementsResponse findDecisions(String                  serverName,
+                                                          String                  urlMarker,
+                                                          SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findDecisions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findDecisions(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findDecisions(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach a decision to an element that represents an outcome of the decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param outcomeGUID  unique identifier of the element that is an outcome of the decision
+     * @param requestBody  properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse linkDecisionOutcome(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     decisionGUID,
+                                            String                     outcomeGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkDecisionOutcome";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkDecisionOutcome(userId, decisionGUID, outcomeGUID, null, null);
+            }
+            else if (requestBody.getProperties() instanceof OutcomeProperties properties)
+            {
+                handler.linkDecisionOutcome(userId, decisionGUID, outcomeGUID, requestBody, properties);
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                handler.linkDecisionOutcome(userId, decisionGUID, outcomeGUID, requestBody, null);
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(OutcomeProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Detach a decision from an element that represents an outcome of the decision.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param decisionGUID unique identifier of the decision
+     * @param outcomeGUID  unique identifier of the element that is an outcome of the decision
+     * @param requestBody  options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse detachDecisionOutcome(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        decisionGUID,
+                                              String                        outcomeGUID,
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDecisionOutcome";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachDecisionOutcome(userId, decisionGUID, outcomeGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Attach an element that has been assessed to the decision that the assessment contributes to.  This is a
+     * multi-link relationship so a new relationship is always created and its unique identifier is returned.
+     *
+     * @param serverName   name of the server to route the request to
+     * @param urlMarker    view service URL marker
+     * @param elementGUID  unique identifier of the element that was assessed
+     * @param decisionGUID unique identifier of the decision
+     * @param requestBody  properties for the relationship
+     *
+     * @return unique identifier of the new relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public GUIDResponse linkAssessment(String                     serverName,
+                                       String                     urlMarker,
+                                       String                     elementGUID,
+                                       String                     decisionGUID,
+                                       NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAssessment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                response.setGUID(handler.linkAssessment(userId, elementGUID, decisionGUID, null, null));
+            }
+            else if (requestBody.getProperties() instanceof AssessmentProperties properties)
+            {
+                response.setGUID(handler.linkAssessment(userId, elementGUID, decisionGUID, requestBody, properties));
+            }
+            else if (requestBody.getProperties() == null)
+            {
+                response.setGUID(handler.linkAssessment(userId, elementGUID, decisionGUID, requestBody, null));
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidPropertiesObject(AssessmentProperties.class.getName(), methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Update the properties of an assessment relationship.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param assessmentGUID unique identifier of the assessment relationship
+     * @param requestBody    properties for the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse updateAssessment(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        assessmentGUID,
+                                         UpdateRelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateAssessment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssessmentProperties properties)
+                {
+                    handler.updateAssessment(userId, assessmentGUID, requestBody, properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateAssessment(userId, assessmentGUID, requestBody, null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(AssessmentProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response);
+        return response;
+    }
+
+
+    /**
+     * Remove an assessment relationship between an element and a decision.
+     *
+     * @param serverName     name of the server to route the request to
+     * @param urlMarker      view service URL marker
+     * @param assessmentGUID unique identifier of the assessment relationship
+     * @param requestBody    options for the delete
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  PropertyServerException    a problem reported in the open metadata server(s)
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public VoidResponse detachAssessment(String                        serverName,
+                                         String                        urlMarker,
+                                         String                        assessmentGUID,
+                                         DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachAssessment";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName, requestBody);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DecisionHandler handler = instanceHandler.getDecisionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssessment(userId, assessmentGUID, requestBody);
         }
         catch (Throwable error)
         {

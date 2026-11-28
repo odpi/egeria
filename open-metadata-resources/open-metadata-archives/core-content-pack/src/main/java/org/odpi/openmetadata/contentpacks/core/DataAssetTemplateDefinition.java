@@ -22,6 +22,7 @@ import org.odpi.openmetadata.adapters.connectors.controls.PostgresDeployedImplem
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.parquetfile.ParquetFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
@@ -405,7 +406,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                           getDataFileExtendedProperties(DeployedImplementationType.PARQUET_FILE.getDeployedImplementationType()),
                           PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                           null,
-                          new BasicFileStoreProvider().getConnectorType().getGUID(),
+                          new ParquetFileStoreProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.FILE_ADDRESS.getPlaceholder(),
                           null,
                           null,

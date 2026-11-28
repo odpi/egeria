@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.dataengineer.server;
 
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DataValueHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -21,6 +22,7 @@ public class DataEngineerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.DATA_ENGINEER;
 
     private final ConnectedAssetClient            connectedAssetClient;
+    private final DataValueHandler                dataValueHandler;
 
 
     /**
@@ -62,6 +64,19 @@ public class DataEngineerInstance extends OMVSServiceInstance
                                                               localServerSecretsStoreCollection,
                                                               maxPageSize,
                                                               auditLog);
+
+        OpenMetadataClient openMetadataClient = new EgeriaOpenMetadataStoreClient(remoteServerName,
+                                                                                  remoteServerURL,
+                                                                                  localServerSecretsStoreProvider,
+                                                                                  localServerSecretsStoreLocation,
+                                                                                  localServerSecretsStoreCollection,
+                                                                                  maxPageSize,
+                                                                                  auditLog);
+
+        dataValueHandler = new DataValueHandler(serverName,
+                                                auditLog,
+                                                myDescription.getViewServiceFullName(),
+                                                openMetadataClient);
     }
 
 
@@ -78,4 +93,14 @@ public class DataEngineerInstance extends OMVSServiceInstance
         return connectedAssetClient;
     }
 
+
+    /**
+     * Return the handler for maintaining data values.
+     *
+     * @return handler
+     */
+    public DataValueHandler getDataValueHandler()
+    {
+        return dataValueHandler;
+    }
 }

@@ -177,6 +177,7 @@ This is its connection definition to use on the [administration commands that co
                     "configurationProperties" :
                     {
                         "catalogRuns" : "false",
+                        "catalogRunLineage" : "false",
                         "catalogSchemas" : "true",
                         "captureStatistics" : "true",
                         "captureDataQuality" : "true",
@@ -186,17 +187,20 @@ This is its connection definition to use on the [administration commands that co
 }
 ```
 
-The configuration properties are all optional booleans.  All default to `true` except `catalogRuns`, which defaults to `false`:
+The configuration properties are all optional booleans.  All default to `true` except `catalogRuns` and `catalogRunLineage`, which default to `false`:
 
 | Property | Controls |
 |----------|----------|
-| `catalogRuns` | A `TransientEmbeddedProcess` per run, owned by the job's process (default `false`). |
+| `catalogRuns` | A `TransientEmbeddedProcess` per run, owned by the job's process (default `false`).  The run has no lineage of its own. |
+| `catalogRunLineage` | A `TransientEmbeddedProcess` per run (as for `catalogRuns`) that is also linked to the datasets the run read and wrote, with the same lineage relationships that link them to the job's process (default `false`).  The lineage on the job's process is still maintained. |
 | `catalogSchemas` | A `TabularSchemaType` and `TabularColumn`s from the schema facet (needed for column-level lineage). |
 | `captureStatistics` | `ResourceProfileAnnotation`s from the inputStatistics, outputStatistics and dataQualityMetrics facets. |
 | `captureDataQuality` | `QualityAnnotation`s from the dataQualityAssertions and test facets. |
 | `updateDataScope` | The `DataScope` classification on the data assets read and written by each run. |
 
 Switch the last three off for high-frequency jobs and derive the equivalent metadata from a log store instead (see the design note).
+
+A job or dataset that is not catalogued yet is created from a catalog template.  The template is chosen through a template name built from the values in the event, such as `job:AIRFLOW:DAG` or `dataset:snowflake`.  `OpenLineageCataloguerTemplateType` defines the names and the default template for each.  The `templates` property (template name to template GUID) of a `CatalogTarget` relationship attached to the connector replaces the default for a name, or supplies a template for a name with no default.  The element that the catalog target points to is not used.  See the design note for the names and rules.
 
 A dataset reported with a `lifecycleStateChange` of `RENAME` has its asset's names updated in place; one reported with `DROP` has its asset archived or deleted according to the connector's configured delete method.
 

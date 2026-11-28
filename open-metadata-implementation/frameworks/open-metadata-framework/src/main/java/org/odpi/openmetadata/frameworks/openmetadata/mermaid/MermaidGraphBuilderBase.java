@@ -991,6 +991,10 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.SOLUTION_BLUEPRINT;
         }
+        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.SOLUTION_BOUNDARY.typeName))
+        {
+            return VisualStyle.SOLUTION_BOUNDARY;
+        }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ACTOR.typeName))
         {
             if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TEAM.typeName))
@@ -1865,6 +1869,33 @@ public class MermaidGraphBuilderBase
     }
 
 
+    /**
+     * Start a subgraph in the mermaid graph that represents a metadata element.  The subgraph is identified by the
+     * element's unique identifier rather than its name, since different elements may have the same name.
+     *
+     * @param elementGUID unique identifier of the element that the subgraph represents
+     * @param subgraphName name of subgraph to display
+     * @param visualStyle style of subgraph
+     */
+    public void startElementSubgraph(String      elementGUID,
+                                     String      subgraphName,
+                                     VisualStyle visualStyle)
+    {
+        String subgraphId = this.lookupNodeName(elementGUID);
+
+        mermaidGraph.append("subgraph ");
+        mermaidGraph.append(subgraphId);
+        mermaidGraph.append(" [\"");
+        mermaidGraph.append(this.removeTroublesomeTitleCharacters(subgraphName));
+        mermaidGraph.append("\"]\n");
+
+        nodeColours.put(subgraphId, visualStyle);
+    }
+
+
+    /**
+     * End the current subgraph.
+     */
     public void endSubgraph()
     {
         mermaidGraph.append("end\n");
@@ -2645,22 +2676,89 @@ public class MermaidGraphBuilderBase
     public void addSolutionComponentListToGraph(List<RelatedMetadataElementSummary> requiredSolutionComponents,
                                                 boolean                             addAllActors)
     {
-        List<String> solutionLinkingWireGUIDs = new ArrayList<>();
-        List<String> validNodeGUIDs           = new ArrayList<>();
+        List<String>                        solutionLinkingWireGUIDs = new ArrayList<>();
+        List<String>                        validNodeGUIDs           = new ArrayList<>();
+        List<RelatedMetadataElementSummary> solutionComponents       = new ArrayList<>();
 
         /*
-         * The solution components displayed are the ones directly linked to the blueprint.
-         * Build a list of value guids.  Later processing will hunt around for links to tie them
-         * together.
+         * The solution components displayed are the ones directly linked to the blueprint, or to a
+         * solution boundary nested in it. Build a list of valid guids.  Later processing will hunt around
+         * for links to tie them together.
          */
-        if (requiredSolutionComponents != null)
+        this.addSolutionComponentNodesToGraph(requiredSolutionComponents, validNodeGUIDs, solutionComponents, new ArrayList<>());
+
+        /*
+         * Build out the relationships between the components in the graph.
+         * Also add the actors.
+         */
+        for (RelatedMetadataElementSummary node : solutionComponents)
         {
-            for (RelatedMetadataElementSummary node : requiredSolutionComponents)
+            this.addSolutionComponentLinksToGraph(node,
+                                                  solutionLinkingWireGUIDs,
+                                                  validNodeGUIDs,
+                                                  addAllActors);
+        }
+    }
+
+
+    /**
+     * Add the nodes for a list of solution components and actors.  If the list includes a solution boundary,
+     * it is shown as a subgraph with its members inside.  Solution boundaries may be nested.
+     *
+     * @param members list of members of the blueprint, solution boundary or solution component
+     * @param validNodeGUIDs the unique identifiers of the nodes that have been added to the graph
+     * @param solutionComponents the solution components that have been added to the graph
+     * @param solutionBoundaryGUIDs the unique identifiers of the solution boundaries that have been added to the graph
+     */
+    private void addSolutionComponentNodesToGraph(List<RelatedMetadataElementSummary> members,
+                                                  List<String>                        validNodeGUIDs,
+                                                  List<RelatedMetadataElementSummary> solutionComponents,
+                                                  List<String>                        solutionBoundaryGUIDs)
+    {
+        if (members != null)
+        {
+            /*
+             * The solution boundaries are processed first so that an element that is a member of both a
+             * solution boundary and its parent is displayed inside the solution boundary.
+             */
+            for (RelatedMetadataElementSummary node : members)
+            {
+                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_BOUNDARY.typeName)))
+                {
+                    String solutionBoundaryGUID = node.getRelatedElement().getElementHeader().getGUID();
+
+                    if (! solutionBoundaryGUIDs.contains(solutionBoundaryGUID))
+                    {
+                        solutionBoundaryGUIDs.add(solutionBoundaryGUID);
+
+                        this.startElementSubgraph(solutionBoundaryGUID,
+                                                  getNodeDisplayName(node.getRelatedElement()),
+                                                  VisualStyle.SOLUTION_BOUNDARY_GRAPH);
+
+                        if (node instanceof RelatedMetadataHierarchySummary solutionBoundary)
+                        {
+                            this.addSolutionComponentNodesToGraph(solutionBoundary.getNestedElements(),
+                                                                  validNodeGUIDs,
+                                                                  solutionComponents,
+                                                                  solutionBoundaryGUIDs);
+                        }
+
+                        this.endSubgraph();
+                    }
+                }
+            }
+
+            for (RelatedMetadataElementSummary node : members)
             {
                 if ((node != null) && ((propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)) ||
                                        (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.ACTOR.typeName))))
                 {
                     validNodeGUIDs.add(node.getRelatedElement().getElementHeader().getGUID());
+
+                    if (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
+                    {
+                        solutionComponents.add(node);
+                    }
 
                     if (node.getRelatedElement().getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
                     {
@@ -2680,21 +2778,6 @@ public class MermaidGraphBuilderBase
                                              getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
                                                                               this.getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT)));
                     }
-                }
-            }
-
-            for (RelatedMetadataElementSummary node : requiredSolutionComponents)
-            {
-                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
-                {
-                    /*
-                     * Build out the relationships between the components in the graph.
-                     * Also add the actors.
-                     */
-                    this.addSolutionComponentLinksToGraph(node,
-                                                          solutionLinkingWireGUIDs,
-                                                          validNodeGUIDs,
-                                                          addAllActors);
                 }
             }
         }

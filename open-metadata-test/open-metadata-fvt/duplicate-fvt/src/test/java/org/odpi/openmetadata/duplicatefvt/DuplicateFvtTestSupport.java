@@ -83,6 +83,29 @@ final class DuplicateFvtTestSupport
     static final String DISTANT_MATCH_LINK_GUID          = "7c550d2c-3c33-4932-af39-2f9bcc4241f3";
 
     /*
+     * Set 10 - a data file and a CSV file with different qualified names and the same path name, linked as
+     * discovered duplicates.  This is what is left when a file is catalogued by hand under the name one
+     * machine knows it by and again by a cataloguer, and its path name is then made canonical.
+     */
+    static final String PATH_MATCH_PATH_NAME          = "/deployments/duplicate-fvt/landing-area/events.csv";
+    static final String PATH_MATCH_QUALIFIED_NAME_ONE = QUALIFIED_NAME_PREFIX + "PathMatch:/Users/someone/landing-area/events.csv";
+    static final String PATH_MATCH_QUALIFIED_NAME_TWO = QUALIFIED_NAME_PREFIX + "PathMatch:" + PATH_MATCH_PATH_NAME;
+    static final String PATH_MATCH_GUID_ONE           = "74644c58-d105-4c4b-8822-95834d934e81";
+    static final String PATH_MATCH_GUID_TWO           = "a12cb6a7-1dfb-48c3-9955-0e7cca7f47bc";
+    static final String PATH_MATCH_LINK_GUID          = "1bbc6c5c-013a-45ca-8b10-3a389cb9798c";
+
+    /*
+     * Set 11 - a folder and a file with the same path name, linked as discovered duplicates.  They contradict
+     * one another rather than describe the same thing.
+     */
+    static final String PATH_CLASH_PATH_NAME          = "/deployments/duplicate-fvt/landing-area/archive";
+    static final String PATH_CLASH_QUALIFIED_NAME_ONE = QUALIFIED_NAME_PREFIX + "PathClash:folder";
+    static final String PATH_CLASH_QUALIFIED_NAME_TWO = QUALIFIED_NAME_PREFIX + "PathClash:file";
+    static final String PATH_CLASH_GUID_ONE           = "2eb29446-2fe2-4ca5-8775-7e7b97e18920";
+    static final String PATH_CLASH_GUID_TWO           = "3dad9c15-fafa-4fba-8858-b72e8776c1fc";
+    static final String PATH_CLASH_LINK_GUID          = "0249b9a2-a378-48d6-8de7-f848fbbcc820";
+
+    /*
      * Set 4 - three elements sharing a qualified name, already validated and classified.
      */
     static final String CLUSTER_QUALIFIED_NAME = QUALIFIED_NAME_PREFIX + "Cluster";
@@ -165,7 +188,11 @@ final class DuplicateFvtTestSupport
                                                                WITHDRAWN_GUID_TWO,
                                                                HELD_CLUSTER_GUID_ONE,
                                                                HELD_CLUSTER_GUID_TWO,
-                                                               HELD_CLUSTER_GUID_THREE);
+                                                               HELD_CLUSTER_GUID_THREE,
+                                                               PATH_MATCH_GUID_ONE,
+                                                               PATH_MATCH_GUID_TWO,
+                                                               PATH_CLASH_GUID_ONE,
+                                                               PATH_CLASH_GUID_TWO);
 
 
     private DuplicateFvtTestSupport()

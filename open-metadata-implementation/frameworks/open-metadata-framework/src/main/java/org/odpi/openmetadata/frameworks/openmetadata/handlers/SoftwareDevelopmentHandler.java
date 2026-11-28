@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -366,6 +368,67 @@ public class SoftwareDevelopmentHandler extends OpenMetadataHandlerBase
         openMetadataClient.declassifyMetadataElementInStore(userId,
                                                             elementGUID,
                                                             OpenMetadataType.REUSABLE_TECHNIQUE_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify an element to say that it holds the files for a specific branch of a source code repository.
+     *
+     * @param userId                calling user
+     * @param elementGUID           unique identifier of the element
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void setElementAsBranch(String                userId,
+                                   String                elementGUID,
+                                   BranchProperties      properties,
+                                   MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        final String methodName               = "setElementAsBranch";
+        final String elementGUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          elementGUID,
+                                                          OpenMetadataType.BRANCH_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the branch designation from an element.
+     *
+     * @param userId                calling user
+     * @param elementGUID           unique identifier of the element
+     * @param metadataSourceOptions options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    a problem reported in the open metadata server(s)
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public void clearElementAsBranch(String                userId,
+                                     String                elementGUID,
+                                     MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String methodName               = "clearElementAsBranch";
+        final String elementGUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.BRANCH_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
 }

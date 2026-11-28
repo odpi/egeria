@@ -1,0 +1,309 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+/**
+ * DataValueProperties describes a particular data value.  This may be a primitive value or a complex value such as
+ * an array, map, nested structure, multidimensional cube, or graph.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = LiteralDataValueProperties.class, name = "LiteralDataValueProperties"),
+        })
+public class DataValueProperties extends ReferenceableProperties
+{
+    private String  dataFormat           = null;
+    private Integer length               = null;
+    private String  dataType             = null;
+    private String  usage                = null;
+    private String  fingerprint          = null;
+    private String  fingerprintAlgorithm = null;
+    private Long    hash                 = null;
+    private String  hashAlgorithm        = null;
+
+
+    /**
+     * Default constructor
+     */
+    public DataValueProperties()
+    {
+        super();
+        super.typeName = OpenMetadataType.DATA_VALUE.typeName;
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public DataValueProperties(DataValueProperties template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            dataFormat           = template.getDataFormat();
+            length               = template.getLength();
+            dataType             = template.getDataType();
+            usage                = template.getUsage();
+            fingerprint          = template.getFingerprint();
+            fingerprintAlgorithm = template.getFingerprintAlgorithm();
+            hash                 = template.getHash();
+            hashAlgorithm        = template.getHashAlgorithm();
+        }
+    }
+
+
+    /**
+     * Return the format of the data value.
+     *
+     * @return string
+     */
+    public String getDataFormat()
+    {
+        return dataFormat;
+    }
+
+
+    /**
+     * Set up the format of the data value.
+     *
+     * @param dataFormat string
+     */
+    public void setDataFormat(String dataFormat)
+    {
+        this.dataFormat = dataFormat;
+    }
+
+
+    /**
+     * Return the length of the data value.
+     *
+     * @return integer
+     */
+    public Integer getLength()
+    {
+        return length;
+    }
+
+
+    /**
+     * Set up the length of the data value.
+     *
+     * @param length integer
+     */
+    public void setLength(Integer length)
+    {
+        this.length = length;
+    }
+
+
+    /**
+     * Return the type of the data value.
+     *
+     * @return string
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+
+    /**
+     * Set up the type of the data value.
+     *
+     * @param dataType string
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+
+    /**
+     * Return the intended usage of the data value.
+     *
+     * @return string
+     */
+    public String getUsage()
+    {
+        return usage;
+    }
+
+
+    /**
+     * Set up the intended usage of the data value.
+     *
+     * @param usage string
+     */
+    public void setUsage(String usage)
+    {
+        this.usage = usage;
+    }
+
+
+    /**
+     * Return the string value that represents the content of the data value.
+     *
+     * @return string
+     */
+    public String getFingerprint()
+    {
+        return fingerprint;
+    }
+
+
+    /**
+     * Set up the string value that represents the content of the data value.
+     *
+     * @param fingerprint string
+     */
+    public void setFingerprint(String fingerprint)
+    {
+        this.fingerprint = fingerprint;
+    }
+
+
+    /**
+     * Return the algorithm used to generate the fingerprint.
+     *
+     * @return string
+     */
+    public String getFingerprintAlgorithm()
+    {
+        return fingerprintAlgorithm;
+    }
+
+
+    /**
+     * Set up the algorithm used to generate the fingerprint.
+     *
+     * @param fingerprintAlgorithm string
+     */
+    public void setFingerprintAlgorithm(String fingerprintAlgorithm)
+    {
+        this.fingerprintAlgorithm = fingerprintAlgorithm;
+    }
+
+
+    /**
+     * Return the long value that represents the content of the data value.
+     *
+     * @return long
+     */
+    public Long getHash()
+    {
+        return hash;
+    }
+
+
+    /**
+     * Set up the long value that represents the content of the data value.
+     *
+     * @param hash long
+     */
+    public void setHash(Long hash)
+    {
+        this.hash = hash;
+    }
+
+
+    /**
+     * Return the algorithm used to generate the hash.
+     *
+     * @return string
+     */
+    public String getHashAlgorithm()
+    {
+        return hashAlgorithm;
+    }
+
+
+    /**
+     * Set up the algorithm used to generate the hash.
+     *
+     * @param hashAlgorithm string
+     */
+    public void setHashAlgorithm(String hashAlgorithm)
+    {
+        this.hashAlgorithm = hashAlgorithm;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "DataValueProperties{" +
+                "dataFormat='" + dataFormat + '\'' +
+                ", length=" + length +
+                ", dataType='" + dataType + '\'' +
+                ", usage='" + usage + '\'' +
+                ", fingerprint='" + fingerprint + '\'' +
+                ", fingerprintAlgorithm='" + fingerprintAlgorithm + '\'' +
+                ", hash=" + hash +
+                ", hashAlgorithm='" + hashAlgorithm + '\'' +
+                "} " + super.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        DataValueProperties that = (DataValueProperties) objectToCompare;
+        return Objects.equals(dataFormat, that.dataFormat) &&
+                Objects.equals(length, that.length) &&
+                Objects.equals(dataType, that.dataType) &&
+                Objects.equals(usage, that.usage) &&
+                Objects.equals(fingerprint, that.fingerprint) &&
+                Objects.equals(fingerprintAlgorithm, that.fingerprintAlgorithm) &&
+                Objects.equals(hash, that.hash) &&
+                Objects.equals(hashAlgorithm, that.hashAlgorithm);
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), dataFormat, length, dataType, usage, fingerprint, fingerprintAlgorithm, hash, hashAlgorithm);
+    }
+}

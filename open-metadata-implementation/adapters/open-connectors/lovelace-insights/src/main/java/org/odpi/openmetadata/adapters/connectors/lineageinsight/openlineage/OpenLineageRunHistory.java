@@ -19,6 +19,34 @@ import java.util.Map;
 public class OpenLineageRunHistory
 {
     /**
+     * The parts of a history that an analysis works from.  A log store holds a row for every run and for every
+     * dataset each run read or wrote, so a service that asks only for the parts it uses keeps the history small.
+     */
+    public enum Content
+    {
+        /**
+         * The runs of each job, with the volumes each run read and wrote.
+         */
+        RUNS,
+
+        /**
+         * The reads and writes of each dataset.
+         */
+        DATASET_ACTIVITY,
+
+        /**
+         * The data quality assertions evaluated against each dataset.
+         */
+        ASSERTIONS,
+
+        /**
+         * The tests reported by each job.
+         */
+        TESTS
+    }
+
+
+    /**
      * Identity of a job or dataset in OpenLineage.
      *
      * @param namespace namespace
@@ -264,12 +292,54 @@ public class OpenLineageRunHistory
     }
 
 
+    private final Map<String, Map<String, Key>> keys    = new HashMap<>();
+    private final Map<String, String>           strings = new HashMap<>();
+
     private final Map<Key, JobHistory>     jobs     = new LinkedHashMap<>();
     private final Map<Key, DataSetHistory> datasets = new LinkedHashMap<>();
+    private       int                      jobCount        = 0;
+    private       int                      dataSetCount    = 0;
     private       int                      eventCount      = 0;
     private       int                      unreadableEvents = 0;
     private       Date                     earliestEvent   = null;
     private       Date                     latestEvent     = null;
+
+
+    /**
+     * Return the key for a job or dataset.  The same key is returned each time the same namespace and name are
+     * passed, so the many records of a job or dataset share one key (and its strings) rather than each holding a
+     * copy.
+     *
+     * @param namespace namespace
+     * @param name name
+     * @return shared key
+     */
+    public Key key(String namespace,
+                   String name)
+    {
+        return keys.computeIfAbsent(namespace, newNamespace -> new HashMap<>())
+                   .computeIfAbsent(name, newName -> new Key(namespace, name));
+    }
+
+
+    /**
+     * Return the shared copy of a value that takes few distinct values (an event type or a status, for example),
+     * so that each record does not hold its own copy.  It is not for values that are different in every record.
+     *
+     * @param value value or null
+     * @return shared copy or null
+     */
+    public String shared(String value)
+    {
+        if (value == null)
+        {
+            return null;
+        }
+
+        String existing = strings.putIfAbsent(value, value);
+
+        return (existing == null) ? value : existing;
+    }
 
 
     /**
@@ -356,6 +426,52 @@ public class OpenLineageRunHistory
         eventCount    = count;
         earliestEvent = earliest;
         latestEvent   = latest;
+    }
+
+
+    /**
+     * Record the number of jobs in the window, when the history does not hold an entry for each of them.
+     *
+     * @param count number of jobs
+     */
+    public void recordJobCount(int count)
+    {
+        jobCount = count;
+    }
+
+
+    /**
+     * Record the number of datasets in the window, when the history does not hold an entry for each of them.
+     *
+     * @param count number of datasets
+     */
+    public void recordDataSetCount(int count)
+    {
+        dataSetCount = count;
+    }
+
+
+    /**
+     * Return the number of jobs in the window.  This is the number of jobs in the history unless a larger count
+     * was recorded because the history holds only the jobs its reader was asked for.
+     *
+     * @return count
+     */
+    public int getJobCount()
+    {
+        return Math.max(jobCount, jobs.size());
+    }
+
+
+    /**
+     * Return the number of datasets in the window.  This is the number of datasets in the history unless a larger
+     * count was recorded because the history holds only the datasets its reader was asked for.
+     *
+     * @return count
+     */
+    public int getDataSetCount()
+    {
+        return Math.max(dataSetCount, datasets.size());
     }
 
 

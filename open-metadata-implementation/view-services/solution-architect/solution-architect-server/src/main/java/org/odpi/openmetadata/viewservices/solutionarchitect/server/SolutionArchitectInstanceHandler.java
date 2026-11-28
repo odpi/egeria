@@ -124,6 +124,34 @@ public class SolutionArchitectInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
+    public CollectionHandler getSolutionBoundaryHandler(String userId,
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        SolutionArchitectInstance instance = (SolutionArchitectInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSolutionBoundaryHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns an OMF handler.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
     public InformationSupplyChainHandler getInformationSupplyChainHandler(String userId,
                                                                           String serverName,
                                                                           String serviceOperationName) throws InvalidParameterException,

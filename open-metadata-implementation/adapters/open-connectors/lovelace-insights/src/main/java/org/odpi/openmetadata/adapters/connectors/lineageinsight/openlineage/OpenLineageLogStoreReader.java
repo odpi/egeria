@@ -162,7 +162,7 @@ public class OpenLineageLogStoreReader
 
         history.countEvent(eventTime);
 
-        OpenLineageRunHistory.Key        jobKey     = new OpenLineageRunHistory.Key(event.getJob().getNamespace(), event.getJob().getName());
+        OpenLineageRunHistory.Key        jobKey     = history.key(event.getJob().getNamespace(), event.getJob().getName());
         OpenLineageRunHistory.JobHistory jobHistory = history.getJob(jobKey);
 
         if ((event.getRun().getFacets() != null) && (event.getRun().getFacets().getEgeriaGovernanceAction() != null))
@@ -219,7 +219,7 @@ public class OpenLineageLogStoreReader
                     continue;
                 }
 
-                OpenLineageRunHistory.Key            datasetKey     = new OpenLineageRunHistory.Key(input.getNamespace(), input.getName());
+                OpenLineageRunHistory.Key            datasetKey     = history.key(input.getNamespace(), input.getName());
                 OpenLineageRunHistory.DataSetHistory datasetHistory = history.getDataSet(datasetKey);
 
                 Long rowCount = null;
@@ -291,7 +291,7 @@ public class OpenLineageLogStoreReader
                     continue;
                 }
 
-                OpenLineageRunHistory.Key            datasetKey     = new OpenLineageRunHistory.Key(output.getNamespace(), output.getName());
+                OpenLineageRunHistory.Key            datasetKey     = history.key(output.getNamespace(), output.getName());
                 OpenLineageRunHistory.DataSetHistory datasetHistory = history.getDataSet(datasetKey);
 
                 Long   rowCount             = null;

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTargetProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteClassificationRequestBody;
@@ -386,6 +387,47 @@ public class ProjectManagerFVT
         classifyAndClear("/glossary-project", new GlossaryProjectProperties(), OpenMetadataType.GLOSSARY_PROJECT_CLASSIFICATION.typeName);
         classifyAndClear("/governance-project", new GovernanceProjectProperties(), OpenMetadataType.GOVERNANCE_PROJECT_CLASSIFICATION.typeName);
         classifyAndClear("/project-kind", new ProjectKindProperties(), OpenMetadataType.PROJECT_KIND_CLASSIFICATION.typeName);
+    }
+
+
+    /**
+     * A project is working on the person's profile.  The ProjectTarget relationship and its properties are
+     * visible from the project until it is cleared.
+     */
+    @Test
+    @Order(8)
+    void projectTargets()
+    {
+        String typeName = OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName;
+        String path     = "/projects/" + projectGUID + "/project-targets/" + personGUID;
+
+        ProjectTargetProperties targetProperties = new ProjectTargetProperties();
+
+        targetProperties.setLabel("onboard");
+        targetProperties.setDescription("The person that the project is onboarding");
+
+        NewRelationshipRequestBody targetRequest = new NewRelationshipRequestBody();
+
+        targetRequest.setProperties(targetProperties);
+
+        projectManager.call(path + "/attach", targetRequest);
+
+        OpenMetadataRootElement project = getProject(projectGUID);
+
+        assertNotNull(project.getProjectTargets(), "the project has no project targets");
+        assertTrue(project.getProjectTargets().stream().anyMatch(summary -> personGUID.equals(summary.getRelatedElement().getElementHeader().getGUID())),
+                   "the person is not in the project's projectTargets");
+
+        ProjectTargetProperties retrieved = assertInstanceOf(ProjectTargetProperties.class,
+                                                             RelatedElementChecks.relationship(project, typeName, personGUID).getRelationshipProperties());
+
+        assertEquals("onboard", retrieved.getLabel());
+        assertEquals("The person that the project is onboarding", retrieved.getDescription());
+
+        projectManager.call(path + "/detach", new DeleteRelationshipRequestBody());
+
+        assertFalse(RelatedElementChecks.isLinked(getProject(projectGUID), typeName, personGUID),
+                    "the project still shows the cleared project target");
     }
 
 

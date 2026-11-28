@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.ReusableTechniqueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.GeneratedTargetProperties;
 import com.fasterxml.jackson.annotation.*;
@@ -117,6 +118,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SecurityListMembershipProperties.class, name = "SecurityListMembershipProperties", names = {"SecurityGroupMembershipProperties"}),
                 @JsonSubTypes.Type(value = SecurityLogProperties.class, name = "SecurityLogProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
+                @JsonSubTypes.Type(value = BranchProperties.class, name = "BranchProperties"),
                 @JsonSubTypes.Type(value = GeneratedTargetProperties.class, name = "GeneratedTargetProperties"),
                 @JsonSubTypes.Type(value = ReusableTechniqueProperties.class, name = "ReusableTechniqueProperties"),
                 @JsonSubTypes.Type(value = SoftwarePackageManifestProperties.class, name = "SoftwarePackageManifestProperties"),

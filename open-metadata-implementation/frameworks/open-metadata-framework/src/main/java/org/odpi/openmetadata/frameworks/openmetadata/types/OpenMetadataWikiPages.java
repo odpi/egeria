@@ -49,6 +49,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0017_EXTERNAL_IDENTIFIERS         = "https://egeria-project.org/types/0/0017-External-Identifiers/";
 
     /**
+     * <a href="https://egeria-project.org/types/0/0018-Decisions/">...</a>
+     */
+    public static final String MODEL_0018_DECISIONS = "https://egeria-project.org/types/0/0018-Decisions/";
+
+    /**
      * <a href="https://egeria-project.org/types/0/0019-More-Information/">...</a>
      */
     public static final String MODEL_0019_MORE_INFORMATION             = "https://egeria-project.org/types/0/0019-More-Information/";
@@ -237,6 +242,11 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/2/0205-Connection-Linkage/">...</a>
      */
     public static final String MODEL_0205_CONNECTION_LINKAGE           = "https://egeria-project.org/types/2/0205-Connection-Linkage/";
+
+    /**
+     * <a href="https://egeria-project.org/types/2/0208-Data-Values/">...</a>
+     */
+    public static final String MODEL_0208_DATA_VALUES = "https://egeria-project.org/types/2/0208-Data-Values/";
 
     /**
      * <a href="https://egeria-project.org/types/2/0210-Data-Stores/">...</a>
@@ -572,6 +582,11 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/5/0512-Derived-Schema-Elements/">...</a>
      */
     public static final String MODEL_0512_DERIVED_SCHEMA_TYPE          = "https://egeria-project.org/types/5/0512-Derived-Schema-Elements/";
+
+    /**
+     * <a href="https://egeria-project.org/types/5/0520-Process-Schemas/">...</a>
+     */
+    public static final String MODEL_0520_PROCESS_SCHEMAS = "https://egeria-project.org/types/5/0520-Process-Schemas/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0525-Process-Variables/">...</a>

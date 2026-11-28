@@ -58,6 +58,7 @@ include(':open-metadata-implementation:adapters:open-connectors:repository-servi
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
+include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:parquet-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
 include(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')

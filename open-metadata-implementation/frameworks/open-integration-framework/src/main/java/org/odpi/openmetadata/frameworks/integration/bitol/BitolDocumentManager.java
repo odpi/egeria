@@ -22,6 +22,15 @@ public interface BitolDocumentManager
 
 
     /**
+     * Remove a listener, so that it receives no more Bitol documents.  This is called when the integration
+     * connector that registered it is disconnected.
+     *
+     * @param listener listener to remove
+     */
+    void unregisterListener(BitolDocumentListener listener);
+
+
+    /**
      * Publish a Bitol document of either kind.  The document is parsed and routed to the listeners according to
      * its "kind" property.
      *

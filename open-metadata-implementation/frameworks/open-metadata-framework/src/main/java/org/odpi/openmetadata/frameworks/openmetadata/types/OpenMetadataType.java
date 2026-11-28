@@ -3,6 +3,17 @@
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.DecisionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.OutcomeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.AssessmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.DataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.LiteralDataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.DataValueSourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.ProcessingVariableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.EmbeddedDataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwaredevelopment.BranchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SupportedVariableTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataClassificationPurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataRelationshipPurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -484,6 +495,38 @@ public enum OpenMetadataType
                                   "Link between an external identifier and an asset or related item.",
                                   ExternalIdLinkProperties.class,
                                   OpenMetadataRelationshipPurpose.ASSIGNMENT),
+
+    /**
+     * Documents a decision that has been made.
+     */
+    DECISION("8b7ef083-9dc5-4486-a9a4-2305b5f60ebb",
+             "Decision",
+             OpenMetadataWikiPages.MODEL_0018_DECISIONS,
+             "b4437df6-6b36-4c8c-b7c2-9173dba51471",
+             "Documents a decision that has been made.",
+             DecisionProperties.class),
+
+    /**
+     * Links a decision to an element that represents an outcome of the decision.
+     */
+    OUTCOME_RELATIONSHIP("133a8d2d-476c-4b42-b5f8-3a4f2cdf5348",
+                         "Outcome",
+                         OpenMetadataWikiPages.MODEL_0018_DECISIONS,
+                         "deab210a-2800-46fe-93c8-2d548ddcd30c",
+                         "Links a decision to an element that represents an outcome of the decision.",
+                         OutcomeProperties.class,
+                         OpenMetadataRelationshipPurpose.ASSOCIATION),
+
+    /**
+     * Links an element that was assessed to the decision that the assessment contributed to.
+     */
+    ASSESSMENT_RELATIONSHIP("512b845c-7440-4d26-a725-d5f0215f0e94",
+                            "Assessment",
+                            OpenMetadataWikiPages.MODEL_0018_DECISIONS,
+                            "bcc272b6-dbe9-4b8f-a40e-d7252ac4d7a8",
+                            "Links an element that was assessed to the decision that the assessment contributed to.",
+                            AssessmentProperties.class,
+                            OpenMetadataRelationshipPurpose.ASSIGNMENT),
 
     /**
      * Link to indicate that a referenceable provides additional information about another referenceable.
@@ -1751,6 +1794,17 @@ public enum OpenMetadataType
                                     OpenMetadataRelationshipPurpose.ASSOCIATION),
 
     /**
+     * Identifies an element that the project is to work on.
+     */
+    PROJECT_TARGET_RELATIONSHIP("06e9625c-d015-4f56-9bee-09a5355463a2",
+                                "ProjectTarget",
+                                OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                "fc8b0a9f-3a09-4568-9388-23f7c829e5ce",
+                                "Identifies an element that the project is to work on.",
+                                ProjectTargetProperties.class,
+                                OpenMetadataRelationshipPurpose.ASSOCIATION),
+
+    /**
      * A superclass for the project classifications that identify the role that the project is playing.
      */
     PROJECT_KIND_CLASSIFICATION("42621da6-3001-479d-be1d-90f47b1fcb7f",
@@ -2226,6 +2280,59 @@ public enum OpenMetadataType
                                   "Link between an asset and the connection to its digital resource.",
                                   AssetConnectionProperties.class,
                                   OpenMetadataRelationshipPurpose.STRUCTURAL),
+
+    /**
+     * Describes a particular data value, which may be a primitive value or a complex value such as an array, map, nested structure, multidimensional cube, or graph.
+     */
+    DATA_VALUE("84c7485f-956c-4848-b7b7-bfa8381a041b",
+               "DataValue",
+               OpenMetadataWikiPages.MODEL_0208_DATA_VALUES,
+               "32f13c0f-2a73-4810-8082-d227745016c1",
+               "Describes a particular data value, which may be a primitive value or a complex value such as an array, map, nested structure, multidimensional cube, or graph.",
+               DataValueProperties.class),
+
+    /**
+     * A data value where the data is stored in the open metadata element.
+     */
+    LITERAL_DATA_VALUE("63f8548c-fe4e-4181-b605-3e653e8e922b",
+                       "LiteralDataValue",
+                       OpenMetadataWikiPages.MODEL_0208_DATA_VALUES,
+                       "61bf832b-00ae-49f3-8185-7381a6f17df2",
+                       "A data value where the data is stored in the open metadata element.",
+                       LiteralDataValueProperties.class),
+
+    /**
+     * Links a data value to the asset for the digital resource where the data is stored.
+     */
+    DATA_VALUE_SOURCE_RELATIONSHIP("7cefb9cc-6d33-4bb1-94a1-b32519155fca",
+                                   "DataValueSource",
+                                   OpenMetadataWikiPages.MODEL_0208_DATA_VALUES,
+                                   "892dc307-9bef-4dcc-ad1b-95f1d1f4315a",
+                                   "Links a data value to the asset for the digital resource where the data is stored.",
+                                   DataValueSourceProperties.class,
+                                   OpenMetadataRelationshipPurpose.DEPLOYMENT),
+
+    /**
+     * Links an element to a data value used to configure its processing.
+     */
+    PROCESSING_VARIABLE_RELATIONSHIP("77a0c605-061e-4dca-8884-4d01c199f1c4",
+                                     "ProcessingVariable",
+                                     OpenMetadataWikiPages.MODEL_0208_DATA_VALUES,
+                                     "5c092c8f-9cff-4d55-a114-9922726fb7fc",
+                                     "Links an element to a data value used to configure its processing.",
+                                     ProcessingVariableProperties.class,
+                                     OpenMetadataRelationshipPurpose.ASSOCIATION),
+
+    /**
+     * Links a data value to another data value that is embedded in it.
+     */
+    EMBEDDED_DATA_VALUE_RELATIONSHIP("576b5d64-21a9-4c77-8fab-2597bdf99bf7",
+                                     "EmbeddedDataValue",
+                                     OpenMetadataWikiPages.MODEL_0208_DATA_VALUES,
+                                     "d7e59996-8814-4f44-96aa-57fd9e18269b",
+                                     "Links a data value to another data value that is embedded in it.",
+                                     EmbeddedDataValueProperties.class,
+                                     OpenMetadataRelationshipPurpose.STRUCTURAL),
 
     /**
      * Collection of related data, not necessarily stored together.
@@ -3104,6 +3211,17 @@ public enum OpenMetadataType
               "5e0ea8d1-bb58-4a85-931d-886f8388b9d2",
               "A file containing properties in YAML format.  This it typically used for configuration.",
               YAMLFileProperties.class),
+
+    /**
+     * Identifies the element that holds the files for a specific branch of a source code repository.
+     */
+    BRANCH_CLASSIFICATION("82c18672-2ec0-4f72-8319-5cf3c93db4eb",
+                          "Branch",
+                          OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                          "5e3bbd48-0a15-4384-b72d-79d98049725e",
+                          "Identifies the element that holds the files for a specific branch of a source code repository.",
+                          BranchProperties.class,
+                          OpenMetadataClassificationPurpose.CATEGORY),
 
     /**
      * The element that is the generated output from a build program or script.
@@ -5374,6 +5492,17 @@ public enum OpenMetadataType
                                                   OpenMetadataRelationshipPurpose.DESIGN_LINEAGE),
 
     /**
+     * Describes a type of data value that is used to initialize/configure an element such as a process.
+     */
+    SUPPORTED_VARIABLE_TYPE_RELATIONSHIP("42f759d2-99e2-4fcc-8a56-abc0a06fae6b",
+                                         "SupportedVariableType",
+                                         OpenMetadataWikiPages.MODEL_0520_PROCESS_SCHEMAS,
+                                         "aea4198e-a30c-4b6e-9638-a953fa51d1f8",
+                                         "Describes a type of data value that is used to initialize/configure an element such as a process.",
+                                         SupportedVariableTypeProperties.class,
+                                         OpenMetadataRelationshipPurpose.DEFINITION),
+
+    /**
      * The root of a complex schema - normally attaches to an asset or port.
      */
     ROOT_SCHEMA_TYPE("126962bf-dd26-4fcf-97d8-d0ad1fdd2d50",
@@ -6059,6 +6188,16 @@ public enum OpenMetadataType
                  "dc91fec8-3ef1-47f3-acdf-7c6ce51f4351",
                  "A curated collection of design model elements.",
                  DesignModelProperties.class),
+
+    /**
+     * A collection of design model boundaries and design model elements that organizes a design model into a hierarchical structure.
+     */
+    DESIGN_MODEL_BOUNDARY("7c732860-9d80-4fc6-8203-73be1a862fb9",
+                          "DesignModelBoundary",
+                          OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
+                          "455b00e2-2e3c-4aa1-b60f-177555b96f57",
+                          "A collection of design model boundaries and design model elements that organizes a design model into a hierarchical structure.",
+                          DesignModelBoundaryProperties.class),
 
     /**
      * Identifies the element from a metadata model that this element embodies.
@@ -7051,6 +7190,16 @@ public enum OpenMetadataType
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
                        "Collection of solution components that make up a solution for digital services such as digital products.",
                        SolutionBlueprintProperties.class),
+
+    /**
+     * Collection of solution components and roles that are grouped together within a solution blueprint to help understanding.
+     */
+    SOLUTION_BOUNDARY("54ede817-8583-4e17-9df1-1956a381a378",
+                      "SolutionBoundary",
+                      OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                      "841c3c77-78b6-4df7-b384-01624e267bb9",
+                      "Collection of solution components and roles that are grouped together within a solution blueprint to help understanding.",
+                      SolutionBoundaryProperties.class),
 
     /**
      * Relationship identifying the solution blueprint for a digital service such as a digital product.

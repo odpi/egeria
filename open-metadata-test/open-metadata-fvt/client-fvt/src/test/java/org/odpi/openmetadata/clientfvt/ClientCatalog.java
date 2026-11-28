@@ -62,6 +62,8 @@ final class ClientCatalog
         add(new LifecycleClient("DataFieldClient", "DataField"));
         add(new LifecycleClient("DataStructureClient", "DataStructure"));
         add(new LifecycleClient("DataValueSpecificationClient", "DataValueSpecification"));
+        add(new LifecycleClient("DataValueClient", "DataValue"));
+        add(new LifecycleClient("DecisionClient", "Decision"));
         add(new LifecycleClient("DesignPatternClient", "DesignPattern"));
         add(new LifecycleClient("EndpointClient", "Endpoint"));
         add(new LifecycleClient("ExternalIdClient", "ExternalId"));

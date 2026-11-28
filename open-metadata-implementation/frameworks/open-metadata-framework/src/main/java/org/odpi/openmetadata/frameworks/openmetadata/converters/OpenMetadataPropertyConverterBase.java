@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.converters;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.decisions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -14878,6 +14880,226 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the nextReviewTime property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date or null
+     */
+    protected Date removeNextReviewTime(ElementProperties elementProperties)
+    {
+        final String methodName = "removeNextReviewTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.NEXT_REVIEW_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the expiryTime property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date or null
+     */
+    protected Date removeExpiryTime(ElementProperties elementProperties)
+    {
+        final String methodName = "removeExpiryTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.EXPIRY_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the assessmentTime property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date or null
+     */
+    protected Date removeAssessmentTime(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAssessmentTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.ASSESSMENT_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the assessor property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeAssessor(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAssessor";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.ASSESSOR.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the assessorTypeName property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeAssessorTypeName(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAssessorTypeName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.ASSESSOR_TYPE_NAME.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the assessorPropertyName property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeAssessorPropertyName(ElementProperties elementProperties)
+    {
+        final String methodName = "removeAssessorPropertyName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.ASSESSOR_PROPERTY_NAME.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the dataFormat property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeDataFormat(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataFormat";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DATA_FORMAT.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the dataValue property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeDataValue(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataValue";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DATA_VALUE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the dataValueList property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return list of strings or null
+     */
+    protected List<String> removeDataValueList(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataValueList";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(localServiceName,
+                                                            OpenMetadataProperty.DATA_VALUE_LIST.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the dataValueMap property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map or null
+     */
+    protected Map<String, String> removeDataValueMap(ElementProperties elementProperties)
+    {
+        final String methodName = "removeDataValueMap";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(localServiceName,
+                                                              OpenMetadataProperty.DATA_VALUE_MAP.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Uses the type of the classification to determine the type of bean to use for the properties.
      *
      * @param attachedClassification element retrieved
@@ -15483,6 +15705,15 @@ public class OpenMetadataPropertyConverterBase
                 ((SecurityLogProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
                 ((SecurityLogProperties)beanProperties).setProcess(this.removeProcess(elementProperties));
                 ((SecurityLogProperties)beanProperties).setSource(this.removeSource(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.BRANCH_CLASSIFICATION.typeName))
+            {
+                beanProperties = new BranchProperties();
+
+                ((BranchProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
+                ((BranchProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                ((BranchProperties)beanProperties).setPurpose(this.removePurpose(elementProperties));
+                ((BranchProperties)beanProperties).setURL(this.removeURL(elementProperties));
             }
             else if (propertyHelper.isTypeOf(attachedClassification, OpenMetadataType.GENERATED_TARGET_CLASSIFICATION.typeName))
             {
@@ -17058,6 +17289,69 @@ public class OpenMetadataPropertyConverterBase
                 ((SmartQueryProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((SmartQueryProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
             }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.OUTCOME_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new OutcomeProperties();
+
+                ((OutcomeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((OutcomeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((OutcomeProperties)relationshipBeanProperties).setImportance(this.removeImportance(elementProperties));
+                ((OutcomeProperties)relationshipBeanProperties).setDisposition(this.removeDisposition(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.ASSESSMENT_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new AssessmentProperties();
+
+                ((AssessmentProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setAssessor(this.removeAssessor(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setAssessorTypeName(this.removeAssessorTypeName(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setAssessorPropertyName(this.removeAssessorPropertyName(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setAssessmentTime(this.removeAssessmentTime(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setExpiryTime(this.removeExpiryTime(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setNotes(this.removeNotes(elementProperties));
+                ((AssessmentProperties)relationshipBeanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PROJECT_TARGET_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ProjectTargetProperties();
+
+                ((ProjectTargetProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ProjectTargetProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.DATA_VALUE_SOURCE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new DataValueSourceProperties();
+
+                ((DataValueSourceProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((DataValueSourceProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.PROCESSING_VARIABLE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new ProcessingVariableProperties();
+
+                ((ProcessingVariableProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((ProcessingVariableProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((ProcessingVariableProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.EMBEDDED_DATA_VALUE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new EmbeddedDataValueProperties();
+
+                ((EmbeddedDataValueProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((EmbeddedDataValueProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((EmbeddedDataValueProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.SUPPORTED_VARIABLE_TYPE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new SupportedVariableTypeProperties();
+
+                ((SupportedVariableTypeProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
+                ((SupportedVariableTypeProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+                ((SupportedVariableTypeProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
+                ((SupportedVariableTypeProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
+                ((SupportedVariableTypeProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
+            }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.REPORT_RUN_OF_RELATIONSHIP.typeName))
             {
                 relationshipBeanProperties = new ReportRunOfProperties();
@@ -17719,6 +18013,17 @@ public class OpenMetadataPropertyConverterBase
                             }
 
                         }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_MODEL_BOUNDARY.typeName))
+                        {
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_BOUNDARY.typeName))
+                            {
+                                beanProperties = new SolutionBoundaryProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new DesignModelBoundaryProperties();
+                            }
+                        }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
@@ -17984,6 +18289,22 @@ public class OpenMetadataPropertyConverterBase
 
                         ((DesignModelElementProperties)beanProperties).setCanonicalName(this.removeCanonicalName(elementProperties));
 
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DECISION.typeName))
+                    {
+                        beanProperties = new DecisionProperties();
+
+                        ((DecisionProperties)beanProperties).setSummary(this.removeSummary(elementProperties));
+                        ((DecisionProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                        ((DecisionProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
+                        ((DecisionProperties)beanProperties).setImportance(this.removeImportance(elementProperties));
+                        ((DecisionProperties)beanProperties).setDisposition(this.removeDisposition(elementProperties));
+                        ((DecisionProperties)beanProperties).setImplications(this.removeImplications(elementProperties));
+                        ((DecisionProperties)beanProperties).setNotes(this.removeNotes(elementProperties));
+                        ((DecisionProperties)beanProperties).setStartTime(this.removeStartTime(elementProperties));
+                        ((DecisionProperties)beanProperties).setLastReviewTime(this.removeLastReviewTime(elementProperties));
+                        ((DecisionProperties)beanProperties).setNextReviewTime(this.removeNextReviewTime(elementProperties));
+                        ((DecisionProperties)beanProperties).setExpiryTime(this.removeExpiryTime(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DESIGN_PATTERN.typeName))
                     {
@@ -19492,6 +19813,30 @@ public class OpenMetadataPropertyConverterBase
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTE_LOG.typeName))
                 {
                     beanProperties = new NoteLogProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_VALUE.typeName))
+                {
+                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LITERAL_DATA_VALUE.typeName))
+                    {
+                        beanProperties = new LiteralDataValueProperties();
+
+                        ((LiteralDataValueProperties)beanProperties).setDataValue(this.removeDataValue(elementProperties));
+                        ((LiteralDataValueProperties)beanProperties).setDataValueList(this.removeDataValueList(elementProperties));
+                        ((LiteralDataValueProperties)beanProperties).setDataValueMap(this.removeDataValueMap(elementProperties));
+                    }
+                    else
+                    {
+                        beanProperties = new DataValueProperties();
+                    }
+
+                    ((DataValueProperties)beanProperties).setDataFormat(this.removeDataFormat(elementProperties));
+                    ((DataValueProperties)beanProperties).setLength(this.removeLength(elementProperties));
+                    ((DataValueProperties)beanProperties).setDataType(this.removeDataType(elementProperties));
+                    ((DataValueProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
+                    ((DataValueProperties)beanProperties).setFingerprint(this.removeFingerprint(elementProperties));
+                    ((DataValueProperties)beanProperties).setFingerprintAlgorithm(this.removeFingerprintAlgorithm(elementProperties));
+                    ((DataValueProperties)beanProperties).setHash(this.removeHash(elementProperties));
+                    ((DataValueProperties)beanProperties).setHashAlgorithm(this.removeHashAlgorithm(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PORT.typeName))
                 {

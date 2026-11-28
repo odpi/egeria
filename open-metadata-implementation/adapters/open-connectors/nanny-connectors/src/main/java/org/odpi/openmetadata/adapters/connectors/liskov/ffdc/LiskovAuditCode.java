@@ -112,14 +112,14 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                    "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
-     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})
+     * LISKOV-DATA-HUB-MANAGER-0019 - The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5})
      */
-    REFRESHING_CSV_FILE("LISKOV-DATA-HUB-MANAGER-0019",
-                        AuditLogRecordSeverityLevel.INFO,
-                        "The {0} integration connector is refreshing data fields from {1} CSV File {2} ({3}) for data sharing hub {4} ({5})",
-                        "The connector is reading the data fields from a CSV file so that it can refresh a data sharing hub.",
-                        "No action is required.  This message identifies the CSV file that the data fields are being read from.",
-                        "https://egeria-project.org/concepts/data-sharing-hub/"),
+    REFRESHING_TABULAR_FILE("LISKOV-DATA-HUB-MANAGER-0019",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} integration connector is refreshing data fields from {1} {2} ({3}) for data sharing hub {4} ({5})",
+                            "The connector is reading the data fields from the columns of a file with a tabular schema, such as a CSV file or an Apache Parquet file, so that it can refresh a data sharing hub.",
+                            "No action is required.  This message identifies the type of file, and the file, that the data fields are being read from.",
+                            "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     /**
      * LISKOV-DATA-HUB-MANAGER-0020 - The {0} integration connector has started engine action {1} to enable the cataloguing of {2} {3} ({4}) using governance action type {5}
@@ -150,6 +150,36 @@ public enum LiskovAuditCode implements AuditLogMessageSet
                        "The connector is not able to determine which cataloguing and survey governance action types are appropriate for this element and so it skips them.  The rest of the refresh continues.",
                        "If this element should be catalogued and surveyed, check that its deployedImplementationType property is set to a technology type that is defined in the content packs loaded into this metadata store.",
                        "https://egeria-project.org/concepts/data-sharing-hub/"),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0023 - The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5}
+     */
+    CANONICAL_PATH_NAME_SET("LISKOV-DATA-HUB-MANAGER-0023",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "The {0} integration connector has changed the path name of {1} {2} ({3}) from {4} to its canonical path name {5}",
+                            "The folder or file is a member of a data sharing hub, or is catalogued beneath a folder that is, and it was catalogued with a path name that is local to one machine.  The connector has replaced the local mount point in its path name with the canonical mount point, so that it lines up with the folders and files catalogued by other runtimes.  Its qualified name and its connection are not changed.",
+                            "No action is required unless the canonical path name is wrong.  In that case, correct the mount points and restore the path name.  The mount points come from the file system linked to the folder or one of the folders above it; then from the catalog target relationship that makes the folder a target of the folder cataloguer - its configuration properties, or the file system named as its metadata source - and otherwise from the localMountPoint and canonicalMountPoint configuration properties of this connector.",
+                            "https://egeria-project.org/concepts/data-sharing-hub/"),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0024 - The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4}
+     */
+    POTENTIAL_DUPLICATES_LINKED("LISKOV-DATA-HUB-MANAGER-0024",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The {0} integration connector has linked {1} elements {2} and {3} as potential duplicates because they have the same canonical path name {4}",
+                                "The two elements are in a folder that is a member of a data sharing hub and, now that they have their canonical path names, they turn out to describe the same folder or file.  The connector has linked them with a PeerDuplicateLink relationship whose status is DISCOVERED.  They are not combined on retrieval until the link is validated.",
+                                "No action is required if the Mendel Automated Duplicate Manager is running, since it validates links between files, or folders, that have the same path name.  Otherwise a steward needs to decide whether the elements are duplicates.",
+                                "https://egeria-project.org/features/duplicate-management/overview/"),
+
+    /**
+     * LISKOV-DATA-HUB-MANAGER-0025 - The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3}
+     */
+    AMBIGUOUS_FILE_SYSTEMS("LISKOV-DATA-HUB-MANAGER-0025",
+                           AuditLogRecordSeverityLevel.ACTION,
+                           "The {0} integration connector is ignoring the file systems for file folder {1} because the nearest ones are {2} file systems with mount points: {3}",
+                           "The file folder is a member of a data sharing hub.  The connector takes the mount points for the folder from the FileSystem that the folder, or one of the folders above it, is linked to with a CapabilityAssetUse relationship.  The nearest file systems are used - the ones linked to the folder itself or, failing that, to the closest level of folders above it that has any.  More than one was found at that level, even after setting aside the ones whose useType is USES, so there is no telling which one's mount points apply.  The connector carries on as if the folder had no file system, taking the mount points from the folder's catalog target, its own configuration properties or the defaults.",
+                           "Review the CapabilityAssetUse relationships that link the listed file systems to the folder, or to the nearest folders above it.  Remove the ones that are wrong, or set their useType to USES, so that a single file system is left.",
+                           "https://egeria-project.org/concepts/data-sharing-hub/"),
 
     ;
 

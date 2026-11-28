@@ -966,15 +966,39 @@ public class IntegrationConnectorHandler
 
         try
         {
+            /*
+             * A connector that has been started is in one of these states.  RUNNING is used by connectors with
+             * their own thread; WAITING and REFRESHING by the connectors that are driven by the refresh thread.
+             * Without the last two, a connector driven by the refresh thread was never disconnected when it was
+             * restarted (or when the daemon shut down), so the instance being replaced kept its resources and
+             * its registered listeners, and carried on receiving events alongside the new instance.
+             */
             if ((integrationConnectorStatus == IntegrationConnectorStatus.RUNNING) ||
+                (integrationConnectorStatus == IntegrationConnectorStatus.WAITING) ||
+                (integrationConnectorStatus == IntegrationConnectorStatus.REFRESHING) ||
                 (integrationConnectorStatus == IntegrationConnectorStatus.FAILED))
             {
-                if (integrationContext != null)
+                /*
+                 * The connector is disconnected before its context, so that it can use the context to save
+                 * what it is holding (the context refuses calls once it is disconnected).  The context is
+                 * disconnected even if the connector fails, since that is what removes its listeners.
+                 */
+                try
                 {
-                    integrationContext.disconnect();
+                    if (integrationConnector != null)
+                    {
+                        integrationConnector.disconnect();
+                    }
                 }
-                integrationConnector.disconnect();
-                updateStatus(IntegrationConnectorStatus.STOPPED);
+                finally
+                {
+                    if (integrationContext != null)
+                    {
+                        integrationContext.disconnect();
+                    }
+
+                    updateStatus(IntegrationConnectorStatus.STOPPED);
+                }
             }
         }
         catch (Exception error)

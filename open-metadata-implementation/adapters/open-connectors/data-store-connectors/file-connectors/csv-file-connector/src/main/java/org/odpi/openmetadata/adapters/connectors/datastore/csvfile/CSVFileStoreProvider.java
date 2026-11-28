@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.OpenConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -30,11 +30,11 @@ public class CSVFileStoreProvider extends OpenConnectorProviderBase
     {
         super(EgeriaOpenConnectorDefinition.CSV_FILE_STORE_CONNECTOR,
               connectorClass,
-              CSVFileConfigurationProperty.getCSVFileStoreConfigPropertyNames(),
+              TabularFileConfigurationProperty.getCSVFileStoreConfigPropertyNames(),
               Collections.singletonList(CSVFileStore.class.getName()),
               expectedDataFormat);
 
-        super.supportedConfigurationProperties = CSVFileConfigurationProperty.getCSVFileStoreConfigConfigurationPropertyTypes();
+        super.supportedConfigurationProperties = TabularFileConfigurationProperty.getCSVFileStoreConfigConfigurationPropertyTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.CSV_FILE});
     }
 }

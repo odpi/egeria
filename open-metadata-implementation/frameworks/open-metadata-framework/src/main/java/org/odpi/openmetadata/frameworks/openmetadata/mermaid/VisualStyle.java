@@ -59,6 +59,8 @@ public enum VisualStyle
 
     SOLUTION_BLUEPRINT(Colour.BLACK.getColourNumber(), Colour.DEEP_SKY_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-doc"),
     SOLUTION_BLUEPRINT_GRAPH(Colour.WHITE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "lin-doc"),
+    SOLUTION_BOUNDARY(Colour.BLACK.getColourNumber(), Colour.DEEP_SKY_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "st-rect"),
+    SOLUTION_BOUNDARY_GRAPH(Colour.WHITE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), Colour.WHITE.getColourNumber(), "st-rect"),
     SOLUTION_ROLE(Colour.WHITE.getColourNumber(), Colour.CERISE.getColourNumber(), Colour.PINKY.getColourNumber(), "trap-t"),
     SOLUTION_SUBGRAPH(Colour.BLACK.getColourNumber(), Colour.LIGHT_STEEL_BLUE.getColourNumber(), Colour.BLACK.getColourNumber(), "trap-t"),
 

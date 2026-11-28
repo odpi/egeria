@@ -39,6 +39,7 @@ import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabas
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.reports.surveyreport.SurveyReportProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyparquet.ParquetSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.ProvisionUnityCatalogGovernanceActionProvider;
@@ -299,6 +300,17 @@ public enum GovernanceServiceDefinition
                     ResourceUse.SURVEY_RESOURCE,
                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                     ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Discovers the columns within a Parquet File, how they are stored and the range of values in them.
+     */
+    PARQUET_FILE_SURVEY("ef947e82-a6e2-4e22-8fc8-2f381c322d0b",
+                        "parquet-file-survey-service",
+                        "Parquet File Survey Service",
+                        new ParquetSurveyServiceProvider(),
+                        ResourceUse.SURVEY_RESOURCE,
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers the name, extension, file type and other characteristics of a file.

@@ -112,6 +112,26 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
 
     /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0027 - The {0} integration connector is using the templates supplied by its catalog targets in place of its default templates for these names: {1}
+     */
+    CATALOG_TARGET_TEMPLATES("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0027",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "The {0} integration connector is using the templates supplied by its catalog targets in place of its default templates for these names: {1}",
+                             "The templates property of the connector's catalog targets maps the names that the connector builds from the open lineage events to the unique identifiers of catalog templates.  These templates are used for the jobs and datasets that are not catalogued yet.  The connector reads its catalog targets on each refresh and writes this message when the templates change.",
+                             "No specific action is required.  Check that the list of names and templates is the one that is expected.",
+                             "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
+     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0028 - The {0} integration connector is ignoring template {1} supplied for {2} by a catalog target because {3}
+     */
+    CATALOG_TARGET_TEMPLATE_IGNORED("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0028",
+                                    AuditLogRecordSeverityLevel.ERROR,
+                                    "The {0} integration connector is ignoring template {1} supplied for {2} by a catalog target because {3}",
+                                    "The connector uses its default template for the job or dataset, or creates the element without a template if there is no default.",
+                                    "Correct the unique identifier of the template in the templates property of the catalog target.  A template for a job must be a DeployedSoftwareComponent and a template for a dataset must be a data asset.  The connector tries the template again after its next refresh.",
+                                    "https://egeria-project.org/egeria-solutions/leveraging-open-lineage/overview/"),
+
+    /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030 - The {0} integration connector is storing open lineage events in database schema {1} of {2}; records older than {3} days are deleted on each refresh
      */
     DATABASE_LOG_STORE_READY("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0030",

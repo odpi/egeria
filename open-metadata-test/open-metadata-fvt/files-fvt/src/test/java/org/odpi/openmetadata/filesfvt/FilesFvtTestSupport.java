@@ -24,8 +24,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -189,6 +191,27 @@ final class FilesFvtTestSupport
 
 
     /**
+     * The Parquet file that is added to the folders in PARQUET_FOLDER_PURPOSES.
+     * <br>
+     * Unlike the other files under test, it cannot be written from a string: a Parquet file is binary and
+     * has to be produced by something that implements the format.  This one was written by DuckDB and is kept
+     * with the suite's resources.  It has 20 rows and five columns, three of which hold nested data.
+     */
+    static final String PARQUET_FILE_NAME = "events.parquet";
+
+    /**
+     * The top-level columns in the Parquet file under test.
+     */
+    static final List<String> PARQUET_FILE_COLUMNS = List.of("id", "scores", "address", "counters", "items");
+
+    /**
+     * The folders that are given the Parquet file.  It is only added where a test asks for it by name, so that
+     * the number of files in the folders that are surveyed and catalogued as a whole stays at FILES_IN_FOLDER.
+     */
+    static final List<String> PARQUET_FOLDER_PURPOSES = List.of("template", "filetypes", "hubfiles");
+
+
+    /**
      * The type each file in the file-types folder should be catalogued as.
      * <br>
      * Taken from the content pack's own templates rather than written out as strings: DeployedImplementationType
@@ -198,7 +221,9 @@ final class FilesFvtTestSupport
      */
     static final Map<String, String> FILE_TYPE_EXPECTATIONS =
             Map.of("measurements.csv", DeployedImplementationType.CSV_FILE.getAssociatedTypeName(),
-                   "settings.json",    DeployedImplementationType.JSON_FILE.getAssociatedTypeName());
+                   "settings.json",    DeployedImplementationType.JSON_FILE.getAssociatedTypeName(),
+                   PARQUET_FILE_NAME,  DeployedImplementationType.PARQUET_FILE.getAssociatedTypeName());
+
 
 
     /**
@@ -375,6 +400,19 @@ final class FilesFvtTestSupport
             writeFile(new File(folder, "notes.txt"), "Notes written by the files-fvt suite.\n");
             writeFile(new File(folder, "settings.json"), "{\"suite\": \"files-fvt\", \"purpose\": \"" + purpose + "\"}\n");
 
+            if (PARQUET_FOLDER_PURPOSES.contains(purpose))
+            {
+                try (InputStream parquetFile = FilesFvtTestSupport.class.getResourceAsStream("/" + PARQUET_FILE_NAME))
+                {
+                    if (parquetFile == null)
+                    {
+                        throw new IllegalStateException("The Parquet file under test, " + PARQUET_FILE_NAME + ", is missing from the suite's resources.");
+                    }
+
+                    Files.copy(parquetFile, new File(folder, PARQUET_FILE_NAME).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+
             if ("actions".equals(purpose))
             {
                 /*
@@ -403,7 +441,8 @@ final class FilesFvtTestSupport
      * The folders this suite builds, one per test that needs one of its own.
      */
     static final List<String> FOLDER_PURPOSES = List.of("survey", "catalog", "template", "actions", "destination",
-                                                        "datafolder", "filetypes", "watchdog", "liskov");
+                                                        "datafolder", "filetypes", "watchdog", "liskov", "hubfiles", "hubmounts",
+                                                        "hubfilesystem");
 
     /**
      * Name of the folder nested inside each folder under test.
@@ -846,6 +885,7 @@ final class FilesFvtTestSupport
         {
             case "csv" -> DeployedImplementationType.CSV_FILE.getDeployedImplementationType();
             case "json" -> DeployedImplementationType.JSON_FILE.getDeployedImplementationType();
+            case "parquet" -> DeployedImplementationType.PARQUET_FILE.getDeployedImplementationType();
             case "yaml", "yml" -> DeployedImplementationType.YAML_FILE.getDeployedImplementationType();
             default -> DeployedImplementationType.DATA_FILE.getDeployedImplementationType();
         };

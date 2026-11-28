@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datavalues.DataValueProperties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactDetailsProperties;
@@ -55,6 +56,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ContactDetailsProperties.class, name = "ContactDetailsProperties"),
                 @JsonSubTypes.Type(value = ContextEventProperties.class, name = "ContextEventProperties"),
                 @JsonSubTypes.Type(value = ContributionRecordProperties.class, name = "ContributionRecordProperties"),
+                @JsonSubTypes.Type(value = DataValueProperties.class, name = "DataValueProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = ExternalIdProperties.class, name = "ExternalIdProperties"),
                 @JsonSubTypes.Type(value = ImplementationSnippetProperties.class, name = "ImplementationSnippetProperties"),

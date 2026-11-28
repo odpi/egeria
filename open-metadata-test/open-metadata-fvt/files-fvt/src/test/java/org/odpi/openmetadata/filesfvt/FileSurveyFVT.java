@@ -13,7 +13,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
@@ -21,15 +23,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * FileSurveyFVT runs the Files content pack's file survey services - the general data file survey and the CSV
- * survey - against real files this suite wrote.
+ * FileSurveyFVT runs the Files content pack's file survey services - the general data file survey, the CSV
+ * survey and the Parquet survey - against real files this suite wrote.
  * <br>
  * Each case catalogues one file from its own catalog template and then surveys it, which is the same shape as
  * {@link FolderSurveyFVT} one level down.  The file assets are created straight from the template rather than
@@ -37,10 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * arrive in the catalogue through a folder cataloguer.  That is covered by {@link FolderCatalogFVT}; what is
  * being tested here is the survey, so the asset is made the shortest way that produces a real one.
  * <br>
- * The two surveys are separate cases rather than one test with two halves, so that a failure names which
+ * The surveys are separate cases rather than one test with several parts, so that a failure names which
  * survey service failed.  They are also genuinely different services reading genuinely different files - a CSV
- * survey reads the column structure, a data file survey does not - so a pass on one says nothing about the
- * other.
+ * survey works out the column structure from the values, a Parquet survey reads it from the file's footer and a
+ * data file survey does not look inside the file at all - so a pass on one says nothing about the others.
  */
 @ExtendWith(OMAGPlatformExtension.class)
 public class FileSurveyFVT
@@ -51,10 +55,13 @@ public class FileSurveyFVT
      * @param fileName file inside the folder under test
      * @param template catalog template for that kind of file
      * @param requestType survey to run against it
+     * @param expectedColumns the columns the survey should attach to the asset as its schema, in order -
+     *                        null for a survey that does not look inside the file
      */
     record FileSurveyCase(String                      fileName,
                           DataAssetTemplateDefinition template,
-                          RequestTypeDefinition       requestType)
+                          RequestTypeDefinition       requestType,
+                          List<String>                expectedColumns)
     {
         @Override
         public String toString()
@@ -73,10 +80,16 @@ public class FileSurveyFVT
     {
         return Stream.of(new FileSurveyCase("measurements.csv",
                                              DataAssetTemplateDefinition.CSV_FILE_TEMPLATE,
-                                             RequestTypeDefinition.SURVEY_CSV_FILE),
+                                             RequestTypeDefinition.SURVEY_CSV_FILE,
+                                             List.of("id", "name", "reading")),
+                         new FileSurveyCase(FilesFvtTestSupport.PARQUET_FILE_NAME,
+                                             DataAssetTemplateDefinition.PARQUET_FILE_TEMPLATE,
+                                             RequestTypeDefinition.SURVEY_PARQUET_FILE,
+                                             FilesFvtTestSupport.PARQUET_FILE_COLUMNS),
                          new FileSurveyCase("notes.txt",
                                              DataAssetTemplateDefinition.DATA_FILE_TEMPLATE,
-                                             RequestTypeDefinition.SURVEY_DATA_FILE));
+                                             RequestTypeDefinition.SURVEY_DATA_FILE,
+                                             null));
     }
 
 
@@ -154,6 +167,32 @@ public class FileSurveyFVT
             assertFalse(annotationGUIDs.isEmpty(),
                         "The " + testCase.requestType().getGovernanceRequestType() + " survey produced a report with no"
                                 + " annotations on it, although " + testCase.fileName() + " has content in it.");
+
+            /*
+             * A survey that looks inside the file leaves more than a report behind: it attaches the columns it
+             * found to the asset as its schema, which is what makes the file's structure visible in the
+             * catalogue.  Checking the names, in order, is what shows that the survey read this file rather
+             * than merely completing.
+             */
+            if (testCase.expectedColumns() != null)
+            {
+                assertEquals(testCase.expectedColumns(),
+                             getColumnNames(openMetadataStore, fileAssetGUID),
+                             "The " + testCase.requestType().getGovernanceRequestType() + " survey completed but the"
+                                     + " schema it attached to the asset for " + testCase.fileName() + " does not"
+                                     + " list the columns that are in the file.");
+
+                /*
+                 * Both of these surveys also read the values in the file to count how many times each value
+                 * occurs in a column.  For the Parquet survey that is the part that depends on the DuckDB JDBC
+                 * driver, and it is skipped - without failing the survey - when the driver is missing.  This is
+                 * what shows that the driver was found and the values were read.
+                 */
+                assertTrue(hasValueCounts(openMetadataStore, annotationGUIDs),
+                           "The " + testCase.requestType().getGovernanceRequestType() + " survey completed but none"
+                                   + " of its annotations records how many times each value occurs in a column of "
+                                   + testCase.fileName() + ", so the values in the file were not read.");
+            }
         }
         finally
         {
@@ -184,6 +223,96 @@ public class FileSurveyFVT
                                                               0);
 
         return (connections != null) && (connections.getElementList() != null) && (! connections.getElementList().isEmpty());
+    }
+
+
+    /**
+     * Return the names of the columns in the schema attached to an asset, in the order of their positions.
+     *
+     * @param openMetadataStore store to read through
+     * @param assetGUID asset to look at
+     * @return column names, empty if the asset has no schema
+     * @throws Exception problem reading from the repository
+     */
+    private List<String> getColumnNames(OpenMetadataStore openMetadataStore,
+                                        String            assetGUID) throws Exception
+    {
+        final String methodName = "getColumnNames";
+
+        PropertyHelper propertyHelper = new PropertyHelper();
+
+        Map<Integer, String> columnNames = new TreeMap<>();
+
+        String schemaTypeGUID = FilesFvtTestSupport.getRelatedGUID(openMetadataStore,
+                                                                    assetGUID,
+                                                                    OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+        if (schemaTypeGUID != null)
+        {
+            RelatedMetadataElementList columns =
+                    openMetadataStore.getRelatedMetadataElements(schemaTypeGUID,
+                                                                  1,
+                                                                  OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                                                  0,
+                                                                  FilesFvtTestSupport.MAX_PAGE_SIZE);
+
+            if ((columns != null) && (columns.getElementList() != null))
+            {
+                for (RelatedMetadataElement column : columns.getElementList())
+                {
+                    if ((column != null) && (column.getElement() != null))
+                    {
+                        columnNames.put(propertyHelper.getIntProperty("files-fvt",
+                                                                      OpenMetadataProperty.POSITION.name,
+                                                                      column.getRelationshipProperties(),
+                                                                      methodName),
+                                        propertyHelper.getStringProperty("files-fvt",
+                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                         column.getElement().getElementProperties(),
+                                                                         methodName));
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(columnNames.values());
+    }
+
+
+    /**
+     * Does any of these annotations record how many times each value occurs?
+     *
+     * @param openMetadataStore store to read through
+     * @param annotationGUIDs annotations to look at
+     * @return true if one of them has a valueCount property with entries in it
+     * @throws Exception problem reading from the repository
+     */
+    private boolean hasValueCounts(OpenMetadataStore openMetadataStore,
+                                   List<String>      annotationGUIDs) throws Exception
+    {
+        final String methodName = "hasValueCounts";
+
+        PropertyHelper propertyHelper = new PropertyHelper();
+
+        for (String annotationGUID : annotationGUIDs)
+        {
+            OpenMetadataElement annotation = openMetadataStore.getMetadataElementByGUID(annotationGUID);
+
+            if (annotation != null)
+            {
+                Map<String, Integer> valueCount = propertyHelper.getIntegerMapFromProperty("files-fvt",
+                                                                                           OpenMetadataProperty.VALUE_COUNT.name,
+                                                                                           annotation.getElementProperties(),
+                                                                                           methodName);
+
+                if ((valueCount != null) && (! valueCount.isEmpty()))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 

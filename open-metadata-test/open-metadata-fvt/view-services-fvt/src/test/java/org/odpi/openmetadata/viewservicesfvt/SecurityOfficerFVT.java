@@ -11,13 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteClassificationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewClassificationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.UpdateRelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ControlImplementationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
@@ -25,6 +28,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdent
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.UserAccountProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.ControlApplicabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StatementOfApplicabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ResourcePermissionsProperties;
@@ -43,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -54,8 +60,9 @@ import static org.odpi.openmetadata.viewservicesfvt.ActorManagerProfilesFVT.newE
 /**
  * SecurityOfficerFVT covers every request of the Security Officer OMVS: the zone hierarchy and zone membership
  * profile, the secrets collection's links to security access controls, security lists and user accounts, its
- * user account profile, the security lists associated with a security access control, and the requests that
- * manage user accounts and security access controls on a running OMAG Server Platform.
+ * user account profile, the security lists associated with a security access control, the statement of
+ * applicability and the controls it covers, and the requests that manage user accounts and security access
+ * controls on a running OMAG Server Platform.
  * <br>
  * The zones and the security access control are governance definitions (Governance Officer), the security group
  * is a collection (Collection Manager), the secrets collection and platform are assets (Asset Maker) and the
@@ -337,6 +344,117 @@ public class SecurityOfficerFVT
 
 
     /**
+     * Create a statement of applicability, read it back, update it, find it and copy it from a template.  Record
+     * whether a control applies within its scope, with the justification and implementation status, then detach
+     * the control and delete the statements.
+     */
+    @Test
+    @Order(8)
+    void statementOfApplicability()
+    {
+        final String statements = "/statements-of-applicability/";
+
+        String qualifiedName = ViewServicesFvtTestSupport.qualifiedName("StatementOfApplicability", "payroll");
+
+        StatementOfApplicabilityProperties properties = new StatementOfApplicabilityProperties();
+
+        properties.setQualifiedName(qualifiedName);
+        properties.setDisplayName("Payroll statement of applicability");
+        properties.setScope("The payroll service");
+
+        String statementGUID = securityOfficer.create("/statements-of-applicability", DesignFvtSupport.newElement(properties));
+
+        OpenMetadataRootElement statement = DesignFvtSupport.assertReadable(securityOfficer,
+                                                                            statements + statementGUID + "/retrieve",
+                                                                            OpenMetadataType.STATEMENT_OF_APPLICABILITY.typeName,
+                                                                            qualifiedName);
+
+        assertEquals("The payroll service", assertInstanceOf(StatementOfApplicabilityProperties.class, statement.getProperties()).getScope());
+
+        StatementOfApplicabilityProperties updateProperties = new StatementOfApplicabilityProperties();
+
+        updateProperties.setScope("The payroll service and its suppliers");
+
+        assertTrue(securityOfficer.post(statements + statementGUID + "/update", DesignFvtSupport.update(updateProperties), BooleanResponse.class).getFlag(),
+                   "updateStatementOfApplicability reported no change");
+
+        StatementOfApplicabilityProperties readBack = assertInstanceOf(StatementOfApplicabilityProperties.class,
+                                                                       securityOfficer.element(statements + statementGUID + "/retrieve", new GetRequestBody()).getProperties());
+
+        assertEquals("The payroll service and its suppliers", readBack.getScope());
+        assertEquals("Payroll statement of applicability", readBack.getDisplayName(), "a merge update should keep the display name");
+
+        DesignFvtSupport.assertContains(securityOfficer.elements(statements + "by-name", DesignFvtSupport.byName(qualifiedName)),
+                                        statementGUID, "getStatementsOfApplicabilityByName");
+        DesignFvtSupport.assertContains(securityOfficer.elements(statements + "by-search-string", DesignFvtSupport.runSearch()),
+                                        statementGUID, "findStatementsOfApplicability");
+
+        StatementOfApplicabilityProperties copyProperties = new StatementOfApplicabilityProperties();
+        String                             copyName       = ViewServicesFvtTestSupport.qualifiedName("StatementOfApplicability", "payroll-copy");
+
+        copyProperties.setQualifiedName(copyName);
+
+        String copyGUID = securityOfficer.post(statements + "from-template",
+                                               DesignFvtSupport.fromTemplate(statementGUID, copyProperties),
+                                               GUIDResponse.class).getGUID();
+
+        assertNotNull(copyGUID, "createStatementOfApplicabilityFromTemplate returned no GUID");
+        assertNotEquals(statementGUID, copyGUID);
+
+        DesignFvtSupport.assertReadable(securityOfficer, statements + copyGUID + "/retrieve", OpenMetadataType.STATEMENT_OF_APPLICABILITY.typeName, copyName);
+
+        /*
+         * The security access control applies within the scope of the statement.
+         */
+        ControlApplicabilityProperties applicability = new ControlApplicabilityProperties();
+
+        applicability.setLabel("access to payroll");
+        applicability.setIsApplicable(true);
+        applicability.setJustification("Payroll data is confidential");
+        applicability.setInclusionReasons(List.of("Legal requirement", "Risk assessment"));
+        applicability.setImplementationStatus(ControlImplementationStatus.PARTIALLY_IMPLEMENTED);
+        applicability.setImplementationDescription("Enforced for the clerks; the suppliers are to follow");
+
+        NewRelationshipRequestBody link = new NewRelationshipRequestBody();
+
+        link.setProperties(applicability);
+
+        String applicabilityPath = statements + statementGUID + "/control-applicability/" + accessControlGUID;
+
+        securityOfficer.call(applicabilityPath + "/attach", link);
+
+        RelatedMetadataElementSummary relationship = DesignFvtSupport.assertLinked(securityOfficer,
+                                                                                   statements + statementGUID + "/retrieve",
+                                                                                   OpenMetadataType.CONTROL_APPLICABILITY_RELATIONSHIP.typeName,
+                                                                                   accessControlGUID);
+
+        ControlApplicabilityProperties retrieved = assertInstanceOf(ControlApplicabilityProperties.class, relationship.getRelationshipProperties());
+
+        assertEquals("access to payroll", retrieved.getLabel());
+        assertEquals(Boolean.TRUE, retrieved.getIsApplicable());
+        assertEquals("Payroll data is confidential", retrieved.getJustification());
+        assertEquals(List.of("Legal requirement", "Risk assessment"), retrieved.getInclusionReasons());
+        assertEquals(ControlImplementationStatus.PARTIALLY_IMPLEMENTED, retrieved.getImplementationStatus());
+        assertEquals("Enforced for the clerks; the suppliers are to follow", retrieved.getImplementationDescription());
+
+        assertLinked(governanceDefinition(accessControlGUID), OpenMetadataType.CONTROL_APPLICABILITY_RELATIONSHIP.typeName, statementGUID);
+
+        securityOfficer.call(applicabilityPath + "/detach", new DeleteRelationshipRequestBody());
+
+        DesignFvtSupport.assertNotLinked(securityOfficer,
+                                         statements + statementGUID + "/retrieve",
+                                         OpenMetadataType.CONTROL_APPLICABILITY_RELATIONSHIP.typeName,
+                                         accessControlGUID);
+
+        DesignFvtSupport.deleteAndCheck(securityOfficer, statements + copyGUID, statements + copyGUID + "/retrieve");
+        DesignFvtSupport.deleteAndCheck(securityOfficer, statements + statementGUID, statements + statementGUID + "/retrieve");
+
+        DesignFvtSupport.assertNotContains(securityOfficer.elements(statements + "by-search-string", DesignFvtSupport.runSearch()),
+                                           statementGUID, "findStatementsOfApplicability after delete");
+    }
+
+
+    /**
      * The user account and security access control requests act on a running OMAG Server Platform, through the
      * connection of the platform's asset to the OMAG Server Platform connector.  This suite has no such asset:
      * the template that catalogues one is not in the CoreContentPack, and the hermetic platform has no metadata
@@ -345,7 +463,7 @@ public class SecurityOfficerFVT
      * not found.
      */
     @Test
-    @Order(8)
+    @Order(9)
     void platformSecurityRequestsForAnUnknownPlatform()
     {
         platformRequestsAreRefused("/platforms/" + UNKNOWN_PLATFORM_GUID, 404);
@@ -357,7 +475,7 @@ public class SecurityOfficerFVT
      * successful having done nothing.
      */
     @Test
-    @Order(9)
+    @Order(10)
     void platformSecurityRequestsForAnUnconnectedPlatform()
     {
         platformRequestsAreRefused("/platforms/" + platformGUID, 0);

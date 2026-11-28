@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -172,14 +172,14 @@ public class CSVFileStoreConnectorTest
             Map<String, Object> configurationProperties = new HashMap<>();
             List<String>        columnNames             = new ArrayList<>();
 
-            configurationProperties.put(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName(), '-');
-            configurationProperties.put(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName(), '\'');
+            configurationProperties.put(TabularFileConfigurationProperty.DELIMITER_CHARACTER.getName(), '-');
+            configurationProperties.put(TabularFileConfigurationProperty.QUOTE_CHARACTER.getName(), '\'');
 
             columnNames.add("RecId");
             columnNames.add("ContactType");
             columnNames.add("Number");
 
-            configurationProperties.put(CSVFileConfigurationProperty.COLUMN_NAMES.getName(), columnNames);
+            configurationProperties.put(TabularFileConfigurationProperty.COLUMN_NAMES.getName(), columnNames);
 
 
             connectionBean.setConfigurationProperties(configurationProperties);

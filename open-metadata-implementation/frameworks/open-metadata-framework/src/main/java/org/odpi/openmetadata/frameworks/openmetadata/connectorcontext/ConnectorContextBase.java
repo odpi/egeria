@@ -92,6 +92,8 @@ public class ConnectorContextBase
     private final   DataValueSpecificationClient   dataValueSpecificationClient;
     private final   DataFieldClient                dataFieldClient;
     private final   DataStructureClient            dataStructureClient;
+    private final   DataValueClient                dataValueClient;
+    private final   DecisionClient                 decisionClient;
     private final   DesignPatternClient            designPatternClient;
     private final   EndpointClient                 endpointClient;
     private final   ExternalIdClient               externalIdClient;
@@ -389,6 +391,28 @@ public class ConnectorContextBase
                                                            openMetadataClient,
                                                            auditLog,
                                                            maxPageSize);
+
+        this.dataValueClient = new DataValueClient(this,
+                                                   localServerName,
+                                                   localServiceName,
+                                                   connectorUserId,
+                                                   connectorGUID,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   openMetadataClient,
+                                                   auditLog,
+                                                   maxPageSize);
+
+        this.decisionClient = new DecisionClient(this,
+                                                 localServerName,
+                                                 localServiceName,
+                                                 connectorUserId,
+                                                 connectorGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 openMetadataClient,
+                                                 auditLog,
+                                                 maxPageSize);
 
         this.designPatternClient = new DesignPatternClient(this,
                                                            localServerName,
@@ -1182,6 +1206,28 @@ public class ConnectorContextBase
     public DataStructureClient getDataStructureClient()
     {
         return dataStructureClient;
+    }
+
+
+    /**
+     * Return the client for managing data values.
+     *
+     * @return connector context client
+     */
+    public DataValueClient getDataValueClient()
+    {
+        return dataValueClient;
+    }
+
+
+    /**
+     * Return the client for managing decisions.
+     *
+     * @return connector context client
+     */
+    public DecisionClient getDecisionClient()
+    {
+        return decisionClient;
     }
 
 

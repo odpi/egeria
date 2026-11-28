@@ -33,11 +33,14 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * LovelaceOpenLineageAnalysisServiceBase is the common base for the Lovelace services that analyse a historical
@@ -59,6 +62,13 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
     protected static final String ANALYSIS_WINDOW_START_PROPERTY = "analysisWindowStart";
     protected static final String ANALYSIS_WINDOW_END_PROPERTY   = "analysisWindowEnd";
     protected static final String ANALYSIS_SERVICE_PROPERTY      = "analysisService";
+
+    /*
+     * A history can be large, and the analysis services are typically started together against the same log
+     * store.  Only one of them holds a history at a time, so that the memory needed is that of the largest
+     * history rather than the sum of them all.
+     */
+    private static final ReentrantLock HISTORY_LOCK = new ReentrantLock(true);
 
     protected Date windowStart  = null;
     protected Date windowEnd    = null;
@@ -85,6 +95,19 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
 
 
     /**
+     * Return the parts of the history that the analysis uses.  A log store in a database holds a row for every run
+     * and for every dataset each run read or wrote, so a service that names only the parts it uses avoids holding
+     * the rest in memory.  The default is the whole history.
+     *
+     * @return parts of the history to read
+     */
+    protected Set<OpenLineageRunHistory.Content> getRequiredContent()
+    {
+        return EnumSet.allOf(OpenLineageRunHistory.Content.class);
+    }
+
+
+    /**
      * Return a short description of what the service produces, for the completion message.
      *
      * @return description
@@ -105,6 +128,30 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         final String methodName = "start";
 
         Connector logStoreConnector = null;
+
+        /*
+         * Wait for any other analysis service that is working with a history to finish.  The analysis time,
+         * and so the analysis window, is set once the wait is over, so that the window ends when the log store
+         * is read rather than when the service was started.
+         */
+        try
+        {
+            HISTORY_LOCK.lockInterruptibly();
+        }
+        catch (InterruptedException error)
+        {
+            /*
+             * The engine is shutting the service down.  The interrupt is passed on to the caller's thread.
+             */
+            Thread.currentThread().interrupt();
+
+            throw new ConnectorCheckedException(LovelaceInsightErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
 
         try
         {
@@ -190,7 +237,7 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
                                                                                                                  formatDate(windowStart),
                                                                                                                  formatDate(windowEnd)));
 
-                history = new OpenLineageDatabaseLogStoreReader().read(databaseLogStore.getDataSource(), databaseSchema, windowStart, windowEnd);
+                history = new OpenLineageDatabaseLogStoreReader().read(databaseLogStore.getDataSource(), databaseSchema, windowStart, windowEnd, getRequiredContent());
             }
             else
             {
@@ -224,8 +271,8 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
 
             logRecord(methodName, LovelaceInsightAuditCode.OPEN_LINEAGE_EVENTS_READ.getMessageDefinition(governanceServiceName,
                                                                                                         Integer.toString(history.getEventCount()),
-                                                                                                        Integer.toString(history.getJobs().size()),
-                                                                                                        Integer.toString(history.getDataSets().size()),
+                                                                                                        Integer.toString(history.getJobCount()),
+                                                                                                        Integer.toString(history.getDataSetCount()),
                                                                                                         Integer.toString(history.getUnreadableEvents())));
 
             int elementsUpdated = analyse(history);
@@ -252,6 +299,8 @@ public abstract class LovelaceOpenLineageAnalysisServiceBase extends GeneralGove
         }
         finally
         {
+            HISTORY_LOCK.unlock();
+
             if (logStoreConnector != null)
             {
                 try

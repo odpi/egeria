@@ -40,6 +40,36 @@ public class PostgresOpenLineageLogStoreSchemaTest
 
 
     /**
+     * Each window query reads the log store's own tables and takes the window start and end as its only parameters.
+     */
+    @Test
+    public void testWindowQueries()
+    {
+        PostgresOpenLineageLogStoreSchema schema = new PostgresOpenLineageLogStoreSchema("Open Lineage");
+
+        for (String sql : new String[]{schema.getRunsInWindowSQL(),
+                                       schema.getRunDatasetsInWindowSQL(),
+                                       schema.getAssertionsInWindowSQL(),
+                                       schema.getTestsInWindowSQL(),
+                                       schema.getEventSummaryInWindowSQL(),
+                                       schema.getJobCountInWindowSQL(),
+                                       schema.getDatasetCountInWindowSQL(),
+                                       schema.getJobGovernanceActionsInWindowSQL()})
+        {
+            assertEquals(sql.chars().filter(character -> character == '?').count(), 2L, sql);
+            assertTrue(sql.contains("\"Open Lineage\".ol_"), sql);
+        }
+
+        assertTrue(schema.getJobCountInWindowSQL().startsWith("SELECT count(*)"));
+        assertTrue(schema.getJobCountInWindowSQL().contains("DISTINCT job_namespace, job_name"));
+        assertTrue(schema.getDatasetCountInWindowSQL().startsWith("SELECT count(*)"));
+        assertTrue(schema.getDatasetCountInWindowSQL().contains("DISTINCT d.dataset_namespace, d.dataset_name"));
+        assertTrue(schema.getJobGovernanceActionsInWindowSQL().contains("governance_action IS NOT NULL"));
+        assertTrue(schema.getJobGovernanceActionsInWindowSQL().endsWith("ORDER BY job_namespace, job_name, first_event_time DESC"));
+    }
+
+
+    /**
      * A missing namespace is stored as an empty string and read back as null.
      */
     @Test

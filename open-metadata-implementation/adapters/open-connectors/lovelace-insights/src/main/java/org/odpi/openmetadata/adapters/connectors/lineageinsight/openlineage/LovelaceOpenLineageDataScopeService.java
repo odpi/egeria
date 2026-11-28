@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,18 @@ public class LovelaceOpenLineageDataScopeService extends LovelaceOpenLineageAnal
      */
     public LovelaceOpenLineageDataScopeService()
     {
+    }
+
+
+    /**
+     * Return the parts of the history that the analysis uses: the reads and writes of each dataset.
+     *
+     * @return parts of the history to read
+     */
+    @Override
+    protected Set<OpenLineageRunHistory.Content> getRequiredContent()
+    {
+        return EnumSet.of(OpenLineageRunHistory.Content.DATASET_ACTIVITY);
     }
 
 

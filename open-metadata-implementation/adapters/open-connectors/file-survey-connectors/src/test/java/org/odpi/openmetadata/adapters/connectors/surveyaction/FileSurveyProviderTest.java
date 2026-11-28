@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyparquet.ParquetSurveyServiceProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
@@ -43,6 +45,32 @@ public class FileSurveyProviderTest
     {
         validateFinalAnalysisSteps(new CSVSurveyServiceProvider(),
                                    List.of("Check Asset", "Measure Resource", "Schema Extraction", "Profile Data"));
+    }
+
+
+    /**
+     * The Parquet file survey measures the file, extracts its columns and then profiles them using the
+     * statistics in the file's footer.  Each of the annotation types it produces is tied to the step that produces it.
+     */
+    @Test public void testParquetSurveyFinalAnalysisSteps()
+    {
+        ParquetSurveyServiceProvider provider = new ParquetSurveyServiceProvider();
+
+        validateFinalAnalysisSteps(provider,
+                                   List.of("Check Asset", "Measure Resource", "Schema Extraction", "Profile Data"));
+
+        List<String> annotationTypes = new ArrayList<>();
+
+        for (AnnotationTypeType annotationTypeType : provider.getProducedAnnotationTypes())
+        {
+            annotationTypes.add(annotationTypeType.getName() + ":" + annotationTypeType.getAnalysisStepName());
+        }
+
+        assertEquals(annotationTypes,
+                     List.of("Extract File Properties:Measure Resource",
+                             "Extract Parquet File Properties:Measure Resource",
+                             "Extract Schema From Footer:Schema Extraction",
+                             "Profile Column From Statistics:Profile Data"));
     }
 
 

@@ -257,7 +257,7 @@ public enum MendelAuditCode implements AuditLogMessageSet
     OWN_VALIDATION_WITHDRAWN("MENDEL-DUPLICATE-MANAGER-0017",
                              AuditLogRecordSeverityLevel.INFO,
                              "The {0} integration connector has retired the duplicate link {1} between {2} and {3} because the elements are no longer a close match",
-                             "The connector validated this link itself, on the grounds that the two elements were of the same type and shared a qualified name.  That is no longer true, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.",
+                             "The connector validated this link itself, on the grounds that the two elements were either of the same type and shared a qualified name, or were both files (or both folders) and shared a path name.  Neither is true any longer, so the grounds have gone and the link is moved to DEPRECATED.  The elements stop being combined on retrieval once neither has a link that is still in force.",
                              "No action is required.  Review the link if the two elements really are duplicates - a steward can validate it again, and this connector will not overrule that decision.",
                              "https://egeria-project.org/features/duplicate-management/overview/"),
 

@@ -503,6 +503,21 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
             super.addRelatedElementSummaries(openMetadataRootElement.getLicenses(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getLicensedElements(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 
+            super.addRelatedElementSummaries(openMetadataRootElement.getAssociatedDecisions(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getDecisionOutcomes(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getInputsToDecision(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getAssessmentDecisions(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getWorkedOnByProjects(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProjectTargets(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getDataValueUses(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProcessingVariables(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getParentDataValues(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getEmbeddedDataValues(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProvidesDataValues(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getDataValueSources(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProcessVariableTypeUses(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+            super.addRelatedElementSummaries(openMetadataRootElement.getProcessVariableTypes(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
+
             super.addRelatedElementSummaries(openMetadataRootElement.getCertifications(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
             super.addRelatedElementSummaries(openMetadataRootElement.getCertifiedElements(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID(), LineStyle.NORMAL);
 

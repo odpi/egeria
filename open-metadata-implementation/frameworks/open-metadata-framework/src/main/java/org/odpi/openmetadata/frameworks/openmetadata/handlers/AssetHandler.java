@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TabularFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeploymentStatus;
@@ -291,12 +291,12 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
             Map<String, Object>  configurationProperties = new HashMap<>();
 
-            configurationProperties.put(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName(), delimiterCharacter);
-            configurationProperties.put(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName(), quoteCharacter);
+            configurationProperties.put(TabularFileConfigurationProperty.DELIMITER_CHARACTER.getName(), delimiterCharacter);
+            configurationProperties.put(TabularFileConfigurationProperty.QUOTE_CHARACTER.getName(), quoteCharacter);
 
             if (columnHeaders != null)
             {
-                configurationProperties.put(CSVFileConfigurationProperty.COLUMN_NAMES.getName(), columnHeaders);
+                configurationProperties.put(TabularFileConfigurationProperty.COLUMN_NAMES.getName(), columnHeaders);
             }
 
             connectionProperties.setConfigurationProperties(configurationProperties);

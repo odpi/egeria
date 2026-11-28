@@ -6,7 +6,7 @@
 
 These connectors provide access to the contents of files, folders and databases.
 
-This directory documents 27 messages in 5 message sets.  Return to the [messages and codes index](../../README.md).
+This directory documents 35 messages in 6 message sets.  Return to the [messages and codes index](../../README.md).
 
 
 ## Message sets
@@ -18,6 +18,7 @@ This directory documents 27 messages in 5 message sets.  Return to the [messages
 | [CSVFileConnectorErrorCode](CSVFileConnectorErrorCode.md) | Exception messages | `CSV-FILE-CONNECTOR-` | 5 | <https://egeria-project.org/concepts/digital-resource-connector/> |
 | [JDBCAuditCode](JDBCAuditCode.md) | Audit log messages | `JDBC-RESOURCE-CONNECTOR-` | 4 | <https://egeria-project.org/concepts/digital-resource-connector/> |
 | [JDBCErrorCode](JDBCErrorCode.md) | Exception messages | `JDBC-RESOURCE-CONNECTOR-` | 7 | <https://egeria-project.org/concepts/digital-resource-connector/> |
+| [ParquetFileConnectorErrorCode](ParquetFileConnectorErrorCode.md) | Exception messages | `PARQUET-FILE-CONNECTOR-` | 8 | <https://egeria-project.org/concepts/digital-resource-connector/> |
 
 
 ----

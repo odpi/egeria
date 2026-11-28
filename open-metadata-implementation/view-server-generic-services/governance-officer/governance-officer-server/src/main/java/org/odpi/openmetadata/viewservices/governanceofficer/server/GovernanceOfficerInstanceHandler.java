@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.governanceofficer.server;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.DecisionHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
@@ -56,6 +57,36 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getGovernanceDefinitionHandler(urlMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the handler for decisions.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  handler
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public DecisionHandler getDecisionHandler(String userId,
+                                              String serverName,
+                                              String urlMarker,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        GovernanceOfficerInstance instance = (GovernanceOfficerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDecisionHandler(urlMarker, serviceOperationName);
         }
 
         return null;
