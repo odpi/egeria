@@ -84,7 +84,7 @@ are parsed and delivered through new default methods on `OpenLineageEventListene
 | `ownership` job/dataset facet | `Ownership` classification (first owner) | The owner name is matched to an actor profile (by user identity, then by name, with any `user:`/`team:` prefix stripped); if found the classification names the profile, otherwise it carries the OpenLineage name.  The OpenLineage name and type are always recorded in the classification's `additionalProperties` (new in this change).  Only added when the element is not already owned. |
 | `parent` run facet (parent and root job) | `Process` for each, `ProcessHierarchy` (OWNED) root → parent → job | A newly created child process is anchored to its parent, so deleting the parent removes its children.  An existing process keeps its own anchor. |
 | `jobDependencies` run facet, JOB entries of the `lineage` job facet | `ControlFlow` between processes | guard = status trigger rule, label = dependency type. |
-| Run (runId) | `TransientEmbeddedProcess` owned by the job's process via `ProcessHierarchy` (OWNED) | Optional (`catalogRuns`, default off).  `activityStatus` from the event type, `startTime`/`completionTime` from event times, `requestedStartTime` from nominal start; run facets in additional properties. |
+| Run (runId) | `TransientEmbeddedProcess` owned by the job's process via `ProcessHierarchy` (OWNED) | Optional (`catalogRuns` or `catalogRunLineage`, default off).  With `catalogRunLineage` the run is also linked to the datasets it read and wrote with the lineage relationships used for the job's process (`DataFlow` for an asset; `DataMapping` for a table plus a `DataFlow` to the table's asset), tagged with the same information supply chains; the lineage on the job's process is maintained either way.  A governance action run is represented by its process instance, so neither option applies to it.  `activityStatus` from the event type, `startTime`/`completionTime` from event times, `requestedStartTime` from nominal start; run facets in additional properties. |
 | Input / output dataset (namespace, name) | The element that describes the physical data: a catalogued `RelationalTable` (with its `DeployedDatabaseSchema` or `RelationalDatabase`), `Topic`, file, Unity Catalog table ... or, when nothing is catalogued, a new asset created from the catalog template for the technology in the namespace, or a generic `DataStore` | See "Matching datasets to the physical landscape" and "Creating datasets and jobs that are not catalogued" below.  A new asset is named `{typeName}::{namespace}::{name}` with namespace in `namespacePath`, name in `resourceName` (and `pathName` for files). |
 | `documentation`, `version` dataset facets | `description`, `versionIdentifier` | |
 | `dataSource`, `storage`, `catalog`, `symlinks`, `hierarchy`, `tags`, `datasetType`, `lifecycleStateChange` dataset facets | additional properties | |
@@ -192,6 +192,28 @@ properties from the facets, which replace the template's values.  The technology
 Postgres, SQL Server, Oracle, Db2 and Unity Catalog tables, in that technology's content pack).  When a template is
 not loaded - for example because the Postgres content pack is not - the asset is created directly with the same type
 and technology type.
+
+The template is chosen through *template names* built from the values in the event
+(`OpenLineageCataloguerTemplateType`).  The names are tried from the most specific to the least specific and the
+first one with a template is used:
+
+* a job tries `job:{integration}:{jobType}`, `job:{integration}`, `job:*:{jobType}` and `job:*`, using the
+  integration and jobType of its `jobType` facet (a parent or root job has no facet: the parent of an Airflow task
+  uses the names of an Airflow DAG and any other parent uses `job:*`);
+* a dataset tries `dataset:{scheme}:{variant}`, `dataset:{scheme}` and `dataset:*`, first with the scheme as it is
+  written in the namespace and then with its canonical form (so `sqlserver` can differ from `mssql`).  The variant
+  is `folder` when the name ends with `/` and `subscription` for a `pubsub` name starting with `subscription:`.
+
+The tables below are the defaults.  The `templates` property of the `CatalogTarget` relationships attached to the
+connector (template name to template GUID, not case-sensitive) replaces the default for a name or supplies a
+template for a name that has no default, including `job:*` and `dataset:*`.  Only the relationships are read, on
+start up and on each refresh; the element at the other end is not used and no connector to it is created.  A
+supplied template that is one of the content pack templates is used through its definition.  Any other template is
+retrieved to find its open metadata type and technology type, which the new element takes; it must be a
+`DeployedSoftwareComponent` for a job or a data asset for a dataset, otherwise it is reported
+(OPEN-LINEAGE-INTEGRATION-CONNECTOR-0028) and the default is used.  The connector still supplies the qualified
+name, names and facet properties, and the placeholder values (plus the host, port, server and topic placeholders
+for a template that is not from the content packs).
 
 | Dataset namespace scheme | Template (technology type) | Open metadata type |
 |--------------------------|----------------------------|--------------------|
@@ -377,7 +399,8 @@ descriptive facets, and for the cheap "last seen" markers (last run, last write,
 catalog feel live.  Route every event to a log store (the file-based or API-based log store connectors, or
 Marquez) and add a scheduled governance service that reads a time window of the log store and maintains the
 statistical metadata: the DataScope classification, process run profile (frequency, duration, volume,
-failure rate) and data quality summaries.  Runs are not catalogued as elements unless `catalogRuns` is set; the
+failure rate) and data quality summaries.  Runs are not catalogued as elements unless `catalogRuns` or
+`catalogRunLineage` is set (the latter also adds a set of lineage relationships for every run); the
 other optional behaviours default to on so the capability can be evaluated on a small pipeline, and should be
 switched off for high-frequency jobs once the log-store analysis is in place.
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.EgeriaOpenConnectorDefinition;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineageCataloguerTemplateType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
 /**
@@ -27,6 +28,7 @@ public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnect
               OpenLineageCataloguerConfigurationProperty.getRecognizedConfigurationProperties());
 
         super.supportedConfigurationProperties = OpenLineageCataloguerConfigurationProperty.getConfigurationPropertyTypes();
+        super.supportedTemplateTypes           = OpenLineageCataloguerTemplateType.getTemplateTypes();
     }
 }
 

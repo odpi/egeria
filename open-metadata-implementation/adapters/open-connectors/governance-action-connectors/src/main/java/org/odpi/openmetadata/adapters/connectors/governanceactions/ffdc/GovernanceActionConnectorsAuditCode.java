@@ -680,6 +680,36 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                           "Validate that the elements describe the same thing, and remove the PeerDuplicateLink relationship if they do not.",
                           "https://egeria-project.org/concepts/governance-action-service/"),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0062 - The {0} governance action service has output the {1} guard for action target {2} of type {3}
+     */
+    TYPE_CAST("GOVERNANCE-ACTION-CONNECTORS-0062",
+              AuditLogRecordSeverityLevel.INFO,
+              "The {0} governance action service has output the {1} guard for action target {2} of type {3}",
+              "The governance action service returns an ACTIONED completion status with the type name as its guard.",
+              "No action is required.  If this type of element is expected, validate that the governance action process has a next step for this guard.",
+              "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0063 - The {0} governance action service has detected that action target {1} of type {2} does not match any of the candidate types {3}
+     */
+    TYPE_NOT_LISTED("GOVERNANCE-ACTION-CONNECTORS-0063",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} governance action service has detected that action target {1} of type {2} does not match any of the candidate types {3}",
+                    "The governance action service returns an ACTIONED completion status with the type-not-listed guard.",
+                    "Validate that the governance action process is responding to the guard as expected, or add the type, or one of its super types, to the candidateTypeNames property.",
+                    "https://egeria-project.org/concepts/governance-action-service/"),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0064 - The {0} governance action service has been passed {1} action targets but can only work with one: {2}
+     */
+    MULTIPLE_TARGETS("GOVERNANCE-ACTION-CONNECTORS-0064",
+                     AuditLogRecordSeverityLevel.ERROR,
+                     "The {0} governance action service has been passed {1} action targets but can only work with one: {2}",
+                     "The governance action service returns an INVALID completion status with the multiple-targets-detected guard without choosing a guard for any of the action targets.",
+                     "Change the governance action process, or the call to initiate the governance action, so that the service is passed a single action target, and then rerun the request.",
+                     "https://egeria-project.org/concepts/governance-action-service/"),
+
     ;
 
     private final String                      logMessageId;

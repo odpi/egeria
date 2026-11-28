@@ -28,7 +28,7 @@ Every Egeria message is defined once, as a constant in a *message set*.  A messa
 | Type | Message sets | Messages | Description |
 |---|---|---|---|
 | Exception messages | 68 | 653 | These messages are used to fill out the exceptions thrown by Egeria.  Each message carries an HTTP error code so that the exception can be faithfully passed across a REST API call and rebuilt by the client. |
-| Audit log messages | 110 | 1132 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
+| Audit log messages | 110 | 1134 | These messages are written to the audit log destinations configured for the OMAG Server Platform.  Each message carries a severity that describes the type of activity being reported and is used to route the message to the appropriate audit log destinations. |
 | Notification messages | 1 | 5 | These messages are the general purpose message sets.  They are used for message content that is neither an exception nor an audit log record - such as the notifications sent to a subscriber. |
 
 
@@ -94,7 +94,7 @@ The message sets are grouped to match the part of Egeria that defines them.
 | [User Security](user-security) | 1 | 1 | The user security services authenticate the callers of the OMAG Server Platform's REST APIs. |
 | [Data Manager Connectors](connectors/data-manager-connectors) | 15 | 93 | These connectors catalog and survey the contents of database servers and other data managers. |
 | [Data Store Connectors](connectors/data-store-connectors) | 6 | 35 | These connectors provide access to the contents of files, folders and databases. |
-| [Integration Connectors](connectors/integration-connectors) | 15 | 111 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
+| [Integration Connectors](connectors/integration-connectors) | 15 | 113 | Integration connectors run in an integration daemon.  They keep the open metadata ecosystem synchronized with the third party technologies that they monitor. |
 | [System Connectors](connectors/system-connectors) | 13 | 80 | These connectors call the APIs of third party systems such as Apache Atlas, Apache Kafka and the Egeria runtime itself. |
 | [Repository Services Connectors](connectors/repository-services-connectors) | 7 | 34 | These connectors provide the pluggable implementations used by the repository services - the metadata repositories, the audit log destinations, the cohort registry stores and the open metadata archive stores. |
 | [Event Bus Connectors](connectors/event-bus-connectors) | 2 | 24 | These connectors send and receive events over the event bus - typically Apache Kafka. |
@@ -260,7 +260,7 @@ Every message identifier begins with a prefix that names the component that rais
 | `OPEN-GOVERNANCE-` | Exception messages | 5 | [OpenGovernanceErrorCode](access-services/OpenGovernanceErrorCode.md) |
 | `OPEN-GOVERNANCE-ACTION-` | Audit log messages | 2 | [OGFAuditCode](frameworks/OGFAuditCode.md) |
 | `OPEN-GOVERNANCE-ACTION-` | Exception messages | 2 | [OGFErrorCode](frameworks/OGFErrorCode.md) |
-| `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | Audit log messages | 14 | [OpenLineageIntegrationConnectorAuditCode](connectors/integration-connectors/OpenLineageIntegrationConnectorAuditCode.md) |
+| `OPEN-LINEAGE-INTEGRATION-CONNECTOR-` | Audit log messages | 16 | [OpenLineageIntegrationConnectorAuditCode](connectors/integration-connectors/OpenLineageIntegrationConnectorAuditCode.md) |
 | `OPEN-LINEAGE-INTEGRATION-CONNECTOR-500-` | Exception messages | 2 | [OpenLineageIntegrationConnectorErrorCode](connectors/integration-connectors/OpenLineageIntegrationConnectorErrorCode.md) |
 | `OPEN-METADATA-` | Audit log messages | 17 | [OMFAuditCode](frameworks/OMFAuditCode.md) |
 | `OPEN-METADATA-` | Exception messages | 32 | [OMFErrorCode](frameworks/OMFErrorCode.md) |
