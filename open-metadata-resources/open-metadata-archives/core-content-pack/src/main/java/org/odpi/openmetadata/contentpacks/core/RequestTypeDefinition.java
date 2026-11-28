@@ -454,7 +454,7 @@ public enum RequestTypeDefinition
                  DeployedImplementationType.ASSET.getQualifiedName(),
                  "3f76aeab-bb47-4b5b-b77e-803cc73e7e13",
                  "Verify Asset",
-                 "Verify that an asset has the correct classifications set up - which includes zone membership, retention and origin.",
+                 "Verify that an asset has the correct classifications set up - which includes zone membership, ownership and origin.",
                  ContentCollectionDefinition.STEWARDSHIP,
                  ContentPackDefinition.CORE_CONTENT_PACK),
 

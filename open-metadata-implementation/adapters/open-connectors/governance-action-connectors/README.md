@@ -61,6 +61,8 @@ The remaining governance action services, grouped by category, are:
   * **TypeDetectorGovernanceActionConnector** - checks that the elements supplied as action targets are of an
     acceptable type, and outputs a guard so that a governance action process can filter out the wrong types.
   * **VerifyAssetGovernanceActionConnector** - evaluates an asset to be sure it has zones, an origin and an owner.
+    It works on a single action target and outputs a guard for each check: `zones-assigned` or `no-zones`,
+    `owner-assigned` or `no-owner`, and `origin-assigned` or `no-origin`.
 
 
 ----

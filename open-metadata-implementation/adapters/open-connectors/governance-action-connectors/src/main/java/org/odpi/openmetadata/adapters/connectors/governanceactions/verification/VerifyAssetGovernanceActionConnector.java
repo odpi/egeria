@@ -43,7 +43,7 @@ public class VerifyAssetGovernanceActionConnector extends GeneralGovernanceActio
 
         try
         {
-            if (governanceContext.getActionTargetElements() == null)
+            if ((governanceContext.getActionTargetElements() == null) || (governanceContext.getActionTargetElements().isEmpty()))
             {
                 completionStatus = VerifyAssetGuard.NO_TARGETS_DETECTED.getCompletionStatus();
                 outputGuards.add(VerifyAssetGuard.NO_TARGETS_DETECTED.getName());
@@ -137,10 +137,14 @@ public class VerifyAssetGovernanceActionConnector extends GeneralGovernanceActio
         }
         catch (OMFCheckedExceptionBase error)
         {
+            this.recordFailure(error);
+
             throw new ConnectorCheckedException(error.getReportedErrorMessage(), error);
         }
         catch (Exception error)
         {
+            this.recordFailure(error);
+
             throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
                                                                                                                               error.getClass().getName(),
                                                                                                                               error.getMessage()),
@@ -150,4 +154,32 @@ public class VerifyAssetGovernanceActionConnector extends GeneralGovernanceActio
         }
     }
 
+
+    /**
+     * Record the verification-failed guard, so that a governance action process can respond to the failure.
+     * The exception is still thrown by the caller.
+     *
+     * @param error exception that stopped the service
+     */
+    private void recordFailure(Exception error)
+    {
+        try
+        {
+            List<String> outputGuards = new ArrayList<>();
+
+            outputGuards.add(VerifyAssetGuard.VERIFICATION_FAILED.getName());
+
+            governanceContext.recordCompletionStatus(VerifyAssetGuard.VERIFICATION_FAILED.getCompletionStatus(),
+                                                     outputGuards,
+                                                     null,
+                                                     null,
+                                                     error.getMessage());
+        }
+        catch (Exception recordError)
+        {
+            /*
+             * The exception from the service is more important, and is thrown by the caller.
+             */
+        }
+    }
 }
