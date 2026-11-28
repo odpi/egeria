@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconte
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
@@ -139,6 +140,209 @@ public class OMRSRepositoryHelperTest
         assertEquals(entities.size(), 2);
     }
 
+
+    /**
+     * An unrestricted request (pageSize == 0) must still start at fromElement and be sequenced
+     * deterministically, exactly like a paged request - and like formatRelationshipResults
+     * already does.  Before the fix the entity version returned the whole unsequenced list
+     * from element zero, so a caller paging through an unrestricted find received overlapping
+     * results.
+     */
+    @Test
+    void testFormatEntityResultsUnrestrictedRespectsFromElement() throws PropertyErrorException, PagingErrorException
+    {
+        List<EntityDetail> fullEntities = createEntitiesWithGUIDs(4);
+
+        List<EntityDetail> page = createHelper().formatEntityResults(fullEntities, 2, null, SequencingOrder.ANY, 0);
+        assertEquals(2, page.size());
+        assertEquals("entity-2", page.get(0).getGUID());
+        assertEquals("entity-3", page.get(1).getGUID());
+
+        // a fromElement beyond the end of an unrestricted request has no results
+        assertNull(createHelper().formatEntityResults(fullEntities, 9, null, SequencingOrder.ANY, 0));
+    }
+
+    /**
+     * The relationship twin must keep agreeing with the entity version on unrestricted requests.
+     */
+    @Test
+    void testFormatRelationshipResultsUnrestrictedRespectsFromElement() throws PropertyErrorException, PagingErrorException
+    {
+        List<Relationship> fullRelationships = createRelationshipsWithGUIDs(4);
+
+        List<Relationship> page = createHelper().formatRelationshipResults(fullRelationships, 2, null, SequencingOrder.ANY, 0);
+        assertEquals(2, page.size());
+        assertEquals("entity-2", page.get(0).getGUID());
+        assertEquals("entity-3", page.get(1).getGUID());
+
+        assertNull(createHelper().formatRelationshipResults(fullRelationships, 9, null, SequencingOrder.ANY, 0));
+    }
+
+    /**
+     * Values of different primitive types for the same property must not compare as equal.
+     * Equality is reserved for values that the GUID tie-break can separate into a total order;
+     * reporting mixed-type pairs as equal while ordering same-type pairs strictly is not
+     * transitive and makes TimSort throw "Comparison method violates its general contract!".
+     */
+    @Test
+    void testComparePropertiesIsTotalOrderAcrossPrimitiveTypes()
+    {
+        OMRSRepositoryHelper helper = createHelper();
+
+        InstanceProperties stringB = singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, "b");
+        InstanceProperties stringA = singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, "a");
+        InstanceProperties intOne  = singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT, 1);
+
+        // same-type values still order by value
+        assertTrue(helper.compareProperties(stringB, stringA, "p", SequencingOrder.PROPERTY_ASCENDING) > 0);
+        assertTrue(helper.compareProperties(stringA, stringB, "p", SequencingOrder.PROPERTY_ASCENDING) < 0);
+        assertEquals(0, helper.compareProperties(stringB, stringB, "p", SequencingOrder.PROPERTY_ASCENDING));
+
+        // mixed-type values order deterministically instead of comparing as equal
+        assertNotEquals(0, helper.compareProperties(stringB, intOne, "p", SequencingOrder.PROPERTY_ASCENDING));
+        assertNotEquals(0, helper.compareProperties(intOne, stringB, "p", SequencingOrder.PROPERTY_ASCENDING));
+
+        // equivalence stays transitive: if a ~ b and b ~ c then a ~ c
+        if (helper.compareProperties(stringB, intOne, "p", SequencingOrder.PROPERTY_ASCENDING) == 0 &&
+            helper.compareProperties(intOne, stringA, "p", SequencingOrder.PROPERTY_ASCENDING) == 0)
+        {
+            assertEquals(0, helper.compareProperties(stringB, stringA, "p", SequencingOrder.PROPERTY_ASCENDING));
+        }
+    }
+
+    /**
+     * A primitive that carries a type but no value (a defined-but-unset property as serialised
+     * by a remote repository) must be ordered, not crash the sort with a NullPointerException.
+     */
+    @Test
+    void testComparePropertiesWithUnsetPrimitiveValueDoesNotThrow()
+    {
+        OMRSRepositoryHelper helper = createHelper();
+
+        InstanceProperties unset = singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, null);
+        InstanceProperties set   = singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, "abc");
+
+        // an unset value sorts before a set one, matching the missing-property handling
+        assertTrue(helper.compareProperties(unset, set, "p", SequencingOrder.PROPERTY_ASCENDING) < 0);
+        assertTrue(helper.compareProperties(set, unset, "p", SequencingOrder.PROPERTY_ASCENDING) > 0);
+        assertEquals(0, helper.compareProperties(unset, unset, "p", SequencingOrder.PROPERTY_ASCENDING));
+    }
+
+    /**
+     * Sequencing a find over instances whose property has different primitive types must not
+     * abort with IllegalArgumentException("Comparison method violates its general contract!").
+     * The instances alternate between two primitive types in blocks, with values descending,
+     * so same-type pairs order strictly while mixed-type pairs used to compare as equal.
+     */
+    @Test
+    void testFormatEntityResultsMixedPrimitiveTypesSortWithoutContractFailure() throws PropertyErrorException, PagingErrorException
+    {
+        List<EntityDetail> fullEntities = new ArrayList<>();
+        for (int i = 0; i < 64; i++)
+        {
+            EntityDetail entity = new EntityDetail();
+            entity.setGUID("entity-" + i);
+
+            if (i % 3 == 0)
+            {
+                entity.setProperties(singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING, String.format("%03d", 64 - i)));
+            }
+            else
+            {
+                entity.setProperties(singlePrimitiveProperty("p", PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT, 64 - i));
+            }
+            fullEntities.add(entity);
+        }
+
+        List<EntityDetail> sorted = createHelper().formatEntityResults(fullEntities, 0, "p", SequencingOrder.PROPERTY_ASCENDING, 64);
+        assertEquals(64, sorted.size());
+
+        // the result is a total order: each primitive type occupies one contiguous block and
+        // values inside a block are ascending
+        Map<String, Integer> blockStarts  = new HashMap<>();
+        int                  lastIntValue = Integer.MIN_VALUE;
+        String               lastString   = null;
+        String               lastTypeName = null;
+
+        for (EntityDetail entity : sorted)
+        {
+            PrimitivePropertyValue value    = (PrimitivePropertyValue) entity.getProperties().getPropertyValue("p");
+            String                 typeName = value.getTypeName();
+
+            if (!typeName.equals(lastTypeName))
+            {
+                assertNull(blockStarts.put(typeName, sorted.indexOf(entity)), "type " + typeName + " appears in more than one block");
+                lastIntValue = Integer.MIN_VALUE;
+                lastString   = null;
+                lastTypeName = typeName;
+            }
+
+            if (value.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
+            {
+                int intValue = (Integer) value.getPrimitiveValue();
+                assertTrue(intValue >= lastIntValue, "int block is not ascending");
+                lastIntValue = intValue;
+            }
+            else
+            {
+                String stringValue = (String) value.getPrimitiveValue();
+                if (lastString != null)
+                {
+                    assertTrue(stringValue.compareTo(lastString) >= 0, "string block is not ascending");
+                }
+                lastString = stringValue;
+            }
+        }
+    }
+
+    private InstanceProperties singlePrimitiveProperty(String                propertyName,
+                                                       PrimitiveDefCategory  category,
+                                                       Object                value)
+    {
+        PrimitivePropertyValue primitive = new PrimitivePropertyValue();
+        primitive.setPrimitiveDefCategory(category);
+
+        if (value != null)
+        {
+            primitive.setPrimitiveValue(value);
+        }
+        primitive.setTypeName(category.getName());
+
+        InstanceProperties properties = new InstanceProperties();
+        properties.setProperty(propertyName, primitive);
+        return properties;
+    }
+
+    private List<EntityDetail> createEntitiesWithGUIDs(int count)
+    {
+        // inserted in a scrambled order so that the tests also exercise the sequencing
+        String[] guids = new String[count];
+        for (int i = 0; i < count; i++)
+        {
+            guids[i] = "entity-" + i;
+        }
+        List<EntityDetail> entities = new ArrayList<>();
+        for (String guid : guids)
+        {
+            EntityDetail entity = new EntityDetail();
+            entity.setGUID(guid);
+            entities.add(entity);
+        }
+        Collections.reverse(entities);
+        return entities;
+    }
+
+    private List<Relationship> createRelationshipsWithGUIDs(int count)
+    {
+        List<Relationship> relationships = new ArrayList<>();
+        for (int i = count - 1; i >= 0; i--)
+        {
+            Relationship relationship = new Relationship();
+            relationship.setGUID("entity-" + i);
+            relationships.add(relationship);
+        }
+        return relationships;
+    }
 
     @Test
     void testCommonDifferencesAcrossInstances() {
