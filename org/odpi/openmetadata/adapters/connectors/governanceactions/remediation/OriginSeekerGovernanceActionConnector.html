@@ -104,13 +104,13 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OriginSeekerGovernanceActionConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/opengovernance/GeneralGovernanceActionService.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GeneralGovernanceActionService</a></span></div>
-<div class="block">OriginSeekerGovernanceActionConnector uses the lineage mapping relationships to determine the origin of the asset that is passed
- as an action target.  It follows each lineage path, collecting the AssetOrigin classifications.  If there is only one, it is
+<div class="block">OriginSeekerGovernanceActionConnector uses the lineage relationships to determine the origin of the asset that is passed
+ as the newAsset action target.  It follows each lineage path, collecting the AssetOrigin classifications.  If there is only one, it is
  added to the action target asset and the output guard is set to origin-assigned.  If there are multiple origin's identified they are
  added to the detectedOrigins request parameter and the output guard is multiple-origins-detected.
  If no AssetOrigin classifications are found, the output guard is no-origins-detected.
- Note: This implementation currently only follows LineageMapping links between assets, it needs extending to support lineage mapping
- between ports and schema attributes.</div>
+ Note: This implementation currently only follows the LineageMapping, DataFlow, ControlFlow and ProcessCall relationships attached
+ directly to the elements in the lineage graph, it needs extending to support lineage mapping between ports and schema attributes.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

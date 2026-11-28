@@ -117403,6 +117403,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0064 - The {0} governance action service has been passed {1} action targets but can only work with one: {2}</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#MULTIPLE_TARGETS" class="member-name-link">MULTIPLE_TARGETS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/TypeCasterGuard.html#MULTIPLE_TARGETS" class="member-name-link">MULTIPLE_TARGETS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.verification.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/TypeCasterGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">TypeCasterGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html#MULTIPLE_TARGETS_DETECTED" class="member-name-link">MULTIPLE_TARGETS_DETECTED</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/QualifiedNamePeerDuplicateGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">QualifiedNamePeerDuplicateGuard</a></dt>
@@ -119275,6 +119277,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0018 - The {0} governance action service has no targets to operate on</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#NO_TARGETS" class="member-name-link">NO_TARGETS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSetterGuard.html#NO_TARGETS" class="member-name-link">NO_TARGETS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSetterGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSetterGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OwnerSetterGuard.html#NO_TARGETS" class="member-name-link">NO_TARGETS</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OwnerSetterGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OwnerSetterGuard</a></dt>
@@ -130967,8 +130971,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
 <dd>
-<div class="block">OriginSeekerGovernanceActionConnector uses the lineage mapping relationships to determine the origin of the asset that is passed
- as an action target.</div>
+<div class="block">OriginSeekerGovernanceActionConnector uses the lineage relationships to determine the origin of the asset that is passed
+ as the newAsset action target.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html#%3Cinit%3E()" class="member-name-link">OriginSeekerGovernanceActionConnector()</a> - Constructor for class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGovernanceActionConnector</a></dt>
 <dd>&nbsp;</dd>
@@ -130983,7 +130987,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" class="type-name-link" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a> - Enum Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
 <dd>
-<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+<div class="block">OriginSeekerGuard describes the guards produced by the Origin Seeker Governance Action Service.</div>
 </dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSetterGovernanceActionConnector.html" class="type-name-link" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSetterGovernanceActionConnector</a> - Class in <a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/package-summary.html">org.odpi.openmetadata.adapters.connectors.governanceactions.remediation</a></dt>
 <dd>
@@ -180282,6 +180286,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action.</div>
 </dd>
+<dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html#TARGET_NOT_ASSET" class="member-name-link">TARGET_NOT_ASSET</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/remediation/OriginSeekerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.remediation">OriginSeekerGuard</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html#TARGET_NOT_ASSET" class="member-name-link">TARGET_NOT_ASSET</a> - Enum constant in enum class org.odpi.openmetadata.adapters.connectors.governanceactions.verification.<a href="org/odpi/openmetadata/adapters/connectors/governanceactions/verification/VerifyAssetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.verification">VerifyAssetGuard</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/odpi/openmetadata/frameworks/opengovernance/controls/Guard.html#TARGET_NOT_ASSET" class="member-name-link">TARGET_NOT_ASSET</a> - Enum constant in enum class org.odpi.openmetadata.frameworks.opengovernance.controls.<a href="org/odpi/openmetadata/frameworks/opengovernance/controls/Guard.html" title="enum class in org.odpi.openmetadata.frameworks.opengovernance.controls">Guard</a></dt>
